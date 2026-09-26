@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Wetenschappen – oefentools</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔬</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EEF2F5; --paper:#FFFFFF; --ink:#1D2A36; --muted:#51606E; --line:#CBD5DE;
+  color-scheme:light;
+  --fysica:#2F6FB0; --chemie:#2E8B57; --algemeen:#B7790F;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  font-size:1.0625rem; line-height:1.5;
+}
+main{max-width:60rem; margin:0 auto; padding:2.5rem 1.25rem 4rem}
+header h1{font-size:clamp(1.9rem,5vw,2.6rem); line-height:1.1; margin:0 0 .5rem}
+header p{margin:0; color:var(--muted); max-width:38rem}
+
+section{margin-top:2.75rem}
+section h2{
+  font-size:1.35rem; margin:0 0 1rem; padding-left:.75rem;
+  border-left:6px solid var(--c);
+}
+h3.jaar{font-size:1rem; font-weight:700; color:var(--muted); margin:1.5rem 0 .6rem}
+section h2 + h3.jaar{margin-top:0}
+.grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(17rem,1fr)); gap:1rem}
+
+.tool{
+  background:var(--paper); border:1px solid var(--line); border-radius:6px;
+  padding:1rem; display:grid; grid-template-columns:4.25rem minmax(0,1fr); gap:.25rem 1rem; grid-template-rows:auto 1fr auto;
+}
+/* Kleine tekening van wat er in de tool zit */
+.sym{
+  grid-row:1 / span 2; align-self:start; width:4.25rem; height:4.25rem; border-radius:6px;
+  color:var(--c); padding:.4rem;
+  background:color-mix(in srgb, var(--c) 7%, var(--paper));
+  border:1px solid color-mix(in srgb, var(--c) 35%, var(--paper));
+}
+.sym svg{width:100%; height:100%; display:block; overflow:visible}
+.sym svg *{vector-effect:non-scaling-stroke}
+.sym svg{fill:none; stroke:currentColor; stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round}
+.sym svg text{stroke:none; fill:currentColor}
+.tool h3{margin:0; font-size:1.1rem; line-height:1.25; hyphens:auto; overflow-wrap:break-word}
+.tool p{margin:0; align-self:start; color:var(--muted); font-size:.95rem}
+.acties{grid-column:1 / -1; display:flex; gap:.5rem; margin-top:.75rem; flex-wrap:wrap}
+.acties a{
+  flex:1 1 auto; text-align:center; text-decoration:none; font-weight:700;
+  padding:.6rem .9rem; border-radius:4px; min-height:44px;
+  display:inline-flex; align-items:center; justify-content:center;
+}
+.open{background:var(--c); color:#fff}
+.down{border:2px solid var(--c); color:var(--c)}
+.acties a:hover{filter:brightness(1.08)}
+.acties a:focus-visible{outline:3px solid var(--ink); outline-offset:2px}
+
+footer{margin-top:3rem; color:var(--muted); font-size:.9rem; max-width:40rem}
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Oefentools wetenschappen</h1>
+    <p>Klik op <strong>Openen</strong> om een tool te gebruiken. Klik op <strong>Downloaden</strong> om de tool op je computer te bewaren. Dan werkt hij ook zonder internet.</p>
+  </header>
+  <div id="lijst"></div>
+  <footer>
+    Een gedownloade tool bewaart je gegevens apart van de online versie. Kies dus één versie en blijf die gebruiken.
+  </footer>
+</main>
+
+<script>
+/* ============================================================
+   HIER PAS JE DE LIJST AAN
+   - open:  de link om de tool te openen
+   - bestand: naam van het gedownloade bestand
+   - jaren: bv. [3] of [3,4,5]; leeg [] = alle jaren
+   Bestanden in dezelfde map als deze index.html: gewoon de bestandsnaam.
+   ============================================================ */
+const VAKKEN = [
+  { naam: "Algemeen", kleur: "--algemeen", perJaar: false },  /* geen jaarkopjes, alles naast elkaar */
+  { naam: "Fysica",   kleur: "--fysica" },
+  { naam: "Chemie",   kleur: "--chemie" }
+];
+
+const TOOLS = [
+  { vak:"Algemeen", icoon:"boek", jaren:[3,4,5], titel:"Studiewijzer",
+    tekst:"Leerstof, leerstrategieën en zelftests per klas en vak.",
+    open:"https://wrldbkr-a11y.github.io/studiewijzerwetenschappen/", bestand:"studiewijzer.html" },
+  { vak:"Algemeen", icoon:"kalender", jaren:[], titel:"Studieplanner",
+    tekst:"Plan je taken en je studiemomenten.",
+    open:"studieplanner.html", bestand:"studieplanner.html" },
+
+  { vak:"Fysica", icoon:"optica", jaren:[3], titel:"Licht aan een scheidings\u00ADoppervlak",
+    tekst:"Terugkaatsing en breking van licht tussen twee middenstoffen.",
+    open:"optica.html", bestand:"optica.html" },
+  { vak:"Fysica", icoon:"grafiek", jaren:[3], titel:"Snelheid en afgelegde weg",
+    tekst:"Snelheid uit een x(t)-grafiek, afgelegde weg uit een v(t)-grafiek.",
+    open:"snelheid-afgelegde-weg.html", bestand:"snelheid-afgelegde-weg.html" },
+  { vak:"Fysica", icoon:"krachten", jaren:[3], titel:"Krachten samenstellen en ontbinden",
+    tekst:"Stap voor stap twee krachten samenstellen of een kracht ontbinden.",
+    open:"krachten-construeren.html", bestand:"krachten-construeren.html" },
+  { vak:"Fysica", icoon:"elektroscoop", jaren:[5], titel:"Elektrostatica",
+    tekst:"De elektroscoop en hoe lading zich verdeelt over bollen.",
+    open:"elektrostatica.html", bestand:"elektrostatica.html" },
+  { vak:"Fysica", icoon:"ladingen", jaren:[5], titel:"Krachten op ladingen",
+    tekst:"Oefenen met de elektrische kracht tussen ladingen.",
+    open:"krachten-op-ladingen.html", bestand:"krachten-op-ladingen.html" },
+  { vak:"Fysica", icoon:"veld", jaren:[5], titel:"Elektrisch veld",
+    tekst:"Veldlijnen rond een puntlading, een geladen bol en tussen twee platen.",
+    open:"elektrisch-veld.html", bestand:"elektrisch-veld.html" },
+  { vak:"Fysica", icoon:"formule", jaren:[3,4,5], titel:"Formules omvormen",
+    tekst:"Redeneren met formules en ze omvormen. Ook voorvoegsels en eenheden.",
+    open:"formuleredeneertool.html", bestand:"formuleredeneertool.html" },
+
+  { vak:"Chemie", icoon:"atoom", jaren:[3], titel:"Elektronen\u00ADconfiguratie",
+    tekst:"Elektronenconfiguratie, ionvorming en ionbinding van de eerste 18 elementen.",
+    open:"elektronenconfiguratie.html", bestand:"elektronenconfiguratie.html" }
+];
+
+
+const A = 'marker-end="url(#PIJL)"';
+const DEFS = `<defs><marker id="PIJL" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="4.5" markerHeight="4.5" orient="auto-start-reverse"><path d="M0 1L9 5L0 9z" fill="currentColor" stroke="none"/></marker></defs>`;
+const T = 'fill="currentColor" stroke="none"';           /* gevulde vorm */
+const Z = (o) => `fill="currentColor" stroke="none" opacity="${o}"`; /* zachte tint */
+const ICONEN = {
+  /* open boek: tekstregels links, vinkje rechts */
+  boek: `<path d="M24 13 C19 9.5 11 9 5 10.5 V38.5 C11 37 19 37.5 24 41 C29 37.5 37 37 43 38.5 V10.5 C37 9 29 9.5 24 13 Z" ${Z(.08)}/>
+    <path d="M24 13 C19 9.5 11 9 5 10.5 V38.5 C11 37 19 37.5 24 41 C29 37.5 37 37 43 38.5 V10.5 C37 9 29 9.5 24 13 Z M24 13 V41"/>
+    <path d="M9 17 H19.5 M9 21.5 H19.5 M9 26 H17" stroke-width="1" opacity=".6"/>
+    <path d="M29 23 L32.5 26.5 L39 18.5" stroke-width="2"/>`,
+  /* kalender met ringen en ingeplande blokjes */
+  kalender: `<rect x="6" y="10" width="36" height="32" rx="3"/>
+    <path d="M6 13 A3 3 0 0 1 9 10 H39 A3 3 0 0 1 42 13 V18 H6 Z" ${Z(.15)}/>
+    <path d="M6 18 H42"/>
+    <path d="M15 6.5 V13 M33 6.5 V13" stroke-width="2"/>
+    <g ${Z(.2)}><circle cx="12" cy="24.5" r="1"/><circle cx="36" cy="24.5" r="1"/><circle cx="12" cy="31.5" r="1"/><circle cx="36" cy="31.5" r="1"/><circle cx="12" cy="38" r="1"/><circle cx="24" cy="38" r="1"/><circle cx="30" cy="38" r="1"/><circle cx="36" cy="38" r="1"/></g>
+    <rect x="16" y="22" width="11" height="5" rx="1" ${T}/>
+    <rect x="21" y="29" width="11" height="5" rx="1" ${Z(.45)}/>
+    <rect x="15" y="35.5" width="6" height="4" rx="1" ${Z(.3)}/>`,
+  /* straal op een scheidingsoppervlak: invallend, teruggekaatst, gebroken */
+  optica: `<rect x="2" y="25" width="44" height="21" ${Z(.1)}/>
+    <path d="M2 25 H46"/>
+    <path d="M24 4 V46" stroke-width="1" stroke-dasharray="2 2.5" opacity=".6"/>
+    <path d="M9 7 L23.4 24.3" ${A}/>
+    <path d="M24.6 24.3 L39 7" opacity=".45" stroke-width="1.2" ${A}/>
+    <path d="M24 25 L31 44" ${A}/>
+    <path d="M24 17 A8 8 0 0 0 18.9 18.8" stroke-width="1" opacity=".7"/>`,
+  /* v(t)-grafiek op ruitjespapier met oppervlakte eronder */
+  grafiek: `<path d="M14 6 V41 M20 6 V41 M26 6 V41 M32 6 V41 M38 6 V41 M8 11 H43 M8 17 H43 M8 23 H43 M8 29 H43 M8 35 H43" stroke-width=".6" opacity=".35"/>
+    <path d="M8 41 V29 L26 17 L38 17 V41 Z" ${Z(.18)}/>
+    <path d="M8 44 V5 M5 41 H45"/>
+    <path d="M8 29 L26 17 L38 17" stroke-width="2.2"/>
+    <text x="10.5" y="9" font-size="7" font-style="italic" font-family="Georgia,serif">v</text>
+    <text x="41" y="47.5" font-size="7" font-style="italic" font-family="Georgia,serif">t</text>`,
+  /* parallellogram van krachten met resultante */
+  krachten: `<path d="M8 40 L36 33 L42 12 L14 19 Z" ${Z(.08)}/>
+    <path d="M36 33 L42 12 M14 19 L42 12" stroke-width="1" stroke-dasharray="2 2.5" opacity=".6"/>
+    <path d="M8 40 L35 33.2" ${A}/>
+    <path d="M8 40 L13.7 20" ${A}/>
+    <path d="M8 40 L41 12.8" stroke-width="2.4" ${A}/>
+    <circle cx="8" cy="40" r="2" ${T}/>`,
+  /* twee ladingen die elkaar aantrekken, pijlen vanuit de lading */
+  ladingen: `<circle cx="10" cy="22" r="6.5" ${Z(.12)}/><circle cx="10" cy="22" r="6.5"/>
+    <path d="M7.2 22 H12.8 M10 19.2 V24.8" stroke-width="1.4"/>
+    <circle cx="38" cy="22" r="6.5" ${Z(.12)}/><circle cx="38" cy="22" r="6.5"/>
+    <path d="M35.2 22 H40.8" stroke-width="1.4"/>
+    <path d="M16.5 22 H21.5" stroke-width="1.8" ${A}/>
+    <path d="M31.5 22 H26.5" stroke-width="1.8" ${A}/>
+    <text x="7" y="38" font-size="6.5" font-style="italic" font-family="Georgia,serif">q₁</text>
+    <text x="35" y="38" font-size="6.5" font-style="italic" font-family="Georgia,serif">q₂</text>`,
+  /* formule omvormen */
+  formule: `<g font-family="Georgia,serif" font-style="italic" font-size="10">
+      <text x="24" y="13" text-anchor="middle">F = m · a</text>
+      <text x="7" y="39.5">a =</text>
+      <text x="32" y="34" text-anchor="middle">F</text>
+      <text x="32" y="46" text-anchor="middle">m</text></g>
+    <path d="M27 37 H37" stroke-width="1.2"/>
+    <path d="M24 17 V24.5" stroke-width="1.2" ${A}/>`,
+  /* homogeen veld tussen twee geladen platen */
+  veld: `<rect x="6" y="6" width="5" height="36" rx="1" ${Z(.2)}/><rect x="6" y="6" width="5" height="36" rx="1"/>
+    <rect x="37" y="6" width="5" height="36" rx="1" ${Z(.2)}/><rect x="37" y="6" width="5" height="36" rx="1"/>
+    <path d="M13 12 H34" stroke-width="1.2" ${A}/><path d="M13 20 H34" stroke-width="1.2" ${A}/><path d="M13 28 H34" stroke-width="1.2" ${A}/><path d="M13 36 H34" stroke-width="1.2" ${A}/>
+    <g font-size="6.5" font-family="inherit" font-weight="700"><text x="6.6" y="47.5">+</text><text x="38.2" y="47.5">−</text></g>`,
+  /* atoommodel natrium (2-8-1), elektronen op de vier hoekpunten per schil */
+  atoom: `<circle cx="24" cy="24" r="3.6" ${Z(.9)}/>
+    <circle cx="24" cy="24" r="8" stroke-width="1" opacity=".55"/>
+    <circle cx="24" cy="24" r="14" stroke-width="1" opacity=".55"/>
+    <circle cx="24" cy="24" r="20" stroke-width="1" opacity=".55"/>
+    <g ${T}>
+      <circle cx="24" cy="16" r="1.5"/><circle cx="32" cy="24" r="1.5"/>
+      <circle cx="22.2" cy="10" r="1.5"/><circle cx="25.8" cy="10" r="1.5"/>
+      <circle cx="38" cy="22.2" r="1.5"/><circle cx="38" cy="25.8" r="1.5"/>
+      <circle cx="22.2" cy="38" r="1.5"/><circle cx="25.8" cy="38" r="1.5"/>
+      <circle cx="10" cy="22.2" r="1.5"/><circle cx="10" cy="25.8" r="1.5"/>
+      <circle cx="24" cy="4" r="1.5"/>
+    </g>`,
+  /* elektroscoop: knop, staaf door isolator, uitgeweken blaadjes in een behuizing */
+  elektroscoop: `<path d="M9 20 H39 V43 A2 2 0 0 1 37 45 H11 A2 2 0 0 1 9 43 Z" ${Z(.07)}/>
+    <path d="M9 20 H39 V43 A2 2 0 0 1 37 45 H11 A2 2 0 0 1 9 43 Z" stroke-width="1" opacity=".6"/>
+    <rect x="21" y="17.5" width="6" height="5" rx="1" ${Z(.35)}/>
+    <circle cx="24" cy="8" r="4.5" ${Z(.15)}/><circle cx="24" cy="8" r="4.5"/>
+    <path d="M24 12.5 V31"/>
+    <path d="M24 31 L17 40.5 M24 31 L31 40.5" stroke-width="1.8"/>
+    <g font-size="6" font-family="inherit" font-weight="700"><text x="13" y="34">+</text><text x="32" y="34">+</text><text x="21.8" y="8.2" font-size="5.5">+</text></g>`
+};
+
+/* ============================================================ */
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const jaarLabel = j => !j.length ? "Alle jaren"
+  : j.length === 1 ? `${j[0]}de jaar`
+  : `${Math.min(...j)}de tot ${Math.max(...j)}de jaar`;
+/* volgorde: alle jaren, dan tools voor meerdere jaren, dan per jaar */
+const jaarSleutel = j => !j.length ? 0 : Math.min(...j) * 10 - (j.length > 1 ? 5 : 0);
+
+const tegel = t => `
+      <article class="tool">
+        <div class="sym" aria-hidden="true"><svg viewBox="0 0 48 48">${(DEFS + (ICONEN[t.icoon] || "")).replaceAll("PIJL", "pijl-" + t.icoon)}</svg></div>
+        <h3>${esc(t.titel)}</h3>
+        <p>${esc(t.tekst)}</p>
+        <div class="acties">
+          <a class="open" href="${esc(t.open)}" target="_blank" rel="noopener">Openen</a>
+          <a class="down" href="${esc(t.open)}" download="${esc(t.bestand)}">Downloaden</a>
+        </div>
+      </article>`;
+
+document.getElementById("lijst").innerHTML = VAKKEN.map(v => {
+  const items = TOOLS.filter(t => t.vak === v.naam);
+  if (!items.length) return "";
+  const groepen = new Map();
+  items.slice().sort((a, b) => jaarSleutel(a.jaren) - jaarSleutel(b.jaren))
+    .forEach(t => {
+      const l = jaarLabel(t.jaren);
+      if (!groepen.has(l)) groepen.set(l, []);
+      groepen.get(l).push(t);
+    });
+  if (v.perJaar === false) return `<section style="--c:var(${v.kleur})">
+    <h2>${esc(v.naam)}</h2>
+    <div class="grid">${items.map(tegel).join("")}</div>
+  </section>`;
+  return `<section style="--c:var(${v.kleur})">
+    <h2>${esc(v.naam)}</h2>
+    ${[...groepen].map(([label, lijst]) => `
+    <h3 class="jaar">${label}</h3>
+    <div class="grid">${lijst.map(tegel).join("")}</div>`).join("")}
+  </section>`;
+}).join("");
+</script>
+</body>
+</html>
