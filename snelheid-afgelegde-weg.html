@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Snelheid en afgelegde weg</title>
+<style>
+  :root {
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    --bg: #eef3f8;
+    --paper: #ffffff;
+    --panel: #ffffff;
+    --ink: #1b2a41;
+    --muted: #55667c;
+    --line: #d3dde9;
+    --grid: #cfe1f1;
+    --grid-major: #93b7d8;
+    --accent: #2a5db0;
+    --accent-ink: #ffffff;
+    --ok: #17804f;
+    --bad: #c23b4b;
+    --c1: #2f7de1;
+    --c2: #e8871e;
+    --c3: #2fa36b;
+    --c4: #b352c7;
+    --c5: #d9455f;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0f151c;
+      --paper: #16202b;
+      --panel: #16202b;
+      --ink: #e6edf5;
+      --muted: #97a8bc;
+      --line: #2a3a4d;
+      --grid: #243548;
+      --grid-major: #3f5d7d;
+      --accent: #6aa2f0;
+      --accent-ink: #0f151c;
+      --ok: #4cc38a;
+      --bad: #ff7b8a;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0f151c;
+    --paper: #16202b;
+    --panel: #16202b;
+    --ink: #e6edf5;
+    --muted: #97a8bc;
+    --line: #2a3a4d;
+    --grid: #243548;
+    --grid-major: #3f5d7d;
+    --accent: #6aa2f0;
+    --accent-ink: #0f151c;
+    --ok: #4cc38a;
+    --bad: #ff7b8a;
+  }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  *, *::before, *::after { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Avenir Next", "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.45;
+  }
+  .wrap { max-width: 1280px; margin: 0 auto; padding: 20px 16px 40px; }
+  h1 { font-size: 1.5rem; margin: 0 0 4px; letter-spacing: -0.01em; }
+  .lead { margin: 0 0 16px; color: var(--muted); max-width: 66ch; }
+
+  .bar { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; margin-bottom: 16px; }
+  .tabs { display: inline-flex; border: 1.5px solid var(--ink); border-radius: 10px; overflow: hidden; }
+  .tabs button {
+    font: inherit; font-weight: 600; padding: 9px 16px; border: 0; background: transparent; color: var(--ink); cursor: pointer;
+  }
+  .tabs button + button { border-left: 1.5px solid var(--ink); }
+  .tabs button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+  .opt { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; }
+  .opt input { width: 18px; height: 18px; accent-color: var(--accent); }
+
+  .layout { display: grid; grid-template-columns: minmax(0, 1fr) 540px; gap: 20px; align-items: start; }
+  @media (max-width: 1000px) { .layout { grid-template-columns: minmax(0, 1fr); } }
+
+  .graph { background: var(--paper); border: 1.5px solid var(--line); border-radius: 12px; padding: 8px; }
+  .graph svg { display: block; width: 100%; height: auto; max-width: 760px; margin: 0 auto; }
+
+  .panel { background: var(--panel); border: 1.5px solid var(--line); border-radius: 12px; padding: 16px; }
+  .panel h2 { font-size: 1.05rem; margin: 0 0 4px; }
+  .panel p.task { margin: 0 0 8px; color: var(--muted); font-size: 0.95rem; }
+
+  .row { padding: 6px 0; border-top: 1px solid var(--line); }
+  .row:first-child { border-top: 0; }
+  .line { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .calc { display: inline-flex; align-items: center; gap: 6px; }
+  .badge {
+    flex: none; width: 26px; height: 26px; border-radius: 50%; background: var(--c, var(--ink)); color: #fff;
+    font-weight: 700; font-size: 0.85rem; display: inline-grid; place-items: center;
+  }
+  .eq, .unit { color: var(--muted); }
+  .row input[type="text"], .row select {
+    font: inherit; padding: 6px 8px; border: 1.5px solid var(--ink); border-radius: 8px; background: var(--paper); color: var(--ink);
+  }
+  .row input[type="text"] { width: 4.8em; text-align: right; font-variant-numeric: tabular-nums; }
+  .row select { min-width: 8.6em; }
+  .row input.ok, .row select.ok { border-color: var(--ok); }
+  .row input.bad, .row select.bad { border-color: var(--bad); }
+  .mark { font-size: 1rem; font-weight: 700; min-width: 1.1em; text-align: center; }
+  .mark.ok { color: var(--ok); }
+  .mark.bad { color: var(--bad); }
+  .sol {
+    margin: 6px 0 2px 34px; padding: 8px 10px; border-left: 3px solid var(--c, var(--accent));
+    background: var(--bg); border-radius: 0 8px 8px 0; font-size: 0.92rem; line-height: 1.9; font-variant-numeric: tabular-nums;
+  }
+  .sol[hidden] { display: none; }
+
+  /* breuken met breukstreep */
+  .frac { display: inline-flex; flex-direction: column; vertical-align: middle; text-align: center; margin: 0 3px; line-height: 1.25; }
+  .frac > .n { border-bottom: 1.5px solid currentColor; padding: 0 5px 1px; }
+  .frac > .d { padding: 1px 5px 0; }
+
+  .btn.sm { font-size: 0.82rem; font-weight: 600; padding: 3px 9px; border-radius: 8px; margin-left: auto; }
+  .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  .btn {
+    font: inherit; font-weight: 600; padding: 9px 14px; border-radius: 9px; cursor: pointer;
+    border: 1.5px solid var(--ink); background: transparent; color: var(--ink);
+  }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+  #summary { margin-top: 12px; font-weight: 600; min-height: 1.4em; }
+  #summary.good { color: var(--ok); }
+
+  button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+  /* grafiek */
+  .g-minor { stroke: var(--grid); stroke-width: 1; }
+  .g-major { stroke: var(--grid-major); stroke-width: 1.5; }
+  .axis { stroke: var(--ink); stroke-width: 2.2; }
+  .tick { font-size: 12px; fill: var(--muted); font-variant-numeric: tabular-nums; }
+  .atitle { font-size: 15px; fill: var(--ink); font-weight: 600; }
+  .dot { fill: var(--paper); stroke: var(--ink); stroke-width: 2; }
+  .bnum { font-size: 13px; font-weight: 700; fill: #fff; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Snelheid en afgelegde weg</h1>
+  <p class="lead" id="lead"></p>
+
+  <div class="bar">
+    <div class="tabs" role="group" aria-label="Soort oefening">
+      <button type="button" id="tab-xt" aria-pressed="true">x(t)-grafiek: snelheid</button>
+      <button type="button" id="tab-vt" aria-pressed="false">v(t)-grafiek: afgelegde weg</button>
+    </div>
+    <label class="opt" id="negopt"><input type="checkbox" id="neg" checked> Ook negatieve snelheden</label>
+  </div>
+
+  <div class="layout">
+    <div class="graph" id="graph"></div>
+    <div class="panel">
+      <h2 id="ptitle"></h2>
+      <p class="task" id="task"></p>
+      <div id="rows"></div>
+      <div class="actions">
+        <button type="button" class="btn primary" id="check">Controleer</button>
+        <button type="button" class="btn" id="solve">Toon alle uitwerkingen</button>
+        <button type="button" class="btn" id="next">Nieuwe grafiek</button>
+      </div>
+      <div id="summary" aria-live="polite"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var CELL = 30, ML = 56, MR = 24, MT = 22, MB = 54, TMAX = 20;
+  var COL = ['var(--c1)', 'var(--c2)', 'var(--c3)', 'var(--c4)', 'var(--c5)'];
+  var TLAB = { erb: 'ERB', stil: 'Stilstand', vers: 'Versnellen', vert: 'Vertragen' };
+  var TORDER = ['erb', 'stil', 'vers', 'vert'];
+  var $ = function (id) { return document.getElementById(id); };
+  var mode = 'xt', data = null;
+
+  function rnd(n) { return Math.floor(Math.random() * n); }
+  function pick(a) { return a[rnd(a.length)]; }
+  function range(a, b, s) {
+    var r = [];
+    for (var v = a; v <= b + 1e-9; v += s) r.push(Math.round(v * 2) / 2);
+    return r;
+  }
+  function f(n) { return String(Math.round(n * 100) / 100).replace('.', ',').replace('-', '\u2212'); }
+  function fr(n, d) { return '<span class="frac"><span class="n">' + n + '</span><span class="d">' + d + '</span></span>'; }
+
+  // 5 duren van 2 tot 6 s die samen 20 s zijn
+  function durations() {
+    var d = [2, 2, 2, 2, 2], left = 10;
+    while (left > 0) {
+      var i = rnd(5);
+      if (d[i] < 6) { d[i]++; left--; }
+    }
+    return d;
+  }
+
+  // x(t): enkel rechte stukken (stilstand of constante snelheid)
+  function genXT(neg) {
+    var pool = neg ? range(-4, 4, 0.5) : range(0, 4, 0.5);
+    for (var a = 0; a < 5000; a++) {
+      var d = durations();
+      var x = neg ? 4 + rnd(13) : rnd(6);
+      var pos = [x], vs = [], ok = true;
+      for (var i = 0; i < 5 && ok; i++) {
+        var cand = pool.filter(function (v) {
+          var dx = v * d[i];
+          if (dx !== Math.round(dx)) return false;
+          var nx = pos[i] + dx;
+          if (nx < 0 || nx > 20) return false;
+          if (i > 0 && v === vs[i - 1]) return false;
+          return true;
+        });
+        if (!cand.length) { ok = false; break; }
+        var v = pick(cand);
+        vs.push(v);
+        pos.push(pos[i] + v * d[i]);
+      }
+      if (!ok) continue;
+      var rests = vs.filter(function (v) { return v === 0; }).length;
+      if (rests > 2) continue;
+      if (neg && !vs.some(function (v) { return v < 0; })) continue;
+      if (rests < 1) continue;
+      if (Math.max.apply(null, pos) - Math.min.apply(null, pos) < 8) continue;
+      return { dur: d, y: pos, v: vs };
+    }
+    return { dur: [4, 4, 4, 4, 4], y: [2, 10, 10, 4, 4, 12], v: [2, 0, -1.5, 0, 2] };
+  }
+
+  // v(t): aaneensluitende rechte stukken: constant, stijgend of dalend
+  function genVT() {
+    for (var a = 0; a < 20000; a++) {
+      var d = durations(), y = [rnd(9)], sl = [], ok = true, i;
+      for (i = 0; i < 5; i++) {
+        var ny = Math.random() < 0.3 ? y[i] : rnd(9);
+        var s = (ny - y[i]) / d[i];
+        if (i > 0 && Math.abs(s - sl[i - 1]) < 1e-9) { ok = false; break; }
+        y.push(ny); sl.push(s);
+      }
+      if (!ok) continue;
+      var up = 0, down = 0, flat = 0, still = 0;
+      for (i = 0; i < 5; i++) {
+        if (y[i + 1] > y[i]) up++;
+        else if (y[i + 1] < y[i]) down++;
+        else { flat++; if (y[i] === 0) still++; }
+      }
+      if (!up || !down || !flat || still < 1 || still > 2) continue;
+      if (Math.max.apply(null, y) - Math.min.apply(null, y) < 4) continue;
+      return { dur: d, y: y };
+    }
+    return { dur: [4, 4, 4, 4, 4], y: [2, 6, 6, 0, 0, 3] };
+  }
+
+  function times() {
+    var T = [0];
+    data.dur.forEach(function (x) { T.push(T[T.length - 1] + x); });
+    return T;
+  }
+
+  function typeOf(i) {
+    var y1 = data.y[i], y2 = data.y[i + 1];
+    if (mode === 'xt') return y1 === y2 ? 'stil' : 'erb';
+    if (y1 === y2) return y1 === 0 ? 'stil' : 'erb';
+    return y2 > y1 ? 'vers' : 'vert';
+  }
+
+  function why(t) {
+    if (mode === 'xt') {
+      return t === 'stil' ? 'horizontale lijn: x verandert niet'
+                          : 'rechte schuine lijn: constante snelheid';
+    }
+    return { erb: 'horizontale lijn boven de t-as: v is constant',
+             stil: 'v = 0 m/s',
+             vers: 'de lijn stijgt: v neemt toe',
+             vert: 'de lijn daalt: v neemt af' }[t];
+  }
+
+  function area(i) { return (data.y[i] + data.y[i + 1]) / 2 * data.dur[i]; }
+
+  function drawGraph() {
+    var isXT = mode === 'xt', rows = isXT ? 20 : 10;
+    var W = ML + TMAX * CELL + MR, H = MT + rows * CELL + MB;
+    var X = function (t) { return ML + t * CELL; };
+    var Y = function (v) { return MT + (rows - v) * CELL; };
+    var T = times(), y = data.y, i, j;
+    var o = '<svg viewBox="0 0 ' + W + ' ' + H + '" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="' +
+      (isXT ? 'x(t)-grafiek met vijf aaneensluitende delen' : 'v(t)-grafiek met vijf aaneensluitende delen') + '">';
+
+    for (i = 0; i <= TMAX; i++) {
+      o += '<line class="' + (i % 5 === 0 ? 'g-major' : 'g-minor') + '" x1="' + X(i) + '" y1="' + MT + '" x2="' + X(i) + '" y2="' + Y(0) + '"/>';
+    }
+    for (j = 0; j <= rows; j++) {
+      o += '<line class="' + (j % 5 === 0 ? 'g-major' : 'g-minor') + '" x1="' + ML + '" y1="' + Y(j) + '" x2="' + X(TMAX) + '" y2="' + Y(j) + '"/>';
+    }
+
+    if (!isXT) {
+      for (i = 0; i < 5; i++) {
+        if (y[i] > 0 || y[i + 1] > 0) {
+          o += '<polygon points="' + X(T[i]) + ',' + Y(0) + ' ' + X(T[i]) + ',' + Y(y[i]) + ' ' + X(T[i + 1]) + ',' + Y(y[i + 1]) + ' ' + X(T[i + 1]) + ',' + Y(0) + '" fill="' + COL[i] + '" opacity="0.17"/>';
+        }
+      }
+    }
+
+    o += '<line class="axis" x1="' + ML + '" y1="' + Y(0) + '" x2="' + X(TMAX) + '" y2="' + Y(0) + '"/>';
+    o += '<line class="axis" x1="' + ML + '" y1="' + MT + '" x2="' + ML + '" y2="' + Y(0) + '"/>';
+
+    for (i = 0; i <= TMAX; i++) {
+      o += '<text class="tick" x="' + X(i) + '" y="' + (Y(0) + 18) + '" text-anchor="middle">' + i + '</text>';
+    }
+    for (j = 0; j <= rows; j++) {
+      o += '<text class="tick" x="' + (ML - 9) + '" y="' + (Y(j) + 4) + '" text-anchor="end">' + j + '</text>';
+    }
+    o += '<text class="atitle" x="' + (ML + TMAX * CELL / 2) + '" y="' + (H - 8) + '" text-anchor="middle">t (s)</text>';
+    o += '<text class="atitle" transform="translate(15 ' + (MT + rows * CELL / 2) + ') rotate(-90)" text-anchor="middle">' + (isXT ? 'x (m)' : 'v (m/s)') + '</text>';
+
+    var badges = '', dots = '';
+    for (i = 0; i < 5; i++) {
+      var x1 = X(T[i]), y1 = Y(y[i]), x2 = X(T[i + 1]), y2 = Y(y[i + 1]);
+      o += '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" stroke="' + COL[i] + '" stroke-width="4.5" stroke-linecap="round"/>';
+      var dx = x2 - x1, dy = y2 - y1, len = Math.sqrt(dx * dx + dy * dy);
+      var nx = -dy / len, ny = dx / len;
+      if (ny > 0) { nx = -nx; ny = -ny; }
+      var bx = (x1 + x2) / 2 + nx * 18, by = (y1 + y2) / 2 + ny * 18;
+      by = Math.max(MT + 11, Math.min(by, Y(0) - 11));
+      bx = Math.max(ML + 11, Math.min(bx, X(TMAX) - 11));
+      badges += '<circle cx="' + bx + '" cy="' + by + '" r="11" fill="' + COL[i] + '"/><text class="bnum" x="' + bx + '" y="' + (by + 4.5) + '" text-anchor="middle">' + (i + 1) + '</text>';
+    }
+    for (i = 0; i <= 5; i++) dots += '<circle class="dot" cx="' + X(T[i]) + '" cy="' + Y(y[i]) + '" r="5"/>';
+    o += dots + badges + '</svg>';
+    $('graph').innerHTML = o;
+  }
+
+  function rowHTML(i, total) {
+    var isXT = mode === 'xt';
+    var color = total ? 'var(--ink)' : COL[i];
+    var sym = total ? '\u03A3' : (i + 1);
+    var h = '<div class="row" data-i="' + i + '" style="--c:' + color + '"><div class="line">';
+    h += '<span class="badge">' + sym + '</span>';
+    if (!total) {
+      h += '<select id="t' + i + '" aria-label="Soort beweging deel ' + (i + 1) + '"><option value="">Soort beweging\u2026</option>';
+      TORDER.forEach(function (k) { h += '<option value="' + k + '">' + TLAB[k] + '</option>'; });
+      h += '</select><span class="mark tmark"></span>';
+    }
+    h += '<span class="calc"><span class="eq">' + (total ? '\u0394x<sub>tot</sub> =' : (isXT ? 'v =' : '\u0394x =')) + '</span>';
+    h += '<input id="a' + i + '" type="text" inputmode="decimal" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="' + (isXT ? 'Snelheid' : 'Afgelegde weg') + (total ? ' totaal' : ' deel ' + (i + 1)) + '">';
+    h += '<span class="unit">' + (isXT ? 'm/s' : 'm') + '</span></span><span class="mark vmark"></span>';
+    h += '<button type="button" class="btn sm" data-sol="1" aria-expanded="false">Uitwerking</button></div>';
+    h += '<div class="sol" hidden></div></div>';
+    return h;
+  }
+
+  function buildPanel() {
+    var isXT = mode === 'xt', box = $('rows'), i;
+    box.innerHTML = '';
+    for (i = 0; i < 5; i++) box.insertAdjacentHTML('beforeend', rowHTML(i, false));
+    if (!isXT) box.insertAdjacentHTML('beforeend', rowHTML(5, true));
+    $('ptitle').textContent = isXT ? 'Beweging en snelheid' : 'Beweging en afgelegde weg';
+    $('task').textContent = isXT
+      ? 'Kies bij elk deel de soort beweging en bereken de snelheid. Lees x en t af op de ruitjes. Een negatieve snelheid schrijf je met een min-teken.'
+      : 'Kies bij elk deel de soort beweging en bereken de afgelegde weg \u0394x. Bereken daarna de totale afgelegde weg. Lees v en t af op de ruitjes.';
+    $('lead').textContent = isXT
+      ? 'De grafiek bestaat uit vijf aaneensluitende rechte delen: stilstand of een beweging met constante snelheid.'
+      : 'De grafiek bestaat uit vijf aaneensluitende rechte delen: constante snelheid, stilstand, of een lijn die stijgt of daalt. De afgelegde weg is de oppervlakte onder de grafiek.';
+    $('negopt').style.display = isXT ? '' : 'none';
+    $('summary').textContent = '';
+    $('summary').className = '';
+    $('solve').textContent = 'Toon alle uitwerkingen';
+  }
+
+  function answers() {
+    var d = data, a = [], i, tot = 0;
+    for (i = 0; i < 5; i++) {
+      if (mode === 'xt') a.push((d.y[i + 1] - d.y[i]) / d.dur[i]);
+      else { var s = area(i); a.push(s); tot += s; }
+    }
+    if (mode === 'vt') a.push(tot);
+    return a;
+  }
+
+  function parse(str) {
+    var n = parseFloat(String(str).trim().replace(',', '.').replace('\u2212', '-'));
+    return isNaN(n) ? null : n;
+  }
+
+  function setState(el, mark, state, text) {
+    el.classList.remove('ok', 'bad');
+    mark.classList.remove('ok', 'bad');
+    if (state === 'ok' || state === 'bad') { el.classList.add(state); mark.classList.add(state); }
+    else if (state === 'empty') { mark.classList.add('bad'); }
+    mark.textContent = state === 'ok' ? '\u2713' : (state === 'bad' ? '\u2717' : '!');
+    mark.setAttribute('role', 'img');
+    mark.setAttribute('aria-label', text);
+    mark.title = text;
+  }
+
+  function check() {
+    var a = answers(), goodT = 0, goodV = 0, nV = a.length, i;
+    for (i = 0; i < nV; i++) {
+      var row = document.querySelector('#rows .row[data-i="' + i + '"]');
+      var inp = row.querySelector('input'), vm = row.querySelector('.vmark');
+      var val = parse(inp.value);
+      if (val === null) setState(inp, vm, 'empty', 'Vul een getal in');
+      else if (Math.abs(val - a[i]) < 0.051) { setState(inp, vm, 'ok', 'Juist'); goodV++; }
+      else setState(inp, vm, 'bad', 'Nog niet juist');
+      if (i < 5) {
+        var sel = row.querySelector('select'), tm = row.querySelector('.tmark');
+        if (!sel.value) setState(sel, tm, 'empty', 'Kies een antwoord');
+        else if (sel.value === typeOf(i)) { setState(sel, tm, 'ok', 'Juist'); goodT++; }
+        else setState(sel, tm, 'bad', 'Nog niet juist');
+      }
+    }
+    var sum = $('summary');
+    if (goodT === 5 && goodV === nV) {
+      sum.textContent = 'Alles juist! Klik op \u201CNieuwe grafiek\u201D voor een volgende oefening.';
+      sum.className = 'good';
+    } else {
+      sum.innerHTML = 'Soort beweging: ' + goodT + ' van 5 juist<br>' +
+        (mode === 'xt' ? 'Snelheid: ' : 'Afgelegde weg: ') + goodV + ' van ' + nV + ' juist';
+      sum.className = '';
+    }
+  }
+
+  function solutionText(i) {
+    var d = data, T = times(), t1 = T[i], t2 = T[i + 1], dt = d.dur[i], ty = typeOf(i);
+    var s = 'Soort beweging: <b>' + TLAB[ty] + '</b> (' + why(ty) + ')<br>';
+    var y1 = d.y[i], y2 = d.y[i + 1];
+    if (mode === 'xt') {
+      var dx = y2 - y1, v = dx / dt;
+      s += '\u0394x = ' + f(y2) + ' m \u2212 ' + f(y1) + ' m = ' + f(dx) + ' m<br>' +
+           '\u0394t = ' + t2 + ' s \u2212 ' + t1 + ' s = ' + dt + ' s<br>' +
+           'v = ' + fr('\u0394x', '\u0394t') + ' = ' + fr(f(dx) + ' m', dt + ' s') + ' = <b>' + f(v) + ' m/s</b>';
+      if (v < 0) s += '<br>Negatief: x neemt af, het voorwerp beweegt in de tegengestelde richting.';
+      return s;
+    }
+    s += '\u0394t = ' + t2 + ' s \u2212 ' + t1 + ' s = ' + dt + ' s<br>';
+    if (y1 === y2) {
+      s += '\u0394x = v \u00B7 \u0394t = ' + y1 + ' m/s \u00B7 ' + dt + ' s = <b>' + f(area(i)) + ' m</b>';
+    } else {
+      s += '\u0394x = ' + fr('v\u2081 + v\u2082', '2') + ' \u00B7 \u0394t = ' +
+           fr(y1 + ' m/s + ' + y2 + ' m/s', '2') + ' \u00B7 ' + dt + ' s = ' +
+           f((y1 + y2) / 2) + ' m/s \u00B7 ' + dt + ' s = <b>' + f(area(i)) + ' m</b>';
+    }
+    return s;
+  }
+
+  function totalText() {
+    var parts = [], sum = 0;
+    for (var i = 0; i < 5; i++) { parts.push(f(area(i)) + ' m'); sum += area(i); }
+    return '\u0394x<sub>tot</sub> = ' + parts.join(' + ') + ' = <b>' + f(sum) + ' m</b>';
+  }
+
+  function setSol(row, open) {
+    var i = +row.getAttribute('data-i'), sol = row.querySelector('.sol'), btn = row.querySelector('[data-sol]');
+    if (open) { sol.innerHTML = (i === 5) ? totalText() : solutionText(i); sol.hidden = false; }
+    else sol.hidden = true;
+    btn.textContent = open ? 'Verberg uitwerking' : 'Uitwerking';
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+
+  function allOpen() {
+    return Array.prototype.every.call(document.querySelectorAll('#rows .row .sol'), function (el) { return !el.hidden; });
+  }
+
+  function syncAll() {
+    $('solve').textContent = allOpen() ? 'Verberg alle uitwerkingen' : 'Toon alle uitwerkingen';
+  }
+
+  function toggleSolution() {
+    var open = !allOpen();
+    document.querySelectorAll('#rows .row').forEach(function (row) { setSol(row, open); });
+    syncAll();
+  }
+
+  function generate() {
+    data = mode === 'xt' ? genXT($('neg').checked) : genVT();
+    buildPanel();
+    drawGraph();
+  }
+
+  function setMode(m) {
+    mode = m;
+    $('tab-xt').setAttribute('aria-pressed', m === 'xt');
+    $('tab-vt').setAttribute('aria-pressed', m === 'vt');
+    generate();
+  }
+
+  $('tab-xt').addEventListener('click', function () { setMode('xt'); });
+  $('tab-vt').addEventListener('click', function () { setMode('vt'); });
+  $('neg').addEventListener('change', generate);
+  $('next').addEventListener('click', generate);
+  $('check').addEventListener('click', check);
+  $('solve').addEventListener('click', toggleSolution);
+  $('rows').addEventListener('click', function (e) {
+    var b = e.target.closest ? e.target.closest('[data-sol]') : null;
+    if (!b) return;
+    var row = b.closest('.row');
+    setSol(row, row.querySelector('.sol').hidden);
+    syncAll();
+  });
+  $('rows').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' && e.target.tagName === 'INPUT') { e.preventDefault(); check(); }
+  });
+
+  generate();
+})();
+</script>
+</body>
+</html>
