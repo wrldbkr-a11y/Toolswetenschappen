@@ -1,0 +1,1495 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Elektrostatische inductie</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #E4E9EB;
+    --grid: #CFD8DC;
+    --panel: #16324F;
+    --panel-2: #1E4468;
+    --panel-text: #EAF1F6;
+    --panel-text-dim: #A9BFD1;
+    --ink: #16324F;
+    --ink-soft: #4C6478;
+    --paper: #FFFFFF;
+    --brass: #B5822C;
+    --brass-light: #D6A957;
+    --pos: #C24A3D;
+    --neg: #2C6E9E;
+    --glass: rgba(180, 205, 215, 0.22);
+    --glass-line: #8FA6B3;
+    --wire: #4C6478;
+    --radius-lg: 14px;
+    --radius-sm: 8px;
+  }
+  *{ box-sizing: border-box; }
+  html,body{ margin:0; padding:0; height:100%; }
+  body{
+    background: var(--bg);
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 28px 28px;
+    font-family: 'IBM Plex Sans', sans-serif;
+    color: var(--ink);
+    min-height: 100vh;
+  }
+  .app{
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 20px 20px 40px;
+  }
+  header{
+    display:flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px 24px;
+    margin-bottom: 16px;
+    padding-bottom: 14px;
+    border-bottom: 2px solid var(--ink);
+  }
+  h1{
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 27px;
+    margin: 0;
+    letter-spacing: 0.2px;
+  }
+  h1 span{ color: var(--brass); }
+  .tabs{
+    display:flex;
+    gap: 4px;
+    background: var(--paper);
+    border: 1.5px solid var(--ink);
+    border-radius: 999px;
+    padding: 3px;
+  }
+  .tab{
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 7px 18px;
+    border-radius: 999px;
+    border: none;
+    background: transparent;
+    color: var(--ink-soft);
+    cursor: pointer;
+  }
+  .tab.active{
+    background: var(--panel);
+    color: var(--panel-text);
+  }
+  .main{
+    display:grid;
+    grid-template-columns: 1fr 320px;
+    gap: 18px;
+    align-items: start;
+  }
+  @media (max-width: 860px){
+    .main{ grid-template-columns: 1fr; }
+  }
+  .canvas-card{
+    background: var(--paper);
+    border: 1.5px solid var(--ink);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+  .canvas-wrap{ position: relative; }
+  svg#scene{ display:block; width: 100%; height: auto; cursor: default; touch-action: none; }
+  .legend{
+    display:flex;
+    gap: 18px;
+    align-items:center;
+    padding: 10px 16px;
+    border-top: 1.5px solid var(--ink);
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .legend-item{ display:flex; align-items:center; gap:6px; }
+  .legend-dot{ width:15px; height:15px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; color:#fff; }
+  .panel{
+    background: var(--panel);
+    color: var(--panel-text);
+    border-radius: var(--radius-lg);
+    padding: 18px;
+    display:flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .panel-scroll{
+    display:flex;
+    flex-direction: column;
+    gap: 14px;
+    min-height: 0;
+    flex: 1 1 auto;
+  }
+  @media (min-width: 861px){
+    .panel{ max-height: min(82vh, 680px); }
+    .panel-scroll{
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: var(--brass) var(--panel-2);
+      padding-right: 4px;
+    }
+    .panel-scroll::-webkit-scrollbar{ width: 8px; }
+    .panel-scroll::-webkit-scrollbar-track{ background: var(--panel-2); border-radius: 4px; }
+    .panel-scroll::-webkit-scrollbar-thumb{ background: var(--brass); border-radius: 4px; }
+  }
+  .group-title{
+    font-family:'Fraunces', serif;
+    font-weight: 600;
+    font-size: 14.5px;
+    color: var(--brass-light);
+    margin: 0 0 10px;
+  }
+  .row{ display:flex; gap:8px; flex-wrap: wrap; }
+  .choice{
+    flex:1;
+    min-width: 64px;
+    background: var(--panel-2);
+    border: 1.5px solid transparent;
+    color: var(--panel-text-dim);
+    font-family:'IBM Plex Sans', sans-serif;
+    font-weight: 600;
+    font-size: 13.5px;
+    padding: 8px 6px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    text-align: center;
+  }
+  .choice.active{
+    background: var(--brass);
+    color: #201404;
+    border-color: var(--brass-light);
+  }
+  .choice:focus-visible, .tab:focus-visible, button:focus-visible{ outline: 2px solid var(--brass-light); outline-offset: 2px; }
+  .sep{ height:1px; background: rgba(255,255,255,0.14); border:none; margin: 0; }
+  /* 3 bollen: lay the properties out as rows with one column per ball, so the panel
+     stays just as short as with 1-2 balls — only a bit wider — instead of growing
+     downward and needing to scroll */
+  .main.wide-controls{ grid-template-columns: 1fr 460px; }
+  @media (max-width: 1100px){
+    .main.wide-controls{ grid-template-columns: 1fr; }
+  }
+  .bol-table{ display:grid; grid-template-columns: 64px repeat(3, 1fr); gap: 6px 8px; align-items:center; }
+  .bol-table .bt-label{ font-size:12.5px; color:var(--panel-text-dim); font-weight:600; }
+  .bol-table .bt-name{ font-family:'Fraunces',serif; font-weight:600; font-size:13px; color:var(--brass-light); text-align:center; }
+  .bol-table .choice{ font-size:12px; padding:6px 4px; min-width:0; }
+  .bol-table .hint{ font-size:11px; text-align:center; }
+  .ground-toggle{
+    display:flex;
+    align-items:center;
+    justify-content: space-between;
+    gap: 8px;
+    background: var(--panel-2);
+    padding: 9px 11px;
+    border-radius: var(--radius-sm);
+    font-size: 13.5px;
+    font-weight: 600;
+  }
+  .switch{
+    position: relative;
+    width: 38px; height: 21px;
+    background: #0E2338;
+    border-radius: 999px;
+    cursor: pointer;
+    flex-shrink: 0;
+    border: 1.5px solid rgba(255,255,255,0.15);
+  }
+  .switch::after{
+    content:'';
+    position:absolute; top:2px; left:2px;
+    width:14px; height:14px; border-radius:50%;
+    background: var(--panel-text-dim);
+    transition: left .18s ease, background .18s ease;
+  }
+  .switch.on{ background: #2C6E4A; }
+  .switch.on::after{ left: 18px; background: #fff; }
+  .status{
+    background: rgba(0,0,0,0.18);
+    border-left: 3px solid var(--brass);
+    padding: 11px 13px;
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    font-size: 13.5px;
+    line-height: 1.5;
+    min-height: 40px;
+  }
+  .status p{ margin: 0 0 6px; }
+  .status p:last-child{ margin-bottom:0; }
+  .reset-btn{
+    background: transparent;
+    border: 1.5px solid var(--panel-text-dim);
+    color: var(--panel-text);
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 600;
+    font-size: 13.5px;
+    padding: 9px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+  }
+  .reset-btn:hover{ border-color: var(--brass-light); color: var(--brass-light); }
+  .hint{ font-size: 12px; color: var(--panel-text-dim); margin: -8px 0 0; }
+
+  /* SVG element styles */
+  .charge-marker{ transition: cx .35s cubic-bezier(.4,0,.2,1), cy .35s cubic-bezier(.4,0,.2,1), opacity .25s; }
+  .charge-marker text{ font-family:'IBM Plex Sans',sans-serif; font-weight:700; font-size: 11px; fill:#fff; pointer-events:none; user-select:none; }
+  .leaf-group{ transition: transform .35s cubic-bezier(.4,0,.2,1); transform-origin: var(--pivot-x) var(--pivot-y); }
+  .rod-group{ cursor: grab; touch-action: none; -webkit-user-drag: none; user-select: none; }
+  .rod-group.dragging{ cursor: grabbing; }
+  .obj-outline{ fill: var(--glass); stroke: var(--ink-soft); stroke-width: 2; }
+  .ball-draggable{ touch-action: none; -webkit-user-drag: none; user-select: none; }
+  .bench-line{ stroke: var(--ink-soft); stroke-width: 2; }
+  .ground-wire{ stroke: var(--wire); stroke-width: 2; fill:none; }
+  .ground-switch-gap{ cursor:pointer; }
+  .zone-label{ font-family:'IBM Plex Sans',sans-serif; font-size: 11px; font-weight:600; fill: var(--ink-soft); }
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <h1>Elektrostatische <span>inductie</span></h1>
+    <div class="tabs">
+      <button class="tab active" data-mode="elektroscoop">Elektroscoop</button>
+      <button class="tab" data-mode="bollen">Bollen</button>
+    </div>
+  </header>
+
+  <div class="main">
+    <div class="canvas-card">
+      <div class="canvas-wrap">
+        <svg id="scene" viewBox="0 0 900 560" xmlns="http://www.w3.org/2000/svg"></svg>
+      </div>
+      <div class="legend">
+        <span class="legend-item"><span class="legend-dot" style="background:var(--pos)">+</span> positieve lading</span>
+        <span class="legend-item"><span class="legend-dot" style="background:var(--neg)">−</span> negatieve lading (elektron)</span>
+        <span class="legend-item" style="margin-left:auto; color:var(--ink-soft);">Sleep de staaf — en in de bollen-modus ook de bollen zelf</span>
+      </div>
+    </div>
+
+    <aside class="panel">
+      <div class="panel-scroll">
+        <div>
+          <p class="group-title">De staaf</p>
+          <div class="row" style="margin-bottom:8px;">
+            <button class="choice active" data-field="rodMaterial" data-value="conductor">Geleider</button>
+            <button class="choice" data-field="rodMaterial" data-value="insulator">Isolator</button>
+          </div>
+          <div class="row">
+            <button class="choice" data-field="rodCharge" data-value="-1">− neg.</button>
+            <button class="choice active" data-field="rodCharge" data-value="0">neutraal</button>
+            <button class="choice" data-field="rodCharge" data-value="1">+ pos.</button>
+          </div>
+        </div>
+
+        <hr class="sep">
+
+        <div id="modeControls"></div>
+      </div>
+
+      <hr class="sep">
+
+      <div>
+        <p class="group-title">Wat gebeurt er?</p>
+        <div class="status" id="status"></div>
+      </div>
+
+      <button class="reset-btn" id="resetBtn">Alles resetten</button>
+    </aside>
+  </div>
+  <p style="text-align:right; color:var(--ink-soft); font-size:11px; margin:6px 4px 0;">versie 2026-09-09 · v20</p>
+</div>
+
+<script>
+(function(){
+  const NS = "http://www.w3.org/2000/svg";
+  const svg = document.getElementById('scene');
+  const statusEl = document.getElementById('status');
+  const modeControlsEl = document.getElementById('modeControls');
+
+  const NADERING_RANGE = 150;
+  const CONTACT_SLACK = 6;
+
+  // ---------- state ----------
+  const state = {
+    mode: 'elektroscoop',
+    rod: { material:'conductor', charge:0, x: 700, y: 120 }, // x,y = position of active tip (left end of rod)
+    rodLength: 210,
+    rodAngle: -35, // degrees, visual only
+    elektroscoop: { material:'conductor', netCharge:0, grounded:false, groundDraining:false },
+    bollenCount: 2,
+    bollen: [
+      { material:'conductor', size:'groot', netCharge:0, grounded:false, groundDraining:false, cx:130 },
+      { material:'insulator', size:'groot', netCharge:0, grounded:false, groundDraining:false, cx:430 },
+      { material:'conductor', size:'klein', netCharge:0, grounded:false, groundDraining:false, cx:730 }
+    ],
+    prevTouchPairs: new Set()
+  };
+
+  // Spaced so that even two "groot" balls (the largest size) start out further apart
+  // than NADERING_RANGE — nothing should react to anything until you actually bring
+  // them closer yourself.
+  const BOL_DEFAULT_X = { 2:[220,610], 3:[130,430,730] };
+  function resetBolPositions(count){
+    const xs = BOL_DEFAULT_X[count];
+    for(let i=0;i<count;i++) state.bollen[i].cx = xs[i];
+    state.prevTouchPairs = new Set();
+  }
+
+  function sign(n){ return n>0?1:(n<0?-1:0); }
+  function signChar(n){ return n>0?'+':(n<0?'−':'0'); }
+  function bolRadius(b){ return b.size==='groot' ? 70 : 46; }
+
+  // ---------- geometry helpers ----------
+  function objectsForMode(){
+    if(state.mode==='elektroscoop'){
+      return [{
+        kind:'elektroscoop',
+        data: state.elektroscoop,
+        cx: 300, top: 90, jarTop:150, jarBottom: 470, jarLeft:210, jarRight:390,
+        knopY: 100, knopR: 24,
+        leavesPivotY: 230
+      }];
+    } else {
+      const count = state.bollenCount;
+      return state.bollen.slice(0,count).map((b,i)=>({
+        kind:'bol', data: b, cx: b.cx, cy: 330, r: bolRadius(b)
+      }));
+    }
+  }
+
+  // touching-conductor groups among the bollen currently on screen, sorted left to right.
+  // returns array of arrays of ball indices; singleton arrays for balls not conductor-merged with a neighbour.
+  function computeTouchGroups(objs){
+    const count = objs.length;
+    const order = objs.map((o,i)=>i).sort((a,b)=>objs[a].cx-objs[b].cx);
+    const groups = [];
+    let current = [order[0]];
+    for(let k=1;k<order.length;k++){
+      const prevIdx = current[current.length-1];
+      const idx = order[k];
+      const a = objs[prevIdx], b = objs[idx];
+      const gap = (b.cx - a.cx) - a.r - b.r;
+      const bothConductor = a.data.material==='conductor' && b.data.material==='conductor';
+      if(bothConductor && gap <= CONTACT_SLACK){
+        current.push(idx);
+      } else {
+        groups.push(current);
+        current = [idx];
+      }
+    }
+    groups.push(current);
+    return groups;
+  }
+
+  // ---------- build static scene per mode ----------
+  function buildScene(){
+    svg.innerHTML = '';
+    const defs = document.createElementNS(NS,'defs');
+    svg.appendChild(defs);
+
+    const objs = objectsForMode();
+
+    if(state.mode==='elektroscoop'){
+      const o = objs[0];
+      // ground line/bench
+      const bench = document.createElementNS(NS,'line');
+      bench.setAttribute('x1', 80); bench.setAttribute('x2', 620);
+      bench.setAttribute('y1', o.jarBottom+40); bench.setAttribute('y2', o.jarBottom+40);
+      bench.setAttribute('class','bench-line');
+      svg.appendChild(bench);
+
+      // jar
+      const jar = document.createElementNS(NS,'path');
+      const jt=o.jarTop, jb=o.jarBottom, jl=o.jarLeft, jr=o.jarRight;
+      jar.setAttribute('d', `M${jl},${jt} L${jl},${jb} Q${jl},${jb+18} ${jl+18},${jb+18} L${jr-18},${jb+18} Q${jr},${jb+18} ${jr},${jb} L${jr},${jt}`);
+      jar.setAttribute('class','obj-outline');
+      svg.appendChild(jar);
+      const jarCap = document.createElementNS(NS,'rect');
+      jarCap.setAttribute('x', jl-14); jarCap.setAttribute('y', jt-10);
+      jarCap.setAttribute('width', (jr-jl)+28); jarCap.setAttribute('height', 16);
+      jarCap.setAttribute('rx',3);
+      jarCap.setAttribute('fill', 'var(--brass)');
+      svg.appendChild(jarCap);
+
+      // steel + knop
+      const steel = document.createElementNS(NS,'rect');
+      steel.setAttribute('x', o.cx-4); steel.setAttribute('y', o.knopY);
+      steel.setAttribute('width', 8); steel.setAttribute('height', o.leavesPivotY-o.knopY);
+      steel.setAttribute('fill','var(--brass)');
+      svg.appendChild(steel);
+      const knop = document.createElementNS(NS,'circle');
+      knop.setAttribute('cx', o.cx); knop.setAttribute('cy', o.knopY-8);
+      knop.setAttribute('r', o.knopR);
+      knop.setAttribute('fill','var(--brass-light)');
+      knop.setAttribute('stroke','var(--brass)'); knop.setAttribute('stroke-width',2);
+      svg.appendChild(knop);
+
+      // leaves (two, hinged at leavesPivotY) — each leaf + its own charge markers
+      // share one rotating group, so the charges stay visually "on" the leaf
+      ['L','R'].forEach(side=>{
+        const leafGroup = document.createElementNS(NS,'g');
+        leafGroup.setAttribute('class','leaf-group');
+        leafGroup.style.setProperty('--pivot-x', o.cx+'px');
+        leafGroup.style.setProperty('--pivot-y', o.leavesPivotY+'px');
+        leafGroup.id = 'leafGroup-'+side;
+
+        const leaf = document.createElementNS(NS,'polygon');
+        const w=9, h=100;
+        const x0=o.cx-w/2, x1=o.cx+w/2;
+        leaf.setAttribute('points', `${x0},${o.leavesPivotY} ${x1},${o.leavesPivotY} ${side==='L'?x1-3:x0+3},${o.leavesPivotY+h}`);
+        leaf.setAttribute('fill', 'var(--brass-light)');
+        leaf.setAttribute('stroke','var(--brass)'); leaf.setAttribute('stroke-width',1.2);
+        leafGroup.appendChild(leaf);
+
+        const leafCharges = document.createElementNS(NS,'g');
+        leafCharges.id = 'leafCharges-'+side;
+        leafGroup.appendChild(leafCharges);
+
+        svg.appendChild(leafGroup);
+      });
+
+      // ground wire from base of jar
+      addGroundWire(o.jarBottom+18, o.jarBottom+40, 'elektroscoop', o.cx);
+
+      // charge marker group for the electroscope conductor
+      const g = document.createElementNS(NS,'g');
+      g.id = 'charges-elektroscoop';
+      svg.appendChild(g);
+
+    } else {
+      const bench = document.createElementNS(NS,'line');
+      bench.setAttribute('x1', 60); bench.setAttribute('x2', 840);
+      bench.setAttribute('y1', 460); bench.setAttribute('y2', 460);
+      bench.setAttribute('class','bench-line');
+      svg.appendChild(bench);
+
+      objs.forEach((o,i)=>{
+        const stand = document.createElementNS(NS,'rect');
+        stand.setAttribute('x', o.cx-3); stand.setAttribute('y', o.cy+o.r);
+        stand.setAttribute('width',6); stand.setAttribute('height', 460-(o.cy+o.r));
+        stand.setAttribute('fill','var(--ink-soft)');
+        stand.id = 'bol-stand-'+i;
+        svg.appendChild(stand);
+
+        const circle = document.createElementNS(NS,'circle');
+        circle.setAttribute('cx', o.cx); circle.setAttribute('cy', o.cy);
+        circle.setAttribute('r', o.r);
+        circle.setAttribute('class','obj-outline ball-draggable');
+        circle.id = 'bol-outline-'+i;
+        circle.style.cursor = 'grab';
+        svg.appendChild(circle);
+
+        const label = document.createElementNS(NS,'text');
+        label.setAttribute('x', o.cx); label.setAttribute('y', o.cy+o.r+34);
+        label.setAttribute('text-anchor','middle');
+        label.setAttribute('class','zone-label');
+        label.id = 'bol-label-'+i;
+        label.textContent = 'Bol ' + (i+1);
+        svg.appendChild(label);
+
+        addGroundWire(o.cy+o.r, 460, 'bol'+i, o.cx);
+        setupBallDrag(circle, i);
+
+        const g = document.createElementNS(NS,'g');
+        g.id = 'charges-bol'+i;
+        svg.appendChild(g);
+      });
+    }
+
+    // rod (always last, drawn on top)
+    const rodG = document.createElementNS(NS,'g');
+    rodG.setAttribute('class','rod-group');
+    rodG.id = 'rodGroup';
+    const rodBody = document.createElementNS(NS,'rect');
+    rodBody.id = 'rodBody';
+    rodBody.setAttribute('width', state.rodLength);
+    rodBody.setAttribute('height', 16);
+    rodBody.setAttribute('rx', 8);
+    rodBody.setAttribute('fill', 'url(#rodFill)');
+    rodBody.setAttribute('stroke', 'var(--ink)');
+    rodBody.setAttribute('stroke-width', 1.5);
+    rodG.appendChild(rodBody);
+    const handle = document.createElementNS(NS,'rect');
+    handle.setAttribute('x', state.rodLength-6);
+    handle.setAttribute('width', 46); handle.setAttribute('height', 24);
+    handle.setAttribute('y', -4);
+    handle.setAttribute('rx', 5);
+    handle.setAttribute('fill', '#3B2A1A');
+    rodG.appendChild(handle);
+    const rodChargesG = document.createElementNS(NS,'g');
+    rodChargesG.id = 'rodCharges';
+    rodG.appendChild(rodChargesG);
+    svg.appendChild(rodG);
+
+    setupDrag(rodG);
+    updateRodFillDef(defs);
+  }
+
+  function updateRodFillDef(defs){
+    let grad = document.getElementById('rodFill');
+    if(grad){ grad.remove(); }
+    grad = document.createElementNS(NS,'linearGradient');
+    grad.id = 'rodFill';
+    grad.setAttribute('x1','0%'); grad.setAttribute('x2','100%');
+    const c = state.rod.material==='conductor' ? '#9AA7AE' : '#C9A876';
+    const c2 = state.rod.material==='conductor' ? '#7C8A93' : '#A9824F';
+    grad.innerHTML = `<stop offset="0%" stop-color="${c}"/><stop offset="100%" stop-color="${c2}"/>`;
+    defs.appendChild(grad);
+  }
+
+  function addGroundWire(fromY, toY, key, x){
+    const outer = document.createElementNS(NS,'g');
+    outer.id = 'groundwire-'+key;
+    outer.setAttribute('transform', `translate(${x},0)`);
+
+    const g = document.createElementNS(NS,'g');
+    g.id = 'ground-'+key;
+    const midY = fromY + (toY-fromY)*0.55;
+    const wire1 = document.createElementNS(NS,'line');
+    wire1.setAttribute('x1',0); wire1.setAttribute('y1',fromY);
+    wire1.setAttribute('x2',0); wire1.setAttribute('y2',midY);
+    wire1.setAttribute('class','ground-wire');
+    g.appendChild(wire1);
+
+    // switch (click target)
+    const switchHit = document.createElementNS(NS,'circle');
+    switchHit.setAttribute('cx', 0); switchHit.setAttribute('cy', midY+8);
+    switchHit.setAttribute('r', 13);
+    switchHit.setAttribute('fill', '#fff');
+    switchHit.setAttribute('stroke','var(--ink)');
+    switchHit.setAttribute('stroke-width',1.5);
+    switchHit.setAttribute('class','ground-switch-gap');
+    switchHit.id = 'switch-'+key;
+    g.appendChild(switchHit);
+    const switchLbl = document.createElementNS(NS,'text');
+    switchLbl.setAttribute('x', 0); switchLbl.setAttribute('y', midY+12);
+    switchLbl.setAttribute('text-anchor','middle');
+    switchLbl.setAttribute('font-size','13');
+    switchLbl.setAttribute('font-weight','700');
+    switchLbl.setAttribute('fill','var(--ink)');
+    switchLbl.style.pointerEvents='none';
+    switchLbl.id = 'switchIcon-'+key;
+    switchLbl.textContent = '○';
+    g.appendChild(switchLbl);
+
+    const wire2 = document.createElementNS(NS,'line');
+    wire2.setAttribute('x1',0); wire2.setAttribute('y1',midY+16);
+    wire2.setAttribute('x2',0); wire2.setAttribute('y2',toY);
+    wire2.setAttribute('class','ground-wire');
+    g.appendChild(wire2);
+
+    // earth symbol
+    const earth = document.createElementNS(NS,'g');
+    [0,7,13].forEach((off,i)=>{
+      const l = document.createElementNS(NS,'line');
+      l.setAttribute('x1', -16+off); l.setAttribute('x2', 16-off);
+      l.setAttribute('y1', toY+off*0.9); l.setAttribute('y2', toY+off*0.9);
+      l.setAttribute('class','ground-wire');
+      earth.appendChild(l);
+    });
+    g.appendChild(earth);
+
+    switchHit.addEventListener('click', ()=> toggleGround(key));
+    g.style.cursor='pointer';
+    g.addEventListener('click', (e)=>{ if(e.target===switchHit) return; toggleGround(key); });
+    outer.appendChild(g);
+    svg.appendChild(outer);
+  }
+
+  function groundedObjectFor(key){
+    if(key==='elektroscoop') return state.elektroscoop;
+    if(key.startsWith('bol')) return state.bollen[parseInt(key.slice(3))];
+    return null;
+  }
+
+  function toggleGround(key){
+    const obj = groundedObjectFor(key);
+    if(!obj) return;
+    const newVal = !obj.grounded;
+    obj.grounded = newVal;
+
+    if(newVal===false && obj.material==='conductor' && obj.groundDraining){
+      // disconnecting while draining: lock in the induced charge for the WHOLE touching
+      // group (they're electrically one conductor while in contact), not just this ball
+      const lockedCharge = -sign(state.rod.charge);
+      if(state.mode==='bollen' && key.startsWith('bol')){
+        const objs = objectsForMode();
+        const groups = computeTouchGroups(objs);
+        const idx = parseInt(key.slice(3));
+        const group = groups.find(g=>g.includes(idx)) || [idx];
+        group.forEach(i=>{ state.bollen[i].netCharge = lockedCharge*4; state.bollen[i].groundDraining = false; });
+      } else {
+        obj.netCharge = lockedCharge;
+      }
+    }
+    obj.groundDraining = false;
+    render();
+  }
+
+  // ---------- drag handling ----------
+  function setupDrag(rodG){
+    let dragging=false, offsetX=0, offsetY=0, pointerId=null;
+    const ctm = ()=> svg.getScreenCTM();
+
+    function toSvgPoint(clientX, clientY){
+      const pt = svg.createSVGPoint();
+      pt.x=clientX; pt.y=clientY;
+      const m = ctm().inverse();
+      return pt.matrixTransform(m);
+    }
+
+    rodG.addEventListener('pointerdown', (e)=>{
+      e.preventDefault();
+      dragging=true; pointerId=e.pointerId;
+      rodG.setPointerCapture(pointerId);
+      rodG.classList.add('dragging');
+      const p = toSvgPoint(e.clientX, e.clientY);
+      offsetX = p.x - state.rod.x; offsetY = p.y - state.rod.y;
+    });
+    rodG.addEventListener('pointermove', (e)=>{
+      if(!dragging) return;
+      const p = toSvgPoint(e.clientX, e.clientY);
+      let nx = p.x - offsetX, ny = p.y - offsetY;
+      nx = Math.max(20, Math.min(900-40, nx));
+      ny = Math.max(20, Math.min(540, ny));
+      state.rod.x = nx; state.rod.y = ny;
+      render();
+    });
+    function endDrag(e){
+      if(!dragging) return;
+      dragging=false;
+      rodG.classList.remove('dragging');
+      try{ rodG.releasePointerCapture(pointerId); }catch(err){}
+    }
+    rodG.addEventListener('pointerup', endDrag);
+    rodG.addEventListener('pointercancel', endDrag);
+  }
+
+  function setupBallDrag(circle, idx){
+    let dragging=false, pointerId=null, minX=60, maxX=840;
+
+    function toSvgX(clientX, clientY){
+      const pt = svg.createSVGPoint();
+      pt.x=clientX; pt.y=clientY;
+      return pt.matrixTransform(svg.getScreenCTM().inverse()).x;
+    }
+
+    function computeBounds(){
+      const b = state.bollen[idx];
+      const r = bolRadius(b);
+      let lo = 60 + r, hi = 840 - r;
+      for(let j=0;j<state.bollenCount;j++){
+        if(j===idx) continue;
+        const other = state.bollen[j];
+        const otherR = bolRadius(other);
+        if(other.cx <= b.cx) lo = Math.max(lo, other.cx + otherR + r);
+        else hi = Math.min(hi, other.cx - otherR - r);
+      }
+      return {lo, hi};
+    }
+
+    circle.addEventListener('pointerdown', (e)=>{
+      e.preventDefault();
+      dragging=true; pointerId=e.pointerId;
+      circle.setPointerCapture(pointerId);
+      circle.style.cursor='grabbing';
+      // bounds fixed for the duration of this drag, based on the OTHER balls' current positions
+      const b = computeBounds();
+      minX = b.lo; maxX = b.hi;
+      e.stopPropagation();
+    });
+    circle.addEventListener('pointermove', (e)=>{
+      if(!dragging) return;
+      e.preventDefault();
+      // the ball's centre follows the pointer directly (clamped) — no click-offset math,
+      // so there's nothing that can throw the position off
+      const x = toSvgX(e.clientX, e.clientY);
+      if(!isFinite(x)) return;
+      state.bollen[idx].cx = Math.max(minX, Math.min(maxX, x));
+      render();
+      e.stopPropagation();
+    });
+    function endDrag(e){
+      if(!dragging) return;
+      dragging=false;
+      circle.style.cursor='grab';
+      try{ circle.releasePointerCapture(pointerId); }catch(err){}
+    }
+    circle.addEventListener('pointerup', endDrag);
+    circle.addEventListener('pointercancel', endDrag);
+  }
+
+  // ---------- physics / state transitions ----------
+  function distanceToObject(o){
+    if(o.kind==='elektroscoop'){
+      const knopPt = {x:o.cx, y:o.knopY-8};
+      const leavesPt = {x:o.cx, y:o.leavesPivotY+55};
+      const dKnop = Math.hypot(state.rod.x-knopPt.x, state.rod.y-knopPt.y) - o.knopR;
+      const dLeaves = Math.hypot(state.rod.x-leavesPt.x, state.rod.y-leavesPt.y) - 30;
+      if(dKnop <= dLeaves) return {dist:dKnop, near:'knop', far:'leaves'};
+      return {dist:dLeaves, near:'leaves', far:'knop'};
+    } else {
+      const d = Math.hypot(state.rod.x-o.cx, state.rod.y-o.cy) - o.r;
+      return {dist:d, near:'body', far:'body'};
+    }
+  }
+
+  function zoneFor(dist){
+    if(dist <= CONTACT_SLACK) return 'contact';
+    if(dist <= NADERING_RANGE) return 'nadering';
+    return 'veraf';
+  }
+
+  // The nearest thing with a charge that could polarise/induce ball `i`: either the
+  // rod (if charged) or another charged ball, whichever is closest. Used only for the
+  // visual clustering of charges — grounding and contact-charging stay rod/touch-based.
+  function nearestFieldSource(i, objs, infos){
+    let best = null;
+    if(state.rod.charge!==0){
+      best = { dist: infos[i].dist, dir: Math.atan2(state.rod.y-objs[i].cy, state.rod.x-objs[i].cx), charge: state.rod.charge };
+    }
+    for(let j=0;j<objs.length;j++){
+      if(j===i) continue;
+      const other = objs[j];
+      if(!other.data || other.data.netCharge===0) continue;
+      const dist = Math.hypot(objs[i].cx-other.cx, objs[i].cy-other.cy) - objs[i].r - other.r;
+      if(best===null || dist < best.dist){
+        best = { dist, dir: Math.atan2(other.cy-objs[i].cy, other.cx-objs[i].cx), charge: sign(other.data.netCharge) };
+      }
+    }
+    return best;
+  }
+
+  // called continuously during drag: handles live grounding-drain + contact-conduction events
+  function processInteractions(objs, infos){
+    if(state.mode!=='bollen'){
+      objs.forEach((o,i)=>{
+        applySoloInteraction(o.data, infos[i].zone);
+      });
+      return;
+    }
+
+    // ---- bollen mode: touching conductors act as one shared conductor ----
+    const groups = computeTouchGroups(objs);
+
+    const currentPairs = new Set();
+    groups.forEach(g=>{
+      for(let k=1;k<g.length;k++) currentPairs.add(Math.min(g[k-1],g[k])+'-'+Math.max(g[k-1],g[k]));
+    });
+
+    // pairs that just broke contact: if induction was active, each ball locks in its own
+    // near/far induced charge — this is the classic two-sphere induction experiment
+    state.prevTouchPairs.forEach(key=>{
+      if(!currentPairs.has(key)){
+        const [a,b] = key.split('-').map(Number);
+        const groupWasGrounded = state.bollen[a].grounded || state.bollen[b].grounded;
+        const inducingAtBreak = !groupWasGrounded && state.rod.charge!==0 &&
+          (infos[a].zone!=='veraf' || infos[b].zone!=='veraf');
+        if(inducingAtBreak){
+          const aCloser = infos[a].dist <= infos[b].dist;
+          const nearIdx = aCloser ? a : b, farIdx = aCloser ? b : a;
+          state.bollen[nearIdx].netCharge = -sign(state.rod.charge)*4;
+          state.bollen[farIdx].netCharge = sign(state.rod.charge)*4;
+        }
+      }
+    });
+    state.prevTouchPairs = currentPairs;
+
+    groups.forEach(group=>{
+      if(group.length===1){
+        const i = group[0];
+        const field = nearestFieldSource(i, objs, infos);
+        applySoloInteraction(objs[i].data, infos[i].zone, field ? field.charge : 0, 4);
+        return;
+      }
+      // touching group of >=2 conductors: shared conductor, react as one
+      const groundedNow = group.some(i=>state.bollen[i].grounded);
+      const minDist = Math.min(...group.map(i=>infos[i].dist));
+      const groupZone = zoneFor(minDist);
+      const inducingNow = groundedNow && groupZone!=='veraf' && state.rod.charge!==0;
+      group.forEach(i=> state.bollen[i].groundDraining = inducingNow);
+
+      if(groundedNow && !inducingNow){
+        // grounded with nothing holding a charge in place: any imbalance just
+        // equalises with earth, so the whole group settles back to neutral
+        group.forEach(i=>{ if(state.bollen[i].netCharge!==0) state.bollen[i].netCharge = 0; });
+        return;
+      }
+
+      if(!groundedNow){
+        const touchingRod = group.some(i=>infos[i].zone==='contact');
+        if(touchingRod && state.rod.material==='conductor' && state.rod.charge!==0){
+          group.forEach(i=> state.bollen[i].netCharge = sign(state.rod.charge)*4);
+          return;
+        }
+      }
+
+      if(!inducingNow){
+        // at rest (not actively being drained or charged this tick): keep the group's
+        // total charge evenly and PERSISTENTLY shared across every touching member, so
+        // each ball always carries its own honest, up-to-date portion — this is what
+        // makes separating any one of them later come away with its fair share instead
+        // of snapping back to what it had before they ever touched
+        const total = group.reduce((sum,i)=> sum + state.bollen[i].netCharge, 0);
+        const shared = total/group.length;
+        group.forEach(i=> state.bollen[i].netCharge = shared);
+      }
+    });
+  }
+
+  function applySoloInteraction(data, zone, fieldCharge, scale){
+    if(fieldCharge===undefined) fieldCharge = state.rod.charge;
+    if(scale===undefined) scale = 1;
+    if(data.material==='conductor'){
+      if(data.grounded){
+        data.groundDraining = zone!=='veraf' && fieldCharge!==0;
+        if(!data.groundDraining && data.netCharge!==0){
+          // grounded with no nearby field holding a charge in place: any excess or
+          // shortage of electrons just equalises with earth
+          data.netCharge = 0;
+        }
+      } else {
+        data.groundDraining = false;
+      }
+      if(zone==='contact' && !data.grounded){
+        if(state.rod.material==='conductor' && state.rod.charge!==0){
+          data.netCharge = sign(state.rod.charge)*scale;
+        }
+      }
+    } else {
+      data.groundDraining = false;
+    }
+  }
+
+  // ---------- rendering charges ----------
+  // Model: each ball always has exactly 4 fixed positive charges in a square (the
+  // immobile positive lattice). Only the negative charges (electrons) move:
+  // - neutral: 4 negatives, interleaved between the positive corners
+  // - net negative: 4 extra negatives added around that (8 total)
+  // - net positive: negatives removed entirely (0 left = electron-deficient)
+  // - conductor under induction: negatives cluster fully to one side, out near the
+  //   ball's edge (free to roam the whole conductor)
+  // - insulator under induction: negatives also all shift to one side, but stay close
+  //   to the square (still bound near their own nucleus, can't roam the whole ball)
+  function renderChargesOnCircle(groupId, cx, cy, r, material, netCharge, grounded, draining, rodDir, zone, negCountOverride, fieldCharge){
+    const g = document.getElementById(groupId);
+    if(!g) return;
+    if(fieldCharge===undefined) fieldCharge = state.rod.charge;
+    const POS_COUNT = 4, MAX_NEG = 8, total = POS_COUNT + MAX_NEG;
+    while(g.children.length < total){
+      const mk = document.createElementNS(NS,'g');
+      mk.setAttribute('class','charge-marker');
+      const c = document.createElementNS(NS,'circle');
+      const t = document.createElementNS(NS,'text');
+      t.setAttribute('text-anchor','middle');
+      t.setAttribute('dy', 4);
+      mk.appendChild(c); mk.appendChild(t);
+      g.appendChild(mk);
+    }
+    while(g.children.length > total){ g.removeChild(g.lastChild); }
+
+    const markerR = r>=60 ? 7 : 5.5; // smaller symbols on the small balls so nothing overlaps
+
+    const inducingActive = material==='conductor' && !grounded && zone!=='veraf' && fieldCharge!==0;
+    const drainingActive = material==='conductor' && grounded && draining;
+    const insulatorShifted = material==='insulator' && zone!=='veraf' && fieldCharge!==0;
+    const ownNegCount = Math.max(0, Math.min(8, Math.round(4-netCharge)));
+
+    let negCount, mode, clusterAngle = rodDir;
+    if(negCountOverride!==undefined && negCountOverride!==null){
+      negCount = negCountOverride; mode = 'ring';
+    } else if(insulatorShifted){
+      negCount = 4; mode = 'cluster-near';
+      clusterAngle = fieldCharge>0 ? rodDir : rodDir+Math.PI;
+    } else if(material==='insulator'){
+      negCount = 4; mode = 'ring';
+    } else if(drainingActive || inducingActive){
+      // the ball's own free electrons — whether it started neutral or already carries
+      // its own charge — all migrate toward one side while a field is nearby
+      negCount = ownNegCount; mode = 'cluster-far';
+      // electrons are attracted toward a + source, repelled by a − source
+      clusterAngle = fieldCharge>0 ? rodDir : rodDir+Math.PI;
+    } else if(netCharge!==0){
+      negCount = ownNegCount; mode = 'ring';
+    } else {
+      negCount = 4; mode = 'ring';
+    }
+
+    // 4 fixed positives, a roomy central square
+    const sq = Math.max(16, r*0.32);
+    const posPositions = [
+      {x:cx-sq,y:cy-sq}, {x:cx+sq,y:cy-sq}, {x:cx-sq,y:cy+sq}, {x:cx+sq,y:cy+sq}
+    ];
+
+    let negPositions = [];
+    if(mode==='cluster-far'){
+      // conductor: free to roam the whole surface — all 4 electrons spread along the
+      // arc near the ball's edge, on the near side (attracted) or far side (repelled)
+      const R = r*0.8;
+      const need = 2*markerR + 2;
+      const step = need/R;
+      for(let k=0;k<negCount;k++){
+        const a = clusterAngle + (k-(negCount-1)/2)*step;
+        negPositions.push({x:cx+Math.cos(a)*R, y:cy+Math.sin(a)*R});
+      }
+    } else if(mode==='cluster-near'){
+      // insulator: each electron stays with its OWN positive charge and just steps to
+      // one side of it — the same side for all four (straight shift, not a rotation) —
+      // toward the source if attracted, away from it if repelled
+      const shift = sq;
+      const sv = {x:Math.cos(clusterAngle)*shift, y:Math.sin(clusterAngle)*shift};
+      posPositions.forEach(p=>{
+        negPositions.push({x:p.x+sv.x, y:p.y+sv.y});
+      });
+    } else if(negCount<=4){
+      // at rest: negatives sit interleaved between the positive corners
+      const ringR = sq;
+      for(let k=0;k<negCount;k++){
+        const a = -Math.PI/2 + k*(Math.PI/2);
+        negPositions.push({x:cx+Math.cos(a)*ringR, y:cy+Math.sin(a)*ringR});
+      }
+    } else {
+      // net negative: the base 4 stay put, plus 4 extra further out
+      const ringR = sq, outerR = sq*2.2;
+      for(let k=0;k<4;k++){
+        const a = -Math.PI/2 + k*(Math.PI/2);
+        negPositions.push({x:cx+Math.cos(a)*ringR, y:cy+Math.sin(a)*ringR});
+      }
+      for(let k=0;k<negCount-4;k++){
+        const a = k*(Math.PI/2);
+        negPositions.push({x:cx+Math.cos(a)*outerR, y:cy+Math.sin(a)*outerR});
+      }
+    }
+
+    for(let i=0;i<POS_COUNT;i++){
+      const mk = g.children[i];
+      const p = posPositions[i];
+      mk.style.display = '';
+      mk.querySelector('circle').setAttribute('r', markerR);
+      mk.querySelector('circle').setAttribute('fill','var(--pos)');
+      mk.querySelector('circle').setAttribute('cx',p.x); mk.querySelector('circle').setAttribute('cy',p.y);
+      mk.querySelector('text').textContent = '+';
+      mk.querySelector('text').setAttribute('x',p.x); mk.querySelector('text').setAttribute('y',p.y+4);
+    }
+    for(let i=0;i<MAX_NEG;i++){
+      const mk = g.children[POS_COUNT+i];
+      if(i < negPositions.length){
+        const p = negPositions[i];
+        mk.style.display = '';
+        mk.querySelector('circle').setAttribute('r', markerR);
+        mk.querySelector('circle').setAttribute('fill','var(--neg)');
+        mk.querySelector('circle').setAttribute('cx',p.x); mk.querySelector('circle').setAttribute('cy',p.y);
+        mk.querySelector('text').textContent = '−';
+        mk.querySelector('text').setAttribute('x',p.x); mk.querySelector('text').setAttribute('y',p.y+4);
+      } else {
+        mk.style.display = 'none';
+      }
+    }
+  }
+
+  function renderElectroscopeCharges(o, info){
+    const zone = info.zone;
+    const data = state.elektroscoop;
+    const gKnop = document.getElementById('charges-elektroscoop');
+    const gLeafL = document.getElementById('leafCharges-L');
+    const gLeafR = document.getElementById('leafCharges-R');
+    if(!gKnop || !gLeafL || !gLeafR) return;
+
+    const inducingActive = data.material==='conductor' && !data.grounded && zone!=='veraf' && state.rod.charge!==0;
+    const drainingActive = data.material==='conductor' && data.grounded && data.groundDraining;
+    const nearIsKnop = info.near==='knop';
+
+    let knopSigns = [], leafSigns = [];
+    if(drainingActive){
+      const oppSign = -sign(state.rod.charge);
+      if(nearIsKnop){ knopSigns=[oppSign,oppSign,oppSign,oppSign]; leafSigns=[]; }
+      else { knopSigns=[]; leafSigns=[oppSign,oppSign,oppSign,oppSign]; }
+    } else if(inducingActive){
+      const oppSign = -sign(state.rod.charge);
+      const sameSign = sign(state.rod.charge);
+      if(nearIsKnop){ knopSigns=[oppSign,oppSign,oppSign,oppSign]; leafSigns=[sameSign,sameSign,sameSign,sameSign]; }
+      else { knopSigns=[sameSign,sameSign,sameSign,sameSign]; leafSigns=[oppSign,oppSign,oppSign,oppSign]; }
+    } else if(data.netCharge!==0){
+      const s = sign(data.netCharge);
+      knopSigns=[s,s,s,s]; leafSigns=[s,s,s,s];
+    } else {
+      knopSigns=[1,-1,1,-1]; leafSigns=[1,-1,1,-1];
+    }
+
+    renderMarkerSet(gKnop, knopSigns, knopMarkerPositions(o));
+    renderMarkerSet(gLeafL, leafSigns, leafMarkerPositions(o,'L'));
+    renderMarkerSet(gLeafR, leafSigns, leafMarkerPositions(o,'R'));
+
+    // leaf angle
+    let magnitude = 0;
+    if(drainingActive || inducingActive){
+      // both leaves always end up with the same sign as each other, so they diverge
+      // whether they're the near or the far side — except when draining has emptied them
+      magnitude = (drainingActive && nearIsKnop) ? 0 : 0.85;
+    } else if(data.netCharge!==0){
+      magnitude = 1;
+    }
+    const maxAngle = 32;
+    const angle = maxAngle*magnitude;
+    const leafGroupL = document.getElementById('leafGroup-L');
+    const leafGroupR = document.getElementById('leafGroup-R');
+    if(leafGroupL) leafGroupL.style.transform = `rotate(${-angle}deg)`;
+    if(leafGroupR) leafGroupR.style.transform = `rotate(${angle}deg)`;
+  }
+
+  function knopMarkerPositions(o){
+    const cx=o.cx, cy=o.knopY-8;
+    return [ {x:cx-9,y:cy-7}, {x:cx+9,y:cy-7}, {x:cx-9,y:cy+9}, {x:cx+9,y:cy+9} ];
+  }
+
+  // positions in the SAME (pre-rotation) coordinate space as the leaf polygon itself,
+  // stacked vertically down its length, so they rotate together with the leaf and never float
+  function leafMarkerPositions(o, side){
+    const x = side==='L' ? o.cx-3 : o.cx+3;
+    return [18,40,62,84].map(dy=>({x, y:o.leavesPivotY+dy}));
+  }
+
+  function renderMarkerSet(g, signs, positions){
+    const total = positions.length;
+    while(g.children.length < total){
+      const mk = document.createElementNS(NS,'g');
+      mk.setAttribute('class','charge-marker');
+      const c = document.createElementNS(NS,'circle'); c.setAttribute('r',9);
+      const t = document.createElementNS(NS,'text'); t.setAttribute('text-anchor','middle'); t.setAttribute('dy',4);
+      mk.appendChild(c); mk.appendChild(t); g.appendChild(mk);
+    }
+    while(g.children.length > total) g.removeChild(g.lastChild);
+    for(let i=0;i<total;i++){
+      const mk = g.children[i];
+      if(i < signs.length){
+        const s = signs[i], p = positions[i];
+        mk.style.display='';
+        mk.querySelector('circle').setAttribute('fill', s>0?'var(--pos)':'var(--neg)');
+        mk.querySelector('circle').setAttribute('cx', p.x);
+        mk.querySelector('circle').setAttribute('cy', p.y);
+        mk.querySelector('text').textContent = s>0?'+':'−';
+        mk.querySelector('text').setAttribute('x', p.x);
+        mk.querySelector('text').setAttribute('y', p.y+4);
+      } else {
+        mk.style.display='none';
+      }
+    }
+  }
+
+  // ---------- status text ----------
+  function describeObject(o, info, label, field){
+    const data = o.data;
+    const zone = info.zone; // rod-based; used for actual physical contact/grounding-by-rod checks
+    const rod = state.rod;
+    const lines = [];
+    const f = field || { dist: info.dist, charge: state.rod.charge, isRod: true };
+    const fieldZone = zoneFor(f.dist);
+    const fieldCharge = f.charge;
+    const sourceWord = f.isRod ? 'de staaf' : 'een nabije geladen bol';
+
+    if(data.material==='insulator'){
+      if(zone==='contact' && rod.charge!==0){
+        lines.push(`${label}: isolator + contact met de staaf — geen ladingsoverdracht. De elektronen (−) verschuiven enkel licht binnen elk atoom, niet doorheen het materiaal. De bol blijft dus overal netto neutraal.`);
+      } else if(fieldZone!=='veraf' && fieldCharge!==0){
+        const dir = fieldCharge>0 ? `naar ${sourceWord} toe (aangetrokken)` : `weg van ${sourceWord} (afgestoten)`;
+        lines.push(`${label}: isolator + nadering — lichte polarisatie. De elektronen (−) schuiven een beetje ${dir}, maar blijven bij hun eigen kern. Er verandert niets aan het totale aantal elektronen, dus de bol blijft netto neutraal.`);
+      } else {
+        lines.push(`${label}: isolator, te ver weg voor effect — de elektronen blijven op hun rustpositie.`);
+      }
+      if(data.grounded && fieldZone!=='veraf'){
+        lines.push(`Aarding heeft geen effect: in een isolator kunnen elektronen zich niet vrij verplaatsen, dus er vloeit niets naar de aarde.`);
+      }
+      return lines;
+    }
+
+    // conductor
+    if(data.grounded){
+      if(fieldZone!=='veraf' && fieldCharge!==0){
+        if(fieldCharge>0){
+          lines.push(`${label}: geaard tijdens nadering — elektronen worden aangetrokken en vloeien vanuit de aarde toe.`);
+          lines.push(`Ontkoppel de aarding nu: het voorwerp houdt dan een overschot aan elektronen vast en wordt negatief geladen.`);
+        } else {
+          lines.push(`${label}: geaard tijdens nadering — elektronen worden afgestoten en vloeien weg naar de aarde.`);
+          lines.push(`Ontkoppel de aarding nu: het voorwerp mist dan elektronen en wordt positief geladen.`);
+        }
+      } else {
+        lines.push(`${label}: geaard — een teveel aan elektronen vloeit weg naar de aarde, een tekort wordt net aangevuld vanuit de aarde. Zonder veld in de buurt blijft het voorwerp dus neutraal.`);
+      }
+      return lines;
+    }
+
+    if(zone==='contact'){
+      if(rod.material==='conductor' && rod.charge!==0){
+        if(rod.charge>0){
+          lines.push(`${label}: contact tussen twee geleiders — elektronen stromen van het voorwerp naar de positieve staaf. Het voorwerp verliest elektronen en wordt zelf ${signChar(rod.charge)} geladen.`);
+        } else {
+          lines.push(`${label}: contact tussen twee geleiders — elektronen stromen van de negatieve staaf naar het voorwerp. Het voorwerp krijgt een overschot aan elektronen en wordt zelf ${signChar(rod.charge)} geladen.`);
+        }
+      } else if(rod.material==='insulator'){
+        lines.push(`${label}: de staaf is een isolator — geen ladingsoverdracht, ondanks het contact.`);
+      } else {
+        lines.push(`${label}: de staaf is neutraal — contact verandert niets.`);
+      }
+    } else if(fieldZone!=='veraf' && fieldCharge!==0){
+      const already = data.netCharge!==0 ? ` De bol was al ${signChar(data.netCharge)} geladen — die lading blijft behouden, enkel de verdeling ervan verschuift mee.` : ` Die kant wordt negatief, de andere kant (elektronentekort) positief. Het totale aantal elektronen blijft gelijk, dus netto blijft het voorwerp neutraal.`;
+      if(fieldCharge>0){
+        lines.push(`${label}: influentie — de vrije elektronen worden aangetrokken en verschuiven volledig naar de kant het dichtst bij ${sourceWord}.${already}`);
+      } else {
+        lines.push(`${label}: influentie — de vrije elektronen worden afgestoten en verschuiven volledig naar de kant het verst van ${sourceWord}.${already}`);
+      }
+    } else if(data.netCharge!==0){
+      const explain = data.netCharge<0 ? 'een blijvend overschot aan elektronen' : 'een blijvend tekort aan elektronen';
+      lines.push(`${label}: blijvend ${signChar(data.netCharge)} geladen — ${explain}, gelijkmatig verdeeld over het oppervlak (van eerdere aarding of contact).`);
+    } else {
+      lines.push(`${label}: neutraal, geen effect op deze afstand — de elektronen blijven verdeeld zoals in rust.`);
+    }
+    return lines;
+  }
+
+  function describeGroup(group, objs, infos){
+    if(group.length===1){
+      const i = group[0];
+      const field = nearestFieldSource(i, objs, infos);
+      return describeObject(objs[i], infos[i], 'Bol '+(i+1), field);
+    }
+    const names = group.map(i=>'Bol '+(i+1)).join(' + ');
+    const lines = [`${names} raken elkaar aan: samen vormen ze tijdelijk één geleider — elektronen kunnen vrij tussen hen doorstromen.`];
+    const groundedNow = group.some(idx=>state.bollen[idx].grounded);
+    const minDist = Math.min(...group.map(idx=>infos[idx].dist));
+    const zone = zoneFor(minDist);
+    if(groundedNow){
+      if(zone!=='veraf' && state.rod.charge!==0){
+        if(state.rod.charge>0){
+          lines.push(`Geaard tijdens nadering — elektronen worden aangetrokken en vloeien vanuit de aarde toe naar de hele groep. Ontkoppel de aarding nu: de groep houdt dan een overschot aan elektronen vast en wordt negatief.`);
+        } else {
+          lines.push(`Geaard tijdens nadering — elektronen worden afgestoten en vloeien weg naar de aarde. Ontkoppel de aarding nu: de groep mist dan elektronen en wordt positief.`);
+        }
+      } else {
+        lines.push(`Geaard — een teveel aan elektronen vloeit weg naar de aarde, een tekort wordt aangevuld vanuit de aarde. Zonder veld in de buurt blijft de groep dus neutraal.`);
+      }
+    } else if(zone==='nadering' && state.rod.charge!==0){
+      const dir = state.rod.charge>0 ? 'aangetrokken en verschuiven naar de kant het dichtst bij de staaf' : 'afgestoten en verschuiven naar de kant het verst van de staaf';
+      lines.push(`Influentie over de hele groep: de vrije elektronen worden ${dir}. Die kant wordt negatief, de andere kant (elektronentekort) positief. Trek de bollen nu uit elkaar om elk hun eigen blijvende lading te laten houden!`);
+    } else if(zone==='contact' && state.rod.material==='conductor' && state.rod.charge!==0){
+      const explain = state.rod.charge>0 ? 'elektronen stromen weg naar de positieve staaf' : 'elektronen stromen over vanuit de negatieve staaf';
+      lines.push(`Contact met de staaf: ${explain} — de hele groep wordt gelijkmatig ${signChar(state.rod.charge)} geladen.`);
+    }
+    return lines;
+  }
+
+  // ---------- main render ----------
+  function render(){
+    const objs = objectsForMode();
+    const infos = objs.map(o=>{
+      const d = distanceToObject(o);
+      return {dist:d.dist, zone: zoneFor(d.dist), near:d.near, far:d.far};
+    });
+
+    processInteractions(objs, infos);
+
+    // position rod group
+    const rodG = document.getElementById('rodGroup');
+    const rodBody = document.getElementById('rodBody');
+    // compute rod direction: point rod from state.rod.x,y toward scene center-ish for nice angle, but keep simple: fixed angle, translate group
+    const angle = state.rodAngle;
+    rodG.setAttribute('transform', `translate(${state.rod.x},${state.rod.y}) rotate(${angle})`);
+
+    // rod tip direction in world space (angle in radians) pointing from handle end toward tip (0,0 local = tip)
+    const rad = angle*Math.PI/180;
+
+    // render rod's own charge markers (uniform along body)
+    renderRodCharges();
+
+    let statusLines = [];
+    if(state.mode==='elektroscoop'){
+      renderElectroscopeCharges(objs[0], infos[0]);
+      statusLines = describeObject(objs[0], infos[0], 'Elektroscoop');
+    } else {
+      // reposition the movable elements first
+      objs.forEach((o,i)=>{
+        const circleEl = document.getElementById('bol-outline-'+i);
+        if(circleEl) circleEl.setAttribute('cx', o.cx);
+        const standEl = document.getElementById('bol-stand-'+i);
+        if(standEl) standEl.setAttribute('x', o.cx-3);
+        const labelEl = document.getElementById('bol-label-'+i);
+        if(labelEl) labelEl.setAttribute('x', o.cx);
+        const gw = document.getElementById('groundwire-bol'+i);
+        if(gw) gw.setAttribute('transform', `translate(${o.cx},0)`);
+      });
+
+      const groups = computeTouchGroups(objs);
+      groups.forEach(group=>{
+        if(group.length===1){
+          const i = group[0], o = objs[i];
+          const field = nearestFieldSource(i, objs, infos);
+          const fieldDir = field ? field.dir : Math.atan2(state.rod.y-o.cy, state.rod.x-o.cx);
+          const fieldZone = field ? zoneFor(field.dist) : 'veraf';
+          const fieldCharge = field ? field.charge : 0;
+          renderChargesOnCircle('charges-bol'+i, o.cx, o.cy, o.r, o.data.material, o.data.netCharge, o.data.grounded, o.data.groundDraining, fieldDir, fieldZone, null, fieldCharge);
+        } else {
+          // shared touching conductor group: electrons flow WITHIN the group toward
+          // whichever outer member is being attracted (or away from the one repelled),
+          // any middle member (3-ball chain) stays at rest
+          const sortedByDist = [...group].sort((a,b)=>infos[a].dist-infos[b].dist);
+          const nearIdx = sortedByDist[0], farIdx = sortedByDist[sortedByDist.length-1];
+          const groundedNow = group.some(idx=>state.bollen[idx].grounded);
+          const minDist = Math.min(...group.map(idx=>infos[idx].dist));
+          const groupZone = zoneFor(minDist);
+          const inducingNow = !groundedNow && groupZone!=='veraf' && state.rod.charge!==0 &&
+            group.every(idx=>state.bollen[idx].netCharge===0);
+          const drainingNow = groundedNow && groupZone!=='veraf' && state.rod.charge!==0;
+
+          let gainIdx=null, loseIdx=null;
+          if(drainingNow || inducingNow){
+            gainIdx = state.rod.charge>0 ? nearIdx : farIdx; // electrons attracted toward a + rod, repelled from a −
+            loseIdx = (gainIdx===nearIdx) ? farIdx : nearIdx;
+          }
+          // when at rest (no gainIdx), each member's own netCharge is already the
+          // correctly, persistently shared value (kept up to date in processInteractions)
+
+          group.forEach(i=>{
+            const o = objs[i];
+            let negOverride = null;
+            if(gainIdx!==null){
+              negOverride = (i===gainIdx) ? 8 : (i===loseIdx ? 0 : 4);
+            }
+            // at rest, force a plain netCharge-based display (fieldCharge=0) so a member
+            // that happens to be exactly neutral doesn't independently show a directional
+            // cluster while its touching neighbours show the shared/rest pattern
+            const fc = gainIdx!==null ? undefined : 0;
+            renderChargesOnCircle('charges-bol'+i, o.cx, o.cy, o.r, o.data.material, o.data.netCharge, o.data.grounded, o.data.groundDraining, Math.atan2(state.rod.y-o.cy, state.rod.x-o.cx), infos[i].zone, negOverride, fc);
+          });
+        }
+        statusLines = statusLines.concat(describeGroup(group, objs, infos));
+      });
+
+      // note any conductor-insulator pairs that are touching but can't merge
+      const orderIdx = objs.map((o,i)=>i).sort((a,b)=>objs[a].cx-objs[b].cx);
+      for(let k=0;k<orderIdx.length-1;k++){
+        const a=orderIdx[k], b=orderIdx[k+1];
+        const gap = (objs[b].cx-objs[a].cx) - objs[a].r - objs[b].r;
+        const bothConductor = objs[a].data.material==='conductor' && objs[b].data.material==='conductor';
+        if(gap<=CONTACT_SLACK && !bothConductor){
+          statusLines.push(`Bol ${a+1} en Bol ${b+1} raken elkaar, maar een isolator geleidt geen lading — er verandert niets tussen hen.`);
+        }
+      }
+    }
+
+    // update switch icons
+    updateSwitchVisual('elektroscoop', state.elektroscoop);
+    for(let i=0;i<3;i++) updateSwitchVisual('bol'+i, state.bollen[i]);
+
+    statusEl.innerHTML = statusLines.map(l=>`<p>${l}</p>`).join('');
+  }
+
+  function renderRodCharges(){
+    const g = document.getElementById('rodCharges');
+    if(!g) return;
+    g.innerHTML='';
+    const rod = state.rod;
+    if(rod.charge===0) return;
+    const count = 5;
+    for(let i=0;i<count;i++){
+      const x = 24 + i*((state.rodLength-48)/(count-1));
+      const c = document.createElementNS(NS,'circle');
+      c.setAttribute('cx',x); c.setAttribute('cy',8); c.setAttribute('r',8);
+      c.setAttribute('fill', rod.charge>0?'var(--pos)':'var(--neg)');
+      g.appendChild(c);
+      const t = document.createElementNS(NS,'text');
+      t.setAttribute('x',x); t.setAttribute('y',12); t.setAttribute('text-anchor','middle');
+      t.setAttribute('font-size','11'); t.setAttribute('font-weight','700'); t.setAttribute('fill','#fff');
+      t.textContent = rod.charge>0?'+':'−';
+      g.appendChild(t);
+    }
+  }
+
+  function updateSwitchVisual(key, data){
+    const icon = document.getElementById('switchIcon-'+key);
+    const hit = document.getElementById('switch-'+key);
+    if(!icon || !hit) return;
+    icon.textContent = data.grounded ? '●' : '○';
+    hit.setAttribute('fill', data.grounded ? '#2C6E4A' : '#fff');
+    icon.setAttribute('fill', data.grounded ? '#fff' : 'var(--ink)');
+  }
+
+  // ---------- controls ----------
+  function buildModeControls(){
+    const mainEl = document.querySelector('.main');
+    if(state.mode==='elektroscoop'){
+      if(mainEl) mainEl.classList.remove('wide-controls');
+      modeControlsEl.innerHTML = `
+        <p class="group-title">Elektroscoop</p>
+        <div class="row" style="margin-bottom:10px;">
+          <button class="choice active" data-field="elektroMaterial" data-value="conductor">Geleider</button>
+          <button class="choice" data-field="elektroMaterial" data-value="insulator">Isolator</button>
+        </div>
+        <div class="ground-toggle">
+          <span>Aarding</span>
+          <span class="switch" id="uiSwitch-elektroscoop"></span>
+        </div>
+      `;
+      modeControlsEl.querySelectorAll('[data-field="elektroMaterial"]').forEach(btn=>{
+        btn.addEventListener('click', ()=>{
+          setActive(modeControlsEl, 'elektroMaterial', btn);
+          state.elektroscoop.material = btn.dataset.value;
+          state.elektroscoop.netCharge = 0;
+          state.elektroscoop.groundDraining = false;
+          render();
+        });
+      });
+      const uiSwitch = document.getElementById('uiSwitch-elektroscoop');
+      uiSwitch.addEventListener('click', ()=> toggleGround('elektroscoop'));
+      syncUiSwitch(uiSwitch, state.elektroscoop.grounded);
+    } else {
+      const n = state.bollenCount;
+      let bolHtml = `<p class="group-title">Bollen</p>
+        <div class="row" style="margin-bottom:10px;">
+          <button class="choice ${n===2?'active':''}" data-field="bollenCount" data-value="2">2 bollen</button>
+          <button class="choice ${n===3?'active':''}" data-field="bollenCount" data-value="3">3 bollen</button>
+        </div>
+        <div class="bol-table" style="grid-template-columns: 52px repeat(${n}, 1fr);">
+          <span></span>${Array.from({length:n},(_,i)=>`<span class="bt-name">Bol ${i+1}</span>`).join('')}
+
+          <span class="bt-label">Stof</span>
+          ${Array.from({length:n},(_,i)=>{ const b=state.bollen[i]; return `
+          <div class="row" style="gap:3px;">
+            <button class="choice ${b.material==='conductor'?'active':''}" data-field="bolMaterial${i}" data-value="conductor" title="Geleider">Gel.</button>
+            <button class="choice ${b.material==='insulator'?'active':''}" data-field="bolMaterial${i}" data-value="insulator" title="Isolator">Isol.</button>
+          </div>`; }).join('')}
+
+          <span class="bt-label">Grootte</span>
+          ${Array.from({length:n},(_,i)=>{ const b=state.bollen[i]; return `
+          <div class="row" style="gap:3px;">
+            <button class="choice ${b.size==='klein'?'active':''}" data-field="bolSize${i}" data-value="klein">Klein</button>
+            <button class="choice ${b.size==='groot'?'active':''}" data-field="bolSize${i}" data-value="groot">Groot</button>
+          </div>`; }).join('')}
+
+          <span class="bt-label">Lading</span>
+          ${Array.from({length:n},(_,i)=>{ const b=state.bollen[i];
+            if(b.material!=='conductor') return `<p class="hint">geen blijvende lading</p>`;
+            return `
+          <div class="row" style="gap:3px;">
+            <button class="choice ${b.netCharge<0?'active':''}" data-field="bolCharge${i}" data-value="-1" title="negatief">−</button>
+            <button class="choice ${b.netCharge===0?'active':''}" data-field="bolCharge${i}" data-value="0" title="neutraal">0</button>
+            <button class="choice ${b.netCharge>0?'active':''}" data-field="bolCharge${i}" data-value="1" title="positief">+</button>
+          </div>`; }).join('')}
+
+          <span class="bt-label">Aarding</span>
+          ${Array.from({length:n},(_,i)=>`<span class="switch" id="uiSwitch-bol${i}" style="margin:0 auto;"></span>`).join('')}
+        </div>`;
+      modeControlsEl.innerHTML = bolHtml;
+      if(mainEl) mainEl.classList.add('wide-controls');
+
+      modeControlsEl.querySelectorAll('[data-field="bollenCount"]').forEach(btn=>{
+        btn.addEventListener('click', ()=>{
+          setActive(modeControlsEl, 'bollenCount', btn);
+          state.bollenCount = parseInt(btn.dataset.value);
+          resetBolPositions(state.bollenCount);
+          buildScene(); buildModeControls(); render();
+        });
+      });
+      for(let i=0;i<state.bollenCount;i++){
+        modeControlsEl.querySelectorAll(`[data-field="bolMaterial${i}"]`).forEach(btn=>{
+          btn.addEventListener('click', ()=>{
+            state.bollen[i].material = btn.dataset.value;
+            state.bollen[i].netCharge = 0;
+            state.bollen[i].groundDraining = false;
+            buildModeControls(); render();
+          });
+        });
+        modeControlsEl.querySelectorAll(`[data-field="bolSize${i}"]`).forEach(btn=>{
+          btn.addEventListener('click', ()=>{
+            setActive(modeControlsEl, 'bolSize'+i, btn);
+            state.bollen[i].size = btn.dataset.value;
+            buildScene(); render();
+          });
+        });
+        modeControlsEl.querySelectorAll(`[data-field="bolCharge${i}"]`).forEach(btn=>{
+          btn.addEventListener('click', ()=>{
+            setActive(modeControlsEl, 'bolCharge'+i, btn);
+            state.bollen[i].netCharge = parseInt(btn.dataset.value)*4;
+            render();
+          });
+        });
+        const sw = document.getElementById('uiSwitch-bol'+i);
+        sw.addEventListener('click', ()=> toggleGround('bol'+i));
+        syncUiSwitch(sw, state.bollen[i].grounded);
+      }
+    }
+  }
+
+  function syncUiSwitch(el, on){
+    if(on) el.classList.add('on'); else el.classList.remove('on');
+  }
+
+  function setActive(container, field, activeBtn){
+    container.querySelectorAll(`[data-field="${field}"]`).forEach(b=>b.classList.remove('active'));
+    activeBtn.classList.add('active');
+  }
+
+  // patch render to also sync the little UI switches in the panel (separate from SVG switches)
+  const _render = render;
+  render = function(){
+    _render();
+    const es = document.getElementById('uiSwitch-elektroscoop');
+    if(es) syncUiSwitch(es, state.elektroscoop.grounded);
+    for(let i=0;i<3;i++){
+      const s = document.getElementById('uiSwitch-bol'+i);
+      if(s) syncUiSwitch(s, state.bollen[i].grounded);
+    }
+  };
+
+  // ---------- global controls: rod material / charge, tabs, reset ----------
+  document.querySelectorAll('[data-field="rodMaterial"]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      setActive(document, 'rodMaterial', btn);
+      state.rod.material = btn.dataset.value;
+      buildScene(); render();
+    });
+  });
+  document.querySelectorAll('[data-field="rodCharge"]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      setActive(document, 'rodCharge', btn);
+      state.rod.charge = parseInt(btn.dataset.value);
+      render();
+    });
+  });
+  document.querySelectorAll('.tab').forEach(tab=>{
+    tab.addEventListener('click', ()=>{
+      document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+      tab.classList.add('active');
+      state.mode = tab.dataset.mode;
+      state.rod.x = 700; state.rod.y = 120;
+      buildScene(); buildModeControls(); render();
+    });
+  });
+  document.getElementById('resetBtn').addEventListener('click', ()=>{
+    state.rod.material='conductor'; state.rod.charge=0; state.rod.x=700; state.rod.y=120;
+    state.elektroscoop = { material:'conductor', netCharge:0, grounded:false, groundDraining:false };
+    state.bollen = [
+      { material:'conductor', size:'groot', netCharge:0, grounded:false, groundDraining:false, cx:130 },
+      { material:'insulator', size:'groot', netCharge:0, grounded:false, groundDraining:false, cx:430 },
+      { material:'conductor', size:'klein', netCharge:0, grounded:false, groundDraining:false, cx:730 }
+    ];
+    resetBolPositions(state.bollenCount);
+    document.querySelectorAll('[data-field="rodMaterial"]').forEach(b=>b.classList.toggle('active', b.dataset.value==='conductor'));
+    document.querySelectorAll('[data-field="rodCharge"]').forEach(b=>b.classList.toggle('active', b.dataset.value==='0'));
+    buildScene(); buildModeControls(); render();
+  });
+
+  // ---------- init ----------
+  resetBolPositions(state.bollenCount);
+  buildScene();
+  buildModeControls();
+  render();
+})();
+</script>
+</body>
+</html>

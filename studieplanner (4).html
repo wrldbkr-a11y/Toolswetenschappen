@@ -1,0 +1,2957 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Studieplanner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F5F4F0;
+  --surface: #FFFFFF;
+  --surface-2: #FAFAF8;
+  --ink: #1E2124;
+  --ink-soft: #5B5F66;
+  --ink-faint: #8B8F96;
+  --border: #E4E2DA;
+  --border-strong: #CFCCC2;
+  --primary: #2E335A;
+  --primary-hover: #3D4373;
+  --primary-soft: #E9E9F2;
+  --done: #2E7D32;
+  --done-soft: #E3F2E4;
+  --block: #757575;
+  --school-blue: #D6E6F7;
+  --school-red: #E8ADAD;
+  --pause-bg: #DCEFDC;
+  --pause-border: #82C08A;
+  --overdue: #FFCDD2;
+  --overdue-ink: #E53935;
+  --soon: #FFF9C4;
+  --soon-ink: #8D6E00;
+  --radius-s: 6px;
+  --radius-m: 10px;
+  --radius-l: 16px;
+  --shadow: 0 1px 2px rgba(30,33,36,0.06), 0 4px 16px rgba(30,33,36,0.06);
+  --shadow-lift: 0 8px 28px rgba(30,33,36,0.16);
+  font-size: 16px;
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  font-feature-settings: "tnum" 1;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, .display {
+  font-family: "Fraunces", Georgia, serif;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+button, input, select, textarea { font-family: inherit; font-size: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 2.5px solid var(--primary); outline-offset: 2px; }
+
+/* ---------- Topbar ---------- */
+.topbar {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 22px 28px 6px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.topbar-title-group { display: flex; align-items: baseline; gap: 10px; }
+.topbar h1 { font-size: 26px; color: var(--primary); }
+.topbar .tagline { font-size: 13px; color: var(--ink-faint); font-style: italic; }
+@media (max-width: 480px) {
+  .topbar .tagline { display: none; } /* zuiver decoratief, hoeft niet op een smal scherm */
+}
+
+/* ---------- Tabs ---------- */
+.tabs {
+  display: flex;
+  gap: 4px;
+  padding: 0 24px;
+  border-bottom: 1.5px solid var(--border-strong);
+  overflow-x: auto;
+}
+.tab-btn {
+  background: none;
+  border: none;
+  padding: 12px 16px 10px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  border-bottom: 3px solid transparent;
+  white-space: nowrap;
+  transition: color .15s ease, border-color .15s ease;
+}
+.tab-btn:hover { color: var(--ink); }
+.tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); }
+
+main { padding: 22px 24px 60px; max-width: 1400px; margin: 0 auto; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* ---------- Generic building blocks ---------- */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-m);
+  box-shadow: var(--shadow);
+}
+.section-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0 0 8px;
+}
+.tips-list { margin: 0 0 24px; padding-left: 20px; }
+.tips-list li { margin-bottom: 10px; line-height: 1.55; font-size: 13.5px; color: var(--ink); }
+.tips-list li:last-child { margin-bottom: 0; }
+.hint {
+  font-size: 12.5px;
+  color: var(--ink-faint);
+  font-style: italic;
+  line-height: 1.5;
+}
+.quote-line {
+  font-family: "Fraunces", Georgia, serif;
+  font-size: 20px;
+  color: var(--primary);
+  font-style: italic;
+  margin: 0 0 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.quote-author { font-size: 12.5px; color: var(--ink-faint); font-style: normal; }
+.planning-header-row {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 8px; flex-wrap: wrap; gap: 8px;
+}
+.planning-header-buttons { display: flex; gap: 8px; flex-wrap: wrap; }
+.view-toggle { display: flex; border: 1px solid var(--border); border-radius: var(--radius-m); overflow: hidden; }
+.view-toggle-btn {
+  border: none; background: var(--surface); color: var(--ink-faint); padding: 6px 12px;
+  font-size: 12.5px; font-weight: 600; cursor: pointer; transition: background .1s ease, color .1s ease;
+}
+.view-toggle-btn:first-child { border-right: 1px solid var(--border); }
+.view-toggle-btn.active { background: var(--primary); color: #fff; }
+.view-toggle-btn:not(.active):hover { background: var(--surface-2); }
+.task-list-view { display: flex; flex-direction: column; gap: 8px; min-height: 200px; }
+.task-list-view .task-chip { width: 100%; box-sizing: border-box; }
+.legend {
+  font-size: 11.5px;
+  color: var(--ink-faint);
+  line-height: 1.6;
+  padding: 8px 0 4px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: var(--radius-s);
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  font-weight: 600;
+  font-size: 13.5px;
+  color: var(--ink);
+  transition: background .12s ease, border-color .12s ease, transform .06s ease;
+}
+.btn:hover { background: var(--surface-2); border-color: var(--ink-faint); }
+.btn:active { transform: translateY(1px); }
+.btn-primary { background: var(--primary); border-color: var(--primary); color: #fff; }
+.btn-primary:hover { background: var(--primary-hover); border-color: var(--primary-hover); }
+.btn-danger { border-color: #E5A2A2; color: #B71C1C; }
+.btn-danger:hover { background: #FFF0F0; }
+.btn-sm { padding: 5px 10px; font-size: 12px; }
+
+label.field-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-soft);
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+input[type=text], input[type=number], input[type=date], input[type=time], textarea, select {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1.5px solid var(--border-strong);
+  border-radius: var(--radius-s);
+  background: var(--surface);
+  color: var(--ink);
+}
+textarea { resize: vertical; min-height: 60px; }
+.checkbox-row { display: flex; align-items: center; gap: 7px; font-size: 13.5px; }
+.checkbox-row input { width: auto; }
+
+.field { margin-bottom: 12px; }
+.field-row { display: flex; gap: 12px; }
+.field-row > .field { flex: 1; }
+
+table.data-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+table.data-table th {
+  text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: .04em;
+  color: var(--ink-faint); border-bottom: 1.5px solid var(--border-strong); padding: 8px 10px;
+}
+table.data-table td { padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+table.data-table tr.row-overdue td { background: var(--overdue); }
+table.data-table tr.row-soon td { background: var(--soon); }
+table.data-table tr.row-done td:not(:last-child) { text-decoration: line-through; text-decoration-thickness: 1.5px; }
+table.data-table tr:hover td { filter: brightness(0.98); }
+
+.pill { display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: 11px; font-weight: 700; color: #fff; }
+.chip { display: inline-flex; align-items: center; gap: 5px; padding: 3px 9px; border-radius: 999px; font-size: 11.5px; font-weight: 600; }
+
+.empty-state { padding: 28px 16px; text-align: center; color: var(--ink-faint); font-size: 13.5px; }
+
+/* ---------- Modal ---------- */
+.modal-backdrop {
+  position: fixed; inset: 0; background: rgba(20,20,24,0.45);
+  display: flex; align-items: center; justify-content: center; z-index: 1000;
+  padding: 20px;
+}
+.modal {
+  background: var(--surface); border-radius: var(--radius-l); box-shadow: var(--shadow-lift);
+  width: 100%; max-width: 540px; max-height: 90vh; overflow-y: auto;
+  padding: 22px 24px;
+}
+.modal h2 { font-size: 19px; margin-bottom: 14px; }
+.modal .modal-actions { display: flex; gap: 8px; margin-top: 18px; flex-wrap: wrap; }
+.table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.modal .table-scroll { margin: 0 -4px; padding: 0 4px; }
+.modal .table-scroll table.data-table { min-width: 480px; }
+.modal-close { position: absolute; }
+
+/* ---------- Subjects tab ---------- */
+.subject-toolbar { display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; margin-bottom: 18px; }
+.subject-toolbar .field { margin-bottom: 0; min-width: 220px; }
+.subjects-layout { display: flex; gap: 10px; align-items: flex-start; flex-wrap: wrap; }
+.pinned-subjects-col {
+  display: flex; flex-direction: column; gap: 10px; width: 150px; flex-shrink: 0;
+  padding-right: 14px; margin-right: 4px; border-right: 1px solid var(--border);
+}
+.subject-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; flex: 1; min-width: 150px; }
+.subject-tile { position: relative; }
+.subject-btn {
+  border: none; border-radius: var(--radius-m); padding: 16px 40px 16px 14px; color: #fff; font-weight: 700;
+  font-size: 14px; text-align: left; box-shadow: var(--shadow); min-height: 64px; width: 100%;
+  display: flex; align-items: center; transition: transform .08s ease, box-shadow .08s ease;
+}
+.subject-btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-lift); }
+.subject-edit-btn {
+  position: absolute; top: 8px; right: 8px; width: 24px; height: 24px; border-radius: 50%;
+  background: rgba(255,255,255,0.28); border: none; color: #fff; font-size: 12px;
+  display: flex; align-items: center; justify-content: center; transition: background .12s ease;
+}
+.subject-edit-btn:hover { background: rgba(255,255,255,0.5); }
+.lang-flag {
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 3px; overflow: hidden; margin-right: 6px; vertical-align: middle;
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.25), 0 1px 2px rgba(0,0,0,0.2);
+}
+.lang-flag svg { display: block; }
+
+/* ---------- Today tab ---------- */
+.streak-line { font-size: 14.5px; font-weight: 700; margin: 8px 0 2px; }
+.streak-active, .streak-warning { color: #B45309; }
+.streak-neutral { color: var(--ink-soft); font-weight: 500; font-style: italic; }
+.progress-row { display: flex; align-items: center; gap: 12px; margin: 10px 0 20px; }
+.all-done-banner {
+  background: var(--done-soft); color: var(--done); border: 1.5px solid var(--done);
+  border-radius: var(--radius-m); padding: 12px 16px; font-weight: 700; font-size: 14.5px;
+  margin: -8px 0 20px;
+}
+.big-task-reminder { margin: -8px 0 20px; display: flex; flex-direction: column; gap: 8px; }
+.reminder-line {
+  background: var(--soon); color: var(--soon-ink); border: 1.5px solid var(--soon-ink);
+  border-radius: var(--radius-m); padding: 10px 14px; font-size: 13.5px; font-weight: 500; margin: 0;
+}
+.reminder-line strong { font-weight: 800; }
+.progress-track { flex: 1; height: 10px; border-radius: 999px; background: var(--border); overflow: hidden; }
+.progress-fill { height: 100%; background: var(--done); border-radius: 999px; transition: width .3s ease; }
+.progress-label { font-size: 12.5px; color: var(--ink-soft); white-space: nowrap; font-weight: 600; }
+
+/* ---------- Planning tab ---------- */
+.planning-layout { display: grid; grid-template-columns: minmax(260px, 320px) 1fr; gap: 18px; align-items: start; }
+.planning-layout > div { min-width: 0; }
+.matrix-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.quadrant { border-radius: var(--radius-m); overflow: hidden; box-shadow: var(--shadow); background: var(--surface); }
+.quadrant-header { padding: 8px 10px; font-size: 12px; font-weight: 700; line-height: 1.3; }
+.quadrant-header .sub { display: block; font-weight: 500; font-size: 10.5px; opacity: .9; }
+.quadrant-body { min-height: 120px; max-height: 260px; overflow-y: auto; padding: 6px; display: flex; flex-direction: column; gap: 5px; }
+.quadrant-body.drag-over { background: var(--primary-soft); }
+.task-chip {
+  border-radius: var(--radius-s); padding: 6px 8px; font-size: 11.5px; color: #fff; font-weight: 600;
+  cursor: grab; line-height: 1.35; box-shadow: 0 1px 2px rgba(0,0,0,.15);
+}
+.task-chip:active { cursor: grabbing; }
+.task-chip .deadline-flag { display: block; font-weight: 700; font-size: 10.5px; margin-bottom: 1px; }
+
+.cal-nav { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
+.cal-range { font-weight: 700; font-size: 13.5px; }
+.cal-scroll {
+  max-height: 620px; overflow: auto; border: 1px solid var(--border); border-radius: var(--radius-m);
+  background: var(--surface); -webkit-overflow-scrolling: touch;
+}
+.cal-scroll-hint { display: none; }
+.tabs-scroll-hint { display: none; }
+@media (max-width: 700px) {
+  .cal-scroll-hint, .tabs-scroll-hint {
+    display: block; font-size: 12.5px; color: var(--ink-faint); font-style: italic;
+    text-align: center; margin: 4px 0 8px;
+  }
+}
+.cal-grid { display: grid; grid-template-columns: 54px repeat(7, minmax(118px, 1fr)); }
+.cal-head-cell {
+  position: sticky; top: 0; background: var(--surface-2); z-index: 2;
+  font-size: 11px; font-weight: 700; text-align: center; padding: 8px 4px;
+  border-bottom: 1.5px solid var(--border-strong); border-left: 1px solid var(--border);
+}
+.cal-head-cell.today { background: var(--soon); }
+.cal-head-cell.time-col-head { border-left: none; }
+.cal-time-label {
+  font-size: 10.5px; color: var(--ink-faint); text-align: right; padding: 4px 6px 0 0;
+  border-top: 1px solid var(--border);
+}
+.cal-cell {
+  border-top: 1px solid var(--border); border-left: 1px solid var(--border);
+  min-height: 40px; padding: 2px; display: flex; flex-direction: column; gap: 2px;
+  cursor: crosshair; user-select: none;
+}
+.cal-cell.drag-over { background: var(--primary-soft); }
+.cal-cell.selecting { background: var(--primary-soft); box-shadow: inset 0 0 0 1.5px var(--primary); }
+.cal-cell.tap-pending { background: var(--primary-soft); box-shadow: inset 0 0 0 2px var(--primary); animation: tapPendingPulse 1.1s ease-in-out infinite; }
+@keyframes tapPendingPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.55; } }
+.cal-task-card, .cal-block-card {
+  border-radius: 5px; padding: 4px 6px; font-size: 10.8px; color: #fff; font-weight: 600;
+  line-height: 1.3; cursor: grab; box-shadow: 0 1px 2px rgba(0,0,0,.18); position: relative;
+}
+.cal-task-card.done { text-decoration: line-through; text-decoration-thickness: 1.5px; opacity: 0.85; }
+.done-badge {
+  position: absolute; top: -6px; right: -6px; width: 15px; height: 15px; border-radius: 50%;
+  background: #fff; color: var(--done); display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 900; line-height: 1; text-decoration: none;
+  box-shadow: 0 1px 3px rgba(0,0,0,.4); border: 1.5px solid var(--done);
+}
+.cal-task-card.drag-insert-before { box-shadow: inset 0 3px 0 0 var(--primary), 0 1px 2px rgba(0,0,0,.18); }
+.cal-task-card.drag-insert-after { box-shadow: inset 0 -3px 0 0 var(--primary), 0 1px 2px rgba(0,0,0,.18); }
+.cal-block-card {
+  cursor: pointer;
+  background-color: var(--block);
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(255,255,255,0.22) 0px,
+    rgba(255,255,255,0.22) 4px,
+    transparent 4px,
+    transparent 11px
+  );
+}
+.cal-block-card.is-school {
+  background-color: var(--school-blue);
+  border: 1.5px solid var(--school-red);
+  color: var(--ink);
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(255,255,255,0.55) 0px,
+    rgba(255,255,255,0.55) 4px,
+    transparent 4px,
+    transparent 11px
+  );
+}
+.cal-block-card.is-pause {
+  background-color: var(--pause-bg);
+  border: 1.5px solid var(--pause-border);
+  color: var(--ink);
+  background-image: radial-gradient(rgba(255,255,255,0.6) 1.5px, transparent 1.5px);
+  background-size: 9px 9px;
+}
+.cal-block-card.is-other {
+  background-color: var(--block) !important;
+}
+.cal-task-card.is-pause-task, .task-chip.is-pause-task, .subject-btn.is-pause-task {
+  background-color: var(--pause-bg) !important;
+  background-image: radial-gradient(rgba(255,255,255,0.6) 1.5px, transparent 1.5px) !important;
+  background-size: 9px 9px !important;
+  border: 1.5px solid var(--pause-border);
+  color: var(--ink) !important;
+}
+.cal-task-card.is-other-task, .task-chip.is-other-task, .subject-btn.is-other-task {
+  background-color: var(--block) !important;
+}
+.cal-task-card.overdue { box-shadow: 0 0 0 2.5px var(--overdue-ink), 0 1px 2px rgba(0,0,0,.18); }
+.cal-task-card .deadline-flag { display: block; font-weight: 700; font-size: 9.5px; margin-bottom: 1px; }
+.cal-task-card:active { cursor: grabbing; }
+
+/* ---------- List tab ---------- */
+.search-row { display: flex; gap: 8px; margin-bottom: 14px; max-width: 420px; }
+.search-row input { flex: 1; }
+
+/* ---------- Completed tab ---------- */
+.total-line { font-weight: 700; font-size: 14px; margin: 10px 0 20px; }
+.chart-wrap { display: flex; align-items: flex-end; gap: 18px; height: 190px; padding: 10px 6px 0; overflow-x: auto; border: 1px solid var(--border); border-radius: var(--radius-m); background: var(--surface); }
+.chart-bar-group { display: flex; flex-direction: column; align-items: center; min-width: 56px; height: 100%; justify-content: flex-end; }
+.chart-bar { width: 44px; border-radius: 5px 5px 0 0; transition: height .3s ease; }
+.chart-value { font-size: 10.5px; font-weight: 700; margin-bottom: 3px; }
+.chart-label { font-size: 10.5px; color: var(--ink-soft); margin-top: 6px; text-align: center; max-width: 62px; }
+
+/* ---------- Review tab ---------- */
+.quality-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+
+/* ---------- Timer ---------- */
+.timer-display { font-family: "Fraunces", serif; font-size: 52px; text-align: center; font-weight: 600; margin: 14px 0; color: var(--primary); }
+.timer-mode { text-align: center; font-weight: 700; font-size: 13px; text-transform: uppercase; letter-spacing: .05em; color: var(--ink-soft); }
+.timer-settings { display: flex; gap: 14px; justify-content: center; align-items: center; margin: 10px 0; font-size: 13px; }
+.timer-settings input { width: 56px; text-align: center; }
+.timer-controls { display: flex; gap: 8px; justify-content: center; margin-top: 10px; }
+
+/* ---------- misc ---------- */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+@media (max-width: 900px) {
+  .planning-layout { grid-template-columns: 1fr; }
+  .two-col { grid-template-columns: 1fr; }
+}
+.toast {
+  position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+  background: var(--ink); color: #fff; padding: 10px 18px; border-radius: 999px;
+  font-size: 13px; font-weight: 600; box-shadow: var(--shadow-lift); z-index: 1200;
+  opacity: 0; transition: opacity .25s ease;
+  display: flex; align-items: center; gap: 14px; white-space: nowrap;
+}
+.toast.show { opacity: 1; }
+.toast-action {
+  background: none; border: none; color: #fff; font-weight: 800; font-size: 13px;
+  text-decoration: underline; cursor: pointer; padding: 0; white-space: nowrap;
+}
+.toast-action:hover { opacity: 0.75; }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-title-group">
+    <h1>Studieplanner</h1>
+    <span class="tagline">plannen &middot; doen &middot; onthouden</span>
+  </div>
+  <button class="btn btn-sm" id="tipsBtn">💡 Tips</button>
+</header>
+
+<nav class="tabs" id="tabNav"></nav>
+<p class="tabs-scroll-hint">↔️ Veeg opzij voor meer tabbladen</p>
+
+<main id="tabContent">
+  <section id="tab-subjects" class="tab-panel"></section>
+  <section id="tab-today" class="tab-panel"></section>
+  <section id="tab-planning" class="tab-panel"></section>
+  <section id="tab-list" class="tab-panel"></section>
+  <section id="tab-completed" class="tab-panel"></section>
+  <section id="tab-review" class="tab-panel"></section>
+</main>
+
+<div id="modalRoot"></div>
+<div id="toastRoot"></div>
+
+<script id="core-logic">
+// ============================================================================
+// Studieplanner — kernlogica (datamodel + business rules)
+// Wordt hieronder getest met Node, en later ingebed in het uiteindelijke
+// standalone HTML-bestand (met localStorage i.p.v. de STORAGE stub hieronder).
+// ============================================================================
+
+const SUBJECT_COLOR_PALETTE = [
+    "#4C72B0", "#DD8452", "#C44E52", "#8172B2", "#937860", "#DA8BC3",
+    "#4E79A7", "#F28E2B", "#B07AA1", "#9C755F", "#5B4E8C", "#D62728",
+    "#E377C2", "#7F7F7F", "#54A24B", "#EDC948",
+];
+const DONE_COLOR = "#2E7D32";
+
+// Bepaalt of witte of donkere tekst best leesbaar is op een gegeven
+// achtergrondkleur (relatieve luminantie, WCAG-formule). Nodig sinds het
+// palet ook lichte kleuren (zoals geel) kan bevatten waar witte tekst op
+// zou verdrinken.
+function getContrastTextColor(hexColor) {
+    const r = parseInt(hexColor.slice(1, 3), 16) / 255;
+    const g = parseInt(hexColor.slice(3, 5), 16) / 255;
+    const b = parseInt(hexColor.slice(5, 7), 16) / 255;
+    const lin = c => (c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4));
+    const luminance = 0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b);
+    return luminance > 0.45 ? "#1E2124" : "#FFFFFF";
+}
+const BLOCK_COLOR = "#757575";
+const DAY_NAMES = ["Ma", "Di", "Wo", "Do", "Vr", "Za", "Zo"];
+const QUADRANTS = [
+    { key: "urgent_important", label: "Doe nu", sub: "belangrijk en urgent", urgent: true, important: true, color: "#E53935", text: "#fff" },
+    { key: "important_only", label: "Plan in", sub: "belangrijk, niet urgent", urgent: false, important: true, color: "#1E88E5", text: "#fff" },
+    { key: "urgent_only", label: "Kort afhandelen", sub: "urgent, niet belangrijk", urgent: true, important: false, color: "#FDD835", text: "#111" },
+    { key: "neither", label: "Herbekijken", sub: "niet urgent, niet belangrijk", urgent: false, important: false, color: "#43A047", text: "#fff" },
+];
+const TIME_BLOCKS = [];
+for (let h = 7; h < 23; h++) {
+    TIME_BLOCKS.push({ start: String(h).padStart(2, "0") + ":00", label: `${h}-${h + 1}u` });
+}
+const QUALITY_LABELS = [
+    { q: 1, label: "Wist het niet meer" },
+    { q: 2, label: "Moeizaam" },
+    { q: 3, label: "Met wat moeite" },
+    { q: 4, label: "Goed" },
+    { q: 5, label: "Vlot / uit het hoofd" },
+];
+
+// ---------------------------------------------------------------------------
+// Datum-hulpfuncties (allemaal lokale tijd, geen UTC-verschuivingsproblemen)
+// ---------------------------------------------------------------------------
+function isoFromDate(d) {
+    const y = d.getFullYear(), m = String(d.getMonth() + 1).padStart(2, "0"), day = String(d.getDate()).padStart(2, "0");
+    return `${y}-${m}-${day}`;
+}
+function dateFromIso(iso) {
+    const [y, m, d] = iso.split("-").map(Number);
+    return new Date(y, m - 1, d);
+}
+function addDays(iso, days) {
+    const d = dateFromIso(iso);
+    d.setDate(d.getDate() + days);
+    return isoFromDate(d);
+}
+function weekStart(iso) {
+    const d = dateFromIso(iso);
+    const wd = (d.getDay() + 6) % 7; // maandag = 0
+    d.setDate(d.getDate() - wd);
+    return isoFromDate(d);
+}
+function weekdayIndex(iso) {
+    return (dateFromIso(iso).getDay() + 6) % 7;
+}
+function daysBetween(isoA, isoB) {
+    return Math.round((dateFromIso(isoB) - dateFromIso(isoA)) / 86400000);
+}
+
+// ---------------------------------------------------------------------------
+// State (in echte app: localStorage; hier: in-memory voor de node-test)
+// ---------------------------------------------------------------------------
+const STORAGE_KEY = "studieplanner_data_v1";
+
+function defaultState() {
+    return { nextId: 1, subjects: [], tasks: [], topics: [], blockedSlots: [], settings: { taskView: "matrix" } };
+}
+function getTaskView() {
+    return (state.settings && state.settings.taskView) || "matrix";
+}
+function setTaskView(mode) {
+    if (mode !== "matrix" && mode !== "list") return;
+    if (!state.settings) state.settings = {};
+    state.settings.taskView = mode;
+    saveState();
+}
+
+let state = defaultState();
+let _storageBackend = null; // wordt in de browser vervangen door localStorage
+function setStorageBackend(b) { _storageBackend = b; }
+
+function saveState() {
+    if (_storageBackend) _storageBackend.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+function loadState() {
+    if (!_storageBackend) { state = defaultState(); return; }
+    try {
+        const raw = _storageBackend.getItem(STORAGE_KEY);
+        state = raw ? Object.assign(defaultState(), JSON.parse(raw)) : defaultState();
+    } catch (e) {
+        state = defaultState();
+    }
+    migrateTaskSessions();
+    migrateSessionDoneStatus();
+}
+
+// ---------------------------------------------------------------------------
+// Ongedaan maken: vlak vóór een destructieve actie (vak/taak/sessie/blok
+// verwijderen) wordt een momentopname bewaard. Enkel de MEEST RECENTE actie
+// kan ongedaan gemaakt worden (geen volledige undo-stack, gewoon een vangnet
+// voor "oeps, te snel geklikt").
+// ---------------------------------------------------------------------------
+let _undoSnapshot = null;
+function saveUndoSnapshot() {
+    _undoSnapshot = JSON.parse(JSON.stringify(state));
+}
+function canUndo() {
+    return _undoSnapshot !== null;
+}
+function undoLastAction() {
+    if (_undoSnapshot === null) return false;
+    state = _undoSnapshot;
+    _undoSnapshot = null;
+    saveState();
+    return true;
+}
+function clearUndoSnapshot() {
+    _undoSnapshot = null;
+}
+
+function migrateTaskSessions() {
+    // Oudere versies van de app kenden elke taak maar 1 plandatum/-tijd toe
+    // (plannedDate/plannedTime). Zet dat om naar de nieuwe sessies-array zodat
+    // bestaande, al opgeslagen planningen niet verloren gaan.
+    let changed = false;
+    state.tasks.forEach(t => {
+        if (!Array.isArray(t.sessions)) {
+            t.sessions = [];
+            if (t.plannedDate) {
+                t.sessions.push({
+                    id: nextId(), date: t.plannedDate, time: t.plannedTime || "09:00",
+                    minutes: t.estimatedMinutes || 30,
+                });
+            }
+            delete t.plannedDate;
+            delete t.plannedTime;
+            changed = true;
+        }
+    });
+    if (changed) saveState();
+}
+function migrateSessionDoneStatus() {
+    // BUG-FIX/migratie: v\u00f3\u00f3r de per-sessie 'klaar'-tracking stond de status
+    // enkel op de taak zelf (t.status === "done"), niet op de individuele
+    // sessies. Zonder deze migratie zou een taak die een leerling v\u00f3\u00f3r deze
+    // update al had afgevinkt, na het bijwerken plots als "niet klaar" tonen
+    // in de kalender/lijst (die nu de sessie-eigen status gebruiken) -- ook al
+    // staat de taak zelf nog gewoon op "done". Zet daarom bij het laden alle
+    // sessies van een al-afgewerkte taak retroactief op done=true, en geeft
+    // elke sessie sowieso een expliciete done/completedAt-waarde (i.p.v.
+    // undefined) voor consistentie.
+    let changed = false;
+    state.tasks.forEach(t => {
+        (t.sessions || []).forEach(s => {
+            if (s.done === undefined) { s.done = false; changed = true; }
+            if (s.completedAt === undefined) { s.completedAt = null; changed = true; }
+            if (t.status === "done" && !s.done) {
+                s.done = true;
+                s.completedAt = s.completedAt || t.completedAt || isoFromDate(new Date());
+                changed = true;
+            }
+        });
+    });
+    if (changed) saveState();
+}
+function nextId() {
+    const id = state.nextId;
+    state.nextId += 1;
+    return id;
+}
+
+// ---------------------------------------------------------------------------
+// Vakken
+// ---------------------------------------------------------------------------
+const FIXED_SUBJECT_COLORS = {
+    "nederlands": "#F4C430",
+    "frans": "#1565C0",
+    "wiskunde": "#EF6C00",
+    "mavo": "#F4C430", // BSO: vervangt Nederlands (en deels Wiskunde), zelfde geel
+};
+// Vaste volgorde vooraan in "Vakken & Taken": enkel Pauze en Andere, apart in
+// hun eigen kolom. Nederlands/Frans/Wiskunde krijgen wel hun vaste kleur
+// (zie FIXED_SUBJECT_COLORS) maar staan gewoon tussen de andere vakken.
+const PINNED_SUBJECT_ORDER = ["pauze", "andere"];
+// Binnen de gewone (verder alfabetische) rij vakken krijgen deze drie een
+// vaste volgorde vooraan (i.p.v. het alfabet), zodat Frans niet toevallig
+// als eerste in beeld komt op een Nederlandstalige school.
+const MAIN_SUBJECT_PRIORITY_ORDER = ["nederlands", "mavo", "wiskunde", "frans"];
+
+function colorDistance(hex1, hex2) {
+    // "Redmean" kleurafstand: een gekende, eenvoudige benadering van
+    // perceptueel kleurverschil (nauwkeuriger dan platte RGB-afstand).
+    const r1 = parseInt(hex1.slice(1, 3), 16), g1 = parseInt(hex1.slice(3, 5), 16), b1 = parseInt(hex1.slice(5, 7), 16);
+    const r2 = parseInt(hex2.slice(1, 3), 16), g2 = parseInt(hex2.slice(3, 5), 16), b2 = parseInt(hex2.slice(5, 7), 16);
+    const rmean = (r1 + r2) / 2;
+    const dr = r1 - r2, dg = g1 - g2, db = b1 - b2;
+    return Math.sqrt((2 + rmean / 256) * dr * dr + 4 * dg * dg + (2 + (255 - rmean) / 256) * db * db);
+}
+function reassignSubjectColors() {
+    const usedColors = [];
+    // 1. Vaste kleuren voor de hoofdvakken (indien aanwezig) eerst toekennen.
+    state.subjects.forEach(s => {
+        const key = s.name.trim().toLowerCase();
+        if (FIXED_SUBJECT_COLORS[key]) {
+            s.color = FIXED_SUBJECT_COLORS[key];
+            usedColors.push(s.color);
+        }
+    });
+    // 2. Overige vakken (behalve Pauze/Andere, die hun eigen vaste styling
+    //    via CSS krijgen en waarvoor de kleur dus niet zichtbaar is) krijgen
+    //    telkens de paletkleur die het VERST verwijderd is van alle reeds
+    //    toegekende kleuren tot dan toe \u2014 zo lijken nooit twee vakken toevallig
+    //    erg op elkaar, ook niet met veel vakken tegelijk.
+    state.subjects.forEach(s => {
+        const key = s.name.trim().toLowerCase();
+        if (FIXED_SUBJECT_COLORS[key]) return; // al gedaan
+        if (key === "pauze") { s.color = SUBJECT_COLOR_PALETTE[0]; return; }
+        if (key === "andere") { s.color = SUBJECT_COLOR_PALETTE[1]; return; }
+        let best = SUBJECT_COLOR_PALETTE[0], bestScore = -1;
+        SUBJECT_COLOR_PALETTE.forEach(candidate => {
+            const minDist = usedColors.length ? Math.min(...usedColors.map(u => colorDistance(candidate, u))) : Infinity;
+            if (minDist > bestScore) { bestScore = minDist; best = candidate; }
+        });
+        s.color = best;
+        usedColors.push(best);
+    });
+}
+function addSubject(name) {
+    name = (name || "").trim();
+    if (!name) throw new Error("Geef het vak een naam.");
+    if (state.subjects.some(s => s.name.toLowerCase() === name.toLowerCase())) {
+        throw new Error("Dit vak bestaat al.");
+    }
+    const s = { id: nextId(), name, color: SUBJECT_COLOR_PALETTE[0] };
+    state.subjects.push(s);
+    reassignSubjectColors();
+    saveState();
+    return s;
+}
+function ensureDefaultSubjects() {
+    // "Pauze" en "Andere" horen er altijd te zijn (ze zijn ook niet meer
+    // verwijderbaar via de UI), dus dit mag veilig bij ELKE opstart gebeuren
+    // — ook voor bestaande installaties die van v\u00f3\u00f3r deze functies dateren.
+    // Nederlands/Wiskunde/Frans staan er standaard ook al bij (gemak voor de
+    // meeste leerlingen), maar blijven wel gewoon verwijderbaar \u2014 bv. voor
+    // BSO-leerlingen die in plaats daarvan "MAVO" gebruiken.
+    ["Pauze", "Andere", "Nederlands", "Wiskunde", "Frans"].forEach(name => {
+        const exists = state.subjects.some(s => s.name.trim().toLowerCase() === name.toLowerCase());
+        if (!exists) addSubject(name);
+    });
+}
+function getSubjects() {
+    return [...state.subjects].sort((a, b) => a.name.localeCompare(b.name, "nl"));
+}
+function getSubjectName(id) { const s = state.subjects.find(s => s.id === id); return s ? s.name : "?"; }
+function getSubjectColor(id) { const s = state.subjects.find(s => s.id === id); return s ? s.color : "#4C72B0"; }
+function renameSubject(id, newName) {
+    newName = (newName || "").trim();
+    if (!newName) throw new Error("Geef het vak een naam.");
+    const s = state.subjects.find(s => s.id === id);
+    if (!s) return;
+    if (state.subjects.some(other => other.id !== id && other.name.toLowerCase() === newName.toLowerCase())) {
+        throw new Error("Er bestaat al een ander vak met deze naam.");
+    }
+    s.name = newName;
+    reassignSubjectColors();
+    saveState();
+}
+function deleteSubject(id) {
+    state.subjects = state.subjects.filter(s => s.id !== id);
+    state.tasks = state.tasks.filter(t => t.subjectId !== id);
+    state.topics = state.topics.filter(t => t.subjectId !== id);
+    reassignSubjectColors();
+    saveState();
+}
+
+// ---------------------------------------------------------------------------
+// Taken
+// ---------------------------------------------------------------------------
+function addTask(subjectId, title, description, deadline, urgent, important, isStudy, estimatedMinutes) {
+    const t = {
+        id: nextId(), subjectId, title: title.trim(), description: description || "",
+        deadline: deadline || null, urgent: !!urgent, important: !!important, isStudy: !!isStudy,
+        estimatedMinutes: estimatedMinutes || 30, actualMinutes: 0,
+        status: "open", sessions: [], completedAt: null,
+        createdAt: isoFromDate(new Date()),
+    };
+    state.tasks.push(t);
+    saveState();
+    return t;
+}
+function getTask(id) { return state.tasks.find(t => t.id === id) || null; }
+function getTasks({ subjectId = null, status = null } = {}) {
+    let list = state.tasks;
+    if (subjectId != null) list = list.filter(t => t.subjectId === subjectId);
+    if (status != null) list = list.filter(t => t.status === status);
+    return [...list].sort((a, b) => {
+        if (!a.deadline && !b.deadline) return 0;
+        if (!a.deadline) return 1;
+        if (!b.deadline) return -1;
+        return a.deadline.localeCompare(b.deadline);
+    });
+}
+function updateTask(id, fields) {
+    const t = getTask(id);
+    if (!t) return;
+    Object.assign(t, fields);
+    saveState();
+}
+function deleteTask(id) {
+    state.tasks = state.tasks.filter(t => t.id !== id);
+    state.topics.forEach(top => { if (top.taskId === id) top.taskId = null; });
+    saveState();
+}
+
+// ---------------------------------------------------------------------------
+// Sessies: een taak kan over meerdere momenten opgesplitst ingepland worden
+// (bv. 60 min geschat -> 2x 30 min op verschillende dagen), zonder de taak
+// zelf meerdere keren te moeten aanmaken.
+// ---------------------------------------------------------------------------
+function getTaskRemainingMinutes(task) {
+    const planned = (task.sessions || []).reduce((sum, s) => sum + (s.minutes || 0), 0);
+    return Math.max(0, (task.estimatedMinutes || 0) - planned);
+}
+function isTaskOpenForMatrix(task) {
+    // Een taak hoort in de matrix zolang er nog niet-ingeplande tijd is.
+    // Normaal gezien verdwijnt een als 'klaar' gemarkeerde taak uit de matrix,
+    // maar bij een taak die in meerdere sessies verspreid wordt ingepland
+    // (bv. "Pauze" met 1000 min, waarvan pas 60 min gepland is) kan je \u00e9\u00e9n
+    // sessie als klaar markeren (dubbelklik in de kalender) terwijl er nog
+    // veel resterende tijd is \u2014 die resterende tijd moet dan gewoon in de
+    // matrix blijven staan om verder in te plannen, i.p.v. helemaal te
+    // verdwijnen.
+    const remaining = getTaskRemainingMinutes(task);
+    if (remaining <= 0) return false;
+    if (task.status !== "done") return true;
+    return Boolean(task.sessions && task.sessions.length > 0);
+}
+const BIG_TASK_REMINDER_THRESHOLD_MIN = 120; // 2 uur
+function getBigUnplannedTasksNeedingAttention() {
+    // Grote taken (2u+ nog niet ingepland) waarvan de deadline dichtbij komt
+    // of al verstreken is \u2014 om een leerling te blijven herinneren zolang de
+    // taak niet (voldoende) ingepland is. Verschijnt telkens opnieuw zolang
+    // de situatie speelt (geen achtergrondmeldingen mogelijk in een gewone
+    // webpagina), en verdwijnt vanzelf zodra er genoeg ingepland is of de
+    // deadline niet meer dringend is.
+    return state.tasks
+        .filter(t => {
+            const remaining = getTaskRemainingMinutes(t);
+            if (remaining < BIG_TASK_REMINDER_THRESHOLD_MIN) return false;
+            const urgency = deadlineUrgency(t.deadline);
+            return urgency === "soon" || urgency === "overdue";
+        })
+        .map(t => ({ ...t, remainingMinutes: getTaskRemainingMinutes(t) }))
+        .sort((a, b) => (a.deadline || "9999").localeCompare(b.deadline || "9999"));
+}
+function _recomputeStatusAfterSessionChange(t) {
+    if (t.status === "done") return; // 'klaar' verandert niet door sessies te wijzigen
+    t.status = (t.sessions && t.sessions.length > 0) ? "planned" : "open";
+}
+function _onTaskFullyCompleted(t) {
+    // Gedeelde logica voor wanneer een taak ECHT volledig afgerond is (alle
+    // sessies klaar, geen resterende tijd meer) -- gebruikt zowel door het
+    // per-sessie afvinken als door het rechtstreeks "hele taak klaar"-pad.
+    if (t.isStudy && !state.topics.some(top => top.taskId === t.id)) {
+        const today = isoFromDate(new Date());
+        state.topics.push({
+            id: nextId(), subjectId: t.subjectId, taskId: t.id, name: t.title,
+            firstDate: today, lastReviewDate: today, reviewCount: 0, intervalDays: 1,
+            ease: 2.5, nextReviewDate: addDays(today, 1),
+        });
+    }
+}
+function _recomputeTaskStatusFromSessions(t) {
+    // Wordt gebruikt na het per-sessie afvinken: een taak is pas ECHT 'klaar'
+    // als ALLE sessies afgevinkt zijn \u00e9n er niets meer resteert om in te
+    // plannen. Zo blijft een taak met bv. 2 sessies (30 min + 60 min) correct
+    // op 'planned' staan zolang er nog een niet-afgevinkte sessie is \u2014 in
+    // plaats van dat \u00e9\u00e9n afgevinkte sessie meteen de hele taak (en dus ook de
+    // andere sessie) als klaar markeert.
+    const sessions = t.sessions || [];
+    const remaining = getTaskRemainingMinutes(t);
+    const allSessionsDone = sessions.length > 0 && sessions.every(s => s.done);
+    if (allSessionsDone && remaining <= 0) {
+        const wasAlreadyDone = t.status === "done";
+        t.status = "done";
+        const dates = sessions.map(s => s.completedAt).filter(Boolean).sort();
+        t.completedAt = dates.length ? dates[dates.length - 1] : isoFromDate(new Date());
+        if (!wasAlreadyDone) _onTaskFullyCompleted(t);
+    } else {
+        t.status = sessions.length > 0 ? "planned" : "open";
+        t.completedAt = null;
+    }
+}
+function toggleSessionDone(taskId, sessionId) {
+    const t = getTask(taskId);
+    if (!t || !t.sessions) return;
+    const s = t.sessions.find(s => s.id === sessionId);
+    if (!s) return;
+    s.done = !s.done;
+    s.completedAt = s.done ? isoFromDate(new Date()) : null;
+    _recomputeTaskStatusFromSessions(t);
+    saveState();
+}
+function addSession(taskId, date, time, minutes) {
+    const t = getTask(taskId);
+    if (!t) return null;
+    if (!t.sessions) t.sessions = [];
+    const id = nextId();
+    const session = { id, date, time, minutes: Math.max(1, Math.round(minutes) || 1), order: id, done: false, completedAt: null };
+    t.sessions.push(session);
+    _recomputeStatusAfterSessionChange(t);
+    saveState();
+    return session;
+}
+function removeSession(taskId, sessionId) {
+    const t = getTask(taskId);
+    if (!t || !t.sessions) return;
+    t.sessions = t.sessions.filter(s => s.id !== sessionId);
+    _recomputeStatusAfterSessionChange(t);
+    saveState();
+}
+function updateSession(taskId, sessionId, fields) {
+    const t = getTask(taskId);
+    if (!t || !t.sessions) return;
+    const s = t.sessions.find(s => s.id === sessionId);
+    if (!s) return;
+    Object.assign(s, fields);
+    saveState();
+}
+function setTaskSessions(taskId, sessions) {
+    // sessions: [{id?, date, time, minutes}] — id optioneel, wordt anders nieuw aangemaakt.
+    // Vervangt de volledige sessielijst in één keer (gebruikt door het bewerkingsvenster).
+    // Blijft de 'klaar'-status van een bestaande sessie behouden (via het id), zodat
+    // bewerken (bv. tijdstip aanpassen) niet per ongeluk het vinkje reset.
+    const t = getTask(taskId);
+    if (!t) return;
+    const oldById = new Map((t.sessions || []).map(s => [s.id, s]));
+    t.sessions = sessions
+        .filter(s => s.date && s.time)
+        .map(s => {
+            const existing = s.id ? oldById.get(s.id) : null;
+            return {
+                id: s.id || nextId(), date: s.date, time: s.time,
+                minutes: Math.max(1, Math.round(Number(s.minutes)) || 1),
+                done: existing ? existing.done : false,
+                completedAt: existing ? existing.completedAt : null,
+                order: existing && existing.order != null ? existing.order : (s.id || nextId()),
+            };
+        });
+    _recomputeStatusAfterSessionChange(t);
+    saveState();
+}
+
+function planTask(id, date, time, minutes) {
+    const t = getTask(id);
+    if (!t) return null;
+    const useMinutes = minutes != null ? minutes : Math.max(1, getTaskRemainingMinutes(t) || t.estimatedMinutes || 30);
+    return addSession(id, date, time, useMinutes);
+}
+function unplanTask(id) {
+    // Volledig loskoppelen: verwijdert ALLE sessies van deze taak in één keer.
+    const t = getTask(id);
+    if (!t || t.status === "done") return;
+    t.sessions = [];
+    t.status = "open";
+    saveState();
+}
+function getPlannedTasksBetween(startIso, endIso) {
+    const rows = [];
+    state.tasks.forEach(t => {
+        (t.sessions || []).forEach(s => {
+            if (s.date >= startIso && s.date <= endIso) {
+                rows.push({
+                    taskId: t.id, sessionId: s.id, title: t.title, subjectId: t.subjectId,
+                    status: t.status, sessionDone: !!s.done, estimatedMinutes: t.estimatedMinutes, actualMinutes: t.actualMinutes,
+                    sessionCount: t.sessions.length, deadline: t.deadline || null,
+                    date: s.date, time: s.time, minutes: s.minutes, order: s.order != null ? s.order : s.id,
+                });
+            }
+        });
+    });
+    return rows.sort((a, b) => {
+        const byTime = (a.date + a.time).localeCompare(b.date + b.time);
+        if (byTime !== 0) return byTime;
+        return a.order - b.order; // binnen hetzelfde uur: expliciete, versleepbare volgorde
+    });
+}
+function reorderSessionsInSlot(date, time, orderedRefs) {
+    // orderedRefs: [{taskId, sessionId}, ...] in de gewenste nieuwe volgorde
+    // voor dit ene tijdstip \u2014 gebruikt na sleep-en-neerzetten binnen dezelfde cel.
+    orderedRefs.forEach((ref, index) => {
+        const t = getTask(ref.taskId);
+        if (!t) return;
+        const s = (t.sessions || []).find(s => s.id === ref.sessionId);
+        if (s && s.date === date && s.time === time) s.order = index;
+    });
+    saveState();
+}
+function getAllPlannedSessions() {
+    // Alle sessies van niet-afgewerkte taken, ongeacht datum (voor de Lijst-tab,
+    // die bewust niet aan één week gebonden is).
+    const rows = [];
+    state.tasks.forEach(t => {
+        if (t.status === "done") return;
+        (t.sessions || []).forEach(s => {
+            if (s.done) return; // deze ene sessie is al afgewerkt, ook al is de taak als geheel dat nog niet
+            rows.push({
+                taskId: t.id, sessionId: s.id, title: t.title, subjectId: t.subjectId,
+                status: t.status, estimatedMinutes: t.estimatedMinutes, deadline: t.deadline || null,
+                date: s.date, time: s.time, minutes: s.minutes,
+            });
+        });
+    });
+    return rows.sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
+}
+function addActualMinutes(id, minutes) {
+    if (minutes <= 0) return;
+    const t = getTask(id); if (!t) return;
+    t.actualMinutes = (t.actualMinutes || 0) + minutes;
+    saveState();
+}
+function markTaskDone(id) {
+    const t = getTask(id); if (!t) return;
+    const today = isoFromDate(new Date());
+    const wasAlreadyDone = t.status === "done";
+    if (t.sessions && t.sessions.length > 0) {
+        t.sessions.forEach(s => { s.done = true; s.completedAt = today; });
+    }
+    t.status = "done";
+    t.completedAt = today;
+    if (!wasAlreadyDone) _onTaskFullyCompleted(t);
+    saveState();
+}
+function toggleTaskDone(id) {
+    const t = getTask(id); if (!t) return;
+    if (t.status === "done") {
+        t.status = (t.sessions && t.sessions.length > 0) ? "planned" : "open";
+        t.completedAt = null;
+        if (t.sessions) t.sessions.forEach(s => { s.done = false; s.completedAt = null; });
+        saveState();
+    } else {
+        markTaskDone(id);
+    }
+}
+function getCompletedTasksBetween(startIso, endIso) {
+    const rows = [];
+    state.tasks.forEach(t => {
+        const sessions = t.sessions || [];
+        if (sessions.length > 0) {
+            // Elke afgevinkte sessie telt als een eigen rij, met haar eigen datum
+            // en minuten -- zo blijft "Deze week gedaan" correct ook wanneer een
+            // taak in meerdere sessies opgesplitst is en die op verschillende
+            // dagen afgewerkt worden.
+            const doneSessions = sessions.filter(s => s.done && s.completedAt);
+            // 'actualMinutes' (de effectief gelogde tijd) staat op taakniveau, niet
+            // per sessie -- die mag dus maar bij \u00e9\u00e9n rij horen (de meest recente),
+            // anders zou hetzelfde getal meermaals meetellen in het weektotaal.
+            const mostRecentDoneId = doneSessions.length
+                ? doneSessions.reduce((a, b) => (a.completedAt > b.completedAt ? a : b)).id
+                : null;
+            doneSessions.forEach(s => {
+                if (s.completedAt >= startIso && s.completedAt <= endIso) {
+                    rows.push({
+                        ...t, sessionId: s.id, sessionTime: s.time, sessionCount: 1,
+                        completedAt: s.completedAt, completedMinutes: s.minutes,
+                        actualMinutes: s.id === mostRecentDoneId ? t.actualMinutes : 0,
+                    });
+                }
+            });
+        } else if (t.status === "done" && t.completedAt && t.completedAt >= startIso && t.completedAt <= endIso) {
+            // Rechtstreeks als klaar afgevinkt zonder ooit gepland te zijn geweest.
+            rows.push({ ...t, sessionId: null, sessionTime: null, sessionCount: 0, completedMinutes: t.estimatedMinutes || 0 });
+        }
+    });
+    return rows.sort((a, b) => (a.completedAt + (a.sessionTime || "")).localeCompare(b.completedAt + (b.sessionTime || "")));
+}
+
+// ---------------------------------------------------------------------------
+// Studiereeks ("streak"): aantal opeenvolgende dagen met minstens 1 afgewerkte
+// taak/sessie — puur motivationeel, gebaseerd op completedAt-datums.
+// ---------------------------------------------------------------------------
+function getCompletionDateSet() {
+    const set = new Set();
+    state.tasks.forEach(t => {
+        const sessions = t.sessions || [];
+        if (sessions.length > 0) {
+            sessions.forEach(s => { if (s.done && s.completedAt) set.add(s.completedAt); });
+        } else if (t.status === "done" && t.completedAt) {
+            set.add(t.completedAt);
+        }
+    });
+    return set;
+}
+function getCurrentStreak(todayIso) {
+    todayIso = todayIso || isoFromDate(new Date());
+    const dates = getCompletionDateSet();
+    let anchor = todayIso;
+    let anchoredToday = true;
+    if (!dates.has(anchor)) {
+        const yesterday = addDays(todayIso, -1);
+        if (dates.has(yesterday)) { anchor = yesterday; anchoredToday = false; }
+        else return { streak: 0, anchoredToday: true };
+    }
+    let streak = 0;
+    let day = anchor;
+    while (dates.has(day)) {
+        streak++;
+        day = addDays(day, -1);
+    }
+    return { streak, anchoredToday };
+}
+function getLongestStreak() {
+    const dates = Array.from(getCompletionDateSet()).sort();
+    if (!dates.length) return 0;
+    let longest = 1, current = 1;
+    for (let i = 1; i < dates.length; i++) {
+        current = daysBetween(dates[i - 1], dates[i]) === 1 ? current + 1 : 1;
+        if (current > longest) longest = current;
+    }
+    return longest;
+}
+
+// ---------------------------------------------------------------------------
+// Automatisch bijpassend icoon voor een vak, op basis van de naam.
+// "Pauze" wordt bewust NIET hier opgenomen: dat krijgt al zijn eigen vaste
+// afhandeling (icoon + pastelgroene kleur) elders in de UI-laag.
+// ---------------------------------------------------------------------------
+const SUBJECT_ICON_KEYWORDS = [
+    { keywords: ["wiskunde", "wisk", "algebra", "meetkunde"], type: "emoji", value: "\u{1F522}" },
+    { keywords: ["mavo"], type: "emoji", value: "\u{1F4DA}" },
+    { keywords: ["nederlands"], type: "lang", value: "NL" },
+    { keywords: ["frans", "français", "francais"], type: "lang", value: "FR" },
+    { keywords: ["engels", "english"], type: "lang", value: "EN" },
+    { keywords: ["duits", "deutsch"], type: "lang", value: "DE" },
+    { keywords: ["spaans", "español", "espanol"], type: "lang", value: "ES" },
+    { keywords: ["italiaans", "italiano"], type: "lang", value: "IT" },
+    { keywords: ["latijn", "latin"], type: "emoji", value: "\u{1F3DB}\uFE0F" },
+    { keywords: ["grieks"], type: "emoji", value: "\u{1F4DC}" },
+    { keywords: ["geschiedenis"], type: "emoji", value: "\u23F3" },
+    { keywords: ["aardrijkskunde", "geografie"], type: "emoji", value: "\u{1F30D}" },
+    { keywords: ["biologie"], type: "emoji", value: "\u{1F9EC}" },
+    { keywords: ["chemie", "scheikunde"], type: "emoji", value: "\u{1F9EA}" },
+    { keywords: ["fysica", "natuurkunde", "natuurwetenschappen"], type: "emoji", value: "\u269B\uFE0F" },
+    { keywords: ["wetenschappen"], type: "emoji", value: "\u{1F52C}" },
+    { keywords: ["economie", "boekhouden"], type: "emoji", value: "\u{1F4CA}" },
+    { keywords: ["informatica", "programmeren", "ict"], type: "emoji", value: "\u{1F4BB}" },
+    { keywords: ["lichamelijke opvoeding", "sport", "gym", "lo"], type: "emoji", value: "\u{1F3C3}" },
+    { keywords: ["muziek"], type: "emoji", value: "\u{1F3B5}" },
+    { keywords: ["kunst", "tekenen", "beeldende"], type: "emoji", value: "\u{1F3A8}" },
+    { keywords: ["techniek", "technologie"], type: "emoji", value: "\u{1F527}" },
+    { keywords: ["koken", "huishoud"], type: "emoji", value: "\u{1F373}" },
+    { keywords: ["filosofie"], type: "emoji", value: "\u{1F4AD}" },
+    { keywords: ["psychologie"], type: "emoji", value: "\u{1F9E0}" },
+    { keywords: ["haarzorg", "haar", "kapper"], type: "emoji", value: "\u2702\uFE0F" },
+    { keywords: ["mode"], type: "emoji", value: "\u{1F457}" },
+    { keywords: ["godsdienst", "levensbeschouwing", "zedenleer", "ethiek"], type: "emoji", value: "\u{1F91D}" },
+];
+function guessSubjectIcon(name) {
+    // Geeft {type: "emoji"|"lang", value} terug, of null. Talen krijgen bewust
+    // GEEN vlag-emoji (die renderen op sommige systemen enkel als losse letters
+    // zoals "FR" i.p.v. een echte vlag) maar een eigen CSS-badge met landcode,
+    // dat werkt overal betrouwbaar hetzelfde.
+    // Korte afkortingen (zoals "LO") worden enkel EXACT herkend, niet als los
+    // stukje tekst binnenin een andere naam (anders zou bv. "Biologie" per
+    // ongeluk ook matchen, want dat woord bevat toevallig ook "lo").
+    const lower = (name || "").trim().toLowerCase();
+    for (const entry of SUBJECT_ICON_KEYWORDS) {
+        if (entry.keywords.some(k => (k.length <= 2 ? lower === k : lower.includes(k)))) return { type: entry.type, value: entry.value };
+    }
+    return null;
+}
+
+function deadlineUrgency(deadline) {
+    if (!deadline) return null;
+    const diff = daysBetween(isoFromDate(new Date()), deadline);
+    if (diff < 0) return "overdue";
+    if (diff <= 2) return "soon";
+    return null;
+}
+
+// ---------------------------------------------------------------------------
+// Geblokkeerde tijdslots (wekelijks terugkerend of eenmalig)
+// ---------------------------------------------------------------------------
+function addRecurringBlock(weekday, blockStart, label, duration = 60) {
+    state.blockedSlots = state.blockedSlots.filter(b => !(b.specificDate == null && b.weekday === weekday && b.blockStart === blockStart));
+    state.blockedSlots.push({ id: nextId(), weekday, specificDate: null, blockStart, label, duration: duration || 60 });
+    saveState();
+}
+function addOnetimeBlock(specificDate, blockStart, label, duration = 60) {
+    state.blockedSlots = state.blockedSlots.filter(b => !(b.specificDate === specificDate && b.blockStart === blockStart));
+    state.blockedSlots.push({ id: nextId(), weekday: null, specificDate, blockStart, label, duration: duration || 60 });
+    saveState();
+}
+function removeRecurringBlock(weekday, blockStart) {
+    // Verwijdert de wekelijkse regel volledig (voor alle weken), inclusief
+    // eventuele losse uitzonderingen die ervoor gemaakt waren (die zijn dan zinloos).
+    state.blockedSlots = state.blockedSlots.filter(b => !(b.specificDate == null && b.weekday === weekday && b.blockStart === blockStart));
+    saveState();
+}
+function removeOnetimeBlock(specificDate, blockStart) {
+    state.blockedSlots = state.blockedSlots.filter(b => !(b.specificDate === specificDate && b.blockStart === blockStart));
+    saveState();
+}
+function skipRecurringBlockForDate(weekday, blockStart, specificDate) {
+    // "Verwijder enkel deze week": de wekelijkse regel blijft bestaan voor
+    // alle ANDERE weken, maar geldt bewust niet op deze ene datum. Dat wordt
+    // opgeslagen als een eenmalige uitzondering met label=null.
+    state.blockedSlots = state.blockedSlots.filter(b => !(b.specificDate === specificDate && b.blockStart === blockStart));
+    state.blockedSlots.push({ id: nextId(), weekday: null, specificDate, blockStart, label: null, duration: null });
+    saveState();
+}
+function removeBlockedRange(dayIndex, dayIso, blockStarts, mode) {
+    // Verwijdert meerdere (aaneengesloten) uren in \u00e9\u00e9n keer, bv. na een
+    // sleep-selectie of twee-tikken-selectie over meerdere uren. Werkt met een
+    // MIX van eenmalige en wekelijkse blokken binnen hetzelfde bereik:
+    // - eenmalige blokken worden altijd volledig verwijderd
+    // - wekelijkse regels volgen 'mode': "week" (enkel deze week, de regel
+    //   blijft bestaan voor andere weken) of "all" (de hele wekelijkse regel)
+    // Uren zonder blok binnen het bereik worden gewoon overgeslagen.
+    let count = 0;
+    blockStarts.forEach(bs => {
+        const existing = getBlockedSlotForDay(dayIso, dayIndex, bs);
+        if (!existing) return;
+        if (existing.isOnetime) {
+            removeOnetimeBlock(dayIso, bs);
+        } else if (mode === "all") {
+            removeRecurringBlock(dayIndex, bs);
+        } else {
+            skipRecurringBlockForDate(dayIndex, bs, dayIso);
+        }
+        count++;
+    });
+    return count;
+}
+function getRecurringBlockLabels() {
+    // Unieke labels van alle wekelijks terugkerende blokken (bv. "School",
+    // "Sporttraining"), voor een dropdown i.p.v. vrije tekst bij het in bulk
+    // vrijmaken van een periode.
+    const set = new Set();
+    state.blockedSlots.filter(b => b.specificDate == null).forEach(b => set.add(b.label));
+    return Array.from(set).sort((a, b) => a.localeCompare(b, "nl"));
+}
+function skipRecurringBlockForDateRange(label, startDate, endDate) {
+    // Verwijdert alle voorkomens van een wekelijks blok met dit label, voor
+    // elke dag tussen startDate en endDate (incl.) \u2014 handig om in \u00e9\u00e9n keer
+    // een hele vakantie- of examenperiode vrij te maken. De wekelijkse regel
+    // zelf blijft bestaan voor alle weken BUITEN deze periode.
+    const lowerLabel = label.trim().toLowerCase();
+    const matchingRules = state.blockedSlots.filter(b => b.specificDate == null && b.label.trim().toLowerCase() === lowerLabel);
+    let count = 0;
+    let cursor = startDate;
+    while (cursor <= endDate) {
+        const wd = weekdayIndex(cursor);
+        matchingRules.filter(r => r.weekday === wd).forEach(r => {
+            const alreadyBlockedElsewhere = state.blockedSlots.some(b => b.specificDate === cursor && b.blockStart === r.blockStart);
+            if (!alreadyBlockedElsewhere) {
+                state.blockedSlots.push({ id: nextId(), weekday: null, specificDate: cursor, blockStart: r.blockStart, label: null, duration: null });
+                count++;
+            }
+        });
+        cursor = addDays(cursor, 1);
+    }
+    saveState();
+    return count;
+}
+function clearBlockException(weekday, blockStart) {
+    // Wanneer een wekelijkse regel opnieuw ingesteld wordt, ruimt dit ALLE
+    // eerder gemaakte "enkel deze week verwijderd"-uitzonderingen op voor
+    // deze weekdag+tijdstip, ongeacht de specifieke datum -- anders zouden
+    // andere weken die eerder ook vrijgemaakt waren (bv. de tweede week van
+    // een langere examenperiode) stiekem leeg blijven staan, ook al staat de
+    // wekelijkse regel er intussen gewoon weer (BUG-FIX: voorheen werd enkel
+    // de uitzondering van de \u00e9\u00e9n specifieke week opgeruimd die net bekeken werd).
+    state.blockedSlots = state.blockedSlots.filter(b => {
+        if (b.label !== null) return true; // geen uitzondering, gewoon laten staan
+        if (b.blockStart !== blockStart) return true;
+        if (b.specificDate == null) return true;
+        return weekdayIndex(b.specificDate) !== weekday;
+    });
+    saveState();
+}
+function getBlockedSlotForDay(dayIso, weekday, blockStart) {
+    const once = state.blockedSlots.find(b => b.specificDate === dayIso && b.blockStart === blockStart);
+    if (once) {
+        if (once.label === null) return null; // uitzondering: bewust NIET geblokkeerd op deze dag
+        return { label: once.label, isOnetime: true, duration: once.duration || 60 };
+    }
+    const weekly = state.blockedSlots.find(b => b.specificDate == null && b.weekday === weekday && b.blockStart === blockStart);
+    if (weekly) return { label: weekly.label, isOnetime: false, duration: weekly.duration || 60 };
+    return null;
+}
+function getBlockedMapForWeek(mondayIso) {
+    const map = {};
+    state.blockedSlots.filter(b => b.specificDate == null).forEach(b => {
+        map[`${b.weekday}|${b.blockStart}`] = { label: b.label, isOnetime: false, duration: b.duration || 60 };
+    });
+    const sundayIso = addDays(mondayIso, 6);
+    state.blockedSlots.filter(b => b.specificDate != null && b.specificDate >= mondayIso && b.specificDate <= sundayIso)
+        .forEach(b => {
+            const dayIndex = daysBetween(mondayIso, b.specificDate);
+            if (dayIndex >= 0 && dayIndex <= 6) {
+                const key = `${dayIndex}|${b.blockStart}`;
+                if (b.label === null) delete map[key]; // uitzondering: haal het wekelijkse blok voor deze dag weg
+                else map[key] = { label: b.label, isOnetime: true, duration: b.duration || 60 };
+            }
+        });
+    return map;
+}
+
+// ---------------------------------------------------------------------------
+// Spaced repetition (SM-2-achtig) + interleaved practice
+// ---------------------------------------------------------------------------
+function scheduleNextReview(topicId, quality) {
+    const top = state.topics.find(t => t.id === topicId);
+    if (!top) return;
+    let { reviewCount, intervalDays, ease } = top;
+    if (quality < 3) {
+        reviewCount = 0; intervalDays = 1;
+    } else {
+        reviewCount += 1;
+        if (reviewCount === 1) intervalDays = 1;
+        else if (reviewCount === 2) intervalDays = 3;
+        else if (reviewCount === 3) intervalDays = 7;
+        else intervalDays = Math.max(1, Math.round(intervalDays * ease));
+        ease = Math.max(1.3, ease + (0.1 - (5 - quality) * (0.08 + (5 - quality) * 0.02)));
+    }
+    const today = isoFromDate(new Date());
+    Object.assign(top, {
+        reviewCount, intervalDays, ease: Math.round(ease * 100) / 100,
+        lastReviewDate: today, nextReviewDate: addDays(today, intervalDays),
+    });
+    saveState();
+}
+function getDueTopicsInterleaved() {
+    const today = isoFromDate(new Date());
+    const due = state.topics.filter(t => t.nextReviewDate <= today)
+        .map(t => ({ ...t, subjectName: getSubjectName(t.subjectId) }))
+        .sort((a, b) => a.subjectName.localeCompare(b.subjectName) || a.nextReviewDate.localeCompare(b.nextReviewDate));
+    const bySubject = {};
+    due.forEach(t => { (bySubject[t.subjectName] = bySubject[t.subjectName] || []).push(t); });
+    const groups = Object.values(bySubject);
+    const interleaved = [];
+    for (let i = 0; ; i++) {
+        let added = false;
+        for (const g of groups) { if (i < g.length) { interleaved.push(g[i]); added = true; } }
+        if (!added) break;
+    }
+    return interleaved;
+}
+function getAllTopics() {
+    return state.topics.map(t => ({ ...t, subjectName: getSubjectName(t.subjectId) }))
+        .sort((a, b) => a.nextReviewDate.localeCompare(b.nextReviewDate));
+}
+
+// ---------------------------------------------------------------------------
+// Back-up (export/import als JSON)
+// ---------------------------------------------------------------------------
+function exportStateJson() {
+    return JSON.stringify(state, null, 2);
+}
+function importStateJson(jsonText) {
+    const parsed = JSON.parse(jsonText);
+    if (!parsed || !Array.isArray(parsed.subjects) || !Array.isArray(parsed.tasks)) {
+        throw new Error("Onherkenbaar back-upbestand.");
+    }
+    state = Object.assign(defaultState(), parsed);
+    saveState();
+}
+
+// exports voor de node-testrunner
+if (typeof module !== "undefined") {
+    module.exports = {
+        SUBJECT_COLOR_PALETTE, DONE_COLOR, BLOCK_COLOR, DAY_NAMES, QUADRANTS, TIME_BLOCKS, QUALITY_LABELS, getContrastTextColor,
+        FIXED_SUBJECT_COLORS, PINNED_SUBJECT_ORDER, MAIN_SUBJECT_PRIORITY_ORDER, colorDistance,
+        isoFromDate, dateFromIso, addDays, weekStart, weekdayIndex, daysBetween,
+        get state() { return state; }, set state(v) { state = v; },
+        setStorageBackend,
+        loadState, saveState, defaultState,
+        addSubject, getSubjects, getSubjectName, getSubjectColor, renameSubject, deleteSubject, reassignSubjectColors,
+        addTask, getTask, getTasks, updateTask, deleteTask, planTask, unplanTask,
+        getTaskRemainingMinutes, addSession, removeSession, updateSession, setTaskSessions,
+        getPlannedTasksBetween, getAllPlannedSessions, addActualMinutes, markTaskDone, toggleTaskDone, toggleSessionDone,
+        getCompletedTasksBetween, deadlineUrgency, migrateTaskSessions, migrateSessionDoneStatus, guessSubjectIcon, ensureDefaultSubjects, isTaskOpenForMatrix, reorderSessionsInSlot,
+        getBigUnplannedTasksNeedingAttention, BIG_TASK_REMINDER_THRESHOLD_MIN,
+        getTaskView, setTaskView,
+        saveUndoSnapshot, canUndo, undoLastAction, clearUndoSnapshot,
+        getCompletionDateSet, getCurrentStreak, getLongestStreak,
+        addRecurringBlock, addOnetimeBlock, removeRecurringBlock, removeOnetimeBlock, skipRecurringBlockForDate, clearBlockException, removeBlockedRange,
+        getRecurringBlockLabels, skipRecurringBlockForDateRange,
+        getBlockedSlotForDay, getBlockedMapForWeek,
+        scheduleNextReview, getDueTopicsInterleaved, getAllTopics,
+        exportStateJson, importStateJson,
+    };
+}
+
+</script>
+<script id="ui-layer">
+// ============================================================================
+// Studieplanner — UI-laag (rendering + interacties, bovenop planner_core.js)
+// ============================================================================
+
+function escapeHtml(str) {
+    return String(str == null ? "" : str).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+function fmtDate(iso) {
+    if (!iso) return "-";
+    const [y, m, d] = iso.split("-");
+    return `${d}/${m}/${y}`;
+}
+function showToast(msg, options) {
+    const root = document.getElementById("toastRoot");
+    const el = document.createElement("div");
+    el.className = "toast";
+    const msgSpan = document.createElement("span");
+    msgSpan.textContent = msg;
+    el.appendChild(msgSpan);
+    let dismissed = false;
+    const dismiss = () => { if (dismissed) return; dismissed = true; el.classList.remove("show"); setTimeout(() => el.remove(), 300); };
+    if (options && options.actionLabel && options.onAction) {
+        const btn = document.createElement("button");
+        btn.className = "toast-action";
+        btn.textContent = options.actionLabel;
+        btn.addEventListener("click", () => { dismiss(); options.onAction(); });
+        el.appendChild(btn);
+    }
+    root.appendChild(el);
+    requestAnimationFrame(() => el.classList.add("show"));
+    setTimeout(dismiss, options && options.actionLabel ? 6000 : 2200);
+}
+
+// ---------------------------------------------------------------------------
+// Modal-infrastructuur (stapelbaar: een modal geopend vanuit een andere modal
+// — bv. de timer vanuit het bewerkingsvenster — sluit de onderliggende NIET)
+// ---------------------------------------------------------------------------
+const _modalStack = []; // [{backdrop, cleanup}]
+function escCloseHandler(e) { if (e.key === "Escape") closeModal(); }
+
+function openModal(innerHtml, { onMount, onClose } = {}) {
+    const backdrop = document.createElement("div");
+    backdrop.className = "modal-backdrop";
+    backdrop.style.zIndex = String(1000 + _modalStack.length);
+    backdrop.innerHTML = `<div class="modal" role="dialog" aria-modal="true">${innerHtml}</div>`;
+    backdrop.addEventListener("mousedown", (e) => { if (e.target === backdrop) closeModal(); });
+    document.getElementById("modalRoot").appendChild(backdrop);
+    _modalStack.push({ backdrop, cleanup: onClose || null });
+    if (_modalStack.length === 1) document.addEventListener("keydown", escCloseHandler);
+    if (onMount) onMount(backdrop.querySelector(".modal"));
+}
+function closeModal() {
+    const top = _modalStack.pop();
+    if (!top) return;
+    top.backdrop.remove();
+    if (top.cleanup) top.cleanup();
+    if (_modalStack.length === 0) document.removeEventListener("keydown", escCloseHandler);
+}
+function closeAllModals() { while (_modalStack.length) closeModal(); }
+
+// ---------------------------------------------------------------------------
+// Tabbladen
+// ---------------------------------------------------------------------------
+const TABS = [
+    { id: "subjects", label: "Vakken & Taken" },
+    { id: "today", label: "Vandaag" },
+    { id: "planning", label: "Plannen" },
+    { id: "list", label: "Lijst" },
+    { id: "completed", label: "Deze week gedaan" },
+    { id: "review", label: "Herhalen" },
+];
+let activeTab = "subjects";
+let planningMonday = weekStart(isoFromDate(new Date()));
+let completedMonday = weekStart(isoFromDate(new Date()));
+let listSearchQuery = "";
+
+function setupTabs() {
+    const nav = document.getElementById("tabNav");
+    nav.innerHTML = TABS.map(t => `<button class="tab-btn" data-tab="${t.id}">${t.label}</button>`).join("");
+    nav.addEventListener("click", (e) => {
+        const btn = e.target.closest(".tab-btn");
+        if (!btn) return;
+        switchTab(btn.dataset.tab);
+    });
+    switchTab(activeTab);
+}
+function switchTab(tabId) {
+    activeTab = tabId;
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.toggle("active", b.dataset.tab === tabId));
+    document.querySelectorAll(".tab-panel").forEach(p => p.classList.toggle("active", p.id === `tab-${tabId}`));
+    renderActiveTab();
+}
+function renderActiveTab() {
+    switch (activeTab) {
+        case "subjects": renderSubjectsTab(); break;
+        case "today": renderTodayTab(); break;
+        case "planning": renderPlanningTab(); break;
+        case "list": renderListTab(); break;
+        case "completed": renderCompletedTab(); break;
+        case "review": renderReviewTab(); break;
+    }
+}
+function refreshAll() { renderActiveTab(); }
+
+// ---------------------------------------------------------------------------
+// Tab: Vakken & Taken
+// ---------------------------------------------------------------------------
+// Kleine vlag-SVG's (geen emoji: die renderen op sommige systemen enkel als
+// losse letters i.p.v. een echte vlag). Puur CSS/SVG, dus overal identiek.
+const LANG_FLAG_SVG = {
+    NL: `<svg viewBox="0 0 20 14" width="20" height="14"><rect y="0" width="20" height="4.67" fill="#AE1C28"/><rect y="4.67" width="20" height="4.67" fill="#FFFFFF"/><rect y="9.33" width="20" height="4.67" fill="#21468B"/></svg>`,
+    FR: `<svg viewBox="0 0 20 14" width="20" height="14"><rect x="0" width="6.67" height="14" fill="#0055A4"/><rect x="6.67" width="6.67" height="14" fill="#FFFFFF"/><rect x="13.33" width="6.67" height="14" fill="#EF4135"/></svg>`,
+    DE: `<svg viewBox="0 0 20 14" width="20" height="14"><rect y="0" width="20" height="4.67" fill="#000000"/><rect y="4.67" width="20" height="4.67" fill="#DD0000"/><rect y="9.33" width="20" height="4.67" fill="#FFCE00"/></svg>`,
+    ES: `<svg viewBox="0 0 20 14" width="20" height="14"><rect y="0" width="20" height="3.5" fill="#AA151B"/><rect y="3.5" width="20" height="7" fill="#F1BF00"/><rect y="10.5" width="20" height="3.5" fill="#AA151B"/></svg>`,
+    IT: `<svg viewBox="0 0 20 14" width="20" height="14"><rect x="0" width="6.67" height="14" fill="#009246"/><rect x="6.67" width="6.67" height="14" fill="#FFFFFF"/><rect x="13.33" width="6.67" height="14" fill="#CE2B37"/></svg>`,
+    EN: `<svg viewBox="0 0 20 14" width="20" height="14"><rect width="20" height="14" fill="#012169"/><path d="M0,0 L20,14 M20,0 L0,14" stroke="#FFFFFF" stroke-width="2.8"/><path d="M0,0 L20,14 M20,0 L0,14" stroke="#C8102E" stroke-width="1.4"/><path d="M10,0 V14 M0,7 H20" stroke="#FFFFFF" stroke-width="4.6"/><path d="M10,0 V14 M0,7 H20" stroke="#C8102E" stroke-width="2.6"/></svg>`,
+};
+
+function renderSubjectsTab() {
+    const el = document.getElementById("tab-subjects");
+    const allSubjects = getSubjects();
+    // Vaste volgorde vooraan: hoofdvakken (indien aangemaakt), dan Pauze, dan Andere.
+    const pinnedSubjects = PINNED_SUBJECT_ORDER
+        .map(name => allSubjects.find(s => s.name.trim().toLowerCase() === name))
+        .filter(Boolean);
+    const otherSubjectsAlphabetical = allSubjects.filter(s => !pinnedSubjects.includes(s));
+    const priorityFirst = MAIN_SUBJECT_PRIORITY_ORDER
+        .map(name => otherSubjectsAlphabetical.find(s => s.name.trim().toLowerCase() === name))
+        .filter(Boolean);
+    const otherSubjects = [...priorityFirst, ...otherSubjectsAlphabetical.filter(s => !priorityFirst.includes(s))];
+
+    const renderTile = (s) => {
+        const isPause = s.name.trim().toLowerCase() === "pauze";
+        const isOther = s.name.trim().toLowerCase() === "andere";
+        let icon = "";
+        if (isPause) {
+            icon = "\u23F8\uFE0F ";
+        } else {
+            const guess = guessSubjectIcon(s.name);
+            if (guess) icon = guess.type === "lang" ? `<span class="lang-flag">${LANG_FLAG_SVG[guess.value]}</span> ` : `${guess.value} `;
+        }
+        return `
+          <div class="subject-tile">
+            <button class="subject-btn ${isPause ? "is-pause-task" : ""} ${isOther ? "is-other-task" : ""}" style="background:${s.color}; color:${getContrastTextColor(s.color)}" data-subject-id="${s.id}">${icon}${escapeHtml(s.name)}</button>
+            <button class="subject-edit-btn" data-edit-subject-id="${s.id}" title="Naam wijzigen of verwijderen">\u2699</button>
+          </div>`;
+    };
+
+    el.innerHTML = `
+      <p class="quote-line">\u201cEen tocht van duizend mijl begint met een enkele stap.\u201d <span class="quote-author">\u2014 Lao Tzu, Tao Te Ching</span></p>
+      <div class="subject-toolbar">
+        <div class="field"><label class="field-label">Nieuw vak</label><input type="text" id="newSubjectName" placeholder="bv. Wiskunde"></div>
+        <button class="btn btn-primary" id="addSubjectBtn">Vak toevoegen</button>
+        <button class="btn" id="exportBtn">\u{1F4BE} Back-up maken</button>
+        <button class="btn" id="importBtn">\u{1F4C2} Back-up laden</button>
+        <input type="file" id="importFileInput" accept="application/json" style="display:none">
+      </div>
+      <p class="hint">Klik op een vak om taken/leerstof in te voeren of te bekijken. Klik op \u2699 om de naam te wijzigen of het vak te verwijderen.</p>
+      <div class="subjects-layout">
+        ${pinnedSubjects.length ? `<div class="pinned-subjects-col">${pinnedSubjects.map(renderTile).join("")}</div>` : ""}
+        <div class="subject-grid">
+          ${otherSubjects.length ? otherSubjects.map(renderTile).join("")
+              : (pinnedSubjects.length ? "" : '<div class="empty-state">Nog geen vakken toegevoegd.</div>')}
+        </div>
+      </div>
+    `;
+    const nameInput = el.querySelector("#newSubjectName");
+    el.querySelector("#addSubjectBtn").addEventListener("click", () => handleAddSubject(nameInput));
+    nameInput.addEventListener("keydown", e => { if (e.key === "Enter") handleAddSubject(nameInput); });
+    el.querySelectorAll(".subject-btn").forEach(b => b.addEventListener("click", () => openSubjectModal(Number(b.dataset.subjectId))));
+    el.querySelectorAll("[data-edit-subject-id]").forEach(b => b.addEventListener("click", (e) => {
+        e.stopPropagation();
+        openSubjectEditModal(Number(b.dataset.editSubjectId));
+    }));
+    el.querySelector("#exportBtn").addEventListener("click", handleExport);
+    el.querySelector("#importBtn").addEventListener("click", () => el.querySelector("#importFileInput").click());
+    el.querySelector("#importFileInput").addEventListener("change", handleImportFile);
+}
+function openSubjectEditModal(subjectId, onRenamed) {
+    const subject = state.subjects.find(s => s.id === subjectId);
+    if (!subject) return;
+    const taskCount = getTasks({ subjectId }).length;
+    const isProtected = ["pauze", "andere"].includes(subject.name.trim().toLowerCase());
+    openModal(`
+      <h2>Vak bewerken</h2>
+      <div class="field"><label class="field-label">Naam</label><input type="text" id="renameSubjectInput" value="${escapeHtml(subject.name)}"></div>
+      <div class="modal-actions">
+        <button class="btn btn-primary" id="saveRenameBtn">Opslaan</button>
+        ${isProtected ? "" : '<button class="btn btn-danger" id="deleteSubjectBtn">Vak verwijderen</button>'}
+        <button class="btn" data-close>Annuleren</button>
+      </div>
+      ${isProtected ? '<p class="hint" style="margin-top:10px;">Dit is een standaardvak en kan niet verwijderd worden \u2014 je kan het wel hernoemen.</p>' : ""}
+      ${!isProtected && taskCount ? `<p class="hint" style="margin-top:10px;">Verwijderen wist ook alle ${taskCount} taken/leerstof van dit vak.</p>` : ""}
+    `, { onMount: (modal) => {
+        const input = modal.querySelector("#renameSubjectInput");
+        input.focus(); input.select();
+        modal.querySelector("[data-close]").addEventListener("click", closeModal);
+        modal.querySelector("#saveRenameBtn").addEventListener("click", () => {
+            try {
+                renameSubject(subjectId, input.value);
+                closeModal(); refreshAll(); showToast("Naam gewijzigd");
+                if (onRenamed) onRenamed();
+            } catch (e) { alert(e.message); }
+        });
+        input.addEventListener("keydown", e => { if (e.key === "Enter") modal.querySelector("#saveRenameBtn").click(); });
+        const deleteBtn = modal.querySelector("#deleteSubjectBtn");
+        if (deleteBtn) deleteBtn.addEventListener("click", () => {
+            if (confirm(`'${subject.name}' en alle bijhorende taken definitief verwijderen?`)) {
+                saveUndoSnapshot();
+                deleteSubject(subjectId);
+                closeAllModals(); // ook een eventueel onderliggend vak-venster heeft geen zin meer
+                refreshAll();
+                showToast("Vak verwijderd", { actionLabel: "Ongedaan maken", onAction: () => { undoLastAction(); refreshAll(); showToast("Vak hersteld"); } });
+            }
+        });
+    }});
+}
+function handleAddSubject(input) {
+    try {
+        addSubject(input.value);
+        input.value = "";
+        renderSubjectsTab();
+        showToast("Vak toegevoegd");
+    } catch (e) { alert(e.message); }
+}
+function handleExport() {
+    const json = exportStateJson();
+    const blob = new Blob([json], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url; a.download = "studieplanner_backup.json";
+    document.body.appendChild(a); a.click(); a.remove();
+    URL.revokeObjectURL(url);
+    showToast("Back-up gedownload");
+}
+function handleImportFile(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+        try {
+            importStateJson(ev.target.result);
+            showToast("Back-up geladen");
+            refreshAll();
+        } catch (err) { alert("Kon back-up niet laden: " + err.message); }
+    };
+    reader.readAsText(file);
+    e.target.value = "";
+}
+
+function openSubjectModal(subjectId) {
+    const subject = state.subjects.find(s => s.id === subjectId);
+    if (!subject) return;
+    openModal(`
+      <h2 style="display:flex; align-items:center; gap:8px;"><span id="subjectModalTitle">${escapeHtml(subject.name)}</span>
+        <button class="btn btn-sm" id="renameFromModalBtn" title="Naam wijzigen" style="font-weight:400;">\u270F\uFE0F</button>
+      </h2>
+      <div id="subjectTaskFormWrap"></div>
+      <h3 class="section-title" style="margin-top:18px;">Taken / leerstof</h3>
+      <div id="subjectTaskListWrap"></div>
+      <div class="modal-actions"><button class="btn" data-close>Sluiten</button></div>
+    `, { onMount: (modal) => {
+        renderTaskFormInline(modal.querySelector("#subjectTaskFormWrap"), subjectId, () => {
+            renderSubjectTaskList(modal.querySelector("#subjectTaskListWrap"), subjectId);
+        });
+        renderSubjectTaskList(modal.querySelector("#subjectTaskListWrap"), subjectId);
+        modal.querySelector("[data-close]").addEventListener("click", closeModal);
+        modal.querySelector("#renameFromModalBtn").addEventListener("click", () => {
+            openSubjectEditModal(subjectId, () => {
+                const titleEl = modal.querySelector("#subjectModalTitle");
+                if (titleEl) titleEl.textContent = getSubjectName(subjectId);
+            });
+        });
+    }});
+}
+
+function renderTaskFormInline(container, subjectId, onAdded) {
+    container.innerHTML = `
+      <div class="field"><label class="field-label">Titel</label><input type="text" id="taskTitle" placeholder="bv. Hoofdstuk 3, bladzijde 12-18 lezen"></div>
+      <div class="field"><label class="field-label">Omschrijving</label><textarea id="taskDesc"></textarea></div>
+      <div class="field-row">
+        <div class="field"><label class="field-label">Deadline</label><input type="date" id="taskDeadline"></div>
+        <div class="field"><label class="field-label">Geschatte tijd (min)</label><input type="number" id="taskMinutes" value="30" min="5" step="5"></div>
+      </div>
+      <div class="field-row">
+        <label class="checkbox-row"><input type="checkbox" id="taskUrgent"> Urgent</label>
+        <label class="checkbox-row"><input type="checkbox" id="taskImportant"> Belangrijk</label>
+        <label class="checkbox-row"><input type="checkbox" id="taskStudy"> Leerstof (te herhalen)</label>
+      </div>
+      <button class="btn btn-primary" id="addTaskBtn">Toevoegen</button>
+    `;
+    container.querySelector("#addTaskBtn").addEventListener("click", () => {
+        const title = container.querySelector("#taskTitle").value.trim();
+        if (!title) { alert("Geef de taak een titel."); return; }
+        addTask(
+            subjectId, title, container.querySelector("#taskDesc").value,
+            container.querySelector("#taskDeadline").value || null,
+            container.querySelector("#taskUrgent").checked,
+            container.querySelector("#taskImportant").checked,
+            container.querySelector("#taskStudy").checked,
+            Number(container.querySelector("#taskMinutes").value) || 30
+        );
+        renderTaskFormInline(container, subjectId, onAdded);
+        onAdded();
+        showToast("Taak toegevoegd");
+    });
+}
+
+function renderSubjectTaskList(container, subjectId) {
+    const tasks = getTasks({ subjectId });
+    if (!tasks.length) { container.innerHTML = '<div class="empty-state">Nog geen taken.</div>'; return; }
+    container.innerHTML = `
+      <div class="table-scroll">
+      <table class="data-table">
+        <thead><tr><th>Titel</th><th>Deadline</th><th>Kenmerken</th><th>Werkelijke tijd</th><th>Status</th><th></th></tr></thead>
+        <tbody>
+          ${tasks.map(t => {
+              const urgency = t.status !== "done" ? deadlineUrgency(t.deadline) : null;
+              const rowClass = urgency === "overdue" ? "row-overdue" : urgency === "soon" ? "row-soon" : (t.status === "done" ? "row-done" : "");
+              const flags = [
+                  t.urgent ? "Urgent" : null,
+                  t.important ? "Belangrijk" : null,
+                  t.isStudy ? "Leerstof" : null,
+              ].filter(Boolean).join(", ") || "\u2014";
+              return `<tr class="${rowClass}">
+                <td>${escapeHtml(t.title)}</td><td>${t.deadline ? fmtDate(t.deadline) : "-"}</td>
+                <td style="font-size:11.5px;">${flags}</td>
+                <td>${t.actualMinutes ? t.actualMinutes + " min" : "\u2014"}</td>
+                <td>${t.status}</td>
+                <td style="white-space:nowrap;">
+                  <button class="btn btn-sm" data-action="edit-task" data-id="${t.id}" title="Bewerken (o.a. werkelijke tijd invullen of de timer starten)">\u270F\uFE0F</button>
+                  <button class="btn btn-sm" data-action="toggle-done" data-id="${t.id}" title="${t.status === "done" ? "Heropenen" : "Klaar markeren"}">${t.status === "done" ? "\u21A9" : "\u2713"}</button>
+                  <button class="btn btn-sm btn-danger" data-action="delete-task" data-id="${t.id}" title="Verwijderen">\u2715</button>
+                </td>
+              </tr>`;
+          }).join("")}
+        </tbody>
+      </table>
+      </div>
+      <p class="hint" style="margin-top:8px;">Tip: klik op \u270F\uFE0F om de werkelijk bestede tijd in te vullen (bv. als je buiten het ingeplande moment gestudeerd hebt) of de studietimer te starten.</p>
+    `;
+    container.querySelectorAll('[data-action="edit-task"]').forEach(b => b.addEventListener("click", () => {
+        openTaskEditModal(Number(b.dataset.id), () => renderSubjectTaskList(container, subjectId));
+    }));
+    container.querySelectorAll('[data-action="toggle-done"]').forEach(b => b.addEventListener("click", () => {
+        toggleTaskDone(Number(b.dataset.id));
+        renderSubjectTaskList(container, subjectId);
+        showToast("Bijgewerkt");
+    }));
+    container.querySelectorAll('[data-action="delete-task"]').forEach(b => b.addEventListener("click", () => {
+        saveUndoSnapshot();
+        deleteTask(Number(b.dataset.id));
+        renderSubjectTaskList(container, subjectId);
+        showToast("Taak verwijderd", { actionLabel: "Ongedaan maken", onAction: () => { undoLastAction(); renderSubjectTaskList(container, subjectId); refreshAll(); showToast("Taak hersteld"); } });
+    }));
+}
+
+// ---------------------------------------------------------------------------
+// Tab: Vandaag
+// ---------------------------------------------------------------------------
+const DAY_NAMES_FULL = ["Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrijdag", "Zaterdag", "Zondag"];
+
+function renderStreakLine(todayIso) {
+    const { streak, anchoredToday } = getCurrentStreak(todayIso);
+    const longest = getLongestStreak();
+    const dayWord = (n) => (n === 1 ? "dag" : "dagen");
+    if (streak === 0) {
+        if (longest === 0) {
+            return `<span class="streak-neutral">Nog geen studiereeks \u2014 rond vandaag je eerste taak af om te beginnen! \u{1F3AF}</span>`;
+        }
+        return `<span class="streak-neutral">Reeks onderbroken (beste reeks ooit: ${longest} ${dayWord(longest)}) \u2014 begin vandaag opnieuw!</span>`;
+    }
+    if (anchoredToday) {
+        const record = streak >= longest && longest > 1 ? " \u2014 nieuw record!" : "";
+        return `<span class="streak-active">\u{1F525} ${streak} ${dayWord(streak)} op rij!${record}</span>`;
+    }
+    return `<span class="streak-warning">\u{1F525} ${streak} ${dayWord(streak)} op rij \u2014 rond vandaag nog iets af om je reeks te behouden!</span>`;
+}
+
+function renderBigTaskReminder() {
+    const tasks = getBigUnplannedTasksNeedingAttention();
+    if (!tasks.length) return "";
+    return `<div class="big-task-reminder">
+      ${tasks.map(t => {
+          const urg = deadlineUrgency(t.deadline);
+          const urgLabel = urg === "overdue" ? "is al verlopen" : "komt dichtbij";
+          const hours = Math.round((t.remainingMinutes / 60) * 10) / 10;
+          return `<p class="reminder-line">\u23F0 <strong>${escapeHtml(getSubjectName(t.subjectId))}: ${escapeHtml(t.title)}</strong> \u2014 nog ${hours}u niet ingepland, en de deadline (${fmtDate(t.deadline)}) ${urgLabel}. Plan er alvast een stuk van in.</p>`;
+      }).join("")}
+    </div>`;
+}
+
+function renderTodayTab() {
+    const el = document.getElementById("tab-today");
+    const today = isoFromDate(new Date());
+    const weekday = weekdayIndex(today);
+    const monday = weekStart(today);
+    const blockedMap = getBlockedMapForWeek(monday);
+
+    const entries = [];
+    TIME_BLOCKS.forEach(b => {
+        const entry = blockedMap[`${weekday}|${b.start}`];
+        const isSchool = entry && entry.label.trim().toLowerCase() === "school";
+        if (entry && !isSchool) entries.push({ time: b.start, type: "blok", label: entry.label, isOnetime: entry.isOnetime, duration: entry.duration });
+    });
+    getPlannedTasksBetween(today, today).forEach(t => {
+        const partLabel = t.sessionCount > 1 ? ` \u00b7 deel` : "";
+        entries.push({ time: t.time || "??:??", type: "taak", label: getSubjectName(t.subjectId), taskId: t.taskId, sessionId: t.sessionId, sessionDone: t.sessionDone, title: t.title + partLabel, est: t.minutes });
+    });
+    entries.sort((a, b) => a.time.localeCompare(b.time));
+
+    let doneCount = 0, taskCount = 0;
+    entries.forEach(e => { if (e.type === "taak") { taskCount++; if (e.sessionDone) doneCount++; } });
+
+    el.innerHTML = `
+      <h2>Vandaag \u2014 ${DAY_NAMES_FULL[weekday]} ${fmtDate(today)}</h2>
+      <div class="streak-line">${renderStreakLine(today)}</div>
+      <div class="progress-row">
+        <div class="progress-track"><div class="progress-fill" style="width:${taskCount ? (doneCount / taskCount * 100) : 0}%"></div></div>
+        <div class="progress-label">${taskCount ? `${doneCount}/${taskCount} taken afgewerkt vandaag` : "Nog geen taken gepland vandaag"}</div>
+      </div>
+      ${taskCount > 0 && doneCount === taskCount ? '<p class="all-done-banner">\u{1F389} Proficiat, je hebt alle taken voor vandaag afgewerkt.</p>' : ""}
+      ${renderBigTaskReminder()}
+      <h3 class="section-title">Rooster van vandaag</h3>
+      <div class="table-scroll" style="margin-bottom:22px;">
+      <table class="data-table">
+        <thead><tr><th>Tijd</th><th>Type</th><th>Vak/blok</th><th>Taak</th><th>Status</th><th></th></tr></thead>
+        <tbody>
+          ${entries.length ? entries.map(e => {
+              if (e.type === "blok") {
+                  const isSchool = e.label.trim().toLowerCase() === "school";
+                  const icon = isSchool ? "\u{1F3EB}" : (e.isOnetime ? "\u{1F4CC}" : "\u{1F512}");
+                  return `<tr style="background:var(--surface-2);"><td>${e.time}</td><td>${icon}</td><td>${escapeHtml(e.label)}${e.duration && e.duration < 60 ? ` (${e.duration}m)` : ""}</td><td colspan="2">\u2014</td><td></td></tr>`;
+              }
+              const rowClass = e.sessionDone ? "row-done" : "";
+              return `<tr class="${rowClass}">
+                <td>${e.time}</td><td>taak</td><td>${escapeHtml(e.label)}</td>
+                <td>${escapeHtml(e.title)} (${e.est}m)</td><td>${e.sessionDone ? "klaar" : "gepland"}</td>
+                <td>
+                  <button class="btn btn-sm" data-action="toggle-session" data-task-id="${e.taskId}" data-session-id="${e.sessionId}">${e.sessionDone ? "Heropen" : "Klaar"}</button>
+                  <button class="btn btn-sm" data-action="timer" data-id="${e.taskId}">\u23F1</button>
+                </td>
+              </tr>`;
+          }).join("") : '<tr><td colspan="6" class="empty-state">Niets gepland vandaag.</td></tr>'}
+        </tbody>
+      </table>
+      </div>
+      <h3 class="section-title">Vandaag te herhalen leerstof</h3>
+      <div id="todayReviewWrap"></div>
+    `;
+    el.querySelectorAll('[data-action="toggle-session"]').forEach(b => b.addEventListener("click", () => {
+        toggleSessionDone(Number(b.dataset.taskId), Number(b.dataset.sessionId)); refreshAll(); showToast("Bijgewerkt");
+    }));
+    el.querySelectorAll('[data-action="timer"]').forEach(b => b.addEventListener("click", () => {
+        const task = getTask(Number(b.dataset.id));
+        if (task) openTimerModal(task, refreshAll);
+    }));
+    renderReviewList(el.querySelector("#todayReviewWrap"));
+}
+
+function renderReviewList(container) {
+    const due = getDueTopicsInterleaved();
+    if (!due.length) { container.innerHTML = '<div class="empty-state">Niets te herhalen.</div>'; return; }
+    container.innerHTML = `
+      <table class="data-table">
+        <thead><tr><th>Vak</th><th>Onderwerp</th><th>Herhaling nr</th><th></th></tr></thead>
+        <tbody>${due.map(t => `<tr data-topic-row="${t.id}" style="cursor:pointer;">
+          <td>${escapeHtml(t.subjectName)}</td><td>${escapeHtml(t.name)}</td><td>${t.reviewCount + 1}</td>
+          <td><span class="hint">selecteer om te beoordelen</span></td></tr>`).join("")}
+        </tbody>
+      </table>
+      <div id="reviewSelectedWrap" class="hint" style="margin-top:8px;">Klik op een rij om te beoordelen.</div>
+    `;
+    container.querySelectorAll("tr[data-topic-row]").forEach(row => {
+        row.addEventListener("click", () => {
+            container.querySelectorAll("tr[data-topic-row]").forEach(r => { r.style.outline = r === row ? "2px solid var(--primary)" : "none"; });
+            renderQualityButtons(container.querySelector("#reviewSelectedWrap"), Number(row.dataset.topicRow));
+        });
+    });
+}
+function renderQualityButtons(container, topicId) {
+    container.innerHTML = `
+      <div style="font-weight:600; margin-bottom:4px;">Hoe goed kende je dit nog?</div>
+      <div class="quality-row">${QUALITY_LABELS.map(q => `<button class="btn btn-sm" data-quality="${q.q}">${q.label}</button>`).join("")}</div>
+    `;
+    container.querySelectorAll("[data-quality]").forEach(b => b.addEventListener("click", () => {
+        scheduleNextReview(topicId, Number(b.dataset.quality));
+        showToast("Volgende herhaling ingepland");
+        refreshAll();
+    }));
+}
+
+// ---------------------------------------------------------------------------
+// Tab: Plannen (matrix + kalender)
+// ---------------------------------------------------------------------------
+function renderPlanningTab() {
+    const el = document.getElementById("tab-planning");
+    const openTasks = getTasks().filter(isTaskOpenForMatrix);
+    const sunday = addDays(planningMonday, 6);
+    const todayIso = isoFromDate(new Date());
+    const blockedMap = getBlockedMapForWeek(planningMonday);
+    const plannedRows = getPlannedTasksBetween(planningMonday, sunday);
+
+    const currentView = getTaskView();
+    el.innerHTML = `
+      <div class="planning-header-row">
+        <h2 style="margin:0;">Plannen</h2>
+        <div class="planning-header-buttons">
+          <div class="view-toggle" id="taskViewToggle" title="Weergave van de openstaande taken">
+            <button class="view-toggle-btn ${currentView === "matrix" ? "active" : ""}" data-view="matrix">\u{1F4CA} Matrix</button>
+            <button class="view-toggle-btn ${currentView === "list" ? "active" : ""}" data-view="list">\u{1F4CB} Lijst</button>
+          </div>
+          <button class="btn btn-sm" id="freePeriodBtn" title="Vakantie of examens? Maak in \u00e9\u00e9n keer een hele periode vrij">\u{1F334} Periode vrijmaken</button>
+          <button class="btn btn-sm" id="planningInfoBtn" title="Hoe werkt dit?">\u2139\uFE0F Hoe werkt dit?</button>
+        </div>
+      </div>
+      <div class="planning-layout">
+        <div id="matrixWrap"></div>
+        <div id="calendarWrap"></div>
+      </div>
+    `;
+    if (currentView === "list") renderTaskListView(el.querySelector("#matrixWrap"), openTasks);
+    else renderMatrix(el.querySelector("#matrixWrap"), openTasks);
+    renderCalendar(el.querySelector("#calendarWrap"), blockedMap, plannedRows, todayIso);
+    el.querySelector("#planningInfoBtn").addEventListener("click", openPlanningInfoModal);
+    el.querySelector("#freePeriodBtn").addEventListener("click", openFreePeriodModal);
+    el.querySelectorAll(".view-toggle-btn").forEach(btn => {
+        btn.addEventListener("click", () => { setTaskView(btn.dataset.view); renderPlanningTab(); });
+    });
+}
+
+function openFreePeriodModal() {
+    const labels = getRecurringBlockLabels();
+    if (!labels.length) {
+        alert("Er zijn nog geen wekelijks terugkerende blokken (zoals School) om te verwijderen.");
+        return;
+    }
+    const todayIso = isoFromDate(new Date());
+    openModal(`
+      <h2>Periode vrijmaken</h2>
+      <p class="hint">Handig voor vakanties of examenperiodes: verwijdert een wekelijks blok (bv. School) voor alle dagen binnen de gekozen periode in \u00e9\u00e9n keer. Buiten die periode blijft het blok gewoon wekelijks terugkomen.</p>
+      <div class="field">
+        <label class="field-label">Welk blok?</label>
+        <select id="freePeriodLabel">${labels.map(l => `<option value="${escapeHtml(l)}">${escapeHtml(l)}</option>`).join("")}</select>
+      </div>
+      <div class="field-row">
+        <div class="field"><label class="field-label">Van</label><input type="date" id="freePeriodStart" value="${todayIso}"></div>
+        <div class="field"><label class="field-label">Tot en met</label><input type="date" id="freePeriodEnd" value="${todayIso}"></div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-primary" id="freePeriodApplyBtn">Verwijderen voor deze periode</button>
+        <button class="btn" data-close>Annuleren</button>
+      </div>
+    `, { onMount: (modal) => {
+        modal.querySelector("[data-close]").addEventListener("click", closeModal);
+        modal.querySelector("#freePeriodApplyBtn").addEventListener("click", () => {
+            const label = modal.querySelector("#freePeriodLabel").value;
+            const start = modal.querySelector("#freePeriodStart").value;
+            const end = modal.querySelector("#freePeriodEnd").value;
+            if (!start || !end) { alert("Kies een start- en einddatum."); return; }
+            if (end < start) { alert("De einddatum ligt v\u00f3\u00f3r de startdatum."); return; }
+            saveUndoSnapshot();
+            const count = skipRecurringBlockForDateRange(label, start, end);
+            closeModal(); refreshAll();
+            showToast(`${count} tijdslot(en) van '${label}' verwijderd voor deze periode`, { actionLabel: "Ongedaan maken", onAction: () => { undoLastAction(); refreshAll(); showToast("Hersteld"); } });
+        });
+    }});
+}
+
+function openPlanningInfoModal() {
+    openModal(`
+      <h2>Hoe werkt de planning?</h2>
+      <p class="hint">Sleep een taak van de matrix naar een uur in de kalender om ze in te plannen. Is de taak nog niet volledig ingepland, dan blijft ze (met de resterende tijd) in de matrix staan zodat je de rest naar een ander moment kan slepen \u2014 zo splits je bv. 60 minuten op in 2x 30 minuten.</p>
+      <p class="hint">Sleep een geplande taak naar een andere cel om ze te verplaatsen, of terug naar de matrix om die ene sessie los te maken. Staan er meerdere taken in hetzelfde uur? Sleep een kaartje naar boven of onder een ander kaartje in diezelfde cel om de volgorde te wijzigen.</p>
+      <p class="hint">Rechtsklik op een taak (in de matrix \u00f3f de kalender) = bewerken: titel, deadline, sessies beheren, werkelijke tijd invullen, timer starten, of verwijderen.</p>
+      <p class="hint">Dubbelklik op een taak in de kalender = groen/klaar markeren.</p>
+      <p class="hint"><strong>Klik-en-sleep over meerdere lege uren</strong> = die in \u00e9\u00e9n keer blokkeren (handig voor schooltijd), met de optie om dat meteen op meerdere dagen toe te passen. Op een touchscreen: houd het eerste uur even ingedrukt en sleep dan verder (net als bestanden selecteren), of tik gewoon kort op het eerste en daarna het laatste uur.</p>
+      <p class="hint">Rechtsklik op \u00e9\u00e9n leeg vak = dat ene tijdstip snel blokkeren/bewerken.</p>
+      <p class="hint">Dubbelklik op een geblokkeerd vak = verwijdert het enkel voor deze week (andere weken blijven staan); wil je een wekelijks blok helemaal weg, gebruik dan rechtsklik \u2192 "Verwijder voor alle weken".</p>
+      <p class="hint">Werkelijke studeertijd invullen kan ook via het \u270F\uFE0F-icoon naast een taak bij "Vakken & Taken" \u2014 handig als je buiten het ingeplande moment gestudeerd hebt.</p>
+      <p class="legend">Legende: \u2713 = klaar &middot; \u{1F501} = herhaalt wekelijks &middot; \u{1F3EB} = School &middot; \u{1F512} = (ander) wekelijks geblokkeerd &middot; \u{1F4CC} = eenmalig geblokkeerd &middot; rood = deadline verlopen &middot; \u23F0 = deadline binnenkort</p>
+      <div class="modal-actions">
+        <button class="btn btn-primary" data-close>Begrepen</button>
+      </div>
+    `, { onMount: (modal) => {
+        modal.querySelector("[data-close]").addEventListener("click", closeModal);
+    }});
+}
+
+function renderTaskChipHtml(t) {
+    const urg = deadlineUrgency(t.deadline);
+    const flag = urg === "overdue" ? "\u26A0 VERLOPEN" : urg === "soon" ? "\u23F0 binnenkort" : "";
+    const remaining = getTaskRemainingMinutes(t);
+    const partial = t.sessions && t.sessions.length > 0;
+    const timeLabel = partial
+        ? `${remaining} min nog te plannen (van ${t.estimatedMinutes} min totaal)`
+        : `${t.estimatedMinutes} min`;
+    const subjectName = getSubjectName(t.subjectId);
+    const isPauseTask = subjectName.trim().toLowerCase() === "pauze";
+    const isOtherTask = subjectName.trim().toLowerCase() === "andere";
+    const pauseIcon = isPauseTask ? "\u23F8\uFE0F " : "";
+    const chipColor = getSubjectColor(t.subjectId);
+    const titleLine = isOtherTask ? escapeHtml(t.title) : `${escapeHtml(subjectName)}: ${escapeHtml(t.title)}`;
+    return `<div class="task-chip ${isPauseTask ? "is-pause-task" : ""} ${isOtherTask ? "is-other-task" : ""}" draggable="true" data-task-id="${t.id}" style="background:${chipColor}; color:${getContrastTextColor(chipColor)}">
+      ${flag ? `<span class="deadline-flag">${flag}</span>` : ""}
+      ${pauseIcon}${titleLine}
+      <br><span style="opacity:.85">${timeLabel}${t.deadline ? ` \u00b7 deadline ${fmtDate(t.deadline)}` : ""}</span>
+    </div>`;
+}
+
+function wireTaskChipsAndDropzones(container) {
+    container.querySelectorAll(".task-chip").forEach(chip => {
+        chip.addEventListener("dragstart", (e) => {
+            e.dataTransfer.setData("text/plain", JSON.stringify({ taskId: Number(chip.dataset.taskId), sessionId: null }));
+            e.dataTransfer.effectAllowed = "move";
+        });
+        chip.addEventListener("contextmenu", (e) => { e.preventDefault(); openTaskEditModal(Number(chip.dataset.taskId)); });
+    });
+    container.querySelectorAll('[data-dropzone="matrix"]').forEach(zone => {
+        zone.addEventListener("dragover", (e) => { e.preventDefault(); zone.classList.add("drag-over"); });
+        zone.addEventListener("dragleave", () => zone.classList.remove("drag-over"));
+        zone.addEventListener("drop", (e) => {
+            e.preventDefault(); zone.classList.remove("drag-over");
+            const payload = parseDragPayload(e);
+            if (!payload) return;
+            saveUndoSnapshot();
+            if (payload.sessionId != null) {
+                removeSession(payload.taskId, payload.sessionId);
+                showToast("Sessie losgemaakt van kalender", { actionLabel: "Ongedaan maken", onAction: () => { undoLastAction(); refreshAll(); showToast("Hersteld"); } });
+            } else {
+                unplanTask(payload.taskId);
+                showToast("Losgemaakt van kalender", { actionLabel: "Ongedaan maken", onAction: () => { undoLastAction(); refreshAll(); showToast("Hersteld"); } });
+            }
+            refreshAll();
+        });
+    });
+}
+
+function renderMatrix(container, openTasks) {
+    container.innerHTML = `
+      <div class="cal-nav" style="visibility:hidden;" aria-hidden="true">
+        <button class="btn btn-sm">&larr; Vorige week</button>
+        <button class="btn btn-sm">Vandaag</button>
+      </div>
+      <div class="matrix-grid">
+      ${QUADRANTS.map(q => {
+          const items = openTasks.filter(t => t.urgent === q.urgent && t.important === q.important);
+          return `<div class="quadrant" data-quadrant="${q.key}">
+            <div class="quadrant-header" style="background:${q.color}; color:${q.text}">${q.label}<span class="sub">${q.sub}</span></div>
+            <div class="quadrant-body" data-dropzone="matrix">
+              ${items.map(renderTaskChipHtml).join("")}
+            </div>
+          </div>`;
+      }).join("")}
+    </div>`;
+    wireTaskChipsAndDropzones(container);
+}
+
+function renderTaskListView(container, openTasks) {
+    // Eenvoudige lijstweergave zonder Eisenhower-matrix: alle taken gewoon
+    // onder elkaar, gesorteerd op deadline (dringendste eerst, geen deadline
+    // achteraan). Bedoeld als minder abstract alternatief, bv. voor BSO of de
+    // eerste graad.
+    const sorted = [...openTasks].sort((a, b) => {
+        if (a.deadline && b.deadline) return a.deadline.localeCompare(b.deadline);
+        if (a.deadline) return -1;
+        if (b.deadline) return 1;
+        return 0;
+    });
+    container.innerHTML = `
+      <div class="cal-nav" style="visibility:hidden;" aria-hidden="true">
+        <button class="btn btn-sm">&larr; Vorige week</button>
+        <button class="btn btn-sm">Vandaag</button>
+      </div>
+      <div class="task-list-view" data-dropzone="matrix">
+        ${sorted.length ? sorted.map(renderTaskChipHtml).join("") : '<div class="empty-state">Geen openstaande taken.</div>'}
+      </div>`;
+    wireTaskChipsAndDropzones(container);
+}
+
+function parseDragPayload(e) {
+    const raw = e.dataTransfer.getData("text/plain");
+    if (!raw) return null;
+    try {
+        const parsed = JSON.parse(raw);
+        if (parsed && typeof parsed.taskId === "number") return parsed;
+    } catch (err) { /* niet-JSON payload, negeren */ }
+    return null;
+}
+
+// ---------------------------------------------------------------------------
+// Sleep-selectie van meerdere kalendervakken tegelijk (bv. voor "schooltijd"
+// in één keer over meerdere uren en eventueel meerdere dagen blokkeren)
+// ---------------------------------------------------------------------------
+let blockSelection = null; // { dayIndex, startIdx, endIdx } tijdens het muis-slepen
+let cellTouchStartPos = null; // { x, y } bij touchstart, om een tik van een veeg te onderscheiden
+let tapSelection = null; // { dayIndex, startIdx } -- eerste tik op een touchscreen, wacht op de tweede
+let touchLongPressTimer = null; // timer voor het "lang indrukken en dan slepen"-gebaar op touchscreens
+let touchDragActive = false; // true zodra de lang-indruk geactiveerd is en er nu gesleept wordt
+
+function beginBlockSelection(dayIndex, blockIdx) {
+    blockSelection = { dayIndex, startIdx: blockIdx, endIdx: blockIdx };
+    document.body.style.userSelect = "none";
+    updateBlockSelectionHighlight();
+    document.addEventListener("mouseup", endBlockSelection, { once: true });
+}
+function extendBlockSelection(dayIndex, blockIdx) {
+    if (!blockSelection || dayIndex !== blockSelection.dayIndex) return;
+    blockSelection.endIdx = blockIdx;
+    updateBlockSelectionHighlight();
+}
+function updateBlockSelectionHighlight() {
+    if (!blockSelection) return;
+    const { dayIndex, startIdx, endIdx } = blockSelection;
+    const lo = Math.min(startIdx, endIdx), hi = Math.max(startIdx, endIdx);
+    document.querySelectorAll(".cal-cell").forEach(cell => {
+        const d = Number(cell.dataset.day), idx = Number(cell.dataset.blockIdx);
+        cell.classList.toggle("selecting", d === dayIndex && idx >= lo && idx <= hi);
+    });
+}
+function endBlockSelection() {
+    document.body.style.userSelect = "";
+    if (!blockSelection) return;
+    const { dayIndex, startIdx, endIdx } = blockSelection;
+    const lo = Math.min(startIdx, endIdx), hi = Math.max(startIdx, endIdx);
+    blockSelection = null;
+    document.querySelectorAll(".cal-cell.selecting").forEach(c => c.classList.remove("selecting"));
+    const blockStarts = TIME_BLOCKS.slice(lo, hi + 1).map(b => b.start);
+    openMultiBlockModal(dayIndex, blockStarts);
+}
+
+function handleCellTap(dayIndex, blockIdx, cellEl) {
+    // Twee-tikken-systeem voor touchscreens (i.p.v. slepen, dat botst met het
+    // native scrollen van de kalender): eerste tik markeert het beginuur en
+    // wacht af, tweede tik (zelfde dag) rondt de selectie af en opent het
+    // venster -- tik tweemaal dezelfde cel voor exact \u00e9\u00e9n uur.
+    if (!tapSelection || tapSelection.dayIndex !== dayIndex) {
+        tapSelection = { dayIndex, startIdx: blockIdx };
+        document.querySelectorAll(".cal-cell.tap-pending").forEach(c => c.classList.remove("tap-pending"));
+        cellEl.classList.add("tap-pending");
+        showToast("Tik op het laatste uur om te blokkeren (of nogmaals hier voor \u00e9\u00e9n uur)");
+        return;
+    }
+    const lo = Math.min(tapSelection.startIdx, blockIdx), hi = Math.max(tapSelection.startIdx, blockIdx);
+    document.querySelectorAll(".cal-cell.tap-pending").forEach(c => c.classList.remove("tap-pending"));
+    tapSelection = null;
+    const blockStarts = TIME_BLOCKS.slice(lo, hi + 1).map(b => b.start);
+    openMultiBlockModal(dayIndex, blockStarts);
+}
+
+function openMultiBlockModal(dayIndex, blockStarts) {
+    const dayDate = addDays(planningMonday, dayIndex);
+    const startLabel = TIME_BLOCKS.find(b => b.start === blockStarts[0]).label.split("-")[0];
+    const endLabel = TIME_BLOCKS.find(b => b.start === blockStarts[blockStarts.length - 1]).label.split("-")[1];
+    const anyBlocked = blockStarts.some(bs => getBlockedSlotForDay(dayDate, dayIndex, bs));
+    openModal(`
+      <h2>Tijdslots blokkeren</h2>
+      <p class="hint">${DAY_NAMES[dayIndex]} ${dayDate.slice(8, 10)}/${dayDate.slice(5, 7)}, van ${startLabel}u tot ${endLabel} (${blockStarts.length} uur)</p>
+      <div class="field">
+        <label class="checkbox-row"><input type="radio" name="mbMode" value="once"> Enkel deze week (eenmalig)</label><br>
+        <label class="checkbox-row"><input type="radio" name="mbMode" value="weekly" checked> Elke week (wekelijks terugkerend)</label>
+      </div>
+      <div class="field"><label class="field-label">Naam</label><input type="text" id="mbLabel" placeholder="bv. School, Pauze, Andere, Sporttraining"></div>
+      <div class="field">
+        <label class="field-label">Ook toepassen op dezelfde uren op</label>
+        <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:4px;">
+          ${DAY_NAMES.map((d, i) => `<label class="checkbox-row"><input type="checkbox" class="mbDayCheck" value="${i}" ${i === dayIndex ? "checked" : ""}> ${d}</label>`).join("")}
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-primary" id="mbSaveBtn">Blokkeren</button>
+        <button class="btn" data-close>Annuleren</button>
+      </div>
+      ${anyBlocked ? `
+      <div class="field" style="border-top:1px solid var(--border); padding-top:12px; margin-top:14px;">
+        <label class="field-label">Of verwijder deze ${blockStarts.length} uur meteen (op de hierboven aangevinkte dagen)</label>
+        <div class="modal-actions" style="margin-top:6px;">
+          <button class="btn btn-danger btn-sm" id="mbRemoveWeekBtn">Verwijder enkel deze week</button>
+          <button class="btn btn-danger btn-sm" id="mbRemoveAllBtn">Verwijder voor alle weken</button>
+        </div>
+      </div>` : ""}
+    `, { onMount: (modal) => {
+        modal.querySelector("#mbLabel").focus();
+        modal.querySelector("[data-close]").addEventListener("click", closeModal);
+        modal.querySelector("#mbSaveBtn").addEventListener("click", () => {
+            const label = modal.querySelector("#mbLabel").value.trim();
+            if (!label) { alert("Geef het blok een naam."); return; }
+            const mode = modal.querySelector('input[name="mbMode"]:checked').value;
+            const checkedDays = Array.from(modal.querySelectorAll(".mbDayCheck:checked")).map(cb => Number(cb.value));
+            if (!checkedDays.length) { alert("Kies minstens één dag."); return; }
+            checkedDays.forEach(di => {
+                const targetDate = addDays(planningMonday, di);
+                blockStarts.forEach(bs => {
+                    if (mode === "once") addOnetimeBlock(targetDate, bs, label);
+                    else { addRecurringBlock(di, bs, label); clearBlockException(di, bs); }
+                });
+            });
+            closeModal(); refreshAll();
+            showToast(`${checkedDays.length * blockStarts.length} tijdslot(en) geblokkeerd`);
+        });
+        const removeRange = (removeMode) => {
+            const checkedDays = Array.from(modal.querySelectorAll(".mbDayCheck:checked")).map(cb => Number(cb.value));
+            if (!checkedDays.length) { alert("Kies minstens één dag."); return; }
+            saveUndoSnapshot();
+            let total = 0;
+            checkedDays.forEach(di => {
+                const targetDate = addDays(planningMonday, di);
+                total += removeBlockedRange(di, targetDate, blockStarts, removeMode);
+            });
+            closeModal(); refreshAll();
+            showToast(`${total} tijdslot(en) verwijderd`, { actionLabel: "Ongedaan maken", onAction: () => { undoLastAction(); refreshAll(); showToast("Hersteld"); } });
+        };
+        const removeWeekBtn = modal.querySelector("#mbRemoveWeekBtn");
+        if (removeWeekBtn) removeWeekBtn.addEventListener("click", () => removeRange("week"));
+        const removeAllBtn = modal.querySelector("#mbRemoveAllBtn");
+        if (removeAllBtn) removeAllBtn.addEventListener("click", () => removeRange("all"));
+    }});
+}
+
+function openMinutesPickerModal(taskId, date, time) {
+    const t = getTask(taskId);
+    if (!t) return;
+    const remaining = getTaskRemainingMinutes(t);
+    const dayLabel = `${DAY_NAMES[weekdayIndex(date)]} ${date.slice(8, 10)}/${date.slice(5, 7)}`;
+    openModal(`
+      <h2>Inplannen</h2>
+      <p class="hint">${escapeHtml(t.title)} \u2014 ${dayLabel} om ${time}</p>
+      <div class="field">
+        <label class="field-label">Hoeveel minuten nu inplannen?</label>
+        <input type="number" id="mpMinutes" value="${Math.min(remaining, 60)}" min="1" max="${remaining}" step="5">
+        <p class="hint" style="margin-top:6px;">Resterend van deze taak: ${remaining} min. Vul minder in om de rest straks apart in te plannen \u2014 zo splits je een taak eenvoudig op.</p>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-primary" id="mpConfirmBtn">Inplannen</button>
+        <button class="btn" data-close>Annuleren</button>
+      </div>
+    `, { onMount: (modal) => {
+        const input = modal.querySelector("#mpMinutes");
+        input.focus(); input.select();
+        modal.querySelector("[data-close]").addEventListener("click", closeModal);
+        modal.querySelector("#mpConfirmBtn").addEventListener("click", () => {
+            let minutes = Number(input.value);
+            if (!minutes || minutes <= 0) { alert("Geef een geldig aantal minuten (groter dan 0)."); return; }
+            if (minutes > remaining) minutes = remaining;
+            if (t.deadline && date > t.deadline) {
+                const ok = confirm(`Let op: ${dayLabel} ligt N\u00c1 de deadline van deze taak (${fmtDate(t.deadline)}). Toch inplannen?`);
+                if (!ok) return;
+            }
+            planTask(taskId, date, time, minutes);
+            closeModal(); refreshAll();
+            showToast(minutes < remaining ? `${minutes} min ingepland \u2014 ${remaining - minutes} min resterend` : "Ingepland");
+        });
+        input.addEventListener("keydown", e => { if (e.key === "Enter") modal.querySelector("#mpConfirmBtn").click(); });
+    }});
+}
+
+function renderCalendar(container, blockedMap, plannedRows, todayIso) {
+    const bySlot = {};
+    plannedRows.forEach(t => { const key = `${t.date}|${t.time}`; (bySlot[key] = bySlot[key] || []).push(t); });
+    const sunday = addDays(planningMonday, 6);
+    const dayIsos = []; for (let i = 0; i < 7; i++) dayIsos.push(addDays(planningMonday, i));
+
+    let gridHtml = `<div class="cal-head-cell time-col-head"></div>`;
+    dayIsos.forEach((d, i) => {
+        const isToday = d === todayIso;
+        gridHtml += `<div class="cal-head-cell ${isToday ? "today" : ""}">${DAY_NAMES[i]}<br>${d.slice(8, 10)}/${d.slice(5, 7)}${isToday ? " (vandaag)" : ""}</div>`;
+    });
+    TIME_BLOCKS.forEach((b, blockIdx) => {
+        gridHtml += `<div class="cal-time-label">${b.label}</div>`;
+        dayIsos.forEach((d, dayIdx) => {
+            const blocked = blockedMap[`${dayIdx}|${b.start}`];
+            const sessionsHere = bySlot[`${d}|${b.start}`] || [];
+            let inner = "";
+            if (blocked) {
+                const labelLower = blocked.label.trim().toLowerCase();
+                const isSchool = labelLower === "school";
+                const isPause = labelLower === "pauze";
+                const isOther = labelLower === "andere";
+                const themeIcon = isPause ? "\u23F8\uFE0F " : isSchool ? "\u{1F3EB} " : "";
+                const recurIcon = isSchool ? "" : (blocked.isOnetime ? "\u{1F4CC} " : "\u{1F512} ");
+                inner += `<div class="cal-block-card ${isSchool ? "is-school" : ""} ${isPause ? "is-pause" : ""} ${isOther ? "is-other" : ""}" data-block-day="${dayIdx}" data-block-date="${d}" data-block-start="${b.start}" data-block-onetime="${blocked.isOnetime}">
+                  ${themeIcon}${recurIcon}${escapeHtml(blocked.label)}${blocked.duration && blocked.duration < 60 ? ` (${blocked.duration}m)` : ""}
+                </div>`;
+            }
+            sessionsHere.forEach(t => {
+                const done = !!t.sessionDone;
+                const subjectName = getSubjectName(t.subjectId);
+                const isPauseTask = subjectName.trim().toLowerCase() === "pauze";
+                const isOtherTask = subjectName.trim().toLowerCase() === "andere";
+                const color = getSubjectColor(t.subjectId);
+                const partLabel = t.sessionCount > 1 ? " \u00b7 deel" : "";
+                const urg = done ? null : deadlineUrgency(t.deadline);
+                const urgClass = urg === "overdue" ? "overdue" : urg === "soon" ? "soon" : "";
+                const urgFlag = urg === "overdue" ? "\u26A0 VERLOPEN" : urg === "soon" ? "\u23F0 binnenkort" : "";
+                const pauseIcon = isPauseTask ? "\u23F8\uFE0F " : "";
+                const cardTitleLine = isOtherTask ? escapeHtml(t.title) : `${escapeHtml(subjectName)}: ${escapeHtml(t.title)}`;
+                inner += `<div class="cal-task-card ${done ? "done" : ""} ${urgClass} ${isPauseTask ? "is-pause-task" : ""} ${isOtherTask ? "is-other-task" : ""}" draggable="true" data-task-id="${t.taskId}" data-session-id="${t.sessionId}" style="background:${color}; color:${getContrastTextColor(color)}">
+                  ${done ? '<span class="done-badge">\u2713</span>' : ""}${urgFlag ? `<span class="deadline-flag">${urgFlag}</span>` : ""}${pauseIcon}${cardTitleLine}${partLabel} (${t.minutes}m)
+                </div>`;
+            });
+            gridHtml += `<div class="cal-cell" data-day="${dayIdx}" data-date="${d}" data-block-start="${b.start}" data-block-idx="${blockIdx}">${inner}</div>`;
+        });
+    });
+
+    container.innerHTML = `
+      <div class="cal-nav">
+        <button class="btn btn-sm" id="prevWeekBtn">&larr; Vorige week</button>
+        <button class="btn btn-sm" id="todayWeekBtn">Vandaag</button>
+        <button class="btn btn-sm" id="nextWeekBtn">Volgende week &rarr;</button>
+        <span class="cal-range">${fmtDate(planningMonday)} \u2013 ${fmtDate(sunday)}</span>
+      </div>
+      <p class="cal-scroll-hint">\u2194\uFE0F Veeg opzij om de andere dagen van de week te zien</p>
+      <div class="cal-scroll"><div class="cal-grid">${gridHtml}</div></div>
+    `;
+    container.querySelector("#prevWeekBtn").addEventListener("click", () => { planningMonday = addDays(planningMonday, -7); renderPlanningTab(); });
+    container.querySelector("#nextWeekBtn").addEventListener("click", () => { planningMonday = addDays(planningMonday, 7); renderPlanningTab(); });
+    container.querySelector("#todayWeekBtn").addEventListener("click", () => { planningMonday = weekStart(isoFromDate(new Date())); renderPlanningTab(); });
+
+    container.querySelectorAll(".cal-cell").forEach(cell => {
+        cell.addEventListener("dragover", (e) => { e.preventDefault(); cell.classList.add("drag-over"); });
+        cell.addEventListener("dragleave", () => cell.classList.remove("drag-over"));
+        cell.addEventListener("drop", (e) => {
+            e.preventDefault(); cell.classList.remove("drag-over");
+            const payload = parseDragPayload(e);
+            if (!payload) return;
+            const dayIdx = Number(cell.dataset.day), d = cell.dataset.date, bs = cell.dataset.blockStart;
+            const blocked = getBlockedSlotForDay(d, dayIdx, bs);
+            if (blocked) { alert(`Dit moment is geblokkeerd voor '${blocked.label}'. Kies een ander tijdstip.`); return; }
+            if (payload.sessionId != null) {
+                // een bestaande sessie naar een andere cel slepen = VERPLAATSEN (duur blijft gelijk)
+                const movedTask = getTask(payload.taskId);
+                const movedSession = movedTask && (movedTask.sessions || []).find(s => s.id === payload.sessionId);
+                const dateChanges = movedSession && movedSession.date !== d;
+                if (movedTask && movedTask.deadline && dateChanges && d > movedTask.deadline) {
+                    const ok = confirm(`Let op: dit tijdstip ligt N\u00c1 de deadline van '${movedTask.title}' (${fmtDate(movedTask.deadline)}). Toch verplaatsen?`);
+                    if (!ok) { showToast("Niet verplaatst \u2014 de deadline was al voorbij"); return; }
+                }
+                updateSession(payload.taskId, payload.sessionId, { date: d, time: bs });
+                showToast("Sessie verplaatst");
+                refreshAll();
+            } else {
+                // vanuit de matrix = (een deel van) de resterende tijd hier NIEUW inplannen
+                openMinutesPickerModal(payload.taskId, d, bs);
+            }
+        });
+        cell.addEventListener("contextmenu", (e) => {
+            e.preventDefault();
+            const dayIdx = Number(cell.dataset.day), d = cell.dataset.date, bs = cell.dataset.blockStart;
+            openBlockModal(dayIdx, d, bs);
+        });
+        // sleep-selectie over meerdere uren tegelijk (voor snel bv. "schooltijd"
+        // blokkeren). Met de muis: gewoon inklikken en slepen. Op een
+        // touchscreen zou een gewone veeg botsen met het native scrollen van
+        // de kalender, dus daar moet je eerst even LANG INDRUKKEN om de
+        // sleep-selectie te activeren (zie touchstart hieronder) -- een gewone
+        // korte veeg blijft daardoor gewoon scrollen. Daarnaast blijft ook het
+        // twee-tikken-systeem beschikbaar als alternatief (zie handleCellTap).
+        cell.addEventListener("mousedown", (e) => {
+            if (e.target !== cell || e.button !== 0) return; // enkel op de lege celachtergrond, linkerknop
+            e.preventDefault();
+            beginBlockSelection(Number(cell.dataset.day), Number(cell.dataset.blockIdx));
+        });
+        cell.addEventListener("mouseenter", () => {
+            extendBlockSelection(Number(cell.dataset.day), Number(cell.dataset.blockIdx));
+        });
+        cell.addEventListener("touchstart", (e) => {
+            if (e.target !== cell) return;
+            const t = e.touches[0];
+            cellTouchStartPos = { x: t.clientX, y: t.clientY };
+            touchDragActive = false;
+            clearTimeout(touchLongPressTimer);
+            // Lang indrukken (zonder te bewegen) start een LIVE sleep-selectie,
+            // net als op een computer met de muis -- een bekend gebaar op
+            // touchscreens (bv. bestanden selecteren). Een gewone, snelle veeg
+            // blijft daardoor gewoon scrollen zoals verwacht.
+            touchLongPressTimer = setTimeout(() => {
+                touchDragActive = true;
+                if (navigator.vibrate) navigator.vibrate(30);
+                beginBlockSelection(Number(cell.dataset.day), Number(cell.dataset.blockIdx));
+            }, 450);
+        }, { passive: true });
+        cell.addEventListener("touchmove", (e) => {
+            if (!cellTouchStartPos) return;
+            const t = e.touches[0];
+            if (!touchDragActive) {
+                const dx = Math.abs(t.clientX - cellTouchStartPos.x), dy = Math.abs(t.clientY - cellTouchStartPos.y);
+                if (dx > 10 || dy > 10) clearTimeout(touchLongPressTimer); // dit is een gewone veeg (scrollen) -- lang-indruk annuleren, scroll niet blokkeren
+                return;
+            }
+            // De lang-indruk is al geactiveerd: nu actief aan het slepen om te
+            // selecteren, dus scroll blokkeren en de cel onder de vinger
+            // opzoeken (touch-events blijven anders gebonden aan de cel waar
+            // de aanraking begon, i.t.t. muis-events).
+            e.preventDefault();
+            if (typeof document.elementFromPoint !== "function") return; // veiligheidsnet voor uitzonderlijke browsers
+            const el = document.elementFromPoint(t.clientX, t.clientY);
+            const targetCell = el ? el.closest(".cal-cell") : null;
+            if (targetCell) extendBlockSelection(Number(targetCell.dataset.day), Number(targetCell.dataset.blockIdx));
+        }, { passive: false });
+        cell.addEventListener("touchend", (e) => {
+            clearTimeout(touchLongPressTimer);
+            if (touchDragActive) {
+                touchDragActive = false;
+                cellTouchStartPos = null;
+                e.preventDefault();
+                endBlockSelection();
+                return;
+            }
+            if (e.target !== cell || !cellTouchStartPos) return;
+            const t = e.changedTouches[0];
+            const dx = Math.abs(t.clientX - cellTouchStartPos.x), dy = Math.abs(t.clientY - cellTouchStartPos.y);
+            cellTouchStartPos = null;
+            if (dx > 12 || dy > 12) return; // dit was een veeg (scrollen), geen tik -- negeren, scroll niet blokkeren
+            // Dit was een echte tik: voorkom dat de browser hierna ook nog eens
+            // nagemaakte muis-events (mousedown/mouseup/click) afvuurt voor
+            // dezelfde aanraking -- anders triggert dat ALSNOG het muis-sleepsysteem
+            // hierboven en opent er meteen een venster voor maar 1 uur.
+            e.preventDefault();
+            handleCellTap(Number(cell.dataset.day), Number(cell.dataset.blockIdx), cell);
+        }, { passive: false });
+    });
+    container.querySelectorAll(".cal-task-card").forEach(card => {
+        card.addEventListener("dragstart", (e) => {
+            e.stopPropagation();
+            e.dataTransfer.setData("text/plain", JSON.stringify({
+                taskId: Number(card.dataset.taskId), sessionId: Number(card.dataset.sessionId),
+            }));
+            e.dataTransfer.effectAllowed = "move";
+        });
+        card.addEventListener("dblclick", (e) => { e.stopPropagation(); toggleSessionDone(Number(card.dataset.taskId), Number(card.dataset.sessionId)); refreshAll(); });
+        card.addEventListener("contextmenu", (e) => { e.preventDefault(); e.stopPropagation(); openTaskEditModal(Number(card.dataset.taskId)); });
+        // Slepen om de volgorde binnen hetzelfde uur te wijzigen (of, bij een
+        // sleep vanuit een ander uur, meteen op de juiste plek in te voegen).
+        card.addEventListener("dragover", (e) => {
+            e.preventDefault();
+            const rect = card.getBoundingClientRect();
+            const before = (e.clientY - rect.top) < rect.height / 2;
+            card.classList.toggle("drag-insert-before", before);
+            card.classList.toggle("drag-insert-after", !before);
+        });
+        card.addEventListener("dragleave", () => {
+            card.classList.remove("drag-insert-before", "drag-insert-after");
+        });
+        card.addEventListener("drop", (e) => {
+            card.classList.remove("drag-insert-before", "drag-insert-after");
+            const payload = parseDragPayload(e);
+            if (!payload || payload.sessionId == null) return; // een NIEUWE sessie vanuit de matrix: laat de cel dit gewoon afhandelen
+            e.preventDefault();
+            e.stopPropagation();
+            const cell = card.closest(".cal-cell");
+            const dayIdx = Number(cell.dataset.day), d = cell.dataset.date, bs = cell.dataset.blockStart;
+            const blocked = getBlockedSlotForDay(d, dayIdx, bs);
+            if (blocked) { alert(`Dit moment is geblokkeerd voor '${blocked.label}'. Kies een ander tijdstip.`); return; }
+
+            const movedTask2 = getTask(payload.taskId);
+            const movedSession2 = movedTask2 && (movedTask2.sessions || []).find(s => s.id === payload.sessionId);
+            const dateChanges2 = movedSession2 && movedSession2.date !== d;
+            if (movedTask2 && movedTask2.deadline && dateChanges2 && d > movedTask2.deadline) {
+                const ok = confirm(`Let op: dit tijdstip ligt N\u00c1 de deadline van '${movedTask2.title}' (${fmtDate(movedTask2.deadline)}). Toch verplaatsen?`);
+                if (!ok) { showToast("Niet verplaatst \u2014 de deadline was al voorbij"); return; }
+            }
+            updateSession(payload.taskId, payload.sessionId, { date: d, time: bs });
+
+            const rect = card.getBoundingClientRect();
+            const before = (e.clientY - rect.top) < rect.height / 2;
+            const existingRefs = Array.from(cell.querySelectorAll(".cal-task-card"))
+                .map(c => ({ taskId: Number(c.dataset.taskId), sessionId: Number(c.dataset.sessionId) }))
+                .filter(r => !(r.taskId === payload.taskId && r.sessionId === payload.sessionId));
+            const targetIndex = existingRefs.findIndex(r => r.taskId === Number(card.dataset.taskId) && r.sessionId === Number(card.dataset.sessionId));
+            existingRefs.splice(before ? targetIndex : targetIndex + 1, 0, { taskId: payload.taskId, sessionId: payload.sessionId });
+            reorderSessionsInSlot(d, bs, existingRefs);
+            refreshAll();
+            showToast("Volgorde aangepast");
+        });
+    });
+    container.querySelectorAll(".cal-block-card").forEach(card => {
+        card.addEventListener("dblclick", (e) => {
+            e.stopPropagation();
+            const dayIdx = Number(card.dataset.blockDay), d = card.dataset.blockDate, bs = card.dataset.blockStart;
+            saveUndoSnapshot();
+            if (card.dataset.blockOnetime === "true") {
+                removeOnetimeBlock(d, bs);
+                refreshAll();
+                showToast("Blok verwijderd", { actionLabel: "Ongedaan maken", onAction: () => { undoLastAction(); refreshAll(); showToast("Blok hersteld"); } });
+            } else {
+                // Veilige standaardactie: enkel deze week, niet de hele wekelijkse
+                // herhaling. Voor "alle weken verwijderen" -> rechtsklik -> venster.
+                skipRecurringBlockForDate(dayIdx, bs, d);
+                refreshAll();
+                showToast("Blok verwijderd voor deze week (blijft op andere weken staan)", { actionLabel: "Ongedaan maken", onAction: () => { undoLastAction(); refreshAll(); showToast("Blok hersteld"); } });
+            }
+        });
+        card.addEventListener("contextmenu", (e) => {
+            e.preventDefault(); e.stopPropagation();
+            const dayIdx = Number(card.dataset.blockDay), d = card.dataset.blockDate, bs = card.dataset.blockStart;
+            openBlockModal(dayIdx, d, bs);
+        });
+    });
+}
+
+function openTaskEditModal(taskId, onSaved) {
+    const t = getTask(taskId);
+    if (!t) return;
+    openModal(`
+      <h2>Taak bewerken \u2014 ${escapeHtml(getSubjectName(t.subjectId))}</h2>
+      <div class="field"><label class="field-label">Titel</label><input type="text" id="editTitle" value="${escapeHtml(t.title)}"></div>
+      <div class="field"><label class="field-label">Omschrijving</label><textarea id="editDesc">${escapeHtml(t.description || "")}</textarea></div>
+      <div class="field-row">
+        <div class="field"><label class="field-label">Deadline</label><input type="date" id="editDeadline" value="${t.deadline || ""}"></div>
+        <div class="field"><label class="field-label">Geschatte tijd (min)</label><input type="number" id="editMinutes" value="${t.estimatedMinutes}" min="5" step="5"></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label class="field-label">Werkelijke tijd (min)</label><input type="number" id="editActual" value="${t.actualMinutes || 0}" min="0" step="5"></div>
+        <div class="field" style="display:flex; align-items:flex-end;"><button class="btn" id="startTimerBtn" style="width:100%;">\u23F1 Start timer</button></div>
+      </div>
+      <div class="field">
+        <label class="field-label">Sessies (opgesplitst inplannen mogelijk)</label>
+        <div id="sessionsListWrap"></div>
+        <button class="btn btn-sm" id="addSessionRowBtn" type="button">+ Sessie toevoegen</button>
+        <p class="hint" id="sessionsTotalHint" style="margin-top:6px;"></p>
+      </div>
+      <div class="field-row">
+        <label class="checkbox-row"><input type="checkbox" id="editUrgent" ${t.urgent ? "checked" : ""}> Urgent</label>
+        <label class="checkbox-row"><input type="checkbox" id="editImportant" ${t.important ? "checked" : ""}> Belangrijk</label>
+      </div>
+      <label class="checkbox-row"><input type="checkbox" id="editStudy" ${t.isStudy ? "checked" : ""}> Leerstof (te herhalen)</label>
+      <div class="hint" style="margin-top:8px;">Status: ${t.status}${t.completedAt ? " &middot; afgewerkt op " + fmtDate(t.completedAt) : ""}</div>
+      <div class="modal-actions">
+        <button class="btn btn-primary" id="saveTaskBtn">Opslaan</button>
+        <button class="btn btn-danger" id="deleteTaskBtn">Verwijderen</button>
+        <button class="btn" data-close>Annuleren</button>
+      </div>
+    `, { onMount: (modal) => {
+        modal.querySelector("[data-close]").addEventListener("click", closeModal);
+        modal.querySelector("#startTimerBtn").addEventListener("click", () => {
+            openTimerModal(t, () => { const fresh = getTask(taskId); if (fresh) modal.querySelector("#editActual").value = fresh.actualMinutes || 0; });
+        });
+
+        // ---- sessies-lijst (lokale werkkopie, pas definitief bij Opslaan) ----
+        const workingSessions = (t.sessions || []).map(s => ({ ...s }));
+        function updateTotalHint() {
+            const total = workingSessions.reduce((sum, s) => sum + (Number(s.minutes) || 0), 0);
+            const est = Number(modal.querySelector("#editMinutes").value) || t.estimatedMinutes;
+            const hint = modal.querySelector("#sessionsTotalHint");
+            if (total < est) hint.textContent = `Totaal ingepland: ${total} / ${est} min (nog ${est - total} min te plannen)`;
+            else if (total > est) hint.textContent = `Totaal ingepland: ${total} / ${est} min (meer dan de geschatte tijd \u2014 dat mag)`;
+            else hint.textContent = `Totaal ingepland: ${total} / ${est} min \u2713`;
+        }
+        function renderSessionRows() {
+            const wrap = modal.querySelector("#sessionsListWrap");
+            wrap.innerHTML = workingSessions.length ? workingSessions.map((s, i) => `
+              <div class="field-row" style="align-items:center; margin-bottom:6px; gap:6px;" data-session-row="${i}">
+                <input type="date" class="sessDate" value="${s.date || ""}" style="flex:1.3;">
+                <input type="time" class="sessTime" value="${s.time || ""}" style="flex:1;">
+                <input type="number" class="sessMinutes" value="${s.minutes}" min="1" step="5" style="flex:0.8;" title="minuten">
+                <button class="btn btn-sm btn-danger" type="button" data-remove-session="${i}" title="Sessie verwijderen">\u{1F5D1}</button>
+              </div>
+            `).join("") : '<p class="hint">Nog geen sessies \u2014 voeg er een toe om deze taak in te plannen.</p>';
+            wrap.querySelectorAll("[data-session-row]").forEach(row => {
+                const i = Number(row.dataset.sessionRow);
+                row.querySelector(".sessDate").addEventListener("input", e => { workingSessions[i].date = e.target.value; });
+                row.querySelector(".sessTime").addEventListener("input", e => { workingSessions[i].time = e.target.value; });
+                row.querySelector(".sessMinutes").addEventListener("input", e => { workingSessions[i].minutes = Number(e.target.value) || 0; updateTotalHint(); });
+            });
+            wrap.querySelectorAll("[data-remove-session]").forEach(btn => {
+                btn.addEventListener("click", () => {
+                    workingSessions.splice(Number(btn.dataset.removeSession), 1);
+                    renderSessionRows(); updateTotalHint();
+                });
+            });
+            updateTotalHint();
+        }
+        modal.querySelector("#addSessionRowBtn").addEventListener("click", () => {
+            const usedSoFar = workingSessions.reduce((sum, s) => sum + (Number(s.minutes) || 0), 0);
+            const est = Number(modal.querySelector("#editMinutes").value) || t.estimatedMinutes;
+            workingSessions.push({ date: "", time: "", minutes: Math.max(1, est - usedSoFar) });
+            renderSessionRows();
+        });
+        modal.querySelector("#editMinutes").addEventListener("input", updateTotalHint);
+        renderSessionRows();
+
+        modal.querySelector("#saveTaskBtn").addEventListener("click", () => {
+            const title = modal.querySelector("#editTitle").value.trim();
+            if (!title) { alert("Geef de taak een titel."); return; }
+            const validSessions = workingSessions.filter(s => s.date && s.time);
+            for (const s of validSessions) {
+                const blocked = getBlockedSlotForDay(s.date, weekdayIndex(s.date), s.time);
+                if (blocked) {
+                    alert(`Sessie op ${fmtDate(s.date)} om ${s.time} valt op een geblokkeerd moment ('${blocked.label}'). Pas dat eerst aan.`);
+                    return;
+                }
+            }
+            const newDeadline = modal.querySelector("#editDeadline").value || null;
+            if (newDeadline) {
+                const lateSessions = validSessions.filter(s => s.date > newDeadline);
+                if (lateSessions.length) {
+                    const ok = confirm(`Let op: ${lateSessions.length} sessie(s) staan gepland N\u00c1 de deadline (${fmtDate(newDeadline)}). Toch opslaan?`);
+                    if (!ok) return;
+                }
+            }
+            updateTask(taskId, {
+                title, description: modal.querySelector("#editDesc").value,
+                deadline: newDeadline,
+                estimatedMinutes: Number(modal.querySelector("#editMinutes").value) || 30,
+                actualMinutes: Number(modal.querySelector("#editActual").value) || 0,
+                urgent: modal.querySelector("#editUrgent").checked,
+                important: modal.querySelector("#editImportant").checked,
+                isStudy: modal.querySelector("#editStudy").checked,
+            });
+            setTaskSessions(taskId, validSessions);
+            closeModal(); refreshAll(); showToast("Taak opgeslagen");
+            if (onSaved) onSaved();
+        });
+        modal.querySelector("#deleteTaskBtn").addEventListener("click", () => {
+            saveUndoSnapshot();
+            deleteTask(taskId); closeModal(); refreshAll();
+            showToast("Taak verwijderd", { actionLabel: "Ongedaan maken", onAction: () => { undoLastAction(); refreshAll(); showToast("Taak hersteld"); } });
+            if (onSaved) onSaved();
+        });
+    }});
+}
+
+function openBlockModal(dayIndex, dayIso, blockStart) {
+    const existing = getBlockedSlotForDay(dayIso, dayIndex, blockStart);
+    const dayLabel = `${DAY_NAMES[dayIndex]} ${dayIso.slice(8, 10)}/${dayIso.slice(5, 7)}`;
+    openModal(`
+      <h2>Tijdslot blokkeren</h2>
+      <p class="hint">${dayLabel} om ${blockStart}</p>
+      <div class="field">
+        <label class="checkbox-row"><input type="radio" name="blockMode" value="once" ${existing && existing.isOnetime ? "checked" : ""}> Enkel deze week (eenmalig)</label><br>
+        <label class="checkbox-row"><input type="radio" name="blockMode" value="weekly" ${!existing || !existing.isOnetime ? "checked" : ""}> Elke week (wekelijks terugkerend)</label>
+      </div>
+      <div class="field"><label class="field-label">Naam</label><input type="text" id="blockLabel" value="${existing ? escapeHtml(existing.label) : ""}" placeholder="bv. School, Pauze, Andere, Sporttraining"></div>
+      <div class="field">
+        <label class="field-label">Duur (minuten)</label>
+        <input type="number" id="blockDuration" min="5" max="60" step="5" value="${existing ? existing.duration : 60}">
+        <p class="hint" style="margin-top:4px;">Het uurvak zelf staat wel volledig als bezet in de kalender \u2014 dit getal is enkel om de echte duur te noteren (bv. een pauze van 15 min binnen dit uur).</p>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-primary" id="saveBlockBtn">Opslaan</button>
+        ${existing && existing.isOnetime ? '<button class="btn btn-danger" id="removeBlockBtn">Verwijder blok</button>' : ""}
+        ${existing && !existing.isOnetime ? '<button class="btn btn-danger" id="removeWeekBtn">Verwijder enkel deze week</button>' : ""}
+        ${existing && !existing.isOnetime ? '<button class="btn btn-danger" id="removeAllBtn">Verwijder voor alle weken</button>' : ""}
+        <button class="btn" data-close>Annuleren</button>
+      </div>
+    `, { onMount: (modal) => {
+        modal.querySelector("[data-close]").addEventListener("click", closeModal);
+        modal.querySelector("#saveBlockBtn").addEventListener("click", () => {
+            const label = modal.querySelector("#blockLabel").value.trim();
+            if (!label) { alert("Geef het blok een naam."); return; }
+            const duration = Math.min(60, Math.max(5, Number(modal.querySelector("#blockDuration").value) || 60));
+            const mode = modal.querySelector('input[name="blockMode"]:checked').value;
+            if (mode === "once") addOnetimeBlock(dayIso, blockStart, label, duration);
+            else { addRecurringBlock(dayIndex, blockStart, label, duration); clearBlockException(dayIndex, blockStart); }
+            closeModal(); refreshAll(); showToast("Blok opgeslagen");
+        });
+        const removeBtn = modal.querySelector("#removeBlockBtn");
+        if (removeBtn) {
+            removeBtn.addEventListener("click", () => {
+                saveUndoSnapshot();
+                removeOnetimeBlock(dayIso, blockStart);
+                closeModal(); refreshAll();
+                showToast("Blok verwijderd", { actionLabel: "Ongedaan maken", onAction: () => { undoLastAction(); refreshAll(); showToast("Blok hersteld"); } });
+            });
+        }
+        const removeWeekBtn = modal.querySelector("#removeWeekBtn");
+        if (removeWeekBtn) {
+            removeWeekBtn.addEventListener("click", () => {
+                saveUndoSnapshot();
+                skipRecurringBlockForDate(dayIndex, blockStart, dayIso);
+                closeModal(); refreshAll();
+                showToast("Blok verwijderd voor deze week (blijft op andere weken staan)", { actionLabel: "Ongedaan maken", onAction: () => { undoLastAction(); refreshAll(); showToast("Blok hersteld"); } });
+            });
+        }
+        const removeAllBtn = modal.querySelector("#removeAllBtn");
+        if (removeAllBtn) {
+            removeAllBtn.addEventListener("click", () => {
+                if (confirm(`'${existing.label}' verwijderen voor ALLE weken (de hele wekelijkse herhaling)?`)) {
+                    saveUndoSnapshot();
+                    removeRecurringBlock(dayIndex, blockStart);
+                    closeModal(); refreshAll();
+                    showToast("Blok verwijderd voor alle weken", { actionLabel: "Ongedaan maken", onAction: () => { undoLastAction(); refreshAll(); showToast("Blok hersteld"); } });
+                }
+            });
+        }
+    }});
+}
+
+// ---------------------------------------------------------------------------
+// Studietimer
+// ---------------------------------------------------------------------------
+let activeTimerInterval = null;
+function openTimerModal(task, onLog) {
+    let mode = "work", running = false, workMin = 25, breakMin = 5, remaining = 25 * 60, sessionSeconds = 0;
+    let periodFresh = true; // true zolang deze periode nog niet gestart is (mag de duur dan nog aanpassen)
+    openModal(`
+      <h2>Studietimer</h2>
+      <p style="text-align:center; font-weight:600;">${escapeHtml(task.title)}</p>
+      <div class="timer-settings">
+        <span>Werk (min): <input type="number" id="timerWork" value="25" min="5" max="90" step="5"></span>
+        <span>Pauze (min): <input type="number" id="timerBreak" value="5" min="1" max="30"></span>
+      </div>
+      <div class="timer-mode" id="timerModeLabel">Werksessie</div>
+      <div class="timer-display" id="timerDisplay">25:00</div>
+      <div class="timer-controls">
+        <button class="btn btn-primary" id="timerStartBtn">Start</button>
+        <button class="btn" id="timerResetBtn">Reset</button>
+      </div>
+      <div class="modal-actions"><button class="btn" id="timerCloseBtn">Stop &amp; sluiten (tijd opslaan)</button></div>
+    `, {
+        onMount: (modal) => {
+            const display = modal.querySelector("#timerDisplay");
+            const modeLabel = modal.querySelector("#timerModeLabel");
+            const startBtn = modal.querySelector("#timerStartBtn");
+            const workInput = modal.querySelector("#timerWork");
+            const breakInput = modal.querySelector("#timerBreak");
+            const fmt = (s) => { const m = Math.floor(Math.max(0, s) / 60), sec = Math.max(0, s) % 60; return `${String(m).padStart(2, "0")}:${String(sec).padStart(2, "0")}`; };
+            const updateDisplay = () => { display.textContent = fmt(remaining); };
+            // zolang de periode nog 'vers' is (nog niet gestart), houdt de klok de
+            // ingevulde duur live bij, zodat je Start kan klikken zonder eerst Reset te doen
+            const syncFreshDuration = () => {
+                if (!periodFresh || running) return;
+                if (mode === "work") { workMin = Number(workInput.value) || 25; remaining = workMin * 60; }
+                else { breakMin = Number(breakInput.value) || 5; remaining = breakMin * 60; }
+                updateDisplay();
+            };
+            workInput.addEventListener("input", syncFreshDuration);
+            breakInput.addEventListener("input", syncFreshDuration);
+
+            function onPeriodEnd() {
+                running = false; startBtn.textContent = "Start";
+                clearInterval(activeTimerInterval); activeTimerInterval = null;
+                workInput.disabled = false; breakInput.disabled = false;
+                if (mode === "work") {
+                    addActualMinutes(task.id, workMin);
+                    sessionSeconds = 0;
+                    if (onLog) onLog();
+                    alert(`Goed bezig! Tijd voor een pauze van ${breakMin} minuten.`);
+                    mode = "break"; remaining = breakMin * 60; modeLabel.textContent = "Pauze";
+                } else {
+                    alert("Pauze voorbij, klaar voor de volgende werksessie?");
+                    mode = "work"; remaining = workMin * 60; modeLabel.textContent = "Werksessie";
+                }
+                periodFresh = true;
+                updateDisplay();
+            }
+            function tick() {
+                periodFresh = false;
+                remaining -= 1;
+                if (mode === "work") sessionSeconds += 1;
+                updateDisplay();
+                if (remaining <= 0) onPeriodEnd();
+            }
+            startBtn.addEventListener("click", () => {
+                running = !running;
+                if (running) {
+                    if (periodFresh) {
+                        workMin = Number(workInput.value) || 25; breakMin = Number(breakInput.value) || 5;
+                        remaining = (mode === "work" ? workMin : breakMin) * 60;
+                        updateDisplay();
+                    }
+                    startBtn.textContent = "Pauzeren";
+                    workInput.disabled = true; breakInput.disabled = true;
+                    activeTimerInterval = setInterval(tick, 1000);
+                } else {
+                    startBtn.textContent = "Start";
+                    clearInterval(activeTimerInterval); activeTimerInterval = null;
+                }
+            });
+            modal.querySelector("#timerResetBtn").addEventListener("click", () => {
+                running = false; startBtn.textContent = "Start";
+                clearInterval(activeTimerInterval); activeTimerInterval = null;
+                workInput.disabled = false; breakInput.disabled = false;
+                sessionSeconds = 0; periodFresh = true;
+                workMin = Number(workInput.value) || 25; breakMin = Number(breakInput.value) || 5;
+                remaining = (mode === "work" ? workMin : breakMin) * 60;
+                updateDisplay();
+            });
+            modal.querySelector("#timerCloseBtn").addEventListener("click", () => {
+                clearInterval(activeTimerInterval); activeTimerInterval = null;
+                if (mode === "work" && sessionSeconds >= 60) {
+                    addActualMinutes(task.id, Math.floor(sessionSeconds / 60));
+                    if (onLog) onLog();
+                }
+                closeModal();
+                refreshAll();
+            });
+            updateDisplay();
+        },
+        onClose: () => { if (activeTimerInterval) { clearInterval(activeTimerInterval); activeTimerInterval = null; } },
+    });
+}
+
+// ---------------------------------------------------------------------------
+// Tab: Lijst
+// ---------------------------------------------------------------------------
+function renderListTab() {
+    const el = document.getElementById("tab-list");
+    el.innerHTML = `
+      <div class="search-row">
+        <input type="text" id="listSearch" placeholder="\u{1F50D} Zoeken op titel of vak..." value="${escapeHtml(listSearchQuery)}">
+        <button class="btn" id="listSearchClear">Wissen</button>
+      </div>
+      <div id="listTableWrap"></div>
+    `;
+    const searchInput = el.querySelector("#listSearch");
+    function renderTable() {
+        const rows = getAllPlannedSessions().filter(r => {
+            if (!listSearchQuery) return true;
+            const q = listSearchQuery.toLowerCase();
+            return r.title.toLowerCase().includes(q) || getSubjectName(r.subjectId).toLowerCase().includes(q);
+        });
+        el.querySelector("#listTableWrap").innerHTML = `
+          <div class="table-scroll">
+          <table class="data-table">
+            <thead><tr><th>Datum</th><th>Tijd</th><th>Vak</th><th>Titel</th><th>Duur</th><th></th></tr></thead>
+            <tbody>${rows.length ? rows.map(r => {
+                const urg = deadlineUrgency(r.deadline);
+                const rowClass = urg === "overdue" ? "row-overdue" : urg === "soon" ? "row-soon" : "";
+                const flag = urg === "overdue" ? "\u26A0 " : urg === "soon" ? "\u23F0 " : "";
+                return `<tr class="${rowClass}">
+              <td>${fmtDate(r.date)}</td><td>${r.time}</td>
+              <td>${escapeHtml(getSubjectName(r.subjectId))}</td><td>${flag}${escapeHtml(r.title)}</td>
+              <td>${r.minutes} min</td>
+              <td><button class="btn btn-sm" data-action="mark-done" data-task-id="${r.taskId}" data-session-id="${r.sessionId}">Klaar</button></td>
+            </tr>`;
+            }).join("") : '<tr><td colspan="6" class="empty-state">Geen ingeplande taken gevonden.</td></tr>'}</tbody>
+          </table>
+          </div>
+        `;
+        el.querySelectorAll('[data-action="mark-done"]').forEach(b => b.addEventListener("click", () => {
+            toggleSessionDone(Number(b.dataset.taskId), Number(b.dataset.sessionId)); refreshAll(); showToast("Gemarkeerd als klaar");
+        }));
+    }
+    searchInput.addEventListener("input", (e) => { listSearchQuery = e.target.value; renderTable(); });
+    el.querySelector("#listSearchClear").addEventListener("click", () => { listSearchQuery = ""; searchInput.value = ""; renderTable(); });
+    renderTable();
+}
+
+// ---------------------------------------------------------------------------
+// Tab: Deze week gedaan
+// ---------------------------------------------------------------------------
+function renderCompletedTab() {
+    const el = document.getElementById("tab-completed");
+    const sunday = addDays(completedMonday, 6);
+    const rows = getCompletedTasksBetween(completedMonday, sunday);
+    let totalMinutes = 0, anyActual = false;
+    const subjectMinutes = {};
+    rows.forEach(t => {
+        const eff = t.actualMinutes ? t.actualMinutes : t.completedMinutes;
+        if (t.actualMinutes) anyActual = true;
+        totalMinutes += eff;
+        const name = getSubjectName(t.subjectId);
+        const entry = subjectMinutes[name] || { minutes: 0, color: getSubjectColor(t.subjectId) };
+        entry.minutes += eff;
+        subjectMinutes[name] = entry;
+    });
+    const chartData = Object.entries(subjectMinutes).map(([name, v]) => ({ name, ...v })).sort((a, b) => b.minutes - a.minutes);
+    const maxMinutes = Math.max(1, ...chartData.map(c => c.minutes));
+
+    el.innerHTML = `
+      <div class="cal-nav">
+        <button class="btn btn-sm" id="cPrev">&larr; Vorige week</button>
+        <button class="btn btn-sm" id="cToday">Deze week</button>
+        <button class="btn btn-sm" id="cNext">Volgende week &rarr;</button>
+        <span class="cal-range">${fmtDate(completedMonday)} \u2013 ${fmtDate(sunday)}</span>
+      </div>
+      <div class="table-scroll">
+      <table class="data-table">
+        <thead><tr><th>Dag</th><th>Tijd</th><th>Vak</th><th>Taak</th><th>Geschat</th><th>Werkelijk</th></tr></thead>
+        <tbody>${rows.length ? rows.map(t => {
+            const wd = weekdayIndex(t.completedAt);
+            const timeLabel = t.sessionTime ? t.sessionTime : (t.sessionCount > 1 ? `${t.sessionCount} sessies` : "-");
+            return `<tr>
+              <td>${DAY_NAMES[wd]} ${t.completedAt.slice(8, 10)}/${t.completedAt.slice(5, 7)}</td>
+              <td>${timeLabel}</td><td>${escapeHtml(getSubjectName(t.subjectId))}</td>
+              <td>${escapeHtml(t.title)}</td><td>${t.completedMinutes} min</td>
+              <td>${t.actualMinutes ? t.actualMinutes + " min" : "-"}</td>
+            </tr>`;
+        }).join("") : '<tr><td colspan="6" class="empty-state">Nog geen taken afgewerkt deze week.</td></tr>'}</tbody>
+      </table>
+      </div>
+      <div class="total-line">${rows.length ? `Totaal deze week: ${rows.length} taken afgewerkt, samen ${Math.floor(totalMinutes / 60)}u${String(totalMinutes % 60).padStart(2, "0")}m${anyActual ? " (werkelijke tijd waar gelogd, anders geschat)" : " (geschat)"}.` : ""}</div>
+      <h3 class="section-title">Tijd per vak deze week</h3>
+      <div class="chart-wrap">
+        ${chartData.length ? chartData.map(c => {
+            const h = Math.max(6, Math.round((c.minutes / maxMinutes) * 140));
+            const hh = Math.floor(c.minutes / 60), mm = c.minutes % 60;
+            return `<div class="chart-bar-group">
+              <div class="chart-value">${hh ? hh + "u" : ""}${String(mm).padStart(2, "0")}m</div>
+              <div class="chart-bar" style="height:${h}px; background:${c.color}"></div>
+              <div class="chart-label">${escapeHtml(c.name)}</div>
+            </div>`;
+        }).join("") : '<div class="empty-state">Nog geen data deze week.</div>'}
+      </div>
+    `;
+    el.querySelector("#cPrev").addEventListener("click", () => { completedMonday = addDays(completedMonday, -7); renderCompletedTab(); });
+    el.querySelector("#cNext").addEventListener("click", () => { completedMonday = addDays(completedMonday, 7); renderCompletedTab(); });
+    el.querySelector("#cToday").addEventListener("click", () => { completedMonday = weekStart(isoFromDate(new Date())); renderCompletedTab(); });
+}
+
+// ---------------------------------------------------------------------------
+// Tab: Herhalen
+// ---------------------------------------------------------------------------
+function renderReviewTab() {
+    const el = document.getElementById("tab-review");
+    el.innerHTML = `
+      <h3 class="section-title">Vandaag te herhalen leerstof (afgewisseld per vak)</h3>
+      <div id="reviewDueWrap"></div>
+      <h3 class="section-title" style="margin-top:24px;">Volledig overzicht van alle leerstof</h3>
+      <div id="reviewAllWrap"></div>
+    `;
+    renderReviewList(el.querySelector("#reviewDueWrap"));
+    const all = getAllTopics();
+    el.querySelector("#reviewAllWrap").innerHTML = all.length ? `
+      <table class="data-table">
+        <thead><tr><th>Vak</th><th>Onderwerp</th><th>Volgende herhaling</th><th>Aantal herhalingen</th></tr></thead>
+        <tbody>${all.map(t => `<tr><td>${escapeHtml(t.subjectName)}</td><td>${escapeHtml(t.name)}</td><td>${fmtDate(t.nextReviewDate)}</td><td>${t.reviewCount}</td></tr>`).join("")}</tbody>
+      </table>` : '<div class="empty-state">Nog geen leerstof geregistreerd.</div>';
+}
+
+function openTipsModal() {
+    openModal(`
+      <p class="quote-line">\u201cEen tocht van duizend mijl begint met een enkele stap.\u201d <span class="quote-author">\u2014 Lao Tzu, Tao Te Ching</span></p>
+
+      <h3 class="section-title">Waarom voelt plannen soms zo zwaar?</h3>
+      <ul class="tips-list">
+        <li>Het stukje van je hersenen dat plant en vooruitkijkt, is nog volop aan het groeien \u2014 dat wordt pas rond je midden-twintiger jaren echt "af". Als dit moeilijk voelt, is dat dus geen persoonlijk falen, maar gewoon waar je nu in je ontwikkeling staat.</li>
+        <li>Een grote, vage taak ("studeren voor de toets") voelt bedreigender dan ze is. Uitstellen geeft even een opgelucht gevoel, maar hoe langer je wacht, hoe groter de taak in je hoofd lijkt te worden.</li>
+        <li>Iedereen \u2014 ook volwassenen \u2014 is slecht in inschatten hoe lang iets duurt. Dat is een bekend, heel normaal verschijnsel, geen persoonlijke zwakte.</li>
+        <li>Directe dingen (je telefoon, vrienden, een spelletje) voelen véél aantrekkelijker dan iets waarvan de beloning (een goed cijfer) pas over twee weken komt. Dat is gewoon hoe hersenen werken, niet iets waar je "beter" in moet zijn.</li>
+      </ul>
+
+      <h3 class="section-title">Wat levert het je op?</h3>
+      <ul class="tips-list">
+        <li>Minder van dat vage, knagende "ik zou eigenlijk moeten..."-gevoel op de achtergrond.</li>
+        <li>Je hoeft niet steeds opnieuw te beslissen wat je nu moet doen \u2014 dat is al beslist, je moet het gewoon uitvoeren.</li>
+        <li>Grote taken voelen minder eng als je ze opdeelt in kleine, concrete stapjes.</li>
+        <li>Je leert jezelf beter kennen: hoe lang iets echt duurt, wanneer je het beste werkt.</li>
+        <li>Het is een vaardigheid die je overal in je leven zal gebruiken, niet enkel op school.</li>
+      </ul>
+
+      <h3 class="section-title">Concrete tips</h3>
+      <ul class="tips-list">
+        <li><strong>\u00c9\u00e9n vast moment per dag</strong> (bv. net na het laatste belsignaal) om Smartschool over te zetten naar de planner \u2014 niet steeds opnieuw tussendoor.</li>
+        <li><strong>Niet alles overtypen.</strong> Enkel wat echt tijd vraagt (toetsen, taken, grote opdrachten) \u2014 elke kleine mededeling erin zetten maakt de lijst snel overweldigend.</li>
+        <li><strong>Begin klein.</strong> Eerst gewoon vandaag en morgen goed plannen, niet meteen de hele week perfect.</li>
+        <li><strong>Maak een taak concreet.</strong> "Hoofdstuk 3, bladzijde 12-18 lezen" werkt beter dan gewoon "studeren".</li>
+        <li><strong>Een gemiste dag is geen ramp.</strong> Gewoon de volgende dag terug oppikken \u2014 dat is waardevoller dan proberen alles perfect te laten lopen.</li>
+        <li><strong>Duurde iets langer dan gepland?</strong> Dat is informatie, geen falen \u2014 zo leer je jezelf beter inschatten voor de volgende keer.</li>
+      </ul>
+      <div class="modal-actions">
+        <button class="btn btn-primary" data-close>Begrepen</button>
+      </div>
+    `, { onMount: (modal) => {
+        modal.querySelector("[data-close]").addEventListener("click", closeModal);
+    }});
+}
+
+// ---------------------------------------------------------------------------
+// Init
+// ---------------------------------------------------------------------------
+function initApp() {
+    setStorageBackend(window.localStorage);
+    loadState();
+    ensureDefaultSubjects();
+    setupTabs();
+    document.getElementById("tipsBtn").addEventListener("click", openTipsModal);
+}
+document.addEventListener("DOMContentLoaded", initApp);
+
+</script>
+</body>
+</html>

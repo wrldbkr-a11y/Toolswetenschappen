@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Krachten construeren — samenstellen &amp; ontbinden</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f4f6fa;
+    --bg-grid:rgba(22,33,58,.055);
+    --paper:#ffffff;
+    --ink:#16213a;
+    --ink-soft:#55617e;
+    --ink-faint:#8a93ab;
+    --border:#dbe2ee;
+    --border-soft:#e8ecf4;
+    --f1:#2563eb;      /* eerste kracht */
+    --f2:#059669;      /* tweede kracht */
+    --fr:#dc2626;      /* resultante / eerste component */
+    --fb:#7c3aed;      /* tweede component */
+    --helper:#94a3b8;  /* hulplijnen */
+    --axis:#b7c0d1;
+    --accent-bg:#eef2ff;
+    --radius:14px;
+    --radius-sm:9px;
+    --shadow:0 1px 2px rgba(22,33,58,.04), 0 8px 24px -12px rgba(22,33,58,.12);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    background-image:
+      linear-gradient(var(--bg-grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--bg-grid) 1px, transparent 1px);
+    background-size:26px 26px;
+    color:var(--ink);
+    font-family:'Inter',system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+  }
+  h1,h2,h3,.display{font-family:'Space Grotesk',sans-serif;}
+  .mono{font-family:'JetBrains Mono',monospace;}
+
+  /* ---------- top bar ---------- */
+  header.top{
+    padding:14px clamp(16px,4vw,40px) 12px;
+    border-bottom:1px solid var(--border);
+    background:var(--paper);
+    position:sticky; top:0; z-index:20;
+  }
+  header.top .eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--fr); font-weight:700; margin-bottom:3px;
+  }
+  header.top h1{
+    font-size:clamp(18px,2.4vw,23px); font-weight:700; margin:0 0 3px;
+    letter-spacing:-.01em;
+  }
+  header.top p{margin:0; color:var(--ink-soft); font-size:13px; max-width:640px;}
+
+  /* ---------- layout ---------- */
+  .layout{
+    display:grid;
+    grid-template-columns:250px 1fr;
+    gap:0;
+    max-width:1220px;
+    margin:0 auto;
+  }
+  nav.side{
+    padding:22px 14px 60px;
+    border-right:1px solid var(--border);
+    position:sticky; top:var(--header-h, 97px); align-self:start;
+    height:calc(100vh - var(--header-h, 97px));
+    overflow-y:auto;
+  }
+  .side-group{margin-bottom:22px;}
+  .side-group h3{
+    font-size:11px; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--ink-faint); font-weight:600; margin:0 0 8px 10px;
+  }
+  .side-item{
+    display:flex; align-items:center; gap:10px;
+    width:100%; text-align:left; border:none; background:none; cursor:pointer;
+    padding:9px 10px; border-radius:var(--radius-sm);
+    font-family:'Inter',sans-serif; font-size:14px; color:var(--ink-soft);
+    margin-bottom:2px; transition:background .15s, color .15s;
+  }
+  .side-item .badge{
+    font-family:'JetBrains Mono',monospace; font-size:11.5px; font-weight:700;
+    color:var(--ink-faint); min-width:30px;
+  }
+  .side-item:hover{background:var(--border-soft); color:var(--ink);}
+  .side-item.active{background:var(--accent-bg); color:var(--ink); font-weight:600;}
+  .side-item.active .badge{color:var(--fr);}
+
+  main.content{padding:16px clamp(16px,4vw,40px) 50px;}
+
+  .crumb{font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--ink-faint); margin-bottom:5px;}
+  .crumb b{color:var(--ink-soft);}
+  main h2{font-size:clamp(19px,2.4vw,24px); margin:0 0 6px; letter-spacing:-.01em;}
+  .method-tag{
+    display:inline-flex; align-items:center; gap:6px;
+    font-family:'JetBrains Mono',monospace; font-size:11.5px; font-weight:700;
+    letter-spacing:.03em; color:var(--f1); background:#eaf1ff;
+    border:1px solid #cfe0ff; padding:4px 10px; border-radius:100px; margin-bottom:10px;
+  }
+  main .intro{color:var(--ink-soft); font-size:14.5px; line-height:1.5; max-width:680px; margin:0 0 14px;}
+
+  /* ---------- stage ---------- */
+  .stage-wrap{
+    display:grid; grid-template-columns:minmax(0,1.35fr) minmax(280px,0.85fr);
+    gap:20px; align-items:start;
+  }
+  .stage-card{
+    background:var(--paper); border:1px solid var(--border); border-radius:var(--radius);
+    box-shadow:var(--shadow); overflow:hidden;
+  }
+  .stage-head{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:12px 16px; border-bottom:1px solid var(--border-soft);
+  }
+  .stage-head .title{font-size:12.5px; color:var(--ink-faint); font-family:'JetBrains Mono',monospace;}
+  .btn{
+    font-family:'Inter',sans-serif; font-weight:600; font-size:13px; cursor:pointer;
+    border-radius:100px; border:1px solid var(--border); background:#fff; color:var(--ink-soft);
+    padding:7px 14px; transition:.15s; display:inline-flex; align-items:center; gap:6px;
+  }
+  .btn:hover{border-color:var(--ink-faint); color:var(--ink);}
+  .btn:active{transform:translateY(1px);}
+  .btn.primary{background:var(--ink); color:#fff; border-color:var(--ink);}
+  .btn.primary:hover{background:#0d1730;}
+  .btn:disabled{opacity:.35; cursor:not-allowed;}
+  .btn:disabled:hover{border-color:var(--border); color:var(--ink-soft);}
+
+  svg#stage{width:100%; height:auto; max-height:60vh; display:block; background:
+      linear-gradient(var(--bg-grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--bg-grid) 1px, transparent 1px);
+    background-size:24px 24px; background-color:#fbfcfe;}
+
+  .legend{display:flex; flex-wrap:wrap; gap:14px; padding:12px 16px; border-top:1px solid var(--border-soft);}
+  .legend .item{display:flex; align-items:center; gap:7px; font-size:13px; color:var(--ink-soft);}
+  .legend .swatch{width:18px; height:3px; border-radius:2px;}
+  .legend .swatch.dashed{background:none; border-top:2px dashed var(--helper); width:18px; height:0;}
+
+  /* ---------- step panel ---------- */
+  .step-card{
+    background:var(--paper); border:1px solid var(--border); border-radius:var(--radius);
+    box-shadow:var(--shadow); padding:18px 20px 20px; display:flex; flex-direction:column;
+    min-height:100%;
+  }
+  .step-progress{display:flex; align-items:center; gap:8px;}
+  .step-progress .dot{width:7px; height:7px; border-radius:50%; background:var(--border);}
+  .step-progress .dot.done{background:var(--f1);}
+  .step-progress .dot.now{background:var(--fr); transform:scale(1.35);}
+  .step-label-row{display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;}
+  .restart-btn{padding:5px 11px; font-size:12px; flex:0 0 auto;}
+  .step-label{font-family:'JetBrains Mono',monospace; font-size:11.5px; color:var(--ink-faint); letter-spacing:.05em; margin-bottom:6px; text-transform:uppercase;}
+  .step-text{font-size:16px; line-height:1.55; color:var(--ink); flex:1; min-height:120px;}
+  .step-text b{color:var(--fr);}
+  .step-nav{display:flex; gap:8px; margin-top:16px;}
+  .step-nav .btn{flex:1; justify-content:center;}
+
+  .vn{position:relative; display:inline-block; padding-top:0.5em;}
+  .vn::before{
+    content:'';
+    position:absolute; top:0.02em; left:50%;
+    width:0.72em; height:0.42em;
+    transform:translateX(-50%);
+    background:currentColor;
+    clip-path: polygon(0% 32%, 62% 32%, 62% 8%, 100% 50%, 62% 92%, 62% 68%, 0% 68%);
+  }
+
+  .summary{
+    margin-top:14px; padding:14px 16px; border-radius:var(--radius-sm);
+    background:var(--accent-bg); border:1px solid #d6ddfb; font-size:13.5px;
+    color:var(--ink); line-height:1.6; display:none;
+  }
+  .summary.show{display:block;}
+  .summary .formula{font-family:'JetBrains Mono',monospace; font-size:14px; color:var(--fr); font-weight:700; display:block; margin-top:4px;}
+
+  /* draw-in animation */
+  .appear{animation:fadeUp .5s ease both;}
+  @keyframes fadeUp{
+    from{opacity:0; transform:translateY(4px);}
+    to{opacity:1; transform:translateY(0);}
+  }
+  .draw-line{stroke-dasharray:800; stroke-dashoffset:800; animation:drawline .6s ease forwards;}
+  @keyframes drawline{to{stroke-dashoffset:0;}}
+
+  @media (max-width:880px){
+    .layout{grid-template-columns:1fr;}
+    nav.side{
+      position:static; height:auto; border-right:none; border-bottom:1px solid var(--border);
+      display:flex; gap:18px; overflow-x:auto; padding:14px 14px 16px;
+      -webkit-overflow-scrolling:touch;
+    }
+    .side-group{margin-bottom:0; flex:0 0 auto;}
+    .side-group h3{white-space:nowrap;}
+    .side-item{white-space:nowrap; padding:11px 12px;}
+    .stage-wrap{grid-template-columns:1fr;}
+    .btn{padding:10px 16px; font-size:14px;}
+    .restart-btn{padding:9px 14px; font-size:13px;}
+    .step-nav .btn{min-height:44px;}
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="eyebrow">Constructie-oefenaar · krachten</div>
+  <h1>Samenstellen &amp; ontbinden van twee krachten</h1>
+  <p>Volg elke constructie stap voor stap — precies zoals op papier met liniaal en geodriehoek. Hulplijnen staan gestippeld; de gezochte kracht (Fr, Fx of Fy) krijgt telkens een eigen kleur.</p>
+</header>
+
+<div class="layout">
+  <nav class="side" id="sideNav"></nav>
+  <main class="content">
+    <div class="crumb" id="crumb"></div>
+    <h2 id="topicTitle"></h2>
+    <div class="method-tag" id="methodTag"></div>
+    <p class="intro" id="topicIntro"></p>
+
+    <div class="stage-wrap">
+      <div class="stage-card">
+        <div class="stage-head">
+          <span class="title" id="stageLabel">CONSTRUCTIE</span>
+          <button class="btn" id="newExampleBtn">↻ Nieuw voorbeeld</button>
+        </div>
+        <svg id="stage" viewBox="0 0 620 360" xmlns="http://www.w3.org/2000/svg"></svg>
+        <div class="legend" id="legend"></div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-label-row">
+          <div class="step-progress" id="dots"></div>
+          <button class="btn restart-btn" id="restartBtn" title="Herbegin deze constructie van nul">↺ Herbegin</button>
+        </div>
+        <div class="step-label" id="stepLabel">Stap 1</div>
+        <div class="step-text" id="stepText"></div>
+        <div class="summary" id="summary"></div>
+        <div class="step-nav">
+          <button class="btn" id="prevBtn">← Vorige</button>
+          <button class="btn primary" id="nextBtn">Volgende →</button>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+/* ============================================================
+   HELPERS: geometrie & svg
+   ============================================================ */
+const NS = "http://www.w3.org/2000/svg";
+const D2R = Math.PI/180;
+function polar(r, deg){ return { x: r*Math.cos(deg*D2R), y: r*Math.sin(deg*D2R) }; }
+function add(a,b){ return {x:a.x+b.x, y:a.y+b.y}; }
+function sub(a,b){ return {x:a.x-b.x, y:a.y-b.y}; }
+function mag(a){ return Math.sqrt(a.x*a.x+a.y*a.y); }
+function randInt(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
+function randChoice(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+function fmt(n){ return (Math.round(n*10)/10).toString().replace('.',','); }
+
+function el(tag, attrs={}){
+  const e = document.createElementNS(NS, tag);
+  for(const k in attrs) e.setAttribute(k, attrs[k]);
+  return e;
+}
+
+/* pixel-canvas setup */
+const VB_W = 620, VB_H = 360;
+let ORIGIN = { x: VB_W/2, y: VB_H/2 };
+
+function makeScale(maxExtent){
+  return Math.max(20, Math.min(46, 300/maxExtent));
+}
+
+/* Verzamel alle punten die in de volledige constructie van een onderwerp
+   kunnen voorkomen, zodat we de tekening precies kunnen centreren en
+   op schaal laten passen binnen het canvas — ongeacht bij welke stap
+   de leerling zich bevindt. */
+function collectPoints(topic, data){
+  const steps = topic.steps(data);
+  const pts = [{x:0,y:0}];
+  steps.forEach(s=>{
+    s.add.forEach(desc=>{
+      if(desc.t==='vec' || desc.t==='helper'){ pts.push(desc.from); pts.push(desc.to); }
+      else if(desc.t==='point'){ pts.push(desc.at); }
+      else if(desc.t==='geo'){ pts.push(desc.through); }
+    });
+  });
+  return pts;
+}
+
+function computeLayout(topicId, data){
+  const topic = TOPICS[topicId];
+  const pts = collectPoints(topic, data);
+  let minX=0, maxX=0, minY=0, maxY=0;
+  pts.forEach(p=>{
+    minX = Math.min(minX, p.x); maxX = Math.max(maxX, p.x);
+    minY = Math.min(minY, p.y); maxY = Math.max(maxY, p.y);
+  });
+  const padWorld = 1.1; // ruimte voor labels, hoekbogen en geodriehoek
+  minX -= padWorld; maxX += padWorld; minY -= padWorld; maxY += padWorld;
+  const w = Math.max(0.5, maxX-minX), h = Math.max(0.5, maxY-minY);
+  const PAD_PX = 40;
+  const scale = Math.max(16, Math.min(52, Math.min((VB_W-2*PAD_PX)/w, (VB_H-2*PAD_PX)/h)));
+  const cx = (minX+maxX)/2, cy = (minY+maxY)/2;
+  return { scale, origin: { x: VB_W/2 - cx*scale, y: VB_H/2 + cy*scale } };
+}
+
+/* ============================================================
+   RENDERING van beschrijvende "descriptors"
+   ============================================================ */
+function toPx(scale, p){
+  return { x: ORIGIN.x + p.x*scale, y: ORIGIN.y - p.y*scale };
+}
+
+function ensureMarker(svg, color, id){
+  let defs = svg.querySelector('defs');
+  if(!defs){ defs = el('defs'); svg.appendChild(defs); }
+  if(svg.querySelector('#'+id)) return;
+  const m = el('marker', {id, markerWidth:'9', markerHeight:'9', refX:'7', refY:'4', orient:'auto', markerUnits:'userSpaceOnUse'});
+  const p = el('path', {d:'M0,0 L8,4 L0,8 Z', fill:color});
+  m.appendChild(p); defs.appendChild(m);
+}
+
+function renderDescriptor(svg, scale, d, animate){
+  ensureMarker(svg, '#16213a', 'arrow-ink');
+  const g = el('g', {class: animate ? 'appear' : ''});
+
+  if(d.t === 'vec'){
+    ensureMarker(svg, d.color, 'arrow-'+d.colorId);
+    const p1 = toPx(scale, d.from), p2 = toPx(scale, d.to);
+    const lineAttrs = {
+      x1:p1.x, y1:p1.y, x2:p2.x, y2:p2.y,
+      stroke:d.color, 'stroke-width':3, 'marker-end':'url(#arrow-'+d.colorId+')',
+      'stroke-linecap':'round', class: animate ? 'draw-line':''
+    };
+    if(d.dashed) lineAttrs['stroke-dasharray'] = '9 6';
+    const line = el('line', lineAttrs);
+    g.appendChild(line);
+    if(d.label){
+      const mid = {x:(p1.x+p2.x)/2, y:(p1.y+p2.y)/2};
+      const side = d.side || 1;
+      let nx, ny;
+      if(d.normalAngle !== undefined){
+        const nrm = polar(1, d.normalAngle+90);
+        nx = nrm.x*side; ny = -nrm.y*side;
+      } else {
+        const dx = p2.x-p1.x, dy = p2.y-p1.y, len = Math.hypot(dx,dy)||1;
+        nx = (-dy/len)*side; ny = (dx/len)*side;
+      }
+      const off = 24;
+      const anchorX = mid.x + nx*off, anchorY = mid.y + ny*off;
+      const fontSize = 13.5, charW = fontSize*0.615;
+      const textWidth = d.label.length*charW;
+      const startX = anchorX - textWidth/2;
+      const t = el('text', {
+        x:startX, y:anchorY, fill:d.color, 'font-family':"'JetBrains Mono',monospace",
+        'font-size':fontSize, 'font-weight':700, 'text-anchor':'start', 'dominant-baseline':'middle',
+        stroke:'#fbfcfe', 'stroke-width':4, 'paint-order':'stroke fill'
+      });
+      t.textContent = d.label;
+      g.appendChild(t);
+      // getekend vectorteken (pijltje) boven de eerste letter van de naam ("F")
+      const ax = startX + charW*0.5, ay = anchorY - fontSize*0.72;
+      const aw = charW*0.8, ah = 2.6;
+      const bg = el('rect', {x:ax-aw/2-1.5, y:ay-ah-1.5, width:aw+3, height:ah*2+3, fill:'#fbfcfe'});
+      g.appendChild(bg);
+      const arrow = el('path', {
+        d:`M${ax-aw/2},${ay} L${ax+aw/2-2},${ay} M${ax+aw/2-5},${ay-ah} L${ax+aw/2},${ay} L${ax+aw/2-5},${ay+ah}`,
+        stroke:d.color, 'stroke-width':1.4, fill:'none', 'stroke-linecap':'round', 'stroke-linejoin':'round'
+      });
+      g.appendChild(arrow);
+    }
+  }
+
+  else if(d.t === 'helper'){
+    const p1 = toPx(scale, d.from), p2 = toPx(scale, d.to);
+    const line = el('line', {
+      x1:p1.x, y1:p1.y, x2:p2.x, y2:p2.y,
+      stroke:'var(--helper)', 'stroke-width':1.6, 'stroke-dasharray':'6 4'
+    });
+    g.appendChild(line);
+  }
+
+  else if(d.t === 'axis'){
+    const dir = polar(1, d.angle);
+    const ext = (VB_W+VB_H)/scale; // ruim genoeg om het volledige canvas te overspannen
+    const p1 = toPx(scale, {x:-dir.x*ext, y:-dir.y*ext});
+    const p2 = toPx(scale, {x:dir.x*ext, y:dir.y*ext});
+    const line = el('line', {
+      x1:p1.x, y1:p1.y, x2:p2.x, y2:p2.y,
+      stroke:'var(--axis)', 'stroke-width':1.4, 'stroke-dasharray':'1 4', 'stroke-linecap':'round'
+    });
+    g.appendChild(line);
+    if(d.label){
+      const lp = toPx(scale, polar(d.labelR||6.6, d.angle));
+      const t = el('text', {x:lp.x, y:lp.y, fill:'var(--ink-faint)', 'font-family':"'JetBrains Mono',monospace",
+        'font-size':12.5, 'font-weight':700, 'text-anchor':'middle',
+        stroke:'#fbfcfe', 'stroke-width':4, 'paint-order':'stroke fill'});
+      t.textContent = d.label;
+      g.appendChild(t);
+    }
+  }
+
+  else if(d.t === 'rightangle'){
+    const s = 0.4;
+    const u1 = polar(s, d.a1), u2 = polar(s, d.a2);
+    const pts = [d.at, add(d.at,u1), add(add(d.at,u1),u2), add(d.at,u2)].map(p=>toPx(scale,p));
+    const path = el('path', {
+      d:`M${pts[0].x},${pts[0].y} L${pts[1].x},${pts[1].y} L${pts[2].x},${pts[2].y} L${pts[3].x},${pts[3].y}`,
+      fill:'none', stroke:'var(--ink-soft)', 'stroke-width':1.4
+    });
+    g.appendChild(path);
+  }
+
+  else if(d.t === 'arc'){
+    const steps = 18; let dstr = '';
+    for(let i=0;i<=steps;i++){
+      const a = d.a1 + (d.a2-d.a1)*i/steps;
+      const p = toPx(scale, add(d.at, polar(d.r, a)));
+      dstr += (i===0?'M':'L') + p.x + ',' + p.y + ' ';
+    }
+    const path = el('path', {d:dstr, fill:'none', stroke:'var(--ink-faint)', 'stroke-width':1.4});
+    g.appendChild(path);
+    if(d.label){
+      const mid = d.a1 + (d.a2-d.a1)/2;
+      const lp = toPx(scale, add(d.at, polar(d.r+0.55, mid)));
+      const t = el('text', {x:lp.x, y:lp.y, fill:'var(--ink-soft)', 'font-family':"'JetBrains Mono',monospace",
+        'font-size':12.5, 'font-weight':600, 'text-anchor':'middle',
+        stroke:'#fbfcfe', 'stroke-width':4, 'paint-order':'stroke fill'});
+      t.textContent = d.label;
+      g.appendChild(t);
+    }
+  }
+
+  else if(d.t === 'geo'){
+    // Een geodriehoek is een rechthoekige (meestal gelijkbenige) driehoek:
+    // de schuine zijde (hypotenusa) leg je tegen de richting die je wil natekenen.
+    const size = d.length || 2.3;               // lengte van de schuine meetzijde
+    const dir = polar(1, d.angle), perp = polar(1, d.angle+90);
+    const sign = d.side || 1;
+    const centerOffset = 0.3;                    // iets van de hulplijn af, zodat ze niet verdwijnt
+    const center = add(d.through, {x:perp.x*centerOffset*sign, y:perp.y*centerOffset*sign});
+    const h1   = sub(center, {x:dir.x*size*0.5,  y:dir.y*size*0.5});   // uiteinde 1 van de schuine zijde
+    const h2   = add(center, {x:dir.x*size*0.5,  y:dir.y*size*0.5});   // uiteinde 2 van de schuine zijde
+    const apex = add(center, {x:perp.x*size*0.5*sign, y:perp.y*size*0.5*sign}); // de rechte hoek
+
+    const pxPts = [h1, h2, apex].map(p=>toPx(scale,p));
+    const poly = el('polygon', {
+      points: pxPts.map(p=>p.x+','+p.y).join(' '),
+      fill:'rgba(120,148,196,.16)', stroke:'var(--ink-soft)', 'stroke-width':1.4
+    });
+    g.appendChild(poly);
+
+    // liniaalstreepjes langs de schuine (meet)zijde
+    const n = 8;
+    for(let i=1;i<n;i++){
+      const t = i/n;
+      const pt = { x:h1.x+(h2.x-h1.x)*t, y:h1.y+(h2.y-h1.y)*t };
+      const tickLen = (i % 2 === 0) ? 0.13 : 0.075;
+      const tickEnd = { x:pt.x + perp.x*tickLen*sign, y:pt.y + perp.y*tickLen*sign };
+      const a = toPx(scale,pt), b = toPx(scale,tickEnd);
+      g.appendChild(el('line',{x1:a.x,y1:a.y,x2:b.x,y2:b.y,stroke:'var(--ink-soft)','stroke-width':1}));
+    }
+
+    // scharniergaatje bij de rechte hoek — typisch voor een geodriehoek
+    const apexPx = toPx(scale, apex);
+    g.appendChild(el('circle', {cx:apexPx.x, cy:apexPx.y, r:2.6, fill:'#fbfcfe', stroke:'var(--ink-soft)', 'stroke-width':1.1}));
+
+    if(d.label){
+      const lp = toPx(scale, add(apex, {x:perp.x*0.55*sign, y:perp.y*0.55*sign}));
+      const t = el('text', {x:lp.x, y:lp.y, fill:'var(--ink-soft)', 'font-family':"'JetBrains Mono',monospace",
+        'font-size':10.5, 'font-weight':600, 'text-anchor':'middle',
+        stroke:'#fbfcfe', 'stroke-width':3.5, 'paint-order':'stroke fill'});
+      t.textContent = d.label;
+      g.appendChild(t);
+    }
+  }
+
+  else if(d.t === 'point'){
+    const p = toPx(scale, d.at);
+    const c = el('circle', {cx:p.x, cy:p.y, r:3.2, fill:'var(--ink)'});
+    g.appendChild(c);
+    if(d.label){
+      const t = el('text', {x:p.x-10, y:p.y+4, fill:'var(--ink-soft)', 'font-family':"'JetBrains Mono',monospace",
+        'font-size':12.5, 'font-weight':700, 'text-anchor':'end',
+        stroke:'#fbfcfe', 'stroke-width':3.5, 'paint-order':'stroke fill'});
+      t.textContent = d.label;
+      g.appendChild(t);
+    }
+  }
+
+  return g;
+}
+
+/* origin marker + label, always drawn */
+function baseOrigin(svg, scale, label){
+  const p = toPx(scale, {x:0,y:0});
+  const c = el('circle', {cx:p.x, cy:p.y, r:3.6, fill:'var(--ink)'});
+  svg.appendChild(c);
+  const t = el('text', {x:p.x-10, y:p.y+18, fill:'var(--ink-faint)', 'font-family':"'JetBrains Mono',monospace",
+    'font-size':12.5, 'font-weight':700});
+  t.textContent = label || 'O';
+  svg.appendChild(t);
+}
+
+/* ============================================================
+   TOPIC DEFINITIONS
+   ============================================================ */
+const TRIPLES = [[3,4,5],[4,3,5],[6,8,10],[8,6,10]];
+
+const TOPICS = {
+
+'1.1': {
+  group:'1', groupTitle:'1 · Samenstellen — zelfde richting', badge:'1.1',
+  title:'Krachten met dezelfde zin',
+  method:'Kop-staartmethode',
+  intro:'Twee krachten grijpen aan in hetzelfde punt en werken langs dezelfde rechte, in dezelfde zin. Om de resultante te construeren, verschuif je één kracht evenwijdig met zichzelf tot ze in het verlengde van de andere ligt (kop-staartmethode).',
+  gen(){
+    const F1 = randInt(3,6), F2 = randInt(2,5), th = randChoice([0,18,-14,26]);
+    const p1 = polar(F1, th);
+    const p2given = polar(F2, th);
+    const p2 = add(p1, polar(F2, th));
+    return {F1,F2,th,p1,p2given,p2, Fr:F1+F2, maxExtent:(F1+F2)*1.15};
+  },
+  steps(d){
+    return [
+      { text:`Teken <b><span class="vn">F</span>₁</b> (${d.F1} N) en <b><span class="vn">F</span>₂</b> (${d.F2} N) allebei vanuit hetzelfde aangrijpingspunt O — zo grijpen ze in werkelijkheid ook aan. Beide liggen op dezelfde rechte, in dezelfde zin.`,
+        add:[
+          {t:'vec', from:{x:0,y:0}, to:d.p1, color:'var(--f1)', colorId:'f1', label:`F₁ (${d.F1} N)`, normalAngle:d.th, side:1},
+          {t:'vec', from:{x:0,y:0}, to:d.p2given, color:'var(--f2)', colorId:'f2', label:`F₂ (${d.F2} N)`, normalAngle:d.th, side:-1}
+        ] },
+      { text:`Teken vanaf de <b>kop van F₂</b> een <b>hulplijn</b> (stippellijn): evenwijdig aan F₁ en even lang. Je verschuift F₂ immers over exact de vector F₁ — het einde van deze hulplijn is de kop van de resultante.`,
+        add:[ {t:'helper', from:d.p2given, to:d.p2} ] },
+      { text:`Verbind de staart van <span class="vn">F</span>₁ met het einde van de hulplijn. Dat is de resultante <b><span class="vn">F</span>r</b> — teken ze in een andere kleur.`,
+        add:[ {t:'vec', from:{x:0,y:0}, to:d.p2, color:'var(--fr)', colorId:'fr', label:`Fr`, normalAngle:d.th, side:-1} ] },
+      { text:`Omdat beide krachten dezelfde zin hebben, tel je gewoon de groottes op: <b>Fr = F₁ + F₂</b>. Richting van Fr = richting van F₁ en F₂.`, add:[] },
+    ];
+  },
+  summary(d){ return `Fr = F₁ + F₂ = ${d.F1} N + ${d.F2} N<span class="formula">Fr = ${fmt(d.Fr)} N</span>`; }
+},
+
+'1.2': {
+  group:'1', groupTitle:'1 · Samenstellen — zelfde richting', badge:'1.2',
+  title:'Krachten met tegengestelde zin',
+  method:'Kop-staartmethode',
+  intro:'Twee krachten grijpen aan in hetzelfde punt en werken langs dezelfde rechte, maar in tegengestelde zin. De constructie verloopt zoals bij 1.1 — je verschuift opnieuw één kracht tot in het verlengde van de andere.',
+  gen(){
+    const F1 = randInt(5,8), F2 = randInt(2,F1-2), th = randChoice([0,18,-14,26]);
+    const p1 = polar(F1, th);
+    const p2given = polar(F2, th+180);
+    const p2 = sub(p1, polar(F2, th));
+    return {F1,F2,th,p1,p2given,p2, Fr:F1-F2, maxExtent:F1*1.2};
+  },
+  steps(d){
+    return [
+      { text:`Teken <b><span class="vn">F</span>₁</b> (${d.F1} N) en <b><span class="vn">F</span>₂</b> (${d.F2} N) allebei vanuit hetzelfde aangrijpingspunt O, want daar grijpen ze in werkelijkheid aan. Ze liggen op dezelfde rechte, maar in <b>tegengestelde zin</b>.`,
+        add:[
+          {t:'vec', from:{x:0,y:0}, to:d.p1, color:'var(--f1)', colorId:'f1', label:`F₁ (${d.F1} N)`, normalAngle:d.th, side:1},
+          {t:'vec', from:{x:0,y:0}, to:d.p2given, color:'var(--f2)', colorId:'f2', label:`F₂ (${d.F2} N)`, normalAngle:d.th, side:-1}
+        ] },
+      { text:`Teken vanaf de <b>kop van F₂</b> een <b>hulplijn</b> (stippellijn): evenwijdig aan F₁ en even lang. Je verschuift F₂ immers over exact de vector F₁ — het einde van deze hulplijn is de kop van de resultante.`,
+        add:[ {t:'helper', from:d.p2given, to:d.p2} ] },
+      { text:`Verbind de staart van <span class="vn">F</span>₁ met het einde van de hulplijn: dat is <b><span class="vn">F</span>r</b>. Merk op dat Fr korter is dan F₁ alleen.`,
+        add:[ {t:'vec', from:{x:0,y:0}, to:d.p2, color:'var(--fr)', colorId:'fr', label:`Fr`, normalAngle:d.th, side:-1} ] },
+      { text:`Bij tegengestelde zin trek je de groottes van elkaar af: <b>Fr = F₁ − F₂</b>. De richting van Fr volgt die van de grootste kracht (hier F₁).`, add:[] },
+    ];
+  },
+  summary(d){ return `Fr = F₁ − F₂ = ${d.F1} N − ${d.F2} N<span class="formula">Fr = ${fmt(d.Fr)} N</span>`; }
+},
+
+'2.1': {
+  group:'2', groupTitle:'2 · Samenstellen — verschillende richting', badge:'2.1',
+  title:'Loodrecht op elkaar staande krachten',
+  method:'Parallellogrammethode',
+  intro:'Beide krachten grijpen aan in hetzelfde punt en staan loodrecht op elkaar. Je vult het parallellogram (hier een rechthoek) aan met gestippelde hulplijnen; de diagonaal is de resultante.',
+  gen(){
+    const [F1,F2,H] = randChoice(TRIPLES);
+    const p1 = polar(F1,0), p2 = polar(F2,90), P = add(p1,p2);
+    return {F1,F2,Fr:H,p1,p2,P, maxExtent: Math.max(F1,F2)*1.35};
+  },
+  steps(d){
+    return [
+      { text:`Teken <b><span class="vn">F</span>₁</b> (${d.F1} N) en <b><span class="vn">F</span>₂</b> (${d.F2} N) vanuit hetzelfde aangrijpingspunt O. Ze staan loodrecht op elkaar — markeer de rechte hoek.`,
+        add:[
+          {t:'vec', from:{x:0,y:0}, to:d.p1, color:'var(--f1)', colorId:'f1', label:`F₁ (${d.F1} N)`},
+          {t:'vec', from:{x:0,y:0}, to:d.p2, color:'var(--f2)', colorId:'f2', label:`F₂ (${d.F2} N)`},
+          {t:'rightangle', at:{x:0,y:0}, a1:0, a2:90}
+        ] },
+      { text:`Teken vanuit de <b>kop van <span class="vn">F</span>₁</b> een stippellijn evenwijdig aan <span class="vn">F</span>₂. Leg de lange zijde van je <b>geodriehoek</b> langs <span class="vn">F</span>₂ en schuif ze naar de kop van <span class="vn">F</span>₁.`,
+        add:[ {t:'helper', from:d.p1, to:d.P}, {t:'geo', through:{x:(d.p1.x+d.P.x)/2,y:(d.p1.y+d.P.y)/2}, angle:90, side:1} ] },
+      { text:`Teken vanuit de <b>kop van <span class="vn">F</span>₂</b> een stippellijn evenwijdig aan <span class="vn">F</span>₁, op dezelfde manier met de geodriehoek. Beide hulplijnen snijden elkaar in punt P — het parallellogram (hier een rechthoek) is compleet.`,
+        add:[ {t:'helper', from:d.p2, to:d.P}, {t:'geo', through:{x:(d.p2.x+d.P.x)/2,y:(d.p2.y+d.P.y)/2}, angle:0, side:-1}, {t:'point', at:d.P, label:'P'} ] },
+      { text:`Teken de <b>resultante <span class="vn">F</span>r</b> van O naar P, in een andere kleur — dit is de diagonaal.`,
+        add:[ {t:'vec', from:{x:0,y:0}, to:d.P, color:'var(--fr)', colorId:'fr', label:'Fr'} ] },
+      { text:`Omdat <span class="vn">F</span>₁ en <span class="vn">F</span>₂ loodrecht staan, vorm je een rechthoekige driehoek: bereken Fr met de <b>stelling van Pythagoras</b>.`, add:[] },
+    ];
+  },
+  summary(d){ return `Fr = √(F₁² + F₂²) = √((${d.F1} N)² + (${d.F2} N)²)<span class="formula">Fr = ${fmt(d.Fr)} N</span>`; }
+},
+
+'2.2': {
+  group:'2', groupTitle:'2 · Samenstellen — verschillende richting', badge:'2.2',
+  title:'Niet-loodrecht op elkaar staande krachten',
+  method:'Parallellogrammethode',
+  intro:'Dezelfde methode als bij 2.1, maar nu staan de krachten onder een willekeurige hoek. Het parallellogram is nu een "scheef" viervlak — de constructiestappen blijven identiek.',
+  gen(){
+    const F1=randInt(3,5), F2=randInt(3,5), th1=randChoice([0,10,-10]);
+    const delta=randChoice([50,60,70,100,110]), th2=th1+delta;
+    const p1=polar(F1,th1), p2=polar(F2,th2), P=add(p1,p2);
+    const Fr=mag(P);
+    return {F1,F2,th1,th2,delta,p1,p2,P,Fr, maxExtent: Math.max(Fr,F1,F2)*1.3};
+  },
+  steps(d){
+    return [
+      { text:`Teken <b><span class="vn">F</span>₁</b> (${d.F1} N) en <b><span class="vn">F</span>₂</b> (${d.F2} N) vanuit hetzelfde aangrijpingspunt O, onder de gegeven hoek van ${d.delta}° tussen beide.`,
+        add:[
+          {t:'vec', from:{x:0,y:0}, to:d.p1, color:'var(--f1)', colorId:'f1', label:`F₁ (${d.F1} N)`},
+          {t:'vec', from:{x:0,y:0}, to:d.p2, color:'var(--f2)', colorId:'f2', label:`F₂ (${d.F2} N)`},
+          {t:'arc', at:{x:0,y:0}, r:1.1, a1:d.th1, a2:d.th2, label:`${d.delta}°`}
+        ] },
+      { text:`Teken vanuit de <b>kop van <span class="vn">F</span>₁</b> een stippellijn evenwijdig aan <span class="vn">F</span>₂. Leg de lange zijde van je <b>geodriehoek</b> langs <span class="vn">F</span>₂ en schuif ze op tot bij de kop van <span class="vn">F</span>₁.`,
+        add:[ {t:'helper', from:d.p1, to:d.P}, {t:'geo', through:{x:(d.p1.x+d.P.x)/2,y:(d.p1.y+d.P.y)/2}, angle:d.th2, side:1} ] },
+      { text:`Teken vanuit de <b>kop van <span class="vn">F</span>₂</b> een stippellijn evenwijdig aan <span class="vn">F</span>₁, opnieuw met behulp van de geodriehoek. Het snijpunt P sluit het parallellogram.`,
+        add:[ {t:'helper', from:d.p2, to:d.P}, {t:'geo', through:{x:(d.p2.x+d.P.x)/2,y:(d.p2.y+d.P.y)/2}, angle:d.th1, side:-1}, {t:'point', at:d.P, label:'P'} ] },
+      { text:`Teken de <b>resultante <span class="vn">F</span>r</b> van O naar P (de diagonaal), in een andere kleur.`,
+        add:[ {t:'vec', from:{x:0,y:0}, to:d.P, color:'var(--fr)', colorId:'fr', label:'Fr'} ] },
+      { text:`Lees Fr grafisch af op schaal. Wil je het exact berekenen, gebruik dan de <b>cosinusregel</b> met de hoek tussen <span class="vn">F</span>₁ en <span class="vn">F</span>₂.`, add:[] },
+    ];
+  },
+  summary(d){ return `Fr² = F₁² + F₂² + 2·F₁·F₂·cos(${d.delta}°) = (${d.F1} N)² + (${d.F2} N)² + 2·${d.F1} N·${d.F2} N·cos(${d.delta}°)<span class="formula">Fr ≈ ${fmt(d.Fr)} N</span>`; }
+},
+
+'3.1': {
+  group:'3', groupTitle:'3 · Ontbinden van een kracht', badge:'3.1',
+  title:'Loodrecht op elkaar staande componenten',
+  method:'Ontbindingsmethode',
+  intro:'Je gaat nu de omgekeerde weg: één kracht F wordt vervangen door twee loodrechte componenten Fx en Fy langs vaste assen.',
+  gen(){
+    const [Fx,Fy,F] = randChoice(TRIPLES);
+    const relTh = Math.atan2(Fy,Fx)/D2R;           // hoek van F t.o.v. de x-as, binnen het stelsel zelf
+    const base = randChoice([0,0,20,-20,35,-35,55,-55,70,-70]); // oriëntatie van het hele stelsel — niet altijd rechtop
+    const th = base + relTh;                        // werkelijke hoek van F t.o.v. de horizontale canvasrichting
+    const pF = polar(F, th);
+    const footX = polar(Fx, base);                   // voetpunt op de x-as
+    const footY = polar(Fy, base+90);                 // voetpunt op de y-as
+    return {F,Fx,Fy,relTh,base,th,pF,footX,footY, maxExtent:F*1.3};
+  },
+  steps(d){
+    return [
+      { text:`Teken de gegeven kracht <b><span class="vn">F</span></b> (${d.F} N) vanuit het aangrijpingspunt O, onder een hoek van ${Math.round(d.relTh)}° met de x-as.`,
+        add:[ {t:'vec', from:{x:0,y:0}, to:d.pF, color:'var(--f1)', colorId:'f1', label:`F (${d.F} N)`},
+              {t:'arc', at:{x:0,y:0}, r:1.0, a1:d.base, a2:d.th, label:`${Math.round(d.relTh)}°`} ] },
+      { text:`Teken de <b>x-as</b> en <b>y-as</b> door O — dit zijn de gegeven loodrechte richtingen. Let op: die staan niet altijd mooi rechtop, teken ze zoals aangegeven.`,
+        add:[ {t:'axis', angle:d.base, label:'x', labelR:d.F*1.2}, {t:'axis', angle:d.base+90, label:'y', labelR:d.F*1.2} ] },
+      { text:`Vanaf de <b>kop van <span class="vn">F</span></b>: teken een stippellijn loodrecht op de x-as. Zet de rechthoekszijde van je <b>geodriehoek</b> tegen de x-as om die loodrechte snel en nauwkeurig te tekenen. Het snijpunt geeft de kop van <b><span class="vn">F</span>x</b>.`,
+        add:[ {t:'helper', from:d.pF, to:d.footX}, {t:'geo', through:{x:(d.pF.x+d.footX.x)/2,y:(d.pF.y+d.footX.y)/2}, angle:d.base+90, side:1} ] },
+      { text:`Vanaf de <b>kop van <span class="vn">F</span></b>: teken een stippellijn loodrecht op de y-as, opnieuw met de geodriehoek. Het snijpunt geeft de kop van <b><span class="vn">F</span>y</b>.`,
+        add:[ {t:'helper', from:d.pF, to:d.footY}, {t:'geo', through:{x:(d.pF.x+d.footY.x)/2,y:(d.pF.y+d.footY.y)/2}, angle:d.base, side:-1} ] },
+      { text:`Teken <b><span class="vn">F</span>x</b> (O tot het snijpunt op de x-as) en <b><span class="vn">F</span>y</b> (O tot het snijpunt op de y-as), elk in hun eigen kleur.`,
+        add:[ {t:'vec', from:{x:0,y:0}, to:d.footX, color:'var(--fr)', colorId:'fr', label:`Fx`},
+              {t:'vec', from:{x:0,y:0}, to:d.footY, color:'var(--fb)', colorId:'fb', label:`Fy`} ] },
+      { text:`Bereken de componenten met goniometrie: <b>Fx = F·cos θ</b> en <b>Fy = F·sin θ</b>.`, add:[] },
+    ];
+  },
+  summary(d){ return `Fx = F·cos ${Math.round(d.relTh)}° = ${d.F} N · cos ${Math.round(d.relTh)}° &nbsp;·&nbsp; Fy = F·sin ${Math.round(d.relTh)}° = ${d.F} N · sin ${Math.round(d.relTh)}°<span class="formula">Fx = ${fmt(d.Fx)} N &nbsp; Fy = ${fmt(d.Fy)} N</span>`; }
+},
+
+'3.2': {
+  group:'3', groupTitle:'3 · Ontbinden van een kracht', badge:'3.2',
+  title:'Niet-loodrecht op elkaar staande componenten',
+  method:'Ontbindingsmethode',
+  intro:'De kracht F wordt nu ontbonden volgens twee gegeven richtingen a en b die niet loodrecht op elkaar staan — bijvoorbeeld twee touwen of een geleiderail.',
+  gen(){
+    const F=randInt(4,6), thF=randChoice([35,50,65,115,130,145]);
+    const a=thF-randChoice([25,30,35]), b=thF+randChoice([25,30,35]);
+    const pF = polar(F, thF);
+    const A=a*D2R, B=b*D2R;
+    const det = Math.cos(A)*Math.sin(B) - Math.cos(B)*Math.sin(A);
+    const Fa = (pF.x*Math.sin(B) - Math.cos(B)*pF.y)/det;
+    const Fb = (Math.cos(A)*pF.y - pF.x*Math.sin(A))/det;
+    const pA = polar(Fa, a), pB = polar(Fb, b);
+    return {F,thF,a,b,pF,Fa,Fb,pA,pB, maxExtent: Math.max(F,Math.abs(Fa),Math.abs(Fb))*1.35};
+  },
+  steps(d){
+    return [
+      { text:`Teken de gegeven kracht <b><span class="vn">F</span></b> (${d.F} N) vanuit O, onder een hoek van ${d.thF}°.`,
+        add:[ {t:'vec', from:{x:0,y:0}, to:d.pF, color:'var(--f1)', colorId:'f1', label:`F (${d.F} N)`} ] },
+      { text:`Teken de twee <b>gegeven richtingen a en b</b> door O — dit zijn de rechten waarlangs je moet ontbinden.`,
+        add:[ {t:'axis', angle:d.a, label:'a', labelR:d.maxExtent+0.4}, {t:'axis', angle:d.b, label:'b', labelR:d.maxExtent+0.4} ] },
+      { text:`Vanaf de <b>kop van <span class="vn">F</span></b>: teken een stippellijn evenwijdig aan richting b, tot ze richting a snijdt. Leg je <b>geodriehoek</b> langs b en schuif ze naar de kop van <span class="vn">F</span>. Dat snijpunt is de kop van component <b><span class="vn">F</span>a</b>.`,
+        add:[ {t:'helper', from:d.pF, to:d.pA}, {t:'geo', through:{x:(d.pF.x+d.pA.x)/2,y:(d.pF.y+d.pA.y)/2}, angle:d.b, side:1} ] },
+      { text:`Vanaf de <b>kop van <span class="vn">F</span></b>: teken een stippellijn evenwijdig aan richting a, tot ze richting b snijdt, opnieuw met de geodriehoek. Dat snijpunt is de kop van component <b><span class="vn">F</span>b</b>.`,
+        add:[ {t:'helper', from:d.pF, to:d.pB}, {t:'geo', through:{x:(d.pF.x+d.pB.x)/2,y:(d.pF.y+d.pB.y)/2}, angle:d.a, side:-1} ] },
+      { text:`Teken <b><span class="vn">F</span>a</b> (O tot het snijpunt op a) en <b><span class="vn">F</span>b</b> (O tot het snijpunt op b), elk in een eigen kleur.`,
+        add:[ {t:'vec', from:{x:0,y:0}, to:d.pA, color:'var(--fr)', colorId:'fr', label:'Fa'},
+              {t:'vec', from:{x:0,y:0}, to:d.pB, color:'var(--fb)', colorId:'fb', label:'Fb'} ] },
+      { text:`Controleer grafisch: leg <span class="vn">F</span>a en <span class="vn">F</span>b kop-staart achter elkaar — samen geven ze opnieuw <b><span class="vn">F</span></b> terug.`, add:[] },
+    ];
+  },
+  summary(d){ return `F (${d.F} N) ontbonden volgens a (${d.a.toFixed(0)}°) en b (${d.b.toFixed(0)}°)<span class="formula">Fa = ${fmt(d.Fa)} N &nbsp; Fb = ${fmt(d.Fb)} N</span>`; }
+},
+
+};
+
+const TOPIC_ORDER = ['1.1','1.2','2.1','2.2','3.1','3.2'];
+
+/* ============================================================
+   STATE & CONTROLLER
+   ============================================================ */
+const state = { topicId:'1.1', data:null, stepIdx:0 };
+
+function buildSidebar(){
+  const nav = document.getElementById('sideNav');
+  nav.innerHTML = '';
+  const groups = [
+    {id:'1', title:'1 · Zelfde richting', items:['1.1','1.2']},
+    {id:'2', title:'2 · Verschillende richting', items:['2.1','2.2']},
+    {id:'3', title:'3 · Ontbinden', items:['3.1','3.2']},
+  ];
+  groups.forEach(g=>{
+    const div = document.createElement('div'); div.className='side-group';
+    const h = document.createElement('h3'); h.textContent = g.title; div.appendChild(h);
+    g.items.forEach(id=>{
+      const b = document.createElement('button');
+      b.className='side-item'+(id===state.topicId?' active':'');
+      b.dataset.id = id;
+      b.innerHTML = `<span class="badge">${id}</span><span>${TOPICS[id].title}</span>`;
+      b.addEventListener('click', ()=>selectTopic(id));
+      div.appendChild(b);
+    });
+    nav.appendChild(div);
+  });
+}
+
+function selectTopic(id){
+  state.topicId = id;
+  state.data = TOPICS[id].gen();
+  state.layout = computeLayout(id, state.data);
+  state.stepIdx = 0;
+  document.querySelectorAll('.side-item').forEach(b=>b.classList.toggle('active', b.dataset.id===id));
+  renderHeader();
+  renderStep(false);
+}
+
+function renderHeader(){
+  const topic = TOPICS[state.topicId];
+  document.getElementById('crumb').innerHTML = `<b>${topic.groupTitle}</b> &nbsp;›&nbsp; ${topic.badge}`;
+  document.getElementById('topicTitle').textContent = topic.title;
+  document.getElementById('methodTag').textContent = '✎ ' + topic.method;
+  document.getElementById('topicIntro').textContent = topic.intro;
+}
+
+function buildLegend(){
+  const topic = TOPICS[state.topicId];
+  const map = {
+    '1.1':[['<span class="vn">F</span>₁','var(--f1)'],['<span class="vn">F</span>₂','var(--f2)'],['<span class="vn">F</span>r (resultante)','var(--fr)'],['hulplijn','dashed']],
+    '1.2':[['<span class="vn">F</span>₁','var(--f1)'],['<span class="vn">F</span>₂','var(--f2)'],['<span class="vn">F</span>r (resultante)','var(--fr)'],['hulplijn','dashed']],
+    '2.1':[['<span class="vn">F</span>₁','var(--f1)'],['<span class="vn">F</span>₂','var(--f2)'],['<span class="vn">F</span>r (resultante)','var(--fr)'],['hulplijn','dashed'],['geodriehoek','geo']],
+    '2.2':[['<span class="vn">F</span>₁','var(--f1)'],['<span class="vn">F</span>₂','var(--f2)'],['<span class="vn">F</span>r (resultante)','var(--fr)'],['hulplijn','dashed'],['geodriehoek','geo']],
+    '3.1':[['<span class="vn">F</span> (gegeven)','var(--f1)'],['<span class="vn">F</span>x','var(--fr)'],['<span class="vn">F</span>y','var(--fb)'],['hulplijn','dashed'],['geodriehoek','geo']],
+    '3.2':[['<span class="vn">F</span> (gegeven)','var(--f1)'],['<span class="vn">F</span>a','var(--fr)'],['<span class="vn">F</span>b','var(--fb)'],['hulplijn','dashed'],['geodriehoek','geo']],
+  };
+  const legend = document.getElementById('legend'); legend.innerHTML='';
+  map[state.topicId].forEach(([label,color])=>{
+    const item = document.createElement('div'); item.className='item';
+    if(color==='dashed'){
+      item.innerHTML = `<span class="swatch dashed"></span>${label}`;
+    } else if(color==='geo'){
+      item.innerHTML = `<span class="swatch" style="border:1.3px solid var(--ink-soft); background:rgba(120,148,196,.20); height:14px; width:14px; clip-path:polygon(0 100%, 100% 100%, 0 0);"></span>${label}`;
+    } else if(color==='dashed-f2'){
+      item.innerHTML = `<span class="swatch dashed" style="border-top-color:var(--f2)"></span>${label}`;
+    } else {
+      item.innerHTML = `<span class="swatch" style="background:${color}"></span>${label}`;
+    }
+    legend.appendChild(item);
+  });
+}
+
+function renderStep(animate){
+  const topic = TOPICS[state.topicId];
+  const steps = topic.steps(state.data);
+  const scale = state.layout.scale;
+  ORIGIN = state.layout.origin;
+
+  // draw svg
+  const svg = document.getElementById('stage');
+  svg.innerHTML = '';
+  svg.setAttribute('viewBox', `0 0 ${VB_W} ${VB_H}`);
+  baseOrigin(svg, scale, 'O');
+  for(let i=0;i<=state.stepIdx;i++){
+    steps[i].add.forEach(desc=>{
+      if(desc.t === 'geo' && i !== state.stepIdx) return; // geodriehoek is een tijdelijk hulpmiddel, geen blijvend element
+      svg.appendChild(renderDescriptor(svg, scale, desc, animate && i===state.stepIdx));
+    });
+  }
+
+  // step text
+  document.getElementById('stepLabel').textContent = `Stap ${state.stepIdx+1} van ${steps.length}`;
+  document.getElementById('stepText').innerHTML = steps[state.stepIdx].text;
+
+  // dots
+  const dots = document.getElementById('dots'); dots.innerHTML='';
+  steps.forEach((s,i)=>{
+    const dot = document.createElement('span');
+    dot.className = 'dot' + (i<state.stepIdx?' done':'') + (i===state.stepIdx?' now':'');
+    dots.appendChild(dot);
+  });
+
+  // summary
+  const summary = document.getElementById('summary');
+  if(state.stepIdx === steps.length-1){
+    summary.innerHTML = topic.summary(state.data);
+    summary.classList.add('show');
+  } else {
+    summary.classList.remove('show');
+  }
+
+  document.getElementById('prevBtn').disabled = state.stepIdx===0;
+  document.getElementById('nextBtn').disabled = state.stepIdx===steps.length-1;
+  document.getElementById('nextBtn').textContent = state.stepIdx===steps.length-2 ? 'Laatste stap →' : 'Volgende →';
+
+  buildLegend();
+}
+
+document.getElementById('prevBtn').addEventListener('click', ()=>{
+  if(state.stepIdx>0){ state.stepIdx--; renderStep(false); }
+});
+document.getElementById('nextBtn').addEventListener('click', ()=>{
+  const steps = TOPICS[state.topicId].steps(state.data);
+  if(state.stepIdx<steps.length-1){ state.stepIdx++; renderStep(true); }
+});
+document.getElementById('newExampleBtn').addEventListener('click', ()=>{
+  state.data = TOPICS[state.topicId].gen();
+  state.layout = computeLayout(state.topicId, state.data);
+  state.stepIdx = 0;
+  renderStep(false);
+});
+document.getElementById('restartBtn').addEventListener('click', ()=>{
+  state.stepIdx = 0;
+  renderStep(false);
+});
+
+/* header-hoogte meten zodat de zijbalk nooit onder de titelbalk schuift */
+function syncHeaderHeight(){
+  const h = document.querySelector('header.top').offsetHeight;
+  document.documentElement.style.setProperty('--header-h', h + 'px');
+}
+window.addEventListener('resize', syncHeaderHeight);
+
+/* init */
+buildSidebar();
+selectTopic('1.1');
+syncHeaderHeight();
+</script>
+</body>
+</html>

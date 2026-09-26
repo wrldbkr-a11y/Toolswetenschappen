@@ -1,0 +1,1230 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Elektronenconfiguratie &amp; ionbinding</title>
+<style>
+  :root{
+    --bg: #F4F5F7;
+    --panel: #FFFFFF;
+    --panel-2: #ECEFF3;
+    --line: #D3D8E0;
+    --text: #1C2430;
+    --muted: #5B6B7C;
+    --amber: #B5650A;
+    --nucleus: #D6480F;
+    --cyan: #0E7490;
+    --green: #15803D;
+    --red: #B91C1C;
+    --serif: Georgia, "Iowan Old Style", "Palatino Linotype", Palatino, serif;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  }
+  *{ box-sizing: border-box; }
+  body{
+    margin:0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    line-height: 1.5;
+    padding-bottom: 60px;
+  }
+  header{
+    padding: 28px 20px 0;
+    max-width: 760px;
+    margin: 0 auto;
+  }
+  h1{
+    font-family: var(--serif);
+    font-weight: normal;
+    font-size: 1.6rem;
+    margin: 0 0 4px;
+    letter-spacing: 0.2px;
+  }
+  header p.sub{
+    color: var(--muted);
+    margin: 0 0 20px;
+    font-size: 0.95rem;
+  }
+  nav.tabs{
+    display:flex;
+    gap: 4px;
+    border-bottom: 1px solid var(--line);
+  }
+  nav.tabs button{
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-family: var(--sans);
+    font-size: 0.92rem;
+    padding: 10px 14px;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+  }
+  nav.tabs button.active{
+    color: var(--text);
+    border-bottom: 2px solid var(--amber);
+  }
+  main{
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 24px 20px 0;
+  }
+  section.module{ display:none; }
+  section.module.active{ display:block; }
+
+  .legend{
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin: 0 0 18px;
+    padding-bottom: 14px;
+    border-bottom: 1px dashed var(--line);
+  }
+
+  .card{
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+
+  .element-head{
+    display:flex;
+    align-items: baseline;
+    gap: 14px;
+    margin-bottom: 4px;
+  }
+  .element-symbol{
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: 1.8rem;
+    color: var(--nucleus);
+  }
+  .element-symbol sub{
+    font-size: 1rem;
+    color: var(--muted);
+  }
+  .element-naam{
+    font-size: 1.05rem;
+  }
+  .element-groep{
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 16px;
+  }
+
+  .diagram-row{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 6px 0 10px;
+  }
+  .diagram-block{
+    flex: 1 1 140px;
+    max-width: 200px;
+    min-width: 85px;
+    text-align:center;
+  }
+  .diagram-block .label{
+    color: var(--muted);
+    font-size: 0.82rem;
+    line-height: 1.3;
+    min-height: 2.6em;
+    margin-top: 4px;
+  }
+  .diagram-arrow{
+    font-size: 1.5rem;
+    color: var(--muted);
+    line-height: 1;
+  }
+  .diagram-arrow-col{
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+  .arrow-controls{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+  .arrow-controls select, .arrow-controls input{
+    background: var(--panel-2);
+    border: 1px solid var(--line);
+    color: var(--text);
+    padding: 4px 4px;
+    border-radius: 4px;
+    font-family: var(--sans);
+    font-size: 0.72rem;
+    width: 92px;
+  }
+  .shell-diagram{ width: 100%; height: auto; display: block; }
+  .nucleus{ fill: var(--nucleus); opacity: 0.9; }
+  .nucleus-label{ fill: #16253B; font-family: var(--mono); font-size: 13px; font-weight:bold; }
+  .corner-hit.interactive{ cursor: pointer; }
+  .corner-hit.interactive:hover{ fill: rgba(14,116,144,0.10); }
+
+  .field{ margin: 14px 0; }
+  .field label{
+    display:block;
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .subtitle{
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+  .field input[type=text], .field input[type=number], .field select{
+    background: var(--panel-2);
+    border: 1px solid var(--line);
+    color: var(--text);
+    padding: 8px 10px;
+    border-radius: 4px;
+    font-family: var(--sans);
+    font-size: 0.95rem;
+  }
+  .field input[type=text]{ width: 100%; max-width: 320px; }
+  .field input[type=number]{ width: 70px; }
+  .inline-fields{ display:flex; gap: 16px; flex-wrap: wrap; align-items: flex-end; }
+
+  .feedback-line{
+    font-size: 0.88rem;
+    margin-top: 6px;
+    padding-left: 20px;
+    position: relative;
+  }
+  .feedback-line::before{
+    position: absolute;
+    left: 0;
+  }
+  .feedback-line.ok{ color: var(--green); }
+  .feedback-line.ok::before{ content: "✓"; }
+  .feedback-line.bad{ color: var(--red); }
+  .feedback-line.bad::before{ content: "✗"; }
+  .feedback-line .antwoord{ color: var(--muted); }
+
+  .actions{
+    display:flex;
+    gap: 10px;
+    margin-top: 18px;
+    flex-wrap: wrap;
+    align-items:center;
+  }
+  button.primary{
+    background: var(--nucleus);
+    color: #FFFFFF;
+    border: none;
+    padding: 9px 18px;
+    border-radius: 4px;
+    font-size: 0.92rem;
+    cursor: pointer;
+    font-weight: 600;
+  }
+  button.primary:hover{ filter: brightness(1.08); }
+  button.secondary{
+    background: none;
+    border: 1px solid var(--line);
+    color: var(--text);
+    padding: 9px 16px;
+    border-radius: 4px;
+    font-size: 0.92rem;
+    cursor: pointer;
+  }
+  button.secondary:hover{ border-color: var(--text); color: var(--text); }
+
+  .score{
+    margin-left: auto;
+    color: var(--muted);
+    font-size: 0.85rem;
+    font-family: var(--mono);
+  }
+
+  table.ionbinding{
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0 18px;
+  }
+  table.ionbinding th, table.ionbinding td{
+    border: 1px solid var(--line);
+    padding: 10px;
+    text-align: center;
+    font-size: 0.92rem;
+  }
+  table.ionbinding th{
+    background: var(--panel-2);
+    color: var(--muted);
+    font-weight: normal;
+  }
+  table.ionbinding td.rowlabel{
+    text-align: left;
+    color: var(--muted);
+    background: var(--panel-2);
+    white-space: nowrap;
+  }
+  .given-value{
+    font-family: var(--mono);
+    color: var(--amber);
+    font-weight: 600;
+  }
+  table.ionbinding input{
+    background: var(--bg);
+    border: 1px solid var(--line);
+    color: var(--text);
+    padding: 6px 8px;
+    border-radius: 4px;
+    width: 100%;
+    max-width: 160px;
+    text-align:center;
+    font-family: var(--sans);
+    font-size: 0.92rem;
+  }
+  .check-row{
+    display:flex;
+    justify-content:center;
+    gap:4px;
+  }
+
+  @media (prefers-reduced-motion: reduce){ *{ transition: none !important; } }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Elektronenconfiguratie &amp; ionbinding</h1>
+  <p class="sub">Oefeningen bij de eerste 18 elementen van het periodiek systeem</p>
+  <nav class="tabs">
+    <button data-tab="atoombouw" class="active">Atoombouw</button>
+    <button data-tab="ionvorming">Ionvorming</button>
+    <button data-tab="ionbinding">Ionbinding</button>
+    <button data-tab="atoommodel">Atoommodel</button>
+  </nav>
+</header>
+
+<main>
+
+  <!-- MODULE 1: ATOOMBOUW -->
+  <section class="module active" id="mod-atoombouw">
+    <div class="card">
+      <div class="element-head">
+        <span class="element-symbol" id="a1-symbol"></span>
+        <span class="element-naam" id="a1-naam"></span>
+      </div>
+
+      <div class="field">
+        <label>Aantal protonen in de kern</label>
+        <input type="number" id="a1-protons" min="1" max="18">
+      </div>
+
+      <div class="diagram-row">
+        <div class="diagram-block">
+          <div id="a1-widget"></div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Notatie van de elektronenconfiguratie (bv. 2/8/1)</label>
+        <input type="text" id="a1-notatie" placeholder="bv. 2/8/1">
+      </div>
+
+      <div id="a1-feedback"></div>
+
+      <div class="actions">
+        <button class="primary" id="a1-check">Controleer</button>
+        <button class="secondary" id="a1-next">Volgend element</button>
+        <span class="score" id="a1-score">0 / 0 correct</span>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- MODULE 2: IONVORMING -->
+  <section class="module" id="mod-ionvorming">
+    <div class="card">
+      <div class="element-head">
+        <span class="element-symbol" id="i1-symbol"></span>
+        <span class="element-naam" id="i1-naam"></span>
+      </div>
+
+      <div class="diagram-row">
+        <div class="diagram-block">
+          <div id="i1-widget-atom"></div>
+          <div class="label">Atoom (neutraal)</div>
+        </div>
+        <div class="diagram-arrow-col">
+          <div class="arrow-controls">
+            <select id="i1-mode">
+              <option value="afgegeven">afgegeven</option>
+              <option value="opgenomen">opgenomen</option>
+            </select>
+            <input type="number" id="i1-n" min="1" max="3" value="1">
+          </div>
+          <div class="diagram-arrow" aria-hidden="true">→</div>
+        </div>
+        <div class="diagram-block">
+          <div id="i1-widget-ion"></div>
+          <div class="label">Ion (klik om aan te passen)</div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Notatie van de ionconfiguratie (getallen gescheiden door /)</label>
+        <input type="text" id="i1-notatie" placeholder="_/_/_">
+      </div>
+
+      <div class="field">
+        <label>Lading van de kern (bv. X+, notatie: X+)</label>
+        <input type="text" id="i1-kernlading" placeholder="bv. X+">
+      </div>
+
+      <div class="field" style="margin-left:20px; padding-left:14px; border-left:2px solid var(--line);">
+        <div class="subtitle">Lading van het ion</div>
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
+          <label style="margin:0; width:150px; flex:0 0 auto;">Aantal protonen</label>
+          <input type="text" id="i1-calc-protons" style="width:70px;">
+        </div>
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
+          <label style="margin:0; width:150px; flex:0 0 auto;">Aantal elektronen</label>
+          <input type="text" id="i1-calc-electrons" style="width:70px;">
+        </div>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <label style="margin:0; width:150px; flex:0 0 auto;">Lading van het ion</label>
+          <input type="text" id="i1-calc-lading" placeholder="bv. X2+" style="width:70px;">
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Ionsymbool en lading (bv. X²⁺, notatie: X2+)</label>
+        <input type="text" id="i1-ionsym" placeholder="bv. X2+ of X2-">
+      </div>
+
+      <div class="field">
+        <label>Reactievergelijking bij de ionvorming (bv. X → X⁺ + e⁻ bij afgifte, X + e⁻ → X⁻ bij opname; notatie met spaties: X -&gt; X+ + e-)</label>
+        <input type="text" id="i1-reactie" placeholder="bv. X -> X+ + e-">
+      </div>
+
+      <div id="i1-feedback"></div>
+
+      <div class="actions">
+        <button class="primary" id="i1-check">Controleer</button>
+        <button class="secondary" id="i1-next">Volgend element</button>
+        <span class="score" id="i1-score">0 / 0 correct</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- MODULE 3: IONBINDING -->
+  <section class="module" id="mod-ionbinding">
+    <p class="legend">Vorm de ionverbinding tussen het metaal en het niet-metaal. Vul de tabel volledig in.</p>
+    <div class="card">
+      <div class="element-head">
+        <span class="element-naam" id="b1-vraag"></span>
+      </div>
+
+      <table class="ionbinding">
+        <tr>
+          <th></th>
+          <th id="b1-h-metaal"></th>
+          <th id="b1-h-nietmetaal"></th>
+        </tr>
+        <tr>
+          <td class="rowlabel">Groepsnummer</td>
+          <td><input type="text" id="b1-groep-m"></td>
+          <td><input type="text" id="b1-groep-n"></td>
+        </tr>
+        <tr>
+          <td class="rowlabel">Oxidatiegetal</td>
+          <td><input type="text" id="b1-ox-m"></td>
+          <td><input type="text" id="b1-ox-n"></td>
+        </tr>
+        <tr>
+          <td class="rowlabel">Ionsymbool</td>
+          <td><input type="text" id="b1-ion-m"></td>
+          <td><input type="text" id="b1-ion-n"></td>
+        </tr>
+        <tr>
+          <td class="rowlabel">Ionverhouding</td>
+          <td><input type="text" id="b1-verhouding-m"></td>
+          <td><input type="text" id="b1-verhouding-n"></td>
+        </tr>
+        <tr>
+          <td class="rowlabel">Formule</td>
+          <td colspan="2"><input type="text" id="b1-formule" style="max-width:160px; margin:0 auto;"></td>
+        </tr>
+        <tr>
+          <td class="rowlabel">Naam van de ionverbinding</td>
+          <td colspan="2"><input type="text" id="b1-naam" style="max-width:220px; margin:0 auto;"></td>
+        </tr>
+      </table>
+
+      <div id="b1-feedback"></div>
+
+      <div class="actions">
+        <button class="primary" id="b1-check">Controleer</button>
+        <button class="secondary" id="b1-next">Volgend paar</button>
+        <span class="score" id="b1-score">0 / 0 correct</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- MODULE 4: ATOOMMODEL (Z, A, protonen, elektronen, neutronen) -->
+  <section class="module" id="mod-atoommodel">
+    <div class="card">
+      <table class="ionbinding" style="max-width:420px;">
+        <tr><td class="rowlabel">Symbool</td><td id="c1-symbol-cell"></td></tr>
+        <tr><td class="rowlabel">Protonaantal Z</td><td id="c1-z-cell"></td></tr>
+        <tr><td class="rowlabel">Massagetal A</td><td id="c1-a-cell"></td></tr>
+        <tr><td class="rowlabel">Aantal protonen</td><td><input type="text" id="c1-protons"></td></tr>
+        <tr><td class="rowlabel">Aantal elektronen</td><td id="c1-electrons-cell"></td></tr>
+        <tr><td class="rowlabel">Aantal neutronen</td><td id="c1-neutrons-cell"></td></tr>
+      </table>
+
+      <div id="c1-feedback"></div>
+
+      <div class="actions">
+        <button class="primary" id="c1-check">Controleer</button>
+        <button class="secondary" id="c1-next">Volgende</button>
+        <span class="score" id="c1-score">0 / 0 correct</span>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+(function(){
+"use strict";
+
+/* ---------- data ---------- */
+
+const ELEMENTS = [
+ {z:1,sym:'H',naam:'Waterstof',shells:[1],groep:1,a:1},
+ {z:2,sym:'He',naam:'Helium',shells:[2],groep:18,a:4},
+ {z:3,sym:'Li',naam:'Lithium',shells:[2,1],groep:1,a:7},
+ {z:4,sym:'Be',naam:'Beryllium',shells:[2,2],groep:2,a:9},
+ {z:5,sym:'B',naam:'Boor',shells:[2,3],groep:13,a:11},
+ {z:6,sym:'C',naam:'Koolstof',shells:[2,4],groep:14,a:12},
+ {z:7,sym:'N',naam:'Stikstof',shells:[2,5],groep:15,a:14},
+ {z:8,sym:'O',naam:'Zuurstof',shells:[2,6],groep:16,a:16},
+ {z:9,sym:'F',naam:'Fluor',shells:[2,7],groep:17,a:19},
+ {z:10,sym:'Ne',naam:'Neon',shells:[2,8],groep:18,a:20},
+ {z:11,sym:'Na',naam:'Natrium',shells:[2,8,1],groep:1,a:23},
+ {z:12,sym:'Mg',naam:'Magnesium',shells:[2,8,2],groep:2,a:24},
+ {z:13,sym:'Al',naam:'Aluminium',shells:[2,8,3],groep:13,a:27},
+ {z:14,sym:'Si',naam:'Silicium',shells:[2,8,4],groep:14,a:28},
+ {z:15,sym:'P',naam:'Fosfor',shells:[2,8,5],groep:15,a:31},
+ {z:16,sym:'S',naam:'Zwavel',shells:[2,8,6],groep:16,a:32},
+ {z:17,sym:'Cl',naam:'Chloor',shells:[2,8,7],groep:17,a:35},
+ {z:18,sym:'Ar',naam:'Argon',shells:[2,8,8],groep:18,a:40},
+];
+function elByS(s){ return ELEMENTS.find(e=>e.sym===s); }
+
+/* Broader pool for module 4 (neutral-atom questions only): the ~40 best-known
+   elements up to Z=90, with Dutch names and the rounded standard atomic mass
+   (as printed on a classroom periodic table) as massagetal A. */
+const EXTENDED_ELEMENTS = ELEMENTS.concat([
+  {z:19,sym:'K', naam:'Kalium',   a:39},
+  {z:20,sym:'Ca',naam:'Calcium',  a:40},
+  {z:22,sym:'Ti',naam:'Titaan',   a:48},
+  {z:24,sym:'Cr',naam:'Chroom',   a:52},
+  {z:25,sym:'Mn',naam:'Mangaan',  a:55},
+  {z:26,sym:'Fe',naam:'IJzer',    a:56},
+  {z:27,sym:'Co',naam:'Kobalt',   a:59},
+  {z:28,sym:'Ni',naam:'Nikkel',   a:59},
+  {z:29,sym:'Cu',naam:'Koper',    a:64},
+  {z:30,sym:'Zn',naam:'Zink',     a:65},
+  {z:33,sym:'As',naam:'Arseen',   a:75},
+  {z:35,sym:'Br',naam:'Broom',    a:80},
+  {z:47,sym:'Ag',naam:'Zilver',   a:108},
+  {z:50,sym:'Sn',naam:'Tin',      a:119},
+  {z:53,sym:'I', naam:'Jood',     a:127},
+  {z:56,sym:'Ba',naam:'Barium',   a:137},
+  {z:74,sym:'W', naam:'Wolfraam', a:184},
+  {z:78,sym:'Pt',naam:'Platina',  a:195},
+  {z:79,sym:'Au',naam:'Goud',     a:197},
+  {z:80,sym:'Hg',naam:'Kwik',     a:201},
+  {z:82,sym:'Pb',naam:'Lood',     a:207},
+  {z:86,sym:'Rn',naam:'Radon',    a:222},
+]);
+
+/* elements that form simple monatomic ions at this level */
+const ION_DATA = [
+  {sym:'H',  mode:'afgegeven', n:1, ionShells:[]},
+  {sym:'Li', mode:'afgegeven', n:1, ionShells:[2]},
+  {sym:'Be', mode:'afgegeven', n:2, ionShells:[2]},
+  {sym:'B',  mode:'afgegeven', n:3, ionShells:[2]},
+  {sym:'N',  mode:'opgenomen', n:3, ionShells:[2,8]},
+  {sym:'O',  mode:'opgenomen', n:2, ionShells:[2,8]},
+  {sym:'F',  mode:'opgenomen', n:1, ionShells:[2,8]},
+  {sym:'Na', mode:'afgegeven', n:1, ionShells:[2,8]},
+  {sym:'Mg', mode:'afgegeven', n:2, ionShells:[2,8]},
+  {sym:'Al', mode:'afgegeven', n:3, ionShells:[2,8]},
+  {sym:'P',  mode:'opgenomen', n:3, ionShells:[2,8,8]},
+  {sym:'S',  mode:'opgenomen', n:2, ionShells:[2,8,8]},
+  {sym:'Cl', mode:'opgenomen', n:1, ionShells:[2,8,8]},
+].map(d => {
+  const el = elByS(d.sym);
+  const ionCharge = d.mode==='afgegeven' ? d.n : -d.n;
+  return Object.assign({}, d, { el, ionCharge });
+});
+
+const METALS = ['Li','Be','Na','Mg','Al'];
+const NONMETALS = ['N','O','F','P','S','Cl'];
+const SUFFIX = {N:'nitride', O:'oxide', F:'fluoride', P:'fosfide', S:'sulfide', Cl:'chloride'};
+
+function chargeFromGroep(g){
+  return {1:1, 2:2, 13:3, 15:-3, 16:-2, 17:-1}[g];
+}
+function gcd(a,b){ return b===0 ? a : gcd(b, a%b); }
+
+const IONBINDING_PAIRS = [];
+METALS.forEach(m => NONMETALS.forEach(n => IONBINDING_PAIRS.push([m,n])));
+
+/* ---------- generic helpers ---------- */
+
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1; i>0; i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+/* draw pool: cycles through all items in random order before repeating, never repeats the immediately previous item */
+function makeBag(items){
+  let bag = shuffle(items);
+  let last = null;
+  return function next(){
+    if(bag.length===0) bag = shuffle(items);
+    if(bag.length>1 && bag[0]===last) bag.push(bag.shift());
+    const item = bag.shift();
+    last = item;
+    return item;
+  };
+}
+
+/* ---------- shell diagram widget ----------
+   Electrons are placed on 4 fixed corner points of a square per shell
+   (K uses only the top/bottom pair). Filling order: one electron per
+   corner, clockwise starting at the top; only once all corners hold one
+   electron does a second electron start pairing up, again clockwise from
+   the top. This yields exactly one correct visual arrangement per count. */
+
+const SHELL_DEFS = [
+  { key:'K', r:38,  innerR:18, band:'#5B8DD9', bright:'#1E40AF', corners:[-90],            cap:2 },
+  { key:'L', r:72,  innerR:38, band:'#5B8DD9', bright:'#1E40AF', corners:[-90, 0, 90, 180], cap:2 },
+  { key:'M', r:106, innerR:72, band:'#5B8DD9', bright:'#1E40AF', corners:[-90, 0, 90, 180], cap:2 },
+];
+function shellMax(sh){ return sh.corners.length * sh.cap; }
+
+function emptyCornerState(){
+  const st = {};
+  SHELL_DEFS.forEach(sh => { st[sh.key] = new Array(sh.corners.length).fill(0); });
+  return st;
+}
+/* the one canonical corner arrangement for a given total electron count on a shell */
+function canonicalCorners(sh, n){
+  const arr = new Array(sh.corners.length).fill(0);
+  let remaining = Math.max(0, Math.min(n, shellMax(sh)));
+  for(let pass=0; pass<sh.cap && remaining>0; pass++){
+    for(let i=0; i<arr.length && remaining>0; i++){ arr[i] = pass+1; remaining--; }
+  }
+  return arr;
+}
+function canonicalState(shellsArr){
+  const counts = countsFromShellsArray(shellsArr);
+  const st = {};
+  SHELL_DEFS.forEach(sh => { st[sh.key] = canonicalCorners(sh, counts[sh.key]||0); });
+  return st;
+}
+function countsFromShellsArray(shellsArr){
+  return { K: shellsArr[0]||0, L: shellsArr[1]||0, M: shellsArr[2]||0 };
+}
+function totalsFromState(state){
+  const out = {};
+  SHELL_DEFS.forEach(sh => { out[sh.key] = state[sh.key].reduce((a,b)=>a+b,0); });
+  return out;
+}
+function statesEqual(a,b){
+  return SHELL_DEFS.every(sh => {
+    const x=a[sh.key], y=b[sh.key];
+    return x.length===y.length && x.every((v,i)=>v===y[i]);
+  });
+}
+function formatCounts(counts){
+  return SHELL_DEFS.map(sh => `${sh.key}: ${counts[sh.key]||0}`).join(', ');
+}
+function parseNotation(str){
+  if(!str || !str.trim()) return null;
+  const parts = str.trim().split(/[\/,\-\s]+/).filter(Boolean);
+  if(parts.length===0) return null;
+  const nums = parts.map(p => parseInt(p,10));
+  if(nums.some(n => isNaN(n))) return null;
+  return nums;
+}
+function arraysEqual(a,b){
+  return a.length===b.length && a.every((v,i) => v===b[i]);
+}
+function normNum(str){
+  if(!str) return null;
+  const s = str.trim().replace(/\s+/g,'');
+  const m = s.match(/^([+-]?)(\d+)$/);
+  if(!m) return null;
+  const sign = m[1]==='-' ? -1 : 1;
+  return sign * parseInt(m[2],10);
+}
+/* accepts a charge written with a leading or trailing sign: "17+", "+17", "2-", "17" (defaults positive) */
+function parseSignedNum(str){
+  if(!str) return null;
+  const s = str.trim().replace(/\s+/g,'');
+  let m = s.match(/^(\d+)([+-])$/);
+  if(m) return (m[2]==='+' ? 1 : -1) * parseInt(m[1],10);
+  m = s.match(/^([+-]?)(\d+)$/);
+  if(m) return (m[1]==='-' ? -1 : 1) * parseInt(m[2],10);
+  return null;
+}
+const ROMAN_TO_INT = {'I':1,'II':2,'III':3,'IV':4,'V':5,'VI':6,'VII':7,'VIII':8};
+const INT_TO_ROMAN = {1:'I',2:'II',3:'III',4:'IV',5:'V',6:'VI',7:'VII',8:'VIII'};
+/* oxidation number as a signed Roman numeral, uppercase only: "+II", "-I", "II" (defaults positive) */
+function parseOxidationRoman(str){
+  if(!str) return null;
+  const s = str.trim().replace(/\s+/g,'');
+  let m = s.match(/^([IVX]+)([+-])$/);
+  if(m){ const mag = ROMAN_TO_INT[m[1]]; return mag!=null ? (m[2]==='+'?1:-1)*mag : null; }
+  m = s.match(/^([+-]?)([IVX]+)$/);
+  if(m){ const mag = ROMAN_TO_INT[m[2]]; return mag!=null ? (m[1]==='-'?-1:1)*mag : null; }
+  return null;
+}
+function formatOxidationRoman(charge){
+  const mag = INT_TO_ROMAN[Math.abs(charge)] || String(Math.abs(charge));
+  return (charge>0?'+':'-') + mag;
+}
+
+function ShellWidget(mount, opts){
+  opts = opts || {};
+  let state = opts.initialState ? cloneState(opts.initialState) : emptyCornerState();
+  let z = (opts.z!=null) ? opts.z : null;
+  const cx=130, cy=130;
+  const dotR = 6, pairOffset = 15;
+
+  function cloneState(s){
+    const out = {};
+    SHELL_DEFS.forEach(sh => { out[sh.key] = s[sh.key].slice(); });
+    return out;
+  }
+
+  function buildSVG(){
+    let rings = '', dots = '', hitAreas = '', labels = '';
+    SHELL_DEFS.forEach(sh => {
+      rings += `<circle cx="${cx}" cy="${cy}" r="${sh.r}" fill="none" stroke="${sh.band}" stroke-width="2" opacity="0.8"></circle>`;
+      const labelR = (sh.innerR + sh.r) / 2;
+      labels += `<text x="${(cx+labelR).toFixed(1)}" y="${cy+4}" fill="${sh.band}" font-family="var(--mono)" font-size="12" opacity="0.9">${sh.key}</text>`;
+
+      sh.corners.forEach((deg, ci) => {
+        const rad = deg * Math.PI/180;
+        const baseX = cx + sh.r*Math.cos(rad);
+        const baseY = cy + sh.r*Math.sin(rad);
+        const count = state[sh.key][ci];
+        const tx = -Math.sin(rad), ty = Math.cos(rad); /* tangent unit vector */
+
+        for(let slot=0; slot<sh.cap; slot++){
+          const offset = (slot - (sh.cap-1)/2) * pairOffset;
+          const px = baseX + offset*tx;
+          const py = baseY + offset*ty;
+          const filled = count>slot;
+          dots += `<circle cx="${px.toFixed(1)}" cy="${py.toFixed(1)}" r="${dotR}" style="fill:${filled?sh.bright:'transparent'}; stroke:${filled?sh.bright:sh.band}; stroke-width:2; opacity:${filled?1:0.85};"></circle>`;
+        }
+        if(opts.interactive){
+          hitAreas += `<circle cx="${baseX.toFixed(1)}" cy="${baseY.toFixed(1)}" r="14" class="corner-hit" data-shell="${sh.key}" data-corner="${ci}" fill="transparent"></circle>`;
+        }
+      });
+    });
+    const zLabel = (z!=null) ? `<text x="${cx}" y="${cy+4}" class="nucleus-label" text-anchor="middle">${z}+</text>` : '';
+    return `<svg viewBox="0 0 260 260" class="shell-diagram">${rings}${labels}<circle cx="${cx}" cy="${cy}" r="18" class="nucleus"></circle>${zLabel}${dots}${hitAreas}</svg>`;
+  }
+
+  function render(){
+    mount.innerHTML = buildSVG();
+    if(opts.interactive){
+      mount.querySelectorAll('.corner-hit').forEach(el => {
+        el.classList.add('interactive');
+        el.addEventListener('click', () => {
+          const sh = SHELL_DEFS.find(s => s.key === el.getAttribute('data-shell'));
+          const ci = +el.getAttribute('data-corner');
+          state[sh.key][ci] = (state[sh.key][ci] + 1) % (sh.cap + 1);
+          render();
+          if(opts.onChange) opts.onChange(totalsFromState(state));
+        });
+      });
+    }
+  }
+
+  render();
+
+  return {
+    getState: () => state,
+    getTotals: () => totalsFromState(state),
+    setState: (s) => { state = cloneState(s); render(); },
+    setZ: (newZ) => { z = newZ; render(); }
+  };
+}
+
+
+/* ---------- ion-notation parsing (for the standalone symbol+charge field) ---------- */
+
+const SUP_MAP = {'⁰':'0','¹':'1','²':'2','³':'3','⁴':'4','⁵':'5','⁶':'6','⁷':'7','⁸':'8','⁹':'9','⁺':'+','⁻':'-'};
+
+function normalizeIonInput(str){
+  if(!str) return null;
+  let s = str.trim();
+  s = s.replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻]/g, ch => SUP_MAP[ch]);
+  s = s.replace(/\^/g,'').replace(/\s+/g,'');
+  const m = s.match(/^([A-Za-z]+)(\d*)([+-])$/);
+  if(!m) return null;
+  const mag = m[2] ? parseInt(m[2],10) : 1;
+  const sign = m[3]==='+' ? 1 : -1;
+  return { sym: m[1], charge: mag*sign };
+}
+function canonicalIonStr(sym, charge){
+  const mag = Math.abs(charge);
+  return sym + (mag>1?mag:'') + (charge>0?'+':'-');
+}
+
+/* ---------- reaction equation checking ---------- */
+
+function normalizeReactionStr(str){
+  let s = str.trim();
+  s = s.replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻]/g, ch => SUP_MAP[ch]);
+  s = s.replace(/\^/g,'');
+  s = s.replace(/→|⟶|=>/g,'->');
+  return s;
+}
+function classifyTerm(t){
+  t = t.trim();
+  let m = t.match(/^(\d*)e-?$/);
+  if(m) return { type:'electron', n: m[1]?parseInt(m[1],10):1 };
+  m = t.match(/^([A-Za-z]+)(\d*)([+-])?$/);
+  if(m){
+    if(m[3]){
+      const mag = m[2] ? parseInt(m[2],10) : 1;
+      const sign = m[3]==='+' ? 1 : -1;
+      return { type:'ion', sym:m[1], charge: mag*sign };
+    }
+    return { type:'atom', sym:m[1] };
+  }
+  return { type:'unknown', raw:t };
+}
+function checkReaction(str, expected){
+  if(!str || !str.trim()) return false;
+  const norm = normalizeReactionStr(str);
+  const arrowParts = norm.split(/\s*->\s*/);
+  if(arrowParts.length !== 2) return false;
+  const leftTerms  = arrowParts[0].split(/\s+\+\s*/).map(t=>t.trim()).filter(Boolean).map(classifyTerm);
+  const rightTerms = arrowParts[1].split(/\s+\+\s*/).map(t=>t.trim()).filter(Boolean).map(classifyTerm);
+  const hasAtomLeft = leftTerms.some(t => t.type==='atom' && t.sym===expected.sym);
+  const ionTerm = rightTerms.find(t => t.type==='ion' && t.sym===expected.sym);
+  const ionOk = !!ionTerm && ionTerm.charge === expected.ionCharge;
+  const eSideTerms = expected.mode==='afgegeven' ? rightTerms : leftTerms;
+  const eTerm = eSideTerms.find(t => t.type==='electron');
+  const eOk = !!eTerm && eTerm.n === expected.n;
+  return hasAtomLeft && ionOk && eOk;
+}
+function exampleReaction(mode){
+  return mode==='afgegeven' ? 'X -> X+ + e-' : 'X + e- -> X-';
+}
+
+/* ---------- feedback rendering helper ---------- */
+
+function renderFeedback(container, items){
+  /* items: [{ok: bool, label: string, answer: string(optional, shown when !ok)}] */
+  container.innerHTML = items.map(it => {
+    const cls = it.ok ? 'ok' : 'bad';
+    const answer = (!it.ok && it.answer) ? ` <span class="antwoord">(correct: ${it.answer})</span>` : '';
+    return `<div class="feedback-line ${cls}">${it.label}${answer}</div>`;
+  }).join('');
+}
+
+/* ================= MODULE 1: ATOOMBOUW ================= */
+
+(function moduleAtoombouw(){
+  const nextEl = makeBag(ELEMENTS);
+  let current = null;
+  let widget = null;
+  let correctCount = 0, totalCount = 0;
+
+  const elSymbol = document.getElementById('a1-symbol');
+  const elNaam = document.getElementById('a1-naam');
+  const inpProtons = document.getElementById('a1-protons');
+  const inpNotatie = document.getElementById('a1-notatie');
+  const elFeedback = document.getElementById('a1-feedback');
+  const elScore = document.getElementById('a1-score');
+  const mount = document.getElementById('a1-widget');
+
+  function load(){
+    current = nextEl();
+    elSymbol.textContent = current.sym;
+    elNaam.textContent = current.naam;
+    inpProtons.value = '';
+    inpNotatie.value = '';
+    elFeedback.innerHTML = '';
+    widget = ShellWidget(mount, { interactive:true, z: null });
+  }
+
+  inpProtons.addEventListener('input', () => {
+    const v = parseInt(inpProtons.value, 10);
+    widget.setZ(Number.isFinite(v) ? v : null);
+  });
+
+  function check(){
+    const protonsOk = parseInt(inpProtons.value,10) === current.z;
+
+    const target = canonicalState(current.shells);
+    const plaatsingOk = statesEqual(widget.getState(), target);
+
+    const notatie = parseNotation(inpNotatie.value);
+    const notatieOk = !!notatie && arraysEqual(notatie, current.shells);
+
+    totalCount++;
+    if(protonsOk && plaatsingOk && notatieOk) correctCount++;
+
+    renderFeedback(elFeedback, [
+      { ok: protonsOk, label: 'Aantal protonen in de kern.', answer: `${current.z}+` },
+      { ok: plaatsingOk, label: 'Plaatsing van de elektronen op de schillen.', answer: formatCounts(countsFromShellsArray(current.shells)) },
+      { ok: notatieOk, label: 'Notatie van de elektronenconfiguratie.', answer: current.shells.join('/') },
+    ]);
+    elScore.textContent = `${correctCount} / ${totalCount} correct`;
+  }
+
+  document.getElementById('a1-check').addEventListener('click', check);
+  document.getElementById('a1-next').addEventListener('click', load);
+
+  load();
+})();
+
+/* ================= MODULE 2: IONVORMING ================= */
+
+(function moduleIonvorming(){
+  const nextIon = makeBag(ION_DATA);
+  let current = null;
+  let atomWidget = null, ionWidget = null;
+  let correctCount = 0, totalCount = 0;
+
+  const elSymbol = document.getElementById('i1-symbol');
+  const elNaam = document.getElementById('i1-naam');
+  const mountAtom = document.getElementById('i1-widget-atom');
+  const mountIon = document.getElementById('i1-widget-ion');
+  const selMode = document.getElementById('i1-mode');
+  const inpN = document.getElementById('i1-n');
+  const inpNotatie = document.getElementById('i1-notatie');
+  const inpKernlading = document.getElementById('i1-kernlading');
+  const inpCalcProtons = document.getElementById('i1-calc-protons');
+  const inpCalcElectrons = document.getElementById('i1-calc-electrons');
+  const inpCalcLading = document.getElementById('i1-calc-lading');
+  const inpIonSym = document.getElementById('i1-ionsym');
+  const inpReactie = document.getElementById('i1-reactie');
+  const elFeedback = document.getElementById('i1-feedback');
+  const elScore = document.getElementById('i1-score');
+
+  function load(){
+    current = nextIon();
+    const el = current.el;
+    elSymbol.innerHTML = `<sub>${el.z}</sub>${el.sym}`;
+    elNaam.textContent = el.naam;
+
+    const atomState = canonicalState(el.shells);
+    atomWidget = ShellWidget(mountAtom, { interactive:false, z: el.z, initialState: atomState });
+    ionWidget = ShellWidget(mountIon, { interactive:true, z: null, initialState: atomState });
+
+    selMode.value = 'afgegeven';
+    inpN.value = 1;
+    inpNotatie.value = '';
+    inpKernlading.value = '';
+    inpCalcProtons.value = '';
+    inpCalcElectrons.value = '';
+    inpCalcLading.value = '';
+    inpIonSym.value = '';
+    inpIonSym.placeholder = 'bv. X2+ of X2-';
+    inpReactie.value = '';
+    elFeedback.innerHTML = '';
+  }
+
+  function check(){
+    const el = current.el;
+    const electronsExpected = el.z - current.ionCharge;
+
+    const target = canonicalState(current.ionShells);
+    const configOk = statesEqual(ionWidget.getState(), target);
+
+    const modeOk = selMode.value === current.mode;
+    const nOk = parseInt(inpN.value,10) === current.n;
+
+    const notatie = parseNotation(inpNotatie.value);
+    const notatieOk = current.ionShells.length===0
+      ? (!!notatie && (notatie.length===0 || (notatie.length===1 && notatie[0]===0)))
+      : (!!notatie && arraysEqual(notatie, current.ionShells));
+    const notatieAnswer = current.ionShells.length===0 ? '0 (geen elektronen)' : current.ionShells.join('/');
+
+    const kernladingOk = parseSignedNum(inpKernlading.value) === el.z;
+
+    const calcProtonsOk = normNum(inpCalcProtons.value) === el.z;
+    const calcElectronsOk = normNum(inpCalcElectrons.value) === electronsExpected;
+    const calcLadingOk = parseSignedNum(inpCalcLading.value) === current.ionCharge;
+
+    const parsedIon = normalizeIonInput(inpIonSym.value);
+    const ionSymOk = !!parsedIon && parsedIon.sym === current.sym && parsedIon.charge === current.ionCharge;
+
+    const reactionOk = checkReaction(inpReactie.value, { sym: current.sym, ionCharge: current.ionCharge, n: current.n, mode: current.mode });
+
+    totalCount++;
+    if(modeOk && nOk && configOk && notatieOk && kernladingOk && calcProtonsOk && calcElectronsOk && calcLadingOk && ionSymOk && reactionOk) correctCount++;
+
+    renderFeedback(elFeedback, [
+      { ok: kernladingOk, label: 'Lading van de kern.', answer: `${el.z}+` },
+      { ok: modeOk && nOk, label: 'Aantal en soort elektronen (afgegeven/opgenomen).', answer: `${current.n} elektron${current.n>1?'en':''} ${current.mode}` },
+      { ok: configOk, label: 'Elektronenconfiguratie van het ion (tekening).', answer: formatCounts(countsFromShellsArray(current.ionShells)) },
+      { ok: notatieOk, label: 'Notatie van de ionconfiguratie.', answer: notatieAnswer },
+      { ok: calcProtonsOk && calcElectronsOk && calcLadingOk, label: 'Berekening van de lading van het ion.', answer: `${el.z} protonen, ${electronsExpected} elektronen → ${Math.abs(current.ionCharge)}${current.ionCharge>0?'+':'-'}` },
+      { ok: ionSymOk, label: 'Ionsymbool en lading.', answer: canonicalIonStr(current.sym, current.ionCharge) },
+      { ok: reactionOk, label: 'Reactievergelijking.', answer: (current.mode==='afgegeven'
+          ? `${current.sym} -> ${canonicalIonStr(current.sym, current.ionCharge)} + ${current.n>1?current.n:''}e-`
+          : `${current.sym} + ${current.n>1?current.n:''}e- -> ${canonicalIonStr(current.sym, current.ionCharge)}`) },
+    ]);
+    elScore.textContent = `${correctCount} / ${totalCount} correct`;
+  }
+
+  inpReactie.addEventListener('focus', () => {
+    if(!inpReactie.value) inpReactie.placeholder = 'bv. ' + exampleReaction(selMode.value);
+  });
+  selMode.addEventListener('change', () => {
+    inpReactie.placeholder = 'bv. ' + exampleReaction(selMode.value);
+  });
+  inpKernlading.addEventListener('input', () => {
+    const v = parseSignedNum(inpKernlading.value);
+    ionWidget.setZ(v!=null ? Math.abs(v) : null);
+  });
+
+  document.getElementById('i1-check').addEventListener('click', check);
+  document.getElementById('i1-next').addEventListener('click', load);
+
+  load();
+})();
+
+/* ================= MODULE 3: IONBINDING ================= */
+
+(function moduleIonbinding(){
+  const nextPair = makeBag(IONBINDING_PAIRS);
+  let current = null;
+  let correctCount = 0, totalCount = 0;
+
+  const elVraag = document.getElementById('b1-vraag');
+  const thM = document.getElementById('b1-h-metaal');
+  const thN = document.getElementById('b1-h-nietmetaal');
+  const inpGroepM = document.getElementById('b1-groep-m');
+  const inpGroepN = document.getElementById('b1-groep-n');
+  const inpOxM = document.getElementById('b1-ox-m');
+  const inpOxN = document.getElementById('b1-ox-n');
+  const inpIonM = document.getElementById('b1-ion-m');
+  const inpIonN = document.getElementById('b1-ion-n');
+  const inpVerhoudingM = document.getElementById('b1-verhouding-m');
+  const inpVerhoudingN = document.getElementById('b1-verhouding-n');
+  const inpFormule = document.getElementById('b1-formule');
+  const inpNaam = document.getElementById('b1-naam');
+  const elFeedback = document.getElementById('b1-feedback');
+  const elScore = document.getElementById('b1-score');
+
+  function computeAnswer(metalSym, nietmetaalSym){
+    const m = elByS(metalSym), n = elByS(nietmetaalSym);
+    const cm = chargeFromGroep(m.groep), cn = chargeFromGroep(n.groep);
+    const g = gcd(Math.abs(cm), Math.abs(cn));
+    const countM = Math.abs(cn)/g, countN = Math.abs(cm)/g;
+    const formule = metalSym + (countM>1?countM:'') + nietmetaalSym + (countN>1?countN:'');
+    const naam = m.naam.toLowerCase() + SUFFIX[nietmetaalSym];
+    return {
+      m, n, cm, cn, countM, countN,
+      ionM: canonicalIonStr(metalSym, cm),
+      ionN: canonicalIonStr(nietmetaalSym, cn),
+      verhouding: `${countM}:${countN}`,
+      formule, naam
+    };
+  }
+
+  function load(){
+    const [metalSym, nietmetaalSym] = nextPair();
+    const ans = computeAnswer(metalSym, nietmetaalSym);
+    current = { metalSym, nietmetaalSym, ans };
+
+    elVraag.textContent = `${ans.m.naam} (${metalSym}) en ${ans.n.naam} (${nietmetaalSym})`;
+    thM.textContent = `${ans.m.naam} (${metalSym})`;
+    thN.textContent = `${ans.n.naam} (${nietmetaalSym})`;
+
+    [inpGroepM,inpGroepN,inpOxM,inpOxN,inpIonM,inpIonN,inpVerhoudingM,inpVerhoudingN,inpFormule,inpNaam].forEach(i => i.value = '');
+    elFeedback.innerHTML = '';
+  }
+
+  function normFormule(str){
+    if(!str) return null;
+    return str.trim().replace(/\s+/g,'');
+  }
+  function normNaam(str){
+    if(!str) return null;
+    return str.trim().toLowerCase().replace(/\s+/g,'');
+  }
+
+  function check(){
+    const ans = current.ans;
+    const groepMOk = normNum(inpGroepM.value) === current.ans.m.groep;
+    const groepNOk = normNum(inpGroepN.value) === current.ans.n.groep;
+    const oxMOk = parseOxidationRoman(inpOxM.value) === ans.cm;
+    const oxNOk = parseOxidationRoman(inpOxN.value) === ans.cn;
+    const ionMParsed = normalizeIonInput(inpIonM.value);
+    const ionMOk = !!ionMParsed && ionMParsed.sym===current.metalSym && ionMParsed.charge===ans.cm;
+    const ionNParsed = normalizeIonInput(inpIonN.value);
+    const ionNOk = !!ionNParsed && ionNParsed.sym===current.nietmetaalSym && ionNParsed.charge===ans.cn;
+    const verhoudingMOk = normNum(inpVerhoudingM.value) === ans.countM;
+    const verhoudingNOk = normNum(inpVerhoudingN.value) === ans.countN;
+    const formuleOk = normFormule(inpFormule.value) === ans.formule;
+    const naamOk = normNaam(inpNaam.value) === ans.naam.toLowerCase();
+
+    totalCount++;
+    if(groepMOk && groepNOk && oxMOk && oxNOk && ionMOk && ionNOk && verhoudingMOk && verhoudingNOk && formuleOk && naamOk) correctCount++;
+
+    renderFeedback(elFeedback, [
+      { ok: groepMOk && groepNOk, label: 'Groepsnummers.', answer: `${ans.m.groep} / ${ans.n.groep}` },
+      { ok: oxMOk && oxNOk, label: 'Oxidatiegetallen.', answer: `${formatOxidationRoman(ans.cm)} / ${formatOxidationRoman(ans.cn)}` },
+      { ok: ionMOk && ionNOk, label: 'Ionsymbolen.', answer: `${ans.ionM} / ${ans.ionN}` },
+      { ok: verhoudingMOk && verhoudingNOk, label: 'Ionverhouding.', answer: `${ans.countM} / ${ans.countN}` },
+      { ok: formuleOk, label: 'Formule.', answer: ans.formule },
+      { ok: naamOk, label: 'Naam van de ionverbinding.', answer: ans.naam },
+    ]);
+    elScore.textContent = `${correctCount} / ${totalCount} correct`;
+  }
+
+  document.getElementById('b1-check').addEventListener('click', check);
+  document.getElementById('b1-next').addEventListener('click', load);
+
+  load();
+})();
+
+/* ================= MODULE 4: ATOOMMODEL ================= */
+
+(function moduleAtoommodel(){
+  const nextNeutral = makeBag(EXTENDED_ELEMENTS);
+  const nextIon = makeBag(ION_DATA);
+  const IDP_CHOICES = ['ZA', 'Zneutrons', 'Aneutrons']; /* which 2 arithmetic fields anchor the question */
+  let current = null;
+  let qIndex = 0;
+  let correctCount = 0, totalCount = 0;
+
+  const cellSymbol = document.getElementById('c1-symbol-cell');
+  const cellZ = document.getElementById('c1-z-cell');
+  const cellA = document.getElementById('c1-a-cell');
+  const inpProtons = document.getElementById('c1-protons');
+  const cellElectrons = document.getElementById('c1-electrons-cell');
+  const cellNeutrons = document.getElementById('c1-neutrons-cell');
+  const elFeedback = document.getElementById('c1-feedback');
+  const elScore = document.getElementById('c1-score');
+
+  function givenCell(value){ return `<span class="given-value">${value}</span>`; }
+  function inputCell(id, placeholder){ return `<input type="text" id="${id}"${placeholder?` placeholder="${placeholder}"`:''}>`; }
+
+  function load(){
+    qIndex++;
+    const forceNeutral = qIndex <= 3;
+    const isIon = !forceNeutral && Math.random() < 0.5;
+
+    let el, ionCharge;
+    if(isIon){
+      const ionEntry = nextIon();
+      el = ionEntry.el; ionCharge = ionEntry.ionCharge;
+    } else {
+      el = nextNeutral(); ionCharge = 0;
+    }
+
+    /* Students may always use a periodic table, so proton number and element
+       symbol are never given at the same time — either is enough to look up
+       the other, so revealing both would be redundant. */
+    const identityGiven = Math.random() < 0.35;
+    const idp = identityGiven ? 'Aneutrons' : IDP_CHOICES[Math.floor(Math.random()*IDP_CHOICES.length)];
+    const electronsGiven = isIon && !identityGiven;
+
+    const neutrons = el.a - el.z;
+    const electronsExpected = isIon ? (el.z - ionCharge) : el.z;
+    const symbolExpected = isIon ? canonicalIonStr(el.sym, ionCharge) : el.sym;
+
+    current = { el, isIon, ionCharge, idp, identityGiven, electronsGiven, neutrons, electronsExpected, symbolExpected };
+
+    cellSymbol.innerHTML = identityGiven ? givenCell(symbolExpected) : inputCell('c1-symbol-input', 'bv. X of X2+');
+    cellZ.innerHTML = (idp==='ZA' || idp==='Zneutrons') ? givenCell(el.z) : inputCell('c1-z-input');
+    cellA.innerHTML = (idp==='ZA' || idp==='Aneutrons') ? givenCell(el.a) : inputCell('c1-a-input');
+    cellNeutrons.innerHTML = (idp==='Zneutrons' || idp==='Aneutrons') ? givenCell(neutrons) : inputCell('c1-neutrons-input');
+    cellElectrons.innerHTML = electronsGiven ? givenCell(electronsExpected) : inputCell('c1-electrons-input');
+
+    inpProtons.value = '';
+    elFeedback.innerHTML = '';
+  }
+
+  function check(){
+    const c = current;
+    const el = c.el;
+
+    const zOk = (c.idp==='ZA' || c.idp==='Zneutrons') ? true : normNum(document.getElementById('c1-z-input').value) === el.z;
+    const aOk = (c.idp==='ZA' || c.idp==='Aneutrons') ? true : normNum(document.getElementById('c1-a-input').value) === el.a;
+    const neutronsOk = (c.idp==='Zneutrons' || c.idp==='Aneutrons') ? true : normNum(document.getElementById('c1-neutrons-input').value) === c.neutrons;
+    const electronsOk = c.electronsGiven ? true : normNum(document.getElementById('c1-electrons-input').value) === c.electronsExpected;
+    const protonsOk = normNum(inpProtons.value) === el.z;
+
+    let symbolOk = true;
+    if(!c.identityGiven){
+      if(c.isIon){
+        const parsed = normalizeIonInput(document.getElementById('c1-symbol-input').value);
+        symbolOk = !!parsed && parsed.sym === el.sym && parsed.charge === c.ionCharge;
+      } else {
+        symbolOk = document.getElementById('c1-symbol-input').value.trim() === el.sym;
+      }
+    }
+
+    totalCount++;
+    if(zOk && aOk && neutronsOk && electronsOk && protonsOk && symbolOk) correctCount++;
+
+    const items = [];
+    if(!c.identityGiven) items.push({ ok: symbolOk, label: c.isIon ? 'Ionsymbool.' : 'Symbool.', answer: c.symbolExpected });
+    if(!(c.idp==='ZA' || c.idp==='Zneutrons')) items.push({ ok: zOk, label: 'Protonaantal Z.', answer: String(el.z) });
+    if(!(c.idp==='ZA' || c.idp==='Aneutrons')) items.push({ ok: aOk, label: 'Massagetal A.', answer: String(el.a) });
+    items.push({ ok: protonsOk, label: 'Aantal protonen.', answer: String(el.z) });
+    if(!c.electronsGiven) items.push({ ok: electronsOk, label: 'Aantal elektronen.', answer: String(c.electronsExpected) });
+    if(!(c.idp==='Zneutrons' || c.idp==='Aneutrons')) items.push({ ok: neutronsOk, label: 'Aantal neutronen.', answer: String(c.neutrons) });
+
+    renderFeedback(elFeedback, items);
+    elScore.textContent = `${correctCount} / ${totalCount} correct`;
+  }
+
+  document.getElementById('c1-check').addEventListener('click', check);
+  document.getElementById('c1-next').addEventListener('click', load);
+
+  load();
+})();
+
+/* ---------- tab switching ---------- */
+
+document.querySelectorAll('nav.tabs button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('nav.tabs button').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('section.module').forEach(s => s.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('mod-' + btn.dataset.tab).classList.add('active');
+  });
+});
+
+})();
+</script>
+
+</body>
+</html>

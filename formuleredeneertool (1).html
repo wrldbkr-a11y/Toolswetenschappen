@@ -1,0 +1,1303 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Formuleredeneertool</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F3F1E9;
+    --paper-line:#DCD9CB;
+    --ink:#1C2B33;
+    --ink-soft:#5B6B72;
+    --accent:#A6631B;
+    --accent-soft:#E7D2B4;
+    --good:#2F6B4F;
+    --good-bg:#E3EEE6;
+    --bad:#A6392B;
+    --bad-bg:#F3E2DE;
+    --card-bg:#FBFAF6;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      linear-gradient(var(--paper-line) 1px, transparent 1px) 0 0/100% 32px,
+      var(--paper);
+    color:var(--ink);
+    font-family:'Source Serif 4', Georgia, serif;
+    line-height:1.5;
+    min-height:100vh;
+  }
+  .wrap{
+    max-width:700px;
+    margin:0 auto;
+    padding:28px 20px 80px;
+  }
+  header.app-header{
+    margin-bottom:28px;
+  }
+  header.app-header h1{
+    font-size:1.7rem;
+    font-weight:700;
+    margin:0 0 6px;
+    letter-spacing:-0.01em;
+  }
+  header.app-header p{
+    color:var(--ink-soft);
+    margin:0;
+    max-width:56ch;
+  }
+  .sym{font-family:'IBM Plex Mono', monospace;}
+  code{
+    font-family:'IBM Plex Mono', monospace;
+    background:var(--accent-soft);
+    padding:0.05em 0.35em;
+    border-radius:3px;
+    font-size:0.92em;
+  }
+
+  /* -------- Home: topic list -------- */
+  .categorie{
+    margin-bottom:26px;
+  }
+  .categorie h2{
+    font-size:0.95rem;
+    font-weight:600;
+    color:var(--accent);
+    margin:0 0 10px;
+    padding-bottom:4px;
+    border-bottom:1px solid var(--paper-line);
+  }
+  .topic-card{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:14px;
+    width:100%;
+    text-align:left;
+    background:var(--card-bg);
+    border:1px solid var(--paper-line);
+    border-left:3px solid var(--accent);
+    padding:12px 14px;
+    margin-bottom:8px;
+    cursor:pointer;
+    font-family:inherit;
+    font-size:1rem;
+    color:var(--ink);
+    border-radius:2px;
+  }
+  .topic-card:hover{ background:#fff; }
+  .topic-card:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  .topic-main .naam{ font-weight:600; }
+  .topic-main .formule{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.86rem;
+    color:var(--ink-soft);
+    margin-top:2px;
+  }
+  .topic-score{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.8rem;
+    color:var(--ink-soft);
+    white-space:nowrap;
+  }
+  .reset-link{
+    display:inline-block;
+    margin-top:18px;
+    font-size:0.85rem;
+    color:var(--ink-soft);
+    cursor:pointer;
+    text-decoration:underline;
+    background:none;
+    border:none;
+    font-family:inherit;
+    padding:0;
+  }
+
+  /* -------- Exercise view -------- */
+  .terug-btn{
+    background:none;
+    border:none;
+    color:var(--accent);
+    font-family:inherit;
+    font-size:0.95rem;
+    cursor:pointer;
+    padding:0;
+    margin-bottom:16px;
+  }
+  .oef-header h2{
+    font-size:1.35rem;
+    margin:0 0 4px;
+  }
+  .oef-note{
+    font-size:0.85rem;
+    color:var(--ink-soft);
+    font-style:italic;
+    margin:2px 0 14px;
+  }
+  .tabs{
+    display:flex;
+    gap:6px;
+    margin:14px 0 18px;
+    flex-wrap:wrap;
+  }
+  .tab-btn{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.8rem;
+    background:var(--card-bg);
+    border:1px solid var(--paper-line);
+    padding:7px 11px;
+    cursor:pointer;
+    color:var(--ink-soft);
+    border-radius:2px;
+  }
+  .tab-btn.actief{
+    background:var(--ink);
+    color:var(--paper);
+    border-color:var(--ink);
+  }
+  .vraag-card{
+    background:var(--card-bg);
+    border:1px solid var(--paper-line);
+    padding:20px;
+    border-radius:3px;
+  }
+  .formule-groot{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:1.3rem;
+    font-weight:500;
+    color:var(--ink);
+    background:var(--accent-soft);
+    display:inline-block;
+    padding:6px 14px;
+    border-radius:3px;
+    margin-bottom:14px;
+  }
+  .vraag-card p{ margin:8px 0; }
+  .hint{ font-size:0.86rem; color:var(--ink-soft); }
+  .gegevens-lijst{ margin:10px 0; }
+  .gegeven-item{
+    display:flex;
+    justify-content:space-between;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.92rem;
+    padding:3px 0;
+    border-bottom:1px dashed var(--paper-line);
+    max-width:420px;
+  }
+  .gegeven-item .g-waarde{ color:var(--accent); font-weight:600; }
+  .antwoord-rij{
+    display:flex;
+    gap:10px;
+    align-items:center;
+    margin-top:16px;
+    flex-wrap:wrap;
+  }
+  .antwoord-rij input[type=text]{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:1rem;
+    padding:8px 10px;
+    border:1px solid var(--ink-soft);
+    border-radius:3px;
+    width:160px;
+  }
+  .antwoord-rij .eenheid{
+    font-family:'IBM Plex Mono', monospace;
+    color:var(--ink-soft);
+    font-size:0.9rem;
+  }
+  button.primair{
+    font-family:'IBM Plex Mono', monospace;
+    background:var(--ink);
+    color:var(--paper);
+    border:none;
+    padding:9px 16px;
+    border-radius:3px;
+    cursor:pointer;
+    font-size:0.9rem;
+  }
+  button.primair:hover{ background:#33454f; }
+  button.secundair{
+    font-family:'IBM Plex Mono', monospace;
+    background:none;
+    border:1px solid var(--ink-soft);
+    color:var(--ink);
+    padding:8px 15px;
+    border-radius:3px;
+    cursor:pointer;
+    font-size:0.9rem;
+  }
+  .feedback{
+    margin-top:16px;
+    padding:12px 14px;
+    border-radius:3px;
+    font-size:0.94rem;
+  }
+  .feedback.goed{ background:var(--good-bg); color:var(--good); }
+  .feedback.fout{ background:var(--bad-bg); color:var(--bad); }
+  .feedback .uitleg{
+    display:block;
+    margin-top:6px;
+    color:var(--ink);
+    font-size:0.9rem;
+  }
+  .verder-rij{
+    margin-top:14px;
+    display:flex;
+    gap:10px;
+  }
+  .score-balk{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.82rem;
+    color:var(--ink-soft);
+    margin-top:14px;
+  }
+  /* MC (kwalitatief) */
+  .mc-opties{ margin-top:14px; display:flex; flex-direction:column; gap:8px; }
+  .mc-optie{
+    text-align:left;
+    background:#fff;
+    border:1px solid var(--paper-line);
+    padding:10px 12px;
+    border-radius:3px;
+    cursor:pointer;
+    font-family:'Source Serif 4', serif;
+    font-size:0.97rem;
+    color:var(--ink);
+  }
+  .mc-optie:hover{ border-color:var(--accent); }
+  .mc-optie.gekozen-goed{ background:var(--good-bg); border-color:var(--good); }
+  .mc-optie.gekozen-fout{ background:var(--bad-bg); border-color:var(--bad); }
+  .mc-optie[disabled]{ cursor:default; }
+
+  /* Blokkenstapels (druk) */
+  .blokken-visual{
+    display:flex;
+    align-items:flex-end;
+    gap:32px;
+    flex-wrap:wrap;
+    margin:14px 0;
+    padding:14px;
+    background:var(--card-bg);
+    border:1px solid var(--paper-line);
+    border-radius:3px;
+  }
+  .blokken-situatie{ text-align:center; }
+  .blokken-label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.8rem;
+    color:var(--ink-soft);
+    margin-bottom:6px;
+  }
+  .blokken-situatie svg{ display:block; }
+
+  @media (max-width:480px){
+    .formule-groot{ font-size:1.05rem; }
+    .antwoord-rij input[type=text]{ width:120px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+
+<script>
+/* ============ DATA ============ */
+const FORMULES = [
+  {
+    id:'zwaartekracht', categorie:'Mechanica', naam:'Zwaartekracht', type:'macht',
+    formuleTekst:'F<sub>z</sub> = m · g',
+    Y:{sym:'Fz',naam:'zwaartekracht',eenheid:'N'},
+    constante:1,
+    factoren:[
+      {sym:'m', naam:'massa', eenheid:'kg', exp:1, min:1, max:80, decimals:0},
+      {sym:'g', naam:'valversnelling', eenheid:'m/s²', exp:1, min:1.5, max:25, decimals:2}
+    ]
+  },
+  {
+    id:'veerkracht', categorie:'Mechanica', naam:'Veerkracht', type:'macht',
+    formuleTekst:'F<sub>v</sub> = k · ΔL',
+    Y:{sym:'Fv',naam:'veerkracht',eenheid:'N'},
+    constante:1,
+    factoren:[
+      {sym:'k', naam:'veerconstante', eenheid:'N/m', exp:1, min:20, max:400, decimals:0},
+      {sym:'ΔL', naam:'lengteverandering', eenheid:'m', exp:1, min:0.02, max:0.5, decimals:2}
+    ]
+  },
+  {
+    id:'druk', categorie:'Mechanica', naam:'Druk op een vaste stof', type:'macht',
+    formuleTekst:'p = F / A',
+    Y:{sym:'p',naam:'druk',eenheid:'Pa'},
+    constante:1,
+    blokken:true,
+    factoren:[
+      {sym:'F', naam:'kracht', eenheid:'N', exp:1, min:10, max:3000, decimals:0},
+      {sym:'A', naam:'oppervlakte', eenheid:'m²', exp:-1, min:0.005, max:2, decimals:3}
+    ]
+  },
+  {
+    id:'archimedes', categorie:'Mechanica', naam:'Wet van Archimedes', type:'macht',
+    formuleTekst:'F<sub>A</sub> = ρ · V · g',
+    Y:{sym:'FA',naam:'Archimedeskracht',eenheid:'N'},
+    constante:9.81,
+    factoren:[
+      {sym:'ρ', naam:'dichtheid van de vloeistof', eenheid:'kg/m³', exp:1, min:700, max:1400, decimals:0},
+      {sym:'V', naam:'ondergedompeld volume', eenheid:'dm³ (liter)', exp:1, min:0.1, max:50, decimals:1, si:0.001}
+    ]
+  },
+  {
+    id:'hydraulisch', categorie:'Mechanica', naam:'Hydraulische systemen', type:'hydraulisch',
+    formuleTekst:'F₁ / A₁ = F₂ / A₂'
+  },
+  {
+    id:'kinetisch', categorie:'Energie', naam:'Kinetische energie', type:'macht',
+    formuleTekst:'E<sub>k</sub> = ½ · m · v²',
+    Y:{sym:'Ek',naam:'kinetische energie',eenheid:'J'},
+    constante:0.5,
+    factoren:[
+      {sym:'m', naam:'massa', eenheid:'kg', exp:1, min:1, max:1500, decimals:0},
+      {sym:'v', naam:'snelheid', eenheid:'m/s', exp:2, min:1, max:40, decimals:0}
+    ]
+  },
+  {
+    id:'gravPE', categorie:'Energie', naam:'Potentiële zwaarte-energie', type:'macht',
+    formuleTekst:'E<sub>p</sub> = m · g · h',
+    Y:{sym:'Ep',naam:'potentiële energie',eenheid:'J'},
+    constante:9.81,
+    factoren:[
+      {sym:'m', naam:'massa', eenheid:'kg', exp:1, min:1, max:100, decimals:0},
+      {sym:'h', naam:'hoogte', eenheid:'m', exp:1, min:0.5, max:50, decimals:1}
+    ]
+  },
+  {
+    id:'elastPE', categorie:'Energie', naam:'Potentiële elastische energie', type:'macht',
+    formuleTekst:'E<sub>el</sub> = ½ · k · ΔL²',
+    Y:{sym:'Eel',naam:'elastische energie',eenheid:'J'},
+    constante:0.5,
+    factoren:[
+      {sym:'k', naam:'veerconstante', eenheid:'N/m', exp:1, min:20, max:400, decimals:0},
+      {sym:'ΔL', naam:'lengteverandering', eenheid:'m', exp:2, min:0.02, max:0.5, decimals:2}
+    ]
+  },
+  {
+    id:'warmte', categorie:'Warmteleer', naam:'Warmte', type:'macht',
+    formuleTekst:'Q = c · m · ΔT',
+    Y:{sym:'Q',naam:'warmte',eenheid:'J'},
+    constante:1,
+    factoren:[
+      {sym:'c', naam:'soortelijke warmte', eenheid:'J/(kg·°C)', exp:1, min:400, max:4200, decimals:0},
+      {sym:'m', naam:'massa', eenheid:'kg', exp:1, min:0.1, max:20, decimals:1},
+      {sym:'ΔT', naam:'temperatuurstijging', eenheid:'°C', exp:1, min:5, max:90, decimals:0}
+    ]
+  },
+  {
+    id:'coulomb', categorie:'Elektriciteit', naam:'Coulombkracht', type:'macht',
+    formuleTekst:'F = k · |q₁ · q₂| / r²',
+    Y:{sym:'F',naam:'Coulombkracht',eenheid:'N'},
+    constante:8.99e9,
+    factoren:[
+      {sym:'q1', naam:'lading 1', eenheid:'µC', exp:1, min:1, max:80, decimals:0, si:1e-6},
+      {sym:'q2', naam:'lading 2', eenheid:'µC', exp:1, min:1, max:80, decimals:0, si:1e-6},
+      {sym:'r', naam:'afstand', eenheid:'cm', exp:-2, min:1, max:100, decimals:0, si:0.01}
+    ]
+  },
+  {
+    id:'elektrischveld', categorie:'Elektriciteit', naam:'Elektrisch veld', type:'macht',
+    formuleTekst:'E = k · Q / r²',
+    Y:{sym:'E',naam:'elektrische veldsterkte',eenheid:'N/C'},
+    constante:8.99e9,
+    factoren:[
+      {sym:'Q', naam:'lading', eenheid:'µC', exp:1, min:1, max:80, decimals:0, si:1e-6},
+      {sym:'r', naam:'afstand', eenheid:'cm', exp:-2, min:1, max:100, decimals:0, si:0.01}
+    ]
+  },
+  {
+    id:'ohm', categorie:'Elektriciteit', naam:'Wet van Ohm', type:'macht',
+    formuleTekst:'U = R · I',
+    Y:{sym:'U',naam:'spanning',eenheid:'V'},
+    constante:1,
+    factoren:[
+      {sym:'R', naam:'weerstand', eenheid:'Ω', exp:1, min:1, max:1000, decimals:0},
+      {sym:'I', naam:'stroomsterkte', eenheid:'A', exp:1, min:0.1, max:10, decimals:1}
+    ]
+  },
+  {
+    id:'lorentz', categorie:'Magnetisme', naam:'Lorentzkracht', type:'macht',
+    formuleTekst:'F = B · I · L',
+    Y:{sym:'F',naam:'Lorentzkracht',eenheid:'N'},
+    constante:1,
+    factoren:[
+      {sym:'B', naam:'magnetische veldsterkte', eenheid:'T', exp:1, min:0.01, max:2, decimals:2},
+      {sym:'I', naam:'stroomsterkte', eenheid:'A', exp:1, min:0.5, max:20, decimals:1},
+      {sym:'L', naam:'lengte van de geleider', eenheid:'m', exp:1, min:0.01, max:2, decimals:2}
+    ]
+  },
+  {
+    id:'rechtegeleider', categorie:'Magnetisme', naam:'Magnetisch veld bij een rechte geleider', type:'macht',
+    formuleTekst:'B = μ<sub>0</sub> · I / (2π · r)',
+    Y:{sym:'B',naam:'magnetische veldsterkte',eenheid:'T'},
+    constante:(4*Math.PI*1e-7)/(2*Math.PI),
+    noot:'μ<sub>0</sub> = 4π·10⁻⁷ T·m/A is de magnetische permeabiliteit van het vacuüm; de 2π uit de afleiding zit al verrekend in de gebruikte constante.',
+    factoren:[
+      {sym:'I', naam:'stroomsterkte', eenheid:'A', exp:1, min:1, max:20, decimals:0},
+      {sym:'r', naam:'afstand tot de geleider', eenheid:'cm', exp:-1, min:1, max:50, decimals:0, si:0.01}
+    ]
+  },
+  {
+    id:'spoel', categorie:'Magnetisme', naam:'Magnetisch veld bij een spoel', type:'macht',
+    formuleTekst:'B = μ<sub>0</sub> · μ<sub>r</sub> · n · I',
+    Y:{sym:'B',naam:'magnetische veldsterkte',eenheid:'T'},
+    constante:4*Math.PI*1e-7,
+    noot:'μ<sub>0</sub> = 4π·10⁻⁷ T·m/A is de permeabiliteit van het vacuüm; μ<sub>r</sub> is de relatieve permeabiliteit van de kern (μ<sub>r</sub> = 1 voor lucht/vacuüm, groter voor bv. een ijzeren kern).',
+    factoren:[
+      {sym:'μ<sub>r</sub>', naam:'relatieve permeabiliteit van de kern', eenheid:'(geen eenheid)', exp:1, min:1, max:50, decimals:0},
+      {sym:'n', naam:'windingen per meter', eenheid:'wind/m', exp:1, min:100, max:2000, decimals:0},
+      {sym:'I', naam:'stroomsterkte', eenheid:'A', exp:1, min:0.1, max:5, decimals:1}
+    ]
+  },
+  {
+    id:'voorvoegsels', categorie:'Voorvoegsels & eenheden', naam:'Voorvoegsels en machten van 10', type:'eenheden', subtype:'voorvoegsel',
+    omschrijving:'milli, centi, kilo, mega, ... ↔ 10ⁿ'
+  },
+  {
+    id:'omzetten-lineair', categorie:'Voorvoegsels & eenheden', naam:'Omzetten naar SI-eenheden', type:'eenheden', subtype:'lineair',
+    omschrijving:'bv. km, mm, µC, kJ → m, C, J'
+  },
+  {
+    id:'omzetten-opp', categorie:'Voorvoegsels & eenheden', naam:'Omzetten naar m² (oppervlakte)', type:'eenheden', subtype:'oppervlakte',
+    omschrijving:'bv. cm² → m²'
+  },
+  {
+    id:'omzetten-vol', categorie:'Voorvoegsels & eenheden', naam:'Omzetten naar m³ (volume)', type:'eenheden', subtype:'volume',
+    omschrijving:'bv. dm³, cm³ → m³'
+  },
+  {
+    id:'omvormen-algemeen', categorie:'Omvormen', naam:'Formules omvormen (alle onderwerpen)', type:'omvormen-algemeen',
+    omschrijving:'Oefen het herschikken van alle formules door elkaar'
+  }
+];
+
+const OMVORMEN = {
+  zwaartekracht: [
+    {doel:'m', correct:'m = Fz / g', fout:['m = g / Fz','m = Fz · g','m = Fz − g']},
+    {doel:'g', correct:'g = Fz / m', fout:['g = m / Fz','g = Fz · m','g = Fz − m']}
+  ],
+  veerkracht: [
+    {doel:'k', correct:'k = Fv / ΔL', fout:['k = ΔL / Fv','k = Fv · ΔL','k = Fv + ΔL']},
+    {doel:'ΔL', correct:'ΔL = Fv / k', fout:['ΔL = k / Fv','ΔL = Fv · k','ΔL = Fv − k']}
+  ],
+  druk: [
+    {doel:'F', correct:'F = p · A', fout:['F = p / A','F = A / p','F = p + A']},
+    {doel:'A', correct:'A = F / p', fout:['A = p / F','A = F · p','A = F − p']}
+  ],
+  archimedes: [
+    {doel:'ρ', correct:'ρ = FA / (V · g)', fout:['ρ = FA · V · g','ρ = (V · g) / FA','ρ = FA / V − g']},
+    {doel:'V', correct:'V = FA / (ρ · g)', fout:['V = FA · ρ · g','V = (ρ · g) / FA','V = FA / ρ − g']}
+  ],
+  hydraulisch: [
+    {doel:'F2', correct:'F2 = F1 · A2 / A1', fout:['F2 = F1 · A1 / A2','F2 = A1 · A2 / F1','F2 = F1 + A2 − A1']},
+    {doel:'A2', correct:'A2 = F2 · A1 / F1', fout:['A2 = F1 · A1 / F2','A2 = F2 / (F1 · A1)','A2 = F2 − F1 + A1']},
+    {doel:'F1', correct:'F1 = F2 · A1 / A2', fout:['F1 = F2 · A2 / A1','F1 = A1 · A2 / F2','F1 = F2 + A1 − A2']},
+    {doel:'A1', correct:'A1 = F1 · A2 / F2', fout:['A1 = F2 · A2 / F1','A1 = F1 / (F2 · A2)','A1 = F1 − A2 + F2']}
+  ],
+  kinetisch: [
+    {doel:'m', correct:'m = 2·Ek / v²', fout:['m = ½·Ek · v²','m = 2·Ek · v²','m = v² / (2·Ek)']},
+    {doel:'v', correct:'v = √(2·Ek / m)', fout:['v = √(m / (2·Ek))','v = 2·Ek / m','v = (2·Ek / m)²']}
+  ],
+  gravPE: [
+    {doel:'m', correct:'m = Ep / (g · h)', fout:['m = Ep · g · h','m = (g · h) / Ep','m = Ep / g − h']},
+    {doel:'h', correct:'h = Ep / (m · g)', fout:['h = Ep · m · g','h = (m · g) / Ep','h = Ep / m − g']}
+  ],
+  elastPE: [
+    {doel:'k', correct:'k = 2·Eel / ΔL²', fout:['k = ½·Eel · ΔL²','k = 2·Eel · ΔL²','k = ΔL² / (2·Eel)']},
+    {doel:'ΔL', correct:'ΔL = √(2·Eel / k)', fout:['ΔL = √(k / (2·Eel))','ΔL = 2·Eel / k','ΔL = (2·Eel / k)²']}
+  ],
+  warmte: [
+    {doel:'c', correct:'c = Q / (m · ΔT)', fout:['c = Q · m · ΔT','c = (m · ΔT) / Q','c = Q / m − ΔT']},
+    {doel:'m', correct:'m = Q / (c · ΔT)', fout:['m = Q · c · ΔT','m = (c · ΔT) / Q','m = Q / c − ΔT']},
+    {doel:'ΔT', correct:'ΔT = Q / (c · m)', fout:['ΔT = Q · c · m','ΔT = (c · m) / Q','ΔT = Q / c − m']}
+  ],
+  coulomb: [
+    {doel:'q1', correct:'q1 = F · r² / (k · q2)', fout:['q1 = F · k · q2 / r²','q1 = F · r² · k · q2','q1 = (k · q2) / (F · r²)']},
+    {doel:'r', correct:'r = √(k · q1 · q2 / F)', fout:['r = √(F / (k · q1 · q2))','r = k · q1 · q2 / F','r = (k · q1 · q2 / F)²']}
+  ],
+  elektrischveld: [
+    {doel:'Q', correct:'Q = E · r² / k', fout:['Q = E · k / r²','Q = E · k · r²','Q = r² / (E · k)']},
+    {doel:'r', correct:'r = √(k · Q / E)', fout:['r = √(E / (k · Q))','r = k · Q / E','r = (k · Q / E)²']}
+  ],
+  ohm: [
+    {doel:'R', correct:'R = U / I', fout:['R = I / U','R = U · I','R = U − I']},
+    {doel:'I', correct:'I = U / R', fout:['I = R / U','I = U · R','I = U − R']}
+  ],
+  lorentz: [
+    {doel:'B', correct:'B = F / (I · L)', fout:['B = F · I · L','B = (I · L) / F','B = F / I − L']},
+    {doel:'I', correct:'I = F / (B · L)', fout:['I = F · B · L','I = (B · L) / F','I = F / B − L']},
+    {doel:'L', correct:'L = F / (B · I)', fout:['L = F · B · I','L = (B · I) / F','L = F / B − I']}
+  ],
+  rechtegeleider: [
+    {doel:'I', correct:'I = B · 2π · r / μ<sub>0</sub>', fout:['I = B · μ<sub>0</sub> / (2π · r)','I = B · μ<sub>0</sub> · 2π · r','I = (2π · r) / (B · μ<sub>0</sub>)']},
+    {doel:'r', correct:'r = μ<sub>0</sub> · I / (2π · B)', fout:['r = B · 2π / (μ<sub>0</sub> · I)','r = B · μ<sub>0</sub> · I · 2π','r = (2π · B) / (μ<sub>0</sub> · I)']}
+  ],
+  spoel: [
+    {doel:'μ<sub>r</sub>', correct:'μ<sub>r</sub> = B / (μ<sub>0</sub> · n · I)', fout:['μ<sub>r</sub> = B · μ<sub>0</sub> · n · I','μ<sub>r</sub> = (μ<sub>0</sub> · n · I) / B','μ<sub>r</sub> = B / μ<sub>0</sub> − n · I']},
+    {doel:'n', correct:'n = B / (μ<sub>0</sub> · μ<sub>r</sub> · I)', fout:['n = B · μ<sub>0</sub> · μ<sub>r</sub> · I','n = (μ<sub>0</sub> · μ<sub>r</sub> · I) / B','n = B / (μ<sub>0</sub> · I) − μ<sub>r</sub>']},
+    {doel:'I', correct:'I = B / (μ<sub>0</sub> · μ<sub>r</sub> · n)', fout:['I = B · μ<sub>0</sub> · μ<sub>r</sub> · n','I = (μ<sub>0</sub> · μ<sub>r</sub> · n) / B','I = B / (μ<sub>0</sub> · n) − μ<sub>r</sub>']}
+  ]
+};
+
+const PREFIXEN = [
+  {naam:'micro', symbol:'µ', macht:-6},
+  {naam:'milli', symbol:'m', macht:-3},
+  {naam:'centi', symbol:'c', macht:-2},
+  {naam:'deci', symbol:'d', macht:-1},
+  {naam:'kilo', symbol:'k', macht:3},
+  {naam:'mega', symbol:'M', macht:6}
+];
+const EENHEDEN_LINEAIR = [
+  {sym:'m', naam:'lengte'},
+  {sym:'g', naam:'massa'},
+  {sym:'N', naam:'kracht'},
+  {sym:'J', naam:'energie'},
+  {sym:'C', naam:'lading'},
+  {sym:'A', naam:'stroomsterkte'},
+  {sym:'V', naam:'spanning'},
+  {sym:'Ω', naam:'weerstand'}
+];
+
+const CATEGORIE_VOLGORDE = ['Voorvoegsels & eenheden','Omvormen','Mechanica','Energie','Warmteleer','Elektriciteit','Magnetisme'];
+
+/* ============ HELPERS ============ */
+function fmt(x){
+  if(x===0) return '0';
+  const a = Math.abs(x);
+  if(a>=100000 || a<0.001){
+    return x.toExponential(2).replace('e+', '·10^').replace('e-', '·10^-');
+  }
+  if(a>=1000) return Math.round(x).toLocaleString('nl-BE');
+  if(a>=100) return (Math.round(x*10)/10).toString().replace('.',',');
+  if(a>=10) return (Math.round(x*100)/100).toString().replace('.',',');
+  if(a>=1) return (Math.round(x*100)/100).toString().replace('.',',');
+  return (Math.round(x*1000)/1000).toString().replace('.',',');
+}
+function randInt(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
+function randWaarde(f){
+  if(f.decimals && f.decimals>0){
+    const p = Math.pow(10,f.decimals);
+    return Math.round((Math.random()*(f.max-f.min)+f.min)*p)/p;
+  }
+  return randInt(Math.round(f.min), Math.round(f.max));
+}
+function siWaarde(f,v){ return v*(f.si||1); }
+function berekenY(formule, waarden){
+  let y = formule.constante;
+  formule.factoren.forEach(f=>{ y *= Math.pow(siWaarde(f,waarden[f.sym]), f.exp); });
+  return y;
+}
+function parseAntwoord(str){
+  if(!str) return NaN;
+  str = str.trim().replace(',', '.');
+  str = str.replace(/\s*[×x\*·]\s*10\s*\^?\s*/i, 'e').replace(/e\^/i, 'e');
+  if(str.includes('/')){
+    const [a,b] = str.split('/').map(s=>parseFloat(s));
+    if(isNaN(a)||isNaN(b)||b===0) return NaN;
+    return a/b;
+  }
+  return parseFloat(str);
+}
+function fmtWetenschappelijk(x){
+  if(x===0) return '0';
+  let e = Math.floor(Math.log10(Math.abs(x)));
+  let mant = Math.round((x/Math.pow(10,e))*100)/100;
+  if(Math.abs(mant)>=10){ mant/=10; e+=1; }
+  const mantStr = mant.toString().replace('.', ',');
+  return e===0 ? mantStr : `${mantStr}·10<sup>${e}</sup>`;
+}
+function isJuist(userVal, correctVal, tol=0.04){
+  if(isNaN(userVal)) return false;
+  const denom = Math.max(Math.abs(correctVal), 1e-12);
+  return Math.abs(userVal-correctVal)/denom <= tol;
+}
+function kiesUit(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
+  return a;
+}
+function gegevenLijstHTML(factoren, waarden){
+  return '<div class="gegevens-lijst">' + factoren.map(f=>
+    `<div class="gegeven-item"><span>${f.naam} (${f.sym})</span><span class="g-waarde">${fmt(waarden[f.sym])} ${f.eenheid}</span></div>`
+  ).join('') + '</div>';
+}
+
+/* ============ SCORES (localStorage) ============ */
+function leesScores(){
+  try{ return JSON.parse(localStorage.getItem('frt-scores')||'{}'); }catch(e){ return {}; }
+}
+function schrijfScores(s){ localStorage.setItem('frt-scores', JSON.stringify(s)); }
+function registreerAntwoord(topicId, goed){
+  const s = leesScores();
+  if(!s[topicId]) s[topicId] = {goed:0, totaal:0};
+  s[topicId].totaal++;
+  if(goed) s[topicId].goed++;
+  schrijfScores(s);
+}
+function scoreTekst(topicId){
+  const s = leesScores()[topicId];
+  if(!s || s.totaal===0) return '';
+  return `${s.goed}/${s.totaal} goed`;
+}
+
+function kiesEenvoudigeBreuk(){
+  let teller, noemer;
+  do{ teller = randInt(1,6); noemer = randInt(1,6); } while(teller===noemer);
+  const ggd = (a,b)=> b===0 ? a : ggd(b, a%b);
+  const d = ggd(teller, noemer);
+  teller/=d; noemer/=d;
+  return {teller, noemer, waarde: teller/noemer};
+}
+function breukTekst(breuk){
+  return breuk.noemer===1 ? `${breuk.teller}` : `${breuk.teller}/${breuk.noemer}`;
+}
+function veranderWerkwoord(breuk){
+  if(breuk.noemer===1){
+    if(breuk.teller===2) return 'verdubbelt';
+    if(breuk.teller===3) return 'verdrievoudigt';
+    if(breuk.teller===4) return 'vervierdubbelt';
+  }
+  if(breuk.teller===1){
+    if(breuk.noemer===2) return 'halveert';
+    if(breuk.noemer===3) return 'wordt één derde';
+    if(breuk.noemer===4) return 'wordt één vierde';
+  }
+  return `verandert met een factor ${breukTekst(breuk)}`;
+}
+
+function randDeelbarePaar(f, teller, noemer){
+  const eenheidStap = f.decimals ? 1/Math.pow(10,f.decimals) : 1;
+  const decFactor = Math.pow(10, f.decimals||0);
+  const lowK = Math.max(f.min/(noemer*eenheidStap), f.min/(teller*eenheidStap));
+  const highK = Math.min(f.max/(noemer*eenheidStap), f.max/(teller*eenheidStap));
+  const kMin = Math.max(1, Math.ceil(lowK));
+  const kMax = Math.max(kMin, Math.floor(highK));
+  const k = randInt(kMin, kMax);
+  const start = Math.round(k*noemer*eenheidStap*decFactor)/decFactor;
+  const eind = Math.round(k*teller*eenheidStap*decFactor)/decFactor;
+  return {start, eind};
+}
+
+function kiesFactorMetPrioriteit(factoren){
+  const pool = [];
+  factoren.forEach(f=>{
+    const gewicht = Math.abs(f.exp)!==1 ? 3 : 1;
+    for(let i=0;i<gewicht;i++) pool.push(f);
+  });
+  return kiesUit(pool);
+}
+
+/* ============ VRAAGGENERATOREN ============ */
+function genVraagMacht(formule, stage){
+  if(stage===1){
+    const factor = kiesFactorMetPrioriteit(formule.factoren);
+    const breuk = kiesEenvoudigeBreuk();
+    const multiplier = breuk.waarde;
+    const bTekst = breukTekst(breuk);
+    const omgekeerd = formule.factoren.length>0 && Math.random()<0.5;
+    if(!omgekeerd){
+      const antwoord = Math.pow(multiplier, factor.exp);
+      const tekst = `
+        <div class="formule-groot">${formule.formuleTekst}</div>
+        <p>${factor.naam} (<span class="sym">${factor.sym}</span>) verandert met een factor <strong>${bTekst}</strong>, terwijl de andere grootheden gelijk blijven.</p>
+        <p>Met welke factor verandert ${formule.Y.naam} (<span class="sym">${formule.Y.sym}</span>)?</p>
+        <p class="hint">Typ het getal waarmee ${formule.Y.sym} vermenigvuldigd wordt — bv. <code>4</code>, <code>0,25</code> of <code>5/2</code>.</p>
+      `;
+      const uitleg = `${formule.Y.sym} is evenredig met ${factor.sym}<sup>${factor.exp}</sup>. Als ${factor.sym} verandert met een factor ${bTekst}, verandert ${formule.Y.sym} met (${bTekst})<sup>${factor.exp}</sup> = <strong>${fmt(antwoord)}</strong>.`;
+      return {tekst, antwoord, uitleg, eenheid:'× (factor)'};
+    }
+    // omgekeerde richting: vraag gaat over één van de andere factoren, niet over Y
+    const antwoord = Math.pow(multiplier, 1/factor.exp);
+    const tekst = `
+      <div class="formule-groot">${formule.formuleTekst}</div>
+      <p>Men wil dat ${formule.Y.naam} (<span class="sym">${formule.Y.sym}</span>) verandert met een factor <strong>${bTekst}</strong>, door enkel ${factor.naam} (<span class="sym">${factor.sym}</span>) te veranderen — de andere grootheden blijven gelijk.</p>
+      <p>Met welke factor moet ${factor.sym} dan veranderen?</p>
+      <p class="hint">Typ het getal waarmee ${factor.sym} vermenigvuldigd wordt.</p>
+    `;
+    const uitleg = `${formule.Y.sym} is evenredig met ${factor.sym}<sup>${factor.exp}</sup>. Om ${formule.Y.sym} met een factor ${bTekst} te laten veranderen door enkel ${factor.sym} aan te passen, moet ${factor.sym} veranderen met een factor (${bTekst})<sup>1/${factor.exp}</sup> = <strong>${fmt(antwoord)}</strong>.`;
+    return {tekst, antwoord, uitleg, eenheid:'× (factor)'};
+  }
+  if(stage===2){
+    const omgekeerd = Math.random()<0.5;
+
+    if(!omgekeerd){
+      // Voorwaarts: factor verdubbelt/halveert/verandert met een breuk -> bereken de nieuwe waarde van Y
+      const factor = kiesUit(formule.factoren);
+      const breuk = kiesEenvoudigeBreuk();
+      const paar = randDeelbarePaar(factor, breuk.teller, breuk.noemer);
+      const waarden = {}; formule.factoren.forEach(f=>waarden[f.sym] = (f.sym===factor.sym) ? paar.start : randWaarde(f));
+      const y1 = berekenY(formule, waarden);
+      const werkwoord = veranderWerkwoord(breuk);
+      const nieuweFactorWaarde = paar.eind;
+      const waarden2 = Object.assign({}, waarden, {[factor.sym]: nieuweFactorWaarde});
+      const y2 = berekenY(formule, waarden2);
+      const tekst = `
+        <div class="formule-groot">${formule.formuleTekst}</div>
+        ${gegevenLijstHTML(formule.factoren, waarden)}
+        <p>${factor.naam} (${factor.sym}) <strong>${werkwoord}</strong> — de andere grootheden blijven gelijk.</p>
+        <p>Bereken de nieuwe waarde van ${formule.Y.sym}.</p>
+      `;
+      const uitleg = `${formule.Y.sym} = ${fmt(y1)} ${formule.Y.eenheid}. ${factor.sym} ${werkwoord}: nieuwe waarde = ${fmt(nieuweFactorWaarde)} ${factor.eenheid}. Ingevuld in de formule: ${formule.Y.sym} = <strong>${fmt(y2)} ${formule.Y.eenheid}</strong>.`;
+      return {tekst, antwoord:y2, uitleg, eenheid:formule.Y.eenheid};
+    }
+
+    // Omgekeerd: enkel Y1 en de gevraagde Y2 worden gegeven (geen onderliggende factoren) —
+    // de leerling moet zelf bepalen met welke factor de gekozen grootheid moet veranderen.
+    // Die factor is altijd een geheel getal (of 1/geheel getal).
+    const factor = kiesFactorMetPrioriteit(formule.factoren);
+    const waarden = {}; formule.factoren.forEach(f=>waarden[f.sym]=randWaarde(f));
+    const y1 = berekenY(formule, waarden);
+    const n = randInt(2,50);
+    const richting = Math.random()<0.5 ? 'groter' : 'kleiner';
+    const factorMultiplier = richting==='groter' ? n : 1/n;
+    const y2 = y1 * Math.pow(factorMultiplier, factor.exp);
+    const tekst = `
+      <div class="formule-groot">${formule.formuleTekst}</div>
+      <p>${formule.Y.naam} (${formule.Y.sym}) is oorspronkelijk <strong>${fmt(y1)} ${formule.Y.eenheid}</strong>.</p>
+      <p>Hoe moet ${factor.naam} (${factor.sym}) veranderen opdat ${formule.Y.sym} <strong>${fmt(y2)} ${formule.Y.eenheid}</strong> wordt? (de andere grootheden blijven gelijk)</p>
+      <p class="hint">Typ het getal waarmee ${factor.sym} vermenigvuldigd wordt. Gebruik een geheel getal (bv. <code>3</code>) of het omgekeerde ervan (bv. <code>1/3</code>).</p>
+    `;
+    const uitleg = `${formule.Y.sym} verandert met een factor ${fmt(y2)} / ${fmt(y1)} = ${fmt(y2/y1)}. Omdat ${formule.Y.sym} evenredig is met ${factor.sym}<sup>${factor.exp}</sup>, moet ${factor.sym} veranderen met een factor (${fmt(y2/y1)})<sup>1/${factor.exp}</sup> = <strong>${fmt(factorMultiplier)}</strong>.`;
+    return {tekst, antwoord:factorMultiplier, uitleg, eenheid:'× (factor)'};
+  }
+  // stage 3: elke factor verandert met een mooie, eenvoudige breuk — vraag naar de verhouding tussen Y1 en Y2
+  const w1 = {};
+  const multipliers = {};
+  const multiplierTeksten = {};
+  const w2 = {};
+  formule.factoren.forEach(f=>{
+    const breuk = kiesEenvoudigeBreuk();
+    const paar = randDeelbarePaar(f, breuk.teller, breuk.noemer);
+    w1[f.sym] = paar.start;
+    w2[f.sym] = paar.eind;
+    multipliers[f.sym] = breuk.waarde;
+    multiplierTeksten[f.sym] = breukTekst(breuk);
+  });
+  const y1 = berekenY(formule, w1), y2 = berekenY(formule, w2);
+  const naarY1 = Math.random()<0.5;
+  const functieVorm = Math.random()<0.5;
+  const antwoord = naarY1 ? y1/y2 : y2/y1;
+  const vraagRegel = naarY1
+    ? (functieVorm
+        ? `Schrijf ${formule.Y.sym}<sub>1</sub> in functie van ${formule.Y.sym}<sub>2</sub>: ${formule.Y.sym}<sub>1</sub> = ___ · ${formule.Y.sym}<sub>2</sub>. Welk getal hoort op de plaats van de stippellijn?`
+        : `Bereken de verhouding ${formule.Y.sym}<sub>1</sub> / ${formule.Y.sym}<sub>2</sub>.`)
+    : (functieVorm
+        ? `Schrijf ${formule.Y.sym}<sub>2</sub> in functie van ${formule.Y.sym}<sub>1</sub>: ${formule.Y.sym}<sub>2</sub> = ___ · ${formule.Y.sym}<sub>1</sub>. Welk getal hoort op de plaats van de stippellijn?`
+        : `Bereken de verhouding ${formule.Y.sym}<sub>2</sub> / ${formule.Y.sym}<sub>1</sub>.`);
+  const tekst = `
+    <div class="formule-groot">${formule.formuleTekst}</div>
+    <p><strong>Toestand 1</strong></p>
+    ${gegevenLijstHTML(formule.factoren, w1)}
+    <p style="margin-top:14px;"><strong>Toestand 2</strong></p>
+    ${gegevenLijstHTML(formule.factoren, w2)}
+    <p>${vraagRegel}</p>
+    <p class="hint">Bereken eerst zelf ${formule.Y.sym}<sub>1</sub> en ${formule.Y.sym}<sub>2</sub> (of werk met de verhoudingen per grootheid — elke grootheid is met een mooie, eenvoudige breuk veranderd).</p>
+  `;
+  const ratioParts = formule.factoren.map(f=>`(${multiplierTeksten[f.sym]})<sup>${f.exp}</sup>`).join(' · ');
+  const y2overy1 = formule.factoren.reduce((acc,f)=>acc*Math.pow(multipliers[f.sym], f.exp), 1);
+  const uitleg = `${formule.Y.sym}<sub>1</sub> = <strong>${fmt(y1)} ${formule.Y.eenheid}</strong>, ${formule.Y.sym}<sub>2</sub> = <strong>${fmt(y2)} ${formule.Y.eenheid}</strong>. Per grootheid: ${formule.factoren.map(f=>`${f.sym} × ${multiplierTeksten[f.sym]}`).join(', ')}. Dit geeft ${formule.Y.sym}<sub>2</sub> / ${formule.Y.sym}<sub>1</sub> = ${ratioParts} = ${fmt(y2overy1)}, dus ${naarY1 ? `${formule.Y.sym}<sub>1</sub> / ${formule.Y.sym}<sub>2</sub>` : `${formule.Y.sym}<sub>2</sub> / ${formule.Y.sym}<sub>1</sub>`} = <strong>${fmt(antwoord)}</strong>.`;
+  return {tekst, antwoord, uitleg, eenheid:'(verhouding)'};
+}
+
+function genVraagHydraulisch(stage){
+  if(stage===1){
+    const basis = kiesUit([2,3,4,5]);
+    const tekst = `
+      <div class="formule-groot">F₁ / A₁ = F₂ / A₂</div>
+      <p>In een hydraulische pers is het oppervlak van de grote zuiger (A₂) <strong>${basis}× zo groot</strong> als het oppervlak van de kleine zuiger (A₁).</p>
+      <p>Hoeveel keer zo groot is de kracht F₂ op de grote zuiger, vergeleken met F₁?</p>
+      <p class="hint">Typ enkel het getal.</p>
+    `;
+    const uitleg = `De druk is overal in de vloeistof gelijk (F₁/A₁ = F₂/A₂), dus F is evenredig met A. Als A₂ = ${basis}×A₁, dan is F₂ = <strong>${basis}×F₁</strong>.`;
+    return {tekst, antwoord:basis, uitleg, eenheid:'× (factor)'};
+  }
+  const A1 = randInt(1,50), A2 = randInt(A1+1, A1*8), F1 = randInt(5,500);
+  if(stage===2){
+    const F2 = F1*(A2/A1);
+    const tekst = `
+      <div class="formule-groot">F₁ / A₁ = F₂ / A₂</div>
+      <div class="gegevens-lijst">
+        <div class="gegeven-item"><span>oppervlakte kleine zuiger (A₁)</span><span class="g-waarde">${A1} cm²</span></div>
+        <div class="gegeven-item"><span>oppervlakte grote zuiger (A₂)</span><span class="g-waarde">${A2} cm²</span></div>
+        <div class="gegeven-item"><span>kracht op kleine zuiger (F₁)</span><span class="g-waarde">${F1} N</span></div>
+      </div>
+      <p>Bereken F₂.</p>
+    `;
+    const uitleg = `F₂ = F₁ · (A₂/A₁) = ${F1} · (${A2}/${A1}) = <strong>${fmt(F2)} N</strong>.`;
+    return {tekst, antwoord:F2, uitleg, eenheid:'N'};
+  }
+  // stage 3: solve for A2
+  const F2 = randInt(F1+1, F1*10);
+  const A2solve = A1*(F2/F1);
+  const tekst = `
+    <div class="formule-groot">F₁ / A₁ = F₂ / A₂</div>
+    <div class="gegevens-lijst">
+      <div class="gegeven-item"><span>oppervlakte kleine zuiger (A₁)</span><span class="g-waarde">${A1} cm²</span></div>
+      <div class="gegeven-item"><span>kracht op kleine zuiger (F₁)</span><span class="g-waarde">${F1} N</span></div>
+      <div class="gegeven-item"><span>gewenste kracht op grote zuiger (F₂)</span><span class="g-waarde">${F2} N</span></div>
+    </div>
+    <p>Hoe groot moet A₂ minstens zijn om deze kracht te bekomen?</p>
+  `;
+  const uitleg = `A₂ = A₁ · (F₂/F₁) = ${A1} · (${F2}/${F1}) = <strong>${fmt(A2solve)} cm²</strong>.`;
+  return {tekst, antwoord:A2solve, uitleg, eenheid:'cm²'};
+}
+
+const ISO_S = 11, ISO_H = 10, ISO_GROND = 84, ISO_VIEWHOOGTE = 118, ISO_MARGE = 12;
+function bouwKubusKolom(cx, hoogte, groundOffset){
+  groundOffset = groundOffset||0;
+  let svg = '';
+  for(let i=0;i<hoogte;i++){
+    const cyTop = ISO_GROND + groundOffset - ISO_S - (i+1)*ISO_H;
+    const L = [cx-ISO_S, cyTop+ISO_S/2];
+    const B = [cx, cyTop+ISO_S];
+    const R = [cx+ISO_S, cyTop+ISO_S/2];
+    const Lb = [cx-ISO_S, cyTop+ISO_S/2+ISO_H];
+    const Bb = [cx, cyTop+ISO_S+ISO_H];
+    const Rb = [cx+ISO_S, cyTop+ISO_S/2+ISO_H];
+    svg += `<polygon points="${L} ${B} ${Bb} ${Lb}" fill="#CBA36C" stroke="#8a5f2e" stroke-width="0.6"/>`;
+    svg += `<polygon points="${B} ${R} ${Rb} ${Bb}" fill="#A67C3D" stroke="#8a5f2e" stroke-width="0.6"/>`;
+    if(i===hoogte-1){
+      const T = [cx, cyTop];
+      svg += `<polygon points="${T} ${R} ${B} ${L}" fill="#EAD5AE" stroke="#8a5f2e" stroke-width="0.6"/>`;
+    }
+  }
+  return svg;
+}
+function bouwBlokkenGridSVG(breedte, diepte, hoogte){
+  const minOffsetX = -(diepte-1)*ISO_S - ISO_S;
+  const maxOffsetX = (breedte-1)*ISO_S + ISO_S;
+  const totaalBreedte = (maxOffsetX-minOffsetX) + 2*ISO_MARGE;
+  const baseCx = ISO_MARGE - minOffsetX;
+  const kolommen = [];
+  for(let by=0; by<diepte; by++){
+    for(let bx=0; bx<breedte; bx++){
+      kolommen.push({bx, by, som:bx+by});
+    }
+  }
+  kolommen.sort((a,b)=>a.som-b.som); // achteraan eerst tekenen, vooraan (dichtst bij kijker) erbovenop
+  let inner = '';
+  kolommen.forEach(k=>{
+    const cx = baseCx + (k.bx-k.by)*ISO_S;
+    const groundOffset = k.som*(ISO_S/2);
+    inner += bouwKubusKolom(cx, hoogte, groundOffset);
+  });
+  return `<svg viewBox="0 0 ${totaalBreedte} ${ISO_VIEWHOOGTE}" width="${totaalBreedte}" height="${ISO_VIEWHOOGTE}" xmlns="http://www.w3.org/2000/svg">${inner}</svg>`;
+}
+
+function genVraagBlokken(){
+  let breedteA, diepteA, hoogteA, breedteB, diepteB, hoogteB;
+  do{
+    breedteA = randInt(1,3); diepteA = randInt(1,3); hoogteA = randInt(1,4);
+    breedteB = randInt(1,3); diepteB = randInt(1,3); hoogteB = randInt(1,4);
+  } while(breedteA===breedteB && diepteA===diepteB && hoogteA===hoogteB);
+  const naarA = Math.random()<0.5;
+  const functieVorm = Math.random()<0.5;
+  const antwoord = naarA ? hoogteA/hoogteB : hoogteB/hoogteA;
+  const vraagRegel = naarA
+    ? (functieVorm
+        ? `Schrijf p<sub>A</sub> in functie van p<sub>B</sub>: p<sub>A</sub> = ___ · p<sub>B</sub>. Welk getal hoort op de plaats van de stippellijn?`
+        : `Bereken de verhouding p<sub>A</sub> / p<sub>B</sub>.`)
+    : (functieVorm
+        ? `Schrijf p<sub>B</sub> in functie van p<sub>A</sub>: p<sub>B</sub> = ___ · p<sub>A</sub>. Welk getal hoort op de plaats van de stippellijn?`
+        : `Bereken de verhouding p<sub>B</sub> / p<sub>A</sub>.`);
+  const visual = `
+    <div class="blokken-visual">
+      <div class="blokken-situatie">
+        <div class="blokken-label">Situatie A</div>
+        ${bouwBlokkenGridSVG(breedteA, diepteA, hoogteA)}
+      </div>
+      <div class="blokken-situatie">
+        <div class="blokken-label">Situatie B</div>
+        ${bouwBlokkenGridSVG(breedteB, diepteB, hoogteB)}
+      </div>
+    </div>
+  `;
+  const tekst = `
+    <p>Alle blokken zijn identiek (zelfde gewicht en grondvlak) en vormen samen telkens één geheel blok.</p>
+    ${visual}
+    <p>${vraagRegel}</p>
+  `;
+  const fA = breedteA*diepteA*hoogteA, aA = breedteA*diepteA;
+  const fB = breedteB*diepteB*hoogteB, aB = breedteB*diepteB;
+  const uitleg = `Elk blok telt als 1F, en elk blok dat de grond raakt telt als 1A. In situatie A is F<sub>A</sub> = ${fA} en A<sub>A</sub> = ${aA}, dus p<sub>A</sub> = F<sub>A</sub>/A<sub>A</sub> = ${fA}/${aA} = ${fmt(fA/aA)}. In situatie B is F<sub>B</sub> = ${fB} en A<sub>B</sub> = ${aB}, dus p<sub>B</sub> = F<sub>B</sub>/A<sub>B</sub> = ${fB}/${aB} = ${fmt(fB/aB)}. ${naarA ? `p<sub>A</sub>/p<sub>B</sub> = ${fmt(fA/aA)}/${fmt(fB/aB)}` : `p<sub>B</sub>/p<sub>A</sub> = ${fmt(fB/aB)}/${fmt(fA/aA)}`} = <strong>${fmt(antwoord)}</strong>.`;
+  return {tekst, antwoord, uitleg, eenheid:'(verhouding)'};
+}
+
+function genVoorvoegselVraag(){
+  const p = kiesUit(PREFIXEN);
+  if(Math.random()<0.5){
+    const tekst = `
+      <p>Welke macht van 10 hoort bij het voorvoegsel <strong>${p.naam}</strong> (${p.symbol})?</p>
+      <p class="hint">Typ enkel de exponent, bv. <code>-3</code> voor 10⁻³.</p>
+    `;
+    const uitleg = `${p.naam} (${p.symbol}) = 10<sup>${p.macht}</sup>.`;
+    return {tekst, type:'numeriek', antwoord:p.macht, eenheid:'(exponent)', uitleg};
+  }
+  const andere = shuffle(PREFIXEN.filter(x=>x!==p)).slice(0,3);
+  const opties = [p, ...andere].map(o=>`${o.naam} (${o.symbol})`);
+  const tekst = `<p>10<sup>${p.macht}</sup> komt overeen met welk voorvoegsel?</p>`;
+  const uitleg = `10<sup>${p.macht}</sup> = ${p.naam} (${p.symbol}).`;
+  return {tekst, type:'mc', opties, correct:`${p.naam} (${p.symbol})`, uitleg};
+}
+
+function genOmzettenVraag(machtExp){
+  let poolPrefixen = PREFIXEN;
+  if(machtExp===2) poolPrefixen = PREFIXEN.filter(p=>['milli','centi','deci','kilo'].includes(p.naam));
+  if(machtExp===3) poolPrefixen = PREFIXEN.filter(p=>['milli','centi','deci'].includes(p.naam));
+  const p = kiesUit(poolPrefixen);
+  let eenheidSym, gramNoot = '';
+  if(machtExp===1){
+    const u = kiesUit(EENHEDEN_LINEAIR);
+    eenheidSym = u.sym;
+    if(eenheidSym==='g') gramNoot = ' <span class="hint">(voorvoegsels worden hier toegepast op gram, niet op kilogram)</span>';
+  } else {
+    eenheidSym = 'm';
+  }
+  const superscript = machtExp===2 ? '²' : (machtExp===3 ? '³' : '');
+  const waarde = Math.round((Math.random()*899+1)*10)/10;
+  const factorMacht = p.macht*machtExp;
+  const antwoord = waarde*Math.pow(10, factorMacht);
+  const vanEenheid = `${p.symbol}${eenheidSym}${superscript}`;
+  const naarEenheid = `${eenheidSym}${superscript}`;
+  let liternoot = '';
+  if(machtExp===3 && p.naam==='deci') liternoot = ' <span class="hint">(1 dm³ = 1 liter)</span>';
+  const tekst = `
+    <p>Zet om: <strong>${fmt(waarde)} ${vanEenheid}</strong> = ______ ${naarEenheid}${gramNoot}${liternoot}</p>
+    <p class="hint">Je antwoord mag een macht van 10 bevatten — dat hoeft niet te worden uitgeschreven als decimaal getal. Typ bv. <code>4,5·10^-3</code>, <code>4.5e-3</code> of <code>0,0045</code>.</p>
+  `;
+  const uitleg = `1 ${vanEenheid} = 10<sup>${factorMacht}</sup> ${naarEenheid}, dus ${fmt(waarde)} × 10<sup>${factorMacht}</sup> = <strong>${fmtWetenschappelijk(antwoord)} ${naarEenheid}</strong>.`;
+  return {tekst, type:'numeriek', antwoord, antwoordWeergave:fmtWetenschappelijk(antwoord), eenheid:naarEenheid, uitleg};
+}
+
+/* ============ APP STATE & RENDER ============ */
+const app = document.getElementById('app');
+let huidigeVraag = null;
+let huidigStage = 1;
+let huidigTopic = null;
+let gecontroleerd = false;
+let huidigVervolgFn = null;
+
+function renderHome(){
+  huidigTopic = null;
+  const scores = leesScores();
+  let html = `
+    <header class="app-header">
+      <h1>Formuleredeneertool</h1>
+      <p>Oefen met redeneren in natuurkundige formules: hoe groot een grootheid wordt als factoren veranderen, en hoe je twee toestanden met elkaar vergelijkt.</p>
+    </header>
+  `;
+  CATEGORIE_VOLGORDE.forEach(cat=>{
+    const items = FORMULES.filter(f=>f.categorie===cat);
+    if(items.length===0) return;
+    html += `<div class="categorie"><h2>${cat}</h2>`;
+    items.forEach(f=>{
+      const s = scores[f.id];
+      const scoreLabel = (s && s.totaal>0) ? `${s.goed}/${s.totaal} goed` : '';
+      html += `
+        <button class="topic-card" data-id="${f.id}">
+          <span class="topic-main">
+            <span class="naam">${f.naam}</span>
+            ${f.formuleTekst ? `<div class="formule">${f.formuleTekst}</div>` : (f.omschrijving ? `<div class="formule">${f.omschrijving}</div>` : '<div class="formule">conceptuele vragen</div>')}
+          </span>
+          <span class="topic-score">${scoreLabel}</span>
+        </button>
+      `;
+    });
+    html += `</div>`;
+  });
+  html += `<button class="reset-link" id="resetBtn">Voortgang wissen</button>`;
+  app.innerHTML = html;
+
+  app.querySelectorAll('.topic-card').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const f = FORMULES.find(x=>x.id===btn.dataset.id);
+      openTopic(f);
+    });
+  });
+  document.getElementById('resetBtn').addEventListener('click', ()=>{
+    if(confirm('Alle bijgehouden scores wissen?')){
+      localStorage.removeItem('frt-scores');
+      renderHome();
+    }
+  });
+}
+
+function openTopic(f){
+  huidigTopic = f;
+  huidigStage = 1;
+  if(f.type==='eenheden'){
+    renderEenheden(f);
+  } else if(f.type==='omvormen-algemeen'){
+    renderOmvormenAlgemeen(f);
+  } else {
+    renderFormuleVraag();
+  }
+}
+
+function nieuweVraagObject(){
+  if(huidigTopic.type==='hydraulisch') return genVraagHydraulisch(huidigStage);
+  return genVraagMacht(huidigTopic, huidigStage);
+}
+
+function toonStage(n){
+  huidigStage = n;
+  if(n===4) renderOmvormenVraag();
+  else if(n===5) renderBlokkenVraag();
+  else renderFormuleVraag();
+}
+
+function bouwTabsHTML(f){
+  let html = '<div class="tabs">';
+  html += `<button class="tab-btn ${huidigStage===1?'actief':''}" data-stage="1">1 · Inzicht</button>`;
+  html += `<button class="tab-btn ${huidigStage===2?'actief':''}" data-stage="2">2 · Berekenen</button>`;
+  html += `<button class="tab-btn ${huidigStage===3?'actief':''}" data-stage="3">3 · Twee toestanden</button>`;
+  if(OMVORMEN[f.id]) html += `<button class="tab-btn ${huidigStage===4?'actief':''}" data-stage="4">4 · Omvormen</button>`;
+  if(f.blokken) html += `<button class="tab-btn ${huidigStage===5?'actief':''}" data-stage="5">5 · Blokkenstapels</button>`;
+  html += '</div>';
+  return html;
+}
+
+function renderFormuleVraag(){
+  huidigVervolgFn = renderFormuleVraag;
+  huidigeVraag = nieuweVraagObject();
+  gecontroleerd = false;
+  const f = huidigTopic;
+  app.innerHTML = `
+    <button class="terug-btn" id="terugBtn">&larr; Terug naar overzicht</button>
+    <div class="oef-header">
+      <h2>${f.naam}</h2>
+      ${f.noot ? `<div class="oef-note">${f.noot}</div>` : ''}
+    </div>
+    ${bouwTabsHTML(f)}
+    <div class="vraag-card" id="vraagCard">
+      ${huidigeVraag.tekst}
+      <div class="antwoord-rij">
+        <input type="text" id="antwoordInput" placeholder="antwoord" autocomplete="off">
+        <span class="eenheid">${huidigeVraag.eenheid}</span>
+        <button class="primair" id="controleerBtn">Controleer</button>
+      </div>
+      <div id="feedbackZone"></div>
+    </div>
+    <div class="score-balk" id="scoreBalk">${scoreTekst(f.id)}</div>
+  `;
+  document.getElementById('terugBtn').addEventListener('click', renderHome);
+  app.querySelectorAll('.tab-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{ toonStage(parseInt(btn.dataset.stage)); });
+  });
+  document.getElementById('controleerBtn').addEventListener('click', controleerAntwoord);
+  document.getElementById('antwoordInput').addEventListener('keydown', e=>{
+    if(e.key==='Enter'){ e.preventDefault(); if(!gecontroleerd) controleerAntwoord(); }
+  });
+  document.getElementById('antwoordInput').focus();
+}
+
+function renderBlokkenVraag(){
+  huidigVervolgFn = renderBlokkenVraag;
+  huidigeVraag = genVraagBlokken();
+  gecontroleerd = false;
+  const f = huidigTopic;
+  app.innerHTML = `
+    <button class="terug-btn" id="terugBtn">&larr; Terug naar overzicht</button>
+    <div class="oef-header"><h2>${f.naam}</h2></div>
+    ${bouwTabsHTML(f)}
+    <div class="vraag-card" id="vraagCard">
+      ${huidigeVraag.tekst}
+      <div class="antwoord-rij">
+        <input type="text" id="antwoordInput" placeholder="antwoord" autocomplete="off">
+        <span class="eenheid">${huidigeVraag.eenheid}</span>
+        <button class="primair" id="controleerBtn">Controleer</button>
+      </div>
+      <div id="feedbackZone"></div>
+    </div>
+    <div class="score-balk" id="scoreBalk">${scoreTekst(f.id)}</div>
+  `;
+  document.getElementById('terugBtn').addEventListener('click', renderHome);
+  app.querySelectorAll('.tab-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{ toonStage(parseInt(btn.dataset.stage)); });
+  });
+  document.getElementById('controleerBtn').addEventListener('click', controleerAntwoord);
+  document.getElementById('antwoordInput').addEventListener('keydown', e=>{
+    if(e.key==='Enter'){ e.preventDefault(); if(!gecontroleerd) controleerAntwoord(); }
+  });
+  document.getElementById('antwoordInput').focus();
+}
+
+function controleerAntwoord(){
+  if(gecontroleerd) return;
+  gecontroleerd = true;
+  const input = document.getElementById('antwoordInput');
+  const userVal = parseAntwoord(input.value);
+  const goed = isJuist(userVal, huidigeVraag.antwoord);
+  registreerAntwoord(huidigTopic.id, goed);
+  input.disabled = true;
+  document.getElementById('controleerBtn').disabled = true;
+  const zone = document.getElementById('feedbackZone');
+  zone.innerHTML = `
+    <div class="feedback ${goed?'goed':'fout'}">
+      ${goed ? 'Juist!' : `Niet helemaal — het juiste antwoord is ${fmt(huidigeVraag.antwoord)} ${huidigeVraag.eenheid}.`}
+      <span class="uitleg">${huidigeVraag.uitleg}</span>
+    </div>
+    <div class="verder-rij">
+      <button class="primair" id="volgendeBtn">Volgende vraag</button>
+    </div>
+  `;
+  document.getElementById('volgendeBtn').addEventListener('click', ()=>huidigVervolgFn());
+  document.getElementById('scoreBalk').textContent = scoreTekst(huidigTopic.id);
+}
+
+/* ---- Generieke meerkeuze-pagina (herbruikt voor omvormen, voorvoegsels) ---- */
+function paginaMC(headerHTML, vraag, topicId, onNext){
+  const opties = shuffle(vraag.opties);
+  app.innerHTML = `
+    <button class="terug-btn" id="terugBtn">&larr; Terug naar overzicht</button>
+    ${headerHTML}
+    <div class="vraag-card">
+      ${vraag.tekst}
+      <div class="mc-opties" id="mcOpties">
+        ${opties.map(o=>`<button class="mc-optie" data-optie="${encodeURIComponent(o)}">${o}</button>`).join('')}
+      </div>
+      <div id="feedbackZone"></div>
+    </div>
+    <div class="score-balk" id="scoreBalk">${scoreTekst(topicId)}</div>
+  `;
+  document.getElementById('terugBtn').addEventListener('click', renderHome);
+  app.querySelectorAll('.mc-optie').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const gekozen = decodeURIComponent(btn.dataset.optie);
+      const goed = gekozen === vraag.correct;
+      registreerAntwoord(topicId, goed);
+      app.querySelectorAll('.mc-optie').forEach(b=>{
+        b.disabled = true;
+        const t = decodeURIComponent(b.dataset.optie);
+        if(t===vraag.correct) b.classList.add('gekozen-goed');
+        else if(b===btn) b.classList.add('gekozen-fout');
+      });
+      document.getElementById('feedbackZone').innerHTML = `
+        <div class="feedback ${goed?'goed':'fout'}">
+          ${goed ? 'Juist!' : 'Niet juist.'}
+          <span class="uitleg">${vraag.uitleg}</span>
+        </div>
+        <div class="verder-rij">
+          <button class="primair" id="volgendeBtn">Volgende vraag</button>
+        </div>
+      `;
+      document.getElementById('volgendeBtn').addEventListener('click', onNext);
+      document.getElementById('scoreBalk').textContent = scoreTekst(topicId);
+    });
+  });
+}
+
+function renderOmvormenVraag(){
+  const f = huidigTopic;
+  const item = kiesUit(OMVORMEN[f.id]);
+  const vraag = {
+    tekst: `<div class="formule-groot">${f.formuleTekst}</div><p>Vorm deze formule om naar <strong>${item.doel}</strong>.</p>`,
+    opties: [item.correct, ...item.fout],
+    correct: item.correct,
+    uitleg: `De juiste omvorming is <strong>${item.correct}</strong>.`
+  };
+  const headerHTML = `
+    <div class="oef-header"><h2>${f.naam}</h2></div>
+    ${bouwTabsHTML(f)}
+  `;
+  paginaMC(headerHTML, vraag, f.id, renderOmvormenVraag);
+  app.querySelectorAll('.tab-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{ toonStage(parseInt(btn.dataset.stage)); });
+  });
+}
+
+function renderOmvormenAlgemeen(f){
+  const formuleIds = Object.keys(OMVORMEN);
+  const gekozenId = kiesUit(formuleIds);
+  const doelformule = FORMULES.find(x=>x.id===gekozenId);
+  const item = kiesUit(OMVORMEN[gekozenId]);
+  const vraag = {
+    tekst: `
+      <div class="formule-groot">${doelformule.formuleTekst}</div>
+      <p class="hint">${doelformule.naam}</p>
+      <p>Vorm deze formule om naar <strong>${item.doel}</strong>.</p>
+    `,
+    opties: [item.correct, ...item.fout],
+    correct: item.correct,
+    uitleg: `De juiste omvorming is <strong>${item.correct}</strong>.`
+  };
+  const headerHTML = `
+    <div class="oef-header">
+      <h2>${f.naam}</h2>
+      <div class="oef-note">Elke vraag komt uit een willekeurige formule uit de volledige lijst.</div>
+    </div>
+  `;
+  paginaMC(headerHTML, vraag, f.id, ()=>renderOmvormenAlgemeen(f));
+}
+
+/* ---- Voorvoegsels & eenheden omzetten ---- */
+function renderEenheden(f){
+  huidigTopic = f;
+  const vraag = (f.subtype==='voorvoegsel')
+    ? genVoorvoegselVraag()
+    : genOmzettenVraag(f.subtype==='lineair' ? 1 : (f.subtype==='oppervlakte' ? 2 : 3));
+  if(vraag.type==='mc'){
+    const headerHTML = `<div class="oef-header"><h2>${f.naam}</h2></div>`;
+    paginaMC(headerHTML, vraag, f.id, ()=>renderEenheden(f));
+    return;
+  }
+  huidigeVraag = vraag;
+  gecontroleerd = false;
+  app.innerHTML = `
+    <button class="terug-btn" id="terugBtn">&larr; Terug naar overzicht</button>
+    <div class="oef-header"><h2>${f.naam}</h2></div>
+    <div class="vraag-card">
+      ${vraag.tekst}
+      <div class="antwoord-rij">
+        <input type="text" id="antwoordInput" placeholder="antwoord" autocomplete="off">
+        <span class="eenheid">${vraag.eenheid}</span>
+        <button class="primair" id="controleerBtn">Controleer</button>
+      </div>
+      <div id="feedbackZone"></div>
+    </div>
+    <div class="score-balk" id="scoreBalk">${scoreTekst(f.id)}</div>
+  `;
+  document.getElementById('terugBtn').addEventListener('click', renderHome);
+  document.getElementById('controleerBtn').addEventListener('click', controleerEenhedenAntwoord);
+  document.getElementById('antwoordInput').addEventListener('keydown', e=>{
+    if(e.key==='Enter'){ e.preventDefault(); if(!gecontroleerd) controleerEenhedenAntwoord(); }
+  });
+  document.getElementById('antwoordInput').focus();
+}
+
+function controleerEenhedenAntwoord(){
+  if(gecontroleerd) return;
+  gecontroleerd = true;
+  const f = huidigTopic;
+  const input = document.getElementById('antwoordInput');
+  const userVal = parseAntwoord(input.value);
+  const goed = isJuist(userVal, huidigeVraag.antwoord, 0.03);
+  registreerAntwoord(f.id, goed);
+  input.disabled = true;
+  document.getElementById('controleerBtn').disabled = true;
+  document.getElementById('feedbackZone').innerHTML = `
+    <div class="feedback ${goed?'goed':'fout'}">
+      ${goed ? 'Juist!' : `Niet helemaal — het juiste antwoord is ${huidigeVraag.antwoordWeergave || fmt(huidigeVraag.antwoord)} ${huidigeVraag.eenheid}.`}
+      <span class="uitleg">${huidigeVraag.uitleg}</span>
+    </div>
+    <div class="verder-rij">
+      <button class="primair" id="volgendeBtn">Volgende vraag</button>
+    </div>
+  `;
+  document.getElementById('volgendeBtn').addEventListener('click', ()=>renderEenheden(f));
+  document.getElementById('scoreBalk').textContent = scoreTekst(f.id);
+}
+
+renderHome();
+</script>
+</body>
+</html>
