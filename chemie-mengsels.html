@@ -1,0 +1,678 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>*,*::before,*::after{box-sizing:border-box}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Mengsels en stofeigenschappen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: één kolom leerpad, drie lesdoelen als tabbladen; microscoop, mengselbouwer en metaalblok als interactieve kern */
+:root{
+  --bg:#f3f7f6; --surface:#ffffff; --surface-2:#e9f1ef; --ink:#13201d; --muted:#53635e; --line:#d3dfdb;
+  --accent:#0b6b66; --accent-ink:#ffffff; --accent-soft:#d8eeeb;
+  --good:#1d7a3b; --good-soft:#dcf2e2; --bad:#b3261e; --bad-soft:#fbe3e1;
+  --p1:#1f8a8a; --p2:#e2683c; --p3:#d9a521;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, Consolas, monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0e1614; --surface:#16211e; --surface-2:#1c2a26; --ink:#e4eeeb; --muted:#9aaca6; --line:#2b3c37;
+  --accent:#5cc7bd; --accent-ink:#06211e; --accent-soft:#183a35;
+  --good:#6fd38f; --good-soft:#163524; --bad:#ff8a80; --bad-soft:#3d1a18;
+  --p1:#3fb8b4; --p2:#f08257; --p3:#f0c24a;
+  color-scheme:dark; } }
+:root[data-theme="dark"]{
+  --bg:#0e1614; --surface:#16211e; --surface-2:#1c2a26; --ink:#e4eeeb; --muted:#9aaca6; --line:#2b3c37;
+  --accent:#5cc7bd; --accent-ink:#06211e; --accent-soft:#183a35;
+  --good:#6fd38f; --good-soft:#163524; --bad:#ff8a80; --bad-soft:#3d1a18;
+  --p1:#3fb8b4; --p2:#f08257; --p3:#f0c24a;
+  color-scheme:dark; }
+
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.55}
+.wrap{max-width:1000px;margin:0 auto;padding-inline:18px;padding-block:28px 64px;display:flex;flex-direction:column;gap:28px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.15}
+h1{font-size:clamp(2rem,6vw,3.2rem);font-weight:800;letter-spacing:-.02em}
+h2{font-size:1.6rem;font-weight:800}
+h3{font-size:1.2rem;font-weight:600}
+p{margin:0;max-width:65ch}
+.eyebrow{font-family:var(--f-mono);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:6px}
+
+.hero{display:flex;flex-direction:column;gap:10px}
+.hero p{color:var(--muted)}
+
+.lesnav{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:8px}
+.lestab{text-align:left;background:var(--surface);border:2px solid var(--line);border-radius:14px;padding:12px 14px;display:flex;gap:12px;align-items:flex-start;min-width:0}
+.lestab .nr{font-family:var(--f-mono);font-weight:700;font-size:1.25rem;color:var(--accent)}
+.lestab .t{display:flex;flex-direction:column;gap:2px;min-width:0}
+.lestab b{font-family:var(--f-display);font-size:1.05rem;line-height:1.2}
+.lestab small{color:var(--muted);font-size:.82rem}
+.lestab[aria-selected="true"]{border-color:var(--accent);background:var(--accent-soft)}
+@media (max-width:700px){ .lesnav{grid-template-columns:1fr;position:static} }
+
+.les{display:flex;flex-direction:column;gap:36px}
+.doel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px;display:flex;flex-direction:column;gap:6px}
+.doel .eyebrow{color:var(--accent)}
+.doel ul{margin:0;padding-left:20px;font-weight:700;font-size:1.08rem}
+
+.blok{display:flex;flex-direction:column;gap:16px}
+.blok-kop{display:flex;gap:12px;align-items:baseline}
+.blok-kop .letter{font-family:var(--f-mono);font-weight:700;color:var(--accent-ink);background:var(--accent);border-radius:8px;padding:2px 9px;font-size:.95rem}
+
+.begrippen{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media (max-width:760px){.begrippen{grid-template-columns:1fr}}
+.begrip{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.begrip h3{font-size:1.3rem}
+.begrip svg{width:120px;height:120px;display:block;margin:0 auto}
+.begrip .vb{font-size:.92rem;color:var(--muted)}
+.tip{background:var(--accent-soft);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:6px}
+.tip b{font-family:var(--f-display);font-size:1.08rem}
+
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:640px){.duo{grid-template-columns:1fr}}
+.kaart{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:6px}
+.kaart h3{font-size:1.3rem}
+
+/* oefeningen */
+.oefening{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.oef-kop{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;align-items:center}
+.score{font-family:var(--f-mono);font-weight:700;font-variant-numeric:tabular-nums;background:var(--surface-2);border-radius:8px;padding:4px 10px}
+.items{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.items.raster{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
+.legende{display:flex;flex-direction:column;gap:4px;font-size:.92rem}
+.legende span{display:flex;gap:8px;align-items:center}
+.legende i{display:inline-block;width:14px;height:14px;border-radius:50%;border:1px solid var(--ink)}
+.item{border:1px solid var(--line);border-left:6px solid var(--line);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:8px}
+.item .beeld svg{width:130px;height:130px;display:block;margin:0 auto}
+.item .zin{font-weight:700}
+.item .opties{display:flex;flex-wrap:wrap;gap:6px}
+.item .opties button{background:var(--surface-2);border:2px solid var(--line);border-radius:10px;padding:5px 11px;font-weight:700}
+.item .opties button:hover:not(:disabled){border-color:var(--accent)}
+.item .opties button:disabled{cursor:default}
+.item .opties button.gekozen{border-color:var(--ink)}
+.item.juist{border-left-color:var(--good);background:var(--good-soft)}
+.item.fout{border-left-color:var(--bad);background:var(--bad-soft)}
+.item .uitleg{font-size:.95rem}
+.item .uitleg b{font-family:var(--f-display)}
+.item.juist .uitleg b{color:var(--good)}
+.item.fout .uitleg b{color:var(--bad)}
+.knop{background:var(--surface);border:2px solid var(--line);border-radius:10px;padding:7px 14px;font-weight:700}
+.knop:hover{border-color:var(--accent)}
+.knop.hoofd{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.knop[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent)}
+.knop:disabled{opacity:.45;cursor:default}
+.opnieuw{align-self:flex-start}
+
+/* microscoop */
+.micro{background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.micro-kop{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;align-items:center;padding:14px 16px 0}
+.micro-stage{background:var(--surface-2);margin:12px 0 0;padding:10px}
+.micro-stage svg{display:block;width:100%;max-width:620px;height:auto;margin:0 auto}
+.micro-stage text{font-family:var(--f-body);fill:var(--ink)}
+.micro .zoom{opacity:0;transform:scale(.4);transform-box:fill-box;transform-origin:center;transition:opacity .6s,transform .8s ease}
+.micro.ingezoomd .zoom{opacity:1;transform:scale(1)}
+.micro-body{padding:14px 16px 16px;display:flex;flex-direction:column;gap:10px}
+.micro-body .rij{display:flex;flex-wrap:wrap;gap:8px}
+.micro-body .antw{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media (max-width:560px){.micro-body .antw{grid-template-columns:1fr}}
+.micro-body .antw button{background:var(--surface-2);border:2px solid var(--line);border-radius:10px;padding:10px;text-align:left;font-weight:700}
+.micro-body .antw button span{display:block;font-weight:400;font-size:.9rem;color:var(--muted)}
+.micro-body .antw button:hover:not(:disabled){border-color:var(--accent)}
+.micro-body .antw button.juist{border-color:var(--good);background:var(--good-soft)}
+.micro-body .antw button.fout{border-color:var(--bad);background:var(--bad-soft)}
+.fb{min-height:1.5em}
+.fb b{font-family:var(--f-display)}
+
+/* mengselbouwer */
+.bouwer{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px}
+@media (max-width:760px){.bouwer{grid-template-columns:1fr}}
+.keuzes{display:flex;flex-direction:column;gap:14px}
+.keuze{display:flex;flex-direction:column;gap:6px}
+.keuze .lbl{font-weight:700}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.uitkomst{background:var(--surface-2);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:8px;align-items:flex-start}
+.uitkomst svg{width:150px;height:150px;align-self:center}
+.uitkomst .naam{font-family:var(--f-display);font-weight:800;font-size:1.7rem;line-height:1.1}
+.uitkomst .soort{font-family:var(--f-mono);font-size:.8rem;border-radius:999px;padding:2px 10px;background:var(--surface);border:1px solid var(--line)}
+.uitkomst .geen{color:var(--muted)}
+.tabelwrap{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:14px}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:.95rem}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--f-mono);font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+td b{font-family:var(--f-display)}
+tr.groep td{background:var(--surface-2);font-weight:700}
+
+/* metaalblok */
+.blokje{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:18px}
+@media (max-width:760px){.blokje{grid-template-columns:1fr}}
+.blokje .links{display:flex;flex-direction:column;gap:12px}
+.blokje .tekening{background:var(--surface-2);border-radius:12px;display:grid;place-items:center;padding:8px}
+.blokje .tekening svg{width:100%;max-width:260px;height:auto}
+.blokje input[type=range]{width:100%;accent-color:var(--accent)}
+.eig-kolommen{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:480px){.eig-kolommen{grid-template-columns:1fr}}
+.eig-kol{border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:6px;border:2px solid var(--line)}
+.eig-kol h3{font-size:1.05rem}
+.eig-kol.stof{border-color:var(--accent)}
+.eig-kol dl{margin:0;display:flex;flex-direction:column;gap:6px}
+.eig-kol dt{font-size:.82rem;color:var(--muted)}
+.eig-kol dd{margin:0;font-weight:700;font-variant-numeric:tabular-nums;border-radius:6px;padding:0 4px;transition:background .8s}
+.eig-kol dd.flits{background:var(--p3)}
+.eig-kol .noot{font-size:.85rem;color:var(--muted)}
+
+.noteer{display:flex;flex-wrap:wrap;gap:8px}
+.noteer input{flex:1 1 220px;min-width:0;border:2px solid var(--line);border-radius:10px;padding:8px 12px;background:var(--surface)}
+.noteer input:focus{border-color:var(--accent);outline:none}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border-radius:999px;padding:4px 12px;font-size:.92rem;border:1px solid var(--line);background:var(--surface-2)}
+.chip.ok{background:var(--good-soft);border-color:var(--good)}
+.chip.nee{background:var(--bad-soft);border-color:var(--bad)}
+
+.ikkan{background:var(--surface);border:2px solid var(--accent);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.ikkan ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.ikkan li{display:flex;gap:10px;align-items:baseline}
+.ikkan .st{font-family:var(--f-mono);font-weight:700;font-variant-numeric:tabular-nums;min-width:5.5em;color:var(--muted)}
+.ikkan .st.ok{color:var(--good)}
+
+@media (prefers-reduced-motion: reduce){ *{transition:none!important;animation:none!important} }
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <a href="index.html" style="align-self:flex-start;font-weight:700;color:var(--accent);text-decoration:none">← Alle tools</a>
+  <header class="hero">
+    <span class="eyebrow">Chemie · 3de jaar · hoofdstuk 2</span>
+    <h1>Mengsels en stofeigenschappen</h1>
+    <p>Is iets een zuivere stof of een mengsel? Welk soort mengsel? En welke eigenschappen horen bij een stof? Kies een lesdoel en werk de stappen af.</p>
+  </header>
+
+  <nav class="lesnav" role="tablist" aria-label="Lesdoelen">
+    <button class="lestab" role="tab" aria-controls="les21" aria-selected="true"><span class="nr">2.1</span><span class="t"><b>Soorten mengsels</b><small>p. 19</small></span></button>
+    <button class="lestab" role="tab" aria-controls="les22" aria-selected="false"><span class="nr">2.2</span><span class="t"><b>Homogene en heterogene mengsels</b><small>p. 21</small></span></button>
+    <button class="lestab" role="tab" aria-controls="les23" aria-selected="false"><span class="nr">2.3</span><span class="t"><b>Stofeigenschappen</b><small>p. 23</small></span></button>
+  </nav>
+
+  <!-- ================= 2.1 ================= -->
+  <main class="les" id="les21" role="tabpanel">
+    <div class="doel"><span class="eyebrow">Lesdoelen 2.1 · p. 19</span>
+      <ul><li>Ik onderscheid de begrippen zuivere stof, bestanddeel en mengsel.</li><li>Ik kan uitleggen waarom een bepaald mengsel homogeen of heterogeen is.</li></ul></div>
+
+    <section class="blok">
+      <div class="blok-kop"><span class="letter">A</span><h2>Zuivere stof, mengsel, bestanddeel</h2></div>
+      <p>Alle stoffen bestaan uit heel kleine deeltjes. Kijk naar de deeltjes: zijn ze allemaal gelijk, of niet?</p>
+      <div class="begrippen">
+        <div class="begrip"><span class="eyebrow">Begrip 1</span><h3>Zuivere stof</h3><div id="b-zuiver"></div><p>Bestaat uit <b>één soort deeltjes</b>. Alle deeltjes zijn gelijk.</p><p class="vb">Voorbeelden: gedestilleerd water, suiker, zuurstofgas, zuiver goud.</p></div>
+        <div class="begrip"><span class="eyebrow">Begrip 2</span><h3>Mengsel</h3><div id="b-mengsel"></div><p>Bestaat uit <b>twee of meer soorten deeltjes</b>: twee of meer zuivere stoffen samen.</p><p class="vb">Voorbeelden: kraantjeswater, lucht, zeewater, melk.</p></div>
+        <div class="begrip"><span class="eyebrow">Begrip 3</span><h3>Bestanddeel</h3><div id="b-bestanddeel"></div><p>Een <b>zuivere stof die in een mengsel zit</b>.</p><p class="vb">Zoutwater heeft twee bestanddelen: water en zout.</p></div>
+      </div>
+      <div class="tip"><b>Let op</b><p>Een deeltje kan uit verschillende atomen bestaan. Als alle deeltjes toch <b>gelijk</b> zijn, is het nog altijd een zuivere stof. Water (H₂O) is een zuivere stof.</p></div>
+      <div class="oefening" id="oef-deeltjes"></div>
+      <div class="oefening" id="oef-zuiver"></div>
+    </section>
+
+    <section class="blok">
+      <div class="blok-kop"><span class="letter">B</span><h2>Homogeen of heterogeen?</h2></div>
+      <div class="duo">
+        <div class="kaart"><span class="eyebrow">homogeen mengsel</span><h3>Je ziet de bestanddelen niet apart</h3><p>Ook niet met een vergrootglas of een microscoop. Het mengsel ziet er overal hetzelfde uit.</p></div>
+        <div class="kaart"><span class="eyebrow">heterogeen mengsel</span><h3>Je ziet de bestanddelen wel apart</h3><p>Met het blote oog, of pas met een microscoop. Het mengsel is niet overal hetzelfde.</p></div>
+      </div>
+      <div class="micro" id="micro">
+        <div class="micro-kop"><h3>Oefening 3 · Kijk door de microscoop</h3><span class="score" id="micro-score">0 / 6</span></div>
+        <div class="micro-stage"><svg viewBox="0 0 400 220" id="micro-svg" role="img" aria-label="Mengsel met het blote oog en onder de microscoop"></svg></div>
+        <div class="micro-body">
+          <p id="micro-vraag"></p>
+          <div class="rij"><button class="knop" id="micro-zoom" type="button">Bekijk met de microscoop</button></div>
+          <div class="antw" id="micro-antw">
+            <button type="button" data-k="hom">Homogeen<span>Ik zie geen aparte bestanddelen.</span></button>
+            <button type="button" data-k="het">Heterogeen<span>Ik zie aparte bestanddelen.</span></button>
+          </div>
+          <div class="fb" id="micro-fb" aria-live="polite"></div>
+          <div class="rij"><button class="knop hoofd" id="micro-volg" type="button" hidden>Volgend mengsel ▶</button></div>
+        </div>
+      </div>
+    </section>
+    <section class="ikkan" id="ikkan21"></section>
+  </main>
+
+  <!-- ================= 2.2 ================= -->
+  <main class="les" id="les22" role="tabpanel" hidden>
+    <div class="doel"><span class="eyebrow">Lesdoel 2.2 · p. 21</span>
+      <ul><li>Ik onderscheid de soorten homogene en heterogene mengsels op basis van de aggregatietoestand van hun bestanddelen.</li></ul></div>
+
+    <section class="blok">
+      <div class="blok-kop"><span class="letter">A</span><h2>Bouw een mengsel</h2></div>
+      <p>De naam van een mengsel hangt af van de <b>aggregatietoestand</b> (vast, vloeibaar of gas) van de bestanddelen. Kies hieronder en kijk welk mengsel je krijgt.</p>
+      <div class="bouwer">
+        <div class="keuzes">
+          <div class="keuze"><span class="lbl">1. Wat zit erin?</span><div class="seg" data-groep="in"></div></div>
+          <div class="keuze"><span class="lbl">2. Waarin zit het?</span><div class="seg" data-groep="mid"></div></div>
+          <div class="keuze"><span class="lbl">3. Zie je de bestanddelen apart?</span><div class="seg" data-groep="het"></div></div>
+        </div>
+        <div class="uitkomst" id="uitkomst" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section class="blok">
+      <div class="blok-kop"><span class="letter">B</span><h2>Overzicht</h2></div>
+      <div class="tabelwrap"><table>
+        <thead><tr><th>Naam</th><th>Wat zit waarin?</th><th>Voorbeelden</th></tr></thead>
+        <tbody>
+          <tr class="groep"><td colspan="3">Heterogene mengsels</td></tr>
+          <tr><td><b>Grof mengsel</b></td><td>vaste stof in vaste stof</td><td>graniet, zand met ijzervijlsel, muesli</td></tr>
+          <tr><td><b>Suspensie</b></td><td>vaste stof in vloeistof</td><td>modderwater, sinaasappelsap met vruchtvlees</td></tr>
+          <tr><td><b>Emulsie</b></td><td>vloeistof in vloeistof</td><td>melk, mayonaise</td></tr>
+          <tr><td><b>Schuim</b></td><td>gas in vloeistof of in vaste stof</td><td>slagroom, scheerschuim, piepschuim</td></tr>
+          <tr><td><b>Rook</b></td><td>vaste stof in gas</td><td>rook van een kampvuur, stof in de lucht</td></tr>
+          <tr><td><b>Nevel</b></td><td>vloeistof in gas</td><td>mist, spray uit een spuitbus</td></tr>
+          <tr><td><b>Aerosol</b></td><td>verzamelnaam: vaste deeltjes of vloeistofdruppeltjes in een gas (rook + nevel)</td><td>rook, mist, spray</td></tr>
+          <tr class="groep"><td colspan="3">Homogene mengsels</td></tr>
+          <tr><td><b>Oplossing</b></td><td>vaste stof, vloeistof of gas opgelost in een vloeistof</td><td>suikerwater, zoutwater, frisdrank in een gesloten fles</td></tr>
+          <tr><td><b>Legering</b></td><td>metalen gemengd in vaste toestand</td><td>brons, messing, staal</td></tr>
+        </tbody></table></div>
+      <div class="oefening" id="oef-soort"></div>
+    </section>
+    <section class="ikkan" id="ikkan22"></section>
+  </main>
+
+  <!-- ================= 2.3 ================= -->
+  <main class="les" id="les23" role="tabpanel" hidden>
+    <div class="doel"><span class="eyebrow">Lesdoelen 2.3 · p. 23</span>
+      <ul><li>Ik beschrijf wat een stofeigenschap is en kan voorbeelden van stofeigenschappen noteren.</li><li>Ik kan het onderscheid maken tussen een stofeigenschap en een voorwerpseigenschap.</li></ul></div>
+
+    <section class="blok">
+      <div class="blok-kop"><span class="letter">A</span><h2>Stof of voorwerp?</h2></div>
+      <div class="duo">
+        <div class="kaart"><span class="eyebrow">stofeigenschap</span><h3>Hoort bij de stof</h3><p>Een stofeigenschap is een kenmerk van de stof zelf. Ze blijft <b>hetzelfde</b>, hoe groot het stuk ook is en welke vorm het ook heeft. Daarmee kan je een stof <b>herkennen</b>.</p><p class="eyebrow" style="text-transform:none;letter-spacing:0">kleur, geur, smelttemperatuur, kooktemperatuur, massadichtheid, oplosbaarheid, geleidt stroom, magnetisch</p></div>
+        <div class="kaart"><span class="eyebrow">voorwerpseigenschap</span><h3>Hoort bij het voorwerp</h3><p>Een voorwerpseigenschap hoort bij één bepaald voorwerp. Ze <b>verandert</b> als je het voorwerp groter, kleiner of anders van vorm maakt.</p><p class="eyebrow" style="text-transform:none;letter-spacing:0">massa, volume, vorm, lengte, temperatuur</p></div>
+      </div>
+      <p>Probeer het uit. Kies een metaal, verander de grootte en de vorm, of zaag het blok in twee. Welke eigenschappen veranderen?</p>
+      <div class="blokje">
+        <div class="links">
+          <div class="tekening"><svg viewBox="0 0 240 200" id="blok-svg" role="img" aria-label="Tekening van het metalen voorwerp"></svg></div>
+          <div class="keuze"><span class="lbl"><b>Metaal</b></span><div class="seg" id="kies-stof"></div></div>
+          <div class="keuze"><span class="lbl"><b>Vorm</b></span><div class="seg" id="kies-vorm"></div></div>
+          <div class="keuze"><label for="vol"><b>Grootte</b></label><input type="range" id="vol" min="5" max="60" step="1" value="40"></div>
+          <button class="knop" id="zaag" type="button">Zaag in twee</button>
+        </div>
+        <div class="eig-kolommen">
+          <div class="eig-kol stof"><h3>Stofeigenschappen</h3><p class="noot">blijven gelijk zolang je hetzelfde metaal houdt</p><dl id="dl-stof"></dl></div>
+          <div class="eig-kol"><h3>Voorwerpseigenschappen</h3><p class="noot">veranderen met grootte en vorm</p><dl id="dl-voorwerp"></dl></div>
+        </div>
+      </div>
+      <div class="tip"><b>Kijk goed</b><p>Een blok aluminium en een blok koper met hetzelfde volume hebben een andere massa. De massadichtheid is een stofeigenschap: zo kan je aluminium en koper uit elkaar houden.</p></div>
+    </section>
+
+    <section class="blok">
+      <div class="blok-kop"><span class="letter">B</span><h2>Oefenen</h2></div>
+      <div class="oefening" id="oef-eig"></div>
+      <div class="oefening">
+        <div class="oef-kop"><h3>Oefening 2 · Noteer zelf stofeigenschappen</h3><span class="score" id="noteer-score">0 / 3</span></div>
+        <p>Typ een stofeigenschap en druk op <b>Controleer</b>. Noteer er minstens drie.</p>
+        <form class="noteer" id="noteer-form"><input id="noteer-in" type="text" placeholder="bv. kooktemperatuur" autocomplete="off"><button class="knop hoofd" type="submit">Controleer</button></form>
+        <div class="fb" id="noteer-fb" aria-live="polite"></div>
+        <div class="chips" id="noteer-chips"></div>
+      </div>
+    </section>
+    <section class="ikkan" id="ikkan23"></section>
+  </main>
+</div>
+
+<script>
+(function(){
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+const shuffle = a => { a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; };
+const komma = (x,d=1) => x.toFixed(d).replace('.',',');
+const scores = {};
+
+/* tabs */
+function toonLes(id){
+  $$('.lestab').forEach(t => t.setAttribute('aria-selected', t.getAttribute('aria-controls')===id?'true':'false'));
+  $$('main.les').forEach(m => m.hidden = m.id!==id);
+}
+$$('.lestab').forEach(t => t.addEventListener('click', () => toonLes(t.getAttribute('aria-controls'))));
+if (['#les22','#les23'].includes(location.hash)) toonLes(location.hash.slice(1));
+
+/* generieke sorteeroefening */
+function sorteer(el, cfg){
+  function render(){
+    const items = shuffle(cfg.items);
+    el.innerHTML = `<div class="oef-kop"><h3>${cfg.titel}</h3><span class="score" data-score>0 / ${items.length}</span></div>
+      <p>${cfg.opdracht}</p><ul class="items ${cfg.raster?'raster':''}"></ul><button class="knop opnieuw" type="button">↺ Opnieuw</button>`;
+    const ul = el.querySelector('.items');
+    let juist=0, klaar=0;
+    scores[cfg.id] = {juist:0,totaal:items.length,klaar:false};
+    items.forEach(it => {
+      const goed = [].concat(it.antwoord);
+      const li = document.createElement('li'); li.className='item';
+      li.innerHTML = `${it.beeld?`<div class="beeld">${it.beeld}</div>`:''}${it.tekst?`<span class="zin">${it.tekst}</span>`:''}
+        <div class="opties">${cfg.opties.map(o=>`<button type="button" data-k="${o.k}">${o.label}</button>`).join('')}</div><div class="uitleg" hidden></div>`;
+      li.querySelectorAll('.opties button').forEach(b => b.addEventListener('click', () => {
+        const ok = goed.includes(b.dataset.k);
+        li.classList.add(ok?'juist':'fout'); b.classList.add('gekozen');
+        li.querySelectorAll('.opties button').forEach(x => x.disabled=true);
+        const lbl = goed.map(k => cfg.opties.find(o=>o.k===k).label).join(' of ');
+        const u = li.querySelector('.uitleg'); u.hidden=false;
+        u.innerHTML = (ok?'<b>Juist!</b> ':`<b>Niet juist.</b> Het is: ${lbl}. `) + it.uitleg;
+        klaar++; if(ok) juist++;
+        el.querySelector('[data-score]').textContent = `${juist} / ${items.length}`;
+        scores[cfg.id] = {juist,totaal:items.length,klaar:klaar===items.length};
+        updateIkKan();
+      }));
+      ul.appendChild(li);
+    });
+    el.querySelector('.opnieuw').addEventListener('click', () => { render(); updateIkKan(); });
+  }
+  render();
+}
+
+/* ---------- deeltjesmodel ---------- */
+function rng(seed){ return () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed>>>15, 1|seed); t = t + Math.imul(t ^ t>>>7, 61|t) ^ t; return ((t ^ t>>>14) >>> 0) / 4294967296; }; }
+function deeltjes(soorten, seed){
+  const r = rng(seed); const plekken = [];
+  for (let y=0;y<4;y++) for (let x=0;x<4;x++) plekken.push([22+x*32+(r()*8-4), 22+y*32+(r()*8-4)]);
+  const vrij = plekken.sort(()=>r()-.5);
+  let s = `<svg viewBox="0 0 140 140" role="img" aria-label="deeltjesmodel"><rect x="2" y="2" width="136" height="136" rx="10" fill="var(--surface)" stroke="var(--ink)" stroke-width="2"/>`;
+  let i=0;
+  soorten.forEach(sp => { for (let n=0;n<sp.n;n++){
+    const [x,y] = vrij[i++]; const rot = Math.floor(r()*180);
+    if (sp.a.length===1) s += `<circle cx="${x}" cy="${y}" r="8" fill="var(--${sp.a[0]})" stroke="var(--ink)" stroke-width="1"/>`;
+    else s += `<g transform="translate(${x} ${y}) rotate(${rot})"><circle cx="-6" r="7" fill="var(--${sp.a[0]})" stroke="var(--ink)" stroke-width="1"/><circle cx="6" r="7" fill="var(--${sp.a[1]})" stroke="var(--ink)" stroke-width="1"/></g>`;
+  }});
+  return s + '</svg>';
+}
+$('#b-zuiver').innerHTML = deeltjes([{n:13,a:['p1']}],3);
+$('#b-mengsel').innerHTML = deeltjes([{n:7,a:['p1']},{n:6,a:['p2','p2']}],8);
+$('#b-bestanddeel').innerHTML = deeltjes([{n:7,a:['p1']},{n:6,a:['p2','p2']}],8) + '<div class="legende"><span><i style="background:var(--p1)"></i>bestanddeel 1</span><span><i style="background:var(--p2)"></i><i style="background:var(--p2);margin-left:-10px"></i>bestanddeel 2</span></div>';
+
+sorteer($('#oef-deeltjes'), {
+  id:'deeltjes', raster:true, titel:'Oefening 1 · Bekijk de deeltjes',
+  opdracht:'Elke bol is een atoom. Bollen die aan elkaar hangen vormen één deeltje. Is het een zuivere stof of een mengsel?',
+  opties:[{k:'z',label:'Zuivere stof'},{k:'m',label:'Mengsel'}],
+  items:[
+    {beeld:deeltjes([{n:13,a:['p1']}],11), antwoord:'z', uitleg:'Alle deeltjes zijn gelijk.'},
+    {beeld:deeltjes([{n:7,a:['p1']},{n:7,a:['p2']}],12), antwoord:'m', uitleg:'Er zijn twee soorten deeltjes: twee bestanddelen.'},
+    {beeld:deeltjes([{n:10,a:['p2','p1']}],13), antwoord:'z', uitleg:'Elk deeltje heeft twee verschillende atomen, maar alle deeltjes zijn gelijk. Het is één stof.'},
+    {beeld:deeltjes([{n:6,a:['p2','p1']},{n:6,a:['p3']}],14), antwoord:'m', uitleg:'Er zijn twee soorten deeltjes.'},
+    {beeld:deeltjes([{n:10,a:['p3','p3']}],15), antwoord:'z', uitleg:'Alle deeltjes zijn gelijk: telkens twee dezelfde atomen.'},
+    {beeld:deeltjes([{n:5,a:['p1','p1']},{n:5,a:['p2','p1']}],16), antwoord:'m', uitleg:'Er zijn twee soorten deeltjes, ook al zit de groene atoomsoort in allebei.'}
+  ]
+});
+sorteer($('#oef-zuiver'), {
+  id:'zuiver', titel:'Oefening 2 · Zuivere stof of mengsel?',
+  opdracht:'Is dit een zuivere stof of een mengsel?',
+  opties:[{k:'z',label:'Zuivere stof'},{k:'m',label:'Mengsel'}],
+  items:[
+    {tekst:'gedestilleerd water', antwoord:'z', uitleg:'Gedestilleerd water bevat alleen watermoleculen.'},
+    {tekst:'kraantjeswater', antwoord:'m', uitleg:'Bestanddelen: water en opgeloste stoffen (mineralen, kalk).'},
+    {tekst:'lucht', antwoord:'m', uitleg:'Bestanddelen: vooral stikstofgas en zuurstofgas, en nog andere gassen.'},
+    {tekst:'zuurstofgas', antwoord:'z', uitleg:'Alleen zuurstofmoleculen.'},
+    {tekst:'suiker', antwoord:'z', uitleg:'Alleen suikermoleculen.'},
+    {tekst:'zeewater', antwoord:'m', uitleg:'Bestanddelen: water, zout en andere stoffen.'},
+    {tekst:'zuiver goud (24 karaat)', antwoord:'z', uitleg:'Alleen goudatomen.'},
+    {tekst:'brons', antwoord:'m', uitleg:'Bestanddelen: koper en tin.'}
+  ]
+});
+
+/* ---------- microscoop ---------- */
+const MENGSELS = [
+  {naam:'suikerwater', bak:'glas', kleur:'#cfe9f4', oog:'egaal', zoom:'egaal', antw:'hom', waarom:'Je ziet geen suikerkorrels meer, ook niet met de microscoop. Het mengsel is overal hetzelfde.'},
+  {naam:'modderwater', bak:'glas', kleur:'#c9b48a', oog:'korrels', zoom:'korrels', antw:'het', waarom:'Je ziet de gronddeeltjes en het water apart. Je ziet het al met het blote oog.'},
+  {naam:'melk', bak:'glas', kleur:'#f7f5ee', oog:'egaal', zoom:'druppels', antw:'het', waarom:'Met het blote oog lijkt melk overal hetzelfde. Maar onder de microscoop zie je vetdruppeltjes in water. Melk is dus heterogeen.'},
+  {naam:'lucht', bak:'fles', kleur:'#eef6f8', oog:'egaal', zoom:'egaal', antw:'hom', waarom:'Lucht is een mengsel van gassen. Gassen mengen helemaal: je kan ze nooit apart zien.'},
+  {naam:'sinaasappelsap met vruchtvlees', bak:'glas', kleur:'#f6b13c', oog:'vezels', zoom:'korrels', antw:'het', waarom:'Je ziet stukjes vruchtvlees in het sap.'},
+  {naam:'messing (een metaal)', bak:'blok', kleur:'#d4b25a', oog:'egaal', zoom:'egaal', antw:'hom', waarom:'Messing is een mengsel van koper en zink. Ook onder de microscoop zie je geen aparte metalen.'}
+];
+function microSvg(m){
+  const r = rng(m.naam.length*7);
+  let bak='';
+  if (m.bak==='glas'){
+    bak = `<rect x="58" y="78" width="74" height="104" fill="${m.kleur}"/><path d="M55 50 V180 a4 4 0 0 0 4 4 H131 a4 4 0 0 0 4 -4 V50" fill="none" stroke="var(--ink)" stroke-width="2.5"/>`;
+    if (m.oog==='korrels'){ for(let i=0;i<26;i++) bak += `<circle cx="${62+r()*66}" cy="${i<12?172+r()*8:90+r()*76}" r="${1.5+r()*2}" fill="#6b4a24"/>`; }
+    if (m.oog==='vezels'){ for(let i=0;i<18;i++){ const x=62+r()*64,y=86+r()*90; bak += `<path d="M${x} ${y} l${4+r()*4} ${r()*4-2}" stroke="#c76d0c" stroke-width="2" stroke-linecap="round"/>`; } }
+  } else if (m.bak==='fles'){
+    bak = `<path d="M84 46 h22 v30 l28 92 a6 6 0 0 1 -6 8 H62 a6 6 0 0 1 -6 -8 l28 -92 z" fill="${m.kleur}" stroke="var(--ink)" stroke-width="2.5"/><rect x="82" y="40" width="26" height="8" rx="2" fill="var(--ink)"/>`;
+  } else {
+    bak = `<path d="M50 110 l30 -22 h70 l-30 22 z" fill="#ead08a" stroke="var(--ink)" stroke-width="2"/><path d="M120 110 l30 -22 v54 l-30 22 z" fill="#b8963f" stroke="var(--ink)" stroke-width="2"/><rect x="50" y="110" width="70" height="54" fill="${m.kleur}" stroke="var(--ink)" stroke-width="2"/>`;
+  }
+  let zoom = `<circle cx="285" cy="110" r="84" fill="${m.kleur}"/>`;
+  if (m.zoom==='korrels'){ const c = m.naam.startsWith('sinaas')?'#c76d0c':'#6b4a24'; for(let i=0;i<16;i++){ const x=225+r()*120,y=50+r()*120; zoom += `<path d="M${x} ${y} l${8+r()*8} ${-3+r()*6} l${-3+r()*6} ${8+r()*8} l${-10-r()*6} ${r()*4} z" fill="${c}"/>`; } }
+  if (m.zoom==='druppels'){ zoom = `<circle cx="285" cy="110" r="84" fill="#dceef4"/>`; for(let i=0;i<22;i++) zoom += `<circle cx="${220+r()*130}" cy="${45+r()*130}" r="${5+r()*8}" fill="#fff6d8" stroke="#c9b26b" stroke-width="1.2"/>`; }
+  if (m.zoom==='egaal') zoom += `<text x="285" y="114" text-anchor="middle" font-size="13" style="fill:#3a4a46">overal hetzelfde</text>`;
+  return `<defs><clipPath id="clipz"><circle cx="285" cy="110" r="84"/></clipPath></defs>
+    ${bak}<text x="95" y="208" text-anchor="middle" font-size="13" fill="var(--muted)">met het blote oog</text>
+    <g class="zoom"><path d="M138 112 L200 110" stroke="var(--muted)" stroke-width="2" stroke-dasharray="5 4"/><g clip-path="url(#clipz)">${zoom}</g><circle cx="285" cy="110" r="84" fill="none" stroke="var(--accent)" stroke-width="5"/><text x="285" y="214" text-anchor="middle" font-size="13" fill="var(--muted)">onder de microscoop</text></g>`;
+}
+let mi=0, mjuist=0, mreeks=shuffle(MENGSELS);
+scores.micro = {juist:0,totaal:MENGSELS.length,klaar:false};
+function toonMengsel(){
+  const box=$('#micro');
+  if (mi>=mreeks.length){
+    box.classList.remove('ingezoomd');
+    $('#micro-vraag').innerHTML = `<b>Klaar!</b> Je had ${mjuist} van de ${mreeks.length} juist.`;
+    $('#micro-antw').hidden=true; $('#micro-zoom').hidden=true; $('#micro-fb').textContent='';
+    $('#micro-volg').hidden=false; $('#micro-volg').textContent='↺ Opnieuw';
+    return;
+  }
+  const m = mreeks[mi];
+  box.classList.remove('ingezoomd');
+  $('#micro-svg').innerHTML = microSvg(m);
+  $('#micro-vraag').innerHTML = `<b>${mi+1} van ${mreeks.length}:</b> Is <b>${m.naam}</b> homogeen of heterogeen? Kijk eerst met het blote oog, daarna met de microscoop.`;
+  $('#micro-zoom').hidden=false; $('#micro-zoom').disabled=false;
+  $('#micro-antw').hidden=false;
+  $$('#micro-antw button').forEach(b => { b.disabled=false; b.className=''; });
+  $('#micro-fb').textContent=''; $('#micro-volg').hidden=true; $('#micro-volg').textContent='Volgend mengsel ▶';
+}
+$('#micro-zoom').addEventListener('click', () => { $('#micro').classList.add('ingezoomd'); $('#micro-zoom').disabled=true; });
+$$('#micro-antw button').forEach(b => b.addEventListener('click', () => {
+  const m = mreeks[mi]; const ok = b.dataset.k===m.antw;
+  $('#micro').classList.add('ingezoomd'); $('#micro-zoom').disabled=true;
+  $$('#micro-antw button').forEach(x => { x.disabled=true; if (x.dataset.k===m.antw) x.classList.add('juist'); });
+  if (!ok) b.classList.add('fout'); else mjuist++;
+  $('#micro-fb').innerHTML = (ok?'<b>Juist!</b> ':`<b>Niet juist.</b> ${m.naam[0].toUpperCase()+m.naam.slice(1)} is ${m.antw==='hom'?'homogeen':'heterogeen'}. `) + m.waarom;
+  $('#micro-score').textContent = `${mjuist} / ${mreeks.length}`;
+  scores.micro = {juist:mjuist,totaal:mreeks.length,klaar:mi===mreeks.length-1};
+  updateIkKan();
+  $('#micro-volg').hidden=false; $('#micro-volg').focus();
+}));
+$('#micro-volg').addEventListener('click', () => {
+  if (mi>=mreeks.length){ mi=0; mjuist=0; mreeks=shuffle(MENGSELS); $('#micro-score').textContent=`0 / ${mreeks.length}`; scores.micro={juist:0,totaal:mreeks.length,klaar:false}; updateIkKan(); }
+  else mi++;
+  toonMengsel();
+});
+toonMengsel();
+
+/* ---------- mengselbouwer ---------- */
+const TOEST = [{k:'v',label:'vaste stof'},{k:'l',label:'vloeistof'},{k:'g',label:'gas'}];
+const MIDKLEUR = {v:'#b9bec4', l:'#bfe3f2', g:'#f2f7f9'};
+const keuze = {in:'v', mid:'l', het:'ja'};
+const UIT = {
+  'v-l-ja':{naam:'Suspensie', soort:'heterogeen', wat:'Vaste deeltjes zweven in een vloeistof. Na een tijd zakken ze naar de bodem.', vb:'modderwater, sinaasappelsap met vruchtvlees'},
+  'v-l-nee':{naam:'Oplossing', soort:'homogeen', wat:'Een vaste stof is opgelost in een vloeistof.', vb:'suikerwater, zoutwater'},
+  'l-l-ja':{naam:'Emulsie', soort:'heterogeen', wat:'Kleine druppeltjes van een vloeistof zweven in een andere vloeistof.', vb:'melk, mayonaise, geschudde vinaigrette'},
+  'l-l-nee':{naam:'Oplossing', soort:'homogeen', wat:'Een vloeistof is opgelost in een andere vloeistof.', vb:'azijn (azijnzuur in water), wijn (alcohol in water)'},
+  'g-l-ja':{naam:'Schuim', soort:'heterogeen', wat:'Gasbelletjes zitten in een vloeistof.', vb:'slagroom, scheerschuim, badschuim'},
+  'g-l-nee':{naam:'Oplossing', soort:'homogeen', wat:'Een gas is opgelost in een vloeistof.', vb:'frisdrank in een gesloten fles (CO₂ in water)'},
+  'v-g-ja':{naam:'Rook', soort:'heterogeen · aerosol', wat:'Vaste deeltjes zweven in een gas. Rook is een soort aerosol.', vb:'rook van een kampvuur, stof in de lucht'},
+  'l-g-ja':{naam:'Nevel', soort:'heterogeen · aerosol', wat:'Vloeistofdruppeltjes zweven in een gas. Nevel is een soort aerosol.', vb:'mist, spray uit een spuitbus'},
+  'g-g-nee':{naam:'Gasmengsel', soort:'homogeen', wat:'Gassen mengen altijd volledig. Deze naam staat niet in de lijst van het lesdoel.', vb:'lucht'},
+  'v-v-nee':{naam:'Legering', soort:'homogeen', wat:'Metalen worden gesmolten, gemengd en daarna weer vast.', vb:'brons (koper + tin), messing (koper + zink), staal'},
+  'v-v-ja':{naam:'Grof mengsel', soort:'heterogeen', wat:'Verschillende vaste stoffen zijn gemengd. Je ziet de korrels of stukjes apart.', vb:'graniet, zand met ijzervijlsel, muesli'},
+  'g-v-ja':{naam:'Schuim', soort:'heterogeen', wat:'Gasbelletjes zitten in een vaste stof (vast schuim).', vb:'piepschuim, isolatieschuim'}
+};
+const GEEN = {
+  'v-g-nee':'Vaste deeltjes in een gas zie je altijd apart. Dat is rook (heterogeen).',
+  'l-g-nee':'Druppeltjes in een gas zie je altijd apart. Dat is nevel (heterogeen). Waterdamp in lucht is gas in gas.',
+  'g-g-ja':'Gassen mengen altijd volledig. Een mengsel van gassen is altijd homogeen.'
+};
+function zoomBeeld(inn, mid, het){
+  const r = rng(inn.charCodeAt(0)*31+mid.charCodeAt(0)+(het?5:0));
+  let s = `<svg viewBox="0 0 150 150" role="img" aria-label="ingezoomd beeld van het mengsel"><defs><clipPath id="cb"><circle cx="75" cy="75" r="68"/></clipPath></defs><g clip-path="url(#cb)"><rect width="150" height="150" fill="${MIDKLEUR[mid]}"/>`;
+  if (mid==='g') for(let i=0;i<30;i++) s += `<circle cx="${r()*150}" cy="${r()*150}" r="1" fill="#9fb3b8"/>`;
+  if (mid==='v') for(let i=0;i<8;i++) s += `<path d="M${i*22-20} 0 l40 150" stroke="#a5abb2" stroke-width="2"/>`;
+  if (het){
+    for(let i=0;i<9;i++){ const x=20+r()*110, y=20+r()*110;
+      if (inn==='v') s += `<path d="M${x} ${y} l12 -3 l3 11 l-13 4 z" fill="#8a5a2b"/>`;
+      if (inn==='l') s += `<circle cx="${x}" cy="${y}" r="${6+r()*6}" fill="#f2d16b" stroke="#b8952e"/>`;
+      if (inn==='g') s += `<circle cx="${x}" cy="${y}" r="${7+r()*7}" fill="#ffffff" stroke="#7d8f94" stroke-width="1.5"/>`;
+    }
+  } else {
+    s += `<rect width="150" height="150" fill="${inn==='v'?'#8a5a2b':inn==='l'?'#f2d16b':'#ffffff'}" opacity=".18"/>`;
+  }
+  return s + `</g><circle cx="75" cy="75" r="68" fill="none" stroke="var(--accent)" stroke-width="4"/></svg>`;
+}
+function maakSeg(groep, opties){
+  const el = document.querySelector(`.seg[data-groep="${groep}"]`);
+  el.innerHTML = opties.map(o=>`<button type="button" class="knop" data-k="${o.k}" aria-pressed="${keuze[groep]===o.k}">${o.label}</button>`).join('');
+  el.querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
+    keuze[groep]=b.dataset.k; el.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed', x===b?'true':'false')); toonUitkomst();
+  }));
+}
+maakSeg('in', TOEST); maakSeg('mid', TOEST); maakSeg('het', [{k:'ja',label:'ja → heterogeen'},{k:'nee',label:'nee → homogeen'}]);
+function toonUitkomst(){
+  const key = `${keuze.in}-${keuze.mid}-${keuze.het}`;
+  const naamIn = TOEST.find(t=>t.k===keuze.in).label, naamMid = TOEST.find(t=>t.k===keuze.mid).label;
+  const u = UIT[key];
+  if (u) $('#uitkomst').innerHTML = zoomBeeld(keuze.in, keuze.mid, keuze.het==='ja') + `<span class="soort">${u.soort}</span><span class="naam">${u.naam}</span><p>${naamIn} in ${naamMid}. ${u.wat}</p><p><b>Voorbeelden:</b> ${u.vb}</p>`;
+  else if (GEEN[key]) $('#uitkomst').innerHTML = `<span class="soort">bestaat niet</span><p class="geen">${GEEN[key]}</p>`;
+  else $('#uitkomst').innerHTML = `<span class="soort">niet in dit hoofdstuk</span><p class="geen">${naamIn} in ${naamMid}: deze combinatie komt in dit hoofdstuk niet aan bod. Probeer een andere combinatie.</p>`;
+}
+toonUitkomst();
+
+const SOORTEN = ['grof mengsel','suspensie','emulsie','schuim','rook','nevel','aerosol','oplossing','legering'].map(k=>({k,label:k[0].toUpperCase()+k.slice(1)}));
+sorteer($('#oef-soort'), {
+  id:'soort', titel:'Oefening · Welk soort mengsel?',
+  opdracht:'Denk na: wat zit waarin? Welke aggregatietoestand hebben de bestanddelen? Kies de naam.',
+  opties:SOORTEN,
+  items:[
+    {tekst:'modderwater', antwoord:'suspensie', uitleg:'Vaste gronddeeltjes in water (vloeistof).'},
+    {tekst:'mayonaise', antwoord:'emulsie', uitleg:'Druppeltjes olie in een andere vloeistof.'},
+    {tekst:'slagroom', antwoord:'schuim', uitleg:'Luchtbelletjes (gas) in room.'},
+    {tekst:'mist', antwoord:['nevel','aerosol'], uitleg:'Waterdruppeltjes (vloeistof) in lucht (gas). Nevel is een soort aerosol.'},
+    {tekst:'rook van een kampvuur', antwoord:['rook','aerosol'], uitleg:'Vaste deeltjes (roet, as) in lucht (gas). Rook is een soort aerosol.'},
+    {tekst:'zoutwater', antwoord:'oplossing', uitleg:'Zout is opgelost in water: je ziet het niet meer. Homogeen.'},
+    {tekst:'brons', antwoord:'legering', uitleg:'Koper en tin, gemengd in vaste toestand.'},
+    {tekst:'graniet (steen met zichtbare korrels)', antwoord:'grof mengsel', uitleg:'Verschillende vaste stoffen: je ziet de korrels apart. Heterogeen.'},
+    {tekst:'Rook en nevel samen noemen we met één woord…', antwoord:'aerosol', uitleg:'Een aerosol is een gas met fijne vaste deeltjes of vloeistofdruppeltjes erin.'},
+    {tekst:'melk', antwoord:'emulsie', uitleg:'Vetdruppeltjes in water: vloeistof in vloeistof.'},
+    {tekst:'scheerschuim', antwoord:'schuim', uitleg:'Gasbelletjes in een vloeistof.'},
+    {tekst:'sinaasappelsap met vruchtvlees', antwoord:'suspensie', uitleg:'Vaste stukjes vruchtvlees in sap.'},
+    {tekst:'thee met opgeloste suiker', antwoord:'oplossing', uitleg:'De suiker is opgelost. Je ziet ze niet meer.'}
+  ]
+});
+
+/* ---------- metaalblok ---------- */
+const METALEN = {
+  al:{naam:'aluminium', kleur:'zilvergrijs', hex:['#e3e7ea','#c3c9ce','#9ea6ad'], smelt:'660 °C', rho:2.70, stroom:'ja', magneet:'nee'},
+  cu:{naam:'koper', kleur:'roodbruin', hex:['#e9a479','#c8743f','#9a522a'], smelt:'1085 °C', rho:8.96, stroom:'ja', magneet:'nee'},
+  fe:{naam:'ijzer', kleur:'donkergrijs', hex:['#b4b9be','#8a8f95','#62676c'], smelt:'1538 °C', rho:7.87, stroom:'ja', magneet:'ja'}
+};
+const VORMEN = [{k:'kubus',label:'kubus'},{k:'cilinder',label:'cilinder'},{k:'bol',label:'bol'}];
+const blok = {stof:'al', vorm:'kubus', vol:40};
+$('#kies-stof').innerHTML = Object.entries(METALEN).map(([k,m])=>`<button type="button" class="knop" data-k="${k}" aria-pressed="${k===blok.stof}">${m.naam}</button>`).join('');
+$('#kies-vorm').innerHTML = VORMEN.map(v=>`<button type="button" class="knop" data-k="${v.k}" aria-pressed="${v.k===blok.vorm}">${v.label}</button>`).join('');
+$$('#kies-stof button').forEach(b=>b.addEventListener('click',()=>{ blok.stof=b.dataset.k; $$('#kies-stof button').forEach(x=>x.setAttribute('aria-pressed',x===b?'true':'false')); tekenBlok(); }));
+$$('#kies-vorm button').forEach(b=>b.addEventListener('click',()=>{ blok.vorm=b.dataset.k; $$('#kies-vorm button').forEach(x=>x.setAttribute('aria-pressed',x===b?'true':'false')); tekenBlok(); }));
+$('#vol').addEventListener('input', e => { blok.vol=+e.target.value; tekenBlok(); });
+$('#zaag').addEventListener('click', () => { blok.vol=Math.max(5, Math.round(blok.vol/2)); $('#vol').value=blok.vol; tekenBlok(); });
+let vorige = {};
+function tekenBlok(){
+  const m = METALEN[blok.stof]; const [l,mid,d] = m.hex;
+  const s = 42*Math.cbrt(blok.vol/20); // schaal in px
+  const cx=120, by=170;
+  let g='';
+  if (blok.vorm==='kubus'){ const o=s*.45;
+    g = `<path d="M${cx-s/2} ${by-s} l${o} ${-o} h${s} l${-o} ${o} z" fill="${l}" stroke="var(--ink)" stroke-width="1.5"/>
+      <path d="M${cx+s/2} ${by-s} l${o} ${-o} v${s} l${-o} ${o} z" fill="${d}" stroke="var(--ink)" stroke-width="1.5"/>
+      <rect x="${cx-s/2}" y="${by-s}" width="${s}" height="${s}" fill="${mid}" stroke="var(--ink)" stroke-width="1.5"/>`;
+  } else if (blok.vorm==='cilinder'){ const w=s*.95, h=s*1.15, ry=w*.22;
+    g = `<path d="M${cx-w/2} ${by-h} v${h} a${w/2} ${ry} 0 0 0 ${w} 0 v${-h}" fill="${mid}" stroke="var(--ink)" stroke-width="1.5"/>
+      <ellipse cx="${cx}" cy="${by-h}" rx="${w/2}" ry="${ry}" fill="${l}" stroke="var(--ink)" stroke-width="1.5"/>`;
+  } else { const r=s*.62;
+    g = `<defs><radialGradient id="bg" cx=".35" cy=".35"><stop offset="0" stop-color="${l}"/><stop offset=".6" stop-color="${mid}"/><stop offset="1" stop-color="${d}"/></radialGradient></defs>
+      <circle cx="${cx}" cy="${by-r}" r="${r}" fill="url(#bg)" stroke="var(--ink)" stroke-width="1.5"/>`;
+  }
+  $('#blok-svg').innerHTML = `<ellipse cx="${cx}" cy="${by+4}" rx="${s*.8}" ry="6" fill="var(--line)"/>${g}<text x="120" y="194" text-anchor="middle" font-size="13" fill="var(--muted)">${m.naam}</text>`;
+  const stof = {Kleur:m.kleur, Smelttemperatuur:m.smelt, Massadichtheid:komma(m.rho,2)+' g/cm³', 'Geleidt elektrische stroom':m.stroom, 'Wordt aangetrokken door een magneet':m.magneet};
+  const voorwerp = {Vorm:blok.vorm, Volume:blok.vol+' cm³', Massa:komma(m.rho*blok.vol,1)+' g'};
+  const vul = (id, obj) => { $(id).innerHTML = Object.entries(obj).map(([k,v])=>`<div><dt>${k}</dt><dd data-k="${k}">${v}</dd></div>`).join('');
+    $$(id+' dd').forEach(dd => { if (vorige[dd.dataset.k]!==undefined && vorige[dd.dataset.k]!==dd.textContent){ dd.classList.add('flits'); setTimeout(()=>dd.classList.remove('flits'),700);} vorige[dd.dataset.k]=dd.textContent; }); };
+  vul('#dl-stof', stof); vul('#dl-voorwerp', voorwerp);
+}
+tekenBlok();
+
+sorteer($('#oef-eig'), {
+  id:'eig', titel:'Oefening 1 · Stofeigenschap of voorwerpseigenschap?',
+  opdracht:'Gaat de zin over de stof zelf, of over één bepaald voorwerp?',
+  opties:[{k:'s',label:'Stofeigenschap'},{k:'v',label:'Voorwerpseigenschap'}],
+  items:[
+    {tekst:'Goud smelt bij 1064 °C.', antwoord:'s', uitleg:'Elk stuk goud smelt bij 1064 °C, groot of klein.'},
+    {tekst:'Deze ring weegt 5 g.', antwoord:'v', uitleg:'De massa hoort bij deze ring. Een andere ring weegt iets anders.'},
+    {tekst:'Water kookt bij 100 °C.', antwoord:'s', uitleg:'De kooktemperatuur hoort bij de stof water (bij normale luchtdruk).'},
+    {tekst:'Het glas is 12 cm hoog.', antwoord:'v', uitleg:'De hoogte hoort bij dit glas.'},
+    {tekst:'Zuurstofgas is kleurloos.', antwoord:'s', uitleg:'Kleur is een stofeigenschap.'},
+    {tekst:'Koper geleidt elektrische stroom.', antwoord:'s', uitleg:'Elk stuk koper geleidt stroom.'},
+    {tekst:'Het blok ijzer heeft een volume van 20 cm³.', antwoord:'v', uitleg:'Het volume hangt af van hoe groot dit blok is.'},
+    {tekst:'Suiker lost op in water.', antwoord:'s', uitleg:'Oplosbaarheid is een stofeigenschap.'},
+    {tekst:'De kaars is rond.', antwoord:'v', uitleg:'De vorm hoort bij deze kaars.'},
+    {tekst:'IJzer wordt aangetrokken door een magneet.', antwoord:'s', uitleg:'Elk stuk ijzer is magnetisch.'},
+    {tekst:'De thee is 70 °C warm.', antwoord:'v', uitleg:'De temperatuur hoort bij deze kop thee. Ze kan veranderen.'},
+    {tekst:'De massadichtheid van aluminium is 2,70 g/cm³.', antwoord:'s', uitleg:'Elk stuk aluminium heeft dezelfde massadichtheid.'}
+  ]
+});
+
+/* noteren */
+const STOFW = [['kleur','kleur'],['geur','geur'],['smaak','smaak'],['smelt','smelttemperatuur'],['stol','stoltemperatuur'],['kook','kooktemperatuur'],['dichtheid','massadichtheid'],['oplos','oplosbaarheid'],['geleid','geleidbaarheid'],['magne','magnetisch'],['brand','brandbaarheid'],['aggregatie','aggregatietoestand'],['hardheid','hardheid'],['glans','glans']];
+const VOORW = [['massa','massa'],['gewicht','massa'],['volume','volume'],['vorm','vorm'],['lengte','lengte'],['grootte','grootte'],['breedte','breedte'],['hoogte','hoogte'],['temperatuur','temperatuur'],['dikte','dikte'],['oppervlak','oppervlakte']];
+const genoteerd = new Set();
+scores.noteer = {juist:0,totaal:3,klaar:false};
+$('#noteer-form').addEventListener('submit', e => {
+  e.preventDefault();
+  const raw = $('#noteer-in').value.trim(); if(!raw) return;
+  const t = raw.toLowerCase();
+  const fb = $('#noteer-fb');
+  // temperatuur-woorden met smelt/kook eerst als stofeigenschap
+  const s = STOFW.find(([k])=>t.includes(k));
+  const v = !s && VOORW.find(([k])=>t.includes(k));
+  if (s){
+    if (genoteerd.has(s[1])) fb.innerHTML = `<b>${s[1]}</b> had je al. Probeer een andere.`;
+    else { genoteerd.add(s[1]); $('#noteer-chips').insertAdjacentHTML('beforeend',`<span class="chip ok">✓ ${s[1]}</span>`); fb.innerHTML = `<b>Juist!</b> ${s[1][0].toUpperCase()+s[1].slice(1)} is een stofeigenschap.`; }
+  } else if (v){
+    $('#noteer-chips').insertAdjacentHTML('beforeend',`<span class="chip nee">✗ ${v[1]}</span>`);
+    fb.innerHTML = `<b>Opgelet:</b> ${v[1]} is een voorwerpseigenschap. Ze verandert als het voorwerp groter of kleiner wordt.`;
+  } else fb.innerHTML = `Dat woord ken ik niet als eigenschap. Controleer de spelling of vraag het aan je leerkracht.`;
+  $('#noteer-in').value='';
+  const n = genoteerd.size;
+  $('#noteer-score').textContent = `${Math.min(n,3)} / 3`;
+  scores.noteer = {juist:Math.min(n,3),totaal:3,klaar:n>=3};
+  updateIkKan();
+});
+
+/* ik kan */
+function regel(label, s){
+  if(!s) return '';
+  const ok = s.klaar && s.juist/s.totaal>=.8;
+  const st = s.klaar ? `${s.juist}/${s.totaal}` : (s.juist ? `${s.juist}/${s.totaal} …` : 'nog niet');
+  return `<li><span class="st ${ok?'ok':''}">${ok?'✓ ':''}${st}</span><span>${label}</span></li>`;
+}
+function updateIkKan(){
+  $('#ikkan21').innerHTML = `<h3>Controle 2.1</h3><ul>${regel('Ik herken een zuivere stof en een mengsel in een deeltjesmodel.',scores.deeltjes)}${regel('Ik herken zuivere stoffen en mengsels uit het dagelijks leven.',scores.zuiver)}${regel('Ik leg uit waarom een mengsel homogeen of heterogeen is.',scores.micro)}</ul>
+    <p>Probeer zelf: leg uit waarom melk een heterogeen mengsel is.</p>`;
+  $('#ikkan22').innerHTML = `<h3>Controle 2.2</h3><ul>${regel('Ik geef de juiste naam aan een mengsel op basis van de aggregatietoestand van de bestanddelen.',scores.soort)}</ul>
+    <p>Gebruik de mengselbouwer om fouten na te kijken.</p>`;
+  $('#ikkan23').innerHTML = `<h3>Controle 2.3</h3><ul>${regel('Ik maak het onderscheid tussen een stofeigenschap en een voorwerpseigenschap.',scores.eig)}${regel('Ik noteer minstens drie stofeigenschappen.',scores.noteer)}</ul>
+    <p>Beschrijf zelf in één zin: <i>Een stofeigenschap is …</i></p>`;
+}
+updateIkKan();
+})();
+</script>
+
+</body>
+</html>
