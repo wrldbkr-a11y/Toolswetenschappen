@@ -1,0 +1,660 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>*,*::before,*::after{box-sizing:border-box}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Periodiek systeem</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+:root{
+  --bg:#f3f7f6; --surface:#ffffff; --surface-2:#e9f1ef; --ink:#13201d; --muted:#53635e; --line:#d3dfdb;
+  --accent:#0b6b66; --accent-ink:#ffffff; --accent-soft:#d8eeeb;
+  --good:#1d7a3b; --good-soft:#dcf2e2; --bad:#b3261e; --bad-soft:#fbe3e1;
+  --proton:#d9443a; --neutron:#8d989c; --elektron:#2f6fb0; --valentie:#e8a400;
+  --c-metaal:#c9dcef; --c-nietmetaal:#cdebd3; --c-halfmetaal:#f3e1b0; --c-edelgas:#e3d4f2; --c-bgroep:#e4e8ea;
+  --c-alkali:#f4b6a8; --c-aardalkali:#f6d6a1; --c-halogeen:#b9e3c4;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, Consolas, monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0e1614; --surface:#16211e; --surface-2:#1c2a26; --ink:#e4eeeb; --muted:#9aaca6; --line:#2b3c37;
+  --accent:#5cc7bd; --accent-ink:#06211e; --accent-soft:#183a35;
+  --good:#6fd38f; --good-soft:#163524; --bad:#ff8a80; --bad-soft:#3d1a18;
+  --proton:#ef5b50; --neutron:#9aa6aa; --elektron:#5b9be0; --valentie:#ffc533;
+  --c-metaal:#24384d; --c-nietmetaal:#1f3d29; --c-halfmetaal:#4a3d18; --c-edelgas:#3a2b4d; --c-bgroep:#26302e;
+  --c-alkali:#5a2a22; --c-aardalkali:#57401b; --c-halogeen:#1e4a2c;
+  color-scheme:dark; } }
+:root[data-theme="dark"]{
+  --bg:#0e1614; --surface:#16211e; --surface-2:#1c2a26; --ink:#e4eeeb; --muted:#9aaca6; --line:#2b3c37;
+  --accent:#5cc7bd; --accent-ink:#06211e; --accent-soft:#183a35;
+  --good:#6fd38f; --good-soft:#163524; --bad:#ff8a80; --bad-soft:#3d1a18;
+  --proton:#ef5b50; --neutron:#9aa6aa; --elektron:#5b9be0; --valentie:#ffc533;
+  --c-metaal:#24384d; --c-nietmetaal:#1f3d29; --c-halfmetaal:#4a3d18; --c-edelgas:#3a2b4d; --c-bgroep:#26302e;
+  --c-alkali:#5a2a22; --c-aardalkali:#57401b; --c-halogeen:#1e4a2c;
+  color-scheme:dark; }
+
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.55}
+.wrap{max-width:1000px;margin:0 auto;padding-inline:18px;padding-block:28px 64px;display:flex;flex-direction:column;gap:28px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.15}
+h1{font-size:clamp(2rem,6vw,3.2rem);font-weight:800;letter-spacing:-.02em}
+h2{font-size:1.6rem;font-weight:800}
+h3{font-size:1.2rem;font-weight:600}
+p{margin:0;max-width:65ch}
+a{color:var(--accent)}
+.eyebrow{font-family:var(--f-mono);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:6px}
+.hero{display:flex;flex-direction:column;gap:10px}
+.hero p{color:var(--muted)}
+.lpd{font-size:.92rem;color:var(--muted)}
+
+.lesnav{display:grid;grid-template-columns:repeat(var(--tabs,2),1fr);gap:10px;position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:8px}
+.lestab{text-align:left;background:var(--surface);border:2px solid var(--line);border-radius:14px;padding:10px 12px;display:flex;gap:10px;align-items:flex-start;min-width:0}
+.lestab .nr{font-family:var(--f-mono);font-weight:700;font-size:1.15rem;color:var(--accent)}
+.lestab .t{display:flex;flex-direction:column;gap:2px;min-width:0}
+.lestab b{font-family:var(--f-display);font-size:1rem;line-height:1.2}
+.lestab small{color:var(--muted);font-size:.8rem}
+.lestab[aria-selected="true"]{border-color:var(--accent);background:var(--accent-soft)}
+@media (max-width:760px){ .lesnav{grid-template-columns:1fr 1fr;position:static} }
+
+.les{display:flex;flex-direction:column;gap:36px}
+.doel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px;display:flex;flex-direction:column;gap:6px}
+.doel .eyebrow{color:var(--accent)}
+.doel ul{margin:0;padding-left:20px;font-weight:700;font-size:1.05rem}
+.blok{display:flex;flex-direction:column;gap:16px}
+.blok-kop{display:flex;gap:12px;align-items:baseline}
+.blok-kop .letter{font-family:var(--f-mono);font-weight:700;color:var(--accent-ink);background:var(--accent);border-radius:8px;padding:2px 9px;font-size:.95rem}
+.tip{background:var(--accent-soft);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:6px}
+.tip b{font-family:var(--f-display);font-size:1.08rem}
+.def{background:var(--surface);border:2px solid var(--accent);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:4px}
+.def .eyebrow{color:var(--accent)}
+.def p{font-size:1.12rem}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media (max-width:700px){.duo,.trio{grid-template-columns:1fr}}
+.kaart{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.kaart h3{font-size:1.2rem}
+.knop{background:var(--surface);border:2px solid var(--line);border-radius:10px;padding:7px 14px;font-weight:700}
+.knop:hover{border-color:var(--accent)}
+.knop.hoofd{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.knop[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent)}
+.knop:disabled{opacity:.45;cursor:default}
+.knoppen{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.fb{min-height:1.4em}
+.fb b{font-family:var(--f-display)}
+.ok-t{color:var(--good)} .nok-t{color:var(--bad)}
+
+.oefening{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.oef-kop{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;align-items:center}
+.score{font-family:var(--f-mono);font-weight:700;font-variant-numeric:tabular-nums;background:var(--surface-2);border-radius:8px;padding:4px 10px}
+.items{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.item{border:1px solid var(--line);border-left:6px solid var(--line);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:8px}
+.item .zin{font-weight:700}
+.item .opties{display:flex;flex-wrap:wrap;gap:6px}
+.item .opties button{background:var(--surface-2);border:2px solid var(--line);border-radius:10px;padding:5px 11px;font-weight:700}
+.item .opties button:hover:not(:disabled){border-color:var(--accent)}
+.item .opties button:disabled{cursor:default}
+.item .opties button.gekozen{border-color:var(--ink)}
+.item.juist{border-left-color:var(--good);background:var(--good-soft)}
+.item.fout{border-left-color:var(--bad);background:var(--bad-soft)}
+.item .uitleg{font-size:.95rem}
+.item .uitleg b{font-family:var(--f-display)}
+.item.juist .uitleg b{color:var(--good)}
+.item.fout .uitleg b{color:var(--bad)}
+.item .invul{display:flex;flex-wrap:wrap;gap:8px}
+.item .invul input{border:2px solid var(--line);border-radius:8px;padding:5px 10px;background:var(--surface);width:12em;max-width:100%}
+.opnieuw{align-self:flex-start}
+
+.tabelwrap{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:14px}
+table{border-collapse:collapse;width:100%;font-size:.95rem}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--f-mono);font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+td b{font-family:var(--f-display)}
+
+.notatie{display:inline-flex;align-items:center;gap:2px;font-family:var(--f-display);font-weight:800;vertical-align:middle}
+.notatie .ge{display:inline-flex;flex-direction:column;align-items:flex-end;font-size:.6em;line-height:1.05;font-family:var(--f-mono);font-weight:700}
+.notatie .sy{font-size:1.15em}
+
+.linkkaart{display:flex;gap:14px;align-items:center;background:var(--surface);border:2px dashed var(--accent);border-radius:14px;padding:14px 16px;text-decoration:none;color:var(--ink)}
+.linkkaart:hover{background:var(--accent-soft)}
+.linkkaart b{font-family:var(--f-display);font-size:1.1rem}
+.linkkaart .pijl{font-size:1.6rem;color:var(--accent);margin-left:auto}
+
+.ikkan{background:var(--surface);border:2px solid var(--accent);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.ikkan ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.ikkan li{display:flex;gap:10px;align-items:baseline}
+.ikkan .st{font-family:var(--f-mono);font-weight:700;font-variant-numeric:tabular-nums;min-width:5.5em;color:var(--muted)}
+.ikkan .st.ok{color:var(--good)}
+@media (prefers-reduced-motion: reduce){ *{transition:none!important;animation:none!important} }
+
+
+.lesnav{--tabs:5}
+.vakje{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px}
+.vakje svg{width:100%;max-width:620px;height:auto;display:block;margin:0 auto}
+.vakje text{font-family:var(--f-body);fill:var(--ink)}
+.detail.enkel{grid-template-columns:minmax(0,1fr)}
+.detail .sluit{position:absolute;top:8px;right:8px;width:34px;height:34px;border-radius:50%;border:2px solid var(--line);background:var(--surface);font-weight:700}
+.detail{position:relative}
+.pse-blok{display:flex;flex-direction:column;gap:12px}
+.pse-wrap{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px}
+.pse{display:grid;grid-template-columns:26px repeat(18,minmax(40px,1fr));gap:3px;min-width:800px}
+.pse .kop{font-family:var(--f-mono);font-size:.72rem;font-weight:700;color:var(--muted);text-align:center;align-self:end;padding-bottom:2px}
+.pse .kop.b{border-bottom:2px solid var(--line)}
+.pse .per{font-family:var(--f-mono);font-size:.75rem;font-weight:700;color:var(--muted);display:grid;place-items:center}
+.cel{border:1px solid var(--line);border-radius:6px;padding:2px 3px;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.05;background:var(--surface);position:relative}
+button.cel{cursor:pointer}
+button.cel:hover{outline:2px solid var(--accent)}
+.cel .z{font-family:var(--f-mono);font-size:.6rem;color:var(--muted);align-self:flex-start}
+.cel .s{font-family:var(--f-display);font-weight:800;font-size:1rem}
+.cel .x{font-family:var(--f-mono);font-size:.6rem}
+.cel.bg{background:var(--c-bgroep);color:var(--muted);border-style:dashed}
+.cel.bg .s{font-weight:600;font-size:.85rem}
+.cel[aria-pressed="true"]{outline:3px solid var(--ink);z-index:2}
+.cel.dim{opacity:.35}
+.cel.lijn{box-shadow:inset 0 0 0 2px var(--accent)}
+.legende{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:.9rem}
+.legende span{display:inline-flex;align-items:center;gap:6px}
+.legende i{display:inline-block;width:16px;height:16px;border-radius:4px;border:1px solid var(--line)}
+.modi{display:flex;flex-wrap:wrap;gap:6px}
+.detail{background:var(--surface);border:2px solid var(--accent);border-radius:14px;padding:14px;display:grid;grid-template-columns:160px minmax(0,1fr);gap:16px;align-items:start}
+.detail svg{width:100%;height:auto;display:block}
+.detail h3{font-size:1.5rem}
+.detail dl{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px 12px;margin:8px 0 0}
+.detail dt{font-family:var(--f-mono);font-size:.7rem;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.detail dd{margin:0;font-weight:700}
+.detail .zin{grid-column:1/-1;font-size:.95rem;background:var(--surface-2);border-radius:8px;padding:8px 10px}
+@media (max-width:560px){.detail{grid-template-columns:1fr}.detail .tek{max-width:160px}}
+.chip{display:inline-block;width:14px;height:14px;border-radius:4px;vertical-align:-2px;margin-right:6px;border:1px solid var(--line)}
+.proef{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:10px}
+.proef svg{width:100%;max-width:620px;height:auto;margin:0 auto;display:block}
+.proef .bel{opacity:0}
+.proef.aan .bel{animation:pbel var(--t,1.6s) ease-in infinite}
+.proef .stuk{transform-box:fill-box}
+.proef.aan .stuk.na{animation:schaats 1.6s ease-in-out infinite alternate}
+.proef.aan .stuk.k{animation:schaats .8s ease-in-out infinite alternate}
+.proef .vlam{opacity:0;transform-box:fill-box;transform-origin:50% 100%}
+.proef.aan .vlam{opacity:1;animation:vlk .25s ease-in-out infinite alternate}
+@keyframes pbel{0%{transform:translateY(0);opacity:0}20%{opacity:.9}100%{transform:translateY(-34px);opacity:0}}
+@keyframes schaats{from{transform:translateX(-14px)}to{transform:translateX(14px)}}
+@keyframes vlk{from{transform:scaleY(.8)}to{transform:scaleY(1.1)}}
+.edel{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.edel div{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:8px;text-align:center}
+.edel svg{width:100%;max-width:170px;height:auto;display:block;margin:0 auto}
+.edel b{font-family:var(--f-display)}
+@media (max-width:560px){.edel{grid-template-columns:1fr}}
+.en-schaal{height:14px;border-radius:7px;background:linear-gradient(90deg,color-mix(in srgb,var(--accent) 6%,var(--surface)),color-mix(in srgb,var(--accent) 90%,var(--surface)));border:1px solid var(--line)}
+.en-lbl{display:flex;justify-content:space-between;font-size:.85rem;color:var(--muted)}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a href="index.html" style="align-self:flex-start;font-weight:700;color:var(--accent);text-decoration:none">← Alle tools</a>
+  <header class="hero">
+    <span class="eyebrow">Chemie · 3de jaar · thema 2 · hoofdstuk 3</span>
+    <h1>Periodiek systeem</h1>
+    <p>In het periodiek systeem van de elementen (PSE) staan alle elementen in volgorde van atoomnummer. Waar een element staat, vertelt veel over zijn atoom.</p>
+    <p class="lpd">LPD 9C: De leerlingen gebruiken het PSE om eigenschappen van atomen af te leiden.</p>
+  </header>
+  <div class="doel"><span class="eyebrow">Lesdoelen hoofdstuk 3 · p. 70–76</span><ul>
+    <li>Ik kan noteren dat de elementen in eenzelfde groep dezelfde chemische eigenschappen hebben en dus op eenzelfde manier reageren.</li>
+    <li>Ik kan met behulp van het PSE noteren wat het verband is tussen het groepsnummer en het periodenummer en de eigenschappen van het atoom.</li>
+    <li>Ik kan met behulp van het PSE de opbouw van een atoom noteren en omgekeerd.</li>
+    <li>Ik kan uitleggen wat een hoge of lage elektronegatieve waarde betekent voor een element.</li>
+    <li>Ik kan uitleggen wat de edelgasconfiguratie is.</li>
+    <li>Ik kan noteren welke categorieën van elementen er zijn en waar deze elementen zich in het PSE bevinden.</li></ul></div>
+  <nav class="lesnav" role="tablist" aria-label="Onderdelen">
+    <button class="lestab" role="tab" aria-controls="lesL" aria-selected="true"><span class="nr">A</span><span class="t"><b>Het PSE lezen</b><small>wat vertelt één vakje?</small></span></button>
+    <button class="lestab" role="tab" aria-controls="lesA" aria-selected="false"><span class="nr">B</span><span class="t"><b>Categorieën</b><small>metalen, niet-metalen, …</small></span></button>
+    <button class="lestab" role="tab" aria-controls="lesB" aria-selected="false"><span class="nr">C</span><span class="t"><b>Groep en periode</b><small>en atoombouw</small></span></button>
+    <button class="lestab" role="tab" aria-controls="lesC" aria-selected="false"><span class="nr">D</span><span class="t"><b>Elektronegativiteit en edelgasconfiguratie</b></span></button>
+    <button class="lestab" role="tab" aria-controls="lesD" aria-selected="false"><span class="nr">E</span><span class="t"><b>Oefenen</b><small>alle lesdoelen</small></span></button>
+  </nav>
+
+  <div class="pse-blok" id="pse-blok">
+    <div class="modi" role="group" aria-label="Kleuren van het PSE">
+      <button type="button" class="knop" data-mode="cat">Categorieën</button>
+      <button type="button" class="knop" data-mode="groep">Groepsnamen</button>
+      <button type="button" class="knop" data-mode="gp">Groep en periode</button>
+      <button type="button" class="knop" data-mode="en">Elektronegativiteit</button>
+    </div>
+    <div class="pse-wrap"><div class="pse" id="pse"></div></div>
+    <div class="legende" id="legende"></div>
+    <div class="detail" id="detail" aria-live="polite" hidden></div>
+  </div>
+
+  <main class="les" id="lesL" role="tabpanel">
+    <section class="blok">
+      <div class="blok-kop"><span class="letter">A</span><h2>Het PSE lezen</h2></div>
+      <p>Elk element heeft een eigen vakje in het PSE. In dat vakje staan een paar getallen. Zo lees je ze:</p>
+      <div class="vakje"><svg viewBox="0 0 560 230" role="img" aria-label="Uitleg van één vakje in het PSE, met natrium als voorbeeld">
+        <rect x="20" y="18" width="170" height="196" rx="10" fill="var(--surface)" stroke="var(--ink)" stroke-width="2"/>
+        <text x="34" y="50" font-size="22" font-weight="700" style="font-family:var(--f-mono)">11</text>
+        <text x="176" y="50" font-size="16" text-anchor="end" style="font-family:var(--f-mono)">0,9</text>
+        <text x="105" y="132" font-size="64" font-weight="800" text-anchor="middle" style="font-family:var(--f-display)">Na</text>
+        <text x="105" y="166" font-size="16" text-anchor="middle">natrium</text>
+        <text x="105" y="200" font-size="18" text-anchor="middle" style="font-family:var(--f-mono)">23</text>
+        <g stroke="var(--accent)" stroke-width="1.5" fill="none"><path d="M70 42 L240 34"/><path d="M183 44 L240 78"/><path d="M142 112 L240 122"/><path d="M140 161 L240 164"/><path d="M130 194 L240 204"/></g>
+        <g fill="var(--accent)"><circle cx="70" cy="42" r="3.5"/><circle cx="183" cy="44" r="3.5"/><circle cx="142" cy="112" r="3.5"/><circle cx="140" cy="161" r="3.5"/><circle cx="130" cy="194" r="3.5"/></g>
+        <text x="246" y="39" font-size="15"><tspan font-weight="700">atoomnummer Z</tspan> → aantal protonen</text>
+        <text x="246" y="83" font-size="15"><tspan font-weight="700">elektronegativiteit</tspan> (EN)</text>
+        <text x="246" y="127" font-size="15"><tspan font-weight="700">symbool</tspan></text>
+        <text x="246" y="169" font-size="15"><tspan font-weight="700">naam</tspan></text>
+        <text x="246" y="209" font-size="15"><tspan font-weight="700">massagetal A</tspan> → protonen + neutronen</text>
+      </svg></div>
+      <div class="tip"><b>Ook de plaats vertelt iets</b><p>De <b>kolom</b> (groep) geeft het aantal valentie-elektronen. De <b>rij</b> (periode) geeft het aantal schillen. Links of rechts van de trap zegt of het een metaal of een niet-metaal is. Op jouw PSE kunnen de getallen op een andere plaats in het vakje staan. Zoek ze dan op dezelfde manier.</p></div>
+      <p>Klik op een element in het PSE. Je ziet alles wat je over dat element uit het PSE kan halen.</p>
+      <div class="pse-plek"></div>
+    </section>
+  </main>
+
+  <main class="les" id="lesA" role="tabpanel" hidden>
+    <section class="blok">
+      <div class="blok-kop"><span class="letter">B</span><h2>Categorieën van elementen</h2></div>
+      <div class="trio">
+        <div class="kaart"><h3><span class="chip" style="background:var(--c-metaal)"></span>Metalen</h3><p>Links van de trap in het PSE. De grootste groep. Ze glanzen en geleiden warmte en elektrische stroom. Bv. natrium, ijzer, koper.</p></div>
+        <div class="kaart"><h3><span class="chip" style="background:var(--c-nietmetaal)"></span>Niet-metalen</h3><p>Rechts van de trap, rechtsboven in het PSE. Ze geleiden geen stroom (uitzondering: koolstof als grafiet). Bv. zuurstof, chloor, zwavel. <b>Let op:</b> waterstof staat links, maar is een niet-metaal.</p></div>
+        <div class="kaart"><h3><span class="chip" style="background:var(--c-edelgas)"></span>Edelgassen</h3><p>De laatste kolom, rechts (groep VIIIa). Ze reageren (bijna) niet met andere stoffen. Bv. helium, neon, argon.</p></div>
+      </div>
+      <div class="pse-plek"></div>
+    </section>
+  </main>
+
+  <main class="les" id="lesB" role="tabpanel" hidden>
+    <section class="blok">
+      <div class="blok-kop"><span class="letter">C</span><h2>Groep en periode</h2></div>
+      <div class="duo">
+        <div class="def"><span class="eyebrow">Groep = kolom</span><p>Groepsnummer (a-groepen) = aantal <b>valentie-elektronen</b>.<br>Bv. groep IIIa → 3 valentie-elektronen.</p></div>
+        <div class="def"><span class="eyebrow">Periode = rij</span><p>Periodenummer = aantal <b>schillen</b>.<br>Bv. periode 3 → 3 schillen (K, L, M).</p></div>
+      </div>
+      <p>Klik op een element in het PSE. De rij en de kolom lichten op, en je ziet de opbouw van het atoom.</p>
+      <div class="pse-plek"></div>
+      <div class="duo">
+        <div class="kaart"><span class="eyebrow">Van PSE naar atoom</span><h3>Magnesium</h3><p>Mg staat in <b>periode 3</b> en <b>groep IIa</b>, met atoomnummer <b>12</b>.<br>→ 3 schillen, 2 valentie-elektronen, 12 protonen en 12 elektronen.<br>→ configuratie 2/8/2.</p></div>
+        <div class="kaart"><span class="eyebrow">Van atoom naar PSE</span><h3>2 schillen, 5 valentie-elektronen</h3><p>2 schillen → <b>periode 2</b>.<br>5 valentie-elektronen → <b>groep Va</b>.<br>→ Dat is <b>stikstof (N)</b>, met Z = 7.</p></div>
+      </div>
+    </section>
+    <section class="blok">
+      <div class="blok-kop"><span class="letter">C2</span><h2>Eén groep, één manier van reageren</h2></div>
+      <div class="def"><span class="eyebrow">Onthoud</span><p>Elementen in <b>dezelfde groep</b> hebben evenveel valentie-elektronen. Daarom hebben ze <b>dezelfde chemische eigenschappen</b>: ze reageren op dezelfde manier.</p></div>
+      <div class="proef" id="proef">
+        <svg viewBox="0 0 420 200" role="img" aria-label="Lithium, natrium en kalium in water">
+        </svg>
+        <p>Lithium, natrium en kalium staan alle drie in groep Ia: ze hebben elk <b>1 valentie-elektron</b>. Ze reageren alle drie met water en vormen een gas (waterstofgas). Hoe lager in de groep, hoe heftiger de reactie.</p>
+        <div class="knoppen"><button class="knop hoofd" type="button" id="proef-knop">▶ Start de proef</button><span class="lpd">Doe dit nooit zelf: alkalimetalen zijn gevaarlijk.</span></div>
+      </div>
+      <div class="tabelwrap"><table>
+        <thead><tr><th>Groep</th><th>Naam van de groep</th><th>Valentie-elektronen</th><th>Voorbeelden</th></tr></thead>
+        <tbody>
+          <tr><td><b>Ia</b></td><td><span class="chip" style="background:var(--c-alkali)"></span>alkalimetalen</td><td>1</td><td>Li, Na, K (niet H)</td></tr>
+          <tr><td><b>IIa</b></td><td><span class="chip" style="background:var(--c-aardalkali)"></span>aardalkalimetalen</td><td>2</td><td>Mg, Ca</td></tr>
+          <tr><td><b>VIIa</b></td><td><span class="chip" style="background:var(--c-halogeen)"></span>halogenen</td><td>7</td><td>F, Cl, Br, I</td></tr>
+          <tr><td><b>VIIIa</b></td><td><span class="chip" style="background:var(--c-edelgas)"></span>edelgassen</td><td>8 (helium: 2)</td><td>He, Ne, Ar</td></tr>
+        </tbody></table></div>
+    </section>
+  </main>
+
+  <main class="les" id="lesC" role="tabpanel" hidden>
+    <section class="blok">
+      <div class="blok-kop"><span class="letter">D</span><h2>Elektronegativiteit</h2></div>
+      <div class="def"><span class="eyebrow">Definitie</span><p>De <b>elektronegativiteit (EN)</b> is een maat voor hoe sterk een atoom elektronen naar zich toe trekt.</p></div>
+      <div class="duo">
+        <div class="kaart"><h3>Hoge EN</h3><p>Het atoom trekt elektronen <b>sterk</b> aan. Het neemt gemakkelijk elektronen op. Dat zijn de niet-metalen, rechtsboven. Fluor heeft de hoogste waarde: <b>4,0</b>.</p></div>
+        <div class="kaart"><h3>Lage EN</h3><p>Het atoom trekt elektronen <b>zwak</b> aan. Het geeft gemakkelijk elektronen af. Dat zijn de metalen, linksonder. Cesium en francium: <b>0,7</b>.</p></div>
+      </div>
+      <div><div class="en-schaal"></div><div class="en-lbl"><span>0,7 · trekt zwak</span><span>4,0 · trekt sterk</span></div></div>
+      <p>De EN <b>stijgt naar rechts</b> in een periode en <b>naar boven</b> in een groep. Edelgassen krijgen geen waarde: ze gaan (bijna) geen bindingen aan.</p>
+      <div class="pse-plek"></div>
+    </section>
+    <section class="blok">
+      <div class="blok-kop"><span class="letter">D2</span><h2>Edelgasconfiguratie</h2></div>
+      <div class="def"><span class="eyebrow">Definitie</span><p>Een atoom heeft een <b>edelgasconfiguratie</b> als de buitenste schil vol is: <b>8 elektronen</b>, of <b>2</b> als er alleen een K-schil is (zoals bij helium).</p></div>
+      <div class="edel" id="edel"></div>
+      <p>Edelgassen hebben al een edelgasconfiguratie. Daarom zijn ze heel <b>stabiel</b> en reageren ze (bijna) niet. Andere atomen proberen ook een edelgasconfiguratie te krijgen. Dat doen ze door elektronen af te geven of op te nemen: zo ontstaan ionen.</p>
+      <a class="linkkaart" href="https://wrldbkr-a11y.github.io/Toolswetenschappen/elektronenconfiguratie.html" target="_blank" rel="noopener"><span><b>Ionvorming en ionbinding oefenen</b><br>In de tool Elektronenconfiguratie zie je hoe atomen een edelgasconfiguratie bereiken.</span><span class="pijl">→</span></a>
+    </section>
+  </main>
+
+  <main class="les" id="lesD" role="tabpanel" hidden>
+    <p>Gebruik het PSE hieronder bij de oefeningen. Zoek de antwoorden zelf af uit de plaats van het element.</p>
+    <div class="pse-plek"></div>
+    <section class="blok">
+      <div class="oefening" id="oef-cat"></div>
+      <div class="oefening" id="oef-zoek"></div>
+      <div class="oefening" id="oef-bouw"></div>
+      <div class="oefening" id="oef-groep"></div>
+      <div class="oefening" id="oef-en"></div>
+      <div class="oefening" id="oef-edel"></div>
+    </section>
+    <section class="ikkan" id="ikkan3"></section>
+  </main>
+</div>
+<script>
+(function(){
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+const shuffle = a => { a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; };
+const norm = s => String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/\s+/g,' ').trim();
+const komma = (x,d=1) => x.toFixed(d).replace('.',',');
+const scores = {};
+let ikkanFn = () => {};
+const updateIkKan = () => ikkanFn();
+
+/* tabbladen + #anker */
+function tabs(){
+  const toon = id => {
+    $$('.lestab').forEach(t => t.setAttribute('aria-selected', t.getAttribute('aria-controls')===id?'true':'false'));
+    $$('main.les').forEach(m => m.hidden = m.id!==id);
+    document.dispatchEvent(new CustomEvent('tab', {detail:id}));
+  };
+  $$('.lestab').forEach(t => t.addEventListener('click', () => toon(t.getAttribute('aria-controls'))));
+  const h = location.hash.slice(1);
+  if (h && document.getElementById(h) && document.getElementById(h).matches('main.les')) toon(h);
+}
+
+/* sorteeroefening: opties per oefening of per item, antwoord mag een lijst zijn */
+function sorteer(el, cfg){
+  function render(){
+    const items = cfg.vast ? cfg.items : shuffle(cfg.items);
+    el.innerHTML = `<div class="oef-kop"><h3>${cfg.titel}</h3><span class="score" data-score>0 / ${items.length}</span></div>
+      ${cfg.opdracht?`<p>${cfg.opdracht}</p>`:''}<ul class="items"></ul><button class="knop opnieuw" type="button">↺ Opnieuw</button>`;
+    const ul = el.querySelector('.items'); let juist=0, klaar=0;
+    scores[cfg.id] = {juist:0,totaal:items.length,klaar:false};
+    items.forEach(it => {
+      const opties = it.opties || cfg.opties;
+      const goed = [].concat(it.antwoord);
+      const li = document.createElement('li'); li.className='item';
+      li.innerHTML = `<span class="zin">${it.tekst}</span><div class="opties">${(it.opties?shuffle(opties):opties).map(o=>`<button type="button" data-k="${o.k}">${o.label}</button>`).join('')}</div><div class="uitleg" hidden></div>`;
+      li.querySelectorAll('.opties button').forEach(b => b.addEventListener('click', () => {
+        const ok = goed.includes(b.dataset.k);
+        li.classList.add(ok?'juist':'fout'); b.classList.add('gekozen');
+        li.querySelectorAll('.opties button').forEach(x => x.disabled=true);
+        const lbl = goed.map(k => opties.find(o=>o.k===k).label).join(' of ');
+        const u = li.querySelector('.uitleg'); u.hidden=false;
+        u.innerHTML = (ok?'<b>Juist!</b> ':`<b>Niet juist.</b> Het is: ${lbl}. `) + (it.uitleg||'');
+        klaar++; if(ok) juist++;
+        el.querySelector('[data-score]').textContent = `${juist} / ${items.length}`;
+        scores[cfg.id] = {juist,totaal:items.length,klaar:klaar===items.length}; updateIkKan();
+      }));
+      ul.appendChild(li);
+    });
+    el.querySelector('.opnieuw').addEventListener('click', () => { render(); updateIkKan(); });
+  }
+  render();
+}
+
+/* invuloefening: leerling typt het antwoord */
+function invul(el, cfg){
+  function render(){
+    const pool = typeof cfg.items==='function' ? cfg.items() : cfg.items;
+    const items = cfg.vast ? pool : shuffle(pool);
+    el.innerHTML = `<div class="oef-kop"><h3>${cfg.titel}</h3><span class="score" data-score>0 / ${items.length}</span></div>
+      ${cfg.opdracht?`<p>${cfg.opdracht}</p>`:''}<ul class="items"></ul><button class="knop opnieuw" type="button">↺ ${cfg.opnieuwTekst||'Opnieuw'}</button>`;
+    const ul = el.querySelector('.items'); let juist=0, klaar=0;
+    scores[cfg.id] = {juist:0,totaal:items.length,klaar:false};
+    items.forEach((it,i) => {
+      const li = document.createElement('li'); li.className='item';
+      li.innerHTML = `<span class="zin">${it.tekst}</span><form class="invul"><input type="text" autocomplete="off" aria-label="antwoord ${i+1}" id="${cfg.id}-in-${i}"><button class="knop" type="submit">Controleer</button></form><div class="uitleg" hidden></div>`;
+      li.querySelector('form').addEventListener('submit', e => {
+        e.preventDefault();
+        const inp = li.querySelector('input'); const v = inp.value.trim(); if(!v) return;
+        const res = (it.check || cfg.check || standaardCheck)(v, it);
+        const u = li.querySelector('.uitleg'); u.hidden=false;
+        if (res.bijna){ u.innerHTML = `<b>Bijna.</b> ${res.bijna}`; return; }
+        li.classList.add(res.ok?'juist':'fout'); inp.disabled = true; li.querySelector('button').disabled = true;
+        u.innerHTML = (res.ok?'<b>Juist!</b> ':`<b>Niet juist.</b> Het is: ${it.toon||it.antwoord[0]}. `) + (it.uitleg||'');
+        klaar++; if(res.ok) juist++;
+        el.querySelector('[data-score]').textContent = `${juist} / ${items.length}`;
+        scores[cfg.id] = {juist,totaal:items.length,klaar:klaar===items.length}; updateIkKan();
+      });
+      ul.appendChild(li);
+    });
+    el.querySelector('.opnieuw').addEventListener('click', () => { render(); updateIkKan(); });
+  }
+  render();
+  return {render};
+}
+function standaardCheck(v, it){ return {ok: it.antwoord.some(a => norm(a)===norm(v))}; }
+function symboolCheck(v, it){
+  const s = it.antwoord[0];
+  if (v===s) return {ok:true};
+  if (v.toLowerCase()===s.toLowerCase()) return {bijna:`Let op de hoofdletters: een symbool begint met een hoofdletter, de tweede letter is klein.`};
+  return {ok:false};
+}
+
+/* "ik kan"-regel */
+function regel(label, s){
+  if(!s) return `<li><span class="st">nog niet</span><span>${label}</span></li>`;
+  const ok = s.klaar && s.juist/s.totaal>=.8;
+  const st = s.klaar ? `${s.juist}/${s.totaal}` : (s.juist?`${s.juist}/${s.totaal} …`:'nog niet');
+  return `<li><span class="st ${ok?'ok':''}">${ok?'✓ ':''}${st}</span><span>${label}</span></li>`;
+}
+
+/* notatie met massagetal en atoomnummer */
+const notatie = (sym, A, Z, lading='') => `<span class="notatie"><span class="ge"><span>${A}</span><span>${Z}</span></span><span class="sy">${sym}</span>${lading?`<sup style="font-size:.6em">${lading}</sup>`:''}</span>`;
+
+/* verdeling elektronen over schillen (eenvoudig: 2, 8, 8, 2) */
+function schillen(e){ const max=[2,8,8,2]; const r=[]; let rest=e; for(const m of max){ if(rest<=0) break; const n=Math.min(m,rest); r.push(n); rest-=n; } return r; }
+
+/* schillenmodel tekenen */
+function bohrSvg(p, n, e, opt={}){
+  const sch = opt.schillen || schillen(e); const R = sch.length>4 ? [0,36,58,80,102,124] : [0,46,72,98,122]; const cx=140, cy=140; const er = sch.length>4 || Math.max(...sch,0)>8 ? 4.5 : 6;
+  let s = `<svg viewBox="0 0 280 280" role="img" aria-label="schillenmodel">`;
+  for (let i=1;i<=Math.max(sch.length, opt.minSchillen||0);i++) s += `<circle cx="${cx}" cy="${cy}" r="${R[i]}" fill="none" stroke="var(--line)" stroke-width="2"/>`;
+  // kern
+  const tot = p+n; const kr = tot ? Math.min(sch.length>4?26:30, 10+Math.sqrt(tot)*3.6) : 8;
+  s += `<circle cx="${cx}" cy="${cy}" r="${kr}" fill="var(--surface)" stroke="var(--ink)" stroke-width="1.5"/>`;
+  const deeltjes = []; for(let i=0;i<p;i++) deeltjes.push('p'); for(let i=0;i<n;i++) deeltjes.push('n');
+  // mengen
+  const gemengd = []; let ip=0, inn=0; while(ip<p||inn<n){ if(ip<p){gemengd.push('p');ip++;} if(inn<n){gemengd.push('n');inn++;} }
+  gemengd.forEach((d,i) => { const a=i*2.39996, r=Math.sqrt(i+0.5)*(kr-5)/Math.sqrt(Math.max(tot,1)); const x=cx+r*Math.cos(a), y=cy+r*Math.sin(a);
+    s += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${tot>60?2.4:tot>24?3.2:4}" fill="${d==='p'?'var(--proton)':'var(--neutron)'}" stroke="var(--ink)" stroke-width=".5"/>`; });
+  sch.forEach((cnt,i) => { const laatste = i===sch.length-1;
+    for(let k=0;k<cnt;k++){ const a = -Math.PI/2 + k*2*Math.PI/cnt + i*0.3; const x=cx+R[i+1]*Math.cos(a), y=cy+R[i+1]*Math.sin(a);
+      s += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${er}" fill="${laatste&&opt.valentie!==false?'var(--valentie)':'var(--elektron)'}" stroke="var(--ink)" stroke-width="1"/>`; } });
+  if (opt.labels) ['K','L','M','N','O'].slice(0,sch.length).forEach((l,i)=>{ s += `<text x="${cx+R[i+1]*0.71+4}" y="${cy-R[i+1]*0.71-4}" font-size="12" font-family="var(--f-mono)" fill="var(--muted)">${l}</text>`; });
+  return s + '</svg>';
+}
+
+/* elementen: Z, symbool, naam, (meest voorkomend) massagetal, Ar, groep (1-18), periode, EN, categorie */
+const ELEM = [
+ [1,'H','waterstof',1,1.0,1,1,2.1,'nm'],[2,'He','helium',4,4.0,18,1,null,'eg'],
+ [3,'Li','lithium',7,6.9,1,2,1.0,'m'],[4,'Be','beryllium',9,9.0,2,2,1.5,'m'],[5,'B','boor',11,10.8,13,2,2.0,'nm'],[6,'C','koolstof',12,12.0,14,2,2.5,'nm'],[7,'N','stikstof',14,14.0,15,2,3.0,'nm'],[8,'O','zuurstof',16,16.0,16,2,3.5,'nm'],[9,'F','fluor',19,19.0,17,2,4.0,'nm'],[10,'Ne','neon',20,20.2,18,2,null,'eg'],
+ [11,'Na','natrium',23,23.0,1,3,0.9,'m'],[12,'Mg','magnesium',24,24.3,2,3,1.2,'m'],[13,'Al','aluminium',27,27.0,13,3,1.5,'m'],[14,'Si','silicium',28,28.1,14,3,1.8,'nm'],[15,'P','fosfor',31,31.0,15,3,2.1,'nm'],[16,'S','zwavel',32,32.1,16,3,2.5,'nm'],[17,'Cl','chloor',35,35.5,17,3,3.0,'nm'],[18,'Ar','argon',40,39.9,18,3,null,'eg'],
+ [19,'K','kalium',39,39.1,1,4,0.8,'m'],[20,'Ca','calcium',40,40.1,2,4,1.0,'m'],[31,'Ga','gallium',69,69.7,13,4,1.6,'m'],[32,'Ge','germanium',74,72.6,14,4,1.8,'m'],[33,'As','arseen',75,74.9,15,4,2.0,'nm'],[34,'Se','seleen',80,79.0,16,4,2.4,'nm'],[35,'Br','broom',79,79.9,17,4,2.8,'nm'],[36,'Kr','krypton',84,83.8,18,4,null,'eg'],
+ [37,'Rb','rubidium',85,85.5,1,5,0.8,'m'],[38,'Sr','strontium',88,87.6,2,5,1.0,'m'],[49,'In','indium',115,114.8,13,5,1.7,'m'],[50,'Sn','tin',120,118.7,14,5,1.8,'m'],[51,'Sb','antimoon',121,121.8,15,5,1.9,'m'],[52,'Te','telluur',130,127.6,16,5,2.1,'nm'],[53,'I','jood',127,126.9,17,5,2.5,'nm'],[54,'Xe','xenon',132,131.3,18,5,null,'eg'],
+ [55,'Cs','cesium',133,132.9,1,6,0.7,'m'],[56,'Ba','barium',138,137.3,2,6,0.9,'m'],[81,'Tl','thallium',205,204.4,13,6,1.8,'m'],[82,'Pb','lood',208,207.2,14,6,1.8,'m'],[83,'Bi','bismut',209,209.0,15,6,1.9,'m'],[84,'Po','polonium',209,209,16,6,2.0,'m'],[85,'At','astaat',210,210,17,6,2.2,'nm'],[86,'Rn','radon',222,222,18,6,null,'eg'],
+ [87,'Fr','francium',223,223,1,7,0.7,'m'],[88,'Ra','radium',226,226,2,7,0.9,'m']
+].map(([Z,sym,naam,A,Ar,g,per,en,cat])=>({Z,sym,naam,A,Ar,g,per,en,cat}));
+const BIJZ = {Z:{}, sym:{}}; ELEM.forEach(e => { BIJZ.Z[e.Z]=e; BIJZ.sym[e.sym]=e; });
+const GROEP_ROMEINS = {1:'Ia',2:'IIa',13:'IIIa',14:'IVa',15:'Va',16:'VIa',17:'VIIa',18:'VIIIa'};
+const VALENTIE = g => g<=2 ? g : g-10;
+
+
+const CATNAAM = {m:'metaal', nm:'niet-metaal', eg:'edelgas'};
+const CATKLEUR = {m:'--c-metaal', nm:'--c-nietmetaal', eg:'--c-edelgas'};
+const GROEPNAAM = e => e.g===1 && e.Z!==1 ? 'alkalimetalen' : e.g===2 ? 'aardalkalimetalen' : e.g===17 ? 'halogenen' : e.g===18 ? 'edelgassen' : '';
+const GROEPKLEUR = {alkalimetalen:'--c-alkali', aardalkalimetalen:'--c-aardalkali', halogenen:'--c-halogeen', edelgassen:'--c-edelgas'};
+const valentie = e => e.Z===2 ? 2 : VALENTIE(e.g);
+const BG = {4:['Sc','Ti','V','Cr','Mn','Fe','Co','Ni','Cu','Zn',21], 5:['Y','Zr','Nb','Mo','Tc','Ru','Rh','Pd','Ag','Cd',39], 6:['La','Hf','Ta','W','Re','Os','Ir','Pt','Au','Hg',0], 7:['Ac','Rf','Db','Sg','Bh','Hs','Mt','Ds','Rg','Cn',0]};
+const BGZ = {6:[57,72,73,74,75,76,77,78,79,80], 7:[89,104,105,106,107,108,109,110,111,112]};
+const P7 = [['Nh',113,13],['Fl',114,14],['Mc',115,15],['Lv',116,16],['Ts',117,17],['Og',118,18]];
+let mode = 'plain', sel = BIJZ.sym['Na'], tab = 'lesL';
+
+function bouwPse(){
+  let h = `<span></span>`;
+  for (let g=1; g<=18; g++){
+    if (g>=3 && g<=12){ if (g===3) h += `<span class="kop b" style="grid-column:4 / span 10;grid-row:1">b-groepen (overgangsmetalen)</span>`; continue; }
+    h += `<span class="kop" style="grid-column:${g+1};grid-row:1">${GROEP_ROMEINS[g]}</span>`;
+  }
+  for (let per=1; per<=7; per++) h += `<span class="per" style="grid-column:1;grid-row:${per+1}">${per}</span>`;
+  ELEM.forEach(e => { h += `<button type="button" class="cel" data-z="${e.Z}" style="grid-column:${e.g+1};grid-row:${e.per+1}" aria-label="${e.naam}"><span class="z">${e.Z}</span><span class="s">${e.sym}</span><span class="x"></span></button>`; });
+  Object.entries(BG).forEach(([per,arr]) => { arr.slice(0,10).forEach((s,i) => { const z = BGZ[per] ? BGZ[per][i] : arr[10]+i;
+    h += `<div class="cel bg" style="grid-column:${i+4};grid-row:${+per+1}" title="b-groep, niet in dit lesdoel"><span class="z">${z}</span><span class="s">${s}</span></div>`; }); });
+  P7.forEach(([s,z,g]) => { h += `<div class="cel bg" style="grid-column:${g+1};grid-row:8" title="niet in dit lesdoel"><span class="z">${z}</span><span class="s">${s}</span></div>`; });
+  $('#pse').innerHTML = h;
+  $$('#pse button.cel').forEach(b => b.addEventListener('click', () => { sel = BIJZ.Z[+b.dataset.z]; kleur(); if (tab!=='lesD') detail(); }));
+}
+function kleur(){
+  $$('#pse button.cel').forEach(b => {
+    const e = BIJZ.Z[+b.dataset.z]; let bg = 'var(--surface)'; let x = '';
+    b.classList.remove('dim','lijn');
+    if (mode==='cat') bg = `var(${CATKLEUR[e.cat]})`;
+    if (mode==='groep'){ const gn = GROEPNAAM(e); bg = gn ? `var(${GROEPKLEUR[gn]})` : 'var(--surface)'; if(!gn) b.classList.add('dim'); }
+    if (mode==='en'){ if (e.en){ const pct = Math.round((e.en-0.7)/3.3*85+5); bg = `color-mix(in srgb, var(--accent) ${pct}%, var(--surface))`; x = komma(e.en,1); } else { x='—'; } }
+    if (mode==='plain') x = e.A;
+    if (mode==='gp'){ if (e.g===sel.g || e.per===sel.per) b.classList.add('lijn'); else b.classList.add('dim'); }
+    b.style.background = bg;
+    b.style.color = (mode==='en' && e.en && e.en>2.6) ? 'var(--accent-ink)' : '';
+    b.querySelector('.x').textContent = x;
+    b.setAttribute('aria-pressed', e===sel && tab!=='lesD' ? 'true' : 'false');
+  });
+  $$('.modi .knop').forEach(k => k.setAttribute('aria-pressed', k.dataset.mode===mode?'true':'false'));
+  const L = {
+    cat: Object.keys(CATNAAM).map(k=>`<span><i style="background:var(${CATKLEUR[k]})"></i>${CATNAAM[k]}</span>`).join('') + `<span><i style="background:var(--c-bgroep)"></i>b-groep (niet in dit lesdoel)</span>`,
+    groep: Object.keys(GROEPKLEUR).map(k=>`<span><i style="background:var(${GROEPKLEUR[k]})"></i>${k}</span>`).join(''),
+    gp: `<span>Kolom = <b>groep</b> → aantal valentie-elektronen. Rij = <b>periode</b> → aantal schillen.</span>`,
+    en: `<span>Hoe donkerder, hoe hoger de elektronegativiteit. Het getal staat onderaan in het vakje.</span>`,
+    plain: tab==='lesL' ? `<span>In elk vakje: atoomnummer, symbool en massagetal.</span>` : ''
+  };
+  $('#legende').innerHTML = L[mode];
+}
+function detail(){
+  const e = sel, v = valentie(e), gn = GROEPNAAM(e);
+  const Naam = e.naam[0].toUpperCase()+e.naam.slice(1);
+  let doel = '';
+  if (e.cat==='eg') doel = `${Naam} heeft al een <b>edelgasconfiguratie</b>: de buitenste schil is vol. Daarom reageert het (bijna) niet.`;
+  else if (e.Z===1) doel = 'Waterstof is een bijzonder geval: het heeft 1 valentie-elektron, maar is een niet-metaal.';
+  else if (v<=3) doel = `Om een edelgasconfiguratie te krijgen, geeft ${e.naam} gemakkelijk <b>${v} elektron${v>1?'en':''} af</b>.`;
+  else if (v>=5) doel = `Om een edelgasconfiguratie te krijgen, neemt ${e.naam} gemakkelijk <b>${8-v} elektron${8-v>1?'en':''} op</b>.`;
+  else doel = `${Naam} heeft 4 valentie-elektronen. Het vormt meestal bindingen zonder ion (zie later).`;
+  const ar = Number.isInteger(e.Ar)&&e.Z>83?'('+e.Ar+')':komma(e.Ar,1);
+  const bohr = e.Z<=18 ? bohrSvg(e.Z, e.A-e.Z, e.Z, {labels:true}) : '';
+  const rij = (dt,dd) => `<div><dt>${dt}</dt><dd>${dd}</dd></div>`;
+  const ve = `${v} valentie-elektron${v===1?'':'en'}`;
+  const waar = e.cat==='eg' ? 'Het staat in de laatste kolom.' : e.Z===1 ? 'Het staat links, maar het is toch een niet-metaal.' : e.cat==='m' ? 'Het staat links van de trap.' : 'Het staat rechts van de trap.';
+  const enUitleg = !e.en ? 'Edelgassen krijgen geen waarde: ze gaan (bijna) geen bindingen aan.' : e.en>=2.8 ? 'Hoge EN: het atoom trekt elektronen <b>sterk</b> naar zich toe.' : e.en<=1.2 ? 'Lage EN: het atoom trekt elektronen <b>zwak</b> aan en geeft ze gemakkelijk af.' : 'Middelmatige EN.';
+  let tek = '', kop = `<span class="eyebrow">${CATNAAM[e.cat]}${gn?' · '+gn:''}</span>`, inhoud = '';
+  if (tab==='lesL'){
+    tek = bohr || `<div style="font-family:var(--f-display);font-weight:800;font-size:4rem;text-align:center">${e.sym}</div>`;
+    inhoud = `<dl>${rij('Atoomnummer Z', `${e.Z} → ${e.Z} protonen, ${e.Z} elektronen`)}${rij('Massagetal A', `${e.A} → ${e.A-e.Z} neutronen`)}${rij('Groep', `${GROEP_ROMEINS[e.g]} → ${ve}`)}${rij('Periode', `${e.per} → ${e.per} schil${e.per>1?'len':''}`)}${e.Z<=18?rij('Configuratie', schillen(e.Z).join('/')):''}${rij('Elektronegativiteit', e.en?komma(e.en,1):'geen waarde (edelgas)')}<p class="zin">${doel}</p></dl>`;
+  } else if (tab==='lesA'){
+    inhoud = `<p>${Naam} is een <b>${CATNAAM[e.cat]}</b>. ${waar}${gn?` Het hoort bij de <b>${gn}</b>.`:''}</p>`;
+  } else if (tab==='lesB'){
+    tek = bohr; kop = `<span class="eyebrow">groep ${GROEP_ROMEINS[e.g]} · periode ${e.per}</span>`;
+    inhoud = `<dl>${rij('Groep', `${GROEP_ROMEINS[e.g]} → ${ve}`)}${rij('Periode', `${e.per} → ${e.per} schil${e.per>1?'len':''}`)}${rij('Atoomnummer Z', `${e.Z} protonen, ${e.Z} elektronen`)}${e.Z<=18?rij('Configuratie', schillen(e.Z).join('/')):''}</dl>`;
+  } else if (tab==='lesC'){
+    kop = `<span class="eyebrow">elektronegativiteit</span>`;
+    inhoud = `<dl>${rij('EN', e.en?komma(e.en,1):'geen waarde')}</dl><p>${enUitleg}</p><p class="zin" style="margin-top:6px">${doel}</p>`;
+  }
+  const d = $('#detail');
+  d.classList.toggle('enkel', !tek);
+  d.innerHTML = `${tek?`<div class="tek">${tek}</div>`:''}<div>${kop}<h3>${e.naam} (${e.sym})</h3>${inhoud}</div>${tab!=='lesL'?'<button type="button" class="sluit" aria-label="Sluiten">×</button>':''}`;
+  d.hidden = false;
+  d.querySelector('.sluit')?.addEventListener('click', () => { d.hidden = true; });
+}
+bouwPse(); kleur(); detail();
+$$('.modi .knop').forEach(k => k.addEventListener('click', () => { mode = k.dataset.mode; kleur(); }));
+
+/* PSE verhuist mee naar het actieve tabblad */
+const MODEPERTAB = {lesL:'plain', lesA:'cat', lesB:'gp', lesC:'en', lesD:'plain'};
+document.addEventListener('tab', ev => {
+  const plek = document.querySelector(`#${ev.detail} .pse-plek`);
+  if (plek) plek.appendChild($('#pse-blok'));
+  tab = ev.detail;
+  mode = MODEPERTAB[tab] || mode;
+  $('.modi').hidden = tab==='lesL' || tab==='lesD';
+  kleur();
+  if (tab==='lesL') detail(); else $('#detail').hidden = true;
+});
+$('#lesL .pse-plek').appendChild($('#pse-blok'));
+$('.modi').hidden = true;
+tabs();
+
+/* proef alkalimetalen */
+(function(){
+  const glas = (x,naam,t,n,cls) => `<path d="M${x} 60 V172 a4 4 0 0 0 4 4 H${x+92} a4 4 0 0 0 4 -4 V60" fill="none" stroke="var(--ink)" stroke-width="2.5"/>
+    <rect x="${x+3}" y="86" width="94" height="87" fill="color-mix(in srgb, #9fd3ea 60%, var(--surface))"/>
+    ${Array.from({length:n},(_,i)=>`<circle class="bel" cx="${x+28+((i*17)%44)}" cy="${84-((i*7)%6)}" r="${2+(i%3)}" fill="#ffffff" stroke="var(--muted)" stroke-width=".8" style="--t:${t}s;animation-delay:${(i*0.23)%t}s"/>`).join('')}
+    <rect class="stuk ${cls}" x="${x+40}" y="80" width="18" height="8" rx="2" fill="#9aa3a8" stroke="var(--ink)" stroke-width="1"/>
+    ${cls==='k'?`<path class="vlam" d="M${x+49} 50 C${x+58} 62 ${x+58} 76 ${x+49} 78 C${x+40} 76 ${x+40} 62 ${x+49} 50 Z" fill="#c58af0" opacity=".9"/>`:''}
+    <text x="${x+50}" y="196" text-anchor="middle" font-size="14" font-weight="700" fill="var(--ink)">${naam}</text>`;
+  $('#proef svg').innerHTML = glas(20,'lithium (Li)',2.2,3,'li') + glas(160,'natrium (Na)',1.4,7,'na') + glas(300,'kalium (K)',.8,12,'k');
+  $('#proef-knop').addEventListener('click', () => { const aan = $('#proef').classList.toggle('aan'); $('#proef-knop').textContent = aan?'❚❚ Stop de proef':'▶ Start de proef'; });
+})();
+
+/* edelgasconfiguraties */
+$('#edel').innerHTML = [['He','helium'],['Ne','neon'],['Ar','argon']].map(([s,n]) => { const e=BIJZ.sym[s]; return `<div>${bohrSvg(e.Z,e.A-e.Z,e.Z)}<b>${n}</b><br>${schillen(e.Z).join('/')} · buitenste schil vol</div>`; }).join('');
+
+/* oefeningen */
+const CAT = Object.keys(CATNAAM).map(k=>({k,label:CATNAAM[k]}));
+sorteer($('#oef-cat'), { id:'cat', titel:'Oefening 1 · Welke categorie?', opdracht:'Zoek het element in het PSE. Is het een metaal, een niet-metaal of een edelgas?', opties:CAT,
+  items:['Na','O','Ne','Mg','Fe','Cl','Ca','Ar','N','S','H','Al'].map(s => { const e = BIJZ.sym[s] || {naam:'ijzer',sym:'Fe',cat:'m'};
+    const extra = s==='H' ? ' Let op: waterstof staat links, maar is een niet-metaal.' : s==='Fe' ? ' IJzer staat bij de b-groepen: dat zijn allemaal metalen.' : '';
+    return {tekst:`${e.naam} (${e.sym})`, antwoord:e.cat, uitleg:`${e.naam[0].toUpperCase()+e.naam.slice(1)} is een ${CATNAAM[e.cat]}.${extra}`}; })});
+invul($('#oef-zoek'), { id:'zoek', titel:'Oefening 2 · Zoek het element', opdracht:'Typ het symbool. Gebruik het PSE.',
+  items:[
+    {tekst:'Periode 3, groep VIIa', antwoord:['Cl'], check:symboolCheck, uitleg:'3 schillen en 7 valentie-elektronen.'},
+    {tekst:'Periode 2, groep IVa', antwoord:['C'], check:symboolCheck},
+    {tekst:'Periode 4, groep Ia', antwoord:['K'], check:symboolCheck},
+    {tekst:'3 schillen en 2 valentie-elektronen', antwoord:['Mg'], check:symboolCheck, uitleg:'3 schillen → periode 3; 2 valentie-elektronen → groep IIa.'},
+    {tekst:'2 schillen en 5 valentie-elektronen', antwoord:['N'], check:symboolCheck, uitleg:'Periode 2, groep Va.'},
+    {tekst:'Het edelgas van periode 3', antwoord:['Ar'], check:symboolCheck},
+    {tekst:'1 schil en 1 valentie-elektron', antwoord:['H'], check:symboolCheck},
+    {tekst:'4 schillen en 7 valentie-elektronen', antwoord:['Br'], check:symboolCheck, uitleg:'Periode 4, groep VIIa: broom.'}
+  ]});
+const N = (...xs) => xs.map(x=>({k:String(x),label:String(x)}));
+sorteer($('#oef-bouw'), { id:'bouwpse', titel:'Oefening 3 · Van PSE naar atoom', opdracht:'Gebruik de plaats in het PSE.',
+  items:[
+    {tekst:'Zwavel (S) staat in periode 3. Hoeveel schillen heeft een zwavelatoom?', opties:N(2,3,6,16), antwoord:'3', uitleg:'Periodenummer = aantal schillen.'},
+    {tekst:'Zwavel (S) staat in groep VIa. Hoeveel valentie-elektronen?', opties:N(3,6,8,16), antwoord:'6', uitleg:'Groepsnummer = aantal valentie-elektronen.'},
+    {tekst:'Kalium (K) heeft atoomnummer 19. Hoeveel elektronen heeft een kaliumatoom?', opties:N(1,4,19,39), antwoord:'19', uitleg:'Neutraal atoom: elektronen = protonen = Z.'},
+    {tekst:'Aluminium (Al): periode 3, groep IIIa. Wat is de configuratie?', opties:[{k:'a',label:'2/8/3'},{k:'b',label:'2/3/8'},{k:'c',label:'3/8/2'},{k:'d',label:'2/8/8/3'}], antwoord:'a', uitleg:'3 schillen, 3 valentie-elektronen op de buitenste schil.'},
+    {tekst:'Een atoom heeft configuratie 2/8/6. In welke groep staat het?', opties:[{k:'a',label:'IIa'},{k:'b',label:'IIIa'},{k:'c',label:'VIa'},{k:'d',label:'VIIIa'}], antwoord:'c', uitleg:'6 valentie-elektronen → groep VIa (zwavel).'}
+  ]});
+sorteer($('#oef-groep'), { id:'groep', titel:'Oefening 4 · Dezelfde groep, dezelfde reactie',
+  items:[
+    {tekst:'Welk element reageert op dezelfde manier als natrium?', opties:[{k:'K',label:'kalium'},{k:'Mg',label:'magnesium'},{k:'Cl',label:'chloor'},{k:'Ne',label:'neon'}], antwoord:'K', uitleg:'Kalium staat in dezelfde groep (Ia).'},
+    {tekst:'Welk element reageert op dezelfde manier als chloor?', opties:[{k:'Br',label:'broom'},{k:'S',label:'zwavel'},{k:'Ar',label:'argon'},{k:'Na',label:'natrium'}], antwoord:'Br', uitleg:'Broom staat in dezelfde groep (VIIa, halogenen).'},
+    {tekst:'Welk element reageert op dezelfde manier als magnesium?', opties:[{k:'Ca',label:'calcium'},{k:'Na',label:'natrium'},{k:'Al',label:'aluminium'},{k:'O',label:'zuurstof'}], antwoord:'Ca', uitleg:'Calcium staat in dezelfde groep (IIa).'},
+    {tekst:'Waarom reageren lithium, natrium en kalium op dezelfde manier?', opties:[{k:'a',label:'Ze hebben evenveel valentie-elektronen.'},{k:'b',label:'Ze hebben evenveel schillen.'},{k:'c',label:'Ze hebben dezelfde massa.'}], antwoord:'a', uitleg:'Ze hebben elk 1 valentie-elektron (groep Ia).'}
+  ]});
+sorteer($('#oef-en'), { id:'en', titel:'Oefening 5 · Elektronegativiteit',
+  items:[
+    {tekst:'Welk atoom trekt elektronen het sterkst aan?', opties:[{k:'Na',label:'natrium'},{k:'Cl',label:'chloor'}], antwoord:'Cl', uitleg:'Chloor (EN 3,0) staat meer naar rechts dan natrium (EN 0,9).'},
+    {tekst:'Welk atoom trekt elektronen het sterkst aan?', opties:[{k:'F',label:'fluor'},{k:'I',label:'jood'}], antwoord:'F', uitleg:'Fluor staat hoger in dezelfde groep. Fluor heeft de hoogste EN van alle elementen.'},
+    {tekst:'Welk atoom heeft de laagste elektronegativiteit?', opties:[{k:'Mg',label:'magnesium'},{k:'Cs',label:'cesium'},{k:'O',label:'zuurstof'}], antwoord:'Cs', uitleg:'Cesium staat linksonder: EN 0,7.'},
+    {tekst:'Wat betekent een hoge elektronegativiteit?', opties:[{k:'a',label:'Het atoom trekt elektronen sterk naar zich toe.'},{k:'b',label:'Het atoom geeft gemakkelijk elektronen af.'},{k:'c',label:'Het atoom is heel zwaar.'}], antwoord:'a'},
+    {tekst:'Een element heeft een lage EN. Wat doet het gemakkelijk?', opties:[{k:'a',label:'elektronen afgeven'},{k:'b',label:'elektronen opnemen'},{k:'c',label:'niet reageren'}], antwoord:'a', uitleg:'Dat zijn meestal metalen.'}
+  ]});
+sorteer($('#oef-edel'), { id:'edel', titel:'Oefening 6 · Edelgasconfiguratie?', opdracht:'Heeft dit atoom een edelgasconfiguratie (een volle buitenste schil)?',
+  opties:[{k:'j',label:'ja'},{k:'n',label:'nee'}],
+  items:[
+    {tekst:'helium: 2', antwoord:'j', uitleg:'Alleen een K-schil, en die is vol met 2 elektronen.'},
+    {tekst:'neon: 2/8', antwoord:'j', uitleg:'8 elektronen op de buitenste schil.'},
+    {tekst:'zuurstof: 2/6', antwoord:'n', uitleg:'Er zijn maar 6 elektronen op de buitenste schil.'},
+    {tekst:'natrium: 2/8/1', antwoord:'n', uitleg:'Er is maar 1 elektron op de buitenste schil.'},
+    {tekst:'argon: 2/8/8', antwoord:'j'},
+    {tekst:'chloor: 2/8/7', antwoord:'n', uitleg:'Er ontbreekt nog 1 elektron.'}
+  ]});
+
+ikkanFn = () => {
+  $('#ikkan3').innerHTML = `<h3>Controle hoofdstuk 3</h3><ul>
+    ${regel('Ik ken de categorieën van elementen en waar ze staan.',scores.cat)}
+    ${regel('Ik vind een element met groep en periode, of met schillen en valentie-elektronen.',scores.zoek)}
+    ${regel('Ik noteer met het PSE de opbouw van een atoom.',scores.bouwpse)}
+    ${regel('Ik weet dat elementen in dezelfde groep op dezelfde manier reageren.',scores.groep)}
+    ${regel('Ik leg uit wat een hoge of lage elektronegativiteit betekent.',scores.en)}
+    ${regel('Ik leg uit wat een edelgasconfiguratie is.',scores.edel)}</ul>`;
+};
+updateIkKan();
+
+})();
+</script>
+</body>
+</html>
