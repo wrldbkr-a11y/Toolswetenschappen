@@ -1,0 +1,732 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Stoffen onder de loep</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: één kolom leerpad, twee lesdoelen als tabbladen, interactieve "filmpjes" als blikvanger */
+:root{
+  --bg:#f3f7f6; --surface:#ffffff; --surface-2:#e9f1ef; --ink:#13201d; --muted:#53635e; --line:#d3dfdb;
+  --accent:#0b6b66; --accent-ink:#ffffff; --accent-soft:#d8eeeb;
+  --good:#1d7a3b; --good-soft:#dcf2e2; --bad:#b3261e; --bad-soft:#fbe3e1;
+  --water:#9fd3ea; --sand:#c79d5c; --atom-o:#d9443a; --atom-h:#f4f6f5; --spark:#e8a400;
+  --ghs-red:#d6001c;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, Consolas, monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0e1614; --surface:#16211e; --surface-2:#1c2a26; --ink:#e4eeeb; --muted:#9aaca6; --line:#2b3c37;
+  --accent:#5cc7bd; --accent-ink:#06211e; --accent-soft:#183a35;
+  --good:#6fd38f; --good-soft:#163524; --bad:#ff8a80; --bad-soft:#3d1a18;
+  --water:#3f7f9c; --sand:#c9a066; --atom-o:#ef5b50; --atom-h:#dfe6e3; --spark:#ffc533;
+  color-scheme:dark; } }
+:root[data-theme="dark"]{
+  --bg:#0e1614; --surface:#16211e; --surface-2:#1c2a26; --ink:#e4eeeb; --muted:#9aaca6; --line:#2b3c37;
+  --accent:#5cc7bd; --accent-ink:#06211e; --accent-soft:#183a35;
+  --good:#6fd38f; --good-soft:#163524; --bad:#ff8a80; --bad-soft:#3d1a18;
+  --water:#3f7f9c; --sand:#c9a066; --atom-o:#ef5b50; --atom-h:#dfe6e3; --spark:#ffc533;
+  color-scheme:dark; }
+
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.55}
+.wrap{max-width:1000px;margin:0 auto;padding-inline:18px;padding-block:28px 64px;display:flex;flex-direction:column;gap:28px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.15}
+h1{font-size:clamp(2rem,6vw,3.2rem);font-weight:800;letter-spacing:-.02em}
+h2{font-size:1.6rem;font-weight:800}
+h3{font-size:1.2rem;font-weight:600}
+p{margin:0;max-width:65ch}
+.eyebrow{font-family:var(--f-mono);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:6px}
+
+/* hero */
+.hero{display:flex;flex-direction:column;gap:10px}
+.hero p{color:var(--muted)}
+
+/* lesdoel-tabs */
+.lesnav{display:grid;grid-template-columns:1fr 1fr;gap:12px;position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:8px}
+.lestab{text-align:left;background:var(--surface);border:2px solid var(--line);border-radius:14px;padding:12px 14px;display:flex;gap:12px;align-items:flex-start;min-width:0}
+.lestab .nr{font-family:var(--f-mono);font-weight:700;font-size:1.25rem;color:var(--accent)}
+.lestab .t{display:flex;flex-direction:column;gap:2px;min-width:0}
+.lestab b{font-family:var(--f-display);font-size:1.05rem}
+.lestab small{color:var(--muted);font-size:.85rem;line-height:1.35}
+.lestab[aria-selected="true"]{border-color:var(--accent);background:var(--accent-soft)}
+@media (max-width:640px){ .lesnav{grid-template-columns:1fr;position:static} .lestab small{display:none} }
+
+.les{display:flex;flex-direction:column;gap:36px}
+.doel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px;display:flex;flex-direction:column;gap:6px}
+.doel .eyebrow{color:var(--accent)}
+.doel p{font-size:1.15rem;font-weight:700}
+
+.blok{display:flex;flex-direction:column;gap:16px}
+.blok-kop{display:flex;gap:12px;align-items:baseline}
+.blok-kop .letter{font-family:var(--f-mono);font-weight:700;color:var(--accent-ink);background:var(--accent);border-radius:8px;padding:2px 9px;font-size:.95rem}
+
+/* vergelijking fysica - chemie */
+.vergelijk{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:700px){.vergelijk{grid-template-columns:1fr}}
+.vak{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.vak h3{font-size:1.4rem}
+.vak .kern{font-weight:700}
+.vak ul{margin:0;padding-left:20px}
+.vak svg{width:100%;max-width:320px;height:auto}
+.vak .vb{background:var(--surface-2);border-radius:10px;padding:10px;display:flex;flex-direction:column;gap:6px;align-items:center;text-align:center}
+.vraag{background:var(--accent-soft);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+.vraag b{font-family:var(--f-display);font-size:1.1rem}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:3px 12px;font-size:.92rem}
+
+/* film-speler */
+.speler{background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.filmkeuze{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid var(--line)}
+.filmkeuze button{background:none;border:0;border-bottom:4px solid transparent;padding:12px 8px;display:flex;flex-direction:column;gap:2px;align-items:center;text-align:center}
+.filmkeuze button b{font-family:var(--f-display);font-size:1.05rem}
+.filmkeuze button small{color:var(--muted);font-size:.8rem;line-height:1.3}
+.filmkeuze button[aria-selected="true"]{border-bottom-color:var(--accent);background:var(--accent-soft)}
+@media (max-width:520px){.filmkeuze button small{display:none}}
+.podium{background:var(--surface-2);padding:10px}
+.podium svg[hidden]{display:none}
+.podium svg{display:block;width:100%;max-width:640px;height:auto;margin:0 auto}
+.onderschrift{padding:14px 18px;min-height:5.2em;font-size:1.12rem;display:flex;gap:12px;align-items:flex-start}
+.onderschrift .stapnr{font-family:var(--f-mono);font-size:.85rem;color:var(--muted);white-space:nowrap;padding-top:3px}
+.knoppen{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:0 18px 16px}
+.knop{background:var(--surface);border:2px solid var(--line);border-radius:10px;padding:7px 14px;font-weight:700}
+.knop:hover{border-color:var(--accent)}
+.knop.hoofd{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.knop:disabled{opacity:.4;cursor:default}
+.stippen{display:flex;gap:6px;margin-left:auto}
+.stippen span{width:10px;height:10px;border-radius:50%;background:var(--line)}
+.stippen span.aan{background:var(--accent)}
+.vraagkop{font-family:var(--f-mono);font-size:.85rem;color:var(--accent);padding:14px 18px 0}
+
+/* film-animaties */
+.film text{font-family:var(--f-body);fill:var(--ink)}
+.film .lbl{font-size:13px;fill:var(--muted)}
+.film .lbl-b{font-size:15px;font-weight:700}
+.film .fade{opacity:0;transition:opacity .9s ease}
+.film .grain{transition:transform 1.4s cubic-bezier(.5,0,.6,1),opacity 1.6s ease}
+.zoomgroep{transform-box:fill-box;transform-origin:center;transform:scale(.3);opacity:0;transition:transform 1.1s ease,opacity .8s ease}
+.f-sam.s1 .zoomgroep{transform:scale(1);opacity:1}
+.f-sam.s1 .z1, .f-sam.s2 .z2, .f-sam.s3 .z3{opacity:1}
+.f-sam.s2 .groot{opacity:1}
+.f-eig.s1 .grain{transform:translateY(85px)}
+.f-eig.s2 .suiker{opacity:0}
+.f-eig.s2 .zand{transform:translateY(132px)}
+.f-eig.s3 .tag{opacity:1}
+.f-eig .roer{opacity:0;transition:opacity .6s}
+.f-eig.s2 .roer{opacity:1}
+.f-eig.s3 .roer{opacity:0}
+.f-omz .atoom{transition:transform 1.5s cubic-bezier(.45,0,.3,1)}
+.f-omz .v0{opacity:1;transition:opacity .6s}
+.f-omz.s1 .v0{opacity:0}
+.f-omz.s1 .vonk{opacity:1}
+.f-omz.s2 .vonk{opacity:0}
+.f-omz.s2 .v0{opacity:0}
+.f-omz.s2 .v2{opacity:1}
+.f-omz.s3 .v3{opacity:1}
+.f-omz.s1 .v01{opacity:1}
+.f-omz .v01{opacity:1;transition:opacity .6s}
+.f-omz.s2 .v01{opacity:0}
+
+/* sorteeroefeningen */
+.oefening{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.oef-kop{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;align-items:center}
+.score{font-family:var(--f-mono);font-weight:700;font-variant-numeric:tabular-nums;background:var(--surface-2);border-radius:8px;padding:4px 10px}
+.items{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.item{border:1px solid var(--line);border-left:6px solid var(--line);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:8px}
+.item .zin{font-weight:700}
+.item .code{font-family:var(--f-mono);font-weight:700;color:var(--accent);margin-right:6px}
+.item .opties{display:flex;flex-wrap:wrap;gap:8px}
+.item .opties button{background:var(--surface-2);border:2px solid var(--line);border-radius:10px;padding:6px 12px;font-weight:700}
+.item .opties button:hover:not(:disabled){border-color:var(--accent)}
+.item .opties button:disabled{cursor:default}
+.item.juist{border-left-color:var(--good);background:var(--good-soft)}
+.item.fout{border-left-color:var(--bad);background:var(--bad-soft)}
+.item .opties button.gekozen{border-color:var(--ink)}
+.item .uitleg{font-size:.95rem}
+.item .uitleg b{font-family:var(--f-display)}
+.item.juist .uitleg b{color:var(--good)}
+.item.fout .uitleg b{color:var(--bad)}
+.opnieuw{align-self:flex-start}
+
+/* pictogrammen */
+.picto-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.picto-kaart{background:var(--surface);border:2px solid var(--line);border-radius:14px;padding:12px;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center}
+.picto-kaart:hover{border-color:var(--accent)}
+.picto-kaart[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.picto-kaart svg{width:84px;height:84px}
+.picto-kaart b{font-family:var(--f-display);font-size:1rem;line-height:1.2}
+.picto-kaart .ghs{font-family:var(--f-mono);font-size:.75rem;color:var(--muted)}
+.picto-detail{background:var(--surface);border:2px solid var(--accent);border-radius:16px;padding:16px;display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:start}
+.picto-detail svg{width:120px;height:120px}
+.picto-detail dl{margin:0;display:grid;gap:8px}
+.picto-detail dt{font-family:var(--f-mono);font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.picto-detail dd{margin:0}
+@media (max-width:520px){.picto-detail{grid-template-columns:1fr}.picto-detail svg{width:96px;height:96px}}
+
+.quiz{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center}
+.quiz .groot-picto svg{width:150px;height:150px}
+.quiz .opties{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.quiz .opties button{background:var(--surface-2);border:2px solid var(--line);border-radius:10px;padding:10px;font-weight:700;text-align:left}
+.quiz .opties button:hover:not(:disabled){border-color:var(--accent)}
+.quiz .opties button.juist{border-color:var(--good);background:var(--good-soft)}
+.quiz .opties button.fout{border-color:var(--bad);background:var(--bad-soft)}
+.quiz .rechts{display:flex;flex-direction:column;gap:10px;min-width:0}
+.quiz .fb{min-height:1.6em;font-weight:700}
+@media (max-width:560px){.quiz{grid-template-columns:1fr;justify-items:center}.quiz .rechts{width:100%}.quiz .opties{grid-template-columns:1fr}}
+
+/* etiket */
+.etiket-zone{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:760px){.etiket-zone{grid-template-columns:1fr}}
+.etiket{background:#ffffff;color:#111;border:3px solid #111;border-radius:6px;padding:14px;display:flex;flex-direction:column;gap:10px;font-size:.92rem}
+.etiket .deel{background:none;border:2px dashed transparent;border-radius:8px;padding:6px;text-align:left;color:#111;display:flex;gap:10px;align-items:flex-start;position:relative}
+.etiket .deel:hover,.etiket .deel[aria-pressed="true"]{border-color:#0b6b66;background:#e3f3f1}
+.etiket .deel .pin{font-family:var(--f-mono);font-weight:700;background:#0b6b66;color:#fff;border-radius:50%;width:24px;height:24px;flex:none;display:grid;place-items:center;font-size:.8rem}
+.etiket .merk{font-family:var(--f-display);font-weight:800;font-size:1.5rem;line-height:1}
+.etiket .sig{font-weight:800;font-size:1.25rem;letter-spacing:.04em;text-transform:uppercase}
+.etiket svg{width:70px;height:70px;flex:none}
+.etiket .zinnen{display:flex;flex-direction:column;gap:3px}
+.etiket .zinnen span b{font-family:var(--f-mono)}
+.uitlegpaneel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:8px;position:sticky;top:120px}
+@media (max-width:760px){.uitlegpaneel{position:static}}
+.uitlegpaneel h3{color:var(--accent)}
+
+.hp-uitleg{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:640px){.hp-uitleg{grid-template-columns:1fr}}
+.hp{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:6px}
+.hp .letter-groot{font-family:var(--f-mono);font-weight:700;font-size:2.2rem;line-height:1;color:var(--accent)}
+.hp .en{font-family:var(--f-mono);font-size:.85rem;color:var(--muted)}
+
+/* ik kan */
+.ikkan{background:var(--surface);border:2px solid var(--accent);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.ikkan ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.ikkan li{display:flex;gap:10px;align-items:baseline}
+.ikkan .st{font-family:var(--f-mono);font-weight:700;font-variant-numeric:tabular-nums;min-width:5.5em;color:var(--muted)}
+.ikkan .st.ok{color:var(--good)}
+
+@media (prefers-reduced-motion: reduce){ *{transition:none!important;animation:none!important} }
+</style>
+
+<div class="wrap">
+  <header class="hero">
+    <span class="eyebrow">Chemie · 3de jaar · hoofdstuk 1</span>
+    <h1>Stoffen onder de loep</h1>
+    <p>Wat onderzoekt een chemicus? En hoe werk je veilig met stoffen? Kies een lesdoel. Bekijk de filmpjes en maak de oefeningen.</p>
+  </header>
+
+  <nav class="lesnav" role="tablist" aria-label="Lesdoelen">
+    <button class="lestab" role="tab" id="tab-11" aria-controls="les11" aria-selected="true">
+      <span class="nr">1.1</span><span class="t"><b>Chemie als wetenschap</b><small>Ik beschrijf wat in de chemie bestudeerd wordt. (p. 11)</small></span>
+    </button>
+    <button class="lestab" role="tab" id="tab-12" aria-controls="les12" aria-selected="false">
+      <span class="nr">1.2</span><span class="t"><b>Veilig omgaan met stoffen</b><small>Ik ken de gevarensymbolen en kan P- en H-zinnen indelen. (p. 13)</small></span>
+    </button>
+  </nav>
+
+  <!-- ========== 1.1 ========== -->
+  <main class="les" id="les11" role="tabpanel" aria-labelledby="tab-11">
+    <div class="doel"><span class="eyebrow">Lesdoel 1.1 · p. 11</span><p>Ik beschrijf wat in de chemie bestudeerd wordt.</p></div>
+
+    <section class="blok">
+      <div class="blok-kop"><span class="letter">A</span><h2>Fysica of chemie?</h2></div>
+      <p>Fysica en chemie zijn allebei natuurwetenschappen. Ze bestuderen verschijnselen: dingen die gebeuren in de natuur. Maar er is één groot verschil.</p>
+      <div class="vergelijk">
+        <div class="vak">
+          <span class="eyebrow">Fysica</span>
+          <h3>De stof blijft dezelfde stof</h3>
+          <p>Na het verschijnsel heb je <span class="kern">nog altijd dezelfde stof</span>. Dat noemen we een fysisch verschijnsel.</p>
+          <div class="vb">
+            <svg viewBox="0 0 300 100" role="img" aria-label="Een ijsblokje smelt tot een plasje water">
+              <rect x="40" y="25" width="50" height="50" rx="8" fill="var(--water)" stroke="var(--ink)" stroke-width="2"/>
+              <path d="M52 38 l10 0 M52 46 l6 0" stroke="var(--surface)" stroke-width="3" stroke-linecap="round"/>
+              <path d="M120 50 h55" stroke="var(--muted)" stroke-width="3"/><path d="M170 42 l10 8 -10 8" fill="none" stroke="var(--muted)" stroke-width="3"/>
+              <ellipse cx="240" cy="68" rx="48" ry="12" fill="var(--water)" stroke="var(--ink)" stroke-width="2"/>
+              <text x="65" y="95" text-anchor="middle" font-size="13" fill="var(--muted)">ijs</text>
+              <text x="240" y="95" text-anchor="middle" font-size="13" fill="var(--muted)">vloeibaar water</text>
+            </svg>
+            <span>IJs smelt. Het blijft <b>water</b>.</span>
+          </div>
+          <p>Fysica bestudeert ook: beweging, krachten, licht, geluid, warmte en elektriciteit.</p>
+        </div>
+        <div class="vak">
+          <span class="eyebrow">Chemie</span>
+          <h3>Er ontstaat een nieuwe stof</h3>
+          <p>Na het verschijnsel heb je <span class="kern">een andere, nieuwe stof</span>. Dat noemen we een chemisch verschijnsel.</p>
+          <div class="vb">
+            <svg viewBox="0 0 300 100" role="img" aria-label="Papier verbrandt tot as en rook">
+              <rect x="38" y="22" width="44" height="56" rx="3" fill="var(--surface)" stroke="var(--ink)" stroke-width="2"/>
+              <path d="M46 36 h28 M46 46 h28 M46 56 h20" stroke="var(--muted)" stroke-width="2"/>
+              <path d="M120 50 h55" stroke="var(--muted)" stroke-width="3"/><path d="M170 42 l10 8 -10 8" fill="none" stroke="var(--muted)" stroke-width="3"/>
+              <path d="M210 76 q30 -16 60 0 z" fill="var(--muted)"/>
+              <path d="M232 58 q-8 -10 0 -20 q8 -10 0 -22 M250 58 q-8 -10 0 -20 q8 -10 0 -22" fill="none" stroke="var(--muted)" stroke-width="2.5" stroke-linecap="round" opacity=".7"/>
+              <text x="60" y="95" text-anchor="middle" font-size="13" fill="var(--muted)">papier</text>
+              <text x="240" y="95" text-anchor="middle" font-size="13" fill="var(--muted)">as en rook</text>
+            </svg>
+            <span>Papier verbrandt. Er ontstaan <b>as en rook</b>: nieuwe stoffen.</span>
+          </div>
+          <p>Chemie is de wetenschap van de <b>stoffen</b>.</p>
+        </div>
+      </div>
+      <div class="vraag">
+        <b>Stel jezelf de vraag: is er een nieuwe stof ontstaan?</b>
+        <p>Ja → chemie. Nee → fysica. Een nieuwe stof herken je vaak aan:</p>
+        <div class="chips"><span class="chip">een andere kleur</span><span class="chip">een gas (bubbels)</span><span class="chip">een nieuwe geur</span><span class="chip">licht of warmte</span><span class="chip">het gaat niet meer terug</span></div>
+      </div>
+      <div class="oefening" id="oef-fc"></div>
+    </section>
+
+    <section class="blok">
+      <div class="blok-kop"><span class="letter">B</span><h2>Wat onderzoekt de chemie?</h2></div>
+      <p>De chemie onderzoekt drie dingen van stoffen: hun <b>samenstelling</b>, hun <b>eigenschappen</b> en hun <b>omzettingen</b>. Kies een filmpje en druk op <b>Speel af</b>. Je kan ook stap voor stap kijken.</p>
+
+      <div class="speler">
+        <div class="filmkeuze" role="tablist" aria-label="Filmpjes">
+          <button role="tab" data-film="sam" aria-selected="true"><b>Samenstelling</b><small>Uit welke deeltjes bestaat een stof?</small></button>
+          <button role="tab" data-film="eig" aria-selected="false"><b>Eigenschappen</b><small>Hoe herken je een stof?</small></button>
+          <button role="tab" data-film="omz" aria-selected="false"><b>Omzettingen</b><small>Hoe verandert een stof in een nieuwe stof?</small></button>
+        </div>
+        <div class="vraagkop" id="vraagkop">Onderzoeksvraag: Uit welke deeltjes bestaat een stof?</div>
+        <div class="podium">
+          <!-- Film 1: samenstelling -->
+          <svg class="film f-sam" data-film="sam" viewBox="0 0 420 230" role="img" aria-label="Animatie: water bestaat uit watermoleculen">
+            <rect x="30" y="70" width="64" height="112" rx="6" fill="none" stroke="var(--ink)" stroke-width="2.5"/>
+            <rect x="33" y="98" width="58" height="81" rx="3" fill="var(--water)"/>
+            <text x="62" y="205" text-anchor="middle" class="lbl">een glas water</text>
+            <g class="fade z1"><path d="M80 118 L128 105" stroke="var(--muted)" stroke-width="2" stroke-dasharray="5 4"/><circle cx="78" cy="120" r="9" fill="none" stroke="var(--muted)" stroke-width="2"/></g>
+            <g class="zoomgroep">
+              <circle cx="196" cy="115" r="74" fill="var(--surface)" stroke="var(--accent)" stroke-width="4"/>
+              <g id="moleculen"></g>
+            </g>
+            <text x="196" y="210" text-anchor="middle" class="lbl fade z1">heel sterk ingezoomd</text>
+            <g class="fade groot">
+              <circle cx="342" cy="92" r="27" fill="var(--atom-o)"/>
+              <circle cx="313" cy="121" r="17" fill="var(--atom-h)" stroke="var(--ink)" stroke-width="1.5"/>
+              <circle cx="371" cy="121" r="17" fill="var(--atom-h)" stroke="var(--ink)" stroke-width="1.5"/>
+              <text x="342" y="99" text-anchor="middle" font-size="20" font-weight="700" fill="#fff">O</text>
+              <text x="313" y="127" text-anchor="middle" font-size="16" font-weight="700" style="fill:#13201d">H</text>
+              <text x="371" y="127" text-anchor="middle" font-size="16" font-weight="700" style="fill:#13201d">H</text>
+              <text x="342" y="50" text-anchor="middle" class="lbl">zuurstofatoom</text>
+              <text x="342" y="158" text-anchor="middle" class="lbl">2 waterstofatomen</text>
+            </g>
+            <text x="342" y="198" text-anchor="middle" class="lbl-b fade z3" font-size="22">H₂O</text>
+          </svg>
+
+          <!-- Film 2: eigenschappen -->
+          <svg class="film f-eig" data-film="eig" viewBox="0 0 420 240" role="img" aria-label="Animatie: suiker lost op in water, zand niet" hidden>
+            <text x="120" y="22" text-anchor="middle" class="lbl-b">suiker</text>
+            <text x="300" y="22" text-anchor="middle" class="lbl-b">zand</text>
+            <rect x="83" y="112" width="74" height="86" fill="var(--water)" opacity=".55"/>
+            <rect x="263" y="112" width="74" height="86" fill="var(--water)" opacity=".55"/>
+            <path d="M80 80 V196 a4 4 0 0 0 4 4 H156 a4 4 0 0 0 4 -4 V80" fill="none" stroke="var(--ink)" stroke-width="2.5"/>
+            <path d="M260 80 V196 a4 4 0 0 0 4 4 H336 a4 4 0 0 0 4 -4 V80" fill="none" stroke="var(--ink)" stroke-width="2.5"/>
+            <g id="korrels"></g>
+            <g class="roer"><path d="M104 150 q16 -12 32 0 q-16 12 -32 0" fill="none" stroke="var(--ink)" stroke-width="1.5" stroke-dasharray="4 3"/><text x="120" y="140" text-anchor="middle" class="lbl">roeren…</text></g>
+            <g class="fade tag">
+              <rect x="70" y="210" width="100" height="26" rx="13" fill="var(--good-soft)" stroke="var(--good)"/>
+              <text x="120" y="228" text-anchor="middle" font-size="13" font-weight="700" style="fill:var(--good)">lost op</text>
+              <rect x="240" y="210" width="120" height="26" rx="13" fill="var(--bad-soft)" stroke="var(--bad)"/>
+              <text x="300" y="228" text-anchor="middle" font-size="13" font-weight="700" style="fill:var(--bad)">lost niet op</text>
+            </g>
+          </svg>
+
+          <!-- Film 3: omzettingen -->
+          <svg class="film f-omz" data-film="omz" viewBox="0 0 420 230" role="img" aria-label="Animatie: waterstof en zuurstof reageren tot water" hidden>
+            <text x="180" y="122" text-anchor="middle" font-size="28" font-weight="700" class="v0">+</text>
+            <text x="83" y="200" text-anchor="middle" class="lbl v01">waterstofgas (H₂)</text>
+            <text x="280" y="200" text-anchor="middle" class="lbl v01">zuurstofgas (O₂)</text>
+            <g class="fade vonk" transform="translate(180 110)">
+              <path d="M0 -26 L6 -6 L26 0 L6 6 L0 26 L-6 6 L-26 0 L-6 -6 Z" fill="var(--spark)"/>
+              <text y="48" text-anchor="middle" class="lbl">vonk</text>
+            </g>
+            <g id="atomen"></g>
+            <text x="212" y="162" text-anchor="middle" class="lbl fade v2">2 watermoleculen (H₂O): een nieuwe stof</text>
+            <text x="212" y="205" text-anchor="middle" class="lbl-b fade v3" font-size="18">2 H₂ + O₂ → 2 H₂O</text>
+          </svg>
+        </div>
+        <div class="onderschrift" aria-live="polite"><span class="stapnr" id="stapnr">1/4</span><span id="caption"></span></div>
+        <div class="knoppen">
+          <button class="knop" id="vorige">◀ Vorige</button>
+          <button class="knop hoofd" id="speel">▶ Speel af</button>
+          <button class="knop" id="volgende">Volgende ▶</button>
+          <div class="stippen" id="stippen" aria-hidden="true"></div>
+        </div>
+      </div>
+      <div class="oefening" id="oef-gebied"></div>
+    </section>
+
+    <section class="ikkan" id="ikkan11" aria-label="Controle lesdoel 1.1"></section>
+  </main>
+
+  <!-- ========== 1.2 ========== -->
+  <main class="les" id="les12" role="tabpanel" aria-labelledby="tab-12" hidden>
+    <div class="doel"><span class="eyebrow">Lesdoel 1.2 · p. 13</span><p>Ik ken de gevarensymbolen en kan P- en H-zinnen categoriseren als voorzorg of gevaar.</p></div>
+
+    <section class="blok">
+      <div class="blok-kop"><span class="letter">A</span><h2>De 9 gevarensymbolen</h2></div>
+      <p>Op gevaarlijke producten staat een <b>gevarensymbool</b>: een rode ruit met een witte achtergrond en een zwart teken. Die symbolen zijn overal in Europa hetzelfde. Klik op een symbool om te zien wat het betekent.</p>
+      <div class="picto-grid" id="picto-grid"></div>
+      <div class="picto-detail" id="picto-detail" aria-live="polite"></div>
+    </section>
+
+    <section class="blok">
+      <div class="blok-kop"><span class="letter">B</span><h2>Ken je de symbolen?</h2></div>
+      <div class="oefening" id="oef-quiz"></div>
+    </section>
+
+    <section class="blok">
+      <div class="blok-kop"><span class="letter">C</span><h2>Een etiket lezen</h2></div>
+      <p>Op het etiket staat meer dan alleen het symbool. Klik op elk deel van dit etiket.</p>
+      <div class="etiket-zone">
+        <div class="etiket" id="etiket">
+          <button class="deel" data-deel="naam"><span class="pin">1</span><span><span class="merk">Buisvrij</span><br>Ontstopper voor afvoeren<br><small>Bevat: natriumhydroxide</small></span></button>
+          <button class="deel" data-deel="symbool"><span class="pin">2</span><span id="etiket-picto"></span></button>
+          <button class="deel" data-deel="signaal"><span class="pin">3</span><span class="sig">Gevaar</span></button>
+          <button class="deel" data-deel="h"><span class="pin">4</span><span class="zinnen"><span><b>H290</b> Kan bijtend zijn voor metalen.</span><span><b>H314</b> Veroorzaakt ernstige brandwonden en oogletsel.</span></span></button>
+          <button class="deel" data-deel="p"><span class="pin">5</span><span class="zinnen"><span><b>P102</b> Buiten het bereik van kinderen houden.</span><span><b>P280</b> Beschermende handschoenen/oogbescherming dragen.</span><span><b>P305+P351+P338</b> BIJ CONTACT MET DE OGEN: voorzichtig afspoelen met water gedurende een aantal minuten; contactlenzen verwijderen, indien mogelijk; blijven spoelen.</span></span></button>
+        </div>
+        <div class="uitlegpaneel" id="etiket-uitleg" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section class="blok">
+      <div class="blok-kop"><span class="letter">D</span><h2>H-zin of P-zin?</h2></div>
+      <div class="hp-uitleg">
+        <div class="hp"><span class="letter-groot">H</span><span class="en">H = hazard (Engels) = gevaar</span><p>Een <b>H-zin</b> zegt wat het <b>gevaar</b> is. Wat kan de stof met jou of met de natuur doen?</p><p class="eyebrow" style="text-transform:none;letter-spacing:0">Vaak: veroorzaakt…, kan…, schadelijk…, giftig…, ontvlambaar…</p></div>
+        <div class="hp"><span class="letter-groot">P</span><span class="en">P = precaution (Engels) = voorzorg</span><p>Een <b>P-zin</b> zegt wat <b>jij moet doen</b> om veilig te zijn. Het is een opdracht.</p><p class="eyebrow" style="text-transform:none;letter-spacing:0">Vaak: dragen, houden, spoelen, niet inademen, niet roken…</p></div>
+      </div>
+      <p>Lees elke zin. Is het een gevaar (H) of een voorzorg (P)? De code verschijnt pas als je geantwoord hebt.</p>
+      <div class="oefening" id="oef-hp"></div>
+    </section>
+
+    <section class="ikkan" id="ikkan12" aria-label="Controle lesdoel 1.2"></section>
+  </main>
+</div>
+
+<script>
+(function(){
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+const shuffle = a => { a = a.slice(); for (let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; };
+
+/* ---------- tabs lesdoelen ---------- */
+function toonLes(id){
+  $$('.lestab').forEach(t => t.setAttribute('aria-selected', t.getAttribute('aria-controls')===id ? 'true':'false'));
+  $$('main.les').forEach(m => m.hidden = m.id!==id);
+}
+$$('.lestab').forEach(t => t.addEventListener('click', () => { toonLes(t.getAttribute('aria-controls')); stopFilm(); }));
+if (location.hash === '#les12') toonLes('les12');
+
+/* ---------- generieke sorteeroefening ---------- */
+const scores = {};
+function sorteer(el, cfg){
+  function render(){
+    const items = cfg.vast ? cfg.items : shuffle(cfg.items);
+    el.innerHTML = `<div class="oef-kop"><h3>${cfg.titel}</h3><span class="score" data-score>0 / ${items.length}</span></div>
+      <p>${cfg.opdracht}</p><ul class="items"></ul>
+      <button class="knop opnieuw" type="button">↺ Opnieuw</button>`;
+    const ul = el.querySelector('.items');
+    let juist = 0, beantwoord = 0;
+    scores[cfg.id] = {juist:0, totaal:items.length, klaar:false};
+    items.forEach(it => {
+      const li = document.createElement('li'); li.className='item';
+      li.innerHTML = `<span class="zin">${cfg.toonCode ? '<span class="code" hidden></span>' : ''}${it.tekst}</span>
+        <div class="opties">${cfg.opties.map(o => `<button type="button" data-k="${o.k}">${o.label}</button>`).join('')}</div>
+        <div class="uitleg" hidden></div>`;
+      li.querySelectorAll('.opties button').forEach(b => b.addEventListener('click', () => {
+        const ok = b.dataset.k === it.antwoord;
+        li.classList.add(ok ? 'juist' : 'fout'); b.classList.add('gekozen');
+        li.querySelectorAll('.opties button').forEach(x => x.disabled = true);
+        const goed = cfg.opties.find(o => o.k===it.antwoord).label;
+        const u = li.querySelector('.uitleg'); u.hidden = false;
+        u.innerHTML = (ok ? '<b>Juist!</b> ' : `<b>Niet juist.</b> Het is: ${goed}. `) + it.uitleg;
+        if (cfg.toonCode){ const c = li.querySelector('.code'); c.textContent = it.code; c.hidden = false; }
+        beantwoord++; if (ok) juist++;
+        el.querySelector('[data-score]').textContent = `${juist} / ${items.length}`;
+        scores[cfg.id] = {juist, totaal:items.length, klaar: beantwoord===items.length};
+        updateIkKan();
+      }));
+      ul.appendChild(li);
+    });
+    el.querySelector('.opnieuw').addEventListener('click', () => { render(); updateIkKan(); });
+  }
+  render();
+}
+
+sorteer($('#oef-fc'), {
+  id:'fc', titel:'Oefening 1 · Fysisch of chemisch?',
+  opdracht:'Lees elk verschijnsel. Ontstaat er een nieuwe stof?',
+  opties:[{k:'f',label:'Fysica: zelfde stof'},{k:'c',label:'Chemie: nieuwe stof'}],
+  items:[
+    {tekst:'IJs smelt tot water.', antwoord:'f', uitleg:'Het blijft water. Alleen de toestand verandert: van vast naar vloeibaar.'},
+    {tekst:'Papier verbrandt.', antwoord:'c', uitleg:'Er ontstaan as en rook. Dat zijn nieuwe stoffen.'},
+    {tekst:'Een fiets rolt van een helling.', antwoord:'f', uitleg:'Dit gaat over beweging. Er verandert geen stof.'},
+    {tekst:'Een ijzeren hek roest.', antwoord:'c', uitleg:'Roest is een nieuwe stof, met een andere kleur dan ijzer.'},
+    {tekst:'Suiker lost op in thee.', antwoord:'f', uitleg:'De suiker is er nog: je proeft ze nog. Er is geen nieuwe stof.'},
+    {tekst:'Je bakt een ei.', antwoord:'c', uitleg:'Het eiwit wordt wit en vast. Er ontstaat een nieuwe stof en het gaat niet meer terug.'},
+    {tekst:'Een lamp geeft licht.', antwoord:'f', uitleg:'Licht en elektriciteit horen bij de fysica. Er ontstaat geen nieuwe stof.'},
+    {tekst:'Melk wordt zuur.', antwoord:'c', uitleg:'Er ontstaan nieuwe stoffen: je ruikt en proeft het.'},
+    {tekst:'Water kookt en wordt waterdamp.', antwoord:'f', uitleg:'Waterdamp is nog altijd water, maar als gas.'},
+    {tekst:'Een bruistablet bruist in water.', antwoord:'c', uitleg:'Er ontstaan bubbels: een nieuw gas. Dat is een nieuwe stof.'}
+  ]
+});
+
+sorteer($('#oef-gebied'), {
+  id:'gebied', titel:'Oefening 2 · Welk onderzoeksgebied?',
+  opdracht:'Een chemicus stelt deze vragen. Over welk van de drie gebieden gaat elke vraag?',
+  opties:[{k:'s',label:'Samenstelling'},{k:'e',label:'Eigenschappen'},{k:'o',label:'Omzettingen'}],
+  items:[
+    {tekst:'Uit welke atomen bestaat koolstofdioxide?', antwoord:'s', uitleg:'Je vraagt uit welke deeltjes de stof bestaat.'},
+    {tekst:'Bij welke temperatuur smelt ijzer?', antwoord:'e', uitleg:'De smelttemperatuur is een eigenschap van een stof.'},
+    {tekst:'Wat ontstaat er als aardgas verbrandt?', antwoord:'o', uitleg:'Bij verbranden ontstaan nieuwe stoffen: een omzetting.'},
+    {tekst:'Lost zout op in water?', antwoord:'e', uitleg:'Oplosbaarheid is een eigenschap van een stof.'},
+    {tekst:'Welke deeltjes zitten er in suiker?', antwoord:'s', uitleg:'Je vraagt naar de deeltjes: de samenstelling.'},
+    {tekst:'Hoe maak je zeep uit vet?', antwoord:'o', uitleg:'Vet verandert in een nieuwe stof (zeep): een omzetting.'},
+    {tekst:'Welke kleur heeft koper?', antwoord:'e', uitleg:'Kleur is een eigenschap van een stof.'},
+    {tekst:'Hoe ontstaat roest op ijzer?', antwoord:'o', uitleg:'IJzer verandert in een nieuwe stof (roest): een omzetting.'},
+    {tekst:'Hoeveel waterstofatomen zitten er in één watermolecule?', antwoord:'s', uitleg:'Je telt de atomen in een molecule: de samenstelling.'}
+  ]
+});
+
+/* ---------- filmpjes ---------- */
+const films = {
+  sam:{ vraag:'Uit welke deeltjes bestaat een stof?', caps:[
+    'Dit is een glas water. Water is een stof. Maar uit wat bestaat water eigenlijk?',
+    'We zoomen heel, heel ver in. Water bestaat uit heel kleine deeltjes: <b>moleculen</b>. Je kan ze niet zien, zelfs niet met een gewone microscoop.',
+    'Eén watermolecule bestaat uit <b>1 zuurstofatoom</b> (O) en <b>2 waterstofatomen</b> (H).',
+    'Daarom schrijven we water als <b>H₂O</b>. De chemie onderzoekt de <b>samenstelling</b> van stoffen: uit welke deeltjes bestaat een stof?'
+  ]},
+  eig:{ vraag:'Hoe herken je een stof?', caps:[
+    'Hier zijn twee stoffen: suiker en zand. We doen ze allebei in een glas water.',
+    'De korrels vallen in het water.',
+    'We roeren. De suiker verdwijnt: ze <b>lost op</b>. Het zand lost niet op en zakt naar de bodem.',
+    'Oplosbaar zijn is een <b>eigenschap</b> van een stof. Andere eigenschappen: kleur, geur, smelttemperatuur, kooktemperatuur. De chemie onderzoekt de eigenschappen van stoffen.'
+  ]},
+  omz:{ vraag:'Hoe verandert een stof in een nieuwe stof?', caps:[
+    'Links: waterstofgas. Rechts: zuurstofgas. Elke molecule bestaat uit 2 atomen.',
+    'Er komt een vonk bij. De moleculen vallen uit elkaar in losse atomen.',
+    'De atomen maken nieuwe groepjes: <b>watermoleculen</b>. Er zijn geen atomen bijgekomen of verdwenen.',
+    'Er is een <b>nieuwe stof</b> ontstaan: water. Dat is een <b>omzetting</b> (een chemische reactie). De chemie onderzoekt hoe stoffen omgezet worden in nieuwe stoffen.'
+  ]}
+};
+
+// moleculen in vergrootglas
+(function(){
+  const g = $('#moleculen'); const ns='http://www.w3.org/2000/svg';
+  const pos = [[160,80,10],[205,68,-30],[245,95,40],[150,125,70],[195,112,-10],[238,140,20],[172,160,-50],[215,165,60],[196,40,0],[128,100,-80],[262,120,100]];
+  pos.forEach(([x,y,r]) => {
+    const m = document.createElementNS(ns,'g'); m.setAttribute('transform',`translate(${x} ${y}) rotate(${r})`);
+    m.innerHTML = `<circle r="9" fill="var(--atom-o)"/><circle cx="-9" cy="9" r="6" fill="var(--atom-h)" stroke="var(--ink)" stroke-width="1"/><circle cx="9" cy="9" r="6" fill="var(--atom-h)" stroke="var(--ink)" stroke-width="1"/>`;
+    g.appendChild(m);
+  });
+  // korrels
+  const k = $('#korrels');
+  for (let i=0;i<12;i++){
+    const x = 96 + (i%6)*9 + (i>5?4:0), y = 36 + Math.floor(i/6)*12 + (i%2)*4;
+    const r = document.createElementNS(ns,'rect');
+    Object.entries({x, y, width:7, height:7, fill:'var(--surface)', stroke:'var(--ink)', 'stroke-width':1.2, class:'grain suiker'}).forEach(([a,v])=>r.setAttribute(a,v));
+    r.style.transitionDelay = (i*0.05)+'s'; k.appendChild(r);
+    const c = document.createElementNS(ns,'circle');
+    Object.entries({cx:x+180+3, cy:y+3+(i%3), r:3.6, fill:'var(--sand)', class:'grain zand'}).forEach(([a,v])=>c.setAttribute(a,v));
+    c.style.transitionDelay = (i*0.05)+'s'; k.appendChild(c);
+  }
+  // atomen
+  const a = $('#atomen');
+  ['H1','H2','H3','H4','O1','O2'].forEach(id => {
+    const isO = id[0]==='O';
+    const el = document.createElementNS(ns,'g'); el.setAttribute('class','atoom'); el.dataset.id = id;
+    el.innerHTML = `<circle r="${isO?19:12}" fill="${isO?'var(--atom-o)':'var(--atom-h)'}" ${isO?'':'stroke="var(--ink)" stroke-width="1.5"'}/>
+      <text y="${isO?6:5}" text-anchor="middle" font-size="${isO?16:13}" font-weight="700" style="fill:${isO?'#fff':'#13201d'}">${id[0]}</text>`;
+    a.appendChild(el);
+  });
+})();
+const atoomPos = [
+  {H1:[70,75],H2:[96,75],H3:[70,145],H4:[96,145],O1:[262,110],O2:[300,110]},
+  {H1:[52,60],H2:[118,84],H3:[52,160],H4:[118,136],O1:[238,90],O2:[322,130]},
+  {H1:[124,117],H2:[176,117],H3:[249,117],H4:[301,117],O1:[150,95],O2:[275,95]},
+  {H1:[124,117],H2:[176,117],H3:[249,117],H4:[301,117],O1:[150,95],O2:[275,95]}
+];
+function plaatsAtomen(stap){
+  $$('#atomen .atoom').forEach(g => { const [x,y] = atoomPos[stap][g.dataset.id]; g.style.transform = `translate(${x}px, ${y}px)`; });
+}
+plaatsAtomen(0);
+
+let huidig = 'sam', stap = 0, timer = null;
+const stippen = $('#stippen');
+function toonStap(){
+  const svg = document.querySelector(`.film[data-film="${huidig}"]`);
+  [1,2,3].forEach(i => svg.classList.toggle('s'+i, stap>=i && (huidig!=='omz' || true)));
+  if (huidig==='omz'){ // omz: per stap exclusieve klassen
+    [1,2,3].forEach(i => svg.classList.toggle('s'+i, stap===i || (i===2 && stap===3)));
+    plaatsAtomen(stap);
+  }
+  if (huidig==='sam'){ // zoom blijft zichtbaar
+    svg.classList.toggle('s1', stap>=1);
+  }
+  const caps = films[huidig].caps;
+  $('#caption').innerHTML = caps[stap];
+  $('#stapnr').textContent = `${stap+1}/${caps.length}`;
+  stippen.innerHTML = caps.map((_,i)=>`<span class="${i<=stap?'aan':''}"></span>`).join('');
+  $('#vorige').disabled = stap===0;
+  $('#volgende').disabled = stap===caps.length-1;
+}
+function stopFilm(){ clearInterval(timer); timer=null; $('#speel').textContent = '▶ Speel af'; }
+function speel(){
+  if (timer){ stopFilm(); return; }
+  const n = films[huidig].caps.length;
+  if (stap===n-1){ stap=0; toonStap(); }
+  $('#speel').textContent = '❚❚ Pauze';
+  timer = setInterval(() => {
+    if (stap < n-1){ stap++; toonStap(); }
+    if (stap===n-1) stopFilm();
+  }, 4200);
+}
+$('#speel').addEventListener('click', speel);
+$('#vorige').addEventListener('click', () => { stopFilm(); if (stap>0){stap--; toonStap();} });
+$('#volgende').addEventListener('click', () => { stopFilm(); if (stap<films[huidig].caps.length-1){stap++; toonStap();} });
+$$('.filmkeuze button').forEach(b => b.addEventListener('click', () => {
+  stopFilm();
+  huidig = b.dataset.film; stap = 0;
+  $$('.filmkeuze button').forEach(x => x.setAttribute('aria-selected', x===b ? 'true':'false'));
+  $$('.film').forEach(f => { f.toggleAttribute('hidden', f.dataset.film!==huidig); f.classList.remove('s1','s2','s3'); });
+  $('#vraagkop').textContent = 'Onderzoeksvraag: ' + films[huidig].vraag;
+  toonStap();
+}));
+toonStap();
+
+/* ---------- gevarensymbolen ---------- */
+const SYM = {
+  GHS01:`<circle cx="44" cy="60" r="10"/><path d="M51 52 L56 45 M60 40 l6-6 M64 48 l9-2 M61 56 l9 3 M37 43 l-4-7 M30 55 l-8-1 M47 40 l1-9 M58 66 l7 4" stroke="#111" stroke-width="3" stroke-linecap="round"/><circle cx="68" cy="38" r="2.4"/><circle cx="31" cy="66" r="2.2"/><circle cx="56" cy="32" r="2"/>`,
+  GHS02:`<path d="M50 24 C60 37 66 45 62 59 C60 67 54 71 50 71 C42 71 37 65 37 57 C37 49 43 45 45 37 C48 43 50 45 53 43 C54 37 52 31 50 24 Z"/><rect x="34" y="74" width="32" height="4"/>`,
+  GHS03:`<g transform="translate(15 -5) scale(.7)"><path d="M50 24 C60 37 66 45 62 59 C60 67 54 71 50 71 C42 71 37 65 37 57 C37 49 43 45 45 37 C48 43 50 45 53 43 C54 37 52 31 50 24 Z"/></g><circle cx="50" cy="63" r="9" fill="none" stroke="#111" stroke-width="4.5"/><rect x="36" y="77" width="28" height="3.5"/>`,
+  GHS04:`<g transform="rotate(-18 50 58)"><rect x="28" y="50" width="40" height="17" rx="8.5"/><rect x="66" y="54" width="7" height="9"/><rect x="72" y="51" width="4" height="15" rx="1"/></g>`,
+  GHS05:`<g transform="rotate(-35 36 32)"><rect x="31" y="22" width="9" height="20" rx="2"/></g><g transform="rotate(35 64 32)"><rect x="60" y="22" width="9" height="20" rx="2"/></g><path d="M42 44 v6 M44 48 v7 M58 44 v6 M56 48 v7" stroke="#111" stroke-width="2.5" stroke-linecap="round"/><path d="M29 64 h8 l2 3 l2-3 h7 v10 h-19 z"/><path d="M54 74 v-7 l3-4 h11 l2 3 h3 v8 z"/><path d="M60 63 v-4 M64 63 v-5 M68 64 v-4" stroke="#111" stroke-width="2.5" stroke-linecap="round"/>`,
+  GHS06:`<circle cx="50" cy="42" r="12.5"/><rect x="44" y="50" width="12" height="9" rx="2"/><circle cx="45" cy="41" r="3.4" fill="#fff"/><circle cx="55" cy="41" r="3.4" fill="#fff"/><path d="M48.5 50 l1.5-3 l1.5 3 z" fill="#fff"/><path d="M35 61 L65 74 M65 61 L35 74" stroke="#111" stroke-width="5" stroke-linecap="round"/><circle cx="33" cy="60" r="3"/><circle cx="67" cy="60" r="3"/><circle cx="33" cy="75" r="3"/><circle cx="67" cy="75" r="3"/>`,
+  GHS07:`<rect x="45" y="27" width="10" height="32" rx="3"/><circle cx="50" cy="69" r="5.5"/>`,
+  GHS08:`<circle cx="50" cy="29" r="7.5"/><path d="M34 76 C34 54 40 40 50 40 C60 40 66 54 66 76 Z"/><path d="M50 49 l2.6 6 6.4 .4 -5 4 1.7 6.2 -5.7-3.5 -5.7 3.5 1.7-6.2 -5-4 6.4-.4 z" fill="#fff"/>`,
+  GHS09:`<path d="M37 74 V40 M37 50 l-7-7 M37 46 l8-9 M37 58 l9-5 M37 62 l-6-4" stroke="#111" stroke-width="3" stroke-linecap="round" fill="none"/><ellipse cx="57" cy="67" rx="10" ry="5"/><path d="M66 67 l8-5 v10 z"/><path d="M50 65 l3 3 M53 65 l-3 3" stroke="#fff" stroke-width="1.4"/><path d="M31 76 h38" stroke="#111" stroke-width="3" stroke-linecap="round"/>`
+};
+const picto = (id, label) => `<svg viewBox="0 0 100 100" role="img" aria-label="${label||'gevarensymbool'}"><polygon points="50,5 95,50 50,95 5,50" fill="#fff" stroke="#d6001c" stroke-width="6" stroke-linejoin="round"/><g fill="#111">${SYM[id]}</g></svg>`;
+
+const PICTOS = [
+  {id:'GHS01', naam:'Ontplofbaar', teken:'een ontploffende bom', bet:'De stof kan ontploffen door een schok, wrijving, vuur of warmte.', vb:'vuurwerk', doe:'Weg van vuur en warmte. Niet laten vallen of schudden.'},
+  {id:'GHS02', naam:'Ontvlambaar', teken:'een vlam', bet:'De stof vat heel gemakkelijk vlam.', vb:'aceton (nagellakremover), alcohol, aanstekergas, benzine', doe:'Weg van vlammen en vonken. Niet roken.'},
+  {id:'GHS03', naam:'Oxiderend', teken:'een vlam boven een cirkel', bet:'De stof helpt een brand. Een vuur wordt groter en heviger.', vb:'geconcentreerd waterstofperoxide, kaliumpermanganaat', doe:'Weg houden van brandbare stoffen.'},
+  {id:'GHS04', naam:'Gas onder druk', teken:'een gasfles', bet:'Gas in een fles onder hoge druk. De fles kan ontploffen bij warmte. Heel koud gas kan bevriezingswonden geven.', vb:'gasfles met propaan, CO₂ of zuurstof', doe:'Niet in de zon of bij warmte zetten. De fles goed vastzetten.'},
+  {id:'GHS05', naam:'Bijtend', teken:'vloeistof die op een hand en op metaal druppelt', bet:'De stof beschadigt je huid en ogen ernstig en kan metalen aantasten.', vb:'ontstopper, zoutzuur, natriumhydroxide', doe:'Handschoenen en een veiligheidsbril dragen.'},
+  {id:'GHS06', naam:'Giftig', teken:'een doodshoofd met gekruiste beenderen', bet:'Al een kleine hoeveelheid kan dodelijk zijn: door inslikken, inademen of via de huid.', vb:'methanol, rattengif', doe:'Niet aanraken, niet inademen, niet inslikken. Handen wassen.'},
+  {id:'GHS07', naam:'Schadelijk of irriterend', teken:'een uitroepteken', bet:'De stof kan je huid of ogen irriteren, een allergie geven of schadelijk zijn. Minder erg dan giftig.', vb:'sommige was- en vaatwasmiddelen', doe:'Handschoenen dragen. Niet in je ogen laten komen.'},
+  {id:'GHS08', naam:'Gevaar voor de gezondheid', teken:'een mens met een ster op de borst', bet:'De stof kan je op lange termijn ernstig ziek maken, bijvoorbeeld je longen of andere organen beschadigen.', vb:'benzine, terpentine', doe:'Niet inademen. De ruimte goed verluchten.'},
+  {id:'GHS09', naam:'Gevaarlijk voor het milieu', teken:'een dode boom en een dode vis', bet:'De stof is giftig voor planten en dieren, vooral in het water.', vb:'bleekwater, insectengif', doe:'Nooit in de gootsteen of in de natuur gieten. Naar het containerpark brengen.'}
+];
+const grid = $('#picto-grid');
+PICTOS.forEach(p => {
+  const b = document.createElement('button'); b.className='picto-kaart'; b.type='button'; b.setAttribute('aria-pressed','false');
+  b.innerHTML = picto(p.id, p.naam) + `<b>${p.naam}</b><span class="ghs">${p.id}</span>`;
+  b.addEventListener('click', () => toonPicto(p, b));
+  grid.appendChild(b);
+});
+function toonPicto(p, knop){
+  $$('.picto-kaart').forEach(k => k.setAttribute('aria-pressed', k===knop ? 'true':'false'));
+  $('#picto-detail').innerHTML = picto(p.id, p.naam) + `<dl>
+    <div><dt>${p.id} · symbool</dt><dd><b style="font-family:var(--f-display);font-size:1.3rem">${p.naam}</b><br>Je ziet ${p.teken}.</dd></div>
+    <div><dt>Wat betekent het?</dt><dd>${p.bet}</dd></div>
+    <div><dt>Voorbeeld</dt><dd>${p.vb}</dd></div>
+    <div><dt>Wat doe jij?</dt><dd>${p.doe}</dd></div></dl>`;
+}
+toonPicto(PICTOS[1], grid.children[1]);
+$('#etiket-picto').innerHTML = picto('GHS05','Bijtend');
+
+/* quiz */
+function quiz(){
+  const el = $('#oef-quiz');
+  const reeks = shuffle(PICTOS);
+  let i = 0, juist = 0;
+  scores.quiz = {juist:0, totaal:reeks.length, klaar:false};
+  function vraag(){
+    if (i >= reeks.length){
+      el.innerHTML = `<div class="oef-kop"><h3>Oefening 3 · Welk symbool is dit?</h3><span class="score">${juist} / ${reeks.length}</span></div>
+        <p>${juist===reeks.length ? 'Alles juist. Je kent alle gevarensymbolen!' : 'Klaar. Bekijk de symbolen die je fout had nog eens bij A en probeer opnieuw.'}</p>
+        <button class="knop opnieuw" type="button">↺ Opnieuw</button>`;
+      el.querySelector('.opnieuw').addEventListener('click', () => { quiz(); updateIkKan(); });
+      return;
+    }
+    const p = reeks[i];
+    const opts = shuffle([p, ...shuffle(PICTOS.filter(x=>x!==p)).slice(0,3)]);
+    el.innerHTML = `<div class="oef-kop"><h3>Oefening 3 · Welk symbool is dit?</h3><span class="score">${i+1} van ${reeks.length} · ${juist} juist</span></div>
+      <div class="quiz"><div class="groot-picto">${picto(p.id,'Welk symbool?')}</div>
+      <div class="rechts"><div class="opties">${opts.map(o=>`<button type="button" data-id="${o.id}">${o.naam}</button>`).join('')}</div>
+      <div class="fb" aria-live="polite"></div><button class="knop hoofd" type="button" hidden>Volgende ▶</button></div></div>`;
+    const volg = el.querySelector('.knop');
+    el.querySelectorAll('.opties button').forEach(b => b.addEventListener('click', () => {
+      const ok = b.dataset.id === p.id;
+      el.querySelectorAll('.opties button').forEach(x => { x.disabled = true; if (x.dataset.id===p.id) x.classList.add('juist'); });
+      if (!ok) b.classList.add('fout'); else juist++;
+      el.querySelector('.fb').textContent = ok ? `Juist! ${p.bet}` : `Niet juist. Dit is: ${p.naam}. ${p.bet}`;
+      scores.quiz = {juist, totaal:reeks.length, klaar: i===reeks.length-1};
+      updateIkKan();
+      volg.hidden = false; volg.focus();
+    }));
+    volg.addEventListener('click', () => { i++; vraag(); });
+  }
+  vraag();
+}
+quiz();
+
+/* etiket */
+const ETIKET = {
+  naam:['1 · Naam en inhoud','Wat is het product en welke gevaarlijke stof zit erin? Hier: natriumhydroxide.'],
+  symbool:['2 · Gevarensymbool','Dit is het symbool <b>Bijtend</b> (GHS05). De stof beschadigt je huid en ogen ernstig.'],
+  signaal:['3 · Signaalwoord','Er zijn twee signaalwoorden. <b>Gevaar</b> = ernstig gevaar. <b>Waarschuwing</b> = minder ernstig.'],
+  h:['4 · H-zinnen = gevaar','De H-zinnen zeggen <b>wat het gevaar is</b>. Hier: de stof tast metalen aan en geeft ernstige brandwonden.'],
+  p:['5 · P-zinnen = voorzorg','De P-zinnen zeggen <b>wat jij moet doen</b>: buiten het bereik van kinderen houden, handschoenen en bril dragen, en wat je doet als het in je ogen komt.']
+};
+function toonDeel(k){
+  $$('#etiket .deel').forEach(d => d.setAttribute('aria-pressed', d.dataset.deel===k ? 'true':'false'));
+  const [t, u] = ETIKET[k];
+  $('#etiket-uitleg').innerHTML = `<h3>${t}</h3><p>${u}</p><p class="eyebrow" style="text-transform:none;letter-spacing:0">Klik op een ander nummer op het etiket.</p>`;
+}
+$$('#etiket .deel').forEach(d => d.addEventListener('click', () => toonDeel(d.dataset.deel)));
+toonDeel('naam');
+
+/* H of P */
+sorteer($('#oef-hp'), {
+  id:'hp', titel:'Oefening 4 · Gevaar of voorzorg?', toonCode:true,
+  opdracht:'Zegt de zin wat het gevaar is (H)? Of zegt de zin wat jij moet doen (P)?',
+  opties:[{k:'H',label:'Gevaar (H-zin)'},{k:'P',label:'Voorzorg (P-zin)'}],
+  items:[
+    {code:'H225', tekst:'Licht ontvlambare vloeistof en damp.', antwoord:'H', uitleg:'De zin beschrijft een gevaar: de stof vat snel vuur.'},
+    {code:'P280', tekst:'Beschermende handschoenen/beschermende kleding/oogbescherming/gelaatsbescherming dragen.', antwoord:'P', uitleg:'Het is een opdracht: <i>dragen</i>.'},
+    {code:'H314', tekst:'Veroorzaakt ernstige brandwonden en oogletsel.', antwoord:'H', uitleg:'De zin zegt wat de stof met je doet: <i>veroorzaakt</i>.'},
+    {code:'P102', tekst:'Buiten het bereik van kinderen houden.', antwoord:'P', uitleg:'Het is een opdracht: <i>houden</i>.'},
+    {code:'H302', tekst:'Schadelijk bij inslikken.', antwoord:'H', uitleg:'De zin beschrijft een gevaar: <i>schadelijk</i>.'},
+    {code:'P210', tekst:'Verwijderd houden van warmte, hete oppervlakken, vonken, open vuur en andere ontstekingsbronnen. Niet roken.', antwoord:'P', uitleg:'Het zijn opdrachten: <i>verwijderd houden</i>, <i>niet roken</i>.'},
+    {code:'H400', tekst:'Zeer giftig voor in het water levende organismen.', antwoord:'H', uitleg:'De zin beschrijft een gevaar voor het milieu.'},
+    {code:'P273', tekst:'Voorkom lozing in het milieu.', antwoord:'P', uitleg:'Het is een opdracht: <i>voorkom</i>.'},
+    {code:'H319', tekst:'Veroorzaakt ernstige oogirritatie.', antwoord:'H', uitleg:'De zin zegt wat de stof met je ogen doet.'},
+    {code:'P260', tekst:'Stof/rook/gas/nevel/damp/spuitnevel niet inademen.', antwoord:'P', uitleg:'Het is een opdracht: <i>niet inademen</i>.'},
+    {code:'H336', tekst:'Kan slaperigheid of duizeligheid veroorzaken.', antwoord:'H', uitleg:'De zin beschrijft een gevaar: <i>kan … veroorzaken</i>.'},
+    {code:'P305+P351+P338', tekst:'BIJ CONTACT MET DE OGEN: voorzichtig afspoelen met water gedurende een aantal minuten; contactlenzen verwijderen, indien mogelijk; blijven spoelen.', antwoord:'P', uitleg:'Het zegt wat jij moet doen: <i>afspoelen</i>, <i>blijven spoelen</i>.'}
+  ]
+});
+
+/* ik kan */
+function regel(label, s){
+  if (!s) return '';
+  const ok = s.klaar && s.juist/s.totaal >= .8;
+  const st = s.klaar ? `${s.juist}/${s.totaal}` : (s.juist||s.klaar ? `${s.juist}/${s.totaal} …` : 'nog niet');
+  return `<li><span class="st ${ok?'ok':''}">${ok?'✓ ':''}${st}</span><span>${label}</span></li>`;
+}
+function updateIkKan(){
+  $('#ikkan11').innerHTML = `<h3>Ik kan beschrijven wat in de chemie bestudeerd wordt</h3>
+    <ul>${regel('Ik herken of een verschijnsel fysisch of chemisch is.', scores.fc)}${regel('Ik ken de drie onderzoeksgebieden van de chemie: samenstelling, eigenschappen en omzettingen.', scores.gebied)}</ul>
+    <p>Lukt het? Beschrijf nu zelf in één zin: <i>De chemie onderzoekt …</i></p>`;
+  $('#ikkan12').innerHTML = `<h3>Ik ken de gevarensymbolen en kan H- en P-zinnen indelen</h3>
+    <ul>${regel('Ik herken de 9 gevarensymbolen.', scores.quiz)}${regel('Ik deel H- en P-zinnen in als gevaar of voorzorg.', scores.hp)}</ul>
+    <p>Een ✓ verschijnt als je een oefening af hebt met minstens 80 % juist.</p>`;
+}
+updateIkKan();
+window.stopFilm = stopFilm;
+})();
+</script>
+
+</body></html>
