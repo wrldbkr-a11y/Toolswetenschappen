@@ -1,0 +1,951 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>*,*::before,*::after{box-sizing:border-box}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Scheidingsmissie</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+:root{
+  --bg:#f3f7f6; --surface:#ffffff; --surface-2:#e9f1ef; --ink:#13201d; --muted:#53635e; --line:#d3dfdb;
+  --accent:#0b6b66; --accent-ink:#ffffff; --accent-soft:#d8eeeb;
+  --good:#1d7a3b; --good-soft:#dcf2e2; --bad:#b3261e; --bad-soft:#fbe3e1;
+  --proton:#d9443a; --neutron:#8d989c; --elektron:#2f6fb0; --valentie:#e8a400;
+  --c-metaal:#c9dcef; --c-nietmetaal:#cdebd3; --c-halfmetaal:#f3e1b0; --c-edelgas:#e3d4f2; --c-bgroep:#e4e8ea;
+  --c-alkali:#f4b6a8; --c-aardalkali:#f6d6a1; --c-halogeen:#b9e3c4;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, Consolas, monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0e1614; --surface:#16211e; --surface-2:#1c2a26; --ink:#e4eeeb; --muted:#9aaca6; --line:#2b3c37;
+  --accent:#5cc7bd; --accent-ink:#06211e; --accent-soft:#183a35;
+  --good:#6fd38f; --good-soft:#163524; --bad:#ff8a80; --bad-soft:#3d1a18;
+  --proton:#ef5b50; --neutron:#9aa6aa; --elektron:#5b9be0; --valentie:#ffc533;
+  --c-metaal:#24384d; --c-nietmetaal:#1f3d29; --c-halfmetaal:#4a3d18; --c-edelgas:#3a2b4d; --c-bgroep:#26302e;
+  --c-alkali:#5a2a22; --c-aardalkali:#57401b; --c-halogeen:#1e4a2c;
+  color-scheme:dark; } }
+:root[data-theme="dark"]{
+  --bg:#0e1614; --surface:#16211e; --surface-2:#1c2a26; --ink:#e4eeeb; --muted:#9aaca6; --line:#2b3c37;
+  --accent:#5cc7bd; --accent-ink:#06211e; --accent-soft:#183a35;
+  --good:#6fd38f; --good-soft:#163524; --bad:#ff8a80; --bad-soft:#3d1a18;
+  --proton:#ef5b50; --neutron:#9aa6aa; --elektron:#5b9be0; --valentie:#ffc533;
+  --c-metaal:#24384d; --c-nietmetaal:#1f3d29; --c-halfmetaal:#4a3d18; --c-edelgas:#3a2b4d; --c-bgroep:#26302e;
+  --c-alkali:#5a2a22; --c-aardalkali:#57401b; --c-halogeen:#1e4a2c;
+  color-scheme:dark; }
+
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.55}
+.wrap{max-width:1000px;margin:0 auto;padding-inline:18px;padding-block:28px 64px;display:flex;flex-direction:column;gap:28px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.15}
+h1{font-size:clamp(2rem,6vw,3.2rem);font-weight:800;letter-spacing:-.02em}
+h2{font-size:1.6rem;font-weight:800}
+h3{font-size:1.2rem;font-weight:600}
+p{margin:0;max-width:65ch}
+a{color:var(--accent)}
+.eyebrow{font-family:var(--f-mono);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:6px}
+.hero{display:flex;flex-direction:column;gap:10px}
+.hero p{color:var(--muted)}
+.lpd{font-size:.92rem;color:var(--muted)}
+
+.lesnav{display:grid;grid-template-columns:repeat(var(--tabs,2),1fr);gap:10px;position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:8px}
+.lestab{text-align:left;background:var(--surface);border:2px solid var(--line);border-radius:14px;padding:10px 12px;display:flex;gap:10px;align-items:flex-start;min-width:0}
+.lestab .nr{font-family:var(--f-mono);font-weight:700;font-size:1.15rem;color:var(--accent)}
+.lestab .t{display:flex;flex-direction:column;gap:2px;min-width:0}
+.lestab b{font-family:var(--f-display);font-size:1rem;line-height:1.2}
+.lestab small{color:var(--muted);font-size:.8rem}
+.lestab[aria-selected="true"]{border-color:var(--accent);background:var(--accent-soft)}
+@media (max-width:760px){ .lesnav{grid-template-columns:1fr 1fr;position:static} }
+
+.les{display:flex;flex-direction:column;gap:36px}
+.doel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px;display:flex;flex-direction:column;gap:6px}
+.doel .eyebrow{color:var(--accent)}
+.doel ul{margin:0;padding-left:20px;font-weight:700;font-size:1.05rem}
+.blok{display:flex;flex-direction:column;gap:16px}
+.blok-kop{display:flex;gap:12px;align-items:baseline}
+.blok-kop .letter{font-family:var(--f-mono);font-weight:700;color:var(--accent-ink);background:var(--accent);border-radius:8px;padding:2px 9px;font-size:.95rem}
+.tip{background:var(--accent-soft);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:6px}
+.tip b{font-family:var(--f-display);font-size:1.08rem}
+.def{background:var(--surface);border:2px solid var(--accent);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:4px}
+.def .eyebrow{color:var(--accent)}
+.def p{font-size:1.12rem}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media (max-width:700px){.duo,.trio{grid-template-columns:1fr}}
+.kaart{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.kaart h3{font-size:1.2rem}
+.knop{background:var(--surface);border:2px solid var(--line);border-radius:10px;padding:7px 14px;font-weight:700}
+.knop:hover{border-color:var(--accent)}
+.knop.hoofd{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.knop[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent)}
+.knop:disabled{opacity:.45;cursor:default}
+.knoppen{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.fb{min-height:1.4em}
+.fb b{font-family:var(--f-display)}
+.ok-t{color:var(--good)} .nok-t{color:var(--bad)}
+
+.oefening{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.oef-kop{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;align-items:center}
+.score{font-family:var(--f-mono);font-weight:700;font-variant-numeric:tabular-nums;background:var(--surface-2);border-radius:8px;padding:4px 10px}
+.items{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.item{border:1px solid var(--line);border-left:6px solid var(--line);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:8px}
+.item .zin{font-weight:700}
+.item .opties{display:flex;flex-wrap:wrap;gap:6px}
+.item .opties button{background:var(--surface-2);border:2px solid var(--line);border-radius:10px;padding:5px 11px;font-weight:700}
+.item .opties button:hover:not(:disabled){border-color:var(--accent)}
+.item .opties button:disabled{cursor:default}
+.item .opties button.gekozen{border-color:var(--ink)}
+.item.juist{border-left-color:var(--good);background:var(--good-soft)}
+.item.fout{border-left-color:var(--bad);background:var(--bad-soft)}
+.item .uitleg{font-size:.95rem}
+.item .uitleg b{font-family:var(--f-display)}
+.item.juist .uitleg b{color:var(--good)}
+.item.fout .uitleg b{color:var(--bad)}
+.item .invul{display:flex;flex-wrap:wrap;gap:8px}
+.item .invul input{border:2px solid var(--line);border-radius:8px;padding:5px 10px;background:var(--surface);width:12em;max-width:100%}
+.opnieuw{align-self:flex-start}
+
+.tabelwrap{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:14px}
+table{border-collapse:collapse;width:100%;font-size:.95rem}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--f-mono);font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+td b{font-family:var(--f-display)}
+
+.notatie{display:inline-flex;align-items:center;gap:2px;font-family:var(--f-display);font-weight:800;vertical-align:middle}
+.notatie .ge{display:inline-flex;flex-direction:column;align-items:flex-end;font-size:.6em;line-height:1.05;font-family:var(--f-mono);font-weight:700}
+.notatie .sy{font-size:1.15em}
+
+.linkkaart{display:flex;gap:14px;align-items:center;background:var(--surface);border:2px dashed var(--accent);border-radius:14px;padding:14px 16px;text-decoration:none;color:var(--ink)}
+.linkkaart:hover{background:var(--accent-soft)}
+.linkkaart b{font-family:var(--f-display);font-size:1.1rem}
+.linkkaart .pijl{font-size:1.6rem;color:var(--accent);margin-left:auto}
+
+.ikkan{background:var(--surface);border:2px solid var(--accent);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.ikkan ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.ikkan li{display:flex;gap:10px;align-items:baseline}
+.ikkan .st{font-family:var(--f-mono);font-weight:700;font-variant-numeric:tabular-nums;min-width:5.5em;color:var(--muted)}
+.ikkan .st.ok{color:var(--good)}
+@media (prefers-reduced-motion: reduce){ *{transition:none!important;animation:none!important} }
+
+
+.sloten{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+.slot-ind{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 2px;border-radius:10px;background:var(--surface);border:2px solid var(--line);font-size:.78rem;text-align:center;line-height:1.15}
+.slot-ind .ic{font-size:1.3rem;line-height:1}
+.slot-ind .cijfer{font-family:var(--f-mono);font-weight:700;font-size:1.05rem;min-height:1.2em}
+.slot-ind.open{border-color:var(--good);background:var(--good-soft)}
+.slot-ind.nu{border-color:var(--accent)}
+@media (max-width:560px){.slot-ind .nm{display:none}}
+.statusbalk{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;justify-content:space-between;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:8px 12px;font-variant-numeric:tabular-nums}
+.statusbalk b{font-family:var(--f-mono)}
+.rollen{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.rol{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:8px 10px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.rol .wie{font-family:var(--f-display);font-weight:800;font-size:1.05rem}
+.rol .wat{font-size:.88rem;color:var(--muted)}
+.rol .taak{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+@media (max-width:560px){.rollen{grid-template-columns:1fr}}
+.kamer{background:var(--surface);border:2px solid var(--accent);border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:14px}
+.kamer h2{font-size:1.5rem}
+.kamer .opdr{font-size:1.1rem}
+.beeld{background:var(--surface-2);border-radius:12px;padding:8px}
+.beeld svg{display:block;width:100%;max-width:560px;height:auto;margin:0 auto}
+.beeld text{font-family:var(--f-body);fill:var(--ink)}
+.rij{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:10px;align-items:center;border:1px solid var(--line);border-left:6px solid var(--line);border-radius:12px;padding:8px 10px}
+.rij .vr{font-weight:700}
+.rij .keuzes{display:flex;flex-wrap:wrap;gap:6px}
+.rij .keuzes button{background:var(--surface-2);border:2px solid var(--line);border-radius:10px;padding:5px 10px;font-weight:700}
+.rij .keuzes button[aria-pressed="true"]{border-color:var(--ink);background:var(--accent-soft)}
+.rij.ok{border-left-color:var(--good);background:var(--good-soft)}
+.rij.nok{border-left-color:var(--bad);background:var(--bad-soft)}
+.rij .hint{grid-column:1/-1;font-size:.92rem}
+@media (max-width:640px){.rij{grid-template-columns:1fr}}
+.kaartjes{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px}
+.kaartje{background:var(--surface);border:2px solid var(--line);border-radius:12px;padding:10px;font-weight:700;text-align:left;display:flex;gap:8px;align-items:center}
+.kaartje .vink{width:22px;height:22px;border-radius:6px;border:2px solid var(--line);display:grid;place-items:center;flex:none;font-size:.9rem}
+.kaartje[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.kaartje[aria-pressed="true"] .vink{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.kaartje.nok{border-color:var(--bad);background:var(--bad-soft)}
+.kaartje.ok{border-color:var(--good)}
+.volgorde{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.volgorde li{display:flex;gap:10px;align-items:center;border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:var(--surface)}
+.volgorde .pos{font-family:var(--f-mono);font-weight:700;width:1.6em;color:var(--muted)}
+.volgorde .nm{flex:1;font-weight:700;min-width:0}
+.volgorde .nm span{font-weight:400;color:var(--muted)}
+.volgorde button{background:var(--surface-2);border:2px solid var(--line);border-radius:8px;width:38px;height:34px;font-weight:700}
+.volgorde li.ok{background:var(--good-soft);border-color:var(--good)}
+.volgorde li.nok{background:var(--bad-soft);border-color:var(--bad)}
+.labels{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:8px}
+.labels li{display:flex;gap:8px;align-items:center;border:1px solid var(--line);border-radius:10px;padding:6px 8px}
+.labels .n{font-family:var(--f-mono);font-weight:700;background:var(--accent);color:var(--accent-ink);border-radius:50%;width:26px;height:26px;display:grid;place-items:center;flex:none}
+.labels select{flex:1;min-width:0;border:2px solid var(--line);border-radius:8px;padding:5px 6px;background:var(--surface)}
+.labels li.ok{background:var(--good-soft);border-color:var(--good)}
+.labels li.nok{background:var(--bad-soft);border-color:var(--bad)}
+.mc{display:grid;gap:8px}
+.mc button{background:var(--surface-2);border:2px solid var(--line);border-radius:10px;padding:10px 12px;text-align:left;font-weight:700}
+.mc button[aria-pressed="true"]{border-color:var(--ink);background:var(--accent-soft)}
+.mc button.nok{border-color:var(--bad);background:var(--bad-soft)}
+.mc button.ok{border-color:var(--good);background:var(--good-soft)}
+.fbk{border-radius:12px;padding:10px 12px;font-weight:700}
+.fbk.nok{background:var(--bad-soft);color:var(--bad)}
+.fbk.ok{background:var(--good-soft);color:var(--good)}
+.fbk span{font-weight:400;color:var(--ink)}
+.zeg{background:var(--accent-soft);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:6px}
+.zeg .eyebrow{color:var(--accent)}
+.zeg p{font-size:1.15rem;font-family:var(--f-display);font-weight:600;line-height:1.9}
+.zeg .gat{display:inline-block;min-width:6.5em;border-bottom:3px solid var(--accent);margin:0 2px}
+.zeg .woord{background:var(--surface);border-radius:6px;padding:0 6px;color:var(--good)}
+.cijferbeeld{display:flex;align-items:center;gap:14px}
+.cijferbeeld .groot{font-family:var(--f-mono);font-weight:700;font-size:2.6rem;background:var(--surface);border:3px solid var(--good);border-radius:14px;width:68px;height:78px;display:grid;place-items:center;color:var(--good)}
+.startform{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.startform label{display:flex;flex-direction:column;gap:4px;font-weight:700;font-size:.95rem}
+.startform input{border:2px solid var(--line);border-radius:10px;padding:8px 10px;background:var(--surface)}
+@media (max-width:560px){.startform{grid-template-columns:1fr}}
+.codeslot{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.codeslot input{width:3.2rem;height:3.6rem;text-align:center;font-family:var(--f-mono);font-weight:700;font-size:1.8rem;border:3px solid var(--line);border-radius:12px;background:var(--surface)}
+.codeslot input:focus{border-color:var(--accent);outline:none}
+.kraan .straal{stroke-dasharray:6 6;animation:straal .5s linear infinite}
+@keyframes straal{from{stroke-dashoffset:12}to{stroke-dashoffset:0}}
+.tech text{font-family:var(--f-body);fill:var(--ink)}
+.tech .stroom{stroke-dasharray:6 6;animation:straal .6s linear infinite}
+.tech .valt{transform-box:fill-box;animation:valt 1.3s linear infinite}
+@keyframes valt{0%{transform:translateY(-6px);opacity:0}20%{opacity:1}100%{transform:translateY(34px);opacity:0}}
+.voor{display:inline-block;font-family:var(--f-mono);font-size:.75rem;font-weight:700;color:var(--accent);background:var(--accent-soft);border-radius:999px;padding:1px 8px;margin-bottom:2px}
+.rij .vr{display:flex;flex-direction:column;align-items:flex-start;gap:2px}
+.toon-knop{border-style:dashed}
+.leerkracht summary{cursor:pointer;font-weight:700}
+.leerkracht{background:var(--surface);border:1px dashed var(--line);border-radius:12px;padding:10px 14px}
+.leerkracht ul{margin:6px 0 0;padding-left:20px}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a href="index.html" style="align-self:flex-start;font-weight:700;color:var(--accent);text-decoration:none">← Alle tools</a>
+  <header class="hero">
+    <span class="eyebrow">Chemie · 3de jaar · mengsels, stofeigenschappen en scheidingstechnieken</span>
+    <h1>Scheidingsmissie</h1>
+  </header>
+  <div id="spel"></div>
+</div>
+<script>
+(function(){
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+const shuffle = a => { a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; };
+const norm = s => String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/\s+/g,' ').trim();
+const komma = (x,d=1) => x.toFixed(d).replace('.',',');
+const scores = {};
+let ikkanFn = () => {};
+const updateIkKan = () => ikkanFn();
+
+/* tabbladen + #anker */
+function tabs(){
+  const toon = id => {
+    $$('.lestab').forEach(t => t.setAttribute('aria-selected', t.getAttribute('aria-controls')===id?'true':'false'));
+    $$('main.les').forEach(m => m.hidden = m.id!==id);
+    document.dispatchEvent(new CustomEvent('tab', {detail:id}));
+  };
+  $$('.lestab').forEach(t => t.addEventListener('click', () => toon(t.getAttribute('aria-controls'))));
+  const h = location.hash.slice(1);
+  if (h && document.getElementById(h) && document.getElementById(h).matches('main.les')) toon(h);
+}
+
+/* sorteeroefening: opties per oefening of per item, antwoord mag een lijst zijn */
+function sorteer(el, cfg){
+  function render(){
+    const items = cfg.vast ? cfg.items : shuffle(cfg.items);
+    el.innerHTML = `<div class="oef-kop"><h3>${cfg.titel}</h3><span class="score" data-score>0 / ${items.length}</span></div>
+      ${cfg.opdracht?`<p>${cfg.opdracht}</p>`:''}<ul class="items"></ul><button class="knop opnieuw" type="button">↺ Opnieuw</button>`;
+    const ul = el.querySelector('.items'); let juist=0, klaar=0;
+    scores[cfg.id] = {juist:0,totaal:items.length,klaar:false};
+    items.forEach(it => {
+      const opties = it.opties || cfg.opties;
+      const goed = [].concat(it.antwoord);
+      const li = document.createElement('li'); li.className='item';
+      li.innerHTML = `<span class="zin">${it.tekst}</span><div class="opties">${(it.opties?shuffle(opties):opties).map(o=>`<button type="button" data-k="${o.k}">${o.label}</button>`).join('')}</div><div class="uitleg" hidden></div>`;
+      li.querySelectorAll('.opties button').forEach(b => b.addEventListener('click', () => {
+        const ok = goed.includes(b.dataset.k);
+        li.classList.add(ok?'juist':'fout'); b.classList.add('gekozen');
+        li.querySelectorAll('.opties button').forEach(x => x.disabled=true);
+        const lbl = goed.map(k => opties.find(o=>o.k===k).label).join(' of ');
+        const u = li.querySelector('.uitleg'); u.hidden=false;
+        u.innerHTML = (ok?'<b>Juist!</b> ':`<b>Niet juist.</b> Het is: ${lbl}. `) + (it.uitleg||'');
+        klaar++; if(ok) juist++;
+        el.querySelector('[data-score]').textContent = `${juist} / ${items.length}`;
+        scores[cfg.id] = {juist,totaal:items.length,klaar:klaar===items.length}; updateIkKan();
+      }));
+      ul.appendChild(li);
+    });
+    el.querySelector('.opnieuw').addEventListener('click', () => { render(); updateIkKan(); });
+  }
+  render();
+}
+
+/* invuloefening: leerling typt het antwoord */
+function invul(el, cfg){
+  function render(){
+    const pool = typeof cfg.items==='function' ? cfg.items() : cfg.items;
+    const items = cfg.vast ? pool : shuffle(pool);
+    el.innerHTML = `<div class="oef-kop"><h3>${cfg.titel}</h3><span class="score" data-score>0 / ${items.length}</span></div>
+      ${cfg.opdracht?`<p>${cfg.opdracht}</p>`:''}<ul class="items"></ul><button class="knop opnieuw" type="button">↺ ${cfg.opnieuwTekst||'Opnieuw'}</button>`;
+    const ul = el.querySelector('.items'); let juist=0, klaar=0;
+    scores[cfg.id] = {juist:0,totaal:items.length,klaar:false};
+    items.forEach((it,i) => {
+      const li = document.createElement('li'); li.className='item';
+      li.innerHTML = `<span class="zin">${it.tekst}</span><form class="invul"><input type="text" autocomplete="off" aria-label="antwoord ${i+1}" id="${cfg.id}-in-${i}"><button class="knop" type="submit">Controleer</button></form><div class="uitleg" hidden></div>`;
+      li.querySelector('form').addEventListener('submit', e => {
+        e.preventDefault();
+        const inp = li.querySelector('input'); const v = inp.value.trim(); if(!v) return;
+        const res = (it.check || cfg.check || standaardCheck)(v, it);
+        const u = li.querySelector('.uitleg'); u.hidden=false;
+        if (res.bijna){ u.innerHTML = `<b>Bijna.</b> ${res.bijna}`; return; }
+        li.classList.add(res.ok?'juist':'fout'); inp.disabled = true; li.querySelector('button').disabled = true;
+        u.innerHTML = (res.ok?'<b>Juist!</b> ':`<b>Niet juist.</b> Het is: ${it.toon||it.antwoord[0]}. `) + (it.uitleg||'');
+        klaar++; if(res.ok) juist++;
+        el.querySelector('[data-score]').textContent = `${juist} / ${items.length}`;
+        scores[cfg.id] = {juist,totaal:items.length,klaar:klaar===items.length}; updateIkKan();
+      });
+      ul.appendChild(li);
+    });
+    el.querySelector('.opnieuw').addEventListener('click', () => { render(); updateIkKan(); });
+  }
+  render();
+  return {render};
+}
+function standaardCheck(v, it){ return {ok: it.antwoord.some(a => norm(a)===norm(v))}; }
+function symboolCheck(v, it){
+  const s = it.antwoord[0];
+  if (v===s) return {ok:true};
+  if (v.toLowerCase()===s.toLowerCase()) return {bijna:`Let op de hoofdletters: een symbool begint met een hoofdletter, de tweede letter is klein.`};
+  return {ok:false};
+}
+
+/* "ik kan"-regel */
+function regel(label, s){
+  if(!s) return `<li><span class="st">nog niet</span><span>${label}</span></li>`;
+  const ok = s.klaar && s.juist/s.totaal>=.8;
+  const st = s.klaar ? `${s.juist}/${s.totaal}` : (s.juist?`${s.juist}/${s.totaal} …`:'nog niet');
+  return `<li><span class="st ${ok?'ok':''}">${ok?'✓ ':''}${st}</span><span>${label}</span></li>`;
+}
+
+/* notatie met massagetal en atoomnummer */
+const notatie = (sym, A, Z, lading='') => `<span class="notatie"><span class="ge"><span>${A}</span><span>${Z}</span></span><span class="sy">${sym}</span>${lading?`<sup style="font-size:.6em">${lading}</sup>`:''}</span>`;
+
+/* verdeling elektronen over schillen (eenvoudig: 2, 8, 8, 2) */
+function schillen(e){ const max=[2,8,8,2]; const r=[]; let rest=e; for(const m of max){ if(rest<=0) break; const n=Math.min(m,rest); r.push(n); rest-=n; } return r; }
+
+/* schillenmodel tekenen */
+function bohrSvg(p, n, e, opt={}){
+  const sch = opt.schillen || schillen(e); const R = sch.length>4 ? [0,36,58,80,102,124] : [0,46,72,98,122]; const cx=140, cy=140; const er = sch.length>4 || Math.max(...sch,0)>8 ? 4.5 : 6;
+  let s = `<svg viewBox="0 0 280 280" role="img" aria-label="schillenmodel">`;
+  for (let i=1;i<=Math.max(sch.length, opt.minSchillen||0);i++) s += `<circle cx="${cx}" cy="${cy}" r="${R[i]}" fill="none" stroke="var(--line)" stroke-width="2"/>`;
+  // kern
+  const tot = p+n; const kr = tot ? Math.min(sch.length>4?26:30, 10+Math.sqrt(tot)*3.6) : 8;
+  s += `<circle cx="${cx}" cy="${cy}" r="${kr}" fill="var(--surface)" stroke="var(--ink)" stroke-width="1.5"/>`;
+  const deeltjes = []; for(let i=0;i<p;i++) deeltjes.push('p'); for(let i=0;i<n;i++) deeltjes.push('n');
+  // mengen
+  const gemengd = []; let ip=0, inn=0; while(ip<p||inn<n){ if(ip<p){gemengd.push('p');ip++;} if(inn<n){gemengd.push('n');inn++;} }
+  gemengd.forEach((d,i) => { const a=i*2.39996, r=Math.sqrt(i+0.5)*(kr-5)/Math.sqrt(Math.max(tot,1)); const x=cx+r*Math.cos(a), y=cy+r*Math.sin(a);
+    s += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${tot>60?2.4:tot>24?3.2:4}" fill="${d==='p'?'var(--proton)':'var(--neutron)'}" stroke="var(--ink)" stroke-width=".5"/>`; });
+  sch.forEach((cnt,i) => { const laatste = i===sch.length-1;
+    for(let k=0;k<cnt;k++){ const a = -Math.PI/2 + k*2*Math.PI/cnt + i*0.3; const x=cx+R[i+1]*Math.cos(a), y=cy+R[i+1]*Math.sin(a);
+      s += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${er}" fill="${laatste&&opt.valentie!==false?'var(--valentie)':'var(--elektron)'}" stroke="var(--ink)" stroke-width="1"/>`; } });
+  if (opt.labels) ['K','L','M','N','O'].slice(0,sch.length).forEach((l,i)=>{ s += `<text x="${cx+R[i+1]*0.71+4}" y="${cy-R[i+1]*0.71-4}" font-size="12" font-family="var(--f-mono)" fill="var(--muted)">${l}</text>`; });
+  return s + '</svg>';
+}
+
+/* elementen: Z, symbool, naam, (meest voorkomend) massagetal, Ar, groep (1-18), periode, EN, categorie */
+const ELEM = [
+ [1,'H','waterstof',1,1.0,1,1,2.1,'nm'],[2,'He','helium',4,4.0,18,1,null,'eg'],
+ [3,'Li','lithium',7,6.9,1,2,1.0,'m'],[4,'Be','beryllium',9,9.0,2,2,1.5,'m'],[5,'B','boor',11,10.8,13,2,2.0,'nm'],[6,'C','koolstof',12,12.0,14,2,2.5,'nm'],[7,'N','stikstof',14,14.0,15,2,3.0,'nm'],[8,'O','zuurstof',16,16.0,16,2,3.5,'nm'],[9,'F','fluor',19,19.0,17,2,4.0,'nm'],[10,'Ne','neon',20,20.2,18,2,null,'eg'],
+ [11,'Na','natrium',23,23.0,1,3,0.9,'m'],[12,'Mg','magnesium',24,24.3,2,3,1.2,'m'],[13,'Al','aluminium',27,27.0,13,3,1.5,'m'],[14,'Si','silicium',28,28.1,14,3,1.8,'nm'],[15,'P','fosfor',31,31.0,15,3,2.1,'nm'],[16,'S','zwavel',32,32.1,16,3,2.5,'nm'],[17,'Cl','chloor',35,35.5,17,3,3.0,'nm'],[18,'Ar','argon',40,39.9,18,3,null,'eg'],
+ [19,'K','kalium',39,39.1,1,4,0.8,'m'],[20,'Ca','calcium',40,40.1,2,4,1.0,'m'],[31,'Ga','gallium',69,69.7,13,4,1.6,'m'],[32,'Ge','germanium',74,72.6,14,4,1.8,'m'],[33,'As','arseen',75,74.9,15,4,2.0,'nm'],[34,'Se','seleen',80,79.0,16,4,2.4,'nm'],[35,'Br','broom',79,79.9,17,4,2.8,'nm'],[36,'Kr','krypton',84,83.8,18,4,null,'eg'],
+ [37,'Rb','rubidium',85,85.5,1,5,0.8,'m'],[38,'Sr','strontium',88,87.6,2,5,1.0,'m'],[49,'In','indium',115,114.8,13,5,1.7,'m'],[50,'Sn','tin',120,118.7,14,5,1.8,'m'],[51,'Sb','antimoon',121,121.8,15,5,1.9,'m'],[52,'Te','telluur',130,127.6,16,5,2.1,'nm'],[53,'I','jood',127,126.9,17,5,2.5,'nm'],[54,'Xe','xenon',132,131.3,18,5,null,'eg'],
+ [55,'Cs','cesium',133,132.9,1,6,0.7,'m'],[56,'Ba','barium',138,137.3,2,6,0.9,'m'],[81,'Tl','thallium',205,204.4,13,6,1.8,'m'],[82,'Pb','lood',208,207.2,14,6,1.8,'m'],[83,'Bi','bismut',209,209.0,15,6,1.9,'m'],[84,'Po','polonium',209,209,16,6,2.0,'m'],[85,'At','astaat',210,210,17,6,2.2,'nm'],[86,'Rn','radon',222,222,18,6,null,'eg'],
+ [87,'Fr','francium',223,223,1,7,0.7,'m'],[88,'Ra','radium',226,226,2,7,0.9,'m']
+].map(([Z,sym,naam,A,Ar,g,per,en,cat])=>({Z,sym,naam,A,Ar,g,per,en,cat}));
+const BIJZ = {Z:{}, sym:{}}; ELEM.forEach(e => { BIJZ.Z[e.Z]=e; BIJZ.sym[e.sym]=e; });
+const GROEP_ROMEINS = {1:'Ia',2:'IIa',13:'IIIa',14:'IVa',15:'Va',16:'VIa',17:'VIIa',18:'VIIIa'};
+const VALENTIE = g => g<=2 ? g : g-10;
+
+
+/* ================= gegevens ================= */
+const ROLLEN = [
+  {rol:'Lezer', wat:'Leest de opdracht hardop voor.'},
+  {rol:'Beslisser', wat:'Klikt op het slot als iedereen klaar is.'},
+  {rol:'Schrijver', wat:'Schrijft de zin op het wisbordje en steekt het omhoog.'}
+];
+const cyrb53 = (str, seed = 0) => { let h1 = 0xdeadbeef ^ seed, h2 = 0x41c6ce57 ^ seed;
+  for (let i = 0, ch; i < str.length; i++) { ch = str.charCodeAt(i); h1 = Math.imul(h1 ^ ch, 2654435761); h2 = Math.imul(h2 ^ ch, 1597334677); }
+  h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507); h1 ^= Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+  h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507); h2 ^= Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+  return 4294967296 * (2097151 & h2) + (h1 >>> 0); };
+const maakCode = pw => { let x = cyrb53(pw.toLowerCase()+'#code'); const d=[]; for(let i=0;i<6;i++){ d.push(1 + (x % 9)); x = Math.floor(x/9); } return d; };
+const VERSIES = {4914641873715827:'A', 6622760550453345:'B', 2024765356473679:'C'};
+function mulberry(a){ return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a>>>15, 1|a); t = t + Math.imul(t ^ t>>>7, 61|t) ^ t; return ((t ^ t>>>14) >>> 0) / 4294967296; }; }
+const mix = (a, r) => { a = a.slice(); for (let i=a.length-1;i>0;i--){ const j=Math.floor(r()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; };
+const vrnd = () => mulberry(st.slot*97 + (st.versie||'A').charCodeAt(0)*131 + 7);
+let CODE = [0,0,0,0,0,0];
+const SLOTNAMEN = ['Het monster','Eigenschappen','Technieken','Waarom?','Het plan','Destilleren'];
+const TECH = ['zeven','decanteren','filtreren','centrifugeren','uitdampen','destilleren','extraheren','adsorberen'];
+const T = k => ({k, label:k});
+
+let st = {fase:'start', slot:0, hints:0, getoond:0, start:0, namen:['','',''], klaar:null, versie:null, code:null};
+try { const o = JSON.parse(localStorage.getItem('missie-drinkwater')||'null'); if (o && o.fase && o.code) { st = o; CODE = o.code; } } catch(e){}
+const bewaar = () => { try { localStorage.setItem('missie-drinkwater', JSON.stringify(st)); } catch(e){} };
+const tijd = () => { const s = Math.floor(((st.klaar||Date.now()) - st.start)/1000); return `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`; };
+const naam = i => st.namen[i] || ['Leerling A','Leerling B','Leerling C'][i];
+const team = () => { const n = st.namen.filter(Boolean); return n.length>=2 ? n : [naam(0),naam(1),naam(2)]; };
+const voor = i => team()[(i + st.slot) % team().length];
+const tag = i => `<span class="voor">👤 ${voor(i)}</span>`;
+
+/* ================= tekeningen ================= */
+const emmer = `<svg viewBox="0 0 560 250" role="img" aria-label="Een emmer vervuild rivierwater met olie, troebel water, zand en kiezels">
+  <path d="M150 40 L170 220 Q170 232 182 232 H318 Q330 232 330 220 L350 40" fill="none" stroke="var(--ink)" stroke-width="3"/>
+  <path d="M153 66 L347 66 L345 84 L155 84 Z" fill="#e8c547" opacity=".85"/>
+  <path d="M155 84 L345 84 L333 196 L167 196 Z" fill="#9c7bb0" opacity=".55"/>
+  <path d="M155 84 L345 84 L333 196 L167 196 Z" fill="#a3814f" opacity=".35"/>
+  ${Array.from({length:40},(_,i)=>`<circle cx="${175+((i*37)%150)}" cy="${92+((i*53)%96)}" r="${1.2+(i%3)*.6}" fill="#6b4a24" opacity=".7"/>`).join('')}
+  <path d="M167 196 L333 196 L330 220 Q330 228 318 228 H182 Q170 228 170 220 Z" fill="#c79d5c"/>
+  ${[[190,212,9],[222,208,11],[260,214,8],[292,209,10],[312,216,7]].map(([x,y,r])=>`<ellipse cx="${x}" cy="${y}" rx="${r}" ry="${r*.75}" fill="#8d9399" stroke="var(--ink)" stroke-width="1"/>`).join('')}
+  <path d="M232 70 l30 -14" stroke="#5b3d1e" stroke-width="4" stroke-linecap="round"/>
+  <g font-size="14">
+    <path d="M345 75 H392" stroke="var(--muted)"/><text x="398" y="80">olie die bovenop drijft</text>
+    <path d="M330 130 H392" stroke="var(--muted)"/><text x="398" y="128">troebel, gekleurd water</text><text x="398" y="146" font-size="12" fill="var(--muted)">smaakt zout, ruikt vies</text>
+    <path d="M330 202 H392" stroke="var(--muted)"/><text x="398" y="206">zand op de bodem</text>
+    <path d="M170 214 H120" stroke="var(--muted)"/><text x="114" y="218" text-anchor="end">kiezels</text>
+    <path d="M232 64 H120" stroke="var(--muted)"/><text x="114" y="68" text-anchor="end">takjes</text>
+  </g></svg>`;
+
+const G = 'stroke="var(--glas)" stroke-width="2.5" fill="none"';
+const erlen = (cx,top) => `<path d="M${cx-10} ${top} V${top+14} L${cx-40} ${top+52} H${cx+40} L${cx+10} ${top+14} V${top}" ${G}/>`;
+const brander = (x,top) => `<rect x="${x-8}" y="${top}" width="16" height="40" fill="var(--neutron)" stroke="var(--ink)" stroke-width="1.5"/><rect x="${x-20}" y="${top+38}" width="40" height="8" rx="2" fill="var(--neutron)" stroke="var(--ink)" stroke-width="1.5"/>`;
+const vlam = (x,y) => `<path d="M${x} ${y-26} C${x+10} ${y-12} ${x+9} ${y} ${x} ${y} C${x-9} ${y} ${x-10} ${y-12} ${x} ${y-26} Z" fill="#f2a33a"/><path d="M${x} ${y-14} C${x+5} ${y-6} ${x+4} ${y} ${x} ${y} C${x-4} ${y} ${x-5} ${y-6} ${x} ${y-14} Z" fill="#3d7bd9"/>`;
+const druppels = (x,y) => [0,1,2].map(i=>`<circle cx="${x}" cy="${y}" r="3" fill="#9fd3ea" class="valt" style="animation-delay:${i*0.43}s"/>`).join('');
+const DEST_LABELS = [
+  {naam:'thermometer', p:[110,44]}, {naam:'destillatiekolf', p:[84,138]}, {naam:'bunsenbrander', p:[110,228]},
+  {naam:'koeler', p:[228,138]}, {naam:'destillaat', p:[322,240]}, {naam:'residu', p:[110,172]}
+];
+const destSvg = () => `<svg class="tech" viewBox="0 0 420 262" role="img" aria-label="Destillatieopstelling met genummerde onderdelen" style="--glas:var(--ink)">
+  ${brander(110,205)}${vlam(110,203)}
+  <path d="M81.7 165 A32 32 0 0 0 138.3 165 Z" fill="#d9d9d9" stroke="var(--muted)"/>
+  ${Array.from({length:10},(_,i)=>`<rect x="${92+(i%5)*7}" y="${168+Math.floor(i/5)*5}" width="4" height="4" fill="#fff" stroke="var(--muted)" stroke-width=".7"/>`).join('')}
+  <circle cx="110" cy="150" r="32" ${G}/><path d="M102 121 V80 M118 121 V80" ${G}/>
+  <rect x="104" y="72" width="12" height="9" fill="var(--neutron)"/>
+  <line x1="110" y1="28" x2="110" y2="92" stroke="var(--ink)" stroke-width="2"/><circle cx="110" cy="94" r="3.5" fill="#d0342c"/>
+  <polygon points="159.7,98 290.6,147.9 282,170.3 151.1,120.4" fill="#9fd3ea" fill-opacity=".35" stroke="var(--ink)" stroke-width="2.5"/>
+  <line x1="118" y1="95" x2="320" y2="172" stroke="var(--ink)" stroke-width="2.5"/>
+  <path d="M118 95 L320 172" stroke="#bfe3f2" stroke-width="3" class="stroom"/>
+  <path d="M172 103 V80 h-12 M270 166 V190 h12" stroke="var(--ink)" stroke-width="2.5" fill="none"/>
+  ${druppels(322,184)}<path d="M293 228 H351 L362 242 H282 Z" fill="#9fd3ea"/>
+  ${erlen(322,190)}
+  ${DEST_LABELS.map((l,i)=>`<circle cx="${l.p[0]}" cy="${l.p[1]}" r="11" fill="var(--accent)" stroke="var(--surface)" stroke-width="2"/><text x="${l.p[0]}" y="${l.p[1]+4}" text-anchor="middle" font-size="12" font-weight="700" style="fill:var(--accent-ink);font-family:var(--f-mono)">${i+1}</text>`).join('')}
+  </svg>`;
+
+/* ================= sloten ================= */
+const SLOTEN = [
+ { titel:'Slot 1 · Bekijk het monster', soort:'rijen',
+   opdr:'Kijk naar de emmer. Welk soort mengsel vormt elk bestanddeel met het water?',
+   beeld: emmer,
+   rijen:[
+    {vr:'zand en modder in het water', opties:['suspensie','emulsie','oplossing','schuim','grof mengsel'], goed:['suspensie'], hint:'Zand is een vaste stof. Water is een vloeistof. Hoe heet vast in vloeistof?'},
+    {vr:'olie (als kleine druppeltjes) in het water', opties:['suspensie','emulsie','oplossing','schuim','grof mengsel'], goed:['emulsie'], hint:'Olie is een vloeistof die niet oplost in water. Vloeistof in vloeistof heet …'},
+    {vr:'zout in het water', opties:['suspensie','emulsie','oplossing','schuim','grof mengsel'], goed:['oplossing'], hint:'Je ziet het zout niet meer, maar je proeft het wel. Het is opgelost.'},
+    {vr:'kiezels en zand samen', opties:['suspensie','emulsie','oplossing','schuim','grof mengsel'], goed:['grof mengsel'], hint:'Twee vaste stoffen die je apart ziet.'},
+    {vr:'Het hele emmermengsel is …', opties:['homogeen','heterogeen'], goed:['heterogeen'], hint:'Zie je verschillende lagen en deeltjes? Dan is het niet overal hetzelfde.'}
+   ],
+   zeg:'Het water is een [heterogeen] mengsel. Zand vormt een [suspensie], olie een [emulsie] en zout een [oplossing].' },
+
+ { titel:'Slot 2 · Welke eigenschappen helpen?', soort:'kaartjes',
+   opdr:'Om bestanddelen te scheiden, gebruik je stofeigenschappen. Duid alle stofeigenschappen aan. Laat de voorwerpseigenschappen uit.',
+   kaartjes:[
+    {t:'kooktemperatuur', goed:true}, {t:'massadichtheid', goed:true}, {t:'oplosbaarheid in water', goed:true}, {t:'kleur', goed:true}, {t:'geur', goed:true},
+    {t:'volume van de emmer', goed:false, hint:'Het volume hoort bij deze emmer. Een andere emmer heeft een ander volume.'},
+    {t:'massa van het monster', goed:false, hint:'Neem je meer water, dan wordt de massa groter. Dat is een voorwerpseigenschap.'},
+    {t:'temperatuur van het water', goed:false, hint:'De temperatuur kan veranderen: warm of koud water is nog altijd water.'},
+    {t:'vorm van de kiezels', goed:false, hint:'Elke kiezel heeft een andere vorm. Vorm hoort bij het voorwerp.'}
+   ],
+   zeg:'Een stofeigenschap hoort bij de [stof] zelf. Ze blijft [gelijk], hoe groot het stuk ook is.' },
+
+ { titel:'Slot 3 · Kies de techniek', soort:'rijen',
+   opdr:'Welke scheidingstechniek gebruik je om dit bestanddeel uit het water te halen?',
+   rijen:[
+    {vr:'de kiezels en takjes', opties:TECH, goed:['zeven'], hint:'Ze zijn veel groter dan de waterdeeltjes. Je houdt ze tegen met een rooster met gaatjes.'},
+    {vr:'het zand dat naar de bodem zakt', opties:TECH, goed:['decanteren'], hint:'Het zand ligt al op de bodem. Je giet het water erboven voorzichtig af.'},
+    {vr:'de olie die bovenop drijft', opties:TECH, goed:['decanteren'], hint:'De olie drijft. Je kan het water eronder laten weglopen of de olie afgieten. Dat is dezelfde techniek als bij het zand.'},
+    {vr:'de fijne modderdeeltjes die blijven zweven', opties:TECH, goed:['filtreren','centrifugeren'], hint:'Ze zakken niet vanzelf. Je laat het water door papier met heel kleine gaatjes lopen.'},
+    {vr:'de kleurstof en de vieze geur', opties:TECH, goed:['adsorberen'], hint:'Je gebruikt actieve kool. Daar blijven kleur- en geurstoffen aan hangen.'},
+    {vr:'het opgeloste zout (we willen het water houden!)', opties:TECH, goed:['destilleren'], hint:'Bij uitdampen verdampt het water en ben je het kwijt. Je moet de waterdamp opvangen en afkoelen.'},
+    {vr:'Met het zuivere water zet het dorp thee om te vieren. Welke techniek is thee zetten?', opties:TECH, goed:['extraheren'], hint:'Het hete water haalt kleur- en smaakstoffen uit de theeblaadjes. De blaadjes zelf lossen niet op.'}
+   ],
+   zeg:'Zand en olie scheid ik door te [decanteren]. Het zout haal ik eruit door te [destilleren], want dan vang ik het [water] op.' },
+
+ { titel:'Slot 4 · Waarop is het gebaseerd?', soort:'rijen',
+   opdr:'Elke techniek werkt omdat de bestanddelen verschillen in een stofeigenschap. Welke?',
+   rijen:[
+    {vr:'zeven', opties:['deeltjesgrootte','massadichtheid','kooktemperatuur','oplosbaarheid','adsorptievermogen'], goed:['deeltjesgrootte'], hint:'Groot blijft liggen, klein valt door.'},
+    {vr:'decanteren', opties:['deeltjesgrootte','massadichtheid','kooktemperatuur','oplosbaarheid','adsorptievermogen'], goed:['massadichtheid'], hint:'Zwaar zakt, licht drijft.'},
+    {vr:'filtreren', opties:['deeltjesgrootte','massadichtheid','kooktemperatuur','oplosbaarheid','adsorptievermogen'], goed:['deeltjesgrootte'], hint:'De gaatjes in het papier zijn te klein voor de modder.'},
+    {vr:'adsorberen', opties:['deeltjesgrootte','massadichtheid','kooktemperatuur','oplosbaarheid','adsorptievermogen'], goed:['adsorptievermogen'], hint:'Sommige stoffen blijven beter aan actieve kool hangen dan andere.'},
+    {vr:'destilleren', opties:['deeltjesgrootte','massadichtheid','kooktemperatuur','oplosbaarheid','adsorptievermogen'], goed:['kooktemperatuur'], hint:'Water kookt bij 100 °C, zout pas bij meer dan 1400 °C.'},
+    {vr:'extraheren (thee zetten)', opties:['deeltjesgrootte','massadichtheid','kooktemperatuur','oplosbaarheid','adsorptievermogen'], goed:['oplosbaarheid'], hint:'De smaakstoffen lossen op in heet water, de blaadjes niet.'}
+   ],
+   zeg:'Destilleren is gebaseerd op een verschil in [kooktemperatuur]. Adsorberen is gebaseerd op een verschil in [adsorptievermogen].' },
+
+ { titel:'Slot 5 · Maak het zuiveringsplan', soort:'volgorde',
+   opdr:'Zet de stappen in de juiste volgorde: wat doe je eerst, wat doe je als laatste? Gebruik de pijltjes.',
+   items:[
+    {t:'zeven', w:'kiezels en takjes', why:'Eerst het grootste vuil eruit. Anders raakt alles verstopt.'},
+    {t:'decanteren', w:'zand en olie', why:'Het zand zakt en de olie drijft. Giet het water ertussen af.'},
+    {t:'filtreren', w:'fijne modder', why:'Pas filtreren als het grove vuil weg is. Anders zit de filter meteen vol.'},
+    {t:'adsorberen', w:'kleur en geur', why:'De actieve kool werkt het best met water dat al helder is.'},
+    {t:'destilleren', w:'zout', why:'Als laatste: zo hou je zuiver water over.'}
+   ],
+   zeg:'Je begint met de [grootste] deeltjes. De kleurstof en de geur blijven hangen aan [actieve kool]: dat is [adsorberen]. Je eindigt met wat [opgelost] is.' },
+
+ { titel:'Slot 6 · De destillatie', soort:'dest',
+   opdr:'Laatste stap! Benoem de onderdelen van de destillatieopstelling en beantwoord de vraag.',
+   vraag:{vr:'Waarom destilleren we het zoute water en dampen we het niet uit?', opties:[
+     {t:'Bij uitdampen verdampt het water en ben je het kwijt. Bij destilleren vang je het water op.', goed:true},
+     {t:'Uitdampen haalt het zout er niet uit.', hint:'Toch wel: bij uitdampen blijft het zout achter. Maar wat gebeurt er met het water?'},
+     {t:'Destilleren gaat sneller dan uitdampen.', hint:'Snelheid is niet de reden. Denk aan wat je wilt overhouden.'}]},
+   zeg:'Bij destilleren verdampt het water, koelt het af in de [koeler] en vang ik het op als [destillaat].' }
+];
+
+/* ================= opstellingen ================= */
+const pins = L => L.map((l,i)=>`<circle cx="${l.p[0]}" cy="${l.p[1]}" r="11" fill="var(--accent)" stroke="var(--surface)" stroke-width="2"/><text x="${l.p[0]}" y="${l.p[1]+4}" text-anchor="middle" font-size="12" font-weight="700" style="fill:var(--accent-ink);font-family:var(--f-mono)">${i+1}</text>`).join('');
+const OPST_A = { naam:'destillatieopstelling', labels: DEST_LABELS, svg: destSvg,
+  hint:'Volg de weg van het water: het kookt in de kolf, gaat als damp door de koeler en druppelt in de erlenmeyer. Wat achterblijft in de kolf is het residu.' };
+const UITD_LABELS = [
+  {naam:'verdampschaal', p:[254,128]}, {naam:'draadnetje', p:[150,158]}, {naam:'driepoot', p:[264,214]},
+  {naam:'bunsenbrander', p:[208,232]}, {naam:'residu', p:[208,148]}
+];
+const OPST_B = { naam:'opstelling om uit te dampen', labels: UITD_LABELS,
+  svg: () => `<svg class="tech" viewBox="0 0 420 262" role="img" aria-label="Opstelling om uit te dampen met genummerde onderdelen" style="--glas:var(--ink)">
+    <line x1="160" y1="160" x2="148" y2="248" stroke="var(--neutron)" stroke-width="4"/><line x1="256" y1="160" x2="268" y2="248" stroke="var(--neutron)" stroke-width="4"/>
+    <rect x="146" y="156" width="124" height="5" fill="var(--neutron)"/>${Array.from({length:12},(_,i)=>`<line x1="${150+i*10}" y1="156" x2="${150+i*10}" y2="161" stroke="var(--surface)" stroke-width="1"/>`).join('')}
+    ${brander(208,202)}${vlam(208,200)}
+    <path d="M160 130 Q208 180 256 130 Z" fill="var(--surface)" stroke="var(--ink)" stroke-width="3"/>
+    <path d="M178 145 Q208 165 238 145 Z" fill="#9fd3ea"/>
+    ${Array.from({length:10},(_,i)=>`<rect x="${194+(i%5)*5}" y="${147+Math.floor(i/5)*4}" width="4" height="4" fill="#fff" stroke="var(--muted)" stroke-width=".7"/>`).join('')}
+    ${[190,210,228].map(x=>`<path d="M${x} 124 q-6 -10 0 -20 q6 -10 0 -20" stroke="var(--muted)" stroke-width="2.5" fill="none" opacity=".7"/>`).join('')}
+    ${pins(UITD_LABELS)}</svg>`,
+  hint:'Van onder naar boven: de bunsenbrander verwarmt, de driepoot draagt het draadnetje en op het draadnetje staat de verdampschaal. Wat achterblijft in de schaal is het residu.' };
+const FILT_LABELS = [
+  {naam:'statief', p:[70,160]}, {naam:'filtreerpapier', p:[241,86]}, {naam:'trechter', p:[218,165]},
+  {naam:'residu', p:[210,124]}, {naam:'filtraat', p:[196,240]}, {naam:'erlenmeyer', p:[246,236]}
+];
+const OPST_C = { naam:'filtratieopstelling', labels: FILT_LABELS,
+  svg: () => `<svg class="tech" viewBox="0 0 420 262" role="img" aria-label="Filtratieopstelling met genummerde onderdelen" style="--glas:var(--ink)">
+    <rect x="40" y="244" width="120" height="8" rx="2" fill="var(--neutron)"/><line x1="70" y1="30" x2="70" y2="244" stroke="var(--neutron)" stroke-width="5"/><line x1="70" y1="82" x2="172" y2="82" stroke="var(--neutron)" stroke-width="4"/>
+    <path d="M168 78 L252 78 L218 146 V186 H202 V146 Z" fill="var(--surface)" fill-opacity=".6" stroke="var(--ink)" stroke-width="2.5"/>
+    <path d="M176 82 L244 82 L210 140 Z" fill="var(--surface)" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="4 3"/>
+    <path d="M190 104 L230 104 L210 136 Z" fill="#f2c4d2"/><path d="M196 114 L224 114 L210 139 Z" fill="#6b4a24"/>
+    ${druppels(210,192)}<path d="M186 226 H234 L251 247 H169 Z" fill="#f2c4d2"/>
+    ${erlen(210,196)}
+    ${pins(FILT_LABELS)}</svg>`,
+  hint:'Het filtreerpapier zit in de trechter. Wat op het papier blijft liggen, is het residu. Wat doorloopt in de erlenmeyer, is het filtraat.' };
+
+/* ================= beelden B en C ================= */
+const zeeEmmer = `<svg viewBox="0 0 560 250" role="img" aria-label="Een emmer zeewater met een olievlek, wier, schelpjes en zand">
+  <path d="M150 40 L170 220 Q170 232 182 232 H318 Q330 232 330 220 L350 40" fill="none" stroke="var(--ink)" stroke-width="3"/>
+  <path d="M153 66 L347 66 L345 80 L155 80 Z" fill="#3b3b3b" opacity=".75"/>
+  <path d="M155 80 L345 80 L333 196 L167 196 Z" fill="#5fa8a0" opacity=".55"/>
+  <path d="M155 80 L345 80 L333 196 L167 196 Z" fill="#a3814f" opacity=".2"/>
+  ${Array.from({length:30},(_,i)=>`<circle cx="${175+((i*37)%150)}" cy="${90+((i*53)%100)}" r="${1.2+(i%3)*.5}" fill="#8a6a3a" opacity=".7"/>`).join('')}
+  ${[190,236,290].map((x,i)=>`<path d="M${x} 196 q-8 -24 0 -48 q8 -24 0 -46" stroke="#3f7a3a" stroke-width="5" fill="none" stroke-linecap="round" opacity=".9"/>`).join('')}
+  <path d="M167 196 L333 196 L330 220 Q330 228 318 228 H182 Q170 228 170 220 Z" fill="#d9bf8a"/>
+  ${[[196,214],[250,210],[300,216]].map(([x,y])=>`<path d="M${x-10} ${y+6} Q${x} ${y-12} ${x+10} ${y+6} Z" fill="#f2e6d8" stroke="var(--ink)" stroke-width="1"/>`).join('')}
+  <g font-size="14">
+    <path d="M345 73 H392" stroke="var(--muted)"/><text x="398" y="78">olievlek (drijft)</text>
+    <path d="M330 130 H392" stroke="var(--muted)"/><text x="398" y="128">troebel zeewater</text><text x="398" y="146" font-size="12" fill="var(--muted)">smaakt zout, ruikt naar vis</text>
+    <path d="M330 206 H392" stroke="var(--muted)"/><text x="398" y="210">zand op de bodem</text>
+    <path d="M186 214 H120" stroke="var(--muted)"/><text x="114" y="218" text-anchor="end">schelpjes</text>
+    <path d="M190 120 H120" stroke="var(--muted)"/><text x="114" y="124" text-anchor="end">wier</text>
+  </g></svg>`;
+const rozenPot = `<svg viewBox="0 0 560 250" role="img" aria-label="Een glazen pot met alcohol, rozenblaadjes, takjes en aarde">
+  <rect x="170" y="30" width="160" height="16" rx="4" fill="var(--neutron)"/>
+  <path d="M176 46 V214 Q176 230 192 230 H308 Q324 230 324 214 V46" fill="none" stroke="var(--ink)" stroke-width="3"/>
+  <path d="M179 70 H321 V212 Q321 226 306 226 H194 Q179 226 179 212 Z" fill="#f2c4d2" opacity=".55"/>
+  ${[[200,80],[240,74],[280,84],[214,110],[262,104],[300,120],[226,140]].map(([x,y],i)=>`<path d="M${x} ${y} q12 -10 22 0 q-10 12 -22 0 Z" fill="#d6336c" opacity=".9" transform="rotate(${i*40} ${x+11} ${y})"/>`).join('')}
+  <path d="M206 160 l40 -18 M250 170 l34 -10" stroke="#5b3d1e" stroke-width="4" stroke-linecap="round"/>
+  <path d="M179 204 H321 V212 Q321 226 306 226 H194 Q179 226 179 212 Z" fill="#6b4a24"/>
+  ${Array.from({length:22},(_,i)=>`<circle cx="${190+((i*41)%120)}" cy="${150+((i*29)%52)}" r="1.4" fill="#6b4a24" opacity=".7"/>`).join('')}
+  <g font-size="14">
+    <path d="M300 80 H392" stroke="var(--muted)"/><text x="398" y="84">rozenblaadjes</text>
+    <path d="M321 140 H392" stroke="var(--muted)"/><text x="398" y="138">alcohol</text><text x="398" y="156" font-size="12" fill="var(--muted)">ruikt al een beetje naar rozen</text>
+    <path d="M321 214 H392" stroke="var(--muted)"/><text x="398" y="218">aarde op de bodem</text>
+    <path d="M210 158 H120" stroke="var(--muted)"/><text x="114" y="162" text-anchor="end">takjes</text>
+  </g></svg>`;
+
+/* ================= sloten B: zout uit de zee ================= */
+const EIG5 = ['deeltjesgrootte','massadichtheid','kooktemperatuur','oplosbaarheid','adsorptievermogen'];
+const MSOORT = ['suspensie','emulsie','oplossing','schuim','nevel','grof mengsel'];
+const SLOTEN_B = [
+ { titel:'Slot 1 · Bekijk het monster', soort:'rijen',
+   opdr:'Kijk naar de emmer zeewater. Welk soort mengsel is het telkens?',
+   beeld: zeeEmmer,
+   rijen:[
+    {vr:'zand in het zeewater', opties:MSOORT, goed:['suspensie'], hint:'Zand is vast, water is vloeibaar. Vast in vloeistof heet …'},
+    {vr:'olie (als kleine druppeltjes) in het zeewater', opties:MSOORT, goed:['emulsie'], hint:'Olie lost niet op in water. Vloeistof in vloeistof heet …'},
+    {vr:'zout in het water', opties:MSOORT, goed:['oplossing'], hint:'Je ziet het zout niet, maar je proeft het wel.'},
+    {vr:'schelpjes en zand samen', opties:MSOORT, goed:['grof mengsel'], hint:'Twee vaste stoffen die je apart ziet.'},
+    {vr:'De emmer met al dit vuil is …', opties:['homogeen','heterogeen'], goed:['heterogeen'], hint:'Zie je verschillende lagen en deeltjes?'},
+    {vr:'Zuiver zeewater, zonder vuil, is …', opties:['homogeen','heterogeen'], goed:['homogeen'], hint:'In zuiver zeewater zie je het zout niet meer apart. Het is overal hetzelfde.'}
+   ],
+   zeg:'Zeewater met vuil is [heterogeen]. Zuiver zeewater is [homogeen], want het zout is [opgelost].' },
+ { titel:'Slot 2 · Welke eigenschappen helpen?', soort:'kaartjes',
+   opdr:'Om bestanddelen te scheiden, gebruik je stofeigenschappen. Duid alle stofeigenschappen aan. Laat de voorwerpseigenschappen uit.',
+   kaartjes:[
+    {t:'kooktemperatuur', goed:true}, {t:'smelttemperatuur', goed:true}, {t:'massadichtheid', goed:true}, {t:'oplosbaarheid in water', goed:true}, {t:'smaak', goed:true},
+    {t:'massa van de zak zout', goed:false, hint:'Een grotere zak zout heeft een grotere massa. Dat hoort bij het voorwerp.'},
+    {t:'volume van de zoutpan', goed:false, hint:'Elke zoutpan kan een ander volume hebben.'},
+    {t:'lengte van het wier', goed:false, hint:'Elk stuk wier is anders lang.'},
+    {t:'temperatuur van de zee', goed:false, hint:'De zee is in de zomer warmer dan in de winter. Het blijft zeewater.'}
+   ],
+   zeg:'De massa van de zak zout is een [voorwerpseigenschap]. De smaak van zout is een [stofeigenschap].' },
+ { titel:'Slot 3 · Kies de techniek', soort:'rijen',
+   opdr:'Welke scheidingstechniek gebruik je?',
+   rijen:[
+    {vr:'de schelpjes en het wier', opties:TECH, goed:['zeven'], hint:'Ze zijn groot. Je houdt ze tegen met een rooster met gaatjes.'},
+    {vr:'de olievlek die bovenop drijft', opties:TECH, goed:['decanteren'], hint:'De olie drijft. Je giet voorzichtig af.'},
+    {vr:'het zand dat naar de bodem zakt', opties:TECH, goed:['decanteren'], hint:'Het zand ligt al op de bodem. Je giet het water erboven af.'},
+    {vr:'de fijne zanddeeltjes die blijven zweven', opties:TECH, goed:['filtreren'], hint:'Ze zakken niet vanzelf. Je laat het water door papier met heel kleine gaatjes lopen.'},
+    {vr:'In het labo test men snel een klein staaltje met heel fijn slib, in buisjes die heel snel ronddraaien.', opties:TECH, goed:['centrifugeren'], hint:'Door het snelle draaien zakken de zware deeltjes naar de bodem van het buisje.'},
+    {vr:'de bruine kleur en de vissengeur', opties:TECH, goed:['adsorberen'], hint:'Je gebruikt actieve kool. Kleur- en geurstoffen blijven eraan hangen.'},
+    {vr:'het zout (we willen het zout houden, het water mag weg)', opties:TECH, goed:['uitdampen'], hint:'Het water mag gewoon verdampen. Je hoeft de waterdamp niet op te vangen. Welke techniek is het eenvoudigst?'},
+    {vr:'Het dorp wil ook drinkwater maken uit zeewater (nu willen we het water houden).', opties:TECH, goed:['destilleren'], hint:'Je wilt het water houden. Je laat het verdampen en vangt de damp op in een koeler.'},
+    {vr:'Van het wier maakt het dorp soep. De smaak gaat uit het wier in het hete water. Welke techniek is dat?', opties:TECH, goed:['extraheren'], hint:'De smaakstoffen lossen op in het hete water. Het wier zelf lost niet op.'}
+   ],
+   zeg:'Wil ik het zout houden, dan kies ik [uitdampen]. Wil ik het water houden, dan kies ik [destilleren].' },
+ { titel:'Slot 4 · Waarop is het gebaseerd?', soort:'rijen',
+   opdr:'Elke techniek werkt omdat de bestanddelen verschillen in een stofeigenschap. Welke?',
+   rijen:[
+    {vr:'zeven', opties:EIG5, goed:['deeltjesgrootte'], hint:'Groot blijft liggen, klein valt door.'},
+    {vr:'decanteren', opties:EIG5, goed:['massadichtheid'], hint:'Zwaar zakt, licht drijft.'},
+    {vr:'filtreren', opties:EIG5, goed:['deeltjesgrootte'], hint:'De gaatjes in het papier zijn te klein voor het zand.'},
+    {vr:'adsorberen', opties:EIG5, goed:['adsorptievermogen'], hint:'Sommige stoffen blijven beter aan actieve kool hangen.'},
+    {vr:'uitdampen', opties:EIG5, goed:['kooktemperatuur'], hint:'Water kookt bij 100 °C, zout pas bij meer dan 1400 °C.'},
+    {vr:'extraheren (wiersoep)', opties:EIG5, goed:['oplosbaarheid'], hint:'De smaakstoffen lossen op in water, het wier niet.'},
+    {vr:'centrifugeren', opties:EIG5, goed:['massadichtheid'], hint:'De zwaardere deeltjes zakken, maar sneller door het draaien.'},
+    {vr:'destilleren', opties:EIG5, goed:['kooktemperatuur'], hint:'Water kookt bij 100 °C, zout niet.'}
+   ],
+   zeg:'Uitdampen is gebaseerd op een verschil in [kooktemperatuur]. Filtreren is gebaseerd op een verschil in [deeltjesgrootte].' },
+ { titel:'Slot 5 · Maak het plan', soort:'volgorde',
+   opdr:'Zet de stappen in de juiste volgorde: wat doe je eerst, wat doe je als laatste? Gebruik de pijltjes.',
+   items:[
+    {t:'zeven', w:'schelpjes en wier', why:'Eerst het grootste vuil eruit.'},
+    {t:'decanteren', w:'zand en olie', why:'Het zand zakt en de olie drijft. Giet het water ertussen af.'},
+    {t:'filtreren', w:'fijn zand', why:'Pas filtreren als het grove vuil weg is. Anders zit de filter meteen vol.'},
+    {t:'adsorberen', w:'kleur en geur', why:'De actieve kool werkt het best met water dat al helder is.'},
+    {t:'uitdampen', w:'zout', why:'Als laatste: het water verdampt en het zuivere zout blijft over.'}
+   ],
+   zeg:'Je begint met de [grootste] deeltjes. Wat [opgelost] is, haal je er als laatste uit door [uitdampen].' },
+ { titel:'Slot 6 · Uitdampen', soort:'dest', opst: OPST_B,
+   opdr:'Laatste stap! Benoem de onderdelen van de opstelling en beantwoord de vraag.',
+   vraag:{vr:'Waarom dampen we hier uit en destilleren we niet?', opties:[
+     {t:'We willen het zout houden. Het water mag weg, dus we hoeven de waterdamp niet op te vangen.', goed:true},
+     {t:'Bij destilleren blijft het zout niet achter.', hint:'Toch wel: ook bij destilleren blijft het zout in de kolf. Maar wat wil je hier houden, en wat mag weg?'},
+     {t:'Uitdampen geeft zuiverder water.', hint:'Bij uitdampen hou je geen water over. Wat wil je hier houden?'}]},
+   zeg:'Bij uitdampen [verdampt] het water en blijft het zout achter in de [verdampschaal].' }
+];
+
+/* ================= sloten C: de parfummakers ================= */
+const SLOTEN_C = [
+ { titel:'Slot 1 · Bekijk het monster', soort:'rijen',
+   opdr:'Kijk naar de pot. Welk soort mengsel is het telkens?',
+   beeld: rozenPot,
+   rijen:[
+    {vr:'aarde in de alcohol', opties:MSOORT, goed:['suspensie'], hint:'Aarde is vast, alcohol is vloeibaar. Vast in vloeistof heet …'},
+    {vr:'de geurstof van de rozen in de alcohol', opties:MSOORT, goed:['oplossing'], hint:'Je ziet de geurstof niet apart, maar je ruikt ze wel. Ze is opgelost.'},
+    {vr:'druppeltjes rozenolie in water', opties:MSOORT, goed:['emulsie'], hint:'Olie lost niet op in water. Vloeistof in vloeistof heet …'},
+    {vr:'parfumspray in de lucht', opties:MSOORT, goed:['nevel'], hint:'Kleine vloeistofdruppeltjes in een gas.'},
+    {vr:'takjes en aarde samen', opties:MSOORT, goed:['grof mengsel'], hint:'Twee vaste stoffen die je apart ziet.'},
+    {vr:'De pot met alles erin is …', opties:['homogeen','heterogeen'], goed:['heterogeen'], hint:'Zie je blaadjes, takjes en aarde apart?'}
+   ],
+   zeg:'Aarde in alcohol is een [suspensie]. De geurstof in alcohol is een [oplossing]. Parfumspray in de lucht is een [nevel].' },
+ { titel:'Slot 2 · Welke eigenschappen helpen?', soort:'kaartjes',
+   opdr:'Om bestanddelen te scheiden, gebruik je stofeigenschappen. Duid alle stofeigenschappen aan. Laat de voorwerpseigenschappen uit.',
+   kaartjes:[
+    {t:'geur', goed:true}, {t:'kooktemperatuur', goed:true}, {t:'oplosbaarheid in alcohol', goed:true}, {t:'kleur', goed:true}, {t:'massadichtheid', goed:true},
+    {t:'volume van het flesje', goed:false, hint:'Een groter flesje heeft een groter volume. Dat hoort bij het voorwerp.'},
+    {t:'massa van de rozenblaadjes', goed:false, hint:'Meer blaadjes, meer massa. Dat is een voorwerpseigenschap.'},
+    {t:'vorm van de pot', goed:false, hint:'Een pot kan rond of vierkant zijn. Vorm hoort bij het voorwerp.'},
+    {t:'temperatuur van de werkplaats', goed:false, hint:'De temperatuur kan veranderen. Het blijft dezelfde stof.'}
+   ],
+   zeg:'De [geur] van een stof is een stofeigenschap. Het [volume] van het flesje is een voorwerpseigenschap.' },
+ { titel:'Slot 3 · Kies de techniek', soort:'rijen',
+   opdr:'Welke scheidingstechniek gebruik je?',
+   rijen:[
+    {vr:'de geurstoffen uit de rozenblaadjes halen met alcohol', opties:TECH, goed:['extraheren'], hint:'De geurstoffen lossen op in alcohol. De blaadjes zelf lossen niet op.'},
+    {vr:'de grote blaadjes en takjes uit de alcohol halen', opties:TECH, goed:['zeven'], hint:'Ze zijn groot. Je houdt ze tegen met een rooster met gaatjes.'},
+    {vr:'de aarde die naar de bodem zakt', opties:TECH, goed:['decanteren'], hint:'De aarde ligt op de bodem. Je giet de alcohol erboven af.'},
+    {vr:'heel fijne troebele deeltjes, snel, in buisjes in een machine die heel snel ronddraait', opties:TECH, goed:['centrifugeren'], hint:'Door het snelle draaien zakken de zware deeltjes naar de bodem van het buisje.'},
+    {vr:'een vieze bruine kleur', opties:TECH, goed:['adsorberen'], hint:'Je gebruikt actieve kool. Kleurstoffen blijven eraan hangen.'},
+    {vr:'de alcohol opvangen om opnieuw te gebruiken (alcohol kookt al bij 78 °C)', opties:TECH, goed:['destilleren'], hint:'Je wilt de alcohol houden. Je laat ze verdampen en vangt de damp op in een koeler.'}
+   ],
+   zeg:'De geur haal ik uit de blaadjes door te [extraheren]. De alcohol win ik terug door te [destilleren].' },
+ { titel:'Slot 4 · Waarop is het gebaseerd?', soort:'rijen',
+   opdr:'Elke techniek werkt omdat de bestanddelen verschillen in een stofeigenschap. Welke?',
+   rijen:[
+    {vr:'extraheren', opties:EIG5, goed:['oplosbaarheid'], hint:'De geurstof lost op in alcohol, het blaadje niet.'},
+    {vr:'zeven', opties:EIG5, goed:['deeltjesgrootte'], hint:'Groot blijft liggen, klein valt door.'},
+    {vr:'decanteren', opties:EIG5, goed:['massadichtheid'], hint:'Zwaar zakt naar de bodem.'},
+    {vr:'centrifugeren', opties:EIG5, goed:['massadichtheid'], hint:'Ook hier zakken de zwaardere deeltjes, maar sneller door het draaien.'},
+    {vr:'adsorberen', opties:EIG5, goed:['adsorptievermogen'], hint:'Sommige stoffen blijven beter aan actieve kool hangen.'},
+    {vr:'destilleren', opties:EIG5, goed:['kooktemperatuur'], hint:'Alcohol kookt al bij 78 °C.'}
+   ],
+   zeg:'Extraheren is gebaseerd op een verschil in [oplosbaarheid]. Centrifugeren is gebaseerd op een verschil in [massadichtheid].' },
+ { titel:'Slot 5 · Maak het plan', soort:'volgorde',
+   opdr:'Zet de stappen in de juiste volgorde: wat doe je eerst, wat doe je als laatste? Gebruik de pijltjes.',
+   items:[
+    {t:'extraheren', w:'blaadjes laten trekken in alcohol', why:'Eerst moet de geur uit de blaadjes in de alcohol komen.'},
+    {t:'zeven', w:'blaadjes en takjes', why:'Daarna haal je het grootste vaste materiaal eruit.'},
+    {t:'decanteren', w:'aarde', why:'De aarde zakt naar de bodem. Giet de alcohol erboven af.'},
+    {t:'centrifugeren', w:'fijne troebeling', why:'De heel fijne deeltjes die blijven zweven, haal je er nu uit.'},
+    {t:'adsorberen', w:'bruine kleur', why:'De actieve kool werkt het best met een heldere vloeistof.'},
+    {t:'destilleren', w:'een deel van de alcohol', why:'Als laatste: je vangt de alcohol op en houdt sterker parfum over.'}
+   ],
+   zeg:'Eerst [extraheren]: de geur moet in de alcohol. Daarna haal je de [vaste] deeltjes eruit.' },
+ { titel:'Slot 6 · Filtreren', soort:'dest', opst: OPST_C,
+   opdr:'Laatste stap! Een klant wil een staaltje. Je filtreert het nog één keer. Benoem de onderdelen en beantwoord de vraag.',
+   vraag:{vr:'Waarom gebruiken we alcohol om de geur uit de blaadjes te halen?', opties:[
+     {t:'De geurstof lost goed op in alcohol, de blaadjes niet.', goed:true},
+     {t:'Alcohol maakt de blaadjes kleiner, zodat ze door de filter gaan.', hint:'De blaadjes blijven even groot. Wat gebeurt er met de geurstof?'},
+     {t:'Alcohol heeft een hoge kooktemperatuur.', hint:'Alcohol kookt al bij 78 °C, lager dan water. Denk aan oplossen.'}]},
+   zeg:'Bij filtreren blijft het [residu] op het filtreerpapier en loopt het [filtraat] door.' }
+];
+
+/* ================= per versie ================= */
+const DATA = {
+  A:{ sloten:SLOTEN, beeld:emmer, opst:OPST_A, slotnamen:['Het monster','Eigenschappen','Technieken','Waarom?','Het plan','Destilleren'],
+      kop:'Het dorp heeft geen drinkwater meer',
+      verhaal:'Na een storm is het water van de rivier vervuild. Er zit olie, zand, modder, kleurstof en zout in. Jullie zijn het team van de waterzuivering. Maak het water weer drinkbaar!',
+      doel:'de kraan', eind:'Het dorp heeft weer drinkwater!' },
+  B:{ sloten:SLOTEN_B, beeld:zeeEmmer, opst:OPST_B, slotnamen:['Het monster','Eigenschappen','Technieken','Waarom?','Het plan','Uitdampen'],
+      kop:'De zoutmakers hebben geen zuiver zout meer',
+      verhaal:'Het kustdorp maakt zout uit zeewater. Na een storm zit er zand, wier, schelpjes en een olievlek in het zeewater. Jullie zijn het team van de zoutmakerij. Maak weer zuiver zout!',
+      doel:'de zoutkist', eind:'Het dorp heeft weer zuiver zout!' },
+  C:{ sloten:SLOTEN_C, beeld:rozenPot, opst:OPST_C, slotnamen:['Het monster','Eigenschappen','Technieken','Waarom?','Het plan','Filtreren'],
+      kop:'De parfumwerkplaats heeft een bestelling',
+      verhaal:'Een klant wil een flesje rozenparfum. In de pot zitten alcohol, rozenblaadjes, takjes en aarde. Jullie zijn het team van de parfumwerkplaats. Maak zuiver rozenparfum!',
+      doel:'het parfumflesje', eind:'Het rozenparfum is klaar!' }
+};
+const D = () => DATA[st.versie] || DATA.A;
+const EIND_A = `<svg class="kraan" viewBox="0 0 300 200" width="300" style="max-width:100%" role="img" aria-label="Een kraan waaruit zuiver water stroomt in een glas">
+      <path d="M40 40 H170 Q190 40 190 60 V80" fill="none" stroke="var(--neutron)" stroke-width="18" stroke-linecap="round"/>
+      <rect x="95" y="18" width="30" height="12" rx="4" fill="var(--neutron)"/><rect x="104" y="26" width="12" height="14" fill="var(--neutron)"/>
+      <path d="M190 90 V150" stroke="#9fd3ea" stroke-width="8" class="straal"/>
+      <path d="M160 120 L166 190 H214 L220 120" fill="none" stroke="var(--ink)" stroke-width="3"/>
+      <path d="M163 150 L166 188 H214 L217 150 Z" fill="#9fd3ea"/></svg>`;
+const EIND_B = `<svg viewBox="0 0 300 200" width="300" style="max-width:100%" role="img" aria-label="Een hoop wit zout naast een zak"><path d="M60 180 Q120 70 180 180 Z" fill="#ffffff" stroke="var(--muted)" stroke-width="2"/>${Array.from({length:14},(_,i)=>`<rect x="${92+(i*13)%60}" y="${130+(i*7)%40}" width="5" height="5" fill="#eef2f4" stroke="var(--muted)" stroke-width=".6"/>`).join('')}<path d="M200 90 H260 L268 180 H192 Z" fill="#d9bf8a" stroke="var(--ink)" stroke-width="2"/><text x="230" y="145" text-anchor="middle" font-size="18" font-weight="700" style="fill:#5b3d1e">ZOUT</text></svg>`;
+const EIND_C = `<svg viewBox="0 0 300 200" width="300" style="max-width:100%" role="img" aria-label="Een flesje roze parfum"><rect x="134" y="30" width="32" height="22" rx="4" fill="var(--neutron)"/><rect x="142" y="52" width="16" height="16" fill="var(--neutron)"/><rect x="104" y="68" width="92" height="112" rx="18" fill="#f2c4d2" stroke="var(--ink)" stroke-width="3"/><path d="M120 120 q30 -16 60 0" stroke="#ffffff" stroke-width="4" fill="none" opacity=".7"/>${[0,1,2].map(i=>`<path d="M${190+i*16} ${50-i*6} q6 -8 0 -16" stroke="#d6336c" stroke-width="2.5" fill="none" opacity=".6"/>`).join('')}</svg>`;
+
+/* ================= weergave ================= */
+const spel = $('#spel');
+let klok = null;
+function kader(){
+  const r = st.slot % 3;
+  const rol = i => ROLLEN[(i + 3 - r) % 3];
+  if (st.getoond===undefined) st.getoond = 0;
+  return `<div class="statusbalk"><span>⏱ <b id="klok">${tijd()}</b></span><span>Foute pogingen: <b>${st.hints}</b></span><span>Antwoord bekeken: <b>${st.getoond}</b></span><span>Slot <b>${Math.min(st.slot+1,6)}</b> van 6</span><span>Versie <b>${st.versie}</b></span></div>
+    <div class="sloten">${D().slotnamen.map((n,i)=>`<div class="slot-ind ${i<st.slot?'open':''} ${i===st.slot?'nu':''}"><span class="ic">${i<st.slot?'🔓':'🔒'}</span><span class="cijfer">${i<st.slot?CODE[i]:''}</span><span class="nm">${n}</span></div>`).join('')}</div>
+    <div class="rollen">${[0,1,2].map(i=>`<div class="rol"><span class="taak">${rol(i).rol}</span><span class="wie">${naam(i)}</span><span class="wat">${rol(i).wat}</span></div>`).join('')}</div>`;
+}
+function startKlok(){ clearInterval(klok); klok = setInterval(()=>{ const k=$('#klok'); if(k) k.textContent = tijd(); }, 1000); }
+
+function toonWachtwoord(){
+  spel.innerHTML = `<div class="kamer">
+    <h2>🔒 Deze missie is vergrendeld</h2>
+    <p>Typ het wachtwoord van je klas. Je krijgt het van je leerkracht.</p>
+    <form class="startform" id="pwform" style="grid-template-columns:minmax(0,22rem)"><label for="pw">Wachtwoord<input id="pw" type="text" autocomplete="off" autocapitalize="off" spellcheck="false"></label></form>
+    <div class="knoppen"><button class="knop hoofd" id="pwgo" type="button">Ontgrendel</button></div><div id="pwfb" aria-live="polite"></div>
+  </div>`;
+  const go = () => {
+    const pw = $('#pw').value.trim().toLowerCase(); const v = VERSIES[cyrb53(pw)];
+    if (!v){ $('#pwfb').innerHTML = `<div class="fbk nok">Dit wachtwoord klopt niet. <span>Vraag het wachtwoord aan je leerkracht.</span></div>`; return; }
+    st.versie = v; st.code = maakCode(pw); CODE = st.code; st.fase = 'team'; bewaar(); toon();
+  };
+  $('#pwgo').addEventListener('click', go);
+  $('#pwform').addEventListener('submit', e => { e.preventDefault(); go(); });
+  $('#pw').focus();
+}
+
+function toonStart(){
+  spel.innerHTML = `<div class="kamer">
+    <h2>${D().kop}</h2>
+    <p class="opdr">${D().verhaal}</p>
+    <p>Achter elk slot zit één cijfer. Met de 6 cijfers open je op het einde ${D().doel}.</p>
+    <div class="beeld">${D().beeld}</div>
+    <h3>Jullie team</h3>
+    <p>Vul jullie namen in. Elk slot krijgt iedereen een andere rol.</p>
+    <form class="startform" id="startform">
+      ${[0,1,2].map(i=>`<label for="nm${i}">Naam ${i+1}<input id="nm${i}" type="text" autocomplete="off" value="${st.namen[i]||''}"></label>`).join('')}
+    </form>
+    <div class="rollen">${ROLLEN.map(r=>`<div class="rol"><span class="wie">${r.rol}</span><span class="wat">${r.wat}</span></div>`).join('')}</div>
+    <p>Elke vraag heeft een naam: die persoon antwoordt, de anderen helpen alleen als het nodig is. Fout? Geen probleem. Je krijgt een hint en mag opnieuw proberen. Lukt het echt niet, dan kan je het antwoord bekijken en ga je toch verder. Iedereen haalt de finish!</p>
+    <p>Wie wint? Het team met <b>de minste bekeken antwoorden</b>. Bij gelijke stand telt de tijd.</p>
+    <div class="knoppen"><button class="knop hoofd" id="go" type="button">▶ Start de missie</button></div>
+    <details class="leerkracht"><summary>Voor de leerkracht</summary><ul>
+      <li>Duur: ± 35 minuten. Groepjes van 3, één toestel per groep.</li>
+      <li>Elke klas krijgt een eigen wachtwoord. Elk wachtwoord geeft een eigen versie met een eigen verhaal, eigen vragen en een eigen eindcode: A drinkwater, B zout uit de zee, C rozenparfum.</li>
+      <li>De rollen schuiven per slot door. Na elk slot schrijft de schrijver een gatenzin volledig op een wisbordje en steekt het omhoog. De groep wacht niet op jou: ze kijken zelf na en gaan verder. Jij kijkt mee als je rondloopt.</li>
+      <li>Nodig: per groep een wisbordje en een stift.</li>
+      <li>Het eindscherm toont de versie, tijd, foute pogingen en bekeken antwoorden.</li>
+      <li>Na twee foute pogingen kan een groep het antwoord bekijken. Zo raakt niemand vast. Elke vraag krijgt de naam van een teamlid, zodat iedereen antwoordt.</li>
+      <li>Nabespreking: vraag bij elke stap "waarom deze techniek?" en "op welke stofeigenschap is ze gebaseerd?".</li>
+      <li>De voortgang blijft bewaard in deze browser. Met "Opnieuw beginnen" op het eindscherm wis je alles.</li></ul></details>
+  </div>`;
+  $('#go').addEventListener('click', () => {
+    st.namen = [0,1,2].map(i => $('#nm'+i).value.trim());
+    st.fase='spel'; st.slot=0; st.hints=0; st.getoond=0; st.start=Date.now(); st.klaar=null; bewaar(); toon();
+  });
+}
+
+function toonSlot(){
+  const s = D().sloten[st.slot];
+  spel.innerHTML = kader() + `<div class="kamer" id="kamer">
+    <span class="eyebrow">${s.titel}</span>
+    <p class="opdr">${s.opdr}</p>
+    ${s.beeld?`<div class="beeld">${s.beeld}</div>`:''}
+    <div id="puzzel"></div>
+    <div class="knoppen"><button class="knop hoofd" id="check" type="button">🔑 Probeer het slot</button></div>
+    <div id="fb" aria-live="polite"></div>
+  </div>`;
+  const P = $('#puzzel');
+  let controle, toonAntwoord;
+  if (s.soort==='rijen'){
+    const vr = vrnd();
+    const keuze = s.rijen.map(()=>null);
+    P.innerHTML = s.rijen.map((r,i)=>`<div class="rij" data-i="${i}"><span class="vr">${tag(i)}${r.vr}</span><div class="keuzes">${mix(r.opties, vr).map(o=>`<button type="button" data-o="${o}" aria-pressed="false">${o}</button>`).join('')}</div><span class="hint" hidden></span></div>`).join('');
+    P.querySelectorAll('.rij').forEach(row => row.querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
+      const i=+row.dataset.i; keuze[i]=b.dataset.o; row.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed', x===b?'true':'false'));
+      row.classList.remove('nok'); row.querySelector('.hint').hidden=true;
+    })));
+    toonAntwoord = () => P.querySelectorAll('.rij').forEach(row => { const i=+row.dataset.i; keuze[i]=s.rijen[i].goed[0];
+      row.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed', x.dataset.o===keuze[i]?'true':'false')); row.classList.remove('nok'); row.classList.add('ok'); row.querySelector('.hint').hidden=true; });
+    controle = () => { let fout=0, leeg=0;
+      P.querySelectorAll('.rij').forEach(row => { const i=+row.dataset.i, r=s.rijen[i], h=row.querySelector('.hint');
+        if (!keuze[i]) { leeg++; return; }
+        const ok = r.goed.includes(keuze[i]); row.classList.toggle('ok',ok); row.classList.toggle('nok',!ok);
+        h.hidden = ok; if(!ok){ fout++; h.innerHTML = '💡 '+r.hint; } });
+      return {fout, leeg}; };
+  }
+  if (s.soort==='kaartjes'){
+    const aan = new Set();
+    P.innerHTML = `<p>Iedereen kiest om beurt één kaartje en zegt waarom: eerst ${team().join(', dan ')}. Ga zo door tot jullie klaar zijn.</p><div class="kaartjes">${mix(s.kaartjes, vrnd()).map(k=>`<button type="button" class="kaartje" data-t="${k.t}" aria-pressed="false"><span class="vink">✓</span>${k.t}</button>`).join('')}</div><div id="khint"></div>`;
+    P.querySelectorAll('.kaartje').forEach(b => b.addEventListener('click', () => { const t=b.dataset.t; aan.has(t)?aan.delete(t):aan.add(t); b.setAttribute('aria-pressed', aan.has(t)?'true':'false'); b.classList.remove('nok'); }));
+    toonAntwoord = () => { P.querySelectorAll('.kaartje').forEach(b => { const k = s.kaartjes.find(x=>x.t===b.dataset.t); if(k.goed) aan.add(k.t); else aan.delete(k.t); b.setAttribute('aria-pressed', k.goed?'true':'false'); b.classList.remove('nok'); }); $('#khint').innerHTML=''; };
+    controle = () => { const hints=[]; let fout=0;
+      P.querySelectorAll('.kaartje').forEach(b => { const k = s.kaartjes.find(x=>x.t===b.dataset.t); const gekozen = aan.has(k.t);
+        if (gekozen && !k.goed){ fout++; b.classList.add('nok'); hints.push(`<b>${k.t}</b>: ${k.hint}`); }
+        else if (!gekozen && k.goed){ fout++; } });
+      const gemist = s.kaartjes.filter(k=>k.goed && !aan.has(k.t)).length;
+      $('#khint').innerHTML = hints.length || gemist ? `<div class="fbk nok" style="margin-top:8px">💡 <span>${hints.join('<br>')}${gemist?`${hints.length?'<br>':''}Je mist nog ${gemist} stofeigenschap${gemist>1?'pen':''}. Welke eigenschappen blijven gelijk, hoe groot het stuk ook is?`:''}</span></div>` : '';
+      return {fout, leeg:0}; };
+  }
+  if (s.soort==='volgorde'){
+    const vr = vrnd(); let lijst = mix(s.items.map((_,i)=>i), vr); while (lijst.every((v,i)=>v===i)) lijst = mix(lijst, vr);
+    const render = (geg) => { P.innerHTML = `<p>Elk teamlid legt uit waarom één stap op zijn plaats staat. ${team().map((n,i)=>`${n}: stap ${[1,3,5][i]||i+1}`).join(' · ')}.</p><ol class="volgorde">${lijst.map((m,pos)=>`<li class="${geg?(m===pos?'ok':'nok'):''}"><span class="pos">${pos+1}.</span><span class="nm">${s.items[m].t} <span>(${s.items[m].w})</span></span>
+      <button type="button" data-p="${pos}" data-d="-1" aria-label="omhoog" ${pos===0?'disabled':''}>▲</button><button type="button" data-p="${pos}" data-d="1" aria-label="omlaag" ${pos===lijst.length-1?'disabled':''}>▼</button></li>`).join('')}</ol>`;
+      P.querySelectorAll('[data-d]').forEach(b => b.addEventListener('click', () => { const p=+b.dataset.p, q=p+(+b.dataset.d); [lijst[p],lijst[q]]=[lijst[q],lijst[p]]; render(false); })); };
+    render(false);
+    toonAntwoord = () => { lijst = s.items.map((_,i)=>i); render(true); P.insertAdjacentHTML('beforeend', `<ul style="margin:8px 0 0;padding-left:20px">${s.items.map(it=>`<li><b>${it.t}</b>: ${it.why}</li>`).join('')}</ul>`); };
+    controle = () => { const fout = lijst.filter((m,pos)=>m!==pos).length; render(true);
+      if (fout){ const eerste = lijst.findIndex((m,pos)=>m!==pos); const goedeStap = s.items[eerste];
+        P.insertAdjacentHTML('beforeend', `<div class="fbk nok" style="margin-top:8px">💡 <span>Stap ${eerste+1} is nog niet juist. Denk na: ${goedeStap.why}</span></div>`); }
+      return {fout, leeg:0}; };
+  }
+  if (s.soort==='dest'){
+    const O = s.opst || OPST_A; const DL = O.labels;
+    const vr = vrnd(); const namen = mix(DL.map(l=>l.naam), vr); let mc = null; const mcVolg = mix(s.vraag.opties.map((_,i)=>i), vr);
+    P.innerHTML = `<div class="beeld">${O.svg()}</div>
+      <ul class="labels">${DL.map((l,i)=>`<li data-i="${i}"><span class="n">${i+1}</span><span class="voor" style="margin:0">${voor(i)}</span><select aria-label="Onderdeel ${i+1}"><option value="">kies…</option>${namen.map(n=>`<option>${n}</option>`).join('')}</select></li>`).join('')}</ul>
+      <p class="opdr" style="margin-top:6px">${tag(0)}<br><b>${s.vraag.vr}</b></p>
+      <div class="mc">${mcVolg.map(i=>`<button type="button" data-i="${i}" aria-pressed="false">${s.vraag.opties[i].t}</button>`).join('')}</div><div id="mchint"></div>`;
+    P.querySelectorAll('.mc button').forEach(b => b.addEventListener('click', () => { mc=+b.dataset.i; P.querySelectorAll('.mc button').forEach(x=>{x.setAttribute('aria-pressed', x===b?'true':'false'); x.classList.remove('nok');}); $('#mchint').innerHTML=''; }));
+    P.querySelectorAll('.labels select').forEach(sel => sel.addEventListener('change', () => sel.closest('li').classList.remove('nok')));
+    toonAntwoord = () => { P.querySelectorAll('.labels li').forEach(li => { li.querySelector('select').value = DL[+li.dataset.i].naam; li.classList.remove('nok'); li.classList.add('ok'); });
+      mc = s.vraag.opties.findIndex(o=>o.goed); P.querySelectorAll('.mc button').forEach(x=>{ const g=+x.dataset.i===mc; x.setAttribute('aria-pressed', g?'true':'false'); x.classList.toggle('ok',g); x.classList.remove('nok'); }); $('#mchint').innerHTML=''; };
+    controle = () => { let fout=0, leeg=0;
+      P.querySelectorAll('.labels li').forEach(li => { const v=li.querySelector('select').value; if(!v){leeg++;return;} const ok = v===DL[+li.dataset.i].naam; li.classList.toggle('ok',ok); li.classList.toggle('nok',!ok); if(!ok) fout++; });
+      if (mc===null) leeg++;
+      else { const o = s.vraag.opties[mc]; const b = P.querySelector(`.mc button[data-i="${mc}"]`); b.classList.toggle('ok',!!o.goed); b.classList.toggle('nok',!o.goed);
+        if(!o.goed){ fout++; $('#mchint').innerHTML = `<div class="fbk nok" style="margin-top:8px">💡 <span>${o.hint}</span></div>`; } }
+      if (fout && P.querySelector('.labels li.nok')) $('#mchint').insertAdjacentHTML('beforeend', `<div class="fbk nok" style="margin-top:8px">💡 <span>${O.hint}</span></div>`);
+      return {fout, leeg}; };
+  }
+  let pogingen = 0;
+  const openSlot = (viaAntwoord) => {
+    const fb = $('#fb');
+    fb.innerHTML = `<div class="cijferbeeld"><span class="groot">${CODE[st.slot]}</span><div class="fbk ok">🔓 Het slot is open! <span>${viaAntwoord?'Lees de juiste antwoorden samen na. ':''}Schrijf het cijfer op.</span></div></div>
+      <div class="zeg"><span class="eyebrow">✏️ ${voor(2)}: schrijf de volledige zin op het wisbordje. Vul samen de open plaatsen in.</span>
+        <p id="gatzin">${s.zeg.replace(/\[[^\]]+\]/g,'<span class="gat"></span>')}</p>
+        <span style="font-size:.92rem">Klaar? Steek het bordje omhoog en kijk daarna zelf na.</span>
+        <div class="knoppen"><button class="knop" id="toonzin" type="button">Bekijk de volledige zin</button></div></div>
+      <div class="knoppen"><button class="knop hoofd" id="verder" type="button" hidden>${st.slot<5?'Naar het volgende slot ▶':'Naar de eindcode ▶'}</button></div>`;
+    $('#toonzin').addEventListener('click', () => { $('#gatzin').innerHTML = s.zeg.replace(/\[([^\]]+)\]/g,'<span class="woord">$1</span>'); $('#toonzin').disabled = true; $('#verder').hidden = false; $('#verder').focus(); });
+    $('#check').disabled = true;
+    P.querySelectorAll('button, select').forEach(x => x.disabled = true);
+    $('#verder').addEventListener('click', () => { st.slot++; if (st.slot>=6) st.fase='code'; bewaar(); toon(); window.scrollTo({top:0}); });
+  };
+  const updStatus = () => { const b = spel.querySelectorAll('.statusbalk b'); if (b[1]) b[1].textContent = st.hints; if (b[2]) b[2].textContent = st.getoond; };
+  $('#check').addEventListener('click', () => {
+    const {fout, leeg} = controle();
+    const fb = $('#fb');
+    if (leeg){ fb.innerHTML = `<div class="fbk nok">Nog niet alles ingevuld. <span>Kies bij elke vraag een antwoord.</span></div>`; return; }
+    if (fout){ st.hints++; pogingen++; bewaar(); updStatus();
+      fb.innerHTML = `<div class="fbk nok">🔒 Het slot blijft dicht. <span>${fout} antwoord${fout>1?'en zijn':' is'} nog niet juist. Lees de hint, overleg en probeer opnieuw.</span></div>
+        ${pogingen>=2 ? `<div class="knoppen" style="margin-top:8px"><button class="knop toon-knop" type="button" id="toon">Lukt het niet? Toon het antwoord</button></div>` : `<p style="margin-top:6px;font-size:.92rem;color:var(--muted)">Lukt het na nog één poging niet, dan kan je het antwoord bekijken.</p>`}`;
+      $('#toon')?.addEventListener('click', () => { toonAntwoord(); st.getoond++; bewaar(); updStatus(); openSlot(true); });
+      return; }
+    openSlot(false);
+  });
+}
+
+function toonCode(){
+  spel.innerHTML = kader() + `<div class="kamer">
+    <span class="eyebrow">De eindcode</span>
+    <h2>Typ de code om ${D().doel} te openen</h2>
+    <p>Vul de 6 cijfers in, in de volgorde van de sloten.</p>
+    <form class="codeslot" id="codeform">${CODE.map((_,i)=>`<input id="c${i}" inputmode="numeric" maxlength="1" aria-label="cijfer ${i+1}" autocomplete="off">`).join('')}<button class="knop hoofd" type="submit">Open ${D().doel}</button></form>
+    <div id="cfb" aria-live="polite"></div></div>`;
+  const ins = CODE.map((_,i)=>$('#c'+i));
+  ins.forEach((inp,i) => inp.addEventListener('input', () => { inp.value = inp.value.replace(/\D/g,'').slice(0,1); if (inp.value && ins[i+1]) ins[i+1].focus(); }));
+  ins[0].focus();
+  $('#codeform').addEventListener('submit', e => { e.preventDefault();
+    if (ins.map(x=>x.value).join('') === CODE.join('')){ st.fase='klaar'; st.klaar=Date.now(); bewaar(); toon(); }
+    else $('#cfb').innerHTML = `<div class="fbk nok">${D().doel[0].toUpperCase()+D().doel.slice(1)} blijft dicht. <span>Controleer de cijfers bij de open sloten bovenaan.</span></div>`; });
+}
+
+function toonKlaar(){
+  clearInterval(klok);
+  spel.innerHTML = `<div class="kamer" style="text-align:center;align-items:center">
+    <span class="eyebrow">Missie geslaagd</span>
+    <h2>${D().eind}</h2>
+    ${st.versie==='B' ? EIND_B : st.versie==='C' ? EIND_C : EIND_A}
+    <p style="font-size:1.2rem">Team ${st.namen.filter(Boolean).join(', ') || ''}</p>
+    <div class="statusbalk" style="justify-content:center;gap:24px"><span>Versie <b>${st.versie}</b></span><span>Tijd: <b>${tijd()}</b></span><span>Foute pogingen: <b>${st.hints}</b></span><span>Antwoord bekeken: <b>${st.getoond}</b></span></div>
+    <p>Toon dit scherm aan je leerkracht.</p>
+    <div class="zeg" style="text-align:left;align-self:stretch"><span class="eyebrow">Nog één keer samen</span><p>Soort mengsel → verschil in stofeigenschap → scheidingstechniek.</p></div>
+    <div class="knoppen"><button class="knop" type="button" id="reset">↺ Opnieuw beginnen</button></div></div>`;
+  $('#reset').addEventListener('click', () => { st = {fase:'start', slot:0, hints:0, getoond:0, start:0, namen:st.namen, klaar:null, versie:null, code:null}; bewaar(); toon(); });
+}
+
+function toon(){
+  if (st.fase==='start' || !st.code) toonWachtwoord();
+  else if (st.fase==='team') toonStart();
+  else if (st.fase==='spel'){ toonSlot(); startKlok(); }
+  else if (st.fase==='code'){ toonCode(); startKlok(); }
+  else toonKlaar();
+}
+toon();
+
+})();
+</script>
+</body>
+</html>
