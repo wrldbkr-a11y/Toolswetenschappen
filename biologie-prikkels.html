@@ -1326,7 +1326,7 @@ $('gewrichten').innerHTML=[['schoudergewricht','kogelgewricht: bewegen in alle r
   lus('e4',dt=>{
     if(loopt){ p+=dt*v; if(p>X1+90){ p=X1+90; loopt=false; } }
     $('slok-v-l').textContent='Snelheid: '+(v<20?'heel traag':v<40?'traag':'sneller');
-    const kring=x=>g(x,p-BR-34,40), lengte=x=>g(x,p+BR+50,48);
+    const kring=x=>g(x,p-BR-8,38), lengte=x=>g(x,p+BR+12,38);
     const r=x=>{ let rr=R0-34*kring(x)+12*lengte(x); if(Math.abs(x-p)<BR+6) rr=Math.max(rr,Math.sqrt(Math.max(0,(BR+6)**2-(x-p)**2))+6); return rr; };
     // lengtespieren trekken samen: wand korter → merktekens schuiven naar elkaar
     const verschuif=x=>{ let d=0; for(let t=X0;t<x;t+=6) d+=lengte(t)*0.28*6; return x-d*0.5; };
@@ -1349,7 +1349,7 @@ $('gewrichten').innerHTML=[['schoudergewricht','kogelgewricht: bewegen in alle r
     if(p>X0-BR&&p<X1+BR) h+=`<ellipse cx="${p}" cy="${CY}" rx="${BR}" ry="${BR-4}" fill="#a0723f" stroke="#6b4423" stroke-width="2"/><text x="${p}" y="${CY+5}" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">voedselbrok</text>`;
     // pijlen en uitleg bij de zones
     if(p>X0&&p<X1){
-      const xa=p-BR-34, xv=p+BR+50;
+      const xa=p-BR-8, xv=p+BR+12;
       if(xa>X0+10){ h+=`<path d="M${xa},40 V${CY-r(xa)-24}" stroke="#b91c1c" stroke-width="2"/><text x="${xa}" y="26" text-anchor="middle" font-size="14" font-weight="700" fill="#b91c1c">achter de brok</text>`;
         h+=`<path d="M${xa+14},${CY} l26,0" stroke="#6b4423" stroke-width="3"/><path d="M${xa+44},${CY} l-10,-7 v14z" fill="#6b4423"/>`; }
       if(xv<X1-10) h+=`<path d="M${xv},40 V${CY-r(xv)-24}" stroke="#1e40af" stroke-width="2"/><text x="${xv}" y="26" text-anchor="middle" font-size="14" font-weight="700" fill="#1e40af">voor de brok</text>`;
