@@ -1342,12 +1342,12 @@ $('gewrichten').innerHTML=[['schoudergewricht','kogelgewricht: bewegen in alle r
     if(led==='arm') h+=`<path d="M250,26 L360,34 L350,92 L272,96Z" fill="#efe3c8" stroke="#a8946a" stroke-width="2.5"/>`;
     else h+=`<path d="M220,20 Q300,0 380,24 L360,80 Q300,96 240,80Z" fill="#efe3c8" stroke="#a8946a" stroke-width="2.5"/>`;
     h+=`<circle cx="${S[0]}" cy="${S[1]}" r="24" fill="#f3e9d3" stroke="#a8946a" stroke-width="2.5"/>`+bot(S,E,led==='arm'?26:32)+`<circle cx="${E[0]}" cy="${E[1]}" r="19" fill="#f3e9d3" stroke="#a8946a" stroke-width="2.5"/>`;
-    let padA, padB;
+    let padA, padB, botLab='';
     if(led==='arm'){
-      const U0=[E[0]-n[0]*7-u[0]*18,E[1]-n[1]*7-u[1]*18], U1=[W[0]-n[0]*7,W[1]-n[1]*7], R0=[E[0]+n[0]*9+u[0]*8,E[1]+n[1]*9+u[1]*8], R1=[W[0]+n[0]*8,W[1]+n[1]*8];
-      h+=bot(U0,U1,15)+bot(R0,R1,14);
+      const U0=[E[0]+n[0]*7-u[0]*22,E[1]+n[1]*7-u[1]*22], U1=[W[0]+n[0]*7,W[1]+n[1]*7], R0=[E[0]-n[0]*9+u[0]*8,E[1]-n[1]*9+u[1]*8], R1=[W[0]-n[0]*8,W[1]-n[1]*8];
+      h+=bot(U0,U1,15)+bot(R0,R1,14); const mU=[U0[0]+(U1[0]-U0[0])*0.7+n[0]*36,U0[1]+(U1[1]-U0[1])*0.7+n[1]*36], mR=[R0[0]+(R1[0]-R0[0])*0.7-n[0]*36,R0[1]+(R1[1]-R0[1])*0.7-n[1]*36]; botLab=`<text x="${mU[0]}" y="${mU[1]}" text-anchor="middle" font-size="14" font-weight="700" fill="#7a6a45" stroke="#fff" stroke-width="4" paint-order="stroke">ellepijp</text><text x="${mR[0]}" y="${mR[1]}" text-anchor="middle" font-size="14" font-weight="700" fill="#7a6a45" stroke="#fff" stroke-width="4" paint-order="stroke">spaakbeen</text>`;
       h+=`<g transform="translate(${W[0]},${W[1]}) rotate(${th})"><path d="M-4,-20 C24,-24 52,-20 64,-8 C70,0 64,12 52,14 C38,20 14,20 -4,18Z" fill="#f0c9a6" stroke="#c48d66" stroke-width="2"/></g>`;
-      padA=[[318,92],[E[0]+u[0]*42+n[0]*12,E[1]+u[1]*42+n[1]*12]]; padB=[[282,96],[E[0]-u[0]*28+n[0]*14,E[1]-u[1]*28+n[1]*14]];
+      padA=[[318,92],[E[0]+u[0]*40-n[0]*14,E[1]+u[1]*40-n[1]*14]]; padB=[[282,96],[E[0]-u[0]*24+n[0]*10,E[1]-u[1]*24+n[1]*10]];
     } else {
       h+=bot([E[0]+u[0]*6,E[1]+u[1]*6],W,24);
       h+=`<g transform="translate(${W[0]},${W[1]}) rotate(${th-90})"><path d="M-22,-6 C-24,14 -10,22 10,22 L70,24 C80,24 82,10 70,6 L18,-6Z" fill="#f0c9a6" stroke="#c48d66" stroke-width="2"/></g>`;
@@ -1364,6 +1364,7 @@ $('gewrichten').innerHTML=[['schoudergewricht','kogelgewricht: bewegen in alle r
     const lab=(t,p,q,kl='#1D2A36')=>`<path d="M${p} L${q}" stroke="${kl}" stroke-width="1.4"/><text x="${q[0]+6}" y="${q[1]+5}" font-size="16" font-weight="700" fill="${kl}" stroke="#fff" stroke-width="4" paint-order="stroke">${t}</text>`;
     const lb=(t,p,q,kl='#1D2A36')=>`<path d="M${p} L${q}" stroke="${kl}" stroke-width="1.4"/><text x="${q[0]-6}" y="${q[1]+5}" text-anchor="end" font-size="16" font-weight="700" fill="${kl}" stroke="#fff" stroke-width="4" paint-order="stroke">${t}</text>`;
     h+=lab(c.sA+(led==='been'?' (voorkant)':''),A.mid,[580,120],'#9a2b26')+lb(c.sB+(led==='been'?' (achterkant)':''),B.mid,[236,160],'#9a2b26')+lab('pees',led==='arm'?[318,86]:padA[2],led==='arm'?[470,40]:[560,250])+(led==='arm'?lb(c.gew,[E[0]-32,E[1]],[200,300],'#2F6FB0'):lab(c.gew,[E[0]+30,E[1]+12],[560,310],'#2F6FB0'))+lb(c.bot,[S[0]-14,S[1]+70],[200,60]);
+    h+=botLab;
     h+=`<g transform="translate(600,350)" font-size="14"><text font-weight="700">lengte ${c.sA}</text><rect y="8" width="${A.L}" height="10" rx="5" fill="#c7463e"/><text y="44" font-weight="700">lengte ${c.sB}</text><rect y="52" width="${B.L}" height="10" rx="5" fill="#b23e38"/></g>`;
     s.innerHTML=h;
     const T={arm:{a:'De <b>biceps</b> krijgt een impuls en <b>trekt samen</b>: ze wordt korter en dikker. Via de pees trekt ze aan de onderarm: de arm <b>buigt</b>.<br>De <b>triceps</b> ontspant en wordt <b>uitgerekt</b>.',b:'De <b>triceps</b> trekt samen: de arm <b>strekt</b>.<br>De <b>biceps</b> ontspant en wordt uitgerekt. Biceps en triceps zijn elkaars <b>antagonisten</b>.'},
