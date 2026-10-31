@@ -5,108 +5,128 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Formuleredeneertool</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --paper:#F3F1E9;
-    --paper-line:#DCD9CB;
-    --ink:#1C2B33;
-    --ink-soft:#5B6B72;
-    --accent:#A6631B;
-    --accent-soft:#E7D2B4;
-    --good:#2F6B4F;
-    --good-bg:#E3EEE6;
-    --bad:#A6392B;
-    --bad-bg:#F3E2DE;
-    --card-bg:#FBFAF6;
+    --bg:#EEF2F5;
+    --paper:#FFFFFF;
+    --panel-2:#F5F8FB;
+    --ink:#1D2A36;
+    --ink-soft:#51606E;
+    --line:#D3DCE5;
+    --accent:#2F6FB0;
+    --accent-dark:#245A91;
+    --accent-soft:#E4EEF8;
+    --good:#1F7A4A;
+    --good-bg:#E3F3E9;
+    --bad:#B3362B;
+    --bad-bg:#FBE6E3;
+    --font:'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
   body{
-    background:
-      linear-gradient(var(--paper-line) 1px, transparent 1px) 0 0/100% 32px,
-      var(--paper);
+    background:var(--bg);
     color:var(--ink);
-    font-family:'Source Serif 4', Georgia, serif;
-    line-height:1.5;
+    font-family:var(--font);
+    line-height:1.55;
     min-height:100vh;
   }
   .wrap{
-    max-width:700px;
+    max-width:1000px;
     margin:0 auto;
-    padding:28px 20px 80px;
+    padding:36px 24px 80px;
   }
-  header.app-header{
-    margin-bottom:28px;
-  }
+  .wrap.smal{ max-width:820px; }
+  header.app-header{ margin-bottom:30px; }
   header.app-header h1{
-    font-size:1.7rem;
+    font-size:2rem;
     font-weight:700;
-    margin:0 0 6px;
-    letter-spacing:-0.01em;
+    margin:0 0 8px;
+    letter-spacing:-0.015em;
   }
   header.app-header p{
     color:var(--ink-soft);
     margin:0;
-    max-width:56ch;
+    max-width:62ch;
   }
-  .sym{font-family:'IBM Plex Mono', monospace;}
+  .sym{ font-weight:600; }
   code{
-    font-family:'IBM Plex Mono', monospace;
+    font-family:var(--font);
+    font-weight:600;
     background:var(--accent-soft);
-    padding:0.05em 0.35em;
-    border-radius:3px;
+    color:var(--accent-dark);
+    padding:0.08em 0.4em;
+    border-radius:5px;
     font-size:0.92em;
   }
 
-  /* -------- Home: topic list -------- */
-  .categorie{
-    margin-bottom:26px;
-  }
+  /* -------- Overzicht -------- */
+  .categorie{ margin-bottom:30px; }
   .categorie h2{
-    font-size:0.95rem;
-    font-weight:600;
-    color:var(--accent);
-    margin:0 0 10px;
-    padding-bottom:4px;
-    border-bottom:1px solid var(--paper-line);
+    font-size:1.2rem;
+    font-weight:700;
+    color:var(--ink);
+    margin:0 0 12px;
+    padding-left:12px;
+    border-left:5px solid var(--accent);
+    line-height:1.4;
+  }
+  .hoofdkop{ margin:6px 0 16px; }
+  .hoofdkop h2{
+    font-size:1.2rem; font-weight:700; color:var(--ink);
+    margin:0 0 6px; padding-left:12px;
+    border-left:5px solid var(--accent); line-height:1.4;
+  }
+  .hoofdkop p{ margin:0 0 0 17px; color:var(--ink-soft); font-size:0.93rem; max-width:70ch; }
+  .categorie.sub{ margin-left:17px; margin-bottom:22px; }
+  .categorie.sub h3{
+    font-size:0.82rem; font-weight:700; text-transform:uppercase;
+    letter-spacing:0.06em; color:var(--accent-dark); margin:0 0 10px;
+  }
+  .topic-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));
+    gap:12px;
   }
   .topic-card{
     display:flex;
-    align-items:center;
+    align-items:flex-start;
     justify-content:space-between;
-    gap:14px;
+    gap:12px;
     width:100%;
     text-align:left;
-    background:var(--card-bg);
-    border:1px solid var(--paper-line);
-    border-left:3px solid var(--accent);
-    padding:12px 14px;
-    margin-bottom:8px;
+    background:var(--paper);
+    border:1px solid var(--line);
+    padding:14px 16px;
     cursor:pointer;
     font-family:inherit;
     font-size:1rem;
     color:var(--ink);
-    border-radius:2px;
+    border-radius:10px;
+    transition:border-color .15s, box-shadow .15s;
   }
-  .topic-card:hover{ background:#fff; }
+  .topic-card:hover{ border-color:var(--accent); box-shadow:0 2px 8px rgba(29,42,54,.08); }
   .topic-card:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
   .topic-main .naam{ font-weight:600; }
   .topic-main .formule{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:0.86rem;
+    font-size:0.88rem;
     color:var(--ink-soft);
-    margin-top:2px;
+    margin-top:3px;
   }
   .topic-score{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:0.8rem;
-    color:var(--ink-soft);
+    font-size:0.78rem;
+    font-weight:600;
+    color:var(--good);
+    background:var(--good-bg);
+    padding:2px 8px;
+    border-radius:999px;
     white-space:nowrap;
   }
+  .topic-score:empty{ display:none; }
   .reset-link{
     display:inline-block;
-    margin-top:18px;
+    margin-top:8px;
     font-size:0.85rem;
     color:var(--ink-soft);
     cursor:pointer;
@@ -117,132 +137,158 @@
     padding:0;
   }
 
-  /* -------- Exercise view -------- */
+  /* -------- Oefenscherm -------- */
   .terug-btn{
     background:none;
     border:none;
     color:var(--accent);
     font-family:inherit;
+    font-weight:600;
     font-size:0.95rem;
     cursor:pointer;
     padding:0;
-    margin-bottom:16px;
+    margin-bottom:14px;
   }
+  .terug-btn:hover{ text-decoration:underline; }
   .oef-header h2{
-    font-size:1.35rem;
+    font-size:1.75rem;
+    font-weight:700;
+    letter-spacing:-0.01em;
     margin:0 0 4px;
   }
   .oef-note{
-    font-size:0.85rem;
+    font-size:0.92rem;
     color:var(--ink-soft);
-    font-style:italic;
     margin:2px 0 14px;
   }
   .tabs{
     display:flex;
-    gap:6px;
-    margin:14px 0 18px;
+    gap:4px;
+    margin:16px 0 20px;
     flex-wrap:wrap;
+    border-bottom:1px solid var(--line);
   }
   .tab-btn{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:0.8rem;
-    background:var(--card-bg);
-    border:1px solid var(--paper-line);
-    padding:7px 11px;
+    font-family:inherit;
+    font-size:0.95rem;
+    font-weight:500;
+    background:none;
+    border:none;
+    border-bottom:2px solid transparent;
+    margin-bottom:-1px;
+    padding:9px 14px;
     cursor:pointer;
     color:var(--ink-soft);
-    border-radius:2px;
   }
+  .tab-btn:hover{ color:var(--ink); }
   .tab-btn.actief{
-    background:var(--ink);
-    color:var(--paper);
-    border-color:var(--ink);
+    color:var(--ink);
+    font-weight:600;
+    border-bottom-color:var(--accent);
   }
   .vraag-card{
-    background:var(--card-bg);
-    border:1px solid var(--paper-line);
-    padding:20px;
-    border-radius:3px;
+    background:var(--paper);
+    border:1px solid var(--line);
+    padding:24px;
+    border-radius:12px;
   }
   .formule-groot{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:1.3rem;
-    font-weight:500;
-    color:var(--ink);
+    font-size:1.35rem;
+    font-weight:600;
+    color:var(--accent-dark);
     background:var(--accent-soft);
     display:inline-block;
-    padding:6px 14px;
-    border-radius:3px;
+    padding:8px 16px;
+    border-radius:8px;
     margin-bottom:14px;
   }
   .vraag-card p{ margin:8px 0; }
-  .hint{ font-size:0.86rem; color:var(--ink-soft); }
-  .gegevens-lijst{ margin:10px 0; }
+  .hint{ font-size:0.88rem; color:var(--ink-soft); }
+  .gegevens-lijst{
+    margin:12px 0;
+    background:var(--panel-2);
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:6px 14px;
+    max-width:460px;
+  }
   .gegeven-item{
     display:flex;
     justify-content:space-between;
-    font-family:'IBM Plex Mono', monospace;
-    font-size:0.92rem;
-    padding:3px 0;
-    border-bottom:1px dashed var(--paper-line);
-    max-width:420px;
+    gap:16px;
+    font-size:0.95rem;
+    padding:5px 0;
+    border-bottom:1px solid var(--line);
   }
-  .gegeven-item .g-waarde{ color:var(--accent); font-weight:600; }
+  .gegeven-item:last-child{ border-bottom:none; }
+  .gegeven-item .g-waarde{ color:var(--accent-dark); font-weight:600; white-space:nowrap; }
   .antwoord-rij{
     display:flex;
     gap:10px;
     align-items:center;
-    margin-top:16px;
+    margin-top:18px;
     flex-wrap:wrap;
   }
   .antwoord-rij input[type=text]{
-    font-family:'IBM Plex Mono', monospace;
+    font-family:inherit;
     font-size:1rem;
-    padding:8px 10px;
-    border:1px solid var(--ink-soft);
-    border-radius:3px;
-    width:160px;
+    padding:9px 12px;
+    border:1px solid var(--line);
+    background:var(--panel-2);
+    border-radius:8px;
+    width:180px;
+    color:var(--ink);
+  }
+  .antwoord-rij input[type=text]:focus{
+    outline:none;
+    border-color:var(--accent);
+    background:#fff;
+    box-shadow:0 0 0 3px var(--accent-soft);
   }
   .antwoord-rij .eenheid{
-    font-family:'IBM Plex Mono', monospace;
     color:var(--ink-soft);
-    font-size:0.9rem;
+    font-size:0.95rem;
   }
   button.primair{
-    font-family:'IBM Plex Mono', monospace;
-    background:var(--ink);
-    color:var(--paper);
-    border:none;
-    padding:9px 16px;
-    border-radius:3px;
+    font-family:inherit;
+    font-weight:600;
+    background:var(--accent);
+    color:#fff;
+    border:1px solid var(--accent);
+    padding:9px 18px;
+    border-radius:8px;
     cursor:pointer;
-    font-size:0.9rem;
+    font-size:0.95rem;
   }
-  button.primair:hover{ background:#33454f; }
+  button.primair:hover{ background:var(--accent-dark); border-color:var(--accent-dark); }
+  button.primair:disabled{ opacity:.5; cursor:default; }
   button.secundair{
-    font-family:'IBM Plex Mono', monospace;
-    background:none;
-    border:1px solid var(--ink-soft);
+    font-family:inherit;
+    font-weight:600;
+    background:#fff;
+    border:1px solid var(--line);
     color:var(--ink);
-    padding:8px 15px;
-    border-radius:3px;
+    padding:9px 18px;
+    border-radius:8px;
     cursor:pointer;
-    font-size:0.9rem;
+    font-size:0.95rem;
   }
   .feedback{
-    margin-top:16px;
-    padding:12px 14px;
-    border-radius:3px;
-    font-size:0.94rem;
+    margin-top:18px;
+    padding:12px 16px;
+    border-radius:8px;
+    border-left:4px solid;
+    font-size:0.95rem;
+    font-weight:600;
   }
-  .feedback.goed{ background:var(--good-bg); color:var(--good); }
-  .feedback.fout{ background:var(--bad-bg); color:var(--bad); }
+  .feedback.goed{ background:var(--good-bg); color:var(--good); border-color:var(--good); }
+  .feedback.fout{ background:var(--bad-bg); color:var(--bad); border-color:var(--bad); }
   .feedback .uitleg{
     display:block;
     margin-top:6px;
     color:var(--ink);
-    font-size:0.9rem;
+    font-weight:400;
+    font-size:0.93rem;
   }
   .verder-rij{
     margin-top:14px;
@@ -250,28 +296,29 @@
     gap:10px;
   }
   .score-balk{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:0.82rem;
+    font-size:0.85rem;
     color:var(--ink-soft);
     margin-top:14px;
+    text-align:right;
   }
-  /* MC (kwalitatief) */
-  .mc-opties{ margin-top:14px; display:flex; flex-direction:column; gap:8px; }
+  /* Meerkeuze */
+  .mc-opties{ margin-top:16px; display:flex; flex-direction:column; gap:8px; }
   .mc-optie{
     text-align:left;
     background:#fff;
-    border:1px solid var(--paper-line);
-    padding:10px 12px;
-    border-radius:3px;
+    border:1px solid var(--line);
+    padding:11px 14px;
+    border-radius:8px;
     cursor:pointer;
-    font-family:'Source Serif 4', serif;
-    font-size:0.97rem;
+    font-family:inherit;
+    font-size:1rem;
     color:var(--ink);
   }
-  .mc-optie:hover{ border-color:var(--accent); }
+  .mc-optie:hover{ border-color:var(--accent); background:var(--accent-soft); }
   .mc-optie.gekozen-goed{ background:var(--good-bg); border-color:var(--good); }
   .mc-optie.gekozen-fout{ background:var(--bad-bg); border-color:var(--bad); }
   .mc-optie[disabled]{ cursor:default; }
+  .mc-optie[disabled]:not(.gekozen-goed):not(.gekozen-fout){ background:#fff; border-color:var(--line); }
 
   /* Blokkenstapels (druk) */
   .blokken-visual{
@@ -280,23 +327,71 @@
     gap:32px;
     flex-wrap:wrap;
     margin:14px 0;
-    padding:14px;
-    background:var(--card-bg);
-    border:1px solid var(--paper-line);
-    border-radius:3px;
+    padding:16px;
+    background:var(--panel-2);
+    border:1px solid var(--line);
+    border-radius:8px;
   }
   .blokken-situatie{ text-align:center; }
   .blokken-label{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:0.8rem;
+    font-size:0.85rem;
+    font-weight:600;
     color:var(--ink-soft);
     margin-bottom:6px;
   }
   .blokken-situatie svg{ display:block; }
 
+
+  /* Uitleg omvormen */
+  .uitleg-knop-rij{ margin-top:12px; }
+  .uitleg-paneel{
+    margin-top:12px;
+    background:var(--panel-2);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 18px;
+  }
+  .uitleg-regel{
+    font-size:0.92rem;
+    color:var(--ink-soft);
+    margin:0 0 12px;
+    padding-bottom:10px;
+    border-bottom:1px solid var(--line);
+  }
+  .stap{ display:flex; gap:12px; margin:0 0 14px; }
+  .stap:last-child{ margin-bottom:0; }
+  .stap-nr{
+    flex:none;
+    width:26px; height:26px;
+    border-radius:50%;
+    background:var(--accent);
+    color:#fff;
+    font-size:0.82rem;
+    font-weight:700;
+    display:flex; align-items:center; justify-content:center;
+    margin-top:1px;
+  }
+  .stap-tekst{ font-size:0.95rem; }
+  .stap-formule{
+    display:inline-block;
+    margin-top:6px;
+    font-weight:600;
+    color:var(--accent-dark);
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:4px 12px;
+  }
+  .weg{ text-decoration:line-through; text-decoration-color:var(--bad); text-decoration-thickness:2px; color:var(--ink-soft); }
+
   @media (max-width:480px){
-    .formule-groot{ font-size:1.05rem; }
-    .antwoord-rij input[type=text]{ width:120px; }
+    .categorie.sub{ margin-left:0; }
+    .hoofdkop p{ margin-left:0; }
+    .wrap{ padding:24px 16px 60px; }
+    header.app-header h1{ font-size:1.6rem; }
+    .formule-groot{ font-size:1.1rem; }
+    .antwoord-rij input[type=text]{ width:130px; }
+    .vraag-card{ padding:18px; }
   }
 </style>
 </head>
@@ -988,6 +1083,7 @@ let huidigVervolgFn = null;
 
 function renderHome(){
   huidigTopic = null;
+  app.classList.remove('smal');
   const scores = leesScores();
   let html = `
     <header class="app-header">
@@ -995,10 +1091,19 @@ function renderHome(){
       <p>Oefen met redeneren in natuurkundige formules: hoe groot een grootheid wordt als factoren veranderen, en hoe je twee toestanden met elkaar vergelijkt.</p>
     </header>
   `;
+  const REDENEER_CATS = ['Mechanica','Energie','Warmteleer','Elektriciteit','Magnetisme'];
+  let redeneerKopGezet = false;
   CATEGORIE_VOLGORDE.forEach(cat=>{
     const items = FORMULES.filter(f=>f.categorie===cat);
     if(items.length===0) return;
-    html += `<div class="categorie"><h2>${cat}</h2>`;
+    const isRedeneer = REDENEER_CATS.includes(cat);
+    if(isRedeneer && !redeneerKopGezet){
+      html += `<div class="hoofdkop"><h2>Redeneren</h2><p>Kies een formule. Je oefent hoe een grootheid verandert als een andere grootheid verandert, je rekent ermee en je vergelijkt twee toestanden.</p></div>`;
+      redeneerKopGezet = true;
+    }
+    html += isRedeneer
+      ? `<div class="categorie sub"><h3>${cat}</h3><div class="topic-grid">`
+      : `<div class="categorie"><h2>${cat}</h2><div class="topic-grid">`;
     items.forEach(f=>{
       const s = scores[f.id];
       const scoreLabel = (s && s.totaal>0) ? `${s.goed}/${s.totaal} goed` : '';
@@ -1012,7 +1117,7 @@ function renderHome(){
         </button>
       `;
     });
-    html += `</div>`;
+    html += `</div></div>`;
   });
   html += `<button class="reset-link" id="resetBtn">Voortgang wissen</button>`;
   app.innerHTML = html;
@@ -1033,6 +1138,7 @@ function renderHome(){
 
 function openTopic(f){
   huidigTopic = f;
+  app.classList.add('smal');
   huidigStage = 1;
   if(f.type==='eenheden'){
     renderEenheden(f);
@@ -1154,8 +1260,160 @@ function controleerAntwoord(){
   document.getElementById('scoreBalk').textContent = scoreTekst(huidigTopic.id);
 }
 
+
+/* ============ UITLEG BIJ OMVORMEN ============ */
+// Productformules Y = a · b · c: stappen worden automatisch opgebouwd.
+const PRODUCT_FORMULES = {
+  zwaartekracht:{Y:'F<sub>z</sub>', f:['m','g']},
+  veerkracht:{Y:'F<sub>v</sub>', f:['k','ΔL']},
+  archimedes:{Y:'F<sub>A</sub>', f:['ρ','V','g']},
+  gravPE:{Y:'E<sub>p</sub>', f:['m','g','h']},
+  warmte:{Y:'Q', f:['c','m','ΔT']},
+  ohm:{Y:'U', f:['R','I']},
+  lorentz:{Y:'F', f:['B','I','L']},
+  spoel:{Y:'B', f:['μ<sub>0</sub>','μ<sub>r</sub>','n','I']}
+};
+function stappenProduct(pf, doel){
+  const rest = pf.f.filter(x=>x!==doel);
+  const restTxt = rest.join(' · ');
+  const noemer = rest.length>1 ? `(${restTxt})` : restTxt;
+  const weg = rest.length>1 ? `<span class="weg">(${restTxt})</span>` : `<span class="weg">${restTxt}</span>`;
+  const rechtsMetWeg = pf.f.map(x=> x===doel ? x : `<span class="weg">${x}</span>`).join(' · ');
+  return [
+    {t:`Je zoekt <strong>${doel}</strong>. In de formule wordt ${doel} vermenigvuldigd met ${restTxt}.`, f:`${pf.Y} = ${pf.f.join(' · ')}`},
+    {t:`Het omgekeerde van vermenigvuldigen is delen. Deel <strong>beide kanten</strong> door ${noemer}.`, f:`${pf.Y} / ${noemer} = ${pf.f.join(' · ')} / ${noemer}`},
+    {t:`Rechts staat ${restTxt} zowel boven als onder de breukstreep. Dat valt weg, want ${restTxt} gedeeld door zichzelf is 1.`, f:`${pf.Y} / ${noemer} = ${rechtsMetWeg} / ${weg}`},
+    {t:`Wissel de twee kanten om, zodat ${doel} links staat.`, f:`${doel} = ${pf.Y} / ${noemer}`}
+  ];
+}
+// Overige formules: handgeschreven stappen per doelgrootheid.
+const OMVORM_STAPPEN = {
+  druk:{
+    'F':[
+      {t:'Je zoekt <strong>F</strong>. In de formule wordt F gedeeld door A.', f:'p = F / A'},
+      {t:'Het omgekeerde van delen is vermenigvuldigen. Vermenigvuldig <strong>beide kanten</strong> met A.', f:'p · A = F / <span class="weg">A</span> · <span class="weg">A</span>'},
+      {t:'Rechts valt A weg (A gedeeld door A is 1). Wissel de kanten om.', f:'F = p · A'}
+    ],
+    'A':[
+      {t:'Je zoekt <strong>A</strong>. A staat onder de breukstreep (in de noemer). Haal A daar eerst weg.', f:'p = F / A'},
+      {t:'Vermenigvuldig <strong>beide kanten</strong> met A.', f:'p · A = F'},
+      {t:'Nu wordt A vermenigvuldigd met p. Deel beide kanten door p.', f:'<span class="weg">p</span> · A / <span class="weg">p</span> = F / p'},
+      {t:'Zet A links.', f:'A = F / p'}
+    ]
+  },
+  hydraulisch:{
+    'F2':[
+      {t:'Je zoekt <strong>F₂</strong>. In de formule wordt F₂ gedeeld door A₂.', f:'F₁ / A₁ = F₂ / A₂'},
+      {t:'Vermenigvuldig <strong>beide kanten</strong> met A₂. Rechts valt A₂ dan weg.', f:'F₁ · A₂ / A₁ = F₂'},
+      {t:'Wissel de kanten om, zodat F₂ links staat.', f:'F₂ = F₁ · A₂ / A₁'}
+    ],
+    'F1':[
+      {t:'Je zoekt <strong>F₁</strong>. In de formule wordt F₁ gedeeld door A₁.', f:'F₁ / A₁ = F₂ / A₂'},
+      {t:'Vermenigvuldig <strong>beide kanten</strong> met A₁. Links valt A₁ dan weg.', f:'F₁ = F₂ · A₁ / A₂'}
+    ],
+    'A2':[
+      {t:'Je zoekt <strong>A₂</strong>. A₂ staat in de noemer. Haal A₂ daar eerst weg: vermenigvuldig beide kanten met A₂.', f:'F₁ · A₂ / A₁ = F₂'},
+      {t:'Haal ook A₁ uit de noemer: vermenigvuldig beide kanten met A₁.', f:'F₁ · A₂ = F₂ · A₁'},
+      {t:'Nu wordt A₂ vermenigvuldigd met F₁. Deel beide kanten door F₁.', f:'A₂ = F₂ · A₁ / F₁'}
+    ],
+    'A1':[
+      {t:'Je zoekt <strong>A₁</strong>. A₁ staat in de noemer. Haal A₁ daar eerst weg: vermenigvuldig beide kanten met A₁.', f:'F₁ = F₂ · A₁ / A₂'},
+      {t:'Haal ook A₂ uit de noemer: vermenigvuldig beide kanten met A₂.', f:'F₁ · A₂ = F₂ · A₁'},
+      {t:'Nu wordt A₁ vermenigvuldigd met F₂. Deel beide kanten door F₂ en zet A₁ links.', f:'A₁ = F₁ · A₂ / F₂'}
+    ]
+  },
+  kinetisch:{
+    'm':[
+      {t:'Je zoekt <strong>m</strong>. Werk eerst de ½ weg: vermenigvuldig <strong>beide kanten</strong> met 2.', f:'2 · E<sub>k</sub> = m · v²'},
+      {t:'Nu wordt m vermenigvuldigd met v². Deel beide kanten door v².', f:'2 · E<sub>k</sub> / v² = m'},
+      {t:'Zet m links.', f:'m = 2 · E<sub>k</sub> / v²'}
+    ],
+    'v':[
+      {t:'Je zoekt <strong>v</strong>. Werk eerst de ½ weg: vermenigvuldig <strong>beide kanten</strong> met 2.', f:'2 · E<sub>k</sub> = m · v²'},
+      {t:'Deel beide kanten door m, zodat v² alleen staat.', f:'2 · E<sub>k</sub> / m = v²'},
+      {t:'Je hebt nu v², maar je zoekt v. Het omgekeerde van een kwadraat is de vierkantswortel. Neem de wortel van beide kanten.', f:'√(2 · E<sub>k</sub> / m) = v'},
+      {t:'Zet v links.', f:'v = √(2 · E<sub>k</sub> / m)'}
+    ]
+  },
+  elastPE:{
+    'k':[
+      {t:'Je zoekt <strong>k</strong>. Werk eerst de ½ weg: vermenigvuldig <strong>beide kanten</strong> met 2.', f:'2 · E<sub>el</sub> = k · ΔL²'},
+      {t:'Nu wordt k vermenigvuldigd met ΔL². Deel beide kanten door ΔL².', f:'2 · E<sub>el</sub> / ΔL² = k'},
+      {t:'Zet k links.', f:'k = 2 · E<sub>el</sub> / ΔL²'}
+    ],
+    'ΔL':[
+      {t:'Je zoekt <strong>ΔL</strong>. Werk eerst de ½ weg: vermenigvuldig <strong>beide kanten</strong> met 2.', f:'2 · E<sub>el</sub> = k · ΔL²'},
+      {t:'Deel beide kanten door k, zodat ΔL² alleen staat.', f:'2 · E<sub>el</sub> / k = ΔL²'},
+      {t:'Je zoekt ΔL, niet ΔL². Neem de vierkantswortel van beide kanten.', f:'√(2 · E<sub>el</sub> / k) = ΔL'},
+      {t:'Zet ΔL links.', f:'ΔL = √(2 · E<sub>el</sub> / k)'}
+    ]
+  },
+  coulomb:{
+    'q1':[
+      {t:'Je zoekt <strong>q₁</strong>. We rekenen met de grootte van de ladingen, dus zonder de absolutewaardestrepen. Haal eerst r² uit de noemer: vermenigvuldig <strong>beide kanten</strong> met r².', f:'F · r² = k · q₁ · q₂'},
+      {t:'Nu wordt q₁ vermenigvuldigd met k en q₂. Deel beide kanten door (k · q₂).', f:'F · r² / (k · q₂) = q₁'},
+      {t:'Zet q₁ links.', f:'q₁ = F · r² / (k · q₂)'}
+    ],
+    'r':[
+      {t:'Je zoekt <strong>r</strong>. r² staat in de noemer. Haal het eruit: vermenigvuldig <strong>beide kanten</strong> met r².', f:'F · r² = k · q₁ · q₂'},
+      {t:'Deel beide kanten door F, zodat r² alleen staat.', f:'r² = k · q₁ · q₂ / F'},
+      {t:'Je zoekt r, niet r². Neem de vierkantswortel van beide kanten.', f:'r = √(k · q₁ · q₂ / F)'}
+    ]
+  },
+  elektrischveld:{
+    'Q':[
+      {t:'Je zoekt <strong>Q</strong>. Haal eerst r² uit de noemer: vermenigvuldig <strong>beide kanten</strong> met r².', f:'E · r² = k · Q'},
+      {t:'Nu wordt Q vermenigvuldigd met k. Deel beide kanten door k.', f:'E · r² / k = Q'},
+      {t:'Zet Q links.', f:'Q = E · r² / k'}
+    ],
+    'r':[
+      {t:'Je zoekt <strong>r</strong>. r² staat in de noemer. Haal het eruit: vermenigvuldig <strong>beide kanten</strong> met r².', f:'E · r² = k · Q'},
+      {t:'Deel beide kanten door E, zodat r² alleen staat.', f:'r² = k · Q / E'},
+      {t:'Je zoekt r, niet r². Neem de vierkantswortel van beide kanten.', f:'r = √(k · Q / E)'}
+    ]
+  },
+  rechtegeleider:{
+    'I':[
+      {t:'Je zoekt <strong>I</strong>. Haal eerst (2π · r) uit de noemer: vermenigvuldig <strong>beide kanten</strong> met 2π · r.', f:'B · 2π · r = μ<sub>0</sub> · I'},
+      {t:'Nu wordt I vermenigvuldigd met μ<sub>0</sub>. Deel beide kanten door μ<sub>0</sub>.', f:'B · 2π · r / μ<sub>0</sub> = I'},
+      {t:'Zet I links.', f:'I = B · 2π · r / μ<sub>0</sub>'}
+    ],
+    'r':[
+      {t:'Je zoekt <strong>r</strong>. r staat in de noemer. Haal (2π · r) eruit: vermenigvuldig <strong>beide kanten</strong> met 2π · r.', f:'B · 2π · r = μ<sub>0</sub> · I'},
+      {t:'Nu wordt r vermenigvuldigd met B en 2π. Deel beide kanten door (2π · B).', f:'<span class="weg">B · 2π</span> · r / <span class="weg">(2π · B)</span> = μ<sub>0</sub> · I / (2π · B)'},
+      {t:'Zet r links.', f:'r = μ<sub>0</sub> · I / (2π · B)'}
+    ]
+  }
+};
+function omvormStappen(formuleId, doel){
+  if(PRODUCT_FORMULES[formuleId]) return stappenProduct(PRODUCT_FORMULES[formuleId], doel);
+  const lijst = OMVORM_STAPPEN[formuleId];
+  return (lijst && lijst[doel]) ? lijst[doel] : null;
+}
+function koppelUitleg(stappen){
+  const zone = document.getElementById('uitlegZone');
+  if(!zone || !stappen) return;
+  let getoond = 0;
+  zone.innerHTML = `
+    <div class="uitleg-paneel" id="uitlegPaneel" hidden>
+      <p class="uitleg-regel">Een formule is een evenwicht: wat je aan de ene kant doet, doe je ook aan de andere kant. Gebruik telkens de <strong>omgekeerde bewerking</strong>: vermenigvuldigen ↔ delen, kwadraat ↔ vierkantswortel.</p>
+      <div id="stappenLijst"></div>
+    </div>
+    <div class="uitleg-knop-rij"><button class="secundair" id="uitlegBtn">Hoe vorm je dit om?</button></div>`;
+  const btn = document.getElementById('uitlegBtn');
+  btn.addEventListener('click', ()=>{
+    document.getElementById('uitlegPaneel').hidden = false;
+    const st = stappen[getoond];
+    document.getElementById('stappenLijst').insertAdjacentHTML('beforeend',
+      `<div class="stap"><span class="stap-nr">${getoond+1}</span><div class="stap-tekst">${st.t}<br><span class="stap-formule">${st.f}</span></div></div>`);
+    getoond++;
+    if(getoond < stappen.length){ btn.textContent = 'Volgende stap'; }
+    else { btn.remove(); }
+  });
+}
+
 /* ---- Generieke meerkeuze-pagina (herbruikt voor omvormen, voorvoegsels) ---- */
-function paginaMC(headerHTML, vraag, topicId, onNext){
+function paginaMC(headerHTML, vraag, topicId, onNext, stappen){
   const opties = shuffle(vraag.opties);
   app.innerHTML = `
     <button class="terug-btn" id="terugBtn">&larr; Terug naar overzicht</button>
@@ -1166,6 +1424,7 @@ function paginaMC(headerHTML, vraag, topicId, onNext){
         ${opties.map(o=>`<button class="mc-optie" data-optie="${encodeURIComponent(o)}">${o}</button>`).join('')}
       </div>
       <div id="feedbackZone"></div>
+      <div id="uitlegZone"></div>
     </div>
     <div class="score-balk" id="scoreBalk">${scoreTekst(topicId)}</div>
   `;
@@ -1194,6 +1453,7 @@ function paginaMC(headerHTML, vraag, topicId, onNext){
       document.getElementById('scoreBalk').textContent = scoreTekst(topicId);
     });
   });
+  koppelUitleg(stappen);
 }
 
 function renderOmvormenVraag(){
@@ -1209,7 +1469,7 @@ function renderOmvormenVraag(){
     <div class="oef-header"><h2>${f.naam}</h2></div>
     ${bouwTabsHTML(f)}
   `;
-  paginaMC(headerHTML, vraag, f.id, renderOmvormenVraag);
+  paginaMC(headerHTML, vraag, f.id, renderOmvormenVraag, omvormStappen(f.id, item.doel));
   app.querySelectorAll('.tab-btn').forEach(btn=>{
     btn.addEventListener('click', ()=>{ toonStage(parseInt(btn.dataset.stage)); });
   });
@@ -1236,7 +1496,7 @@ function renderOmvormenAlgemeen(f){
       <div class="oef-note">Elke vraag komt uit een willekeurige formule uit de volledige lijst.</div>
     </div>
   `;
-  paginaMC(headerHTML, vraag, f.id, ()=>renderOmvormenAlgemeen(f));
+  paginaMC(headerHTML, vraag, f.id, ()=>renderOmvormenAlgemeen(f), omvormStappen(gekozenId, item.doel));
 }
 
 /* ---- Voorvoegsels & eenheden omzetten ---- */
