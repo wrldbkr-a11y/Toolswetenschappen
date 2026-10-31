@@ -472,10 +472,16 @@ const fmt=(v,d=1)=>v.toFixed(d).replace('.',',').replace('-0,0','0,0');
     karren.forEach(k=>{
       let a=0;
       if(proef===1 && duwT>0) a=F/k.m;
-      if(proef===2 && k.x>=REMX && k.v>0){ if(!k.remt){ k.remt=true; k.xRem=k.x; } a=-F/k.m; }
+      if(proef===2 && !k.remt && k.x+k.v*dt>=REMX){ k.remt=true; k.x=REMX; k.tRem=0; return; }
+      if(proef===2 && k.remt){
+        // exact remmen vanaf de streep: v = v0 − a·t, x = xstreep + v0·t − ½·a·t²
+        if(k.klaar) return;
+        const ar=F/k.m, tStop=V0/ar; k.tRem=Math.min(k.tRem+dt,tStop);
+        k.v=V0-ar*k.tRem; k.x=REMX+V0*k.tRem-0.5*ar*k.tRem*k.tRem;
+        if(k.tRem>=tStop){ k.v=0; k.klaar=true; }
+        return;
+      }
       k.v+=a*dt;
-      if(proef===2 && k.remt && k.v<=0){ k.v=0; if(!k.klaar){ k.klaar=true; } }
-      if(proef===2 && k.remt && !k.klaar) k.tRem+=dt;
       k.x+=k.v*dt;
       const max=(W-60)/PX; if(k.x>max){ k.x=max; k.v=0; }
     });
@@ -491,7 +497,7 @@ const fmt=(v,d=1)=>v.toFixed(d).replace('.',',').replace('-0,0','0,0');
       text(ctx,'remstreep: vanaf hier rem je met 60 N',REMX*PX,H-14,{size:13,weight:700,color:'#dc2626',align:'center'});
       karren.forEach(k=>{ if(k.remt){ const y=k.y+46; ctx.strokeStyle='#dc2626'; ctx.lineWidth=2;
         ctx.beginPath(); ctx.moveTo(REMX*PX,y); ctx.lineTo(k.x*PX,y); ctx.moveTo(REMX*PX,y-6); ctx.lineTo(REMX*PX,y+6); ctx.moveTo(k.x*PX,y-6); ctx.lineTo(k.x*PX,y+6); ctx.stroke();
-        text(ctx,'remafstand '+fmt(k.x-REMX,2)+' m',(REMX+k.x)/2*PX,y+20,{size:13,weight:700,color:'#dc2626',align:'center'}); } });
+        text(ctx,'remafstand '+fmt(k.x-REMX,2)+' m',Math.max(REMX*PX+60,(REMX+k.x)/2*PX),y-8,{size:13,weight:700,color:'#dc2626',align:'center'}); } });
     }
     karren.forEach(k=>{
       kar(k);
