@@ -125,6 +125,13 @@ canvas{display:block;width:100%;height:auto;}
 .note{background:var(--panel-2);border-left:4px solid var(--accent);border-radius:0 8px 8px 0;padding:10px 12px;font-size:13.5px;color:var(--text-dim);line-height:1.6;}
 .note strong{color:var(--text);}
 
+.sort-lijst{display:flex;flex-direction:column;gap:10px;max-width:760px;}
+.sort-item{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px;}
+.sort-item .wat{font-weight:600;}
+.sort-item .keuzes{display:flex;gap:8px;flex-wrap:wrap;}
+.sort-item .uitleg{flex-basis:100%;font-size:14px;}
+.playbtn.goed{background:#E3F3E9;border-color:#1F7A4A;color:#1F7A4A;}
+.playbtn.fout{background:#FBE6E3;border-color:#B3362B;color:#B3362B;}
 footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-dim);font-size:12px;}
 </style>
 </head>
@@ -138,6 +145,100 @@ footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-di
 </header>
 
 <main>
+
+
+  <section class="scene" id="z1" data-title="Lichtbronnen en donkere lichamen" data-cat="zien">
+    <div class="scene-head"><span class="num">1</span><h3>Lichtbronnen en donkere lichamen</h3></div>
+    <p class="scene-sub">Een <strong>lichtbron</strong> zendt zelf licht uit. Een <strong>donker lichaam</strong> zendt zelf geen licht uit: je ziet het alleen als er licht op valt dat het weerkaatst. Klik bij elk voorwerp op het juiste antwoord.</p>
+    <div class="sort-lijst" id="z1-lijst"></div>
+    <div class="note" style="margin-top:14px;max-width:760px"><strong>Let op:</strong> de maan en een spiegel lijken te schijnen, maar zenden zelf geen licht uit. Ze weerkaatsen het licht van de zon of van een lamp: het zijn <strong>donkere lichamen</strong>.</div>
+  </section>
+
+  <section class="scene" id="z2" data-title="Voortplanting en lichtbundels" data-cat="zien">
+    <div class="scene-head"><span class="num">2</span><h3>Voortplanting van licht en soorten lichtbundels</h3></div>
+    <p class="scene-sub">Een stof waar licht door kan, heet een <strong>optische middenstof</strong>, bv. lucht, water, glas en plexiglas. Licht kan zich ook voortplanten in het luchtledige. In een middenstof die overal gelijk is, plant licht zich <strong>rechtlijnig</strong> voort. De stralengang is <strong>omkeerbaar</strong>: licht kan dezelfde weg ook in de andere zin afleggen.</p>
+    <div class="grid">
+      <div class="canvas-wrap"><canvas id="cz2" width="800" height="400"></canvas></div>
+      <div class="controls">
+        <div class="ctrl-group"><label>Soort lichtbundel</label>
+          <div class="ctrl-row" style="flex-wrap:wrap">
+            <button class="playbtn" data-bundel="div">divergerend</button>
+            <button class="playbtn secondary" data-bundel="even">evenwijdig</button>
+            <button class="playbtn secondary" data-bundel="conv">convergerend</button>
+          </div>
+        </div>
+        <div class="ctrl-group"><label>Optische middenstof</label>
+          <div class="ctrl-row" style="flex-wrap:wrap">
+            <button class="playbtn" data-mid="lucht">lucht</button>
+            <button class="playbtn secondary" data-mid="water">water</button>
+            <button class="playbtn secondary" data-mid="glas">glas</button>
+            <button class="playbtn secondary" data-mid="plexiglas">plexiglas</button>
+          </div>
+        </div>
+        <div class="ctrl-row"><button class="playbtn secondary" id="z2-om">⇄ Stralengang omkeren</button></div>
+        <div class="readout" id="z2-read"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene" id="z3" data-title="Schaduwvorming" data-cat="zien">
+    <div class="scene-head"><span class="num">3</span><h3>Schaduw: kernschaduw en bijschaduw</h3></div>
+    <p class="scene-sub">Schaduw is een gevolg van de <strong>rechtlijnige voortplanting</strong> van licht: achter een donker lichaam komt geen licht. Met één kleine lichtbron krijg je alleen een <strong>kernschaduw</strong>. Met twee lichtbronnen (of een grote lichtbron) krijg je ook een <strong>bijschaduw</strong>: daar komt licht van maar één lichtbron.</p>
+    <div class="grid">
+      <div class="canvas-wrap"><canvas id="cz3" width="800" height="430"></canvas></div>
+      <div class="controls">
+        <div class="ctrl-row">
+          <button class="playbtn secondary" data-bron="1">1 lichtbron</button>
+          <button class="playbtn" data-bron="2">2 lichtbronnen</button>
+        </div>
+        <div class="ctrl-group"><label>Plaats van het voorwerp</label><input type="range" id="z3-x" min="200" max="560" value="360"></div>
+        <div class="ctrl-group"><label>Afstand tussen de lichtbronnen</label><input type="range" id="z3-d" min="20" max="200" value="110"></div>
+        <div class="readout" id="z3-read"></div>
+        <div class="legend">
+          <div class="row"><span class="sw" style="background:#1e293b;height:10px"></span>kernschaduw: geen licht</div>
+          <div class="row"><span class="sw" style="background:#94a3b8;height:10px"></span>bijschaduw: licht van één bron</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene" id="z4" data-title="Zons- en maansverduistering" data-cat="zien">
+    <div class="scene-head"><span class="num">4</span><h3>Zonsverduistering en maansverduistering</h3></div>
+    <p class="scene-sub">De maan draait rond de aarde. Staat de <strong>maan tussen de zon en de aarde</strong>, dan valt de schaduw van de maan op de aarde: een <strong>zonsverduistering</strong>. Staat de <strong>aarde tussen de zon en de maan</strong>, dan komt de maan in de schaduw van de aarde: een <strong>maansverduistering</strong>. De tekening is niet op schaal.</p>
+    <div class="grid">
+      <div class="canvas-wrap"><canvas id="cz4" width="800" height="420"></canvas></div>
+      <div class="controls">
+        <div class="ctrl-group"><label>Plaats van de maan in haar baan</label><input type="range" id="z4-a" min="0" max="359" value="0"></div>
+        <div class="ctrl-group"><label>Maan iets boven of onder de lijn zon–aarde</label><input type="range" id="z4-h" min="-40" max="40" value="0"></div>
+        <div class="ctrl-row" style="flex-wrap:wrap">
+          <button class="playbtn secondary" id="z4-zon">zonsverduistering</button>
+          <button class="playbtn secondary" id="z4-maan">maansverduistering</button>
+        </div>
+        <div class="readout" id="z4-read"></div>
+        <div class="note">Meestal staat de maan net iets boven of onder de lijn zon–aarde. Daarom is er niet elke maand een verduistering.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene" id="w0" data-title="Lichamen zien" data-cat="weerkaatsing">
+    <div class="scene-head"><span class="num">5</span><h3>Hoe zie je een voorwerp?</h3></div>
+    <p class="scene-sub">Je ziet iets als er licht van dat voorwerp <strong>in je oog</strong> komt. Een <strong>lichtbron</strong> zie je omdat haar licht rechtstreeks in je oog valt. Een <strong>donker lichaam</strong> zie je omdat het licht van een lichtbron erop valt en het een deel van dat licht naar je oog <strong>weerkaatst</strong>. De rest wordt <strong>geabsorbeerd</strong> (opgeslorpt).</p>
+    <div class="grid">
+      <div class="canvas-wrap"><canvas id="cw0" width="800" height="400"></canvas></div>
+      <div class="controls">
+        <div class="ctrl-group"><label>Wat bekijk je?</label>
+          <div class="ctrl-row" style="flex-wrap:wrap">
+            <button class="playbtn" data-zie="lamp">een brandende lamp</button>
+            <button class="playbtn secondary" data-zie="wit">een wit blad</button>
+            <button class="playbtn secondary" data-zie="rood">een rode appel</button>
+            <button class="playbtn secondary" data-zie="zwart">een zwart voorwerp</button>
+          </div>
+        </div>
+        <div class="ctrl-row"><button class="playbtn secondary" id="w0-licht">💡 Lamp uit</button></div>
+        <div class="readout" id="w0-read"></div>
+      </div>
+    </div>
+  </section>
 
   <section class="scene" id="s1" data-title="Weerkaatsing — vlakke spiegel" data-cat="weerkaatsing">
     <div class="scene-head"><span class="num">1</span><h3>Weerkaatsing op een vlakke spiegel</h3></div>
@@ -240,6 +341,7 @@ footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-di
           <button class="playbtn secondary" id="s12-reset">↻ Reset</button>
         </div>
         <div class="readout" id="s12-read"></div>
+        <div class="note"><strong>De vijf kenmerken van het beeld bij een vlakke spiegel:</strong><br>1. <strong>virtueel</strong> (de verlengden snijden elkaar, niet de stralen zelf)<br>2. <strong>rechtop</strong><br>3. <strong>even groot</strong> als het voorwerp<br>4. <strong>even ver</strong> achter de spiegel als het voorwerp ervoor staat<br>5. <strong>gespiegeld</strong>: links en rechts zijn omgewisseld (symmetrisch t.o.v. de spiegel)</div>
         <div class="legend">
           <div class="row"><span class="sw" style="background:var(--amber)"></span>Invallende stralen</div>
           <div class="row"><span class="sw" style="background:var(--rose)"></span>Weerkaatste stralen</div>
@@ -269,6 +371,7 @@ footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-di
           <button class="playbtn secondary" id="s13-reset">↻ Reset</button>
         </div>
         <div class="readout" id="s13-read"></div>
+        <div class="note"><strong>Waarom is het gezichtsveld belangrijk?</strong> De binnenspiegel en de zijspiegels van een auto moeten de weg achter je tonen; wat buiten het gezichtsveld valt, is de <strong>dode hoek</strong>. Ook een spiegel bij de kapper, in een winkel of bij een uitrit werkt zo.</div>
         <div class="legend">
           <div class="row"><span class="sw" style="background:var(--rose)"></span>Werkelijke stralen (grenslijn + weerkaatsing naar het oog)</div>
           <div class="row"><span class="sw" style="background:var(--rose);opacity:.35"></span>Constructiestukje O' → uiteinde (niet reëel)</div>
@@ -294,6 +397,7 @@ footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-di
           <div class="num-field"><label>n ijl (bv. lucht)</label><input type="number" id="s4-n2" value="1.0" step="0.1" min="1.0" max="1.4"></div>
         </div>
         <div class="readout" id="s4-read"></div>
+        <div class="note"><strong>Zo verwoord je het:</strong> bij de overgang van een optisch <strong>dichte</strong> naar een optisch <strong>ijle</strong> middenstof breekt de lichtstraal <strong>van de normaal weg</strong>. De brekingshoek is <strong>groter</strong> dan de invalshoek.</div>
         <div class="legend">
           <div class="row"><span class="sw" style="background:var(--amber)"></span>Invallende straal (in dichte middenstof)</div>
           <div class="row"><span class="sw" style="background:var(--cyan2)"></span>Gebroken straal (in ijle middenstof)</div>
@@ -318,6 +422,7 @@ footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-di
           <div class="num-field"><label>n dicht (bv. water)</label><input type="number" id="s5-n2" value="1.33" step="0.01" min="1.1" max="2.5"></div>
         </div>
         <div class="readout" id="s5-read"></div>
+        <div class="note"><strong>Zo verwoord je het:</strong> bij de overgang van een optisch <strong>ijle</strong> naar een optisch <strong>dichte</strong> middenstof breekt de lichtstraal <strong>naar de normaal toe</strong>. De invalshoek is <strong>groter</strong> dan de brekingshoek. Valt de straal loodrecht in (invalshoek 0°), dan gaat ze rechtdoor.</div>
         <div class="legend">
           <div class="row"><span class="sw" style="background:var(--amber)"></span>Invallende straal (in ijle middenstof)</div>
           <div class="row"><span class="sw" style="background:var(--cyan2)"></span>Gebroken straal (in dichte middenstof)</div>
@@ -371,6 +476,7 @@ footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-di
           <div class="num-field"><label>n ijl</label><input type="number" id="s6-n2" value="1.0" step="0.1" min="1.0" max="1.4"></div>
         </div>
         <div class="readout" id="s6-read"></div>
+        <div class="note"><strong>Voorwaarden voor totale weerkaatsing:</strong><br>1. het licht gaat van een optisch <strong>dichte</strong> naar een optisch <strong>ijle</strong> middenstof;<br>2. de invalshoek is <strong>groter dan de grenshoek</strong>.</div>
         <div class="legend">
           <div class="row"><span class="sw" style="background:var(--amber)"></span>Invallende straal</div>
           <div class="row"><span class="sw" style="background:var(--cyan2)"></span>Gebroken straal (verdwijnt bij θc)</div>
@@ -504,6 +610,22 @@ footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-di
   </section>
 
 
+  <section class="scene" id="s16" data-title="Vergrotingsfactor" data-cat="lenzen">
+    <div class="scene-head"><span class="num">16</span><h3>De vergrotingsfactor van een bolle lens</h3></div>
+    <p class="scene-sub">De straal door het optisch middelpunt O gaat rechtdoor. Zo ontstaan twee <strong>gelijkvormige driehoeken</strong>: één met het voorwerp en één met het beeld. Daarom is de verhouding beeldgrootte/voorwerpsgrootte gelijk aan de verhouding beeldafstand/voorwerpsafstand. Dat getal is de <strong>vergrotingsfactor N</strong>.</p>
+    <div class="grid">
+      <div class="canvas-wrap"><canvas id="c16" width="800" height="440"></canvas></div>
+      <div class="controls">
+        <div class="formule-box" style="font-size:17px;font-weight:700;text-align:center;border:1px solid var(--line);border-radius:8px;padding:8px;background:#fff">N = B / V = b / v</div>
+        <div class="ctrl-group"><label id="s16-v-l">Voorwerpsafstand v</label><input type="range" id="s16-v" min="0" max="8" step="1" value="4"></div>
+        <div class="ctrl-group"><label id="s16-g-l">Voorwerpsgrootte V</label><input type="range" id="s16-g" min="1" max="4" step="0.5" value="2"></div>
+        <div class="readout" id="s16-read"></div>
+        <div class="note"><strong>Symbolen:</strong> V = grootte van het voorwerp, B = grootte van het beeld, v = voorwerpsafstand, b = beeldafstand (tot het optisch middelpunt).<br><strong>Omvormen:</strong> B = N · V &nbsp;·&nbsp; V = B / N &nbsp;·&nbsp; b = N · v &nbsp;·&nbsp; v = b / N</div>
+      </div>
+    </div>
+  </section>
+
+
 </main>
 
 <footer>gemaakt voor klasgebruik — fysica optica</footer>
@@ -523,6 +645,7 @@ const scenes = [...document.querySelectorAll('.scene')];
 const nav = document.getElementById('nav');
 const catNav = document.getElementById('catnav');
 const categories = [
+  {id:'zien', label:'Zien door licht'},
   {id:'weerkaatsing', label:'Weerkaatsing'},
   {id:'breking', label:'Breking'},
   {id:'toepassingen', label:'Toepassingen'},
@@ -1584,15 +1707,19 @@ function snellRefractDeg(n1,n2,i){
       read.innerHTML = `<span class="k">voorwerpsafstand do</span> <span class="v">${atFocus?'1,00 × f (in F1)':D.toFixed(2)+' × f'}</span><br>`+
         `<span class="k">Zet minstens twee stralen aan om het beeld te zien.</span>`;
     } else if(atFocus){
-      read.innerHTML = `<span class="k">voorwerpsafstand do</span> <span class="v">1,00 × f (in F1)</span><br>`+
-        `<span class="k">beeldafstand di</span> <span class="v">oneindig</span><br>`+
-        `<span class="ok">alle stralen verlaten de lens evenwijdig aan elkaar</span>`;
+      read.innerHTML = `<span class="k">voorwerpsafstand v</span> <span class="v">= f (voorwerp in F1)</span><br>`+
+        `<span class="k">beeldafstand b</span> <span class="v">oneindig: er is geen beeld</span><br>`+
+        `<span class="ok">alle stralen verlaten de lens evenwijdig aan elkaar</span><br>`+
+        `<span class="k">toepassing:</span> <span class="v">schijnwerper, vuurtoren (evenwijdige bundel)</span>`;
     } else {
-      const M=hi/ho;
-      read.innerHTML = `<span class="k">voorwerpsafstand do</span> <span class="v">${D.toFixed(2)} × f</span><br>`+
-        `<span class="k">beeldafstand di</span> <span class="v">${(xi/f).toFixed(2)} × f</span><br>`+
-        `<span class="k">vergroting</span> <span class="v">${Math.abs(M).toFixed(2)}×</span><br>`+
-        (real? `<span class="ok">reëel, ${M<0?'omgekeerd':'rechtop'}</span>` : `<span class="flag">virtueel, ${M<0?'omgekeerd':'rechtop'}</span>`);
+      const M=hi/ho, N=Math.abs(M);
+      const grootte = Math.abs(N-1)<0.01?'even groot':N>1?'vergroot':'verkleind';
+      const toep = !real?'loep, vergrootglas' : D>2.01?'fototoestel, oog' : Math.abs(D-2)<0.01?'kopieerapparaat' : 'projector (beamer)';
+      read.innerHTML = `<span class="k">voorwerpsafstand v</span> <span class="v">${D.toFixed(1).replace('.',',')} × f</span><br>`+
+        `<span class="k">beeldafstand b</span> <span class="v">${Math.abs(xi/f).toFixed(1).replace('.',',')} × f</span><br>`+
+        `<span class="k">vergrotingsfactor N</span> <span class="v">${N.toFixed(2).replace('.',',')}</span><br>`+
+        `<span class="k">stand:</span> <span class="v">${M<0?'omgekeerd':'rechtop'}</span> · <span class="k">grootte:</span> <span class="v">${grootte}</span><br>`+
+        `<span class="k">aard:</span> ${real?'<span class="ok">reëel</span>':'<span class="flag">virtueel</span>'} · <span class="k">toepassing:</span> <span class="v">${toep}</span>`;
     }
   }
 
@@ -2412,6 +2539,253 @@ function snellRefractDeg(n1,n2,i){
   }
   requestAnimationFrame(loop);
 })();
+
+//////////////////// NIEUW: hulp voor de secties van 'Zien door licht' ////////////////////
+function zCanvas(id){ const c=document.getElementById(id); const ctx=hiDPI(c); return {c,ctx,W:c._lw,H:c._lh}; }
+function zText(ctx,t,x,y,{size=13,weight=500,color='#1D2A36',align='left'}={}){ ctx.save(); ctx.font=`${weight} ${size}px Inter, sans-serif`; ctx.fillStyle=color; ctx.textAlign=align; ctx.fillText(t,x,y); ctx.restore(); }
+function zLoop(id,fn){ let last=performance.now(); (function lp(now){ const dt=Math.min(0.05,(now-last)/1000); last=now; if(document.getElementById(id).classList.contains('active')) fn(dt,now); requestAnimationFrame(lp); })(last); }
+function zKies(sel,cb){ const bs=document.querySelectorAll(sel); bs.forEach(b=>b.addEventListener('click',()=>{ bs.forEach(o=>o.classList.toggle('secondary',o!==b)); cb(b); })); }
+function zLamp(ctx,x,y,aan){ ctx.save(); if(aan){ const g=ctx.createRadialGradient(x,y,4,x,y,46); g.addColorStop(0,'rgba(255,214,10,0.9)'); g.addColorStop(1,'rgba(255,214,10,0)'); ctx.fillStyle=g; ctx.beginPath(); ctx.arc(x,y,46,0,Math.PI*2); ctx.fill(); }
+  ctx.fillStyle=aan?'#ffd60a':'#cbd5e1'; ctx.strokeStyle='#475569'; ctx.lineWidth=2; ctx.beginPath(); ctx.arc(x,y,16,0,Math.PI*2); ctx.fill(); ctx.stroke(); ctx.fillStyle='#64748b'; ctx.fillRect(x-7,y+15,14,10); ctx.restore(); }
+function zOog(ctx,x,y,dir=-1){ ctx.save(); ctx.translate(x,y); ctx.scale(dir,1); ctx.fillStyle='#fff'; ctx.strokeStyle='#1D2A36'; ctx.lineWidth=2.5; ctx.beginPath(); ctx.moveTo(26,0); ctx.quadraticCurveTo(0,-20,-26,0); ctx.quadraticCurveTo(0,20,26,0); ctx.fill(); ctx.stroke(); ctx.fillStyle='#2F6FB0'; ctx.beginPath(); ctx.arc(-8,0,9,0,Math.PI*2); ctx.fill(); ctx.fillStyle='#111'; ctx.beginPath(); ctx.arc(-10,0,4,0,Math.PI*2); ctx.fill(); ctx.restore(); }
+
+//////////////////// Z1 — LICHTBRONNEN EN DONKERE LICHAMEN ////////////////////
+(function(){
+  const items=[
+    ['de zon','lichtbron','De zon zendt zelf licht uit (kernfusie).'],
+    ['de maan','donker lichaam','De maan weerkaatst het licht van de zon.'],
+    ['een brandende kaars','lichtbron','De vlam zendt zelf licht uit.'],
+    ['een boek','donker lichaam','Je ziet een boek alleen als er licht op valt.'],
+    ['een spiegel','donker lichaam','Een spiegel weerkaatst licht, maar zendt zelf geen licht uit.'],
+    ['het scherm van een gsm die aanstaat','lichtbron','Het scherm zendt zelf licht uit.'],
+    ['een ster aan de hemel','lichtbron','Een ster is een zon heel ver weg: ze zendt zelf licht uit.'],
+    ['een fietsreflector','donker lichaam','Een reflector weerkaatst het licht van koplampen heel goed, maar zendt zelf geen licht uit.'],
+    ['een gloeiende kookplaat','lichtbron','Iets dat gloeit van de hitte, zendt zelf licht uit.'],
+    ['een wolk','donker lichaam','Een wolk weerkaatst en verstrooit het zonlicht.'],
+  ];
+  const lijst=document.getElementById('z1-lijst');
+  items.forEach(([wat,j,u])=>{
+    const r=document.createElement('div'); r.className='sort-item'; r.innerHTML=`<div class="wat">${wat}</div>`;
+    const k=document.createElement('div'); k.className='keuzes'; const ue=document.createElement('div'); ue.className='uitleg';
+    ['lichtbron','donker lichaam'].forEach(o=>{ const b=document.createElement('button'); b.className='playbtn secondary'; b.textContent=o;
+      b.onclick=()=>{ if(k.dataset.klaar) return; k.dataset.klaar=1; [...k.children].forEach(bb=>{ if(bb.textContent===j) bb.classList.add('goed'); else if(bb===b) bb.classList.add('fout'); });
+        ue.innerHTML=(o===j?'<b style="color:var(--ok-text)">Juist.</b> ':'<b style="color:var(--flag-text)">Niet juist: '+j+'.</b> ')+u; };
+      k.appendChild(b); });
+    r.appendChild(k); r.appendChild(ue); lijst.appendChild(r);
+  });
+})();
+
+//////////////////// Z2 — VOORTPLANTING EN LICHTBUNDELS ////////////////////
+(function(){
+  const {ctx,W,H}=zCanvas('cz2'); const read=document.getElementById('z2-read');
+  const MID={lucht:'rgba(219,234,254,0.35)',water:'rgba(96,165,250,0.30)',glas:'rgba(167,243,208,0.40)',plexiglas:'rgba(226,232,240,0.70)'};
+  let bundel='div', mid='lucht', om=false, t=0;
+  zKies('[data-bundel]',b=>bundel=b.dataset.bundel); zKies('[data-mid]',b=>mid=b.dataset.mid);
+  document.getElementById('z2-om').onclick=()=>{ om=!om; };
+  function stralen(){
+    const y0=H/2, out=[];
+    for(let k=-3;k<=3;k++){
+      if(bundel==='div') out.push([[110,y0],[W-40,y0+k*52]]);
+      if(bundel==='even') out.push([[60,y0+k*42],[W-40,y0+k*42]]);
+      if(bundel==='conv') out.push([[60,y0+k*48],[560,y0]]);
+    }
+    return out;
+  }
+  zLoop('z2',dt=>{
+    t+=dt;
+    ctx.clearRect(0,0,W,H); ctx.fillStyle=MID[mid]; ctx.fillRect(0,0,W,H);
+    zText(ctx,'optische middenstof: '+mid,16,26,{size:14,weight:700});
+    const s=stralen();
+    s.forEach(([a,b])=>{
+      ctx.strokeStyle='#e8a300'; ctx.lineWidth=2.5; ctx.beginPath(); ctx.moveTo(...a); ctx.lineTo(...b); ctx.stroke();
+      const [p,q]=om?[b,a]:[a,b], ang=Math.atan2(q[1]-p[1],q[0]-p[0]);
+      // pijlpunt op 60 %
+      const mx=p[0]+(q[0]-p[0])*0.6, my=p[1]+(q[1]-p[1])*0.6;
+      arrowHead(ctx,mx,my,ang,6,'#c2410c');
+      // bewegend lichtdeeltje
+      const f=(t*0.35)%1; dot(ctx,p[0]+(q[0]-p[0])*f,p[1]+(q[1]-p[1])*f,3.5,'#c2410c');
+    });
+    if(bundel==='div') zLamp(ctx,110,H/2,true);
+    if(bundel==='conv'){ ctx.fillStyle='#c2410c'; ctx.beginPath(); ctx.arc(560,H/2,5,0,Math.PI*2); ctx.fill(); zText(ctx,'convergentiepunt',560,H/2+26,{size:12,align:'center',color:'#51606E'}); }
+    const naam={div:'divergerende bundel: de stralen gaan uit elkaar',even:'evenwijdige bundel: de stralen lopen evenwijdig',conv:'convergerende bundel: de stralen komen samen in één punt'}[bundel];
+    zText(ctx,naam,16,H-16,{size:14,weight:700,color:'#9a3412'});
+    let extra='';
+    if(om && bundel==='div') extra='<br><span class="ok">Omgekeerd: dezelfde stralen lopen nu naar de lamp toe. De divergerende bundel wordt convergerend.</span>';
+    if(om && bundel==='conv') extra='<br><span class="ok">Omgekeerd: de stralen vertrekken nu uit het punt en gaan uit elkaar. De convergerende bundel wordt divergerend.</span>';
+    if(om && bundel==='even') extra='<br><span class="ok">Omgekeerd: de bundel blijft evenwijdig, alleen de zin verandert.</span>';
+    read.innerHTML=`<span class="v">${naam[0].toUpperCase()+naam.slice(1)}.</span><br><span class="k">In een homogene middenstof plant licht zich <b>rechtlijnig</b> voort: elke lichtstraal is een rechte lijn.</span>`+(om?extra:'<br><span class="k">Klik op <b>Stralengang omkeren</b>: het licht volgt dezelfde weg terug.</span>');
+  });
+})();
+
+//////////////////// Z3 — SCHADUW ////////////////////
+(function(){
+  const {ctx,W,H}=zCanvas('cz3'); const xs=document.getElementById('z3-x'), ds=document.getElementById('z3-d'), read=document.getElementById('z3-read');
+  let n=2; zKies('[data-bron]',b=>n=+b.dataset.bron);
+  const LX=70, SX=720, YM=215, OT=180, OB=250; // voorwerp van OT tot OB
+  const proj=(sx,sy,ox,oy)=>sy+(oy-sy)*(SX-sx)/(ox-sx);
+  zLoop('z3',()=>{
+    const ox=+xs.value, d=+ds.value;
+    const bronnen = n===1?[YM]:[YM-d/2,YM+d/2];
+    ctx.clearRect(0,0,W,H); ctx.fillStyle='#fffbeb'; ctx.fillRect(0,0,W,H);
+    // schaduwkegels (overlap wordt vanzelf donkerder)
+    const iv=bronnen.map(by=>{ const a=proj(LX,by,ox,OT), b=proj(LX,by,ox,OB);
+      ctx.fillStyle='rgba(30,41,59,0.38)'; ctx.beginPath(); ctx.moveTo(ox,OT); ctx.lineTo(SX,a); ctx.lineTo(SX,b); ctx.lineTo(ox,OB); ctx.closePath(); ctx.fill();
+      ctx.strokeStyle='rgba(232,163,0,0.8)'; ctx.lineWidth=1.3; ctx.setLineDash([5,5]); ctx.beginPath(); ctx.moveTo(LX,by); ctx.lineTo(SX,a); ctx.moveTo(LX,by); ctx.lineTo(SX,b); ctx.stroke(); ctx.setLineDash([]);
+      return [a,b]; });
+    // scherm met kleuren
+    ctx.fillStyle='#fff'; ctx.fillRect(SX,10,26,H-20);
+    for(let y=10;y<H-10;y++){ const c=iv.filter(([a,b])=>y>=a&&y<=b).length; if(c===0) continue; ctx.fillStyle=c===iv.length?'#1e293b':'#94a3b8'; ctx.fillRect(SX,y,26,1); }
+    ctx.strokeStyle='#334155'; ctx.lineWidth=2; ctx.strokeRect(SX,10,26,H-20); zText(ctx,'scherm',SX+13,H-0,{size:12,align:'center',color:'#51606E'});
+    // voorwerp en lichtbronnen
+    ctx.fillStyle='#475569'; ctx.fillRect(ox-6,OT,12,OB-OT);
+    bronnen.forEach((by,i)=>{ zLamp(ctx,LX,by,true); if(n===2) zText(ctx,i?'B':'A',LX-34,by+5,{size:14,weight:700}); });
+    // labels
+    if(n===2){ const k0=Math.max(iv[0][0],iv[1][0]), k1=Math.min(iv[0][1],iv[1][1]);
+      if(k1>k0) zText(ctx,'kernschaduw',SX-10,(k0+k1)/2+5,{size:13,weight:700,align:'right'});
+      const b0=Math.min(iv[0][0],iv[1][0]), b1=Math.max(iv[0][1],iv[1][1]);
+      zText(ctx,'bijschaduw',SX-10,(b0+Math.min(k0,b1))/2+5,{size:12,weight:700,align:'right',color:'#51606E'});
+      zText(ctx,'bijschaduw',SX-10,(Math.max(k1,b0)+b1)/2+5,{size:12,weight:700,align:'right',color:'#51606E'});
+      read.innerHTML='<span class="k">In de <b>kernschaduw</b> komt geen licht van A en geen licht van B.</span><br><span class="k">In de <b>bijschaduw</b> komt licht van maar één lichtbron.</span>'+(k1<=k0?'<br><span class="flag">Er is geen kernschaduw meer op het scherm: het voorwerp is te klein of staat te dicht bij de lichtbronnen.</span>':'');
+    } else { zText(ctx,'kernschaduw',SX-10,(iv[0][0]+iv[0][1])/2+5,{size:13,weight:700,align:'right'});
+      read.innerHTML='<span class="k">Met één kleine lichtbron is er alleen een <b>kernschaduw</b>: een scherpe schaduw zonder bijschaduw.</span><br><span class="k">Schuif het voorwerp: dichter bij de lamp → grotere schaduw.</span>'; }
+  });
+})();
+
+//////////////////// Z4 — ZONS- EN MAANSVERDUISTERING ////////////////////
+(function(){
+  const {ctx,W,H}=zCanvas('cz4'); const aS=document.getElementById('z4-a'), hS=document.getElementById('z4-h'), read=document.getElementById('z4-read');
+  document.getElementById('z4-zon').onclick=()=>{ aS.value=0; hS.value=0; };
+  document.getElementById('z4-maan').onclick=()=>{ aS.value=180; hS.value=0; };
+  const S={x:70,y:210,r:50}, E={x:470,y:210,r:26}, RB=120, RM=14;
+  function kegels(B,kleurK,kleurB){ // kern- en bijschaduw achter lichaam B
+    const dx=B.x-S.x, dy=B.y-S.y, d=Math.hypot(dx,dy), ux=dx/d, uy=dy/d, nx=-uy, ny=ux;
+    const L=760; // tot buiten beeld
+    const ru=s=>B.r - s*(S.r-B.r)/d, rp=s=>B.r + s*(S.r+B.r)/d;
+    const sU=Math.min(L, d*B.r/(S.r-B.r));
+    const P=(s,r)=>[B.x+ux*s+nx*r, B.y+uy*s+ny*r];
+    ctx.fillStyle=kleurB; ctx.beginPath(); ctx.moveTo(...P(0,B.r)); ctx.lineTo(...P(L,rp(L))); ctx.lineTo(...P(L,-rp(L))); ctx.lineTo(...P(0,-B.r)); ctx.closePath(); ctx.fill();
+    ctx.fillStyle=kleurK; ctx.beginPath(); ctx.moveTo(...P(0,B.r)); ctx.lineTo(...P(sU,ru(sU))); ctx.lineTo(...P(sU,-ru(sU))); ctx.lineTo(...P(0,-B.r)); ctx.closePath(); ctx.fill();
+    return {ux,uy,nx,ny,d,ru,rp,sU};
+  }
+  function inSchaduw(K,B,X){ // hoe ligt cirkel X t.o.v. de schaduw van B (K = kegels)
+    const vx=X.x-B.x, vy=X.y-B.y, s=vx*K.ux+vy*K.uy, a=Math.abs(vx*K.nx+vy*K.ny);
+    if(s<=0) return 'geen';
+    const ru=K.ru(s), rp=K.rp(s);
+    if(ru>0 && a+X.r<=ru) return 'volledig kern';
+    if(ru>0 && a-X.r<ru) return 'deels kern';
+    if(a-X.r<rp) return 'bij';
+    return 'geen';
+  }
+  zLoop('z4',()=>{
+    const a=+aS.value*Math.PI/180, h=+hS.value;
+    const M={x:E.x-RB*Math.cos(a), y:E.y+RB*0.32*Math.sin(a)+h, r:RM};
+    ctx.clearRect(0,0,W,H); ctx.fillStyle='#0b1220'; ctx.fillRect(0,0,W,H);
+    for(let k=0;k<60;k++){ ctx.fillStyle='rgba(255,255,255,0.5)'; ctx.fillRect((k*137)%W,(k*71)%H,1.5,1.5); }
+    const KE=kegels(E,'rgba(0,0,0,0.75)','rgba(71,85,105,0.45)');
+    const KM=kegels(M,'rgba(0,0,0,0.8)','rgba(100,116,139,0.45)');
+    // zon
+    const g=ctx.createRadialGradient(S.x,S.y,10,S.x,S.y,S.r+20); g.addColorStop(0,'#fff7cc'); g.addColorStop(0.7,'#fbbf24'); g.addColorStop(1,'rgba(251,191,36,0)'); ctx.fillStyle=g; ctx.beginPath(); ctx.arc(S.x,S.y,S.r+20,0,Math.PI*2); ctx.fill();
+    zText(ctx,'zon',S.x,S.y+S.r+28,{size:13,weight:700,color:'#fde68a',align:'center'});
+    // maanbaan
+    ctx.strokeStyle='rgba(203,213,225,0.35)'; ctx.setLineDash([4,6]); ctx.beginPath(); ctx.ellipse(E.x,E.y,RB,RB*0.32,0,0,Math.PI*2); ctx.stroke(); ctx.setLineDash([]);
+    const tekenAarde=()=>{ ctx.fillStyle='#3b82f6'; ctx.beginPath(); ctx.arc(E.x,E.y,E.r,0,Math.PI*2); ctx.fill(); ctx.fillStyle='rgba(0,0,0,0.45)'; ctx.beginPath(); ctx.arc(E.x,E.y,E.r,-Math.PI/2,Math.PI/2); ctx.fill(); zText(ctx,'aarde',E.x,E.y+E.r+18,{size:13,weight:700,color:'#bfdbfe',align:'center'}); };
+    const st=inSchaduw(KE,E,M);
+    const tekenMaan=()=>{ ctx.fillStyle=st==='volledig kern'?'#9a3412':st==='deels kern'?'#b45309':st==='bij'?'#94a3b8':'#e2e8f0'; ctx.beginPath(); ctx.arc(M.x,M.y,M.r,0,Math.PI*2); ctx.fill(); zText(ctx,'maan',M.x,M.y-M.r-6,{size:12,weight:700,color:'#e2e8f0',align:'center'}); };
+    if(Math.sin(a)<0){ tekenMaan(); tekenAarde(); } else { tekenAarde(); tekenMaan(); }
+    // beoordelen
+    const maanVoor = M.x<E.x;
+    let html='';
+    if(maanVoor){
+      const z=inSchaduw(KM,M,E);
+      if(z==='volledig kern'||z==='deels kern') html='<span class="ok">Zonsverduistering!</span><br><span class="k">Wie in de <b>kernschaduw</b> van de maan staat, ziet een <b>totale</b> zonsverduistering: de maan bedekt de hele zon. Wie in de <b>bijschaduw</b> staat, ziet een <b>gedeeltelijke</b> zonsverduistering: de maan bedekt maar een deel van de zon.</span>';
+      else if(z==='bij') html='<span class="ok">Gedeeltelijke zonsverduistering.</span><br><span class="k">Alleen de <b>bijschaduw</b> van de maan valt op de aarde. Daar zien de mensen maar een deel van de zon bedekt.</span>';
+      else html='<span class="k">De maan staat aan de kant van de zon, maar haar schaduw mist de aarde: <b>geen verduistering</b> (nieuwe maan).</span>';
+    } else {
+      if(st==='volledig kern') html='<span class="ok">Totale maansverduistering.</span><br><span class="k">De maan zit helemaal in de <b>kernschaduw</b> van de aarde. Ze wordt donker roodbruin: alleen wat licht dat door de atmosfeer van de aarde gebroken wordt, bereikt haar nog.</span>';
+      else if(st==='deels kern') html='<span class="ok">Gedeeltelijke maansverduistering.</span><br><span class="k">Een deel van de maan zit in de <b>kernschaduw</b> van de aarde.</span>';
+      else if(st==='bij') html='<span class="ok">Gedeeltelijke (bijschaduw)maansverduistering.</span><br><span class="k">De maan zit in de <b>bijschaduw</b> van de aarde: ze wordt maar een beetje donkerder.</span>';
+      else html='<span class="k">De maan valt niet in de schaduw van de aarde: <b>geen verduistering</b>.</span>';
+    }
+    read.innerHTML=html;
+  });
+})();
+
+//////////////////// W0 — LICHAMEN ZIEN ////////////////////
+(function(){
+  const {ctx,W,H}=zCanvas('cw0'); const read=document.getElementById('w0-read'); const lb=document.getElementById('w0-licht');
+  let wat='lamp', aan=true, t=0;
+  zKies('[data-zie]',b=>wat=b.dataset.zie);
+  lb.onclick=()=>{ aan=!aan; lb.textContent=aan?'💡 Lamp uit':'💡 Lamp aan'; };
+  const L={x:150,y:90}, O={x:390,y:300}, E={x:690,y:200};
+  function straal(a,b,kleur,alpha=1,w=3){ ctx.save(); ctx.globalAlpha=alpha; ctx.strokeStyle=kleur; ctx.lineWidth=w; ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke(); ctx.restore(); arrowHead(ctx,a.x+(b.x-a.x)*0.6,a.y+(b.y-a.y)*0.6,Math.atan2(b.y-a.y,b.x-a.x),5,kleur,alpha); }
+  zLoop('w0',dt=>{
+    t+=dt; ctx.clearRect(0,0,W,H); ctx.fillStyle=aan?'#fbfcfe':'#1f2937'; ctx.fillRect(0,0,W,H);
+    zOog(ctx,E.x,E.y,1); zText(ctx,'oog',E.x,E.y+38,{size:12,align:'center',color:aan?'#51606E':'#cbd5e1'});
+    let txt='';
+    if(wat==='lamp'){
+      zLamp(ctx,O.x,O.y-20,aan);
+      if(aan){ straal({x:O.x+14,y:O.y-26},E,'#e8a300'); [-0.5,0.4,1.4,2.4].forEach(a=>straal({x:O.x,y:O.y-20},{x:O.x+Math.cos(a)*120,y:O.y-20+Math.sin(a)*120},'#e8a300',0.5,2)); txt='<span class="v">Je ziet de lamp.</span><br><span class="k">Een lichtbron zendt zelf licht uit. Een deel van dat licht valt <b>rechtstreeks</b> in je oog.</span>'; }
+      else txt='<span class="flag">De lamp is uit: er komt geen licht in je oog. Je ziet niets.</span>';
+    } else {
+      zLamp(ctx,L.x,L.y,aan);
+      const kleur={wit:'#f8fafc',rood:'#dc2626',zwart:'#111827'}[wat];
+      ctx.fillStyle=aan?kleur:'#374151'; ctx.strokeStyle='#475569'; ctx.lineWidth=2;
+      if(wat==='rood'){ ctx.beginPath(); ctx.arc(O.x,O.y,32,0,Math.PI*2); ctx.fill(); ctx.stroke(); ctx.fillStyle='#65a30d'; ctx.fillRect(O.x-3,O.y-44,6,14); }
+      else { ctx.fillRect(O.x-50,O.y-30,100,60); ctx.strokeRect(O.x-50,O.y-30,100,60); }
+      if(aan){
+        straal(L,{x:O.x-10,y:O.y-30},'#e8a300'); straal({x:L.x+10,y:L.y},{x:O.x+20,y:O.y-30},'#e8a300');
+        if(wat==='wit'){ straal({x:O.x,y:O.y-30},E,'#e8a300'); [2.2,2.8,3.6,-0.4].forEach(a=>straal({x:O.x,y:O.y-30},{x:O.x+Math.cos(a)*110,y:O.y-30+Math.sin(a)*110},'#e8a300',0.5,2));
+          txt='<span class="v">Je ziet het witte blad.</span><br><span class="k">Het licht van de lamp valt op het blad. Het blad <b>weerkaatst</b> bijna al het licht in alle richtingen, ook naar je oog.</span>'; }
+        if(wat==='rood'){ straal({x:O.x,y:O.y-30},E,'#dc2626');
+          txt='<span class="v">Je ziet een rode appel.</span><br><span class="k">De appel <b>absorbeert</b> de meeste kleuren van het licht en <b>weerkaatst</b> vooral rood licht naar je oog.</span>'; }
+        if(wat==='zwart'){ zText(ctx,'licht wordt geabsorbeerd',O.x,O.y+54,{size:12,align:'center',color:'#51606E'});
+          txt='<span class="v">Een zwart voorwerp zie je als een donkere vlek.</span><br><span class="k">Het <b>absorbeert</b> bijna al het licht en weerkaatst (bijna) niets naar je oog.</span>'; }
+      } else txt='<span class="flag">De lamp is uit: er valt geen licht op het voorwerp, dus het kan ook niets weerkaatsen. Je ziet het niet.</span>';
+    }
+    read.innerHTML=txt;
+  });
+})();
+
+//////////////////// S16 — VERGROTINGSFACTOR ////////////////////
+(function(){
+  const {ctx,W,H}=zCanvas('c16'); const vS=document.getElementById('s16-v'), gS=document.getElementById('s16-g'), read=document.getElementById('s16-read');
+  const VS=[4,6,8,15,18,20,25,30,40], f=10, LX=430, AY=250, K=9;
+  const fmt=(x,d=1)=>(Math.round(x*10**d)/10**d).toString().replace('.',',');
+  function pijl(x,y0,y1,kleur,stippel){ ctx.save(); ctx.strokeStyle=kleur; ctx.lineWidth=3.5; if(stippel) ctx.setLineDash([7,5]); ctx.beginPath(); ctx.moveTo(x,y0); ctx.lineTo(x,y1); ctx.stroke(); ctx.restore(); arrowHead(ctx,x,y1,y1<y0?-Math.PI/2:Math.PI/2,8,kleur); }
+  function maat(x0,x1,y,t){ ctx.save(); ctx.strokeStyle='#51606E'; ctx.lineWidth=1.3; ctx.beginPath(); ctx.moveTo(x0,y); ctx.lineTo(x1,y); ctx.moveTo(x0,y-5); ctx.lineTo(x0,y+5); ctx.moveTo(x1,y-5); ctx.lineTo(x1,y+5); ctx.stroke(); ctx.restore(); zText(ctx,t,(x0+x1)/2,y+18,{size:14,weight:700,align:'center'}); }
+  function draw(){
+    const v=VS[+vS.value], V=+gS.value, b=f*v/(v-f), B=V*b/v; // b<0: virtueel beeld
+    document.getElementById('s16-v-l').textContent='Voorwerpsafstand v = '+v+' cm (f = 10 cm)';
+    document.getElementById('s16-g-l').textContent='Voorwerpsgrootte V = '+fmt(V)+' cm';
+    ctx.clearRect(0,0,W,H); ctx.fillStyle='#fbfcfe'; ctx.fillRect(0,0,W,H);
+    ctx.strokeStyle='#31404f'; ctx.lineWidth=1.5; ctx.beginPath(); ctx.moveTo(10,AY); ctx.lineTo(W-10,AY); ctx.stroke();
+    // lens
+    ctx.fillStyle='rgba(139,190,255,0.18)'; ctx.strokeStyle='rgba(61,127,191,0.8)'; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(LX,AY-190); ctx.quadraticCurveTo(LX+22,AY,LX,AY+170); ctx.quadraticCurveTo(LX-22,AY,LX,AY-190); ctx.fill(); ctx.stroke();
+    [[-f,'F1'],[f,'F2']].forEach(([x,t])=>{ ctx.fillStyle='#1D2A36'; ctx.beginPath(); ctx.arc(LX+x*K,AY,3,0,Math.PI*2); ctx.fill(); zText(ctx,t,LX+x*K,AY+20,{size:12,align:'center',color:'#51606E'}); });
+    zText(ctx,'O',LX+8,AY+16,{size:12,weight:700});
+    const xo=LX-v*K, yo=AY-V*K, xb=LX+b*K, yb=AY+B*K; // B positief = omgekeerd (onder de as) bij reëel beeld
+    // gelijkvormige driehoeken
+    ctx.fillStyle='rgba(37,99,235,0.15)'; ctx.beginPath(); ctx.moveTo(LX,AY); ctx.lineTo(xo,AY); ctx.lineTo(xo,yo); ctx.closePath(); ctx.fill();
+    ctx.fillStyle='rgba(234,88,12,0.15)'; ctx.beginPath(); ctx.moveTo(LX,AY); ctx.lineTo(xb,AY); ctx.lineTo(xb,yb); ctx.closePath(); ctx.fill();
+    // straal door O
+    ctx.strokeStyle='#00b894'; ctx.lineWidth=2.5;
+    if(b>0){ ctx.beginPath(); ctx.moveTo(xo,yo); ctx.lineTo(xb,yb); ctx.stroke(); }
+    else { ctx.beginPath(); ctx.moveTo(xo,yo); ctx.lineTo(LX+(LX-xo)*0.6,AY+(AY-yo)*0.6); ctx.stroke(); ctx.save(); ctx.setLineDash([6,5]); ctx.globalAlpha=0.6; ctx.beginPath(); ctx.moveTo(xo,yo); ctx.lineTo(xb,yb); ctx.stroke(); ctx.restore(); }
+    pijl(xo,AY,yo,'#1D2A36',false); zText(ctx,'V',xo-12,(AY+yo)/2+5,{size:15,weight:700,align:'right'});
+    pijl(xb,AY,yb,b>0?'#ea580c':'#c23854',b<0); zText(ctx,'B',xb+(b>0?12:-12),(AY+yb)/2+5,{size:15,weight:700,align:b>0?'left':'right',color:b>0?'#ea580c':'#c23854'});
+    if(b>0){ maat(xo,LX,AY+150,'v = '+v+' cm'); maat(LX,xb,AY+150,'b = '+fmt(b)+' cm'); }
+    else { maat(xo,LX,AY+105,'v = '+v+' cm'); maat(xb,LX,AY+145,'b = '+fmt(-b)+' cm'); }
+    zText(ctx,b>0?'reëel beeld':'virtueel beeld (aan dezelfde kant als het voorwerp)',20,28,{size:14,weight:700,color:b>0?'#ea580c':'#c23854'});
+    const Ba=Math.abs(B), ba=Math.abs(b), N=Ba/V;
+    read.innerHTML=`<span class="k">uit de constructie:</span><br><span class="v">V = ${fmt(V)} cm · B = ${fmt(Ba)} cm</span><br><span class="v">v = ${v} cm · b = ${fmt(ba)} cm</span><br>`+
+      `<span class="k">N = B / V =</span> <span class="v">${fmt(Ba)} / ${fmt(V)} = ${fmt(N,2)}</span><br><span class="k">N = b / v =</span> <span class="v">${fmt(ba)} / ${v} = ${fmt(ba/v,2)}</span><br>`+
+      `<span class="ok">${N>1.001?'N > 1: het beeld is vergroot.':N<0.999?'N < 1: het beeld is verkleind.':'N = 1: het beeld is even groot.'}</span>`;
+  }
+  vS.oninput=draw; gS.oninput=draw; draw();
+})();
+
+// secties doorlopend nummeren (in de volgorde van de pagina)
+document.querySelectorAll('.scene').forEach((sc,i)=>{ const n=sc.querySelector('.scene-head .num'); if(n) n.textContent=i+1; });
 </script>
 </body>
 </html>
