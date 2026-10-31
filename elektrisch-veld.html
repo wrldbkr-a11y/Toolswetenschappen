@@ -4,13 +4,19 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Elektrisch veld en gravitatieveld</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --ink:#1d3557;
-    --ink-soft:#4a5a76;
-    --bg:#eef1f5;
+    --ink:#1D2A36;
+    --ink-soft:#51606E;
+    --bg:#EEF2F5;
     --panel:#ffffff;
-    --border:#d7dce3;
+    --border:#D3DCE5;
+    --accent:#2F6FB0;
+    --accent-dark:#245A91;
+    --accent-soft:#E4EEF8;
+    --font:'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
     --pos:#d64550;
     --neg:#2a6f97;
     --line:#98a2b3;
@@ -22,38 +28,42 @@
   body{
     background:var(--bg);
     color:var(--ink);
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    padding:20px;
+    font-family:var(--font);
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
   }
-  .num{font-family:ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace; font-variant-numeric: tabular-nums;}
+  .num{font-family:var(--font); font-variant-numeric: tabular-nums;}
 
-  .wrap{max-width:1180px;margin:0 auto;}
+  .wrap{max-width:1180px;margin:0 auto;padding:36px 24px 70px;}
 
   h1{
-    font-size:1.35rem;
-    font-weight:650;
-    margin:0 0 4px 0;
-    letter-spacing:-0.01em;
+    font-size:2rem;
+    font-weight:700;
+    margin:0 0 8px 0;
+    letter-spacing:-0.015em;
   }
   .sub{
     color:var(--ink-soft);
-    font-size:0.92rem;
+    font-size:15px;
+    line-height:1.6;
+    max-width:75ch;
     margin:0 0 16px 0;
   }
 
   .tabs{
     display:flex;
-    gap:6px;
-    margin-bottom:16px;
+    gap:4px;
+    margin:22px 0 14px;
     border-bottom:1px solid var(--border);
   }
   .tab{
     appearance:none;
     border:none;
     background:none;
-    padding:9px 16px;
-    font-size:0.95rem;
-    font-weight:550;
+    padding:9px 14px;
+    font-family:var(--font);
+    font-size:15px;
+    font-weight:500;
     color:var(--ink-soft);
     cursor:pointer;
     border-bottom:2px solid transparent;
@@ -61,7 +71,8 @@
   }
   .tab.active{
     color:var(--ink);
-    border-bottom:2px solid var(--ink);
+    font-weight:600;
+    border-bottom:2px solid var(--accent);
   }
 
   .grid{
@@ -76,14 +87,14 @@
   .panel{
     background:var(--panel);
     border:1px solid var(--border);
-    border-radius:10px;
+    border-radius:12px;
     padding:16px;
   }
   .panel h2{
-    font-size:0.8rem;
+    font-size:0.95rem;
     text-transform:none;
-    font-weight:650;
-    color:var(--ink-soft);
+    font-weight:700;
+    color:var(--ink);
     margin:0 0 12px 0;
   }
 
@@ -116,7 +127,7 @@
   }
   input[type=range]{
     width:100%;
-    accent-color:var(--ink);
+    accent-color:var(--accent);
   }
 
   .sign-toggle{
@@ -162,13 +173,14 @@
     padding:8px 0;
     border:1px solid var(--border);
     background:#fff;
-    border-radius:6px;
-    font-size:0.85rem;
+    border-radius:8px;
+    font-family:var(--font);
+    font-size:14px;
     font-weight:600;
-    color:var(--ink-soft);
+    color:var(--ink);
     cursor:pointer;
   }
-  .btn-reset:hover{background:#f6f7f9;}
+  .btn-reset:hover{border-color:var(--accent);}
 
   .graph-panel{margin-top:18px;}
   .legend{
@@ -188,7 +200,7 @@
     flex:1;padding:9px 0;border:1px solid var(--border);background:#fff;border-radius:6px;
     font-size:0.88rem;font-weight:600;color:var(--ink-soft);cursor:pointer;
   }
-  .seg button.active{background:var(--ink);border-color:var(--ink);color:#fff;}
+  .seg button.active{background:var(--accent);border-color:var(--accent);color:#fff;}
   .field-row.disabled{opacity:0.4;pointer-events:none;}
   .readout-row .v{text-align:right;}
   .explain{margin-top:10px;padding-top:10px;border-top:1px solid var(--border);color:var(--ink-soft);font-size:0.84rem;line-height:1.55;}
@@ -200,8 +212,8 @@
     padding:8px 9px;cursor:pointer;color:var(--ink-soft);font-size:0.78rem;line-height:1.4;
   }
   .case b{display:block;color:var(--ink);font-size:0.82rem;margin-bottom:2px;}
-  .case.row-active{background:#f1f4f9;}
-  .case.active{background:var(--ink);border-color:var(--ink);color:#e6ebf4;}
+  .case.row-active{background:var(--accent-soft);}
+  .case.active{background:var(--accent);border-color:var(--accent);color:#e6ebf4;}
   .case.active b{color:#fff;}
   .case-note{font-size:0.78rem;color:var(--ink-soft);margin:8px 0 0 0;}
   .points{margin:0;padding:0;list-style:none;font-size:0.88rem;line-height:1.6;color:var(--ink-soft);}
@@ -210,6 +222,12 @@
   .vec{position:relative;display:inline-block;line-height:1;}
   .vec::before{content:"\2192";position:absolute;left:50%;top:-0.7em;transform:translateX(-50%);font-size:0.75em;font-weight:700;font-style:normal;}
   .tabs{flex-wrap:wrap;}
+  .sign-btn,.seg button,.case{font-family:var(--font);}
+  .seg.weergave{max-width:420px;margin:0 0 16px;}
+  .ctrl3d{display:flex;gap:8px;margin-top:8px;max-width:760px;margin-left:auto;margin-right:auto;}
+  #veld3d canvas{max-width:760px;margin:0 auto;}
+  #veld3d .canvas-hint{max-width:760px;margin-left:auto;margin-right:auto;}
+  .ctrl3d .btn-reset{margin-top:0;}
   @media (max-width:820px){ .tab{padding:8px 10px;font-size:0.86rem;} }
 </style>
 </head>
@@ -224,6 +242,11 @@
     <button class="tab" data-mode="punt">Puntlading</button>
     <button class="tab" data-mode="bol">Geleidende bol</button>
     <button class="tab" data-mode="homogeen">Homogeen veld</button>
+  </div>
+
+  <div class="seg weergave" id="weergave">
+    <button data-w="2d" class="active">2D-tekening</button>
+    <button data-w="3d">3D-veldlijnen</button>
   </div>
 
   <div id="viewRadial">
@@ -1288,6 +1311,7 @@ render();
 
 const k = 8.99e9;
 const st = { Qb: 5, Qp: 1, r: 14, mode: 'zonder' }; // µC, µC, cm
+window.cbState = st;
 
 const cv = document.getElementById('cb_cv');
 const ctx = cv.getContext('2d');
@@ -1517,6 +1541,7 @@ render();
 
 const G = 6.674e-11, M = 5.972e24, R_KM = 6371;     // SI, kg, km
 const st = { h: 6400, m: 10, mode: 'zonder' };       // km, kg
+window.gvState = st;
 
 const cv = document.getElementById('gv_cv');
 const ctx = cv.getContext('2d');
@@ -1703,6 +1728,194 @@ render();
 
 })();
 </script>
+<script>
+/* =====================================================================
+   3D-WEERGAVE VAN DE VELDLIJNEN
+   Eigen kleine 3D-tekenaar op een 2D-canvas (geen externe bibliotheek):
+   alle veldlijnen in deze situaties zijn rechte lijnen (radiaal of evenwijdig).
+   ===================================================================== */
+(function(){
+  const POS='#d64550', NEG='#2a6f97', LIJN='#5b6b85', EVEC='#4f6fd0', FVEC='#d64550';
+  let weergave='2d';
+  const blok=document.createElement('div');
+  blok.id='veld3d';
+  blok.innerHTML=`<canvas id="c3d" width="760" height="500" style="cursor:grab"></canvas>
+    <div class="ctrl3d">
+      <button class="btn-reset" id="d3-auto">⏸ Stop met draaien</button>
+      <button class="btn-reset" id="d3-zicht">↺ Beginzicht</button>
+    </div>
+    <p class="canvas-hint">Sleep om het veld te draaien, scroll of knijp om in of uit te zoomen. Ladingen en punten verplaats je in de 2D-tekening; de instellingen rechts werken ook hier.</p>`;
+  const c=blok.querySelector('canvas'), ctx=c.getContext('2d');
+  const dpr=window.devicePixelRatio||1, CW=c.width, CH=c.height;
+  c.width=CW*dpr; c.height=CH*dpr; ctx.scale(dpr,dpr);
+
+  let yaw=-0.6, pitch=0.35, zoom=1, auto=true;
+  const autoBtn=blok.querySelector('#d3-auto');
+  autoBtn.onclick=()=>{ auto=!auto; autoBtn.textContent=auto?'⏸ Stop met draaien':'⟳ Automatisch draaien'; };
+  blok.querySelector('#d3-zicht').onclick=()=>{ yaw=-0.6; pitch=0.35; zoom=1; };
+
+  // slepen en zoomen (muis en touch)
+  let drag=null, pinch=null;
+  c.addEventListener('pointerdown',e=>{ drag={x:e.clientX,y:e.clientY}; c.setPointerCapture(e.pointerId); c.style.cursor='grabbing'; if(auto){ auto=false; autoBtn.textContent='⟳ Automatisch draaien'; } });
+  c.addEventListener('pointermove',e=>{ if(!drag) return; yaw+=(e.clientX-drag.x)*0.008; pitch=Math.max(-1.4,Math.min(1.4,pitch+(e.clientY-drag.y)*0.008)); drag={x:e.clientX,y:e.clientY}; });
+  c.addEventListener('pointerup',()=>{ drag=null; c.style.cursor='grab'; });
+  c.addEventListener('wheel',e=>{ e.preventDefault(); zoom=Math.max(0.5,Math.min(2.5,zoom*(e.deltaY<0?1.1:0.9))); },{passive:false});
+  c.addEventListener('touchmove',e=>{ if(e.touches.length===2){ e.preventDefault(); const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY); if(pinch) zoom=Math.max(0.5,Math.min(2.5,zoom*d/pinch)); pinch=d; drag=null; } },{passive:false});
+  c.addEventListener('touchend',()=>{ pinch=null; });
+
+  // ---------- projectie ----------
+  let schaal=1, camAfst=40;
+  function proj(p){
+    const cy=Math.cos(yaw), sy=Math.sin(yaw), cp=Math.cos(pitch), sp=Math.sin(pitch);
+    let x=p[0]*cy - p[2]*sy, z=p[0]*sy + p[2]*cy, y=p[1];
+    const y2=y*cp - z*sp, z2=y*sp + z*cp;
+    const f=camAfst/(camAfst+z2);
+    return {x:CW/2 + x*f*schaal*zoom, y:CH/2 - y2*f*schaal*zoom, z:z2, f};
+  }
+  // ---------- scène-elementen ----------
+  let items=[];
+  const lijn=(a,b,kleur,breedte=1.6,alpha=0.85)=>items.push({t:'l',a,b,kleur,breedte,alpha});
+  const bol=(m,r,kleur,alpha=1,teken='')=>items.push({t:'s',m,r,kleur,alpha,teken});
+  const vlak=(pts,kleur,alpha)=>items.push({t:'p',pts,kleur,alpha});
+  const label=(p,tekst,kleur='#1D2A36')=>items.push({t:'txt',p,tekst,kleur});
+  // pijl: lijn + pijlpunt; 'rond' = pijlpunt op de helft
+  function pijl(a,b,kleur,breedte=2,punt=1){ lijn(a,b,kleur,breedte,0.95); items.push({t:'a',a,b,kleur,punt}); }
+  function veldlijn(a,b,kleur,naarBuiten){ // lijn in stukken (juiste overlap) met pijlpunt in het midden
+    const n=8; for(let i=0;i<n;i++){ const t0=i/n, t1=(i+1)/n; lijn(mix(a,b,t0),mix(a,b,t1),kleur,1.6,0.8); }
+    const m0=mix(a,b,0.52), m1=mix(a,b,0.58);
+    items.push({t:'a',a:naarBuiten?m0:m1,b:naarBuiten?m1:m0,kleur,punt:1,klein:true});
+  }
+  const mix=(a,b,t)=>[a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t,a[2]+(b[2]-a[2])*t];
+  const norm=v=>{ const l=Math.hypot(...v)||1; return [v[0]/l,v[1]/l,v[2]/l]; };
+  function fibonacci(n){ const out=[], g=Math.PI*(3-Math.sqrt(5)); for(let i=0;i<n;i++){ const y=1-(i+0.5)/n*2, r=Math.sqrt(1-y*y), th=g*i; out.push([Math.cos(th)*r,y,Math.sin(th)*r]); } return out; }
+  function assen(L){ [[L,0,0],[0,L,0],[0,0,L]].forEach(p=>lijn([-p[0],-p[1],-p[2]],p,'#c8d1dc',1,0.6)); }
+
+  // ---------- scènes per situatie ----------
+  function radiaal(Qteken,rIn,rUit,n,kleur){ fibonacci(n).forEach(u=>veldlijn([u[0]*rIn,u[1]*rIn,u[2]*rIn],[u[0]*rUit,u[1]*rUit,u[2]*rUit],kleur,Qteken>0)); }
+
+  function scenePunt(isBol){
+    const Q=state.Qsign, n=Math.round(10+3.2*state.Qmag), kleur=Q>0?POS:NEG;
+    assen(16);
+    if(isBol){
+      const R=state.R;
+      bol([0,0,0],R,kleur,0.28);
+      fibonacci(40).forEach(u=>items.push({t:'txt',p:[u[0]*R,u[1]*R,u[2]*R],tekst:Q>0?'+':'−',kleur,klein:true}));
+      radiaal(Q,R,R+11,n,LIJN);
+      label([0,-R-1.6,0],'binnenin: E = 0','#51606E');
+    } else {
+      bol([0,0,0],1.3,kleur,1,Q>0?'+':'−');
+      radiaal(Q,1.5,13,n,LIJN);
+    }
+    if(state.test){ // testlading in het vlak van de 2D-tekening (z = 0)
+      const p=[state.test.xcm,-state.test.ycm,0], r=Math.hypot(p[0],p[1]);
+      const binnen=isBol && r<state.R;
+      bol(p,0.55,state.qtSign>0?POS:NEG,1,state.qtSign>0?'+':'−');
+      if(!binnen && r>0.5){ const u=norm(p), s=Q>0?1:-1; pijl(p,[p[0]+u[0]*3*s,p[1]+u[1]*3*s,0],EVEC,3); label([p[0]+u[0]*3.6*s,p[1]+u[1]*3.6*s+0.6,0],'E',EVEC);
+        const sf=s*(state.qtSign>0?1:-1); pijl(p,[p[0]+u[0]*2.2*sf,p[1]+u[1]*2.2*sf+0.0001,0],FVEC,3); label([p[0]+u[0]*2.8*sf,p[1]+u[1]*2.8*sf-0.8,0],'F',FVEC); }
+    }
+    return 15;
+  }
+
+  function sceneHom(){
+    const d=hom.d, h=Math.max(1.5,d/2), S=4.5, pos=hom.swap?1:-1; // x van de positieve plaat
+    const plaat=(x,kleur)=>vlak([[x,-S,-S],[x,S,-S],[x,S,S],[x,-S,S]],kleur,0.2);
+    plaat(pos*h,POS); plaat(-pos*h,NEG);
+    for(let i=-1;i<=1;i++) for(let j=-1;j<=1;j++){
+      const y=i*2.8, z=j*2.8;
+      veldlijn([pos*h,y,z],[-pos*h,y,z],'#334155',true);
+      items.push({t:'txt',p:[pos*h,y+1.15,z+1.15],tekst:'+',kleur:POS,klein:true});
+      items.push({t:'txt',p:[-pos*h,y+1.15,z+1.15],tekst:'−',kleur:NEG,klein:true});
+    }
+    label([pos*h,S+1.4,0],'+ plaat',POS); label([-pos*h,S+1.4,0],'− plaat',NEG);
+    if(hom.pcX!=null){
+      const x=pos*h - pos*hom.pcX; // pcX in cm vanaf de positieve plaat
+      bol([x,0,0],0.5,hom.pcSign>0?POS:NEG,1,hom.pcSign>0?'+':'−');
+      const s=-pos*(hom.pcSign>0?1:-1); pijl([x,0,0],[x+s*2.4,0,0],FVEC,3); label([x+s*3,0.9,0],'F',FVEC);
+    }
+    return Math.max(8,h+4);
+  }
+
+  function sceneCoulomb(){
+    const st=window.cbState; if(!st) return 15;
+    const Qb=st.Qb, kleur=Qb>0?POS:Qb<0?NEG:'#98a2b3', n=Math.round(10+3*Math.abs(Qb)), r=st.r*0.6;
+    assen(17);
+    bol([0,0,0],1.2,kleur,1,Qb>0?'+':Qb<0?'−':'0');
+    if(Qb!==0) radiaal(Qb,1.4,16,n,LIJN);
+    label([0,-1.9,0],'Qb',kleur);
+    const P=[r,0,0], s=Qb>0?1:-1;
+    if(st.mode==='met'){ bol(P,0.55,st.Qp>0?POS:st.Qp<0?NEG:'#98a2b3',1,st.Qp>0?'+':st.Qp<0?'−':''); label([r,-1.5,0],'Qp',st.Qp>0?POS:NEG); }
+    else { bol(P,0.28,'#1D2A36',1); label([r,-1.2,0],'P'); }
+    if(Qb!==0){ pijl(P,[r+3*s,0,0],EVEC,3); label([r+3.6*s,0.7,0],'E',EVEC);
+      if(st.mode==='met' && st.Qp!==0){ const sf=s*(st.Qp>0?1:-1); pijl([r,0.25,0],[r+2.4*sf,0.25,0],FVEC,3); label([r+3*sf,-0.9,0],'Fc',FVEC); } }
+    return 17;
+  }
+
+  function sceneZwaarte(){
+    const st=window.gvState; if(!st) return 15;
+    const RE=6.371, r=RE+st.h/1000; // eenheid: 1000 km
+    bol([0,0,0],RE,'#3b82c4',1,'');
+    const n=40, rUit=Math.max(RE*2.2,r+4);
+    fibonacci(n).forEach(u=>veldlijn([u[0]*rUit,u[1]*rUit,u[2]*rUit],[u[0]*RE*1.02,u[1]*RE*1.02,u[2]*RE*1.02],LIJN,true));
+    label([0,-RE-1.4,0],'Aarde','#1d4ed8');
+    const P=[r,0,0];
+    if(st.mode==='met'){ bol(P,0.5,'#4a5a76',1); label([r,-1.4,0],'m'); } else { bol(P,0.25,'#1D2A36',1); label([r,-1.2,0],'P'); }
+    const L=Math.min(3.5,1.2+3*Math.pow(RE/r,2));
+    pijl(P,[r-L,0,0],EVEC,3); label([r-L-0.6,0.8,0],'g',EVEC);
+    if(st.mode==='met'){ pijl([r,0.3,0],[r-L*0.8,0.3,0],FVEC,3); label([r-L*0.8-0.6,-0.8,0],'Fz',FVEC); }
+    return rUit;
+  }
+
+  // ---------- tekenen ----------
+  function teken(){
+    items=[];
+    const m=state.mode;
+    const straal = m==='punt'?scenePunt(false) : m==='bol'?scenePunt(true) : m==='homogeen'?sceneHom() : m==='coulomb'?sceneCoulomb() : sceneZwaarte();
+    camAfst=straal*4; schaal=Math.min(CW,CH)*0.42/straal;
+    // diepte bepalen en sorteren (ver eerst)
+    items.forEach(it=>{
+      if(it.t==='l'||it.t==='a') it.z=(proj(it.a).z+proj(it.b).z)/2;
+      else if(it.t==='s') it.z=proj(it.m).z+ (it.alpha<1?it.r*0.0:0);
+      else if(it.t==='p') it.z=it.pts.reduce((s,p)=>s+proj(p).z,0)/it.pts.length;
+      else it.z=proj(it.p).z-0.01;
+    });
+    items.sort((a,b)=>b.z-a.z);
+    ctx.clearRect(0,0,CW,CH);
+    const bg=ctx.createRadialGradient(CW/2,CH/2,40,CW/2,CH/2,CW*0.7); bg.addColorStop(0,'#ffffff'); bg.addColorStop(1,'#eef2f6'); ctx.fillStyle=bg; ctx.fillRect(0,0,CW,CH);
+    items.forEach(it=>{
+      if(it.t==='l'){ const a=proj(it.a), b=proj(it.b); ctx.globalAlpha=it.alpha*diepteAlpha(it.z); ctx.strokeStyle=it.kleur; ctx.lineWidth=it.breedte*Math.max(0.6,(a.f+b.f)/2); ctx.lineCap='round'; ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke(); ctx.globalAlpha=1; }
+      else if(it.t==='a'){ const a=proj(it.a), b=proj(it.b); const ang=Math.atan2(b.y-a.y,b.x-a.x), s=(it.klein?7:11)*Math.max(0.6,b.f);
+        if(Math.hypot(b.x-a.x,b.y-a.y)<0.5) return;
+        ctx.globalAlpha=diepteAlpha(it.z); ctx.fillStyle=it.kleur; ctx.beginPath(); ctx.moveTo(b.x+Math.cos(ang)*s*0.3,b.y+Math.sin(ang)*s*0.3); ctx.lineTo(b.x-s*Math.cos(ang-0.45),b.y-s*Math.sin(ang-0.45)); ctx.lineTo(b.x-s*Math.cos(ang+0.45),b.y-s*Math.sin(ang+0.45)); ctx.closePath(); ctx.fill(); ctx.globalAlpha=1; }
+      else if(it.t==='s'){ const p=proj(it.m), r=it.r*p.f*schaal*zoom;
+        const g=ctx.createRadialGradient(p.x-r*0.35,p.y-r*0.35,r*0.1,p.x,p.y,r); g.addColorStop(0,'#ffffff'); g.addColorStop(0.25,it.kleur); g.addColorStop(1,shade(it.kleur));
+        ctx.globalAlpha=it.alpha; ctx.fillStyle=g; ctx.beginPath(); ctx.arc(p.x,p.y,r,0,Math.PI*2); ctx.fill(); ctx.globalAlpha=1;
+        if(it.teken){ ctx.fillStyle='#fff'; ctx.font=`700 ${Math.max(10,r*1.1)}px Inter, sans-serif`; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(it.teken,p.x,p.y+1); ctx.textBaseline='alphabetic'; } }
+      else if(it.t==='p'){ ctx.globalAlpha=it.alpha; ctx.fillStyle=it.kleur; ctx.strokeStyle=shade(it.kleur); ctx.lineWidth=1.5; ctx.beginPath(); it.pts.forEach((q,i)=>{ const p=proj(q); i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y); }); ctx.closePath(); ctx.fill(); ctx.globalAlpha=1; ctx.stroke(); }
+      else if(it.t==='txt'){ const p=proj(it.p); ctx.fillStyle=it.kleur; ctx.font=it.klein?`700 ${Math.round(11*p.f)}px Inter, sans-serif`:'700 14px Inter, sans-serif'; ctx.textAlign='center'; ctx.globalAlpha=it.klein?0.8:1; ctx.fillText(it.tekst,p.x,p.y+(it.klein?4:0)); ctx.globalAlpha=1; }
+    });
+  }
+  const diepteAlpha=z=>Math.max(0.35,Math.min(1,1-z/(camAfst*0.9)));
+  function shade(hex){ const n=parseInt(hex.slice(1),16); const r=(n>>16)*0.6|0, g=((n>>8)&255)*0.6|0, b=(n&255)*0.6|0; return `rgb(${r},${g},${b})`; }
+
+  // ---------- inpassen in de pagina ----------
+  const CANVAS2D={punt:'fieldCanvas',bol:'fieldCanvas',homogeen:'fieldCanvas2',coulomb:'cb_cv',zwaarte:'gv_cv'};
+  function plaats(){
+    // eerst alles terug naar 2D
+    Object.values(CANVAS2D).forEach(id=>{ const cv=document.getElementById(id); cv.style.display=''; const h=cv.nextElementSibling; if(h && h.classList.contains('canvas-hint')) h.style.display=''; });
+    if(weergave!=='3d'){ blok.remove(); return; }
+    const cv=document.getElementById(CANVAS2D[state.mode]);
+    cv.style.display='none'; const h=cv.nextElementSibling; if(h && h.classList.contains('canvas-hint')) h.style.display='none';
+    cv.insertAdjacentElement('afterend',blok);
+  }
+  const knoppen=document.querySelectorAll('#weergave button');
+  knoppen.forEach(b=>b.onclick=()=>{ weergave=b.dataset.w; knoppen.forEach(o=>o.classList.toggle('active',o===b)); plaats(); });
+  document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>setTimeout(plaats,0)));
+
+  let last=performance.now();
+  (function lus(now){ const dt=Math.min(0.05,(now-last)/1000); last=now; if(weergave==='3d' && blok.isConnected){ if(auto && !drag) yaw+=dt*0.35; teken(); } requestAnimationFrame(lus); })(last);
+})();
+</script>
+
 <script>document.querySelector('.tab').click();</script>
 </body>
 </html>
