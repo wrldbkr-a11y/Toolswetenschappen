@@ -12,7 +12,7 @@
 :root{
   --bg:#EEF2F5; --paper:#FFFFFF; --ink:#1D2A36; --muted:#51606E; --line:#CBD5DE;
   color-scheme:light;
-  --fysica:#2F6FB0; --chemie:#2E8B57; --biologie:#5B8C2A; --algemeen:#B7790F;
+  --fysica:#2F6FB0; --chemie:#D46A1A; --biologie:#3E8E41; --algemeen:#C99406;
   box-sizing:border-box;
   padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
 }
@@ -89,9 +89,9 @@ footer{margin-top:3rem; color:var(--muted); font-size:.9rem; max-width:40rem}
    ============================================================ */
 const VAKKEN = [
   { naam: "Algemeen", kleur: "--algemeen", perJaar: false },  /* geen jaarkopjes, alles naast elkaar */
-  { naam: "Fysica",   kleur: "--fysica" },
+  { naam: "Biologie", kleur: "--biologie" },
   { naam: "Chemie",   kleur: "--chemie" },
-  { naam: "Biologie", kleur: "--biologie" }
+  { naam: "Fysica",   kleur: "--fysica" }
 ];
 
 const TOOLS = [
@@ -135,7 +135,7 @@ const TOOLS = [
   { vak:"Fysica", icoon:"schakeling", jaren:[5], titel:"Gemengde schakelingen",
     tekst:"Wet van Ohm, serie en parallel, en gemengde schakelingen stap voor stap oplossen.",
     open:"schakelingen.html", bestand:"schakelingen.html" },
-  { vak:"Fysica", icoon:"formule", jaren:[3,4,5], titel:"Formules omvormen",
+  { vak:"Algemeen", icoon:"formule", jaren:[3,4,5], titel:"Formules omvormen",
     tekst:"Redeneren met formules en ze omvormen. Ook voorvoegsels en eenheden.",
     open:"formuleredeneertool.html", bestand:"formuleredeneertool.html" },
 
