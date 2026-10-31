@@ -838,48 +838,48 @@ labelFig({wrap:'fig-wortel',ctl:'ctl-wortel',inner:`<g transform="translate(-60,
   const VB={
     water:{n:'water in je lichaam',as:'watergehalte van het lichaam (%)',norm:60,L:59.2,U:60.8,min:57.5,max:62.5,d:1,
       st:[['🏃 Je sport en zweet','sport'],['🥤 Je drinkt veel in één keer','drink']],
-      eff:{laag:{naam:'dorst → je drinkt',kl:'#2563eb',uit:'genoeg gedronken → je stopt'},hoog:{naam:'nieren maken meer urine',kl:'#7c3aed',uit:'nieren houden water vast'}},
-      uitleg:{laag:'Het watergehalte is onder de ondergrens gezakt. Receptoren in de hersenen merken dat: je krijgt <b>dorst</b> en je <b>drinkt</b>. Het watergehalte stijgt.',
-              hoog:'Het watergehalte is boven de bovengrens. Je hersenen geven het signaal dat je <b>genoeg</b> hebt: je stopt met drinken en de <b>nieren</b> maken meer urine. Het watergehalte daalt.',
+      eff:{laag:{naam:'dorst → je drinkt',kl:'#2563eb'},hoog:{naam:'genoeg gedronken → je stopt',kl:'#7c3aed'}},
+      uitleg:{laag:'Het watergehalte daalt. Receptoren in de hersenen merken dat: je krijgt <b>dorst</b> en je <b>drinkt</b>. Het watergehalte stijgt.',
+              hoog:'Het watergehalte is hoog genoeg. Je hersenen geven het signaal dat je <b>genoeg</b> hebt: je stopt met drinken, en de <b>nieren</b> maken meer urine. Het watergehalte daalt weer, tot je opnieuw dorst krijgt.',
               rust:'Je verliest voortdurend wat water (zweet, adem, urine). Het watergehalte daalt langzaam, tot het weer onder de ondergrens komt.'}},
     suiker:{n:'bloedsuikerspiegel',as:'suiker in het bloed (g/l)',norm:1.0,L:0.85,U:1.15,min:0.6,max:1.5,d:2,
       st:[['🍞 Je eet een boterham','eet'],['🏃 Je sport','sport']],
-      eff:{laag:{naam:'glucagon en adrenaline',kl:'#d97706',uit:'genoeg suiker: geen glucagon meer'},hoog:{naam:'insuline',kl:'#059669',uit:'normaal: geen insuline meer'}},
-      uitleg:{laag:'De bloedsuikerspiegel is te laag. De alvleesklier maakt <b>glucagon</b> (en de bijnieren <b>adrenaline</b>). Daardoor zet de lever opgeslagen glycogeen om in <b>glucose</b> en geeft die af aan het bloed. De spiegel stijgt.',
-              hoog:'De bloedsuikerspiegel is te hoog (bv. na het eten). De alvleesklier maakt <b>insuline</b>. Daardoor nemen de cellen glucose op en slaat de lever het op als glycogeen. De spiegel daalt.',
+      eff:{laag:{naam:'glucagon en adrenaline',kl:'#d97706'},hoog:{naam:'insuline',kl:'#059669'}},
+      uitleg:{laag:'De bloedsuikerspiegel daalt. De alvleesklier maakt <b>glucagon</b> (en de bijnieren <b>adrenaline</b>). Daardoor zet de lever opgeslagen glycogeen om in <b>glucose</b> en geeft die af aan het bloed. De spiegel stijgt.',
+              hoog:'De bloedsuikerspiegel stijgt (bv. na het eten). De alvleesklier maakt <b>insuline</b>. Daardoor nemen de cellen glucose op en slaat de lever het op als glycogeen. De spiegel daalt.',
               rust:'Je cellen verbruiken voortdurend glucose. De spiegel daalt langzaam.'}},
     temp:{n:'lichaamstemperatuur',as:'lichaamstemperatuur (°C)',norm:37,L:36.7,U:37.3,min:36.0,max:38.0,d:1,
       st:[['🏃 Je gaat sporten','sport'],['❄ Je gaat de kou in','koud'],['☀ Een warme dag','warm']],
-      eff:{laag:{naam:'rillen, bloedvaten vernauwen',kl:'#2563eb',uit:'warm genoeg: rillen stopt'},hoog:{naam:'zweten, bloedvaten verwijden',kl:'#dc2626',uit:'koel genoeg: zweten stopt'}},
-      uitleg:{laag:'De temperatuur is onder de ondergrens. Thermoreceptoren sturen een signaal naar de hersenen: je gaat <b>rillen</b> (spieren maken warmte) en de bloedvaten in je huid <b>vernauwen</b> (minder warmteverlies). De temperatuur stijgt.',
-              hoog:'De temperatuur is boven de bovengrens. Je hersenen sturen een signaal: je gaat <b>zweten</b> (verdampend zweet koelt af) en de bloedvaten in je huid <b>verwijden</b> (meer warmte naar buiten). De temperatuur daalt.',
+      eff:{laag:{naam:'rillen, bloedvaten vernauwen',kl:'#2563eb'},hoog:{naam:'zweten, bloedvaten verwijden',kl:'#dc2626'}},
+      uitleg:{laag:'De temperatuur daalt. Thermoreceptoren sturen een signaal naar de hersenen: je gaat <b>rillen</b> (spieren maken warmte) en de bloedvaten in je huid <b>vernauwen</b> (minder warmteverlies). De temperatuur stijgt.',
+              hoog:'De temperatuur stijgt. Je hersenen sturen een signaal: je gaat <b>zweten</b> (verdampend zweet koelt af) en de bloedvaten in je huid <b>verwijden</b> (meer warmte naar buiten). De temperatuur daalt.',
               rust:'Je lichaam maakt voortdurend wat warmte. De temperatuur stijgt of daalt langzaam, afhankelijk van de omgeving.'}},
   };
-  let soort='neg', k='water', x, eff=null, sterk={laag:0,hoog:0}, data=[], vlag=[], t=0, stor={}, pos=0, posData=[], posKlaar='';
+  let soort='neg', k='water', x, eff=null, sterk={laag:0,hoog:0}, vsn={laag:0,hoog:0}, data=[], vlag=[], t=0, stor={}, pos=0, posData=[], posKlaar='';
   const TW=120;
   Object.entries(VB).forEach(([id,v])=>{ const b=document.createElement('button'); b.className='btn'; b.dataset.id=id; b.textContent=v.n; b.onclick=()=>{ k=id; reset(); }; vbBox.appendChild(b); });
   document.querySelectorAll('[data-fb]').forEach(b=>b.onclick=()=>{ soort=b.dataset.fb; document.querySelectorAll('[data-fb]').forEach(o=>o.classList.toggle('on',o===b)); reset(); });
   function reset(){
-    const v=VB[k]; x=v.norm+(v.U-v.norm)*0.6; eff=null; sterk={laag:0,hoog:0}; data=[]; vlag=[]; t=0; stor={}; posData=[]; pos=0; posKlaar='';
+    const v=VB[k]; x=v.norm+(v.U-v.norm)*0.6; vx=0; eff=null; sterk={laag:0,hoog:0}; vsn={laag:0,hoog:0}; data=[]; vlag=[]; t=0; stor={}; posData=[]; pos=0; posKlaar='';
     [...vbBox.children].forEach(b=>b.classList.toggle('on',b.dataset.id===k));
     $('fb-vb-g').style.display=soort==='neg'?'':'none';
     if(soort==='neg'){ $('fb-st-l').textContent='Verstoring'; kn.innerHTML=v.st.map(([t2,id])=>`<button class="btn" data-s="${id}">${t2}</button>`).join(''); kn.querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>{ stor[b.dataset.s]=8; }); }
     else { $('fb-st-l').textContent='Start'; kn.innerHTML='<button class="btn primary" id="fb-start">▶ De bevalling begint</button>'; $('fb-start').onclick=()=>{ posData=[]; pos=1; t=0; posKlaar=''; }; }
   }
+  // golf rond de normwaarde: herstel naar de norm met vertraging (blijft netjes binnen de grenzen)
+  const VERST={sport:{water:-1,suiker:-1,temp:1},drink:{water:1},eet:{suiker:1},koud:{temp:-1},warm:{temp:0.6}};
+  let vx=0;
   function stap(dt){
-    const v=VB[k], span=v.U-v.L;
-    let dx=0;
-    if(k==='water'){ dx=-0.07*span; if(stor.sport) dx-=0.25*span; if(stor.drink) dx+=0.5*span; dx+=0.45*span*sterk.laag-0.3*span*sterk.hoog; }
-    if(k==='suiker'){ dx=-0.06*span; if(stor.eet) dx+=0.55*span; if(stor.sport) dx-=0.3*span; dx+=0.35*span*sterk.laag-0.35*span*sterk.hoog; }
-    if(k==='temp'){ dx=0.05*span; if(stor.sport) dx+=0.4*span; if(stor.warm) dx+=0.25*span; if(stor.koud) dx-=0.5*span; dx+=0.4*span*sterk.laag-0.4*span*sterk.hoog; }
-    ['laag','hoog'].forEach(q=>{ sterk[q]+=((eff===q?1:0)-sterk[q])*Math.min(1,dt*1.5); });
-    x+=dx*dt*0.5; Object.keys(stor).forEach(s2=>{ stor[s2]-=dt; if(stor[s2]<=0) delete stor[s2]; });
-    // signalen met drempels (hysterese)
-    const vorig=eff;
-    if(k==='water'){ if(eff===null&&x<v.L) eff='laag'; else if(eff==='laag'&&x>v.U-span*0.1) eff=null; else if(eff===null&&x>v.U+span*0.05) eff='hoog'; else if(eff==='hoog'&&x<v.norm) eff=null; }
-    else { if(eff===null&&x<v.L) eff='laag'; else if(eff==='laag'&&x>v.norm+span*0.12) eff=null; else if(eff===null&&x>v.U) eff='hoog'; else if(eff==='hoog'&&x<v.norm-span*0.12) eff=null; }
-    if(vorig!==eff){ const e=VB[k].eff; vlag.push({t,y:x,tekst:eff?e[eff].naam:e[vorig].uit,kl:eff?e[eff].kl:'#51606E'}); }
-    data.push([t,x]);
+    const v=VB[k], A=(v.U-v.norm)*0.42, w=0.32, y=(x-v.norm)/A;
+    let f=-w*w*y - 0.25*(y*y-1)*(vx/A);
+    Object.keys(stor).forEach(n=>{ f+=0.9*((VERST[n]||{})[k]||0); });
+    const vorigV=vx; vx+=f*A*dt; x+=vx*dt;
+    Object.keys(stor).forEach(n=>{ stor[n]-=dt; if(stor[n]<=0) delete stor[n]; });
+    // reactie in gang: stijgend → de verhogende reactie, dalend → de verlagende
+    const nieuw=Math.abs(x-v.norm)<A*0.15?eff:(vx>0?'laag':'hoog');
+    if(vorigV<0&&vx>=0) vlag.push({t,y:x,tekst:v.eff.laag.naam,kl:v.eff.laag.kl});
+    if(vorigV>0&&vx<=0) vlag.push({t,y:x,tekst:v.eff.hoog.naam,kl:v.eff.hoog.kl});
+    eff=nieuw; data.push([t,x]);
   }
   lus('f2',dt=>{
     let h='';
@@ -903,9 +903,9 @@ labelFig({wrap:'fig-wortel',ctl:'ctl-wortel',inner:`<g transform="translate(-60,
       h+=`<text x="${X0}" y="${Y0-14}" font-size="14" font-weight="700">${v.as}</text><text x="${X0+GW}" y="${Y0+GH+24}" text-anchor="end" font-size="13" fill="#51606E">tijd →</text>`;
       // terugkoppellus
       const e=eff?v.eff[eff]:null, stand=x<v.L?'te laag':x>v.U?'te hoog':'binnen de grenzen';
-      h+=`<g transform="translate(${X0},${Y0+GH+44})" font-size="13"><rect width="${GW}" height="40" rx="8" fill="${e?'#fff7ed':'#f1f5f9'}" stroke="${e?e.kl:'#cbd5e1'}"/><text x="14" y="25"><tspan font-weight="700">nu:</tspan> ${stand} · <tspan font-weight="700" fill="${e?e.kl:'#51606E'}">${e?'reactie: '+e.naam:'geen reactie nodig'}</tspan>${Object.keys(stor).length?' · verstoring bezig':''}</text></g>`;
+      h+=`<g transform="translate(${X0},${Y0+GH+44})" font-size="13"><rect width="${GW}" height="40" rx="8" fill="${e?'#fff7ed':'#f1f5f9'}" stroke="${e?e.kl:'#cbd5e1'}"/><text x="14" y="25"><tspan font-weight="700">nu:</tspan> ${stand} · <tspan font-weight="700" fill="${e?e.kl:'#51606E'}">${e?'reactie: '+e.naam:'normwaarde'}</tspan>${Object.keys(stor).length?' · verstoring bezig':''}</text></g>`;
       s.innerHTML=h;
-      read.innerHTML=`<b>Negatieve feedback</b> werkt een verandering <b>tegen</b>. Komt de waarde buiten de grenzen, dan gaat er een signaal naar de hersenen (of een klier) en volgt een reactie die de waarde terugbrengt. Is de waarde terug, dan stopt het signaal.<br><span style="color:${e?e.kl:'#51606E'}">${v.uitleg[eff||'rust']}</span>`;
+      read.innerHTML=`<b>Negatieve feedback</b> werkt een verandering <b>tegen</b>. Wijkt de waarde af van de normwaarde, dan gaat er een signaal naar de hersenen (of een klier) en volgt een reactie die de waarde terugbrengt. Omdat elke reactie wat tijd nodig heeft, schiet de waarde telkens een beetje door: zo ontstaat een golf rond de normwaarde, binnen de grenzen.<br><span style="color:${e?e.kl:'#51606E'}">${v.uitleg[eff||'rust']}</span>`;
     } else {
       if(pos){ t+=dt; const y=Math.min(100,2*Math.exp(t/2.2)); posData.push([t,y]); if(y>=100){ pos=0; posKlaar='geboorte: de lus stopt'; } }
       const tx=q=>X0+q/12*GW, ty=y=>Y0+GH-y/100*GH;
