@@ -331,6 +331,8 @@ function activate(i){
   renderCatNav(); renderSectionNav();
 }
 activate(0);
+// directe link naar een sectie, bv. krachten-beweging.html#s3
+if(location.hash){ const i=scenes.findIndex(sc=>sc.id===location.hash.slice(1)); if(i>=0) activate(i); }
 const isActive=id=>document.getElementById(id).classList.contains('active');
 
 //////////////////// HULPFUNCTIES ////////////////////

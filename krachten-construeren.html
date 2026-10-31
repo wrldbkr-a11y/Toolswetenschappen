@@ -941,6 +941,8 @@ function renderDagelijks(){
 
 /* init */
 selectTopic('1.1');
+// directe link naar een onderwerp, bv. krachten-construeren.html#2.1
+if(location.hash && TOPICS[decodeURIComponent(location.hash.slice(1))]) selectTopic(decodeURIComponent(location.hash.slice(1)));
 </script>
 </body>
 </html>

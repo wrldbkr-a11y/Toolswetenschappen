@@ -335,6 +335,8 @@ function renderCatNav(){ catNav.innerHTML=''; categories.forEach(cat=>{ const b=
 function renderSectionNav(){ nav.innerHTML=''; scenes.forEach((sc,i)=>{ if(sc.dataset.cat!==activeCat) return; const b=document.createElement('button'); b.innerHTML='<span class="nr">'+(i+1)+'</span>'+sc.dataset.title; b.classList.toggle('active',i===currentIndex); b.addEventListener('click',()=>activate(i)); nav.appendChild(b); }); }
 function activate(i){ currentIndex=i; scenes.forEach((sc,j)=>sc.classList.toggle('active',j===i)); activeCat=scenes[i].dataset.cat; renderCatNav(); renderSectionNav(); }
 activate(0);
+// directe link naar een sectie, bv. druk.html#s3
+if(location.hash){ const i=scenes.findIndex(sc=>sc.id===location.hash.slice(1)); if(i>=0) activate(i); }
 const isActive=id=>document.getElementById(id).classList.contains('active');
 
 //////////////////// HULPFUNCTIES ////////////////////

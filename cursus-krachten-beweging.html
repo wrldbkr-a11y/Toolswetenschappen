@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Krachten, traagheid en beweging</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EEF2F5; --panel:#FFFFFF; --panel-2:#F5F8FB; --line:#D3DCE5;
+  --text:#1D2A36; --text-dim:#51606E;
+  --accent:#2F6FB0; --accent-dark:#245A91; --accent-soft:#E4EEF8;
+  --ok:#1F7A4A; --ok-bg:#E3F3E9; --warn:#9A5B00; --warn-bg:#FFF4D6;
+  --font:'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:var(--font);}
+body{-webkit-font-smoothing:antialiased;line-height:1.6;font-size:16px;}
+.top{max-width:900px;margin:0 auto;padding:36px 24px 0;}
+.top .eyebrow{font-size:13px;font-weight:700;color:var(--accent-dark);letter-spacing:.04em;text-transform:uppercase;margin-bottom:6px;}
+.top h1{font-size:2rem;font-weight:700;letter-spacing:-0.015em;margin:0 0 8px;line-height:1.2;}
+.top .intro{color:var(--text-dim);font-size:15px;margin:0;}
+.inhoud{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0 0;padding-bottom:14px;border-bottom:1px solid var(--line);}
+.inhoud a{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:500;text-decoration:none;color:var(--text-dim);background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:7px 12px;}
+.inhoud a:hover{border-color:var(--accent);color:var(--text);}
+.inhoud a .nr{min-width:22px;height:22px;border-radius:11px;display:inline-flex;align-items:center;justify-content:center;background:var(--accent-soft);color:var(--accent-dark);font-size:12px;font-weight:700;padding:0 6px;}
+.inhoud a.slot{opacity:.55;}
+main{max-width:900px;margin:0 auto;padding:22px 24px 80px;}
+section.blok{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:22px 24px;margin-bottom:22px;scroll-margin-top:16px;}
+section.blok > h2{font-size:1.45rem;margin:0 0 12px;display:flex;align-items:center;gap:10px;letter-spacing:-0.01em;}
+section.blok > h2 .nr{min-width:30px;height:30px;border-radius:15px;display:inline-flex;align-items:center;justify-content:center;background:var(--accent);color:#fff;font-size:14px;font-weight:700;padding:0 8px;}
+h3{font-size:1.1rem;margin:22px 0 8px;}
+p{margin:0 0 12px;}
+ul.doelen{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px;}
+ul.doelen li{background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:9px 12px 9px 40px;position:relative;}
+ul.doelen li::before{content:'✓';position:absolute;left:14px;top:9px;color:var(--accent);font-weight:700;}
+.figuur{margin:12px 0 16px;text-align:center;}
+.figuur svg{max-width:100%;height:auto;background:#fbfcfe;border:1px solid var(--line);border-radius:10px;}
+.figuur figcaption{font-size:13px;color:var(--text-dim);margin-top:4px;}
+.kader{border-left:4px solid var(--accent);background:var(--accent-soft);border-radius:0 10px 10px 0;padding:12px 16px;margin:14px 0;}
+.kader .kop{font-weight:700;color:var(--accent-dark);margin-bottom:4px;}
+.kader p:last-child{margin-bottom:0;}
+.formule{display:inline-block;font-size:19px;font-weight:700;background:#fff;border:1px solid var(--line);border-radius:8px;padding:6px 14px;margin:4px 0 8px;}
+.toolknop{display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-weight:600;font-size:14px;color:var(--accent-dark);background:#fff;border:1px solid var(--accent);border-radius:8px;padding:8px 14px;margin:6px 8px 10px 0;}
+.toolknop:hover{background:var(--accent-soft);}
+.denk{border:1px solid var(--line);border-radius:10px;margin:16px 0;overflow:hidden;}
+.denk .vraag{background:var(--warn-bg);padding:12px 16px;}
+.denk .vraag .kop{font-size:12px;font-weight:700;color:var(--warn);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px;}
+.denk .vraag p:last-child{margin:0;}
+.denk .onder{padding:10px 16px;background:#fff;}
+.denk button,.knop{font-family:var(--font);font-size:14px;font-weight:600;background:var(--accent);color:#fff;border:1px solid var(--accent);border-radius:8px;padding:8px 14px;cursor:pointer;}
+.denk button:hover,.knop:hover{background:var(--accent-dark);}
+.knop.licht{background:#fff;color:var(--text);border-color:var(--line);}
+.knop.licht:hover{border-color:var(--accent);background:#fff;}
+.slotje{color:var(--text-dim);font-size:14px;}
+.redenering{margin-top:10px;}
+.redenering ol{margin:0;padding-left:0;list-style:none;counter-reset:st;}
+.redenering ol li{counter-increment:st;position:relative;padding:8px 0 8px 40px;border-top:1px dashed var(--line);}
+.redenering ol li:first-child{border-top:none;}
+.redenering ol li::before{content:counter(st);position:absolute;left:4px;top:8px;width:24px;height:24px;border-radius:12px;background:var(--ok-bg);color:var(--ok);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;}
+.redenering .stap{font-weight:700;}
+.redenering .besluit{background:var(--ok-bg);border-radius:8px;padding:8px 12px;margin-top:6px;color:var(--ok);font-weight:600;}
+.oef{border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:12px 0;}
+.oef .titel{font-weight:700;margin-bottom:4px;}
+.oef .titel .nr{display:inline-flex;min-width:26px;height:26px;border-radius:13px;align-items:center;justify-content:center;background:var(--accent-soft);color:var(--accent-dark);font-size:13px;margin-right:8px;}
+.oef ol.deelvragen{margin:6px 0 4px;padding-left:22px;}
+.gesloten-deel{color:var(--text-dim);font-size:15px;display:flex;align-items:center;gap:10px;}
+.stappenplan{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 14px;}
+.stappenplan span{background:var(--panel-2);border:1px solid var(--line);border-radius:999px;padding:3px 12px;font-size:13px;font-weight:600;}
+table.vb{border-collapse:collapse;margin:6px 0 12px;font-size:15px;}
+table.vb td{padding:3px 12px 3px 0;vertical-align:top;}
+table.vb td:first-child{font-weight:700;color:var(--accent-dark);white-space:nowrap;}
+.leerkracht-banner{background:#7c3aed;color:#fff;text-align:center;font-size:14px;font-weight:600;padding:6px;}
+footer{max-width:900px;margin:0 auto;padding:0 24px 40px;color:var(--text-dim);font-size:12px;}
+/* ---------- afdrukken ---------- */
+.printblad{display:none;}
+@media print{
+  @page{size:A4;margin:16mm 15mm;}
+  body{background:#fff;font-size:12pt;}
+  body.print-oef > *:not(#print-oef), body.print-cornell > *:not(#print-cornell){display:none !important;}
+  body.print-oef #print-oef, body.print-cornell #print-cornell{display:block;}
+  .printblad h1{font-size:16pt;margin:0 0 2mm;}
+  .printblad .naam{display:flex;gap:10mm;font-size:11pt;margin:0 0 5mm;}
+  .printblad .oef{border:none;border-top:1px solid #999;border-radius:0;padding:3mm 0;margin:0;break-inside:avoid;}
+  .printblad table.cornell{width:100%;border-collapse:collapse;}
+  .printblad table.cornell td{border:1px solid #555;vertical-align:top;padding:2mm 3mm;font-size:11pt;}
+  .printblad table.cornell td.v{width:32%;font-weight:600;}
+  .printblad .samenv{border:1px solid #555;height:38mm;margin-top:4mm;padding:2mm 3mm;font-weight:600;}
+}
+</style>
+</head>
+<body>
+<div id="banner"></div>
+<header class="top">
+  <div class="eyebrow">Fysica 3de jaar · Krachten</div>
+  <h1>Krachten, traagheid en beweging</h1>
+  <p class="intro">Werk dit hoofdstuk samen met de tools <a href="krachten-construeren.html">Krachten samenstellen</a> en <a href="krachten-beweging.html">Traagheid, resulterende kracht en beweging</a>. Oefeningen maak je op papier.</p>
+  <nav class="inhoud" id="inhoud"></nav>
+</header>
+<main id="cursus">
+<section class="blok" id="lesdoelen">
+<h2>Lesdoelen</h2>
+<p>Na dit hoofdstuk kan je:</p><ul class="doelen">
+<li>een kracht voorstellen als <b>vector</b> met aangrijpingspunt, richting, zin en grootte;</li>
+<li>de <b>resulterende kracht</b> van twee krachten met <b>dezelfde richting</b> construeren en berekenen;</li>
+<li>de resulterende kracht van twee krachten met een <b>verschillende richting</b> construeren met de <b>parallellogrammethode</b>, en ze berekenen als de krachten loodrecht staan;</li>
+<li>uitleggen wat <b>traagheid</b> is, en dat een grotere massa een grotere traagheid heeft;</li>
+<li>de <b>traagheidswet</b> formuleren en toepassen;</li>
+<li>uit de resulterende kracht afleiden of de snelheid van een voorwerp <b>toeneemt, afneemt, gelijk blijft of van richting verandert</b>.</li></ul>
+<div class="kader"><div class="kop">Voor de leerkracht</div><p>Deze lesdoelen zijn geformuleerd op basis van de tools. Pas ze aan aan je leerplandoelen als dat nodig is.</p></div>
+</section>
+<section class="blok" id="deel1" data-vrij="deel1">
+<h2><span class="nr">1</span>Een kracht is een vector</h2>
+<p>Een kracht heeft niet alleen een <b>grootte</b>, maar ook een <b>richting</b> en een <b>zin</b>. Daarom stellen we een kracht voor met een pijl: een <b>vector</b>.</p>
+<figure class="figuur"><svg viewBox="0 0 560 150" width="560" xmlns="http://www.w3.org/2000/svg"><defs><marker id="pk" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="context-stroke"/></marker></defs><circle cx="80" cy="100" r="5" fill="#1D2A36"/><line x1="80" y1="100" x2="330" y2="100" stroke="#2563eb" stroke-width="5" marker-end="url(#pk)" stroke-linecap="round"/><text x="80" y="128" fill="#1D2A36" font-size="14" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">aangrijpingspunt</text><text x="210" y="86" fill="#2563eb" font-size="14" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">lengte = grootte (schaal 1 cm ≙ 10 N)</text><text x="345" y="105" fill="#1D2A36" font-size="14" font-weight="700" text-anchor="start" font-family="Inter,sans-serif">zin →</text><line x1="40" y1="100" x2="520" y2="100" stroke="#94a3b8" stroke-dasharray="5 5"/><text x="470" y="90" fill="#51606E" font-size="14" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">richting (werklijn)</text></svg><figcaption>De vier kenmerken van een krachtvector.</figcaption></figure>
+<div class="kader"><div class="kop">Kenmerken van een kracht</div><p><b>Aangrijpingspunt</b>: waar de kracht aangrijpt.<br><b>Richting</b>: de rechte waarop de pijl ligt (horizontaal, verticaal, schuin …).<br><b>Zin</b>: naar welke kant de pijl wijst.<br><b>Grootte</b>: hoe groot de kracht is, in newton (N). Op een tekening is dat de lengte van de pijl, op schaal.</p></div>
+<div class="denk" data-vrij="denk_1">
+  <div class="vraag"><div class="kop">Denkvraag</div><p>Je tekent een kracht van 35 N met de schaal 1 cm ≙ 10 N. Hoe lang wordt de pijl?</p></div>
+  <div class="onder"><div class="redenering"><ol><li><span class="stap">Schaal</span> 1 cm op papier stelt 10 N voor.</li><li><span class="stap">Hoeveel keer 10 N?</span> 35 N / 10 N = 3,5</li><li><span class="stap">Lengte</span> 3,5 · 1 cm = 3,5 cm</li></ol><div class="besluit">De pijl is 3,5 cm lang.</div></div></div>
+</div>
+</section>
+<section class="blok" id="deel2" data-vrij="deel2">
+<h2><span class="nr">2</span>Krachten samenstellen</h2>
+<p>Werken er twee krachten op een voorwerp, dan kan je ze vervangen door <b>één kracht</b> die hetzelfde effect heeft: de <b>resulterende kracht F<sub>r</sub></b>.</p>
+<h3>Twee krachten met dezelfde richting</h3>
+<figure class="figuur"><svg viewBox="0 0 560 140" width="560" xmlns="http://www.w3.org/2000/svg"><defs><marker id="pk" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="context-stroke"/></marker></defs><line x1="40" y1="50" x2="200" y2="50" stroke="#2563eb" stroke-width="4" marker-end="url(#pk)" stroke-linecap="round"/><text x="120" y="40" fill="#2563eb" font-size="14" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">F₁ = 40 N</text><line x1="40" y1="80" x2="160" y2="80" stroke="#059669" stroke-width="4" marker-end="url(#pk)" stroke-linecap="round"/><text x="100" y="70" fill="#059669" font-size="14" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">F₂ = 30 N</text><line x1="260" y1="60" x2="420" y2="60" stroke="#2563eb" stroke-width="4" marker-end="url(#pk)" stroke-linecap="round"/><line x1="420" y1="60" x2="540" y2="60" stroke="#059669" stroke-width="4" marker-end="url(#pk)" stroke-linecap="round"/><line x1="260" y1="100" x2="540" y2="100" stroke="#dc2626" stroke-width="5" marker-end="url(#pk)" stroke-linecap="round"/><text x="400" y="128" fill="#dc2626" font-size="14" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">Fr = F₁ + F₂ = 70 N</text></svg><figcaption>Kop-staartmethode: teken F₂ verder vanaf de kop van F₁.</figcaption></figure>
+<p><b>Zelfde zin</b>: tel de groottes op, F<sub>r</sub> = F₁ + F₂. F<sub>r</sub> heeft dezelfde zin.<br><b>Tegengestelde zin</b>: trek de groottes af, F<sub>r</sub> = F₁ − F₂. F<sub>r</sub> heeft de zin van de grootste kracht.</p>
+<a class="toolknop" href="krachten-construeren.html#1.1" target="_blank" rel="noopener">▶ Stap voor stap: zelfde zin</a> <a class="toolknop" href="krachten-construeren.html#1.2" target="_blank" rel="noopener">▶ Stap voor stap: tegengestelde zin</a>
+<h3>Twee krachten met een verschillende richting</h3>
+<figure class="figuur"><svg viewBox="0 0 560 175" width="560" xmlns="http://www.w3.org/2000/svg"><defs><marker id="pk" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="context-stroke"/></marker></defs><line x1="60" y1="140" x2="260" y2="140" stroke="#2563eb" stroke-width="4" marker-end="url(#pk)" stroke-linecap="round"/><text x="160" y="162" fill="#2563eb" font-size="14" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">F₁</text><line x1="60" y1="140" x2="60" y2="40" stroke="#059669" stroke-width="4" marker-end="url(#pk)" stroke-linecap="round"/><text x="42" y="90" fill="#059669" font-size="14" font-weight="700" text-anchor="end" font-family="Inter,sans-serif">F₂</text><line x1="260" y1="140" x2="260" y2="40" stroke="#94a3b8" stroke-width="2" stroke-dasharray="6 5" stroke-linecap="round"/><line x1="60" y1="40" x2="260" y2="40" stroke="#94a3b8" stroke-width="2" stroke-dasharray="6 5" stroke-linecap="round"/><line x1="60" y1="140" x2="260" y2="40" stroke="#dc2626" stroke-width="5" marker-end="url(#pk)" stroke-linecap="round"/><text x="175" y="82" fill="#dc2626" font-size="14" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">Fr</text><rect x="60" y="128" width="12" height="12" fill="none" stroke="#1D2A36"/><text x="400" y="70" fill="#1D2A36" font-size="13" font-weight="700" text-anchor="start" font-family="Inter,sans-serif">1. teken F₁ en F₂ vanuit O</text><text x="400" y="92" fill="#1D2A36" font-size="13" font-weight="700" text-anchor="start" font-family="Inter,sans-serif">2. hulplijnen evenwijdig</text><text x="400" y="114" fill="#1D2A36" font-size="13" font-weight="700" text-anchor="start" font-family="Inter,sans-serif">3. diagonaal = Fr</text></svg><figcaption>Parallellogrammethode: de diagonaal vanuit O is de resulterende kracht.</figcaption></figure>
+<p>Gebruik de <b>parallellogrammethode</b>: teken beide krachten vanuit hetzelfde punt O, teken met je geodriehoek hulplijnen evenwijdig aan de krachten, en teken de diagonaal. Meet de lengte en zet om met de schaal.</p>
+<p>Staan de krachten <b>loodrecht</b> op elkaar, dan kan je F<sub>r</sub> ook berekenen met de <b>stelling van Pythagoras</b>: F<sub>r</sub> = √(F₁² + F₂²).</p>
+<a class="toolknop" href="krachten-construeren.html#2.1" target="_blank" rel="noopener">▶ Stap voor stap: loodrechte krachten</a> <a class="toolknop" href="krachten-construeren.html#2.2" target="_blank" rel="noopener">▶ Stap voor stap: schuine krachten</a>
+<div class="denk" data-vrij="denk_2">
+  <div class="vraag"><div class="kop">Denkvraag</div><p>Twee krachten van 30 N en 40 N werken op hetzelfde voorwerp. Hoe groot kan de resulterende kracht zijn? Wat is de kleinste en de grootste waarde?</p></div>
+  <div class="onder"><div class="redenering"><ol><li><span class="stap">Grootste</span> Zelfde richting en zin: 30 N + 40 N = 70 N.</li><li><span class="stap">Kleinste</span> Zelfde richting, tegengestelde zin: 40 N − 30 N = 10 N.</li><li><span class="stap">Daartussen</span> Bij elke andere hoek ligt F<sub>r</sub> tussen 10 N en 70 N. Loodrecht: √(30² + 40²) = 50 N.</li></ol><div class="besluit">F<sub>r</sub> ligt tussen 10 N en 70 N, afhankelijk van de hoek tussen de krachten.</div></div></div>
+</div>
+</section>
+<section class="blok" id="deel3" data-vrij="deel3">
+<h2><span class="nr">3</span>Traagheid</h2>
+<p>Zit je in een bus die plots vertrekt, dan val je naar achter. Remt de bus, dan val je naar voor. Niemand duwt je: je lichaam wil gewoon blijven doen wat het deed. Dat noemen we <b>traagheid</b>.</p>
+<div class="kader"><div class="kop">Traagheid</div><p>Elk voorwerp verzet zich tegen een verandering van zijn snelheid: het wil blijven <b>stilstaan</b>, of <b>even snel rechtdoor</b> blijven bewegen. Traagheid is <b>geen kracht</b>.</p><p>Hoe <b>groter de massa</b>, hoe <b>groter de traagheid</b>: een zwaar voorwerp is moeilijk in beweging te brengen en moeilijk te stoppen.</p></div>
+<a class="toolknop" href="krachten-beweging.html#s1" target="_blank" rel="noopener">▶ Bekijk de bus in de tool</a> <a class="toolknop" href="krachten-beweging.html#s2" target="_blank" rel="noopener">▶ Vergelijk een lege en een volle kar</a>
+<div class="denk" data-vrij="denk_3">
+  <div class="vraag"><div class="kop">Denkvraag</div><p>Waarom moet een volgeladen vrachtwagen veel vroeger beginnen remmen dan een lege vrachtwagen die even snel rijdt?</p></div>
+  <div class="onder"><div class="redenering"><ol><li><span class="stap">Wat is verschillend?</span> De volgeladen vrachtwagen heeft een veel grotere massa.</li><li><span class="stap">Wat betekent dat?</span> Grotere massa → grotere traagheid: hij verzet zich meer tegen een verandering van snelheid.</li><li><span class="stap">Met dezelfde remkracht</span> neemt zijn snelheid trager af. Hij heeft meer tijd en een langere afstand nodig om te stoppen.</li></ol><div class="besluit">De volle vrachtwagen heeft een langere remweg, door zijn grotere traagheid.</div></div></div>
+</div>
+</section>
+<section class="blok" id="deel4" data-vrij="deel4">
+<h2><span class="nr">4</span>Resulterende kracht en beweging</h2>
+<div class="kader"><div class="kop">Traagheidswet (eerste wet van Newton)</div><p>Is de resulterende kracht op een voorwerp <b>nul</b>, dan blijft het voorwerp in <b>rust</b>, of beweegt het <b>eenparig rechtlijnig</b>: even snel en rechtdoor.</p></div>
+<p>Is de resulterende kracht <b>niet nul</b>, dan verandert de snelheid. Vergelijk F<sub>r</sub> met de beweging:</p>
+<table class="vb">
+<tr><td>F<sub>r</sub> = 0</td><td>de snelheid blijft gelijk (rust of ERB)</td></tr>
+<tr><td>F<sub>r</sub> mee met v</td><td>de snelheid neemt toe</td></tr>
+<tr><td>F<sub>r</sub> tegen v in</td><td>de snelheid neemt af</td></tr>
+<tr><td>F<sub>r</sub> loodrecht op v</td><td>de richting van de snelheid verandert (bocht)</td></tr></table>
+<p>Let op: om <b>te blijven bewegen</b> heb je <b>geen</b> kracht nodig. Je hebt een kracht nodig om de snelheid te <b>veranderen</b>.</p>
+<a class="toolknop" href="krachten-beweging.html#s3" target="_blank" rel="noopener">▶ Probeer het met de slee in de tool</a> <a class="toolknop" href="krachten-beweging.html#s3b" target="_blank" rel="noopener">▶ Een bal die je hand verlaat</a>
+<div class="denk" data-vrij="denk_4">
+  <div class="vraag"><div class="kop">Denkvraag</div><p>Je rolt een bal weg over het gras. Na een tijdje stopt hij. Sofia zegt: "De bal rolt eerst nog verder omdat de kracht van je hand nog in de bal zit." Klopt dat?</p></div>
+  <div class="onder"><div class="redenering"><ol><li><span class="stap">Wanneer werkt de kracht van je hand?</span> Alleen zolang je hand de bal raakt. Daarna bestaat die kracht niet meer.</li><li><span class="stap">Waarom rolt de bal verder?</span> Door zijn traagheid: hij wil even snel blijven bewegen.</li><li><span class="stap">Welke kracht werkt er dan nog (horizontaal)?</span> Alleen de wrijving, tegen de beweging in. F<sub>r</sub> wijst dus naar achter.</li><li><span class="stap">Gevolg</span> De snelheid neemt af tot de bal stilligt.</li></ol><div class="besluit">Sofia heeft geen gelijk. De bal krijgt geen kracht mee: hij rolt door zijn traagheid en stopt door de wrijving.</div></div></div>
+</div>
+<div class="denk" data-vrij="denk_5">
+  <div class="vraag"><div class="kop">Denkvraag</div><p>Een fietser rijdt met constante snelheid rechtdoor. Hij trapt dus. Is de resulterende kracht op de fietser dan groter dan nul?</p></div>
+  <div class="onder"><div class="redenering"><ol><li><span class="stap">Wat weet je over de beweging?</span> Constante snelheid, rechtdoor: een ERB.</li><li><span class="stap">Traagheidswet</span> Bij een ERB is F<sub>r</sub> = 0.</li><li><span class="stap">Welke krachten?</span> De trapkracht naar voor is even groot als de wrijving (lucht en weg) naar achter.</li></ol><div class="besluit">F<sub>r</sub> = 0: de trapkracht en de wrijving heffen elkaar op.</div></div></div>
+</div>
+</section>
+<section class="blok" id="oefeningen" data-vrij="oefeningen">
+<h2>Oefeningen op papier</h2>
+<p>Maak deze oefeningen <b>op papier</b>. Bij constructies gebruik je een lat en een geodriehoek. De oplossingen verschijnen hier nadat we de oefeningen in de les besproken hebben.</p>
+<p><button class="knop licht" data-print="oef">🖨 Druk de oefeningen af</button></p>
+<div class="oef" data-vrij="opl_1">
+  <div class="titel"><span class="nr">1</span>Zelfde zin</div>
+  <div class="tekst">Twee krachten van 30 N en 50 N werken op hetzelfde punt, in dezelfde richting en zin. Construeer F<sub>r</sub> met de schaal 1 cm ≙ 10 N en bereken F<sub>r</sub>.</div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">Constructie</span> F₁ = 3,0 cm, F₂ = 5,0 cm kop aan staart: F<sub>r</sub> = 8,0 cm.</li><li><span class="stap">Berekening</span> F<sub>r</sub> = 30 N + 50 N = 80 N</li></ol><div class="besluit">F<sub>r</sub> = 80 N, in dezelfde zin als beide krachten.</div></div>
+</div>
+<div class="oef" data-vrij="opl_2">
+  <div class="titel"><span class="nr">2</span>Tegengestelde zin</div>
+  <div class="tekst">Op een kar werkt een kracht van 70 N naar rechts en een kracht van 25 N naar links. Construeer F<sub>r</sub> (1 cm ≙ 10 N) en bereken F<sub>r</sub>. Welke zin heeft F<sub>r</sub>?</div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">Berekening</span> F<sub>r</sub> = 70 N − 25 N = 45 N</li><li><span class="stap">Zin</span> de zin van de grootste kracht: naar rechts</li></ol><div class="besluit">F<sub>r</sub> = 45 N naar rechts (4,5 cm op de tekening).</div></div>
+</div>
+<div class="oef" data-vrij="opl_3">
+  <div class="titel"><span class="nr">3</span>Touwtrekken</div>
+  <div class="tekst">Team A trekt met 4 kinderen van elk 150 N naar links. Team B trekt met 3 kinderen van elk 180 N naar rechts. Bereken F<sub>r</sub> op het touw. Welk team wint?</div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">Team A</span> 4 · 150 N = 600 N naar links</li><li><span class="stap">Team B</span> 3 · 180 N = 540 N naar rechts</li><li><span class="stap">F<sub>r</sub></span> 600 N − 540 N = 60 N naar links</li></ol><div class="besluit">F<sub>r</sub> = 60 N naar links: team A wint.</div></div>
+</div>
+<div class="oef" data-vrij="opl_4">
+  <div class="titel"><span class="nr">4</span>Loodrechte krachten</div>
+  <div class="tekst">F₁ = 40 N werkt horizontaal naar rechts, F₂ = 30 N verticaal naar boven, in hetzelfde punt. Construeer F<sub>r</sub> met de parallellogrammethode (1 cm ≙ 10 N). Meet F<sub>r</sub> en controleer met de stelling van Pythagoras.</div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">Constructie</span> De diagonaal van de rechthoek (4,0 cm × 3,0 cm) is 5,0 cm lang.</li><li><span class="stap">Pythagoras</span> F<sub>r</sub> = √(40² + 30²) = √2500 = 50 N</li></ol><div class="besluit">F<sub>r</sub> = 50 N, schuin naar rechtsboven.</div></div>
+</div>
+<div class="oef" data-vrij="opl_5">
+  <div class="titel"><span class="nr">5</span>Schuine krachten</div>
+  <div class="tekst">Twee krachten van elk 50 N werken in hetzelfde punt. De hoek tussen beide is 60°. Construeer F<sub>r</sub> met de parallellogrammethode (1 cm ≙ 10 N) en meet de grootte.</div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">Constructie</span> Het parallellogram is een ruit. De diagonaal meet ongeveer 8,7 cm.</li><li><span class="stap">Controle</span> F<sub>r</sub> ligt tussen 0 N en 100 N en precies in het midden tussen beide krachten (30° met elk).</li></ol><div class="besluit">F<sub>r</sub> ≈ 87 N</div></div>
+</div>
+<div class="oef" data-vrij="opl_6">
+  <div class="titel"><span class="nr">6</span>Traagheid uitleggen</div>
+  <div class="tekst">Leg telkens uit met het begrip traagheid.<ol class="deelvragen" type="a"><li>Waarom draag je een gordel in de auto?</li><li>Waarom kan je een tafelkleed snel wegtrekken zonder dat de borden vallen?</li><li>Waarom is een volle winkelkar moeilijker te stoppen dan een lege?</li></ol></div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">a</span> Remt de auto plots, dan wil je lichaam even snel verder bewegen. De gordel houdt je tegen.</li><li><span class="stap">b</span> De borden willen blijven stilstaan. Trek je snel, dan hebben ze geen tijd om mee te bewegen.</li><li><span class="stap">c</span> De volle kar heeft een grotere massa, dus een grotere traagheid.</li></ol><div class="besluit">Traagheid: een voorwerp wil blijven doen wat het deed.</div></div>
+</div>
+<div class="oef" data-vrij="opl_7">
+  <div class="titel"><span class="nr">7</span>Wat gebeurt er met de snelheid?</div>
+  <div class="tekst">Bepaal telkens F<sub>r</sub> (grootte en zin). Zeg dan of de snelheid toeneemt, afneemt of gelijk blijft.<ol class="deelvragen" type="a"><li>Een auto rijdt rechtdoor. De motorkracht is 2000 N naar voor, de wrijving 2000 N naar achter.</li><li>Een fietser stopt met trappen. Alleen de wrijving van 30 N naar achter werkt nog.</li><li>Een slee staat stil. Een kind trekt met 40 N naar voor, de wrijving is 15 N.</li><li>Een ruimtesonde vliegt ver in de ruimte met uitgeschakelde motor.</li></ol></div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">a</span> F<sub>r</sub> = 0 → snelheid blijft gelijk (ERB).</li><li><span class="stap">b</span> F<sub>r</sub> = 30 N naar achter, tegen de beweging → snelheid neemt af.</li><li><span class="stap">c</span> F<sub>r</sub> = 40 N − 15 N = 25 N naar voor → de slee begint te bewegen, de snelheid neemt toe.</li><li><span class="stap">d</span> F<sub>r</sub> ≈ 0 → de sonde vliegt even snel rechtdoor.</li></ol><div class="besluit">Vergelijk altijd de zin van F<sub>r</sub> met de zin van de beweging.</div></div>
+</div>
+<div class="oef" data-vrij="opl_8">
+  <div class="titel"><span class="nr">8</span>Juist of fout?</div>
+  <div class="tekst">Juist of fout? Verbeter de foute uitspraken.<ol class="deelvragen" type="a"><li>Een voorwerp dat beweegt, heeft altijd een kracht nodig om te blijven bewegen.</li><li>Als F<sub>r</sub> = 0, dan staat het voorwerp zeker stil.</li><li>Een bal die je weggooit, krijgt een kracht mee van je hand.</li><li>Hoe groter de massa, hoe groter de traagheid.</li></ol></div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">a</span> Fout: om te blijven bewegen is geen kracht nodig. Een kracht is nodig om de snelheid te veranderen.</li><li><span class="stap">b</span> Fout: het voorwerp staat stil óf beweegt even snel rechtdoor.</li><li><span class="stap">c</span> Fout: de kracht van je hand bestaat alleen zolang je de bal raakt.</li><li><span class="stap">d</span> Juist.</li></ol><div class="besluit">Alleen d is juist.</div></div>
+</div>
+<a class="toolknop" href="krachten-beweging.html#s7" target="_blank" rel="noopener">▶ Extra oefenen in de tool</a>
+</section>
+<section class="blok" id="cornell">
+<h2>Cornellschema</h2>
+<p>Op het bord bouwen we samen een <b>Cornellschema</b> op. Links staan de vragen, rechts noteer je de antwoorden die we samen opbouwen. Onderaan vat je alles samen in je eigen woorden. Dek thuis de rechterkolom af en overhoor jezelf met de vragen links.</p>
+<p><button class="knop licht" data-print="cornell">🖨 Druk het Cornellblad af</button></p>
+</section>
+<section class="blok" id="samenvatting" data-vrij="samenvatting">
+<h2>Samenvatting</h2>
+<div class="kader"><div class="kop">Samenvatting</div><p>Een <b>kracht</b> is een vector: aangrijpingspunt, richting, zin en grootte (N).</p>
+<p><b>Resulterende kracht</b>: zelfde zin → F<sub>r</sub> = F₁ + F₂; tegengestelde zin → F<sub>r</sub> = F₁ − F₂; verschillende richting → parallellogrammethode (loodrecht: Pythagoras).</p>
+<p><b>Traagheid</b>: een voorwerp wil zijn snelheid behouden. Meer massa → meer traagheid.</p>
+<p><b>Traagheidswet</b>: F<sub>r</sub> = 0 → rust of ERB. F<sub>r</sub> mee met v → sneller; tegen v → trager; loodrecht → bocht.</p></div>
+</section>
+
+</main>
+<footer>Cursus fysica — gemaakt voor klasgebruik, bij de tools op Oefentools wetenschappen.</footer>
+
+<div class="printblad" id="print-oef"></div>
+<div class="printblad" id="print-cornell"></div>
+
+<script>
+/* =====================================================================
+   VRIJGAVE — hier zet de leerkracht onderdelen open of dicht.
+   true  = zichtbaar voor de leerlingen
+   false = nog gesloten (de leerling ziet een slotje)
+   Tip: met ?leerkracht achter de link zie je als leerkracht alles,
+        bv. .../cursus-krachten-beweging.html?leerkracht
+   ===================================================================== */
+const VRIJGAVE = {
+  deel1: true,               // Een kracht is een vector
+  deel2: false,              // Krachten samenstellen
+  deel3: false,              // Traagheid
+  deel4: false,              // Resulterende kracht en beweging
+  denk_1: false,             // redenering denkvraag deel 1
+  denk_2: false,             // redenering denkvraag deel 2
+  denk_3: false,             // redenering denkvraag deel 3
+  denk_4: false,             // redenering denkvraag deel 4 (bal)
+  denk_5: false,             // redenering denkvraag deel 4 (fietser)
+  oefeningen: false,         // de oefeningen zelf (opgaven)
+  opl_1: false,              // oplossing oefening 1
+  opl_2: false,              // oplossing oefening 2
+  opl_3: false,              // oplossing oefening 3
+  opl_4: false,              // oplossing oefening 4
+  opl_5: false,              // oplossing oefening 5
+  opl_6: false,              // oplossing oefening 6
+  opl_7: false,              // oplossing oefening 7
+  opl_8: false,              // oplossing oefening 8
+  samenvatting: false,       // samenvatting
+};
+
+/* ===================================================================== */
+const LK = new URLSearchParams(location.search).has('leerkracht');
+const open = id => LK || VRIJGAVE[id] === true;
+if(LK) document.getElementById('banner').innerHTML='<div class="leerkracht-banner">Leerkrachtweergave: alles is zichtbaar, ook wat voor leerlingen nog gesloten is.</div>';
+
+// delen open of dicht
+document.querySelectorAll('section.blok[data-vrij]').forEach(el=>{
+  if(open(el.dataset.vrij)) return;
+  const kop=el.querySelector(':scope > h2');
+  [...el.children].forEach(c=>{ if(c!==kop) c.style.display='none'; });
+  const m=document.createElement('p'); m.className='gesloten-deel'; m.innerHTML='🔒 Dit deel wordt opengesteld wanneer we het in de les behandelen.';
+  el.appendChild(m);
+});
+
+// denkvragen: redenering pas tonen na vrijgave
+document.querySelectorAll('.denk').forEach(d=>{
+  const id=d.dataset.vrij, red=d.querySelector('.redenering'), onder=d.querySelector('.onder');
+  red.hidden=true;
+  if(open(id)){
+    const b=document.createElement('button'); b.textContent='Toon de redenering';
+    b.onclick=()=>{ red.hidden=!red.hidden; b.textContent=red.hidden?'Toon de redenering':'Verberg de redenering'; };
+    onder.prepend(b);
+  } else {
+    onder.innerHTML='<span class="slotje">💬 Denk eerst zelf na. We bespreken dit samen in de les; daarna verschijnt hier de redenering.</span>';
+  }
+});
+
+// oplossingen van oefeningen
+document.querySelectorAll('.oef[data-vrij]').forEach(o=>{
+  const id=o.dataset.vrij, opl=o.querySelector('.redenering'), onder=o.querySelector('.onder');
+  opl.hidden=true;
+  if(open(id)){
+    const b=document.createElement('button'); b.className='knop licht'; b.textContent='Toon de oplossing';
+    b.onclick=()=>{ opl.hidden=!opl.hidden; b.textContent=opl.hidden?'Toon de oplossing':'Verberg de oplossing'; };
+    onder.appendChild(b);
+  } else onder.innerHTML='<span class="slotje">🔒 De oplossing verschijnt nadat we de oefening besproken hebben.</span>';
+});
+
+// inhoudstafel
+const inh=document.getElementById('inhoud');
+document.querySelectorAll('section.blok').forEach(s=>{
+  const a=document.createElement('a'); a.href='#'+s.id;
+  const nr=s.querySelector('h2 .nr'); const tekst=s.querySelector('h2').textContent.replace(nr?nr.textContent:'','').trim();
+  a.innerHTML=(nr?'<span class="nr">'+nr.textContent+'</span>':'')+tekst;
+  if(s.dataset.vrij && !open(s.dataset.vrij)) a.classList.add('slot');
+  inh.appendChild(a);
+});
+
+// afdrukbare bladen
+function vulPrint(){
+  const oefs=[...document.querySelectorAll('#oefeningen .oef')].map(o=>{ const k=o.cloneNode(true); k.querySelectorAll('.redenering,.onder').forEach(x=>x.remove()); k.removeAttribute('data-vrij'); return k.outerHTML; }).join('');
+  document.getElementById('print-oef').innerHTML=`<h1>Krachten, traagheid en beweging · oefeningen</h1><div class="naam"><span>Naam: ______________________</span><span>Klas: ______</span><span>Datum: __________</span></div><p>Maak elke oefening in je schrift. Gebruik telkens: gegeven · gevraagd · formule · oplossing · antwoord met eenheid.</p>`+oefs;
+  const vragen=CORNELL.map(v=>`<tr><td class="v">${v[0]}</td><td style="height:${Math.round((v[1]||32)*1.35)}mm"></td></tr>`).join('');
+  document.getElementById('print-cornell').innerHTML=`<h1>Krachten, traagheid en beweging · Cornellblad</h1><div class="naam"><span>Naam: ______________________</span><span>Klas: ______</span></div><table class="cornell"><tr><td class="v">Vragen</td><td><b>Notities</b> (samen opgebouwd in de les)</td></tr>${vragen}</table><div class="samenv">Samenvatting in mijn eigen woorden:</div>`;
+}
+const CORNELL = [["Wat zijn de kenmerken van een kracht?", 26], ["Hoe bepaal je F<sub>r</sub> bij krachten met dezelfde richting?", 30], ["Hoe construeer je F<sub>r</sub> bij krachten met een verschillende richting?", 34], ["Wat is traagheid? Hoe hangt ze af van de massa?", 26], ["Wat zegt de traagheidswet?", 22], ["Wat gebeurt er met de snelheid bij F<sub>r</sub> = 0, mee met v, tegen v, loodrecht op v?", 34]];
+function druk(soort){ vulPrint(); document.body.classList.add('print-'+soort); setTimeout(()=>{ window.print(); document.body.classList.remove('print-'+soort); },50); }
+document.querySelectorAll('[data-print]').forEach(b=>b.onclick=()=>druk(b.dataset.print));
+</script>
+</body>
+</html>
