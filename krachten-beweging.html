@@ -173,13 +173,13 @@ footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-di
 
   <section class="scene" id="s2" data-title="Traagheid en massa" data-cat="traagheid">
     <div class="scene-head"><span class="num">2</span><h3>Traagheid en massa</h3></div>
-    <p class="scene-sub">Twee winkelkarren op een gladde vloer: een lege en een volle. Ze krijgen telkens <strong>dezelfde duw</strong>. Welke kar komt het snelst in beweging? Welke is het moeilijkst te stoppen?</p>
+    <p class="scene-sub">Twee winkelkarren op een gladde vloer: een lege en een volle. Je duwt ze allebei met <strong>dezelfde kracht</strong> (F = 120 N), en even lang. Welke kar komt het snelst in beweging? Welke is het moeilijkst te stoppen?</p>
     <div class="grid">
       <div class="canvas-wrap"><canvas id="c2" width="800" height="420"></canvas></div>
       <div class="controls">
         <div class="ctrl-row">
-          <button class="btn primary" id="s2-duw">Duw naar rechts →</button>
-          <button class="btn" id="s2-rem">← Duw terug</button>
+          <button class="btn primary" id="s2-duw">Duw met 120 N →</button>
+          <button class="btn" id="s2-rem">← Duw terug met 120 N</button>
         </div>
         <div class="ctrl-row"><button class="btn" id="s2-reset">↻ Opnieuw</button></div>
         <div class="readout" id="s2-read"></div>
@@ -418,7 +418,7 @@ const fmt=(v,d=1)=>v.toFixed(d).replace('.',',').replace('-0,0','0,0');
 (function(){
   const c=document.getElementById('c2'), ctx=hiDPI(c), W=c._w, H=c._h;
   const read=document.getElementById('s2-read');
-  const F=120, DUUR=0.5, PX=40; // dezelfde duw: 120 N gedurende 0,5 s
+  const F=120, DUUR=0.5, PX=40; // dezelfde kracht: 120 N, telkens gedurende 0,5 s
   const karren=[{naam:'lege kar',m:10,y:150},{naam:'volle kar',m:60,y:330}];
   let duw=0, duwT=0;
   function reset(){ karren.forEach(k=>{k.x=1.2; k.v=0;}); duw=0; duwT=0; }
@@ -451,11 +451,11 @@ const fmt=(v,d=1)=>v.toFixed(d).replace('.',',').replace('-0,0','0,0');
     text(ctx,'gladde vloer: geen wrijving',W-16,24,{size:13,color:'#51606E',align:'right'});
     karren.forEach(k=>{
       kar(k);
-      if(duwT>0) arrow(ctx,k.x*PX-(duw>0?130:-130),k.y-45,k.x*PX-(duw>0?60:-60),k.y-45,'#2563eb',5,'F',0,-12);
+      if(duwT>0) arrow(ctx,k.x*PX-(duw>0?130:-130),k.y-45,k.x*PX-(duw>0?60:-60),k.y-45,'#2563eb',5,'F = '+F+' N',0,-12);
     });
     read.innerHTML=karren.map(k=>`<span class="k">${k.naam}</span> <span class="v">${fmt(Math.abs(k.v))} m/s</span>`).join('<br>')+
       (Math.abs(karren[0].v)>0.05 && Math.abs(karren[1].v)>0.05 && duwT<=0 ?
-       `<br><span class="ok">Zelfde duw, maar de lege kar gaat ${fmt(Math.abs(karren[0].v/karren[1].v),0)} keer zo snel.</span>`:'')+
+       `<br><span class="ok">Zelfde kracht, maar de lege kar gaat ${fmt(Math.abs(karren[0].v/karren[1].v),0)} keer zo snel.</span>`:'')+
       (duwT<=0 && (Math.abs(karren[0].v)>0.05||Math.abs(karren[1].v)>0.05) ? `<br><span class="k">Zonder kracht blijven ze <b>even snel</b> verder rijden (traagheid).</span>`:'');
   }
   let last=performance.now();
