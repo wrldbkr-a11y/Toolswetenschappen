@@ -133,7 +133,7 @@ footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-di
         </table>
         <div class="note"><strong>Open:</strong> stoom (materie) ontsnapt en warmte (energie) gaat naar binnen en naar buiten.<br><strong>Gesloten:</strong> het deksel houdt de stoom binnen, maar warmte gaat er nog door.<br><strong>Geïsoleerd:</strong> een goede thermosfles laat (bijna) geen warmte en geen materie door.</div>
         <div class="legend" style="display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--text-dim)">
-          <div style="display:flex;gap:8px;align-items:center"><span style="width:16px;height:3px;background:var(--warmte)"></span><span>energie (warmte)</span></div>
+          <div style="display:flex;gap:8px;align-items:center"><svg width="18" height="16" viewBox="0 0 18 16" aria-hidden="true"><g fill="none" stroke="#dc2626" stroke-width="1.8" stroke-linecap="round"><path d="M3 5 A4 4 0 0 1 3 11"/><path d="M7 3 A7 7 0 0 1 7 13"/><path d="M11 1 A10 10 0 0 1 11 15"/></g></svg><span>energie (warmte)</span></div>
           <div style="display:flex;gap:8px;align-items:center"><span style="width:16px;height:3px;background:var(--materie)"></span><span>materie (stoom)</span></div>
         </div>
       </div>
@@ -347,6 +347,10 @@ const VORM={
     ctx.strokeStyle='#475569'; ctx.lineWidth=3; roundRect(ctx,cx-62,by-90,124,90,10); ctx.stroke();
     if(type==='gesloten'){ ctx.fillStyle='#475569'; roundRect(ctx,cx-68,by-102,136,14,6); ctx.fill(); ctx.fillRect(cx-10,by-114,20,12); }
   }
+  // warmte als drie stralingsboogjes die naar buiten golven
+  function warmte(x,y,a,t){ ctx.save(); ctx.strokeStyle='#dc2626'; ctx.lineCap='round'; ctx.lineWidth=3.5;
+    for(let k=0;k<3;k++){ const r=10+k*9+((t*14)%9); ctx.globalAlpha=Math.max(0.4,1-(r-10)/40); ctx.beginPath(); ctx.arc(x,y,r,a-0.6,a+0.6); ctx.stroke(); }
+    ctx.restore(); }
   function draw(dt){
     t+=dt; ctx.clearRect(0,0,W,H); ctx.fillStyle='#fbfcfe'; ctx.fillRect(0,0,W,H);
     panels.forEach((p,i)=>{
@@ -355,18 +359,20 @@ const VORM={
       text(ctx,p.naam,p.x,40,{size:16,weight:700,align:'center'});
       pot(p.x,p.type);
       // stoomdeeltjes
-      if(p.type==='open'){ if(Math.random()<0.5) stoom[i].push({x:p.x-40+Math.random()*80,y:205,vy:-30-Math.random()*25,vx:(Math.random()-0.5)*14}); }
-      if(p.type==='gesloten'){ if(Math.random()<0.25) stoom[i].push({x:p.x-40+Math.random()*80,y:228,vy:-18,vx:(Math.random()-0.5)*20,binnen:true}); }
-      stoom[i].forEach(s=>{ s.y+=s.vy*dt; s.x+=s.vx*dt; if(s.binnen && s.y<204){ s.y=204; s.vy=-s.vy*0.5; s.life=(s.life||0)+1; } });
-      stoom[i]=stoom[i].filter(s=>s.y>30 && (s.life||0)<3);
+      if(p.type==='open'){ if(Math.random()<0.3) stoom[i].push({x:p.x-40+Math.random()*80,y:205,vy:-30-Math.random()*25,vx:(Math.random()-0.5)*14}); }
+      if(p.type==='gesloten'){ if(stoom[i].length<14&&Math.random()<0.2) stoom[i].push({x:p.x-40+Math.random()*80,y:226,vy:-14-Math.random()*8,vx:(Math.random()-0.5)*30,binnen:true,life:0}); }
+      stoom[i].forEach(s=>{ s.y+=s.vy*dt; s.x+=s.vx*dt; if(s.binnen){ s.life+=dt;
+        if(s.y<216){ s.y=216; s.vy=Math.abs(s.vy); } if(s.y>226){ s.y=226; s.vy=-Math.abs(s.vy); }
+        if(s.x<p.x-52){ s.x=p.x-52; s.vx=Math.abs(s.vx); } if(s.x>p.x+52){ s.x=p.x+52; s.vx=-Math.abs(s.vx); } } });
+      stoom[i]=stoom[i].filter(s=>s.y>50 && (!s.binnen || s.life<3));
       ctx.fillStyle='#2563eb';
       stoom[i].forEach(s=>{ ctx.beginPath(); ctx.arc(s.x,s.y,3.2,0,Math.PI*2); ctx.fill(); });
       // energiepijlen (warmte)
       if(p.type!=='iso'){
         const o=6*Math.sin(t*4);
-        arrow(ctx,p.x,375+o*0.3,p.x,342,'#dc2626',4);
+        warmte(p.x,372,-Math.PI/2,t);
         text(ctx,'warmte in',p.x+10,378,{size:12,color:'#dc2626',weight:600});
-        arrow(ctx,p.x+70,200,p.x+108+o,200,'#dc2626',4);
+        warmte(p.x+68,200,0,t);
         text(ctx,'warmte uit',p.x+114,184,{size:12,color:'#dc2626',weight:600,align:'right'});
       } else {
         text(ctx,'geen warmte in of uit',p.x,82,{size:12,color:'#51606E',align:'center'});
