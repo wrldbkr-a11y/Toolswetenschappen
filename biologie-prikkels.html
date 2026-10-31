@@ -416,7 +416,6 @@ td.ok-cel{background:var(--ok-bg);} td.fout-cel{background:var(--flag-bg);}
     <div class="canvas-wrap"><svg id="svg-slok-zoom" viewBox="0 0 900 330" style="display:block;width:100%;height:auto"></svg></div>
     <div class="grid" style="margin-top:14px;grid-template-columns:1fr 1fr">
       <div class="controls">
-        <div class="ctrl-row"><button class="btn on" data-pm="boek">model van het boek</button><button class="btn" data-pm="echt">zoals het echt gebeurt</button></div>
         <div class="ctrl-row"><button class="btn primary" id="slok-start">▶ Slikken</button><button class="btn" id="slok-pauze">⏸ Pauze</button></div>
         <div class="ctrl-group"><label id="slok-v-l">Snelheid</label><input type="range" id="slok-v" min="8" max="80" value="22"></div>
       </div>
@@ -1318,7 +1317,7 @@ $('gewrichten').innerHTML=[['schoudergewricht','kogelgewricht: bewegen in alle r
 //////////////////// SLOKDARM: PERISTALTIEK ////////////////////
 (function(){
   const s=$('svg-slok'), read=$('slok-read');
-  let p=-60, loopt=false, v=22, model='boek';
+  let p=-60, loopt=false, v=22, model='echt';
   document.querySelectorAll('[data-pm]').forEach(b=>b.onclick=()=>{ model=b.dataset.pm; document.querySelectorAll('[data-pm]').forEach(x=>x.classList.toggle('on',x===b)); p=-60; loopt=false; });
   $('slok-start').onclick=()=>{ p=-60; loopt=true; $('slok-pauze').textContent='⏸ Pauze'; };
   $('slok-pauze').onclick=()=>{ loopt=!loopt; $('slok-pauze').textContent=loopt?'⏸ Pauze':'▶ Verder'; };
