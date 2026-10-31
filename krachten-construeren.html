@@ -5,136 +5,111 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Krachten construeren — samenstellen &amp; ontbinden</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#f4f6fa;
-    --bg-grid:rgba(22,33,58,.055);
-    --paper:#ffffff;
-    --ink:#16213a;
-    --ink-soft:#55617e;
-    --ink-faint:#8a93ab;
-    --border:#dbe2ee;
-    --border-soft:#e8ecf4;
+    --bg:#EEF2F5;
+    --paper:#FFFFFF;
+    --panel-2:#F5F8FB;
+    --ink:#1D2A36;
+    --ink-soft:#51606E;
+    --ink-faint:#8995A2;
+    --border:#D3DCE5;
+    --border-soft:#E6ECF2;
+    --accent:#2F6FB0;
+    --accent-dark:#245A91;
+    --accent-soft:#E4EEF8;
+    --accent-bg:var(--accent-soft);
+    --bg-grid:rgba(29,42,54,.05);
     --f1:#2563eb;      /* eerste kracht */
     --f2:#059669;      /* tweede kracht */
     --fr:#dc2626;      /* resultante / eerste component */
     --fb:#7c3aed;      /* tweede component */
     --helper:#94a3b8;  /* hulplijnen */
     --axis:#b7c0d1;
-    --accent-bg:#eef2ff;
-    --radius:14px;
-    --radius-sm:9px;
-    --shadow:0 1px 2px rgba(22,33,58,.04), 0 8px 24px -12px rgba(22,33,58,.12);
+    --radius:12px;
+    --radius-sm:8px;
+    --font:'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
   body{
     background:var(--bg);
-    background-image:
-      linear-gradient(var(--bg-grid) 1px, transparent 1px),
-      linear-gradient(90deg, var(--bg-grid) 1px, transparent 1px);
-    background-size:26px 26px;
     color:var(--ink);
-    font-family:'Inter',system-ui,sans-serif;
+    font-family:var(--font);
+    line-height:1.55;
     -webkit-font-smoothing:antialiased;
     min-height:100vh;
   }
-  h1,h2,h3,.display{font-family:'Space Grotesk',sans-serif;}
-  .mono{font-family:'JetBrains Mono',monospace;}
+  .mono{font-family:var(--font);font-variant-numeric:tabular-nums;}
 
-  /* ---------- top bar ---------- */
-  header.top{
-    padding:14px clamp(16px,4vw,40px) 12px;
-    border-bottom:1px solid var(--border);
-    background:var(--paper);
-    position:sticky; top:0; z-index:20;
+  /* ---------- kop + navigatie (zelfde stijl als de andere tools) ---------- */
+  header.top{max-width:1180px;margin:0 auto;padding:36px 24px 0;}
+  header.top h1{font-size:2rem;font-weight:700;letter-spacing:-0.015em;margin:0 0 8px;}
+  header.top .intro{color:var(--ink-soft);max-width:70ch;font-size:15px;line-height:1.6;margin:0;}
+  nav{display:flex;flex-wrap:wrap;gap:8px;}
+  .catnav{gap:4px;margin:22px 0 14px;border-bottom:1px solid var(--border);}
+  .catnav button{
+    font-family:var(--font);font-weight:500;font-size:15px;
+    background:none;border:none;border-bottom:2px solid transparent;margin-bottom:-1px;
+    color:var(--ink-soft);padding:9px 14px;cursor:pointer;
   }
-  header.top .eyebrow{
-    font-family:'JetBrains Mono',monospace;
-    font-size:11px; letter-spacing:.14em; text-transform:uppercase;
-    color:var(--fr); font-weight:700; margin-bottom:3px;
+  .catnav button:hover{color:var(--ink);}
+  .catnav button.active{color:var(--ink);font-weight:600;border-bottom-color:var(--accent);}
+  #topicNav button{
+    display:flex;align-items:center;gap:9px;
+    font-family:var(--font);font-size:14px;font-weight:500;
+    background:var(--paper);border:1px solid var(--border);color:var(--ink-soft);
+    padding:9px 14px 9px 10px;border-radius:10px;cursor:pointer;text-align:left;
+    transition:border-color .15s, background .15s;
   }
-  header.top h1{
-    font-size:clamp(18px,2.4vw,23px); font-weight:700; margin:0 0 3px;
-    letter-spacing:-.01em;
+  .nr{
+    flex:none;min-width:24px;height:24px;border-radius:12px;padding:0 7px;
+    display:inline-flex;align-items:center;justify-content:center;
+    background:var(--accent-soft);color:var(--accent-dark);font-size:12px;font-weight:700;
   }
-  header.top p{margin:0; color:var(--ink-soft); font-size:13px; max-width:640px;}
+  #topicNav button:hover{border-color:var(--accent);color:var(--ink);}
+  #topicNav button.active{background:var(--accent-soft);border-color:var(--accent);color:var(--ink);font-weight:600;}
+  #topicNav button.active .nr{background:var(--accent);color:#fff;}
 
-  /* ---------- layout ---------- */
-  .layout{
-    display:grid;
-    grid-template-columns:250px 1fr;
-    gap:0;
-    max-width:1220px;
-    margin:0 auto;
-  }
-  nav.side{
-    padding:22px 14px 60px;
-    border-right:1px solid var(--border);
-    position:sticky; top:var(--header-h, 97px); align-self:start;
-    height:calc(100vh - var(--header-h, 97px));
-    overflow-y:auto;
-  }
-  .side-group{margin-bottom:22px;}
-  .side-group h3{
-    font-size:11px; letter-spacing:.1em; text-transform:uppercase;
-    color:var(--ink-faint); font-weight:600; margin:0 0 8px 10px;
-  }
-  .side-item{
-    display:flex; align-items:center; gap:10px;
-    width:100%; text-align:left; border:none; background:none; cursor:pointer;
-    padding:9px 10px; border-radius:var(--radius-sm);
-    font-family:'Inter',sans-serif; font-size:14px; color:var(--ink-soft);
-    margin-bottom:2px; transition:background .15s, color .15s;
-  }
-  .side-item .badge{
-    font-family:'JetBrains Mono',monospace; font-size:11.5px; font-weight:700;
-    color:var(--ink-faint); min-width:30px;
-  }
-  .side-item:hover{background:var(--border-soft); color:var(--ink);}
-  .side-item.active{background:var(--accent-bg); color:var(--ink); font-weight:600;}
-  .side-item.active .badge{color:var(--fr);}
+  main.content{max-width:1180px;margin:0 auto;padding:26px 24px 70px;}
 
-  main.content{padding:16px clamp(16px,4vw,40px) 50px;}
-
-  .crumb{font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--ink-faint); margin-bottom:5px;}
-  .crumb b{color:var(--ink-soft);}
-  main h2{font-size:clamp(19px,2.4vw,24px); margin:0 0 6px; letter-spacing:-.01em;}
+  .topic-head{display:flex;align-items:center;gap:10px;margin-bottom:4px;flex-wrap:wrap;}
+  .topic-head .nr{min-width:34px;height:28px;border-radius:14px;font-size:13px;background:var(--accent);color:#fff;}
+  main h2{font-size:1.5rem;font-weight:700;margin:0;letter-spacing:-.01em;}
   .method-tag{
     display:inline-flex; align-items:center; gap:6px;
-    font-family:'JetBrains Mono',monospace; font-size:11.5px; font-weight:700;
-    letter-spacing:.03em; color:var(--f1); background:#eaf1ff;
-    border:1px solid #cfe0ff; padding:4px 10px; border-radius:100px; margin-bottom:10px;
+    font-size:13px; font-weight:600;
+    color:var(--accent-dark); background:var(--accent-soft);
+    padding:3px 10px; border-radius:100px; margin:8px 0 6px;
   }
-  main .intro{color:var(--ink-soft); font-size:14.5px; line-height:1.5; max-width:680px; margin:0 0 14px;}
+  main .intro{color:var(--ink-soft); font-size:15px; line-height:1.55; max-width:75ch; margin:0 0 18px;}
 
   /* ---------- stage ---------- */
   .stage-wrap{
     display:grid; grid-template-columns:minmax(0,1.35fr) minmax(280px,0.85fr);
-    gap:20px; align-items:start;
+    gap:18px; align-items:start;
   }
   .stage-card{
     background:var(--paper); border:1px solid var(--border); border-radius:var(--radius);
-    box-shadow:var(--shadow); overflow:hidden;
+    overflow:hidden;
   }
   .stage-head{
     display:flex; justify-content:space-between; align-items:center;
     padding:12px 16px; border-bottom:1px solid var(--border-soft);
   }
-  .stage-head .title{font-size:12.5px; color:var(--ink-faint); font-family:'JetBrains Mono',monospace;}
+  .stage-head .title{font-size:13px; font-weight:600; color:var(--ink-soft); letter-spacing:.04em;}
   .btn{
-    font-family:'Inter',sans-serif; font-weight:600; font-size:13px; cursor:pointer;
-    border-radius:100px; border:1px solid var(--border); background:#fff; color:var(--ink-soft);
-    padding:7px 14px; transition:.15s; display:inline-flex; align-items:center; gap:6px;
+    font-family:var(--font); font-weight:600; font-size:14px; cursor:pointer;
+    border-radius:8px; border:1px solid var(--border); background:#fff; color:var(--ink);
+    padding:8px 14px; transition:.15s; display:inline-flex; align-items:center; gap:6px;
   }
-  .btn:hover{border-color:var(--ink-faint); color:var(--ink);}
+  .btn:hover{border-color:var(--accent);}
   .btn:active{transform:translateY(1px);}
-  .btn.primary{background:var(--ink); color:#fff; border-color:var(--ink);}
-  .btn.primary:hover{background:#0d1730;}
+  .btn.primary{background:var(--accent); color:#fff; border-color:var(--accent);}
+  .btn.primary:hover{background:var(--accent-dark); border-color:var(--accent-dark);}
   .btn:disabled{opacity:.35; cursor:not-allowed;}
-  .btn:disabled:hover{border-color:var(--border); color:var(--ink-soft);}
+  .btn:disabled:hover{border-color:var(--border);}
 
   svg#stage{width:100%; height:auto; max-height:60vh; display:block; background:
       linear-gradient(var(--bg-grid) 1px, transparent 1px),
@@ -149,20 +124,35 @@
   /* ---------- step panel ---------- */
   .step-card{
     background:var(--paper); border:1px solid var(--border); border-radius:var(--radius);
-    box-shadow:var(--shadow); padding:18px 20px 20px; display:flex; flex-direction:column;
+    padding:18px 20px 20px; display:flex; flex-direction:column;
     min-height:100%;
   }
   .step-progress{display:flex; align-items:center; gap:8px;}
   .step-progress .dot{width:7px; height:7px; border-radius:50%; background:var(--border);}
-  .step-progress .dot.done{background:var(--f1);}
+  .step-progress .dot.done{background:var(--accent);}
   .step-progress .dot.now{background:var(--fr); transform:scale(1.35);}
   .step-label-row{display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;}
-  .restart-btn{padding:5px 11px; font-size:12px; flex:0 0 auto;}
-  .step-label{font-family:'JetBrains Mono',monospace; font-size:11.5px; color:var(--ink-faint); letter-spacing:.05em; margin-bottom:6px; text-transform:uppercase;}
+  .restart-btn{padding:5px 11px; font-size:13px; flex:0 0 auto;}
+  .step-label{font-size:13px; font-weight:600; color:var(--ink-soft); margin-bottom:6px;}
   .step-text{font-size:16px; line-height:1.55; color:var(--ink); flex:1; min-height:120px;}
   .step-text b{color:var(--fr);}
   .step-nav{display:flex; gap:8px; margin-top:16px;}
   .step-nav .btn{flex:1; justify-content:center;}
+
+  /* ---------- voorbeelden uit het dagelijks leven ---------- */
+  .dagelijks{margin-top:30px;}
+  .dagelijks h3{
+    font-size:1.2rem; font-weight:700; margin:0 0 6px; padding-left:12px;
+    border-left:5px solid var(--accent); line-height:1.4;
+  }
+  .dagelijks > p{margin:0 0 14px 17px; color:var(--ink-soft); font-size:15px; max-width:75ch;}
+  .vb-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:14px;}
+  .vb-card{background:var(--paper); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden;}
+  .vb-card svg{display:block; width:100%; height:auto; background:#fbfcfe; border-bottom:1px solid var(--border-soft);}
+  .vb-card .txt{padding:12px 16px 14px;}
+  .vb-card h4{margin:0 0 4px; font-size:1rem; font-weight:700;}
+  .vb-card p{margin:0; font-size:14px; color:var(--ink-soft); line-height:1.55;}
+  .vb-card p b{color:var(--ink);}
 
   .vn{position:relative; display:inline-block; padding-top:0.5em;}
   .vn::before{
@@ -176,11 +166,11 @@
 
   .summary{
     margin-top:14px; padding:14px 16px; border-radius:var(--radius-sm);
-    background:var(--accent-bg); border:1px solid #d6ddfb; font-size:13.5px;
+    background:var(--accent-bg); border:1px solid #C9DBEE; font-size:14px;
     color:var(--ink); line-height:1.6; display:none;
   }
   .summary.show{display:block;}
-  .summary .formula{font-family:'JetBrains Mono',monospace; font-size:14px; color:var(--fr); font-weight:700; display:block; margin-top:4px;}
+  .summary .formula{font-family:var(--font); font-size:15px; color:var(--fr); font-weight:700; display:block; margin-top:4px;}
 
   /* draw-in animation */
   .appear{animation:fadeUp .5s ease both;}
@@ -192,17 +182,8 @@
   @keyframes drawline{to{stroke-dashoffset:0;}}
 
   @media (max-width:880px){
-    .layout{grid-template-columns:1fr;}
-    nav.side{
-      position:static; height:auto; border-right:none; border-bottom:1px solid var(--border);
-      display:flex; gap:18px; overflow-x:auto; padding:14px 14px 16px;
-      -webkit-overflow-scrolling:touch;
-    }
-    .side-group{margin-bottom:0; flex:0 0 auto;}
-    .side-group h3{white-space:nowrap;}
-    .side-item{white-space:nowrap; padding:11px 12px;}
     .stage-wrap{grid-template-columns:1fr;}
-    .btn{padding:10px 16px; font-size:14px;}
+    .btn{padding:10px 16px;}
     .restart-btn{padding:9px 14px; font-size:13px;}
     .step-nav .btn{min-height:44px;}
   }
@@ -211,16 +192,14 @@
 <body>
 
 <header class="top">
-  <div class="eyebrow">Constructie-oefenaar · krachten</div>
-  <h1>Samenstellen &amp; ontbinden van twee krachten</h1>
-  <p>Volg elke constructie stap voor stap — precies zoals op papier met liniaal en geodriehoek. Hulplijnen staan gestippeld; de gezochte kracht (Fr, Fx of Fy) krijgt telkens een eigen kleur.</p>
+  <h1>Samenstellen &amp; ontbinden van krachten</h1>
+  <p class="intro">Volg elke constructie stap voor stap — precies zoals op papier met liniaal en geodriehoek. Hulplijnen staan gestippeld; de gezochte kracht (F<sub>r</sub>, F<sub>x</sub> of F<sub>y</sub>) krijgt telkens een eigen kleur.</p>
+  <nav id="catNav" class="catnav"></nav>
+  <nav id="topicNav"></nav>
 </header>
 
-<div class="layout">
-  <nav class="side" id="sideNav"></nav>
-  <main class="content">
-    <div class="crumb" id="crumb"></div>
-    <h2 id="topicTitle"></h2>
+<main class="content">
+    <div class="topic-head"><span class="nr" id="topicBadge"></span><h2 id="topicTitle"></h2></div>
     <div class="method-tag" id="methodTag"></div>
     <p class="intro" id="topicIntro"></p>
 
@@ -248,8 +227,9 @@
         </div>
       </div>
     </div>
-  </main>
-</div>
+
+    <section class="dagelijks" id="dagelijks" hidden></section>
+</main>
 
 <script>
 /* ============================================================
@@ -361,7 +341,7 @@ function renderDescriptor(svg, scale, d, animate){
       const textWidth = d.label.length*charW;
       const startX = anchorX - textWidth/2;
       const t = el('text', {
-        x:startX, y:anchorY, fill:d.color, 'font-family':"'JetBrains Mono',monospace",
+        x:startX, y:anchorY, fill:d.color, 'font-family':"Inter, system-ui, sans-serif",
         'font-size':fontSize, 'font-weight':700, 'text-anchor':'start', 'dominant-baseline':'middle',
         stroke:'#fbfcfe', 'stroke-width':4, 'paint-order':'stroke fill'
       });
@@ -401,7 +381,7 @@ function renderDescriptor(svg, scale, d, animate){
     g.appendChild(line);
     if(d.label){
       const lp = toPx(scale, polar(d.labelR||6.6, d.angle));
-      const t = el('text', {x:lp.x, y:lp.y, fill:'var(--ink-faint)', 'font-family':"'JetBrains Mono',monospace",
+      const t = el('text', {x:lp.x, y:lp.y, fill:'var(--ink-faint)', 'font-family':"Inter, system-ui, sans-serif",
         'font-size':12.5, 'font-weight':700, 'text-anchor':'middle',
         stroke:'#fbfcfe', 'stroke-width':4, 'paint-order':'stroke fill'});
       t.textContent = d.label;
@@ -432,7 +412,7 @@ function renderDescriptor(svg, scale, d, animate){
     if(d.label){
       const mid = d.a1 + (d.a2-d.a1)/2;
       const lp = toPx(scale, add(d.at, polar(d.r+0.55, mid)));
-      const t = el('text', {x:lp.x, y:lp.y, fill:'var(--ink-soft)', 'font-family':"'JetBrains Mono',monospace",
+      const t = el('text', {x:lp.x, y:lp.y, fill:'var(--ink-soft)', 'font-family':"Inter, system-ui, sans-serif",
         'font-size':12.5, 'font-weight':600, 'text-anchor':'middle',
         stroke:'#fbfcfe', 'stroke-width':4, 'paint-order':'stroke fill'});
       t.textContent = d.label;
@@ -476,7 +456,7 @@ function renderDescriptor(svg, scale, d, animate){
 
     if(d.label){
       const lp = toPx(scale, add(apex, {x:perp.x*0.55*sign, y:perp.y*0.55*sign}));
-      const t = el('text', {x:lp.x, y:lp.y, fill:'var(--ink-soft)', 'font-family':"'JetBrains Mono',monospace",
+      const t = el('text', {x:lp.x, y:lp.y, fill:'var(--ink-soft)', 'font-family':"Inter, system-ui, sans-serif",
         'font-size':10.5, 'font-weight':600, 'text-anchor':'middle',
         stroke:'#fbfcfe', 'stroke-width':3.5, 'paint-order':'stroke fill'});
       t.textContent = d.label;
@@ -489,7 +469,7 @@ function renderDescriptor(svg, scale, d, animate){
     const c = el('circle', {cx:p.x, cy:p.y, r:3.2, fill:'var(--ink)'});
     g.appendChild(c);
     if(d.label){
-      const t = el('text', {x:p.x-10, y:p.y+4, fill:'var(--ink-soft)', 'font-family':"'JetBrains Mono',monospace",
+      const t = el('text', {x:p.x-10, y:p.y+4, fill:'var(--ink-soft)', 'font-family':"Inter, system-ui, sans-serif",
         'font-size':12.5, 'font-weight':700, 'text-anchor':'end',
         stroke:'#fbfcfe', 'stroke-width':3.5, 'paint-order':'stroke fill'});
       t.textContent = d.label;
@@ -505,7 +485,7 @@ function baseOrigin(svg, scale, label){
   const p = toPx(scale, {x:0,y:0});
   const c = el('circle', {cx:p.x, cy:p.y, r:3.6, fill:'var(--ink)'});
   svg.appendChild(c);
-  const t = el('text', {x:p.x-10, y:p.y+18, fill:'var(--ink-faint)', 'font-family':"'JetBrains Mono',monospace",
+  const t = el('text', {x:p.x-10, y:p.y+18, fill:'var(--ink-faint)', 'font-family':"Inter, system-ui, sans-serif",
     'font-size':12.5, 'font-weight':700});
   t.textContent = label || 'O';
   svg.appendChild(t);
@@ -717,26 +697,28 @@ const TOPIC_ORDER = ['1.1','1.2','2.1','2.2','3.1','3.2'];
    ============================================================ */
 const state = { topicId:'1.1', data:null, stepIdx:0 };
 
-function buildSidebar(){
-  const nav = document.getElementById('sideNav');
-  nav.innerHTML = '';
-  const groups = [
-    {id:'1', title:'1 · Zelfde richting', items:['1.1','1.2']},
-    {id:'2', title:'2 · Verschillende richting', items:['2.1','2.2']},
-    {id:'3', title:'3 · Ontbinden', items:['3.1','3.2']},
-  ];
-  groups.forEach(g=>{
-    const div = document.createElement('div'); div.className='side-group';
-    const h = document.createElement('h3'); h.textContent = g.title; div.appendChild(h);
-    g.items.forEach(id=>{
-      const b = document.createElement('button');
-      b.className='side-item'+(id===state.topicId?' active':'');
-      b.dataset.id = id;
-      b.innerHTML = `<span class="badge">${id}</span><span>${TOPICS[id].title}</span>`;
-      b.addEventListener('click', ()=>selectTopic(id));
-      div.appendChild(b);
-    });
-    nav.appendChild(div);
+const GROUPS = [
+  {id:'1', title:'Zelfde richting', items:['1.1','1.2']},
+  {id:'2', title:'Verschillende richting', items:['2.1','2.2']},
+  {id:'3', title:'Ontbinden', items:['3.1','3.2']},
+];
+function buildNav(){
+  const cur = TOPICS[state.topicId].group;
+  const cat = document.getElementById('catNav'); cat.innerHTML='';
+  GROUPS.forEach(g=>{
+    const b=document.createElement('button');
+    b.textContent=g.id+' · '+g.title;
+    b.classList.toggle('active', g.id===cur);
+    b.addEventListener('click',()=>selectTopic(g.items[0]));
+    cat.appendChild(b);
+  });
+  const nav = document.getElementById('topicNav'); nav.innerHTML='';
+  GROUPS.find(g=>g.id===cur).items.forEach(id=>{
+    const b=document.createElement('button');
+    b.innerHTML=`<span class="nr">${id}</span>${TOPICS[id].title}`;
+    b.classList.toggle('active', id===state.topicId);
+    b.addEventListener('click',()=>selectTopic(id));
+    nav.appendChild(b);
   });
 }
 
@@ -745,14 +727,15 @@ function selectTopic(id){
   state.data = TOPICS[id].gen();
   state.layout = computeLayout(id, state.data);
   state.stepIdx = 0;
-  document.querySelectorAll('.side-item').forEach(b=>b.classList.toggle('active', b.dataset.id===id));
+  buildNav();
+  renderDagelijks();
   renderHeader();
   renderStep(false);
 }
 
 function renderHeader(){
   const topic = TOPICS[state.topicId];
-  document.getElementById('crumb').innerHTML = `<b>${topic.groupTitle}</b> &nbsp;›&nbsp; ${topic.badge}`;
+  document.getElementById('topicBadge').textContent = topic.badge;
   document.getElementById('topicTitle').textContent = topic.title;
   document.getElementById('methodTag').textContent = '✎ ' + topic.method;
   document.getElementById('topicIntro').textContent = topic.intro;
@@ -848,17 +831,116 @@ document.getElementById('restartBtn').addEventListener('click', ()=>{
   renderStep(false);
 });
 
-/* header-hoogte meten zodat de zijbalk nooit onder de titelbalk schuift */
-function syncHeaderHeight(){
-  const h = document.querySelector('header.top').offsetHeight;
-  document.documentElement.style.setProperty('--header-h', h + 'px');
+/* ================= VOORBEELDEN UIT HET DAGELIJKS LEVEN (ontbinden) ================= */
+const VB = {
+  '3.1': [
+    {type:'trek', titel:'Een koffer met wieltjes trekken',
+     tekst:'Je trekt <b>schuin omhoog</b> aan het handvat. Alleen F<sub>x</sub> trekt de koffer <b>vooruit</b>. F<sub>y</sub> tilt de koffer een beetje <b>op</b>. Hoe schuiner je trekt, hoe kleiner F<sub>x</sub>.'},
+    {type:'duw', titel:'Een grasmaaier duwen',
+     tekst:'Je duwt <b>schuin naar beneden</b> langs de stang. F<sub>x</sub> duwt de maaier <b>vooruit</b>. F<sub>y</sub> drukt hem <b>tegen de grond</b>: dat helpt niet om vooruit te gaan.'},
+    {type:'helling', titel:'Een slee op een helling',
+     tekst:'De zwaartekracht F<sub>z</sub> wijst recht naar beneden. Je ontbindt ze <b>langs de helling</b> (F<sub>∥</sub>: de slee glijdt naar beneden) en <b>loodrecht op de helling</b> (F<sub>⊥</sub>: de slee drukt tegen de helling). Hoe steiler de helling, hoe groter F<sub>∥</sub>.'},
+  ],
+  '3.2': [
+    {type:'lamp', titel:'Een lamp aan twee kabels',
+     tekst:'Het gewicht F<sub>z</sub> van de lamp wordt verdeeld over de <b>twee kabels</b>. Je ontbindt F<sub>z</sub> in de richting van elke kabel. De kabel die het <b>steilst</b> hangt, moet het <b>meest</b> dragen.'},
+    {type:'waslijn', titel:'Natte was aan een waslijn',
+     tekst:'Hangt de waslijn bijna <b>horizontaal</b>, dan zijn de krachten in de lijn <b>veel groter</b> dan het gewicht van de was. Daarom kan een strak gespannen waslijn knappen. Laat je ze meer doorhangen, dan worden de krachten kleiner.'},
+  ],
+};
+
+function vbSvg(type){
+  const NS='http://www.w3.org/2000/svg';
+  const W=300,H=190;
+  let o='';
+  const C={f:'#2563eb',a:'#dc2626',b:'#7c3aed',h:'#94a3b8',ink:'#1D2A36',grond:'#cfd8e2'};
+  const arrow=(x1,y1,x2,y2,col,lab,lx,ly,w=3)=>{
+    const ang=Math.atan2(y2-y1,x2-x1), s=9;
+    const p1=[x2-s*Math.cos(ang-0.4),y2-s*Math.sin(ang-0.4)], p2=[x2-s*Math.cos(ang+0.4),y2-s*Math.sin(ang+0.4)];
+    return `<line x1="${x1}" y1="${y1}" x2="${x2-5*Math.cos(ang)}" y2="${y2-5*Math.sin(ang)}" stroke="${col}" stroke-width="${w}" stroke-linecap="round"/>`+
+      `<polygon points="${x2},${y2} ${p1[0]},${p1[1]} ${p2[0]},${p2[1]}" fill="${col}"/>`+
+      (lab?`<text x="${lx}" y="${ly}" fill="${col}" font-size="14" font-weight="700" font-family="Inter, sans-serif">${lab}</text>`:'');
+  };
+  const dash=(x1,y1,x2,y2)=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${C.h}" stroke-width="1.5" stroke-dasharray="5 4"/>`;
+  // ontbind vector F (vanuit P) volgens eenheidsrichtingen a en b
+  const ontbind=(P,F,a,b)=>{
+    const det=a[0]*b[1]-a[1]*b[0];
+    const al=(F[0]*b[1]-F[1]*b[0])/det, be=(a[0]*F[1]-a[1]*F[0])/det;
+    return {A:[P[0]+al*a[0],P[1]+al*a[1]], B:[P[0]+be*b[0],P[1]+be*b[1]], T:[P[0]+F[0],P[1]+F[1]]};
+  };
+  if(type==='trek' || type==='duw'){
+    const g=150;
+    o+=`<line x1="10" y1="${g}" x2="290" y2="${g}" stroke="${C.grond}" stroke-width="3"/>`;
+    if(type==='trek'){
+      // koffer
+      o+=`<rect x="40" y="${g-62}" width="58" height="50" rx="7" fill="#e8eef6" stroke="${C.ink}" stroke-width="2"/>`+
+         `<circle cx="52" cy="${g-6}" r="6" fill="${C.ink}"/><circle cx="86" cy="${g-6}" r="6" fill="${C.ink}"/>`;
+      const P=[98,g-58], ang=-35*Math.PI/180, L=120;
+      o+=`<line x1="${P[0]}" y1="${P[1]}" x2="${P[0]+38*Math.cos(ang)}" y2="${P[1]+38*Math.sin(ang)}" stroke="${C.ink}" stroke-width="3"/>`;
+      const F=[L*Math.cos(ang),L*Math.sin(ang)], r=ontbind(P,F,[1,0],[0,-1]);
+      o+=dash(r.A[0],r.A[1],r.T[0],r.T[1])+dash(r.B[0],r.B[1],r.T[0],r.T[1]);
+      o+=arrow(P[0],P[1],r.A[0],r.A[1],C.a,'Fx',r.A[0]-8,r.A[1]+20)+arrow(P[0],P[1],r.B[0],r.B[1],C.b,'Fy',P[0]-26,r.B[1]+8)+arrow(P[0],P[1],r.T[0],r.T[1],C.f,'F',r.T[0]+6,r.T[1]+4,3.4);
+    } else {
+      // grasmaaier: stang naar linksboven, duwkracht naar rechtsonder
+      o+=`<rect x="150" y="${g-34}" width="90" height="26" rx="6" fill="#e3f0e5" stroke="${C.ink}" stroke-width="2"/>`+
+         `<circle cx="164" cy="${g-6}" r="7" fill="${C.ink}"/><circle cx="226" cy="${g-6}" r="7" fill="${C.ink}"/>`+
+         `<line x1="152" y1="${g-30}" x2="70" y2="${g-100}" stroke="${C.ink}" stroke-width="3"/>`;
+      // de kracht grijpt aan bij de handen (bovenaan de stang) en wijst langs de stang naar rechtsonder
+      const S=[70,g-100], ang=Math.atan2(70,82), L=92;
+      const F=[L*Math.cos(ang),L*Math.sin(ang)];
+      const r=ontbind(S,F,[1,0],[0,1]);
+      o+=`<circle cx="${S[0]}" cy="${S[1]}" r="7" fill="#f3d9c4" stroke="${C.ink}" stroke-width="1.5"/>`;
+      o+=dash(r.A[0],r.A[1],r.T[0],r.T[1])+dash(r.B[0],r.B[1],r.T[0],r.T[1]);
+      o+=arrow(S[0],S[1],r.A[0],r.A[1],C.a,'Fx',r.A[0]+4,r.A[1]+4)+arrow(S[0],S[1],r.B[0],r.B[1],C.b,'Fy',S[0]-30,r.B[1])+arrow(S[0],S[1],r.T[0],r.T[1],C.f,'F',r.T[0]+8,r.T[1]+10,3.4);
+    }
+  } else if(type==='helling'){
+    const A=[20,170], B=[280,170], T=[20,55];
+    o+=`<polygon points="${A} ${B} ${T}" fill="#eef2f6" stroke="${C.grond}" stroke-width="2"/>`;
+    const ang=Math.atan2(B[1]-T[1],B[0]-T[0]); // helling daalt naar rechts
+    const u=[Math.cos(ang),Math.sin(ang)], n=[Math.sin(ang),-Math.cos(ang)]; // langs helling (naar beneden), normaal (naar buiten)
+    const M=[T[0]+0.42*(B[0]-T[0]), T[1]+0.42*(B[1]-T[1])];
+    const P=[M[0]+n[0]*16, M[1]+n[1]*16];
+    o+=`<g transform="translate(${P[0]},${P[1]}) rotate(${ang*180/Math.PI})"><rect x="-26" y="-16" width="52" height="32" rx="5" fill="#fde8d8" stroke="${C.ink}" stroke-width="2"/></g>`;
+    const F=[0,92], r=ontbind(P,F,u,[-n[0],-n[1]]);
+    o+=dash(r.A[0],r.A[1],r.T[0],r.T[1])+dash(r.B[0],r.B[1],r.T[0],r.T[1]);
+    o+=arrow(P[0],P[1],r.A[0],r.A[1],C.a,'F∥',r.A[0]+4,r.A[1]-4)+arrow(P[0],P[1],r.B[0],r.B[1],C.b,'F⊥',r.B[0]-30,r.B[1]+6)+arrow(P[0],P[1],r.T[0],r.T[1],C.f,'Fz',r.T[0]+6,r.T[1]);
+    o+=`<circle cx="${P[0]}" cy="${P[1]}" r="3" fill="${C.ink}"/>`;
+  } else if(type==='lamp' || type==='waslijn'){
+    const plafY=22;
+    let L1,L2,P,Fl;
+    if(type==='lamp'){ L1=[70,plafY]; L2=[250,plafY]; P=[140,92]; Fl=78; }
+    else { L1=[14,40]; L2=[286,40]; P=[150,60]; Fl=40; }
+    o+=(type==='lamp'
+        ? `<line x1="10" y1="${plafY}" x2="290" y2="${plafY}" stroke="${C.ink}" stroke-width="3"/>`
+        : `<rect x="8" y="30" width="8" height="150" fill="${C.grond}"/><rect x="284" y="30" width="8" height="150" fill="${C.grond}"/>`);
+    o+=`<line x1="${L1[0]}" y1="${L1[1]}" x2="${P[0]}" y2="${P[1]}" stroke="${C.ink}" stroke-width="2"/><line x1="${L2[0]}" y1="${L2[1]}" x2="${P[0]}" y2="${P[1]}" stroke="${C.ink}" stroke-width="2"/>`;
+    o+= type==='lamp'
+        ? `<path d="M${P[0]-16},${P[1]+18} L${P[0]+16},${P[1]+18} L${P[0]+8},${P[1]} L${P[0]-8},${P[1]} Z" fill="#fff3c4" stroke="${C.ink}" stroke-width="2"/>`
+        : `<rect x="${P[0]-14}" y="${P[1]}" width="28" height="30" rx="3" fill="#dbeafe" stroke="${C.ink}" stroke-width="2"/>`;
+    // richtingen: verlengde van elke kabel voorbij het ophangpunt (kabel wordt uitgerekt)
+    const n1=Math.hypot(P[0]-L1[0],P[1]-L1[1]), n2=Math.hypot(P[0]-L2[0],P[1]-L2[1]);
+    const a=[(P[0]-L1[0])/n1,(P[1]-L1[1])/n1], b=[(P[0]-L2[0])/n2,(P[1]-L2[1])/n2];
+    const r=ontbind(P,[0,Fl],a,b);
+    o+=dash(r.A[0],r.A[1],r.T[0],r.T[1])+dash(r.B[0],r.B[1],r.T[0],r.T[1]);
+    const clip=(Q)=>[Math.max(4,Math.min(296,Q[0])),Q[1]];
+    const A=clip(r.A), B=clip(r.B);
+    o+=arrow(P[0],P[1],A[0],A[1],C.a,'Fa',A[0]+(A[0]>P[0]?-26:4),A[1]+16)+arrow(P[0],P[1],B[0],B[1],C.b,'Fb',B[0]+(B[0]>P[0]?-26:6),B[1]+16)+arrow(P[0],P[1],r.T[0],r.T[1],C.f,'Fz',r.T[0]+6,r.T[1]);
+    if(type==='waslijn') o+=`<text x="150" y="182" text-anchor="middle" fill="${C.ink}" font-size="12" font-family="Inter, sans-serif">Fa en Fb zijn veel groter dan Fz</text>`;
+  }
+  return `<svg viewBox="0 0 ${W} ${H}" xmlns="${NS}" role="img">${o}</svg>`;
 }
-window.addEventListener('resize', syncHeaderHeight);
+
+function renderDagelijks(){
+  const box=document.getElementById('dagelijks');
+  const lijst=VB[state.topicId];
+  if(!lijst){ box.hidden=true; box.innerHTML=''; return; }
+  box.hidden=false;
+  box.innerHTML=`<h3>Ontbinden in het dagelijks leven</h3><p>Vaak werkt maar één component van een kracht mee. Kijk welk deel van de kracht nuttig is.</p>`+
+    `<div class="vb-grid">`+lijst.map(v=>`<div class="vb-card">${vbSvg(v.type)}<div class="txt"><h4>${v.titel}</h4><p>${v.tekst}</p></div></div>`).join('')+`</div>`;
+}
 
 /* init */
-buildSidebar();
 selectTopic('1.1');
-syncHeaderHeight();
 </script>
 </body>
 </html>
