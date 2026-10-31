@@ -1261,7 +1261,7 @@ $('gewrichten').innerHTML=[['schoudergewricht','kogelgewricht: bewegen in alle r
   let led='arm', th=80, doel=80, actief=null;
   const S=[300,70], E=[300,292];
   const CFG={arm:{rust:80,a:-28,b:80,LV:215,sA:'biceps',sB:'triceps',bA:'Biceps trekt samen',bB:'Triceps trekt samen',gew:'elleboog (gewricht)',bot:'opperarmbeen'},
-             been:{rust:90,a:90,b:180,LV:225,sA:'quadriceps',sB:'hamstrings',bA:'Quadriceps trekt samen',bB:'Hamstrings trekken samen',gew:'knie (gewricht)',bot:'dijbeen'}};
+             been:{rust:90,a:90,b:180,LV:190,sA:'quadriceps',sB:'hamstrings',bA:'Quadriceps trekt samen',bB:'Hamstrings trekken samen',gew:'knie (gewricht)',bot:'dijbeen'}};
   function zet(){ const c=CFG[led]; $('arm-buig').textContent=c.bA; $('arm-strek').textContent=c.bB; th=doel=c.rust; actief=null; }
   document.querySelectorAll('[data-ledemaat]').forEach(b=>b.onclick=()=>{ led=b.dataset.ledemaat; document.querySelectorAll('[data-ledemaat]').forEach(x=>x.classList.toggle('on',x===b)); zet(); });
   $('arm-buig').onclick=()=>{ doel=CFG[led].a; actief='a'; };
@@ -1280,7 +1280,8 @@ $('gewrichten').innerHTML=[['schoudergewricht','kogelgewricht: bewegen in alle r
   lus('e4',dt=>{
     const c=CFG[led], vorig=th; th+=(doel-th)*Math.min(1,dt*2.2); const beweegt=Math.abs(th-vorig)>0.05;
     const a=th*Math.PI/180, u=[Math.cos(a),Math.sin(a)], n=[-u[1],u[0]], W=[E[0]+u[0]*c.LV,E[1]+u[1]*c.LV];
-    let h=`<rect width="820" height="440" fill="#fbfcfe"/>`;
+    s.setAttribute('viewBox',led==='arm'?'0 0 820 440':'0 0 820 530');
+    let h=`<rect width="820" height="530" fill="#fbfcfe"/>`;
     h+=lijn([S[0],S[1]+10],E,led==='arm'?92:120,'rgba(240,201,166,.35)')+lijn(E,W,led==='arm'?74:90,'rgba(240,201,166,.35)');
     if(led==='arm') h+=`<path d="M250,26 L360,34 L350,92 L272,96Z" fill="#efe3c8" stroke="#a8946a" stroke-width="2.5"/>`;
     else h+=`<path d="M220,20 Q300,0 380,24 L360,80 Q300,96 240,80Z" fill="#efe3c8" stroke="#a8946a" stroke-width="2.5"/>`;
