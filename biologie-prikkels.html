@@ -257,12 +257,13 @@ td.ok-cel{background:var(--ok-bg);} td.fout-cel{background:var(--flag-bg);}
 
   <section class="scene" id="f2" data-title="Feedbacksystemen" data-cat="feedback">
     <div class="scene-head"><span class="num">8</span><h3>Homeostase: negatieve en positieve feedback</h3></div>
-    <p class="scene-sub"><strong>Homeostase</strong> is het constant houden van het intern milieu, zoals je lichaamstemperatuur, je bloedsuikerspiegel en de hoeveelheid water in je lichaam. Dat gebeurt met <strong>feedbacksystemen</strong> (terugkoppeling): het effect van een reactie stuurt de reactie zelf bij.</p>
+    <p class="scene-sub"><strong>Homeostase</strong> is het constant houden van het intern milieu, zoals je lichaamstemperatuur, je bloedsuikerspiegel en de hoeveelheid water in je lichaam. Dat gebeurt met <strong>feedbacksystemen</strong> (terugkoppeling): het effect van een reactie stuurt de reactie zelf bij. Het evenwicht is <strong>dynamisch</strong>: de waarde schommelt voortdurend, maar blijft binnen vaste grenzen.</p>
     <div class="grid">
-      <div class="canvas-wrap"><svg id="svg-fb" viewBox="0 0 860 420" style="display:block;width:100%;height:auto"></svg></div>
+      <div class="canvas-wrap"><svg id="svg-fb" viewBox="0 0 860 460" style="display:block;width:100%;height:auto"></svg></div>
       <div class="controls">
         <div class="ctrl-row"><button class="btn on" data-fb="neg">negatieve feedback</button><button class="btn" data-fb="pos">positieve feedback</button></div>
-        <div class="ctrl-row" id="fb-knoppen"></div>
+        <div class="ctrl-group" id="fb-vb-g"><label>Voorbeeld</label><div class="keuzes" id="fb-vb"></div></div>
+        <div class="ctrl-group"><label id="fb-st-l">Verstoring</label><div class="keuzes" id="fb-knoppen"></div></div>
         <div class="readout" id="fb-read"></div>
       </div>
     </div>
@@ -833,40 +834,89 @@ labelFig({wrap:'fig-wortel',ctl:'ctl-wortel',inner:`<g transform="translate(-60,
 
 //////////////////// FEEDBACK ////////////////////
 (function(){
-  const s=$('svg-fb'), read=$('fb-read'), kn=$('fb-knoppen');
-  let soort='neg', data=[], t=0, storing=0, pos=0, gebeurt='';
-  const X0=70,Y0=40,GW=760,GH=300, TMAX=60;
-  document.querySelectorAll('[data-fb]').forEach(b=>b.onclick=()=>{ soort=b.dataset.fb; document.querySelectorAll('[data-fb]').forEach(x=>x.classList.toggle('on',x===b)); reset(); });
-  function reset(){ data=[]; t=0; storing=0; pos=soort==='pos'?1:0; gebeurt='';
-    kn.innerHTML=soort==='neg'?'<button class="btn" id="fb-koud">❄ Het wordt koud</button><button class="btn" id="fb-warm">☀ Je gaat sporten</button>':'<button class="btn primary" id="fb-start">▶ De bevalling begint</button>';
-    if(soort==='neg'){ $('fb-koud').onclick=()=>{ storing=-1; }; $('fb-warm').onclick=()=>{ storing=1; }; }
-    else $('fb-start').onclick=()=>{ data=[]; t=0; pos=1; gebeurt=''; };
-    read.innerHTML=soort==='neg'?'<b>Negatieve feedback</b> brengt een waarde terug naar de <b>normwaarde</b>. Wordt je lichaamstemperatuur te laag, dan ga je rillen (warmte maken). Wordt ze te hoog, dan ga je zweten (afkoelen). Het effect werkt de verandering <b>tegen</b>.<br><span class="k">Klik op een knop om een verstoring te geven.</span>':
-      '<b>Positieve feedback</b> <b>versterkt</b> de verandering. Bij een bevalling duwt de baby tegen de baarmoederhals. Daardoor maakt het lichaam het hormoon oxytocine, dat de weeën sterker maakt. Sterkere weeën duwen nog harder, en zo verder, tot de baby geboren is.';
+  const s=$('svg-fb'), read=$('fb-read'), kn=$('fb-knoppen'), vbBox=$('fb-vb');
+  const VB={
+    water:{n:'water in je lichaam',as:'watergehalte van het lichaam (%)',norm:60,L:59.2,U:60.8,min:57.5,max:62.5,d:1,
+      st:[['🏃 Je sport en zweet','sport'],['🥤 Je drinkt veel in één keer','drink']],
+      eff:{laag:{naam:'dorst → je drinkt',kl:'#2563eb',uit:'genoeg gedronken → je stopt'},hoog:{naam:'nieren maken meer urine',kl:'#7c3aed',uit:'nieren houden water vast'}},
+      uitleg:{laag:'Het watergehalte is onder de ondergrens gezakt. Receptoren in de hersenen merken dat: je krijgt <b>dorst</b> en je <b>drinkt</b>. Het watergehalte stijgt.',
+              hoog:'Het watergehalte is boven de bovengrens. Je hersenen geven het signaal dat je <b>genoeg</b> hebt: je stopt met drinken en de <b>nieren</b> maken meer urine. Het watergehalte daalt.',
+              rust:'Je verliest voortdurend wat water (zweet, adem, urine). Het watergehalte daalt langzaam, tot het weer onder de ondergrens komt.'}},
+    suiker:{n:'bloedsuikerspiegel',as:'suiker in het bloed (g/l)',norm:1.0,L:0.85,U:1.15,min:0.6,max:1.5,d:2,
+      st:[['🍞 Je eet een boterham','eet'],['🏃 Je sport','sport']],
+      eff:{laag:{naam:'glucagon en adrenaline',kl:'#d97706',uit:'genoeg suiker: geen glucagon meer'},hoog:{naam:'insuline',kl:'#059669',uit:'normaal: geen insuline meer'}},
+      uitleg:{laag:'De bloedsuikerspiegel is te laag. De alvleesklier maakt <b>glucagon</b> (en de bijnieren <b>adrenaline</b>). Daardoor zet de lever opgeslagen glycogeen om in <b>glucose</b> en geeft die af aan het bloed. De spiegel stijgt.',
+              hoog:'De bloedsuikerspiegel is te hoog (bv. na het eten). De alvleesklier maakt <b>insuline</b>. Daardoor nemen de cellen glucose op en slaat de lever het op als glycogeen. De spiegel daalt.',
+              rust:'Je cellen verbruiken voortdurend glucose. De spiegel daalt langzaam.'}},
+    temp:{n:'lichaamstemperatuur',as:'lichaamstemperatuur (°C)',norm:37,L:36.7,U:37.3,min:36.0,max:38.0,d:1,
+      st:[['🏃 Je gaat sporten','sport'],['❄ Je gaat de kou in','koud'],['☀ Een warme dag','warm']],
+      eff:{laag:{naam:'rillen, bloedvaten vernauwen',kl:'#2563eb',uit:'warm genoeg: rillen stopt'},hoog:{naam:'zweten, bloedvaten verwijden',kl:'#dc2626',uit:'koel genoeg: zweten stopt'}},
+      uitleg:{laag:'De temperatuur is onder de ondergrens. Thermoreceptoren sturen een signaal naar de hersenen: je gaat <b>rillen</b> (spieren maken warmte) en de bloedvaten in je huid <b>vernauwen</b> (minder warmteverlies). De temperatuur stijgt.',
+              hoog:'De temperatuur is boven de bovengrens. Je hersenen sturen een signaal: je gaat <b>zweten</b> (verdampend zweet koelt af) en de bloedvaten in je huid <b>verwijden</b> (meer warmte naar buiten). De temperatuur daalt.',
+              rust:'Je lichaam maakt voortdurend wat warmte. De temperatuur stijgt of daalt langzaam, afhankelijk van de omgeving.'}},
+  };
+  let soort='neg', k='water', x, eff=null, sterk={laag:0,hoog:0}, data=[], vlag=[], t=0, stor={}, pos=0, posData=[], posKlaar='';
+  const TW=120;
+  Object.entries(VB).forEach(([id,v])=>{ const b=document.createElement('button'); b.className='btn'; b.dataset.id=id; b.textContent=v.n; b.onclick=()=>{ k=id; reset(); }; vbBox.appendChild(b); });
+  document.querySelectorAll('[data-fb]').forEach(b=>b.onclick=()=>{ soort=b.dataset.fb; document.querySelectorAll('[data-fb]').forEach(o=>o.classList.toggle('on',o===b)); reset(); });
+  function reset(){
+    const v=VB[k]; x=v.norm+(v.U-v.norm)*0.6; eff=null; sterk={laag:0,hoog:0}; data=[]; vlag=[]; t=0; stor={}; posData=[]; pos=0; posKlaar='';
+    [...vbBox.children].forEach(b=>b.classList.toggle('on',b.dataset.id===k));
+    $('fb-vb-g').style.display=soort==='neg'?'':'none';
+    if(soort==='neg'){ $('fb-st-l').textContent='Verstoring'; kn.innerHTML=v.st.map(([t2,id])=>`<button class="btn" data-s="${id}">${t2}</button>`).join(''); kn.querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>{ stor[b.dataset.s]=8; }); }
+    else { $('fb-st-l').textContent='Start'; kn.innerHTML='<button class="btn primary" id="fb-start">▶ De bevalling begint</button>'; $('fb-start').onclick=()=>{ posData=[]; pos=1; t=0; posKlaar=''; }; }
   }
-  let Tlich=37, v=0;
+  function stap(dt){
+    const v=VB[k], span=v.U-v.L;
+    let dx=0;
+    if(k==='water'){ dx=-0.07*span; if(stor.sport) dx-=0.25*span; if(stor.drink) dx+=0.5*span; dx+=0.45*span*sterk.laag-0.3*span*sterk.hoog; }
+    if(k==='suiker'){ dx=-0.06*span; if(stor.eet) dx+=0.55*span; if(stor.sport) dx-=0.3*span; dx+=0.35*span*sterk.laag-0.35*span*sterk.hoog; }
+    if(k==='temp'){ dx=0.05*span; if(stor.sport) dx+=0.4*span; if(stor.warm) dx+=0.25*span; if(stor.koud) dx-=0.5*span; dx+=0.4*span*sterk.laag-0.4*span*sterk.hoog; }
+    ['laag','hoog'].forEach(q=>{ sterk[q]+=((eff===q?1:0)-sterk[q])*Math.min(1,dt*1.5); });
+    x+=dx*dt*0.5; Object.keys(stor).forEach(s2=>{ stor[s2]-=dt; if(stor[s2]<=0) delete stor[s2]; });
+    // signalen met drempels (hysterese)
+    const vorig=eff;
+    if(k==='water'){ if(eff===null&&x<v.L) eff='laag'; else if(eff==='laag'&&x>v.U-span*0.1) eff=null; else if(eff===null&&x>v.U+span*0.05) eff='hoog'; else if(eff==='hoog'&&x<v.norm) eff=null; }
+    else { if(eff===null&&x<v.L) eff='laag'; else if(eff==='laag'&&x>v.norm+span*0.12) eff=null; else if(eff===null&&x>v.U) eff='hoog'; else if(eff==='hoog'&&x<v.norm-span*0.12) eff=null; }
+    if(vorig!==eff){ const e=VB[k].eff; vlag.push({t,y:x,tekst:eff?e[eff].naam:e[vorig].uit,kl:eff?e[eff].kl:'#51606E'}); }
+    data.push([t,x]);
+  }
   lus('f2',dt=>{
-    if(soort==='neg'){ t+=dt*4;
-      if(storing){ v+=storing*1.6*dt*4; storing*=Math.pow(0.2,dt*4); if(Math.abs(storing)<0.05) storing=0; }
-      const fout=Tlich-37; gebeurt=fout<-0.15?'rillen, bloedvaten in de huid vernauwen':fout>0.15?'zweten, bloedvaten in de huid verwijden':'normwaarde';
-      v+=-fout*1.6*dt*4 - v*1.4*dt*4; Tlich+=v*dt*4*0.25;
-      data.push([t,Tlich]); if(t>TMAX){ data=data.filter(d=>d[0]>t-TMAX); }
-    } else if(pos){ t+=dt*4; const y=Math.min(100,2*Math.exp(t/9)); data.push([t,y]); if(y>=100){ pos=0; gebeurt='geboorte: de lus stopt'; } }
-    let h=`<rect x="${X0}" y="${Y0}" width="${GW}" height="${GH}" fill="#fbfcfe" stroke="#d3dce5"/>`;
-    const tmin=soort==='neg'?Math.max(0,t-TMAX):0, tx=x=>X0+(x-tmin)/TMAX*GW;
-    if(soort==='neg'){ const ty=y=>Y0+GH/2-(y-37)*GH/4;
-      for(let y=35.5;y<=38.5;y+=0.5){ h+=`<line x1="${X0}" x2="${X0+GW}" y1="${ty(y)}" y2="${ty(y)}" stroke="#eef2f6"/><text x="${X0-8}" y="${ty(y)+4}" text-anchor="end" font-size="12" fill="#51606E">${String(y).replace('.',',')}</text>`; }
-      h+=`<line x1="${X0}" x2="${X0+GW}" y1="${ty(37)}" y2="${ty(37)}" stroke="#059669" stroke-width="2" stroke-dasharray="8 6"/><text x="${X0+GW-6}" y="${ty(37)-8}" text-anchor="end" font-size="13" font-weight="700" fill="#059669">normwaarde 37 °C</text>`;
-      h+=`<path d="M${data.map(d=>[tx(d[0]),Math.max(Y0,Math.min(Y0+GH,ty(d[1])))]).join(' L')}" fill="none" stroke="#dc2626" stroke-width="3"/>`;
-      h+=`<text x="${X0}" y="${Y0-14}" font-size="14" font-weight="700">lichaamstemperatuur (°C)</text><text x="${X0+GW}" y="${Y0+GH+30}" text-anchor="end" font-size="13" fill="#51606E">tijd →</text>`;
-      h+=`<text x="${X0+12}" y="${Y0+GH+30}" font-size="14" font-weight="700" fill="#2F6FB0">reactie: ${gebeurt}</text>`;
-    } else { const ty=y=>Y0+GH-y/100*GH;
-      h+=`<path d="M${data.map(d=>[tx(d[0]),ty(d[1])]).join(' L')}" fill="none" stroke="#7c3aed" stroke-width="3"/>`;
-      h+=`<text x="${X0}" y="${Y0-14}" font-size="14" font-weight="700">sterkte van de weeën en hoeveelheid oxytocine</text><text x="${X0+GW}" y="${Y0+GH+30}" text-anchor="end" font-size="13" fill="#51606E">tijd →</text>`;
-      if(gebeurt) h+=`<text x="${X0+12}" y="${Y0+GH+30}" font-size="14" font-weight="700" fill="#7c3aed">${gebeurt}</text>`;
+    let h='';
+    const X0=60,Y0=40,GW=730,GH=320;
+    if(soort==='neg'){
+      const v=VB[k], dts=dt*2.5; t+=dts; stap(dts);
+      const tmin=Math.max(0,t-TW); data=data.filter(d=>d[0]>tmin-1); vlag=vlag.filter(f=>f.t>tmin);
+      const tx=q=>X0+(q-tmin)/TW*GW, ty=y=>Y0+GH-(y-v.min)/(v.max-v.min)*GH, cl=y=>Math.max(Y0,Math.min(Y0+GH,y));
+      h+=`<rect x="${X0}" y="${Y0}" width="${GW}" height="${GH}" fill="#fbfcfe" stroke="#d3dce5"/>`;
+      h+=`<rect x="${X0}" y="${ty(v.U)}" width="${GW}" height="${ty(v.L)-ty(v.U)}" fill="#dcfce7" opacity=".7"/>`;
+      h+=`<line x1="${X0}" x2="${X0+GW}" y1="${ty(v.U)}" y2="${ty(v.U)}" stroke="#16a34a" stroke-width="1.5" stroke-dasharray="4 4"/><line x1="${X0}" x2="${X0+GW}" y1="${ty(v.L)}" y2="${ty(v.L)}" stroke="#16a34a" stroke-width="1.5" stroke-dasharray="4 4"/>`;
+      h+=`<line x1="${X0}" x2="${X0+GW}" y1="${ty(v.norm)}" y2="${ty(v.norm)}" stroke="#059669" stroke-width="2" stroke-dasharray="9 6"/>`;
+      const f=n=>n.toLocaleString('nl-BE',{minimumFractionDigits:v.d,maximumFractionDigits:v.d});
+      h+=`<g font-size="12.5" font-weight="700" fill="#15803d"><text x="${X0+GW+6}" y="${ty(v.U)+4}">boven</text><text x="${X0+GW+6}" y="${ty(v.norm)+4}">norm</text><text x="${X0+GW+6}" y="${ty(v.L)+4}">onder</text></g><text x="${X0+8}" y="${Y0+GH-10}" font-size="12.5" font-weight="700" fill="#15803d">groene zone: tussen ondergrens ${f(v.L)} en bovengrens ${f(v.U)} · normwaarde ${f(v.norm)}</text>`;
+      for(let i=0;i<=4;i++){ const y=v.min+(v.max-v.min)*i/4; h+=`<text x="${X0-8}" y="${ty(y)+4}" text-anchor="end" font-size="12" fill="#51606E">${f(y)}</text>`; }
+      // achtergrond tijdens een effectorreactie
+      let seg=null; const segs=[]; vlag.concat([{t,einde:1}]).forEach(()=>{});
+      h+=`<path d="M${data.map(d=>[tx(d[0]),cl(ty(d[1]))]).join(' L')}" fill="none" stroke="#1D2A36" stroke-width="3"/>`;
+      vlag.forEach((fl,i)=>{ const xx=tx(fl.t), yy=cl(ty(fl.y)), toon=i>=vlag.length-2, onder=fl.y<v.norm; const ly=onder?Math.min(Y0+GH-8,yy+38):Math.max(Y0+14,yy-30);
+        h+=`<circle cx="${xx}" cy="${yy}" r="5" fill="${fl.kl}"/>`; if(toon) h+=`<path d="M${xx},${yy} L${xx},${ly+(onder?-12:4)}" stroke="${fl.kl}" stroke-width="1.5"/><text x="${Math.min(xx,X0+GW-200)}" y="${ly}" font-size="12.5" font-weight="700" fill="${fl.kl}" stroke="#fff" stroke-width="3" paint-order="stroke">${fl.tekst}</text>`; });
+      h+=`<text x="${X0}" y="${Y0-14}" font-size="14" font-weight="700">${v.as}</text><text x="${X0+GW}" y="${Y0+GH+24}" text-anchor="end" font-size="13" fill="#51606E">tijd →</text>`;
+      // terugkoppellus
+      const e=eff?v.eff[eff]:null, stand=x<v.L?'te laag':x>v.U?'te hoog':'binnen de grenzen';
+      h+=`<g transform="translate(${X0},${Y0+GH+44})" font-size="13"><rect width="${GW}" height="40" rx="8" fill="${e?'#fff7ed':'#f1f5f9'}" stroke="${e?e.kl:'#cbd5e1'}"/><text x="14" y="25"><tspan font-weight="700">nu:</tspan> ${stand} · <tspan font-weight="700" fill="${e?e.kl:'#51606E'}">${e?'reactie: '+e.naam:'geen reactie nodig'}</tspan>${Object.keys(stor).length?' · verstoring bezig':''}</text></g>`;
+      s.innerHTML=h;
+      read.innerHTML=`<b>Negatieve feedback</b> werkt een verandering <b>tegen</b>. Komt de waarde buiten de grenzen, dan gaat er een signaal naar de hersenen (of een klier) en volgt een reactie die de waarde terugbrengt. Is de waarde terug, dan stopt het signaal.<br><span style="color:${e?e.kl:'#51606E'}">${v.uitleg[eff||'rust']}</span>`;
+    } else {
+      if(pos){ t+=dt; const y=Math.min(100,2*Math.exp(t/2.2)); posData.push([t,y]); if(y>=100){ pos=0; posKlaar='geboorte: de lus stopt'; } }
+      const tx=q=>X0+q/12*GW, ty=y=>Y0+GH-y/100*GH;
+      h+=`<rect x="${X0}" y="${Y0}" width="${GW}" height="${GH}" fill="#fbfcfe" stroke="#d3dce5"/>`;
+      if(posData.length) h+=`<path d="M${posData.map(d=>[tx(d[0]),ty(d[1])]).join(' L')}" fill="none" stroke="#7c3aed" stroke-width="3"/>`;
+      h+=`<text x="${X0}" y="${Y0-14}" font-size="14" font-weight="700">sterkte van de weeën en hoeveelheid oxytocine</text><text x="${X0+GW}" y="${Y0+GH+24}" text-anchor="end" font-size="13" fill="#51606E">tijd →</text>`;
+      if(posKlaar) h+=`<text x="${X0+12}" y="${Y0+GH+24}" font-size="14" font-weight="700" fill="#7c3aed">${posKlaar}</text>`;
       h+=`<g transform="translate(${X0+30},${Y0+30})" font-size="13" fill="#334155"><text>weeën → druk op de baarmoederhals →</text><text y="20">meer oxytocine → sterkere weeën → …</text></g>`;
+      s.innerHTML=h;
+      read.innerHTML='<b>Positieve feedback</b> <b>versterkt</b> de verandering. Bij een bevalling duwt de baby tegen de baarmoederhals. Daardoor maakt het lichaam het hormoon oxytocine, dat de weeën sterker maakt. Sterkere weeën duwen nog harder, en zo verder, tot de baby geboren is. Er is geen evenwicht: de lus stopt pas als het doel bereikt is.';
     }
-    s.innerHTML=h;
   });
   reset();
   $('fb-kaarten').innerHTML=[
