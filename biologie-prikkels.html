@@ -1268,14 +1268,20 @@ $('gewrichten').innerHTML=[['schoudergewricht','kogelgewricht: bewegen in alle r
   $('arm-strek').onclick=()=>{ doel=CFG[led].b; actief='b'; };
   const lijn=(a,b,w,k)=>`<path d="M${a} L${b}" stroke="${k}" stroke-width="${w}" stroke-linecap="round"/>`;
   const bot=(a,b,w)=>lijn(a,b,w+5,'#a8946a')+lijn(a,b,w,'#f3e9d3')+lijn(a,b,w*0.35,'#fbf6ea');
-  function spier(o,i,kant,vol,kleur){
-    const dx=i[0]-o[0], dy=i[1]-o[1], L=Math.hypot(dx,dy), ux=dx/L, uy=dy/L; let nx=-uy, ny=ux; if(nx*kant<0){ nx=-nx; ny=-ny; }
-    const w=Math.min(46,vol/L), a=[o[0]+ux*L*0.14,o[1]+uy*L*0.14], b=[o[0]+ux*L*0.8,o[1]+uy*L*0.8], m=[(a[0]+b[0])/2,(a[1]+b[1])/2];
+  // spier: buik vanaf de oorsprong, pees (vaste lengte T) tot de aanhechting, eventueel over een omleidingspunt (knieschijf)
+  function spier(pad,kant,vol,T,kleur){
+    const d=(a,b)=>Math.hypot(b[0]-a[0],b[1]-a[1]);
+    let Leff=0; for(let k=1;k<pad.length;k++) Leff+=d(pad[k-1],pad[k]);
+    const o=pad[0], q=pad[1], L1=d(o,q), ux=(q[0]-o[0])/L1, uy=(q[1]-o[1])/L1;
+    const B=Math.max(50,Math.min(L1-6,Leff-T));
+    let nx=-uy, ny=ux; if(nx*kant<0){ nx=-nx; ny=-ny; }
+    const w=Math.min(60,vol/B), a=[o[0]+ux*B*0.1,o[1]+uy*B*0.1], b=[o[0]+ux*B,o[1]+uy*B], m=[(a[0]+b[0])/2,(a[1]+b[1])/2];
     const c1=[m[0]+nx*w*1.7,m[1]+ny*w*1.7], c2=[m[0]-nx*w*0.25,m[1]-ny*w*0.25];
-    let h=lijn(o,a,10,'#a8946a')+lijn(o,a,7,'#f4efe2')+lijn(b,i,10,'#a8946a')+lijn(b,i,7,'#f4efe2');
+    const pees=[b,...pad.slice(1)].map(p=>p.join(',')).join(' L');
+    let h=lijn(o,a,10,'#a8946a')+lijn(o,a,7,'#f4efe2')+`<path d="M${pees}" fill="none" stroke="#a8946a" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/><path d="M${pees}" fill="none" stroke="#f4efe2" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>`;
     h+=`<path d="M${a} Q${c1} ${b} Q${c2} ${a}Z" fill="${kleur}" stroke="#6b1a17" stroke-width="2.4"/>`;
     for(let k=1;k<6;k++){ const f=k/6; h+=`<path d="M${a} Q${m[0]+nx*w*(1.7*f-0.25*(1-f))},${m[1]+ny*w*(1.7*f-0.25*(1-f))} ${b}" fill="none" stroke="#7d1f1b" stroke-width="1.1" opacity=".45"/>`; }
-    return {h,mid:[m[0]+nx*w*0.75,m[1]+ny*w*0.75],L};
+    return {h,mid:[m[0]+nx*w*0.75,m[1]+ny*w*0.75],L:B};
   }
   lus('e4',dt=>{
     const c=CFG[led], vorig=th; th+=(doel-th)*Math.min(1,dt*2.2); const beweegt=Math.abs(th-vorig)>0.05;
@@ -1286,28 +1292,29 @@ $('gewrichten').innerHTML=[['schoudergewricht','kogelgewricht: bewegen in alle r
     if(led==='arm') h+=`<path d="M250,26 L360,34 L350,92 L272,96Z" fill="#efe3c8" stroke="#a8946a" stroke-width="2.5"/>`;
     else h+=`<path d="M220,20 Q300,0 380,24 L360,80 Q300,96 240,80Z" fill="#efe3c8" stroke="#a8946a" stroke-width="2.5"/>`;
     h+=`<circle cx="${S[0]}" cy="${S[1]}" r="24" fill="#f3e9d3" stroke="#a8946a" stroke-width="2.5"/>`+bot(S,E,led==='arm'?26:32)+`<circle cx="${E[0]}" cy="${E[1]}" r="19" fill="#f3e9d3" stroke="#a8946a" stroke-width="2.5"/>`;
-    let ins, ins2;
+    let padA, padB;
     if(led==='arm'){
       const U0=[E[0]-n[0]*7-u[0]*18,E[1]-n[1]*7-u[1]*18], U1=[W[0]-n[0]*7,W[1]-n[1]*7], R0=[E[0]+n[0]*9+u[0]*8,E[1]+n[1]*9+u[1]*8], R1=[W[0]+n[0]*8,W[1]+n[1]*8];
       h+=bot(U0,U1,15)+bot(R0,R1,14);
       h+=`<g transform="translate(${W[0]},${W[1]}) rotate(${th})"><path d="M-4,-20 C24,-24 52,-20 64,-8 C70,0 64,12 52,14 C38,20 14,20 -4,18Z" fill="#f0c9a6" stroke="#c48d66" stroke-width="2"/></g>`;
-      ins=[E[0]+u[0]*42+n[0]*12,E[1]+u[1]*42+n[1]*12]; ins2=[E[0]-u[0]*20-n[0]*12,E[1]-u[1]*20-n[1]*12];
+      padA=[[318,92],[E[0]+u[0]*42+n[0]*12,E[1]+u[1]*42+n[1]*12]]; padB=[[282,96],[E[0]-u[0]*28+n[0]*14,E[1]-u[1]*28+n[1]*14]];
     } else {
       h+=bot([E[0]+u[0]*6,E[1]+u[1]*6],W,24);
-      h+=`<ellipse cx="${E[0]-n[0]*20}" cy="${E[1]-n[1]*20}" rx="10" ry="13" transform="rotate(${th-90} ${E[0]-n[0]*20} ${E[1]-n[1]*20})" fill="#f3e9d3" stroke="#a8946a" stroke-width="2"/>`;
       h+=`<g transform="translate(${W[0]},${W[1]}) rotate(${th-90})"><path d="M-22,-6 C-24,14 -10,22 10,22 L70,24 C80,24 82,10 70,6 L18,-6Z" fill="#f0c9a6" stroke="#c48d66" stroke-width="2"/></g>`;
-      ins=[E[0]+u[0]*40-n[0]*14,E[1]+u[1]*40-n[1]*14]; ins2=[E[0]+u[0]*34+n[0]*14,E[1]+u[1]*34+n[1]*14];
+      const f=(th-90)*Math.PI/360, P=[E[0]+34*Math.cos(f),E[1]+34*Math.sin(f)];
+      padA=[[318,92],P,[E[0]+u[0]*50-n[0]*14,E[1]+u[1]*50-n[1]*14]]; padB=[[282,96],[E[0]+u[0]*34+n[0]*16,E[1]+u[1]*34+n[1]*16]];
+      h+=`<ellipse cx="${P[0]}" cy="${P[1]}" rx="9" ry="13" fill="#f3e9d3" stroke="#a8946a" stroke-width="2"/>`;
     }
-    const A=spier([318,92],ins,1,led==='arm'?8200:10500,actief==='a'&&beweegt?'#e2574c':'#c7463e');
-    const B=spier([282,96],ins2,-1,led==='arm'?7600:9500,actief==='b'&&beweegt?'#e2574c':'#b23e38');
+    const A=spier(padA,1,led==='arm'?5500:6500,led==='arm'?60:90,actief==='a'&&beweegt?'#e2574c':'#c7463e');
+    const B=spier(padB,-1,led==='arm'?5000:5500,led==='arm'?50:60,actief==='b'&&beweegt?'#e2574c':'#b23e38');
     h+=B.h+A.h;
     h+=`<circle cx="${E[0]}" cy="${E[1]}" r="32" fill="none" stroke="#2F6FB0" stroke-width="2.5" stroke-dasharray="6 5"/>`;
     const imp=p=>`<path d="M${p[0]-6},${p[1]-16} l10,0 l-6,10 l8,0 l-14,20 l4,-14 l-8,0z" fill="#facc15" stroke="#a16207" stroke-width="1.2"/>`;
     if(beweegt&&actief==='a') h+=imp([A.mid[0]+34,A.mid[1]]); if(beweegt&&actief==='b') h+=imp([B.mid[0]-34,B.mid[1]]);
     const lab=(t,p,q,kl='#1D2A36')=>`<path d="M${p} L${q}" stroke="${kl}" stroke-width="1.4"/><text x="${q[0]+6}" y="${q[1]+5}" font-size="16" font-weight="700" fill="${kl}" stroke="#fff" stroke-width="4" paint-order="stroke">${t}</text>`;
     const lb=(t,p,q,kl='#1D2A36')=>`<path d="M${p} L${q}" stroke="${kl}" stroke-width="1.4"/><text x="${q[0]-6}" y="${q[1]+5}" text-anchor="end" font-size="16" font-weight="700" fill="${kl}" stroke="#fff" stroke-width="4" paint-order="stroke">${t}</text>`;
-    h+=lab(c.sA+(led==='been'?' (voorkant)':''),A.mid,[580,120],'#9a2b26')+lb(c.sB+(led==='been'?' (achterkant)':''),B.mid,[236,160],'#9a2b26')+lab('pees',led==='arm'?[318,86]:ins,led==='arm'?[470,40]:[560,250])+lb(c.gew,[E[0]-32,E[1]],[200,300],'#2F6FB0')+lb(c.bot,[S[0]-14,S[1]+70],[200,60]);
-    h+=`<g transform="translate(600,350)" font-size="14"><text font-weight="700">lengte ${c.sA}</text><rect y="8" width="${A.L*0.7}" height="10" rx="5" fill="#c7463e"/><text y="44" font-weight="700">lengte ${c.sB}</text><rect y="52" width="${B.L*0.7}" height="10" rx="5" fill="#b23e38"/></g>`;
+    h+=lab(c.sA+(led==='been'?' (voorkant)':''),A.mid,[580,120],'#9a2b26')+lb(c.sB+(led==='been'?' (achterkant)':''),B.mid,[236,160],'#9a2b26')+lab('pees',led==='arm'?[318,86]:padA[2],led==='arm'?[470,40]:[560,250])+(led==='arm'?lb(c.gew,[E[0]-32,E[1]],[200,300],'#2F6FB0'):lab(c.gew,[E[0]+30,E[1]+12],[560,310],'#2F6FB0'))+lb(c.bot,[S[0]-14,S[1]+70],[200,60]);
+    h+=`<g transform="translate(600,350)" font-size="14"><text font-weight="700">lengte ${c.sA}</text><rect y="8" width="${A.L}" height="10" rx="5" fill="#c7463e"/><text y="44" font-weight="700">lengte ${c.sB}</text><rect y="52" width="${B.L}" height="10" rx="5" fill="#b23e38"/></g>`;
     s.innerHTML=h;
     const T={arm:{a:'De <b>biceps</b> krijgt een impuls en <b>trekt samen</b>: ze wordt korter en dikker. Via de pees trekt ze aan de onderarm: de arm <b>buigt</b>.<br>De <b>triceps</b> ontspant en wordt <b>uitgerekt</b>.',b:'De <b>triceps</b> trekt samen: de arm <b>strekt</b>.<br>De <b>biceps</b> ontspant en wordt uitgerekt. Biceps en triceps zijn elkaars <b>antagonisten</b>.'},
       been:{a:'De <b>quadriceps</b> (voorkant van de dij) trekt samen. Via de pees over de knieschijf trekt ze aan het scheenbeen: het been <b>strekt</b> (zoals bij een trap tegen een bal).<br>De <b>hamstrings</b> ontspannen en worden uitgerekt.',b:'De <b>hamstrings</b> (achterkant van de dij) trekken samen: de knie <b>buigt</b>.<br>De <b>quadriceps</b> ontspant en wordt uitgerekt. Quadriceps en hamstrings zijn elkaars <b>antagonisten</b>.'}};
