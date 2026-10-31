@@ -173,13 +173,13 @@ footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-di
 
   <section class="scene" id="s2" data-title="Traagheid en massa" data-cat="traagheid">
     <div class="scene-head"><span class="num">2</span><h3>Traagheid en massa</h3></div>
-    <p class="scene-sub">Twee winkelkarren op een gladde vloer: een lege en een volle. Je duwt ze allebei met <strong>dezelfde kracht</strong> (F = 120 N), en even lang. Welke kar komt het snelst in beweging? Welke is het moeilijkst te stoppen?</p>
+    <p class="scene-sub">Twee winkelkarren op een gladde vloer: een lege en een volle. Ze krijgen telkens <strong>dezelfde kracht</strong> (F = 60 N). <strong>Proef 1:</strong> welke kar komt het snelst in beweging? <strong>Proef 2:</strong> beide karren rijden even snel. Welke kar is het moeilijkst tegen te houden?</p>
     <div class="grid">
       <div class="canvas-wrap"><canvas id="c2" width="800" height="420"></canvas></div>
       <div class="controls">
         <div class="ctrl-row">
-          <button class="btn primary" id="s2-duw">Duw met 120 N →</button>
-          <button class="btn" id="s2-rem">← Duw terug met 120 N</button>
+          <button class="btn primary" id="s2-duw">① In beweging brengen</button>
+          <button class="btn primary" id="s2-rem">② Tegenhouden</button>
         </div>
         <div class="ctrl-row"><button class="btn" id="s2-reset">↻ Opnieuw</button></div>
         <div class="readout" id="s2-read"></div>
@@ -448,45 +448,71 @@ const fmt=(v,d=1)=>v.toFixed(d).replace('.',',').replace('-0,0','0,0');
 (function(){
   const c=document.getElementById('c2'), ctx=hiDPI(c), W=c._w, H=c._h;
   const read=document.getElementById('s2-read');
-  const F=120, DUUR=0.5, PX=40; // dezelfde kracht: 120 N, telkens gedurende 0,5 s
+  const F=60, DUUR=0.5, PX=40, V0=3, REMX=5;   // kracht (N), duwtijd (s), px per m, beginsnelheid proef 2 (m/s), remstreep (m)
   const karren=[{naam:'lege kar',m:10,y:150},{naam:'volle kar',m:60,y:330}];
-  let duw=0, duwT=0;
-  function reset(){ karren.forEach(k=>{k.x=1.2; k.v=0;}); duw=0; duwT=0; }
+  let proef=0, duwT=0;
+  function reset(){ proef=0; duwT=0; karren.forEach(k=>{ k.x=1.5; k.v=0; k.remt=false; k.tRem=0; k.xRem=null; k.klaar=false; }); }
   reset();
-  document.getElementById('s2-duw').onclick=()=>{ duw=1; duwT=DUUR; };
-  document.getElementById('s2-rem').onclick=()=>{ duw=-1; duwT=DUUR; };
+  document.getElementById('s2-duw').onclick=()=>{ reset(); proef=1; duwT=DUUR; };
+  document.getElementById('s2-rem').onclick=()=>{ reset(); proef=2; karren.forEach(k=>{ k.x=0.8; k.v=V0; }); };
   document.getElementById('s2-reset').onclick=reset;
+
   function kar(k){
     const x=k.x*PX, y=k.y;
-    ctx.save();
-    ctx.strokeStyle='#51606E'; ctx.lineWidth=3;
-    // mand
-    ctx.fillStyle='#f5f8fb'; ctx.beginPath(); ctx.moveTo(x-50,y-70); ctx.lineTo(x+50,y-70); ctx.lineTo(x+40,y-20); ctx.lineTo(x-40,y-20); ctx.closePath(); ctx.fill(); ctx.stroke();
+    ctx.save(); ctx.strokeStyle='#51606E'; ctx.lineWidth=3; ctx.fillStyle='#f5f8fb';
+    ctx.beginPath(); ctx.moveTo(x-50,y-70); ctx.lineTo(x+50,y-70); ctx.lineTo(x+40,y-20); ctx.lineTo(x-40,y-20); ctx.closePath(); ctx.fill(); ctx.stroke();
     ctx.beginPath(); ctx.moveTo(x-50,y-70); ctx.lineTo(x-66,y-90); ctx.stroke();
-    if(k.m>20){ ctx.fillStyle='#b5651d'; for(let i=0;i<3;i++) for(let j=0;j<2;j++){ ctx.fillRect(x-38+i*26,y-66+j*21,24,19); } }
+    if(k.m>20){ ctx.fillStyle='#b5651d'; for(let i=0;i<3;i++) for(let j=0;j<2;j++) ctx.fillRect(x-38+i*26,y-66+j*21,24,19); }
     ctx.fillStyle='#333'; [x-30,x+30].forEach(w=>{ ctx.beginPath(); ctx.arc(w,y-8,8,0,Math.PI*2); ctx.fill(); });
     ctx.restore();
     text(ctx,k.naam+' ('+k.m+' kg)',x,y-102,{size:14,weight:700,align:'center'});
-    if(Math.abs(k.v)>0.02) arrow(ctx,x,y+20,x+k.v*45,y+20,'#d97706',4,'v',0,-10);
+    if(Math.abs(k.v)>0.02) arrow(ctx,x,y+22,x+k.v*45,y+22,'#d97706',4,'v',0,-10);
   }
   function step(dt){
-    if(duwT>0){ const t=Math.min(dt,duwT); karren.forEach(k=>{ k.v+=duw*F/k.m*t; }); duwT-=t; }
-    karren.forEach(k=>{ k.x+=k.v*dt; const max=(W-70)/PX, min=70/PX;
-      if(k.x>max){ k.x=max; k.v=0; } if(k.x<min){ k.x=min; k.v=0; } });
+    karren.forEach(k=>{
+      let a=0;
+      if(proef===1 && duwT>0) a=F/k.m;
+      if(proef===2 && k.x>=REMX && k.v>0){ if(!k.remt){ k.remt=true; k.xRem=k.x; } a=-F/k.m; }
+      k.v+=a*dt;
+      if(proef===2 && k.remt && k.v<=0){ k.v=0; if(!k.klaar){ k.klaar=true; } }
+      if(proef===2 && k.remt && !k.klaar) k.tRem+=dt;
+      k.x+=k.v*dt;
+      const max=(W-60)/PX; if(k.x>max){ k.x=max; k.v=0; }
+    });
+    if(duwT>0) duwT-=dt;
   }
   function draw(){
-    ctx.clearRect(0,0,W,H);
-    ctx.fillStyle='#f7f9fb'; ctx.fillRect(0,0,W,H);
+    ctx.clearRect(0,0,W,H); ctx.fillStyle='#f7f9fb'; ctx.fillRect(0,0,W,H);
     karren.forEach(k=>{ ctx.fillStyle='#e3e9ef'; ctx.fillRect(0,k.y,W,6); });
     text(ctx,'gladde vloer: geen wrijving',W-16,24,{size:13,color:'#51606E',align:'right'});
+    if(proef===2){
+      // remstreep en remafstanden
+      ctx.save(); ctx.strokeStyle='#dc2626'; ctx.setLineDash([6,5]); ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(REMX*PX,40); ctx.lineTo(REMX*PX,H-34); ctx.stroke(); ctx.restore();
+      text(ctx,'remstreep: vanaf hier rem je met 60 N',REMX*PX,H-14,{size:13,weight:700,color:'#dc2626',align:'center'});
+      karren.forEach(k=>{ if(k.remt){ const y=k.y+46; ctx.strokeStyle='#dc2626'; ctx.lineWidth=2;
+        ctx.beginPath(); ctx.moveTo(REMX*PX,y); ctx.lineTo(k.x*PX,y); ctx.moveTo(REMX*PX,y-6); ctx.lineTo(REMX*PX,y+6); ctx.moveTo(k.x*PX,y-6); ctx.lineTo(k.x*PX,y+6); ctx.stroke();
+        text(ctx,'remafstand '+fmt(k.x-REMX,2)+' m',(REMX+k.x)/2*PX,y+20,{size:13,weight:700,color:'#dc2626',align:'center'}); } });
+    }
     karren.forEach(k=>{
       kar(k);
-      if(duwT>0) arrow(ctx,k.x*PX-(duw>0?130:-130),k.y-45,k.x*PX-(duw>0?60:-60),k.y-45,'#2563eb',5,'F = '+F+' N',0,-12);
+      const duwt = (proef===1 && duwT>0) || (proef===2 && k.remt && !k.klaar);
+      if(duwt){ const s=proef===1?1:-1, x=k.x*PX;
+        // kracht tegen de kar: bij duwen van achter, bij remmen van voor
+        if(s>0) arrow(ctx,x-130,k.y-45,x-58,k.y-45,'#2563eb',5,'F = 60 N',0,-12);
+        else arrow(ctx,x+130,k.y-45,x+58,k.y-45,'#2563eb',5,'F = 60 N',0,-12); }
     });
-    read.innerHTML=karren.map(k=>`<span class="k">${k.naam}</span> <span class="v">${fmt(Math.abs(k.v))} m/s</span>`).join('<br>')+
-      (Math.abs(karren[0].v)>0.05 && Math.abs(karren[1].v)>0.05 && duwT<=0 ?
-       `<br><span class="ok">Zelfde kracht, maar de lege kar gaat ${fmt(Math.abs(karren[0].v/karren[1].v),0)} keer zo snel.</span>`:'')+
-      (duwT<=0 && (Math.abs(karren[0].v)>0.05||Math.abs(karren[1].v)>0.05) ? `<br><span class="k">Zonder kracht blijven ze <b>even snel</b> verder rijden (traagheid).</span>`:'');
+    let html='';
+    if(proef===0) html='<span class="k">Kies <b>proef 1</b> of <b>proef 2</b>.</span>';
+    if(proef===1){
+      html=karren.map(k=>`<span class="k">${k.naam}:</span> <span class="v">${fmt(k.v)} m/s</span>`).join('<br>');
+      if(duwT<=0) html+=`<br><span class="ok">Dezelfde kracht, even lang: de lege kar gaat ${fmt(karren[0].v/karren[1].v,0)} keer zo snel.</span><br><span class="k">De volle kar is <b>moeilijker in beweging</b> te brengen.</span>`;
+    }
+    if(proef===2){
+      html=`<span class="k">Beide karren rijden aan <b>${V0} m/s</b> tot aan de remstreep.</span><br>`+
+        karren.map(k=>`<span class="k">${k.naam}:</span> <span class="v">${k.remt?('remtijd '+fmt(k.tRem,2)+' s · remafstand '+fmt(k.x-REMX,2)+' m'):'nog niet aan het remmen'}</span>`).join('<br>');
+      if(karren.every(k=>k.klaar)) html+=`<br><span class="ok">Dezelfde remkracht, maar de volle kar rijdt ${fmt((karren[1].x-REMX)/(karren[0].x-REMX),0)} keer zo ver door.</span><br><span class="k">De volle kar is <b>moeilijker tegen te houden</b>: ze heeft meer traagheid.</span>`;
+    }
+    read.innerHTML=html;
   }
   let last=performance.now();
   function loop(now){ const dt=Math.min(0.05,(now-last)/1000); last=now; if(isActive('s2')){ step(dt); draw(); } requestAnimationFrame(loop); }
