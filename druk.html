@@ -400,7 +400,7 @@ const kaart=(svg,tag,titel,tekst)=>`<div class="card">${svg}<div class="txt">${t
     // bergjes zand naast de kuil
     ctx.fillStyle='#e9d29a'; ctx.beginPath(); ctx.ellipse(x0-8,ZAND,14,diepte*0.25+1,0,Math.PI,0); ctx.fill(); ctx.beginPath(); ctx.ellipse(x0+w+8,ZAND,14,diepte*0.25+1,0,Math.PI,0); ctx.fill();
     // kracht
-    arrow(ctx,W/2,y-60,W/2,y-8,'#2563eb',5); text(ctx,'F = '+nl(F,1)+' N',W/2+12,y-30,{size:15,weight:700,color:'#2563eb'});
+    arrow(ctx,W/2,yb,W/2,yb+52,'#2563eb',5); text(ctx,'F = '+nl(F,1)+' N (op het zand)',W/2+12,yb+38,{size:15,weight:700,color:'#2563eb'});
     // diepte-aanduiding
     text(ctx,'indrukking in het zand',x0+w+40,ZAND+28,{size:12,color:'#7c5a1a'});
     ctx.strokeStyle='#7c5a1a'; ctx.lineWidth=1.5; ctx.beginPath(); ctx.moveTo(x0+w+30,ZAND); ctx.lineTo(x0+w+30,yb); ctx.stroke();
@@ -426,9 +426,9 @@ const kaart=(svg,tag,titel,tekst)=>`<div class="card">${svg}<div class="txt">${t
     ctx.fillStyle='#e9d29a'; ctx.fillRect(cx-150,y,300,30);
     ctx.fillStyle='#94a3b8'; ctx.fillRect(cx-w/2,y-60,w,60);
     ctx.fillStyle='#2F6FB0'; ctx.fillRect(cx-w/2,y-4,w,4);
-    arrow(ctx,cx,y-70-40*fF,cx,y-66,'#2563eb',4);
+    arrow(ctx,cx,y,cx,y+Math.min(64,22+28*fF),'#2563eb',4);
     text(ctx,titel,cx,28,{size:16,weight:700,align:'center'});
-    text(ctx,'blauw = contactoppervlak A',cx,y+48,{size:11,color:'#51606E',align:'center'});
+    text(ctx,'blauw = contactoppervlak A',cx+10,y+50,{size:11,color:'#51606E'});
   }
   function draw(){
     const fF=F[+fS.value][1], fA=F[+aS.value][1], fp=fF/fA;
@@ -442,7 +442,7 @@ const kaart=(svg,tag,titel,tekst)=>`<div class="card">${svg}<div class="txt">${t
   fS.oninput=draw; aS.oninput=draw; draw();
   const V='#dc2626', L='#16a34a';
   document.getElementById('s2-cards').innerHTML=[
-    kaart(svgW(`<path d="M40 100 L230 80 L260 100 Z" fill="#cbd5e1" stroke="#475569" stroke-width="2"/><rect x="20" y="92" width="60" height="16" rx="5" fill="#7c2d12"/>`+sA(150,40,150,84,'#2563eb')+sT(150,130,'heel smalle snijkant','#51606E',12,'middle',500)),{t:'drukverhogend',cls:'rood'},'Een scherp mes','De snijkant heeft een <b>heel kleine oppervlakte</b>. Met een kleine kracht maak je zo een <b>grote druk</b>: het mes snijdt makkelijk.'),
+    kaart(svgW(`<path d="M40 100 L230 80 L260 100 Z" fill="#cbd5e1" stroke="#475569" stroke-width="2"/><rect x="20" y="92" width="60" height="16" rx="5" fill="#7c2d12"/>`+sA(150,98,150,140,'#2563eb')+sT(150,160,'heel smalle snijkant','#51606E',12,'middle',500)),{t:'drukverhogend',cls:'rood'},'Een scherp mes','De snijkant heeft een <b>heel kleine oppervlakte</b>. Met een kleine kracht maak je zo een <b>grote druk</b>: het mes snijdt makkelijk.'),
     kaart(svgW(`<rect x="110" y="40" width="80" height="16" rx="8" fill="#dc2626"/><path d="M146 56 L150 120 L154 56 Z" fill="#64748b"/><rect x="40" y="120" width="220" height="30" fill="#e7c9a0"/>`+sT(150,30,'brede kop: lage druk op je duim','#51606E',12,'middle',500)+sT(150,166,'scherpe punt: hoge druk','#51606E',12,'middle',500)),{t:'allebei',cls:''},'Een punaise','De <b>punt</b> is heel klein: <b>drukverhogend</b>, zodat ze in het hout gaat. De <b>brede kop</b> is <b>drukverlagend</b>, zodat je duim geen pijn doet.'),
     kaart(svgW(`<rect x="0" y="120" width="300" height="50" fill="#f1f5f9"/><ellipse cx="150" cy="118" rx="80" ry="12" fill="#475569"/><rect x="138" y="40" width="24" height="76" rx="8" fill="#1d4ed8"/>`+sT(150,30,'grote oppervlakte','#51606E',12,'middle',500)),{t:'drukverlagend',cls:'groen'},'Sneeuwschoenen','Je gewicht wordt verdeeld over een <b>grote oppervlakte</b>. De druk op de sneeuw is klein, zodat je niet wegzakt.'),
     kaart(svgW(`<rect x="0" y="130" width="300" height="40" fill="#a3866b"/><rect x="60" y="60" width="180" height="40" rx="6" fill="#ca8a04"/><rect x="40" y="100" width="220" height="30" rx="15" fill="#334155"/>`+[60,90,120,150,180,210,240].map(x=>`<circle cx="${x}" cy="115" r="9" fill="#94a3b8"/>`).join('')),{t:'drukverlagend',cls:'groen'},'Rupsbanden','Een zware graafmachine rijdt op <b>brede rupsbanden</b>. De grote oppervlakte maakt de druk op de grond klein, zodat de machine niet wegzakt in de modder.'),
@@ -532,8 +532,8 @@ const kaart=(svg,tag,titel,tekst)=>`<div class="card">${svg}<div class="txt">${t
     document.getElementById('s4-read2').innerHTML=`<span class="k">F = p · A =</span> <span class="v">101 325 Pa · ${nl(A/1e4,4)} m² = ${nl(F)} N</span><br><span class="k">Dat is evenveel als het gewicht van ± ${nl(F/G)} kg!</span>`;
   });
   document.getElementById('s4-cards').innerHTML=[
-    kaart(svgW(`<path d="M110 20 L190 20 L185 110 L115 110 Z" fill="rgba(59,130,246,0.35)" stroke="#334155" stroke-width="3"/><rect x="100" y="110" width="100" height="5" fill="#f59e0b"/>`+sA(150,165,150,120,'#dc2626')+sT(160,150,'kracht van de lucht','#dc2626',13,'start')),null,'Kaartje onder een omgekeerd glas','Vul een glas helemaal met water, leg er een kaartje op en draai om. De <b>lucht</b> onder het kaartje botst ertegen en oefent een <b>kracht</b> naar boven uit. Die kracht is groot, want de luchtdruk is groot (± 101 000 Pa): F = p · A. Het water oefent van boven een veel kleinere kracht uit (druk ± 1000 Pa). De kracht naar boven wint: het kaartje blijft hangen.'),
-    kaart(svgW(`<rect x="230" y="10" width="20" height="150" fill="#cbd5e1"/><path d="M228 40 Q170 85 228 130 Z" fill="#fca5a5" stroke="#dc2626" stroke-width="2"/><rect x="150" y="78" width="40" height="14" rx="6" fill="#dc2626"/>`+sA(80,60,165,72,'#2563eb')+sA(80,110,165,98,'#2563eb')+sT(100,140,'kracht van','#2563eb',13,'middle')+sT(100,156,'de buitenlucht','#2563eb',13,'middle')+sT(210,88,'lage','#dc2626',11)+sT(210,100,'druk','#dc2626',11)),null,'Een zuignap','Je duwt de lucht onder de zuignap weg. Daar is nu een <b>lage druk (onderdruk)</b>. Buiten is de luchtdruk veel groter, dus de buitenlucht oefent een veel grotere <b>kracht</b> uit op de zuignap dan de lucht eronder. Die kracht <b>duwt de zuignap vast</b> tegen de muur.'),
+    kaart(svgW(`<path d="M110 20 L190 20 L185 110 L115 110 Z" fill="rgba(59,130,246,0.35)" stroke="#334155" stroke-width="3"/><rect x="100" y="110" width="100" height="5" fill="#f59e0b"/>`+sA(150,114,150,62,'#dc2626')+sT(158,80,'kracht van de lucht','#991b1b',13,'start')+sT(158,95,'op het kaartje','#991b1b',13,'start')),null,'Kaartje onder een omgekeerd glas','Vul een glas helemaal met water, leg er een kaartje op en draai om. De <b>lucht</b> onder het kaartje botst ertegen en oefent een <b>kracht</b> naar boven uit. Die kracht is groot, want de luchtdruk is groot (± 101 000 Pa): F = p · A. Het water oefent van boven een veel kleinere kracht uit (druk ± 1000 Pa). De kracht naar boven wint: het kaartje blijft hangen.'),
+    kaart(svgW(`<rect x="230" y="10" width="20" height="150" fill="#cbd5e1"/><path d="M228 40 Q170 85 228 130 Z" fill="#fca5a5" stroke="#dc2626" stroke-width="2"/><rect x="150" y="78" width="40" height="14" rx="6" fill="#dc2626"/>`+sA(176,64,220,64,'#2563eb')+sA(176,106,220,106,'#2563eb')+sT(100,140,'kracht van','#2563eb',13,'middle')+sT(100,156,'de buitenlucht','#2563eb',13,'middle')+sT(210,88,'lage','#dc2626',11)+sT(210,100,'druk','#dc2626',11)),null,'Een zuignap','Je duwt de lucht onder de zuignap weg. Daar is nu een <b>lage druk (onderdruk)</b>. Buiten is de luchtdruk veel groter, dus de buitenlucht oefent een veel grotere <b>kracht</b> uit op de zuignap dan de lucht eronder. Die kracht <b>duwt de zuignap vast</b> tegen de muur.'),
     kaart(svgW(`<rect x="0" y="0" width="300" height="170" fill="#eef5fc"/><path d="M40 160 L150 30 L260 160 Z" fill="#8a9a7b"/><path d="M130 54 L150 30 L170 54 Z" fill="#fff"/>`+sT(150,22,'minder lucht boven je','#51606E',12,'middle',500)),null,'Hoogte en weer','Hoe <b>hoger</b> je komt, hoe <b>minder lucht</b> boven je en hoe <b>lager</b> de luchtdruk. De luchtdruk hangt ook af van het <b>weer</b> (hogedruk- en lagedrukgebieden) en van de <b>temperatuur</b>.'),
     kaart(svgW(`<rect x="110" y="40" width="80" height="110" rx="14" fill="rgba(59,130,246,0.15)" stroke="#334155" stroke-width="3"/><rect x="130" y="24" width="40" height="18" rx="4" fill="#334155"/>`+[0,1,2,3,4,5,6,7].map(i=>`<circle cx="${125+(i%4)*17}" cy="${65+Math.floor(i/4)*45+(i%2)*12}" r="5" fill="#2563eb"/>`).join('')+sT(240,90,'warm','#dc2626',14,'middle',700)),null,'Een gesloten fles in de zon','De lucht in de fles wordt warmer. De deeltjes bewegen sneller en botsen <b>harder en vaker</b> tegen de wand. De druk in de fles stijgt.'),
   ].join('');
@@ -619,7 +619,10 @@ const kaart=(svg,tag,titel,tekst)=>`<div class="card">${svg}<div class="txt">${t
       text(ctx,'h = '+hcm+' cm',x0+bw+44,(top+sy)/2+5,{size:15,weight:700,color:'#dc2626'});
       // drukpijlen rond de sonde: in alle richtingen even groot
       const L=Math.min(60,8+ph/400);
-      if(hcm>0) [0,1,2,3,4,5,6,7].forEach(k=>{ const a=k*Math.PI/4; arrow(ctx,sx+Math.cos(a)*(L+14),sy+Math.sin(a)*(L+14),sx+Math.cos(a)*13,sy+Math.sin(a)*13,'#2563eb',2.5); });
+      // krachten van het omringende water op een denkbeeldig bolletje water rond de sonde: vertrekken op het oppervlak, wijzen naar binnen
+      const R0=58, Lk=Math.min(R0-14,L);
+      if(hcm>0){ ctx.save(); ctx.setLineDash([4,4]); ctx.strokeStyle='#1d4ed8'; ctx.lineWidth=1.3; ctx.beginPath(); ctx.arc(sx,sy,R0,0,Math.PI*2); ctx.stroke(); ctx.restore();
+        [0,1,2,3,4,5,6,7].forEach(k=>{ const a=k*Math.PI/4+Math.PI/8; arrow(ctx,sx+Math.cos(a)*R0,sy+Math.sin(a)*R0,sx+Math.cos(a)*(R0-Lk),sy+Math.sin(a)*(R0-Lk),'#2563eb',2.5); }); }
       text(ctx,V.naam+' · '+pl,x0,y0-12,{size:14,weight:700});
     } else {
       document.getElementById('s6-h-l').textContent='Hoogte van de vloeistof: h = '+hcm+' cm';
@@ -665,8 +668,8 @@ const kaart=(svg,tag,titel,tekst)=>`<div class="card">${svg}<div class="txt">${t
     // auto op de grote zuiger
     ctx.fillStyle='#ef4444'; roundRect(ctx,x2-70,z2-62,140,36,8); ctx.fill(); roundRect(ctx,x2-40,z2-84,80,26,8); ctx.fill();
     ctx.fillStyle='#1D2A36'; ctx.beginPath(); ctx.arc(x2-40,z2-24,11,0,Math.PI*2); ctx.arc(x2+40,z2-24,11,0,Math.PI*2); ctx.fill();
-    arrow(ctx,x1,z1-90,x1,z1-14,'#2563eb',5); text(ctx,'F₁ = '+F1+' N',x1-w1/2-10,z1-60,{size:15,weight:700,color:'#2563eb',align:'right'});
-    arrow(ctx,x2+w2/2+30,z2+20,x2+w2/2+30,z2-70,'#dc2626',5); text(ctx,'F₂ = '+nl(F2)+' N',x2+w2/2+40,z2-30,{size:15,weight:700,color:'#dc2626'});
+    arrow(ctx,x1,z1-12,x1,z1+62,'#2563eb',5); text(ctx,'F₁ = '+F1+' N',x1-w1/2-10,z1+30,{size:15,weight:700,color:'#2563eb',align:'right'});
+    arrow(ctx,x2,z2,x2,z2-74,'#dc2626',5); text(ctx,'F₂ = '+nl(F2)+' N',x2+w2/2+14,z2-30,{size:15,weight:700,color:'#dc2626'});
     text(ctx,'p = '+nl(p)+' Pa overal in de olie',(x1+x2)/2,yb-12,{size:13,weight:700,align:'center'});
     read.innerHTML=`<span class="k">p = F₁ / A₁ =</span> <span class="v">${F1} N / ${nl(A1/1e4,4)} m² = ${nl(p)} Pa</span><br>`+
       `<span class="k">F₂ = p · A₂ =</span> <span class="v">${nl(p)} Pa · ${nl(A2/1e4,4)} m² = ${nl(F2)} N</span><br>`+
@@ -689,18 +692,17 @@ const kaart=(svg,tag,titel,tekst)=>`<div class="card">${svg}<div class="txt">${t
     text(ctx,'water',50,top+20,{size:13,color:'#1d4ed8',weight:600});
     const bx=W/2-60, by=top+d*100*S, bs=hb*100*S;
     ctx.fillStyle='#e2e8f0'; ctx.strokeStyle='#334155'; ctx.lineWidth=2; ctx.fillRect(bx,by,120,bs); ctx.strokeRect(bx,by,120,bs);
-    const k=0.035;
-    // boven: naar beneden
-    [0.2,0.5,0.8].forEach(f=>arrow(ctx,bx+120*f,by-8-Math.max(4,p1*k),bx+120*f,by-4,'#16a34a',3));
-    // onder: naar boven
-    [0.2,0.5,0.8].forEach(f=>arrow(ctx,bx+120*f,by+bs+8+p2*k,bx+120*f,by+bs+4,'#dc2626',3));
+    // krachten van het water op de vlakken: vertrekken op het vlak en wijzen het blok in
+    const k=Math.min(0.035,bs*0.3/Math.max(1,p2),30/Math.max(1,p2));
+    [0.32,0.68].forEach(f=>arrow(ctx,bx+120*f,by,bx+120*f,by+Math.max(6,p1*k),'#16a34a',3));
+    [0.32,0.68].forEach(f=>arrow(ctx,bx+120*f,by+bs,bx+120*f,by+bs-Math.max(6,p2*k),'#dc2626',3));
     // zijkanten: lengte groeit met de diepte en heffen elkaar op
-    [0.15,0.5,0.85].forEach(f=>{ const pp=rho*G*(d+hb*f), L=pp*k; const y=by+bs*f;
-      arrow(ctx,bx-8-L,y,bx-4,y,'#94a3b8',2.5); arrow(ctx,bx+128+L,y,bx+124,y,'#94a3b8',2.5); });
+    [0.25,0.5,0.75].forEach(f=>{ const pp=rho*G*(d+hb*f), L=Math.max(6,pp*k); const y=by+bs*f;
+      arrow(ctx,bx,y,bx+L,y,'#94a3b8',2.5); arrow(ctx,bx+120,y,bx+120-L,y,'#94a3b8',2.5); });
     text(ctx,'F boven = '+nl(F1,1)+' N',bx+130+20,by-14,{size:14,weight:700,color:'#16a34a'});
     text(ctx,'F onder = '+nl(F2,1)+' N',bx+130+20,by+bs+30,{size:14,weight:700,color:'#dc2626'});
     // resultaat
-    arrow(ctx,W-110,by+bs/2+50,W-110,by+bs/2-50,'#7c3aed',6); text(ctx,'FA',W-96,by+bs/2+5,{size:16,weight:700,color:'#7c3aed'});
+    arrow(ctx,bx+60,by+bs/2,bx+60,by+bs/2-Math.max(30,(p2-p1)*k*1.6),'#7c3aed',6); text(ctx,'FA',bx+70,by+bs/2-8,{size:16,weight:700,color:'#7c3aed'});
     read.innerHTML=`<span class="k">blok: 10 cm × 10 cm × 10 cm (V = 1 dm³)</span><br>`+
       `<span class="k">p boven = ρ·g·h₁ =</span> <span class="v">${nl(p1)} Pa</span><br>`+
       `<span class="k">p onder = ρ·g·h₂ =</span> <span class="v">${nl(p2)} Pa</span><br>`+
@@ -741,10 +743,10 @@ const kaart=(svg,tag,titel,tekst)=>`<div class="card">${svg}<div class="txt">${t
     ctx.fillStyle=kl; ctx.strokeStyle='#334155'; ctx.lineWidth=2; ctx.fillRect(x-hpx/2,y-hpx/2,hpx,hpx); ctx.strokeRect(x-hpx/2,y-hpx/2,hpx,hpx);
     const K=6, cap=170;
     const LZ=Math.min(cap,Fz*K,H-12-y);
-    arrow(ctx,x-25,y,x-25,y+LZ,'#2563eb',5); text(ctx,'Fz = '+nl(Fz,2)+' N'+(LZ<Fz*K-1?' (pijl ingekort)':''),x-35,y+LZ-4,{size:14,weight:700,color:'#2563eb',align:'right'});
-    if(FA>0.01){ arrow(ctx,x+20,y,x+20,y-Math.min(cap,FA*K),'#7c3aed',5); text(ctx,'FA = '+nl(FA,2)+' N',x+28,y-Math.min(cap,FA*K)+14,{size:14,weight:700,color:'#7c3aed'}); }
+    arrow(ctx,x,y,x,y+LZ,'#2563eb',5); text(ctx,'Fz = '+nl(Fz,2)+' N'+(LZ<Fz*K-1?' (pijl ingekort)':''),x-12,y+LZ-4,{size:14,weight:700,color:'#2563eb',align:'right'});
+    if(FA>0.01){ arrow(ctx,x,y,x,y-Math.min(cap,FA*K),'#7c3aed',5); text(ctx,'FA = '+nl(FA,2)+' N',x+12,y-Math.min(cap,FA*K)+14,{size:14,weight:700,color:'#7c3aed'}); }
     const op=y+hpx/2>=BODEM-0.5;
-    if(op && Fz>FA) { const FN=Fz-FA, LN=Math.min(cap,FN*K,y+hpx/2-40); arrow(ctx,x+50,y+hpx/2,x+50,y+hpx/2-LN,'#16a34a',4); text(ctx,'FN = '+nl(FN,2)+' N',x+58,y+hpx/2-LN+14,{size:13,weight:700,color:'#16a34a'}); }
+    if(op && Fz>FA) { const FN=Fz-FA, LN=Math.min(cap,FN*K,y+hpx/2-40); arrow(ctx,x+hpx/2-8,y+hpx/2,x+hpx/2-8,y+hpx/2-LN,'#16a34a',4); text(ctx,'FN = '+nl(FN,2)+' N',x+hpx/2,y+hpx/2-LN+14,{size:13,weight:700,color:'#16a34a'}); }
     let toestand;
     const d=rv-rl;
     if(Math.abs(d)<1) toestand='zweeft'; else if(d>0) toestand=op?'ligt op de bodem (gezonken)':'zinkt'; else toestand=(onder<0.999 && Math.abs(v)<0.05)?'drijft':'stijgt';
@@ -781,8 +783,8 @@ const kaart=(svg,tag,titel,tekst)=>`<div class="card">${svg}<div class="txt">${t
     ctx.restore();
     text(ctx,'zwemblaas',x+8,y+4,{size:11,color:'#334155',align:'center'});
     const K=25;
-    arrow(ctx,x-130,y,x-130,y+Fz*K,'#2563eb',5); text(ctx,'Fz = '+nl(Fz,2)+' N',x-140,y+Fz*K,{size:14,weight:700,color:'#2563eb',align:'right'});
-    arrow(ctx,x+150,y,x+150,y-FA*K,'#7c3aed',5); text(ctx,'FA = '+nl(FA,2)+' N',x+160,y-FA*K+14,{size:14,weight:700,color:'#7c3aed'});
+    arrow(ctx,x,y,x,y+Fz*K,'#2563eb',5); text(ctx,'Fz = '+nl(Fz,2)+' N',x,y+Fz*K+20,{size:14,weight:700,color:'#2563eb',align:'center'});
+    arrow(ctx,x,y,x,y-FA*K,'#7c3aed',5); text(ctx,'FA = '+nl(FA,2)+' N',x,y-FA*K-10,{size:14,weight:700,color:'#7c3aed',align:'center'});
     const d=rv-1000, toestand=Math.abs(d)<2?'zweeft':d>0?'zinkt':'stijgt';
     text(ctx,'De vis '+toestand,20,28,{size:18,weight:700});
     read.innerHTML=`<span class="k">massa vis:</span> <span class="v">${nl(mT,3)} kg (blijft gelijk)</span><br>`+
@@ -814,8 +816,8 @@ const kaart=(svg,tag,titel,tekst)=>`<div class="card">${svg}<div class="txt">${t
     ctx.fillStyle='#92400e'; ctx.fillRect(x-20,yb-24,40,24);
     if(T>20){ ctx.fillStyle='#f59e0b'; ctx.beginPath(); ctx.moveTo(x-6,yb-30); ctx.quadraticCurveTo(x,yb-52-warm*20,x+6,yb-30); ctx.fill(); }
     const K=0.0035, cy=yb-170;
-    arrow(ctx,x-170,cy,x-170,cy+Fz*K,'#2563eb',5); text(ctx,'Fz = '+nl(Fz)+' N',x-180,cy+Fz*K,{size:14,weight:700,color:'#2563eb',align:'right'});
-    arrow(ctx,x+170,cy,x+170,cy-FA*K,'#7c3aed',5); text(ctx,'FA = '+nl(FA)+' N',x+180,cy-FA*K+14,{size:14,weight:700,color:'#7c3aed'});
+    arrow(ctx,x,cy,x,cy+Fz*K,'#2563eb',5); text(ctx,'Fz = '+nl(Fz)+' N',x,cy+Fz*K+20,{size:14,weight:700,color:'#2563eb',align:'center'});
+    arrow(ctx,x,cy,x,cy-FA*K,'#7c3aed',5); text(ctx,'FA = '+nl(FA)+' N',x,cy-FA*K-10,{size:14,weight:700,color:'#7c3aed',align:'center'});
     const toestand=Math.abs(rel)<0.005?'zweeft':rel>0?'stijgt':(hoogte<=0?'blijft op de grond':'daalt');
     text(ctx,'De ballon '+toestand,20,30,{size:18,weight:700});
     read.innerHTML=`<span class="k">ρ lucht in de ballon:</span> <span class="v">${nl(rin,3)} kg/m³</span><br>`+

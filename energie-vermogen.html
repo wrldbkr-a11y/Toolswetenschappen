@@ -133,7 +133,7 @@ footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-di
         </table>
         <div class="note"><strong>Open:</strong> stoom (materie) ontsnapt en warmte (energie) gaat naar binnen en naar buiten.<br><strong>Gesloten:</strong> het deksel houdt de stoom binnen, maar warmte gaat er nog door.<br><strong>Geïsoleerd:</strong> een goede thermosfles laat (bijna) geen warmte en geen materie door.</div>
         <div class="legend" style="display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--text-dim)">
-          <div style="display:flex;gap:8px;align-items:center"><svg width="18" height="16" viewBox="0 0 18 16" aria-hidden="true"><g fill="none" stroke="#dc2626" stroke-width="1.8" stroke-linecap="round"><path d="M3 5 A4 4 0 0 1 3 11"/><path d="M7 3 A7 7 0 0 1 7 13"/><path d="M11 1 A10 10 0 0 1 11 15"/></g></svg><span>energie (warmte)</span></div>
+          <div style="display:flex;gap:8px;align-items:center"><svg width="20" height="16" viewBox="0 0 20 16" aria-hidden="true"><g fill="none" stroke="#dc2626" stroke-width="1.8" stroke-linecap="round"><path d="M2 3 Q5 0 8 3 T14 3 T20 3"/><path d="M2 8 Q5 5 8 8 T14 8 T20 8"/><path d="M2 13 Q5 10 8 13 T14 13 T20 13"/></g></svg><span>energie (warmte)</span></div>
           <div style="display:flex;gap:8px;align-items:center"><span style="width:16px;height:3px;background:var(--materie)"></span><span>materie (stoom)</span></div>
         </div>
       </div>
@@ -348,8 +348,9 @@ const VORM={
     if(type==='gesloten'){ ctx.fillStyle='#475569'; roundRect(ctx,cx-68,by-102,136,14,6); ctx.fill(); ctx.fillRect(cx-10,by-114,20,12); }
   }
   // warmte als drie stralingsboogjes die naar buiten golven
-  function warmte(x,y,a,t){ ctx.save(); ctx.strokeStyle='#dc2626'; ctx.lineCap='round'; ctx.lineWidth=3.5;
-    for(let k=0;k<3;k++){ const r=10+k*9+((t*14)%9); ctx.globalAlpha=Math.max(0.4,1-(r-10)/40); ctx.beginPath(); ctx.arc(x,y,r,a-0.6,a+0.6); ctx.stroke(); }
+  function warmte(x,y,a,t){ // drie horizontale golfjes
+    ctx.save(); ctx.strokeStyle='#dc2626'; ctx.lineWidth=3; ctx.lineCap='round';
+    for(let k=0;k<3;k++){ const yy=y-12+k*12; ctx.beginPath(); for(let u=0;u<=36;u+=2){ const px=x-18+u, py=yy+3.5*Math.sin(u/36*2*Math.PI*1.5+t*5); u?ctx.lineTo(px,py):ctx.moveTo(px,py); } ctx.stroke(); }
     ctx.restore(); }
   function draw(dt){
     t+=dt; ctx.clearRect(0,0,W,H); ctx.fillStyle='#fbfcfe'; ctx.fillRect(0,0,W,H);
@@ -370,9 +371,9 @@ const VORM={
       // energiepijlen (warmte)
       if(p.type!=='iso'){
         const o=6*Math.sin(t*4);
-        warmte(p.x,372,-Math.PI/2,t);
+        warmte(p.x,362,0,t);
         text(ctx,'warmte in',p.x+10,378,{size:12,color:'#dc2626',weight:600});
-        warmte(p.x+68,200,0,t);
+        warmte(p.x+90,206,0,t);
         text(ctx,'warmte uit',p.x+114,184,{size:12,color:'#dc2626',weight:600,align:'right'});
       } else {
         text(ctx,'geen warmte in of uit',p.x,82,{size:12,color:'#51606E',align:'center'});

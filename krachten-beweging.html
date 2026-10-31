@@ -435,7 +435,7 @@ const fmt=(v,d=1)=>v.toFixed(d).replace('.',',').replace('-0,0','0,0');
       for(let i=1;i<=n;i++) ctx.lineTo(x+(i===n?0:(i%2?18:-18)),y0+L*i/n); ctx.stroke();
       const m=p<0.08?0:1; const by=y0+L;
       ctx.fillStyle='#475569'; roundRect(ctx,x-34,by,68,56,6); ctx.fill(); text(ctx,'1 kg',x,by+34,{color:'#fff',weight:700,align:'center'});
-      if(m) arrow(ctx,x+60,by+28,x+60,by+28+80,F,5,'Fz',22,0);
+      if(m) arrow(ctx,x,by+28,x,by+28+80,F,5,'Fz',22,0);
       text(ctx,'de veer wordt langer: haar vorm verandert',W/2,380,{align:'center',color:'#51606E'});
     }
     if(s.id==='spons'){
@@ -443,21 +443,21 @@ const fmt=(v,d=1)=>v.toFixed(d).replace('.',',').replace('-0,0','0,0');
       ctx.fillStyle='#FACC15'; roundRect(ctx,300,300-h,200,h,10); ctx.fill();
       ctx.fillStyle='#CA8A04'; for(let i=0;i<14;i++){ ctx.beginPath(); ctx.arc(320+(i*37)%170,300-h+12+((i*23)%Math.max(10,h-22)),4,0,7); ctx.fill(); }
       ctx.fillStyle='#E9B48A'; roundRect(ctx,330,300-h-60,140,60,24); ctx.fill();
-      arrow(ctx,400,300-h-150,400,300-h-70,F,5,'F',18,0);
+      arrow(ctx,400,300-h,400,300-h+Math.min(48,h-6),F,5,'F',18,0);
     }
     if(s.id==='lat'){
       const d=ease*38; ctx.fillStyle='#94A3B8'; ctx.fillRect(120,240,50,120); ctx.fillRect(630,240,50,120);
       ctx.strokeStyle='#92400E'; ctx.lineWidth=14; ctx.lineCap='butt'; ctx.beginPath(); ctx.moveTo(110,234); ctx.quadraticCurveTo(400,234+2*d,690,234); ctx.stroke();
       const py=234+d-7; ctx.fillStyle='#334155';
       ctx.beginPath(); ctx.arc(400,py-118,16,0,7); ctx.fill(); ctx.fillRect(388,py-100,24,58); ctx.fillRect(390,py-44,9,44); ctx.fillRect(401,py-44,9,44);
-      arrow(ctx,440,py-80,440,py,F,5,'F',18,0);
+      arrow(ctx,400,py,400,py+62,F,5,'F',18,0);
     }
     if(s.id==='trap'){
       grond(320); const x=250+(p<0.25?0:(p-0.25)*700);
       ctx.fillStyle='#fff'; ctx.strokeStyle='#1e293b'; ctx.lineWidth=2; ctx.beginPath(); ctx.arc(x,296,24,0,7); ctx.fill(); ctx.stroke();
       const v=Math.max(0,Math.min(1,(0.25-p)/0.25)); ctx.fillStyle='#1e293b';
       ctx.save(); ctx.translate(200-40*v,300); ctx.beginPath(); ctx.ellipse(0,0,30,12,0,0,7); ctx.fill(); ctx.fillRect(-14,-110,22,100); ctx.restore();
-      if(p>0.2&&p<0.32) arrow(ctx,x-10,260,x+70,260,F,5,'F',0,-10);
+      if(p>0.2&&p<0.32) arrow(ctx,x-24,296,x+56,296,F,5,'F',0,-30);
       if(p>0.32) arrow(ctx,x,350,x+60,350,'#d97706',4,'v',0,-10);
     }
     if(s.id==='rem'){
@@ -677,8 +677,8 @@ const fmt=(v,d=1)=>v.toFixed(d).replace('.',',').replace('-0,0','0,0');
       const duwt = (proef===1 && duwT>0) || (proef===2 && k.remt && !k.klaar);
       if(duwt){ const s=proef===1?1:-1, x=k.x*PX;
         // kracht tegen de kar: bij duwen van achter, bij remmen van voor
-        if(s>0) arrow(ctx,x-130,k.y-45,x-58,k.y-45,'#2563eb',5,'F = 60 N',0,-12);
-        else arrow(ctx,x+130,k.y-45,x+58,k.y-45,'#2563eb',5,'F = 60 N',0,-12); }
+        if(s>0) arrow(ctx,x-45,k.y-45,x+27,k.y-45,'#2563eb',5,'F = 60 N',0,-34);
+        else arrow(ctx,x+45,k.y-45,x-27,k.y-45,'#2563eb',5,'F = 60 N',0,-34); }
     });
     let html='';
     if(proef===0) html='<span class="k">Kies <b>proef 1</b> of <b>proef 2</b>.</span>';
@@ -734,18 +734,18 @@ const fmt=(v,d=1)=>v.toFixed(d).replace('.',',').replace('-0,0','0,0');
     text(ctx,'ijs: geen wrijving · m = '+M+' kg',16,22,{size:13,color:'#51606E'});
     // slee in het midden
     const sx=W/2, sy=iceY;
-    ctx.fillStyle='#c0392b'; roundRect(ctx,sx-55,sy-48,110,34,6); ctx.fill();
+    ctx.fillStyle='#b98a52'; roundRect(ctx,sx-55,sy-48,110,34,6); ctx.fill();
     ctx.strokeStyle='#5b3a1a'; ctx.lineWidth=4; ctx.beginPath(); ctx.moveTo(sx-60,sy-6); ctx.lineTo(sx+52,sy-6); ctx.quadraticCurveTo(sx+70,sy-6,sx+68,sy-24); ctx.stroke();
     ctx.beginPath(); ctx.moveTo(sx-35,sy-14); ctx.lineTo(sx-35,sy-6); ctx.moveTo(sx+30,sy-14); ctx.lineTo(sx+30,sy-6); ctx.stroke();
     // krachten (schaal: 1 N = 1,6 px)
-    const K=1.6, fy=sy-31;
+    const K=1.6, fy=sy-22;
     arrow(ctx,sx+56,fy,sx+56+(+f1.value)*K,fy,'#2563eb',5);
     arrow(ctx,sx-56,fy,sx-56-(+f2.value)*K,fy,'#059669',5);
     if(+f1.value) text(ctx,'F₁ = '+f1.value+' N',sx+64+(+f1.value)*K,fy+5,{size:15,weight:700,color:'#2563eb'});
     if(+f2.value) text(ctx,'F₂ = '+f2.value+' N',sx-64-(+f2.value)*K,fy+5,{size:15,weight:700,color:'#059669',align:'right'});
     const fr=Fr();
-    if(fr!==0) arrow(ctx,sx,sy-90,sx+fr*K,sy-90,'#dc2626',6,'Fr = '+Math.abs(fr)+' N',0,-12);
-    else text(ctx,'Fr = 0 N',sx,sy-96,{size:15,weight:700,color:'#dc2626',align:'center'});
+    if(fr!==0) arrow(ctx,sx,sy-40,sx+fr*K,sy-40,'#dc2626',6,'Fr = '+Math.abs(fr)+' N',0,-20);
+    else text(ctx,'Fr = 0 N',sx,sy-62,{size:15,weight:700,color:'#dc2626',align:'center'});
     // snelheid
     if(Math.abs(v)>0.03) arrow(ctx,sx,sy+48,sx+v*22,sy+48,'#d97706',5,'v',0,-10);
 
@@ -836,14 +836,14 @@ const fmt=(v,d=1)=>v.toFixed(d).replace('.',',').replace('-0,0','0,0');
     const handX = (fase==='klaar'||fase==='duwen') ? bx-r-1 : 120-r-1+TDUWx()*PX-camX;
     drawHand(handX, by);
     // bal
-    ctx.fillStyle='#e0452f'; ctx.beginPath(); ctx.arc(bx,by,r,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle='#e9c46a'; ctx.beginPath(); ctx.arc(bx,by,r,0,Math.PI*2); ctx.fill(); ctx.strokeStyle='#a1791f'; ctx.lineWidth=1.5; ctx.stroke();
     ctx.save(); ctx.translate(bx,by); ctx.rotate(x/(r/PX)); ctx.strokeStyle='#fff'; ctx.lineWidth=3;
     ctx.beginPath(); ctx.moveTo(-r+5,0); ctx.lineTo(r-5,0); ctx.stroke(); ctx.restore();
     // krachten op de bal
     const k=krachten(), K=14, fy=by-r-26;
-    if(k.hand) { arrow(ctx,bx,fy,bx+k.hand*K,fy,'#2563eb',5); text(ctx,'F hand = '+k.hand+' N',bx+k.hand*K+8,fy+5,{size:14,weight:700,color:'#2563eb'}); }
+    if(k.hand) { const hx=bx-r*0.87, hy=by+r*0.5; arrow(ctx,hx,hy,hx+k.hand*K,hy,'#2563eb',5); text(ctx,'F hand = '+k.hand+' N',hx+k.hand*K+8,hy+5,{size:14,weight:700,color:'#2563eb'}); }
     if(k.wrijving){ arrow(ctx,bx,by+r+2-6,bx-k.wrijving*K*1.6,by+r+2-6,'#059669',5); const lx=bx-k.wrijving*K*1.6-8, ly=GY+30; ctx.save(); ctx.font='700 14px Inter, sans-serif'; const tw=ctx.measureText('F wrijving').width; ctx.fillStyle='rgba(255,255,255,0.9)'; roundRect(ctx,lx-tw-6,ly-14,tw+12,20,5); ctx.fill(); ctx.restore(); text(ctx,'F wrijving',lx,ly+1,{size:14,weight:700,color:'#059669',align:'right'}); }
-    if(k.fr) { arrow(ctx,bx,fy-40,bx+k.fr*K,fy-40,'#dc2626',6); text(ctx,'Fr',bx+k.fr*K+(k.fr>0?8:-8),fy-35,{size:15,weight:700,color:'#dc2626',align:k.fr>0?'left':'right'}); }
+    if(k.fr) { arrow(ctx,bx,by-r*0.35,bx+k.fr*K,by-r*0.35,'#dc2626',6); text(ctx,'Fr',bx+k.fr*K+(k.fr>0?8:-8),by-r*0.35+5,{size:15,weight:700,color:'#dc2626',align:k.fr>0?'left':'right'}); }
     else if(fase!=='klaar') text(ctx,'Fr = 0',bx,fy-34,{size:15,weight:700,color:'#dc2626',align:'center'});
     if(v>0.02) arrow(ctx,bx,GY+58,bx+v*18,GY+58,'#d97706',4,'v',-v*9-12,5);
 
