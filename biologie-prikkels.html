@@ -1350,9 +1350,9 @@ $('gewrichten').innerHTML=[['schoudergewricht','kogelgewricht: bewegen in alle r
     // pijlen en uitleg bij de zones
     if(p>X0&&p<X1){
       const xa=p-BR-8, xv=p+BR+12;
-      if(xa>X0+10){ h+=`<path d="M${xa},40 V${CY-r(xa)-24}" stroke="#b91c1c" stroke-width="2"/><text x="${xa}" y="26" text-anchor="middle" font-size="14" font-weight="700" fill="#b91c1c">achter de brok</text>`;
-        h+=`<path d="M${xa+14},${CY} l26,0" stroke="#6b4423" stroke-width="3"/><path d="M${xa+44},${CY} l-10,-7 v14z" fill="#6b4423"/>`; }
-      if(xv<X1-10) h+=`<path d="M${xv},40 V${CY-r(xv)-24}" stroke="#1e40af" stroke-width="2"/><text x="${xv}" y="26" text-anchor="middle" font-size="14" font-weight="700" fill="#1e40af">voor de brok</text>`;
+      if(xa>X0+10){ h+=`<path d="M${xa},40 V${CY-r(xa)-24}" stroke="#b91c1c" stroke-width="2"/><text x="${xa}" y="26" text-anchor="end" font-size="14" font-weight="700" fill="#b91c1c">achter de brok</text>`;
+}
+      if(xv<X1-10) h+=`<path d="M${xv},40 V${CY-r(xv)-24}" stroke="#1e40af" stroke-width="2"/><text x="${xv}" y="26" text-anchor="start" font-size="14" font-weight="700" fill="#1e40af">voor de brok</text>`;
     }
     // staafjes: toestand per plaats
     const rij=(y,t,f,kl,kl0)=>{ h+=`<text x="${X0}" y="${y-8}" font-size="14" font-weight="700" fill="#1D2A36">${t}</text>`;
