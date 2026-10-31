@@ -161,7 +161,7 @@ footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-di
   <!-- ================= GASSEN ================= -->
   <section class="scene" id="s3" data-title="Hoe ontstaat gasdruk?" data-cat="gas">
     <div class="scene-head"><span class="num">3</span><h3>Hoe ontstaat druk in een gas?</h3></div>
-    <p class="scene-sub">Een gas bestaat uit deeltjes die snel en kriskras bewegen. Ze <strong>botsen</strong> voortdurend tegen de wand. Al die botsingen samen duwen op de wand: dat is de <strong>gasdruk</strong>.</p>
+    <p class="scene-sub">Een gas bestaat uit deeltjes die snel en kriskras bewegen. Ze <strong>botsen</strong> voortdurend tegen de wand. Bij elke botsing oefent een deeltje een kleine <strong>kracht</strong> uit op de wand. Al die botsingen samen geven een kracht op de wand. De <strong>gasdruk</strong> is die kracht per oppervlakte: <strong>p = F / A</strong>.</p>
     <div class="grid">
       <div class="canvas-wrap"><canvas id="c3" width="800" height="420"></canvas></div>
       <div class="controls">
@@ -169,13 +169,14 @@ footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-di
         <div class="ctrl-group"><label id="s3-v-l"></label><input type="range" id="s3-v" min="40" max="100" step="5" value="100"></div>
         <div class="readout" id="s3-read"></div>
         <div class="note"><strong>Warmer</strong> → de deeltjes bewegen sneller → ze botsen vaker en harder → <strong>hogere druk</strong>.<br><strong>Kleiner volume</strong> → de deeltjes botsen vaker tegen de wand → <strong>hogere druk</strong>.</div>
+        <div class="note"><strong>Druk of kracht?</strong> Een kracht heeft een richting en duwt. Druk heeft <strong>geen richting</strong>: het zegt hoe groot de kracht is per m². Zeg dus niet „de luchtdruk duwt”, maar „de lucht duwt” of „de lucht oefent een kracht uit”. Die kracht staat altijd <strong>loodrecht</strong> op het oppervlak en is F = p · A.</div>
       </div>
     </div>
   </section>
 
   <section class="scene" id="s4" data-title="Luchtdruk" data-cat="gas">
     <div class="scene-head"><span class="num">4</span><h3>Luchtdruk</h3></div>
-    <p class="scene-sub">De lucht boven ons drukt op alles: dat is de <strong>luchtdruk</strong> of <strong>atmosferische druk</strong>. Hoe <strong>hoger</strong> je komt, hoe minder lucht er boven je is, en hoe <strong>kleiner</strong> de luchtdruk. Ook het weer (hoge- en lagedrukgebied) en de temperatuur hebben invloed.</p>
+    <p class="scene-sub">De lucht om ons heen botst tegen alles en oefent op elk oppervlak een kracht uit. Die kracht per oppervlakte is de <strong>luchtdruk</strong> of <strong>atmosferische druk</strong>. Hoe <strong>hoger</strong> je komt, hoe minder lucht er boven je is, en hoe <strong>kleiner</strong> de luchtdruk. Ook het weer (hoge- en lagedrukgebied) en de temperatuur hebben invloed.</p>
     <div class="grid">
       <div class="canvas-wrap"><canvas id="c4" width="800" height="420"></canvas></div>
       <div class="controls">
@@ -531,8 +532,8 @@ const kaart=(svg,tag,titel,tekst)=>`<div class="card">${svg}<div class="txt">${t
     document.getElementById('s4-read2').innerHTML=`<span class="k">F = p · A =</span> <span class="v">101 325 Pa · ${nl(A/1e4,4)} m² = ${nl(F)} N</span><br><span class="k">Dat is evenveel als het gewicht van ± ${nl(F/G)} kg!</span>`;
   });
   document.getElementById('s4-cards').innerHTML=[
-    kaart(svgW(`<path d="M110 20 L190 20 L185 110 L115 110 Z" fill="rgba(59,130,246,0.35)" stroke="#334155" stroke-width="3"/><rect x="100" y="110" width="100" height="5" fill="#f59e0b"/>`+sA(150,165,150,120,'#dc2626')+sT(205,150,'luchtdruk','#dc2626',13,'start')),null,'Kaartje onder een omgekeerd glas','Vul een glas helemaal met water, leg er een kaartje op en draai om. De <b>luchtdruk</b> duwt van onder tegen het kaartje (± 101 000 Pa). Het water duwt van boven veel minder hard (± 1000 Pa). Het kaartje blijft hangen.'),
-    kaart(svgW(`<rect x="230" y="10" width="20" height="150" fill="#cbd5e1"/><path d="M228 40 Q170 85 228 130 Z" fill="#fca5a5" stroke="#dc2626" stroke-width="2"/><rect x="150" y="78" width="40" height="14" rx="6" fill="#dc2626"/>`+sA(80,60,165,72,'#2563eb')+sA(80,110,165,98,'#2563eb')+sT(60,90,'luchtdruk','#2563eb',13,'middle')+sT(210,88,'lage','#dc2626',11)+sT(210,100,'druk','#dc2626',11)),null,'Een zuignap','Je duwt de lucht onder de zuignap weg. Daar is nu een <b>lage druk (onderdruk)</b>. De luchtdruk aan de buitenkant is veel groter en <b>duwt de zuignap vast</b> tegen de muur.'),
+    kaart(svgW(`<path d="M110 20 L190 20 L185 110 L115 110 Z" fill="rgba(59,130,246,0.35)" stroke="#334155" stroke-width="3"/><rect x="100" y="110" width="100" height="5" fill="#f59e0b"/>`+sA(150,165,150,120,'#dc2626')+sT(160,150,'kracht van de lucht','#dc2626',13,'start')),null,'Kaartje onder een omgekeerd glas','Vul een glas helemaal met water, leg er een kaartje op en draai om. De <b>lucht</b> onder het kaartje botst ertegen en oefent een <b>kracht</b> naar boven uit. Die kracht is groot, want de luchtdruk is groot (± 101 000 Pa): F = p · A. Het water oefent van boven een veel kleinere kracht uit (druk ± 1000 Pa). De kracht naar boven wint: het kaartje blijft hangen.'),
+    kaart(svgW(`<rect x="230" y="10" width="20" height="150" fill="#cbd5e1"/><path d="M228 40 Q170 85 228 130 Z" fill="#fca5a5" stroke="#dc2626" stroke-width="2"/><rect x="150" y="78" width="40" height="14" rx="6" fill="#dc2626"/>`+sA(80,60,165,72,'#2563eb')+sA(80,110,165,98,'#2563eb')+sT(100,140,'kracht van','#2563eb',13,'middle')+sT(100,156,'de buitenlucht','#2563eb',13,'middle')+sT(210,88,'lage','#dc2626',11)+sT(210,100,'druk','#dc2626',11)),null,'Een zuignap','Je duwt de lucht onder de zuignap weg. Daar is nu een <b>lage druk (onderdruk)</b>. Buiten is de luchtdruk veel groter, dus de buitenlucht oefent een veel grotere <b>kracht</b> uit op de zuignap dan de lucht eronder. Die kracht <b>duwt de zuignap vast</b> tegen de muur.'),
     kaart(svgW(`<rect x="0" y="0" width="300" height="170" fill="#eef5fc"/><path d="M40 160 L150 30 L260 160 Z" fill="#8a9a7b"/><path d="M130 54 L150 30 L170 54 Z" fill="#fff"/>`+sT(150,22,'minder lucht boven je','#51606E',12,'middle',500)),null,'Hoogte en weer','Hoe <b>hoger</b> je komt, hoe <b>minder lucht</b> boven je en hoe <b>lager</b> de luchtdruk. De luchtdruk hangt ook af van het <b>weer</b> (hogedruk- en lagedrukgebieden) en van de <b>temperatuur</b>.'),
     kaart(svgW(`<rect x="110" y="40" width="80" height="110" rx="14" fill="rgba(59,130,246,0.15)" stroke="#334155" stroke-width="3"/><rect x="130" y="24" width="40" height="18" rx="4" fill="#334155"/>`+[0,1,2,3,4,5,6,7].map(i=>`<circle cx="${125+(i%4)*17}" cy="${65+Math.floor(i/4)*45+(i%2)*12}" r="5" fill="#2563eb"/>`).join('')+sT(240,90,'warm','#dc2626',14,'middle',700)),null,'Een gesloten fles in de zon','De lucht in de fles wordt warmer. De deeltjes bewegen sneller en botsen <b>harder en vaker</b> tegen de wand. De druk in de fles stijgt.'),
   ].join('');
@@ -572,12 +573,12 @@ const kaart=(svg,tag,titel,tekst)=>`<div class="card">${svg}<div class="txt">${t
   });
   const items=[
     ['Een opgepompte fietsband','overdruk','De lucht in de band heeft een grotere druk dan de luchtdruk.'],
-    ['Een stofzuiger','onderdruk','In de stofzuiger is de druk lager; de luchtdruk duwt lucht en stof naar binnen.'],
-    ['Drinken met een rietje','onderdruk','Je maakt een lage druk in je mond; de luchtdruk duwt de drank omhoog.'],
+    ['Een stofzuiger','onderdruk','In de stofzuiger is de druk lager; de buitenlucht (hogere druk) duwt lucht en stof naar binnen.'],
+    ['Drinken met een rietje','onderdruk','Je maakt een lage druk in je mond; de buitenlucht (hogere druk) duwt op de drank in het glas en duwt ze zo omhoog in het rietje.'],
     ['Een spuitbus','overdruk','Het gas in de bus staat onder hoge druk en duwt de inhoud naar buiten.'],
-    ['Vacuümverpakte koffie','onderdruk','Er is (bijna) geen lucht meer in het pak; de luchtdruk duwt het pak hard.'],
+    ['Vacuümverpakte koffie','onderdruk','Er is (bijna) geen lucht meer in het pak; de buitenlucht oefent een grote kracht uit op het pak en drukt het hard.'],
     ['Een snelkookpan','overdruk','De damp in de pan heeft een hogere druk; daardoor kookt het water bij een hogere temperatuur.'],
-    ['Een injectiespuit vullen','onderdruk','Je trekt de zuiger uit: de druk in de spuit daalt en de luchtdruk duwt de vloeistof erin.'],
+    ['Een injectiespuit vullen','onderdruk','Je trekt de zuiger uit: de druk in de spuit daalt en de buitenlucht (hogere druk) duwt de vloeistof erin.'],
     ['Een opgeblazen ballon','overdruk','De gespannen ballon drukt op de lucht binnenin: die druk is groter dan de luchtdruk.'],
   ];
   const lijst=document.getElementById('s5-lijst');
