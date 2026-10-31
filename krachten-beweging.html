@@ -213,8 +213,38 @@ footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-di
     </div>
   </section>
 
+
+  <section class="scene" id="s3b" data-title="Een bal die je hand verlaat" data-cat="fr">
+    <div class="scene-head"><span class="num">4</span><h3>Een bal die je hand verlaat</h3></div>
+    <p class="scene-sub">Je rolt een bal weg over de grond. Zolang je hand de bal <strong>raakt</strong>, duwt je hand. Zodra de bal je hand <strong>verlaat</strong>, is die kracht weg. Welke kracht blijft er dan nog over?</p>
+    <div class="grid">
+      <div class="canvas-wrap"><canvas id="c3b" width="800" height="420"></canvas></div>
+      <div class="controls">
+        <div class="ctrl-group"><label>Ondergrond</label>
+          <div class="ctrl-row">
+            <button class="btn on" data-grond="gras">gras</button>
+            <button class="btn" data-grond="tegels">tegels</button>
+            <button class="btn" data-grond="ijs">ijs</button>
+          </div>
+        </div>
+        <div class="ctrl-row">
+          <button class="btn primary" id="s3b-play">▶ Rol de bal</button>
+          <button class="btn" id="s3b-reset">↻ Opnieuw</button>
+        </div>
+        <div class="readout" id="s3b-read"></div>
+        <div class="note"><strong>Let op!</strong> De bal krijgt <strong>geen kracht mee</strong> van je hand. Een kracht bestaat alleen zolang je hand de bal raakt. De bal rolt verder door zijn <strong>traagheid</strong>, en stopt door de <strong>wrijving</strong>.</div>
+        <div class="legend">
+          <div class="row"><span class="sw" style="background:var(--f1)"></span><span>F<sub>hand</sub>: kracht van je hand</span></div>
+          <div class="row"><span class="sw" style="background:var(--f2)"></span><span>F<sub>wrijving</sub></span></div>
+          <div class="row"><span class="sw" style="background:var(--fr)"></span><span>F<sub>r</sub> resulterende kracht</span></div>
+          <div class="row"><span class="sw" style="background:var(--v)"></span><span>snelheid v</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="scene" id="s4" data-title="Kracht loodrecht op de beweging" data-cat="fr">
-    <div class="scene-head"><span class="num">4</span><h3>Kracht loodrecht op de beweging</h3></div>
+    <div class="scene-head"><span class="num">5</span><h3>Kracht loodrecht op de beweging</h3></div>
     <p class="scene-sub">Je draait een bal rond aan een touw (bovenaanzicht). Het touw trekt de bal altijd <strong>naar het midden</strong>, loodrecht op de beweging. Daardoor verandert de <strong>richting</strong> van de snelheid, niet hoe snel de bal gaat. Laat het touw los: wat doet de bal dan?</p>
     <div class="grid">
       <div class="canvas-wrap"><canvas id="c4" width="800" height="460"></canvas></div>
@@ -233,21 +263,21 @@ footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-di
   </section>
 
   <section class="scene" id="s5" data-title="Overzicht" data-cat="fr">
-    <div class="scene-head"><span class="num">5</span><h3>Overzicht: wat doet F<sub>r</sub> met de beweging?</h3></div>
+    <div class="scene-head"><span class="num">6</span><h3>Overzicht: wat doet F<sub>r</sub> met de beweging?</h3></div>
     <p class="scene-sub">Kijk altijd eerst naar de <strong>resulterende kracht</strong>, en vergelijk ze met de richting van de beweging.</p>
     <div class="cards" id="s5-cards"></div>
   </section>
 
   <!-- ===================== DAGELIJKS LEVEN ===================== -->
   <section class="scene" id="s6" data-title="Voorbeelden uit het dagelijks leven" data-cat="leven">
-    <div class="scene-head"><span class="num">6</span><h3>Traagheid en F<sub>r</sub> in het dagelijks leven</h3></div>
+    <div class="scene-head"><span class="num">7</span><h3>Traagheid en F<sub>r</sub> in het dagelijks leven</h3></div>
     <p class="scene-sub">Je ziet traagheid en resulterende kracht overal rondom je.</p>
     <div class="cards" id="s6-cards"></div>
   </section>
 
   <!-- ===================== OEFENEN ===================== -->
   <section class="scene" id="s7" data-title="Oefenen" data-cat="oefenen">
-    <div class="scene-head"><span class="num">7</span><h3>Oefenen: wat gebeurt er met de snelheid?</h3></div>
+    <div class="scene-head"><span class="num">8</span><h3>Oefenen: wat gebeurt er met de snelheid?</h3></div>
     <p class="scene-sub">Bepaal eerst de resulterende kracht. Vergelijk ze dan met de beweging.</p>
     <div class="oef">
       <div class="oef-head">
@@ -552,6 +582,100 @@ const fmt=(v,d=1)=>v.toFixed(d).replace('.',',').replace('-0,0','0,0');
     }
     requestAnimationFrame(loop);
   }
+  requestAnimationFrame(loop);
+})();
+
+//////////////////// BAL DIE JE HAND VERLAAT ////////////////////
+(function(){
+  const c=document.getElementById('c3b'), ctx=hiDPI(c), W=c._w, H=c._h;
+  const read=document.getElementById('s3b-read'), playBtn=document.getElementById('s3b-play');
+  const GROND={gras:{naam:'gras',f:1.5,kleur:'#bcd9a4',lijn:'#8ab17d'},tegels:{naam:'tegels',f:0.6,kleur:'#d9dde2',lijn:'#b7bec7'},ijs:{naam:'ijs',f:0,kleur:'#dcecf8',lijn:'#b9cfe2'}};
+  const M=1, FHAND=6, TDUW=0.8, PX=60, GY=230, TMAX=12;   // m (kg), handkracht (N), duwtijd (s)
+  let grond='gras', fase='klaar', x=0, v=0, t=0, hist=[];
+  function reset(){ fase='klaar'; x=0; v=0; t=0; hist=[{t:0,v:0,duw:true}]; playBtn.textContent='▶ Rol de bal'; }
+  reset();
+  playBtn.onclick=()=>{ if(fase==='klaar'){ fase='duwen'; playBtn.textContent='de bal rolt…'; } else { reset(); } };
+  document.getElementById('s3b-reset').onclick=reset;
+  document.querySelectorAll('[data-grond]').forEach(b=>b.onclick=()=>{
+    grond=b.dataset.grond; document.querySelectorAll('[data-grond]').forEach(o=>o.classList.toggle('on',o===b)); reset(); });
+
+  function krachten(){
+    const f=GROND[grond].f;
+    const hand = fase==='duwen' ? FHAND : 0;
+    const wrijving = (fase==='duwen' || (fase==='los' && v>0)) ? f : 0;
+    return {hand, wrijving, fr:hand-wrijving};
+  }
+  function step(dt){
+    if(fase==='duwen'||fase==='los'){
+      const k=krachten(); v+=k.fr/M*dt;
+      if(fase==='los' && v<=0){ v=0; fase='stil'; playBtn.textContent='↻ Nog eens'; }
+      x+=v*dt; t+=dt; hist.push({t,v,duw:fase==='duwen'});
+      if(fase==='duwen' && t>=TDUW){ fase='los'; }
+      if(t>=TMAX && fase==='los'){ fase='verder'; playBtn.textContent='↻ Nog eens'; }
+    } else if(fase==='verder'){ x+=v*dt; }
+  }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    const g=GROND[grond];
+    ctx.fillStyle='#f3f7fb'; ctx.fillRect(0,0,W,GY);
+    ctx.fillStyle=g.kleur; ctx.fillRect(0,GY,W,40);
+    // camera volgt de bal zodra hij voorbij het midden is
+    const camX=Math.max(0, x*PX-(W/2-120));
+    ctx.strokeStyle=g.lijn; ctx.lineWidth=2;
+    for(let m=0;m<200;m++){ const sx=120+m*PX-camX; if(sx<-10||sx>W+10) continue;
+      ctx.beginPath(); ctx.moveTo(sx,GY+4); ctx.lineTo(sx,GY+(m%5===0?20:12)); ctx.stroke();
+      if(m%5===0) text(ctx,m+' m',sx,GY+36,{size:11,color:'#51606E',align:'center'}); }
+    text(ctx,'ondergrond: '+g.naam+(g.f? ' · wrijvingskracht '+String(g.f).replace('.',',')+' N':' · geen wrijving'),16,24,{size:13,color:'#51606E'});
+    // hand
+    const r=22, bx=120+x*PX-camX, by=GY-r;
+    const handX = (fase==='klaar'||fase==='duwen') ? bx-r-4 : 120-r-4+Math.min(x,TDUWx())*PX-camX;
+    drawHand(handX, by);
+    // bal
+    ctx.fillStyle='#e0452f'; ctx.beginPath(); ctx.arc(bx,by,r,0,Math.PI*2); ctx.fill();
+    ctx.save(); ctx.translate(bx,by); ctx.rotate(x/(r/PX)); ctx.strokeStyle='#fff'; ctx.lineWidth=3;
+    ctx.beginPath(); ctx.moveTo(-r+5,0); ctx.lineTo(r-5,0); ctx.stroke(); ctx.restore();
+    // krachten op de bal
+    const k=krachten(), K=14, fy=by-r-26;
+    if(k.hand) { arrow(ctx,bx,fy,bx+k.hand*K,fy,'#2563eb',5); text(ctx,'F hand = '+k.hand+' N',bx+k.hand*K+8,fy+5,{size:14,weight:700,color:'#2563eb'}); }
+    if(k.wrijving){ arrow(ctx,bx,by+r+2-6,bx-k.wrijving*K*1.6,by+r+2-6,'#059669',5); text(ctx,'F wrijving',bx-k.wrijving*K*1.6-8,by+r-1,{size:14,weight:700,color:'#059669',align:'right'}); }
+    if(k.fr) { arrow(ctx,bx,fy-40,bx+k.fr*K,fy-40,'#dc2626',6); text(ctx,'Fr',bx+k.fr*K+(k.fr>0?8:-8),fy-35,{size:15,weight:700,color:'#dc2626',align:k.fr>0?'left':'right'}); }
+    else if(fase!=='klaar') text(ctx,'Fr = 0',bx,fy-34,{size:15,weight:700,color:'#dc2626',align:'center'});
+    if(v>0.02) arrow(ctx,bx,GY+58,bx+v*18,GY+58,'#d97706',4,'v',-v*9-12,5);
+
+    // v(t)-grafiek
+    const gx=60, gw=W-90, gt=300, gh=100, g0=gt+gh, vs=gh/6;
+    ctx.fillStyle='rgba(37,99,235,0.08)'; ctx.fillRect(gx,gt,TDUW/TMAX*gw,gh);
+    text(ctx,'hand duwt',gx+4,gt+14,{size:11,color:'#2563eb',weight:600});
+    ctx.strokeStyle='#D3DCE5'; ctx.lineWidth=1;
+    for(let k2=1;k2<=6;k2++){ ctx.beginPath(); ctx.moveTo(gx,g0-k2*vs); ctx.lineTo(gx+gw,g0-k2*vs); ctx.stroke(); }
+    ctx.strokeStyle='#1D2A36'; ctx.lineWidth=1.6; ctx.beginPath(); ctx.moveTo(gx,gt-6); ctx.lineTo(gx,g0); ctx.lineTo(gx+gw,g0); ctx.stroke();
+    text(ctx,'v',gx-8,gt+4,{size:12,weight:700,align:'right'}); text(ctx,'t',gx+gw,g0+16,{size:12,weight:700,align:'right'});
+    ctx.save(); ctx.beginPath(); ctx.rect(gx,gt-4,gw,gh+6); ctx.clip();
+    ctx.strokeStyle='#d97706'; ctx.lineWidth=3; ctx.beginPath();
+    hist.forEach((p,i)=>{ const X=gx+p.t/TMAX*gw, Y=g0-p.v*vs; i?ctx.lineTo(X,Y):ctx.moveTo(X,Y); }); ctx.stroke(); ctx.restore();
+
+    const txt={
+      klaar:'<span class="k">Kies een ondergrond en druk op <b>Rol de bal</b>.</span>',
+      duwen:'<span class="v">Je hand duwt de bal.</span><br><span class="k">F<sub>hand</sub> is groter dan de wrijving → F<sub>r</sub> wijst <b>naar voor</b> → de bal gaat <b>sneller</b>.</span>',
+      los: GROND[grond].f
+        ? '<span class="v">De bal heeft je hand verlaten.</span><br><span class="flag">F<sub>hand</sub> bestaat niet meer!</span><br><span class="k">Alleen de <b>wrijving</b> blijft over → F<sub>r</sub> wijst <b>naar achter</b>, tegen de beweging → de bal gaat <b>trager</b>.</span>'
+        : '<span class="v">De bal heeft je hand verlaten.</span><br><span class="flag">F<sub>hand</sub> bestaat niet meer!</span><br><span class="ok">Op ijs is er geen wrijving: F<sub>r</sub> = 0 → de bal rolt <b>even snel</b> verder (traagheid).</span>',
+      stil:'<span class="v">De bal ligt stil.</span><br><span class="k">De wrijving heeft de bal afgeremd tot stilstand. Nu is F<sub>r</sub> = 0. Afgelegde weg: <b>'+fmt(x)+' m</b>.</span>',
+      verder:'<span class="ok">Zonder wrijving zou de bal <b>altijd</b> even snel blijven rollen.</span>',
+    }[fase];
+    read.innerHTML=txt+(fase==='duwen'||fase==='los'?'<br><span class="k">snelheid:</span> <span class="v">'+fmt(v)+' m/s</span>':'');
+  }
+  function TDUWx(){ // waar de hand stopt: positie van de bal op het moment van loslaten
+    let xx=0,vv=0; const f=GROND[grond].f; for(let tt=0;tt<TDUW;tt+=0.01){ vv+=(FHAND-f)/M*0.01; xx+=vv*0.01; } return xx;
+  }
+  function drawHand(hx,hy){
+    ctx.save(); ctx.fillStyle='#f3d9c4'; ctx.strokeStyle='#1D2A36'; ctx.lineWidth=2;
+    roundRect(ctx,hx-46,hy-14,40,28,10); ctx.fill(); ctx.stroke();
+    ctx.fillRect(hx-110,hy-8,66,16); ctx.strokeRect(hx-110,hy-8,66,16);
+    ctx.restore();
+  }
+  let last=performance.now();
+  function loop(now){ const dt=Math.min(0.05,(now-last)/1000); last=now; if(isActive('s3b')){ step(dt); draw(); } requestAnimationFrame(loop); }
   requestAnimationFrame(loop);
 })();
 
