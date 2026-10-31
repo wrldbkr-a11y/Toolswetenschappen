@@ -434,7 +434,7 @@ const fmt=(v,d=1)=>v.toFixed(d).replace('.',',').replace('-0,0','0,0');
       ctx.strokeStyle='#334155'; ctx.lineWidth=3; ctx.beginPath(); ctx.moveTo(x,y0);
       for(let i=1;i<=n;i++) ctx.lineTo(x+(i===n?0:(i%2?18:-18)),y0+L*i/n); ctx.stroke();
       const m=p<0.08?0:1; const by=y0+L;
-      ctx.fillStyle='#475569'; roundRect(ctx,x-34,by,68,56,6); ctx.fill(); text(ctx,'1 kg',x,by+34,{color:'#fff',weight:700,align:'center'});
+      ctx.fillStyle='#475569'; roundRect(ctx,x-34,by,68,56,6); ctx.fill(); text(ctx,'1 kg',x-14,by+20,{color:'#fff',weight:700,align:'center',size:13});
       if(m) arrow(ctx,x,by+28,x,by+28+80,F,5,'Fz',22,0);
       text(ctx,'de veer wordt langer: haar vorm verandert',W/2,380,{align:'center',color:'#51606E'});
     }

@@ -371,8 +371,8 @@ const VORM={
       // energiepijlen (warmte)
       if(p.type!=='iso'){
         const o=6*Math.sin(t*4);
-        warmte(p.x,362,0,t);
-        text(ctx,'warmte in',p.x+10,378,{size:12,color:'#dc2626',weight:600});
+        warmte(p.x-12,362,0,t);
+        text(ctx,'warmte in',p.x+26,372,{size:12,color:'#dc2626',weight:600});
         warmte(p.x+90,206,0,t);
         text(ctx,'warmte uit',p.x+114,184,{size:12,color:'#dc2626',weight:600,align:'right'});
       } else {
