@@ -628,7 +628,7 @@ const fmt=(v,d=1)=>v.toFixed(d).replace('.',',').replace('-0,0','0,0');
     text(ctx,'ondergrond: '+g.naam+(g.f? ' · wrijvingskracht '+String(g.f).replace('.',',')+' N':' · geen wrijving'),16,24,{size:13,color:'#51606E'});
     // hand
     const r=22, bx=120+x*PX-camX, by=GY-r;
-    const handX = (fase==='klaar'||fase==='duwen') ? bx-r-4 : 120-r-4+Math.min(x,TDUWx())*PX-camX;
+    const handX = (fase==='klaar'||fase==='duwen') ? bx-r-1 : 120-r-1+TDUWx()*PX-camX;
     drawHand(handX, by);
     // bal
     ctx.fillStyle='#e0452f'; ctx.beginPath(); ctx.arc(bx,by,r,0,Math.PI*2); ctx.fill();
@@ -637,7 +637,7 @@ const fmt=(v,d=1)=>v.toFixed(d).replace('.',',').replace('-0,0','0,0');
     // krachten op de bal
     const k=krachten(), K=14, fy=by-r-26;
     if(k.hand) { arrow(ctx,bx,fy,bx+k.hand*K,fy,'#2563eb',5); text(ctx,'F hand = '+k.hand+' N',bx+k.hand*K+8,fy+5,{size:14,weight:700,color:'#2563eb'}); }
-    if(k.wrijving){ arrow(ctx,bx,by+r+2-6,bx-k.wrijving*K*1.6,by+r+2-6,'#059669',5); text(ctx,'F wrijving',bx-k.wrijving*K*1.6-8,by+r-1,{size:14,weight:700,color:'#059669',align:'right'}); }
+    if(k.wrijving){ arrow(ctx,bx,by+r+2-6,bx-k.wrijving*K*1.6,by+r+2-6,'#059669',5); const lx=bx-k.wrijving*K*1.6-8, ly=GY+30; ctx.save(); ctx.font='700 14px Inter, sans-serif'; const tw=ctx.measureText('F wrijving').width; ctx.fillStyle='rgba(255,255,255,0.9)'; roundRect(ctx,lx-tw-6,ly-14,tw+12,20,5); ctx.fill(); ctx.restore(); text(ctx,'F wrijving',lx,ly+1,{size:14,weight:700,color:'#059669',align:'right'}); }
     if(k.fr) { arrow(ctx,bx,fy-40,bx+k.fr*K,fy-40,'#dc2626',6); text(ctx,'Fr',bx+k.fr*K+(k.fr>0?8:-8),fy-35,{size:15,weight:700,color:'#dc2626',align:k.fr>0?'left':'right'}); }
     else if(fase!=='klaar') text(ctx,'Fr = 0',bx,fy-34,{size:15,weight:700,color:'#dc2626',align:'center'});
     if(v>0.02) arrow(ctx,bx,GY+58,bx+v*18,GY+58,'#d97706',4,'v',-v*9-12,5);
@@ -668,10 +668,27 @@ const fmt=(v,d=1)=>v.toFixed(d).replace('.',',').replace('-0,0','0,0');
   function TDUWx(){ // waar de hand stopt: positie van de bal op het moment van loslaten
     let xx=0,vv=0; const f=GROND[grond].f; for(let tt=0;tt<TDUW;tt+=0.01){ vv+=(FHAND-f)/M*0.01; xx+=vv*0.01; } return xx;
   }
+  // zijaanzicht van een duwende hand: arm met mouw, pols geknikt, handpalm rechtop tegen de bal, vingers omhoog
   function drawHand(hx,hy){
-    ctx.save(); ctx.fillStyle='#f3d9c4'; ctx.strokeStyle='#1D2A36'; ctx.lineWidth=2;
-    roundRect(ctx,hx-46,hy-14,40,28,10); ctx.fill(); ctx.stroke();
-    ctx.fillRect(hx-110,hy-8,66,16); ctx.strokeRect(hx-110,hy-8,66,16);
+    // hx = rechterrand van de handpalm (raakt de bal), hy = hoogte van het midden van de bal
+    const huid='#f2c9a5', rand='#9a6b4b';
+    ctx.save(); ctx.lineJoin='round'; ctx.lineCap='round';
+    // mouw en onderarm
+    ctx.fillStyle='#3b82c4'; roundRect(ctx,hx-150,hy+2,78,24,8); ctx.fill();
+    ctx.fillStyle=huid; ctx.strokeStyle=rand; ctx.lineWidth=1.8;
+    ctx.beginPath(); ctx.moveTo(hx-74,hy+4); ctx.lineTo(hx-30,hy+4); ctx.quadraticCurveTo(hx-20,hy+5,hx-18,hy+14); ctx.lineTo(hx-18,hy+24); ctx.lineTo(hx-74,hy+24); ctx.closePath(); ctx.fill(); ctx.stroke();
+    // vingers (vier, licht uitwaaierend, naar boven)
+    const vingers=[{dx:-14,h:30,a:-0.10},{dx:-9,h:36,a:-0.03},{dx:-4,h:34,a:0.03},{dx:1,h:28,a:0.10}];
+    vingers.forEach(f=>{ ctx.save(); ctx.translate(hx+f.dx,hy-14); ctx.rotate(f.a);
+      roundRect(ctx,-3.5,-f.h,8,f.h+6,4); ctx.fill(); ctx.stroke(); ctx.restore(); });
+    // handpalm
+    ctx.beginPath(); ctx.moveTo(hx-22,hy-16); ctx.lineTo(hx+2,hy-16); ctx.quadraticCurveTo(hx+6,hy,hx+2,hy+18);
+    ctx.quadraticCurveTo(hx-8,hy+26,hx-22,hy+22); ctx.closePath(); ctx.fill(); ctx.stroke();
+    // duim, schuin naar de bal toe
+    ctx.save(); ctx.translate(hx-6,hy+4); ctx.rotate(-0.9); roundRect(ctx,-4,-22,9,24,4.5); ctx.fill(); ctx.stroke(); ctx.restore();
+    // nagellijntjes voor herkenbaarheid
+    ctx.strokeStyle='#c99a7a'; ctx.lineWidth=1.2;
+    ctx.beginPath(); ctx.moveTo(hx-20,hy-4); ctx.quadraticCurveTo(hx-12,hy-1,hx-4,hy-6); ctx.stroke();
     ctx.restore();
   }
   let last=performance.now();

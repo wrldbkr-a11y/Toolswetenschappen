@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Energie, vermogen en rendement</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EEF2F5; --panel:#FFFFFF; --panel-2:#F5F8FB; --line:#D3DCE5;
+  --text:#1D2A36; --text-dim:#51606E;
+  --accent:#2F6FB0; --accent-dark:#245A91; --accent-soft:#E4EEF8;
+  --ok-text:#1F7A4A; --ok-bg:#E3F3E9; --flag-text:#B3362B; --flag-bg:#FBE6E3;
+  --energie:#d97706; --materie:#2563eb; --warmte:#dc2626;
+  --font:'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:var(--font);}
+body{-webkit-font-smoothing:antialiased;line-height:1.55;}
+.top{max-width:1180px;margin:0 auto;padding:36px 24px 0;}
+.top h1{font-size:2rem;font-weight:700;letter-spacing:-0.015em;margin:0 0 8px;}
+.top .intro{color:var(--text-dim);max-width:70ch;font-size:15px;line-height:1.6;margin:0;}
+.top .intro strong{color:var(--text);}
+nav{display:flex;flex-wrap:wrap;gap:8px;}
+.catnav{gap:4px;margin:22px 0 14px;border-bottom:1px solid var(--line);}
+.catnav button{font-family:var(--font);font-weight:500;font-size:15px;background:none;border:none;border-bottom:2px solid transparent;margin-bottom:-1px;color:var(--text-dim);padding:9px 14px;cursor:pointer;}
+.catnav button:hover{color:var(--text);}
+.catnav button.active{color:var(--text);font-weight:600;border-bottom-color:var(--accent);}
+#nav button{display:flex;align-items:center;gap:9px;font-family:var(--font);font-size:14px;font-weight:500;background:var(--panel);border:1px solid var(--line);color:var(--text-dim);padding:9px 14px 9px 10px;border-radius:10px;cursor:pointer;text-align:left;transition:border-color .15s, background .15s;}
+#nav button .nr{flex:none;min-width:24px;height:24px;border-radius:12px;padding:0 6px;display:inline-flex;align-items:center;justify-content:center;background:var(--accent-soft);color:var(--accent-dark);font-size:12px;font-weight:700;}
+#nav button:hover{border-color:var(--accent);color:var(--text);}
+#nav button.active{background:var(--accent-soft);border-color:var(--accent);color:var(--text);font-weight:600;}
+#nav button.active .nr{background:var(--accent);color:#fff;}
+main{max-width:1180px;margin:0 auto;padding:26px 24px 70px;}
+.scene{display:none;}
+.scene.active{display:block;animation:fade .25s ease;}
+@keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+.scene-head{display:flex;align-items:center;gap:10px;margin-bottom:4px;flex-wrap:wrap;}
+.scene-head .num{min-width:28px;height:28px;border-radius:14px;padding:0 7px;display:inline-flex;align-items:center;justify-content:center;background:var(--accent);color:#fff;font-size:13px;font-weight:700;}
+.scene-head h3{font-size:1.5rem;letter-spacing:-0.01em;margin:0;font-weight:700;}
+.scene-sub{color:var(--text-dim);font-size:15px;margin:4px 0 18px;max-width:75ch;line-height:1.55;}
+.scene-sub strong{color:var(--text);}
+.lpd{display:inline-block;font-size:12px;font-weight:600;color:var(--accent-dark);background:var(--accent-soft);padding:2px 8px;border-radius:999px;margin-left:4px;}
+.grid{display:grid;grid-template-columns:1fr 310px;gap:18px;align-items:start;}
+@media(max-width:860px){.grid{grid-template-columns:1fr;}}
+.canvas-wrap{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;}
+canvas{display:block;width:100%;height:auto;}
+.controls{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 16px 18px;display:flex;flex-direction:column;gap:14px;}
+.ctrl-group label{display:block;font-size:13px;font-weight:600;color:var(--text);margin-bottom:6px;}
+.ctrl-group input[type=range]{width:100%;accent-color:var(--accent);}
+.ctrl-group select{width:100%;font-family:var(--font);font-size:14px;padding:8px 9px;border:1px solid var(--line);border-radius:8px;background:#fff;}
+.ctrl-row{display:flex;gap:8px;flex-wrap:wrap;}
+.ctrl-row .btn{flex:1;}
+.btn{background:#fff;border:1px solid var(--line);color:var(--text);border-radius:8px;padding:9px 12px;font-family:var(--font);font-weight:600;font-size:14px;cursor:pointer;}
+.btn:hover{border-color:var(--accent);}
+.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent);}
+.btn.primary:hover{background:var(--accent-dark);border-color:var(--accent-dark);}
+.btn.on{background:var(--accent-soft);border-color:var(--accent);}
+.readout{background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:14px;line-height:1.75;font-variant-numeric:tabular-nums;}
+.readout .k{color:var(--text-dim);}
+.readout .v{color:var(--text);font-weight:600;}
+.readout .ok{color:var(--ok-text);font-weight:700;}
+.readout .flag{color:var(--flag-text);font-weight:700;}
+.note{background:var(--panel-2);border-left:4px solid var(--accent);border-radius:0 8px 8px 0;padding:10px 12px;font-size:14px;color:var(--text-dim);line-height:1.6;}
+.note strong{color:var(--text);}
+.formule{font-size:15px;font-weight:700;color:var(--text);background:#fff;border:1px solid var(--line);border-radius:8px;padding:8px 12px;text-align:center;}
+table.tab{border-collapse:collapse;width:100%;font-size:14px;}
+table.tab th,table.tab td{border:1px solid var(--line);padding:6px 8px;text-align:center;}
+table.tab th{background:var(--panel-2);font-weight:600;}
+table.tab td.ja{color:var(--ok-text);font-weight:700;}
+table.tab td.nee{color:var(--flag-text);font-weight:700;}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden;}
+.card svg{display:block;width:100%;height:auto;background:#fbfcfe;border-bottom:1px solid #E6ECF2;}
+.card .txt{padding:12px 16px 14px;}
+.card h4{margin:0 0 4px;font-size:1rem;font-weight:700;}
+.card p{margin:0;font-size:14px;color:var(--text-dim);line-height:1.55;}
+.card p b{color:var(--text);}
+.card .vb{margin-top:6px;font-size:13.5px;color:var(--text);}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;}
+.chips .btn{font-weight:500;}
+.keten{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:6px 0 4px;}
+.keten .vorm{padding:8px 12px;border-radius:10px;font-weight:700;font-size:14px;border:2px solid;}
+.keten .pijl{font-size:20px;color:var(--text-dim);}
+.oef{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px;}
+.oef-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px;}
+.score{font-size:14px;font-weight:600;color:var(--ok-text);background:var(--ok-bg);padding:3px 10px;border-radius:999px;}
+.opgave{font-size:16px;line-height:1.6;margin:4px 0 12px;}
+.keuzes{display:flex;flex-wrap:wrap;gap:8px;}
+.keuzes .btn{font-weight:500;}
+.btn.goed{background:var(--ok-bg);border-color:var(--ok-text);color:var(--ok-text);font-weight:700;}
+.btn.fout{background:var(--flag-bg);border-color:var(--flag-text);color:var(--flag-text);}
+.invul{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+.invul input{font-family:var(--font);font-size:16px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;width:180px;}
+.invul input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft);}
+.invul .eenheid{font-weight:600;}
+.feedback{margin-top:10px;font-size:14.5px;line-height:1.6;}
+.feedback.goed{color:var(--ok-text);}
+.feedback.fout{color:var(--flag-text);}
+.feedback .uitleg{color:var(--text);display:block;margin-top:4px;}
+.sort-lijst{display:flex;flex-direction:column;gap:10px;}
+.sort-item{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px;}
+.sort-item .wat{font-weight:600;}
+.sort-item .wat small{display:block;font-weight:400;color:var(--text-dim);}
+.sort-item .uitleg{flex-basis:100%;font-size:14px;color:var(--text);}
+footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-dim);font-size:12px;}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <h1>Energie, vermogen en rendement</h1>
+  <p class="intro"><strong>Thema 2 · Energie en vermogen (4de jaar).</strong> Ontdek welke soorten systemen er zijn, welke vormen van energie bestaan en hoe energie wordt omgezet. Daarna leer je wat vermogen en rendement betekenen.</p>
+  <nav id="catnav" class="catnav"></nav>
+  <nav id="nav"></nav>
+</header>
+
+<main>
+
+  <!-- ============ ENERGIE IN SYSTEMEN ============ -->
+  <section class="scene" id="s1" data-title="Open, gesloten, geïsoleerd" data-cat="systemen">
+    <div class="scene-head"><span class="num">1</span><h3>Open, gesloten en geïsoleerd systeem</h3></div>
+    <p class="scene-sub">Een <strong>systeem</strong> is het deel van de wereld dat je bestudeert. Alles daarbuiten is de <strong>omgeving</strong>. Een systeem kan <strong>energie</strong> en/of <strong>materie</strong> uitwisselen met de omgeving. Kijk naar drie potten soep op een vuur.</p>
+    <div class="grid">
+      <div class="canvas-wrap"><canvas id="c1" width="900" height="400"></canvas></div>
+      <div class="controls">
+        <table class="tab">
+          <tr><th></th><th>energie uitwisselen</th><th>materie uitwisselen</th></tr>
+          <tr><th>open</th><td class="ja">ja</td><td class="ja">ja</td></tr>
+          <tr><th>gesloten</th><td class="ja">ja</td><td class="nee">nee</td></tr>
+          <tr><th>geïsoleerd</th><td class="nee">nee</td><td class="nee">nee</td></tr>
+        </table>
+        <div class="note"><strong>Open:</strong> stoom (materie) ontsnapt en warmte (energie) gaat naar binnen en naar buiten.<br><strong>Gesloten:</strong> het deksel houdt de stoom binnen, maar warmte gaat er nog door.<br><strong>Geïsoleerd:</strong> een goede thermosfles laat (bijna) geen warmte en geen materie door.</div>
+        <div class="legend" style="display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--text-dim)">
+          <div style="display:flex;gap:8px;align-items:center"><span style="width:16px;height:3px;background:var(--warmte)"></span><span>energie (warmte)</span></div>
+          <div style="display:flex;gap:8px;align-items:center"><span style="width:16px;height:3px;background:var(--materie)"></span><span>materie (stoom)</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene" id="s2" data-title="Welk systeem?" data-cat="systemen">
+    <div class="scene-head"><span class="num">2</span><h3>Welk soort systeem is het?</h3></div>
+    <p class="scene-sub">Stel jezelf telkens twee vragen: <strong>kan er energie in of uit?</strong> En <strong>kan er materie in of uit?</strong></p>
+    <div class="sort-lijst" id="s2-lijst"></div>
+    <div class="ctrl-row" style="margin-top:12px;max-width:320px"><button class="btn" id="s2-reset">↻ Opnieuw</button></div>
+  </section>
+
+  <section class="scene" id="s3" data-title="Potentiële energie in velden" data-cat="systemen">
+    <div class="scene-head"><span class="num">3</span><h3>Potentiële energie in een veld</h3></div>
+    <p class="scene-sub">In een <strong>zwaarteveld</strong>, een <strong>magnetisch veld</strong> en een <strong>elektrisch veld</strong> werkt er een kracht. Verplaats je een voorwerp <strong>tegen die kracht in</strong>, dan moet je energie leveren. Die energie zit dan opgeslagen in het veld: dat is <strong>potentiële energie</strong>. Laat je los, dan zet het veld die energie om in kinetische energie.</p>
+    <div class="cards" id="s3-cards"></div>
+  </section>
+
+  <!-- ============ VORMEN EN OMZETTINGEN ============ -->
+  <section class="scene" id="s4" data-title="Vormen van energie" data-cat="vormen">
+    <div class="scene-head"><span class="num">4</span><h3>Vormen van energie</h3></div>
+    <p class="scene-sub">Energie bestaat in verschillende <strong>vormen</strong>. De eenheid van energie is de <strong>joule (J)</strong>.</p>
+    <div class="cards" id="s4-cards"></div>
+  </section>
+
+  <section class="scene" id="s5" data-title="Energieomzettingen" data-cat="vormen">
+    <div class="scene-head"><span class="num">5</span><h3>Energieomzettingen en energiebalans</h3></div>
+    <p class="scene-sub">Energie kan je niet maken en niet vernietigen. Je kan ze alleen <strong>omzetten</strong> van de ene vorm in de andere: dat is de <strong>wet van behoud van energie</strong>. Kies een voorbeeld.</p>
+    <div class="chips" id="s5-chips"></div>
+    <div class="grid">
+      <div>
+        <div class="canvas-wrap" style="padding:16px 18px">
+          <div style="font-weight:700;font-size:15px;margin-bottom:4px" id="s5-titel"></div>
+          <div class="keten" id="s5-keten"></div>
+          <div style="font-weight:700;font-size:15px;margin:18px 0 6px">Energiebalans</div>
+          <canvas id="c5" width="760" height="230"></canvas>
+        </div>
+      </div>
+      <div class="controls">
+        <div class="readout" id="s5-read"></div>
+        <div class="note"><strong>Energiebalans:</strong> toegevoerde energie = nuttige energie + niet-nuttige energie. Die niet-nuttige energie is bijna altijd <strong>thermische energie</strong> (warmte). Ze gaat niet verloren, maar je kan ze moeilijk nog gebruiken.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene" id="s6" data-title="Waterreservoir op een heuvel" data-cat="vormen">
+    <div class="scene-head"><span class="num">6</span><h3>Energie opslaan in een waterreservoir op een heuvel</h3></div>
+    <p class="scene-sub">Een <strong>pompcentrale</strong> slaat energie op. Is er te veel elektrische energie (bv. 's nachts, of veel wind en zon), dan pompt ze water omhoog. Is er te weinig, dan laat ze het water terug naar beneden stromen door een turbine. In België werkt de centrale van <strong>Coo-Trois-Ponts</strong> zo.</p>
+    <div class="grid">
+      <div class="canvas-wrap"><canvas id="c6" width="800" height="430"></canvas></div>
+      <div class="controls">
+        <div class="ctrl-row">
+          <button class="btn primary" id="s6-pomp">⬆ Water oppompen</button>
+          <button class="btn" id="s6-turbine">⬇ Stroom maken</button>
+        </div>
+        <div class="ctrl-row"><button class="btn" id="s6-stop">■ Stop</button></div>
+        <div class="readout" id="s6-read"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ VERMOGEN ============ -->
+  <section class="scene" id="s7" data-title="Vermogen: de trap op" data-cat="vermogen">
+    <div class="scene-head"><span class="num">7</span><h3>Vermogen: hoe snel wordt energie omgezet?</h3></div>
+    <p class="scene-sub">Twee leerlingen met dezelfde massa lopen dezelfde trap op. Ze zetten dus <strong>evenveel energie</strong> om. Toch is er een verschil: de ene doet het <strong>sneller</strong>. Het <strong>vermogen P</strong> zegt hoeveel energie er per seconde wordt omgezet.</p>
+    <div class="grid">
+      <div class="canvas-wrap"><canvas id="c7" width="800" height="430"></canvas></div>
+      <div class="controls">
+        <div class="formule">P = E / Δt &nbsp;&nbsp; [P] = J/s = W (watt)</div>
+        <div class="ctrl-group"><label id="s7-m-l"></label><input type="range" id="s7-m" min="40" max="90" step="5" value="60"></div>
+        <div class="ctrl-group"><label id="s7-h-l"></label><input type="range" id="s7-h" min="3" max="15" step="3" value="9"></div>
+        <div class="ctrl-group"><label id="s7-ta-l"></label><input type="range" id="s7-ta" min="6" max="30" step="1" value="10"></div>
+        <div class="ctrl-group"><label id="s7-tb-l"></label><input type="range" id="s7-tb" min="6" max="30" step="1" value="20"></div>
+        <div class="ctrl-row"><button class="btn primary" id="s7-go">▶ Start</button></div>
+        <div class="readout" id="s7-read"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene" id="s8" data-title="Vermogen van toestellen" data-cat="vermogen">
+    <div class="scene-head"><span class="num">8</span><h3>Vermogen van toestellen</h3></div>
+    <p class="scene-sub">Op elk toestel staat het vermogen in <strong>watt (W)</strong>. Hoe groter het vermogen en hoe langer het toestel werkt, hoe meer energie het omzet: <strong>E = P · Δt</strong>. Let op: de tijd moet in <strong>seconden</strong>.</p>
+    <div class="grid">
+      <div class="canvas-wrap"><canvas id="c8" width="800" height="400"></canvas></div>
+      <div class="controls">
+        <div class="ctrl-group"><label>Toestel</label><select id="s8-toestel"></select></div>
+        <div class="ctrl-group"><label id="s8-t-l"></label><input type="range" id="s8-t" min="1" max="120" step="1" value="10"></div>
+        <div class="readout" id="s8-read"></div>
+        <div class="note">Omvormen: <strong>P = E / Δt</strong> &nbsp;·&nbsp; <strong>E = P · Δt</strong> &nbsp;·&nbsp; <strong>Δt = E / P</strong></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ RENDEMENT ============ -->
+  <section class="scene" id="s9" data-title="Rendement" data-cat="rendement">
+    <div class="scene-head"><span class="num">9</span><h3>Rendement: hoeveel energie is nuttig?</h3></div>
+    <p class="scene-sub">Geen enkel toestel zet alle toegevoerde energie om in <strong>nuttige</strong> energie. Een deel wordt altijd <strong>thermische energie</strong> die je niet wil gebruiken. Het <strong>rendement η</strong> (eta) zegt welk deel nuttig is.</p>
+    <div class="grid">
+      <div class="canvas-wrap"><canvas id="c9" width="800" height="400"></canvas></div>
+      <div class="controls">
+        <div class="formule">η = E<sub>nuttig</sub> / E<sub>toegevoerd</sub> · 100 %</div>
+        <div class="ctrl-group"><label>Toestel</label><select id="s9-toestel"></select></div>
+        <div class="ctrl-group"><label id="s9-e-l"></label><input type="range" id="s9-e" min="100" max="2000" step="100" value="1000"></div>
+        <div class="readout" id="s9-read"></div>
+        <div class="note">Het rendement is altijd <strong>kleiner dan 100 %</strong>. Je mag ook met vermogens rekenen: <strong>η = P<sub>nuttig</sub> / P<sub>toegevoerd</sub> · 100 %</strong>.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ OEFENEN ============ -->
+  <section class="scene" id="s10" data-title="Oefenen" data-cat="oefenen">
+    <div class="scene-head"><span class="num">10</span><h3>Oefenen</h3></div>
+    <p class="scene-sub">Gemengde opgaven over systemen, energieomzettingen, vermogen en rendement. Gebruik g = 9,81 N/kg. Je mag een komma of een punt gebruiken.</p>
+    <div class="oef">
+      <div class="oef-head">
+        <div class="score" id="s10-score">0 / 0 juist</div>
+        <button class="btn primary" id="s10-nieuw">Nieuwe opgave →</button>
+      </div>
+      <div id="s10-q"></div>
+    </div>
+  </section>
+
+</main>
+
+<footer>gemaakt voor klasgebruik — fysica 4de jaar: energie en vermogen</footer>
+
+<script>
+//////////////////// NAVIGATIE ////////////////////
+const scenes=[...document.querySelectorAll('.scene')];
+const nav=document.getElementById('nav'), catNav=document.getElementById('catnav');
+const categories=[
+  {id:'systemen',label:'Energie in systemen'},
+  {id:'vormen',label:'Vormen en omzettingen'},
+  {id:'vermogen',label:'Vermogen'},
+  {id:'rendement',label:'Rendement'},
+  {id:'oefenen',label:'Oefenen'},
+];
+let currentIndex=0, activeCat=scenes[0].dataset.cat;
+function renderCatNav(){
+  catNav.innerHTML='';
+  categories.forEach(cat=>{ const b=document.createElement('button'); b.textContent=cat.label;
+    b.classList.toggle('active',cat.id===activeCat);
+    b.addEventListener('click',()=>{ const i=scenes.findIndex(s=>s.dataset.cat===cat.id); if(i>=0) activate(i); });
+    catNav.appendChild(b); });
+}
+function renderSectionNav(){
+  nav.innerHTML='';
+  scenes.forEach((sc,i)=>{ if(sc.dataset.cat!==activeCat) return;
+    const b=document.createElement('button'); b.innerHTML='<span class="nr">'+(i+1)+'</span>'+sc.dataset.title;
+    b.classList.toggle('active',i===currentIndex); b.addEventListener('click',()=>activate(i)); nav.appendChild(b); });
+}
+function activate(i){ currentIndex=i; scenes.forEach((sc,j)=>sc.classList.toggle('active',j===i)); activeCat=scenes[i].dataset.cat; renderCatNav(); renderSectionNav(); }
+activate(0);
+const isActive=id=>document.getElementById(id).classList.contains('active');
+
+//////////////////// HULPFUNCTIES ////////////////////
+function hiDPI(canvas){ const dpr=window.devicePixelRatio||1, w=canvas.width, h=canvas.height; canvas.width=w*dpr; canvas.height=h*dpr; const ctx=canvas.getContext('2d'); ctx.scale(dpr,dpr); canvas._w=w; canvas._h=h; return ctx; }
+function arrow(ctx,x1,y1,x2,y2,color,width=4){
+  const len=Math.hypot(x2-x1,y2-y1); if(len<2) return;
+  const a=Math.atan2(y2-y1,x2-x1), hs=Math.min(14,4+width*2.2);
+  ctx.save(); ctx.strokeStyle=color; ctx.fillStyle=color; ctx.lineWidth=width; ctx.lineCap='round';
+  ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2-Math.cos(a)*hs*0.8,y2-Math.sin(a)*hs*0.8); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(x2,y2); ctx.lineTo(x2-hs*Math.cos(a-0.42),y2-hs*Math.sin(a-0.42)); ctx.lineTo(x2-hs*Math.cos(a+0.42),y2-hs*Math.sin(a+0.42)); ctx.closePath(); ctx.fill();
+  ctx.restore();
+}
+function text(ctx,t,x,y,{size=14,weight=500,color='#1D2A36',align='left'}={}){ ctx.save(); ctx.font=`${weight} ${size}px Inter, sans-serif`; ctx.fillStyle=color; ctx.textAlign=align; ctx.fillText(t,x,y); ctx.restore(); }
+function roundRect(ctx,x,y,w,h,r){ ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); }
+// getallen op zijn Belgisch: komma als decimaalteken, spatie als duizendtalscheiding
+function nl(v,d=0){ const s=Math.abs(v).toFixed(d).split('.'); s[0]=s[0].replace(/\B(?=(\d{3})+(?!\d))/g,' '); return (v<0?'−':'')+s.join(','); }
+const G=9.81;
+
+// energievormen: naam + kleur (gebruikt in kaarten, ketens en balans)
+const VORM={
+  grav:{naam:'gravitationele potentiële energie',kort:'gravitationele energie',kleur:'#2563eb'},
+  kin:{naam:'kinetische energie',kort:'kinetische energie',kleur:'#0891b2'},
+  elas:{naam:'elastische potentiële energie',kort:'elastische energie',kleur:'#7c3aed'},
+  chem:{naam:'chemische energie',kort:'chemische energie',kleur:'#16a34a'},
+  therm:{naam:'thermische energie',kort:'thermische energie',kleur:'#dc2626'},
+  straal:{naam:'stralingsenergie',kort:'stralingsenergie',kleur:'#d97706'},
+  kern:{naam:'kernenergie',kort:'kernenergie',kleur:'#be185d'},
+  elek:{naam:'elektrische energie',kort:'elektrische energie',kleur:'#ca8a04'},
+};
+
+//////////////////// 1 — OPEN, GESLOTEN, GEÏSOLEERD ////////////////////
+(function(){
+  const c=document.getElementById('c1'), ctx=hiDPI(c), W=c._w, H=c._h;
+  const panels=[{x:150,naam:'open systeem',type:'open'},{x:450,naam:'gesloten systeem',type:'gesloten'},{x:750,naam:'geïsoleerd systeem',type:'iso'}];
+  const stoom=panels.map(()=>[]);
+  let t=0;
+  function pot(cx,type){
+    const by=300;
+    if(type==='iso'){
+      // thermosfles
+      ctx.fillStyle='#c9d4df'; roundRect(ctx,cx-48,by-190,96,190,16); ctx.fill();
+      ctx.strokeStyle='#51606E'; ctx.lineWidth=3; roundRect(ctx,cx-48,by-190,96,190,16); ctx.stroke();
+      ctx.fillStyle='#fff'; roundRect(ctx,cx-36,by-178,72,166,10); ctx.fill();
+      ctx.fillStyle='#e7b26b'; roundRect(ctx,cx-36,by-120,72,108,8); ctx.fill();
+      ctx.fillStyle='#51606E'; roundRect(ctx,cx-34,by-214,68,28,6); ctx.fill();
+      text(ctx,'dubbele wand met vacuüm',cx,by+26,{size:12,color:'#51606E',align:'center'});
+      return;
+    }
+    // vuur
+    for(let k=0;k<5;k++){ const fx=cx-40+k*20, h=24+8*Math.sin(t*9+k*1.7);
+      ctx.fillStyle='#f97316'; ctx.beginPath(); ctx.moveTo(fx-9,by+30); ctx.quadraticCurveTo(fx,by+30-h*2,fx+9,by+30); ctx.fill();
+      ctx.fillStyle='#fde047'; ctx.beginPath(); ctx.moveTo(fx-4,by+30); ctx.quadraticCurveTo(fx,by+30-h,fx+4,by+30); ctx.fill(); }
+    ctx.fillStyle='#64748b'; ctx.fillRect(cx-70,by+30,140,8);
+    // pot
+    ctx.fillStyle='#94a3b8'; roundRect(ctx,cx-62,by-90,124,90,10); ctx.fill();
+    ctx.fillStyle='#e7b26b'; ctx.fillRect(cx-56,by-70,112,62);
+    ctx.strokeStyle='#475569'; ctx.lineWidth=3; roundRect(ctx,cx-62,by-90,124,90,10); ctx.stroke();
+    if(type==='gesloten'){ ctx.fillStyle='#475569'; roundRect(ctx,cx-68,by-102,136,14,6); ctx.fill(); ctx.fillRect(cx-10,by-114,20,12); }
+  }
+  function draw(dt){
+    t+=dt; ctx.clearRect(0,0,W,H); ctx.fillStyle='#fbfcfe'; ctx.fillRect(0,0,W,H);
+    panels.forEach((p,i)=>{
+      // systeemgrens
+      ctx.save(); ctx.strokeStyle='#94a3b8'; ctx.setLineDash([7,6]); ctx.lineWidth=2; roundRect(ctx,p.x-120,60,240,300,14); ctx.stroke(); ctx.restore();
+      text(ctx,p.naam,p.x,40,{size:16,weight:700,align:'center'});
+      pot(p.x,p.type);
+      // stoomdeeltjes
+      if(p.type==='open'){ if(Math.random()<0.5) stoom[i].push({x:p.x-40+Math.random()*80,y:205,vy:-30-Math.random()*25,vx:(Math.random()-0.5)*14}); }
+      if(p.type==='gesloten'){ if(Math.random()<0.25) stoom[i].push({x:p.x-40+Math.random()*80,y:228,vy:-18,vx:(Math.random()-0.5)*20,binnen:true}); }
+      stoom[i].forEach(s=>{ s.y+=s.vy*dt; s.x+=s.vx*dt; if(s.binnen && s.y<204){ s.y=204; s.vy=-s.vy*0.5; s.life=(s.life||0)+1; } });
+      stoom[i]=stoom[i].filter(s=>s.y>30 && (s.life||0)<3);
+      ctx.fillStyle='#2563eb';
+      stoom[i].forEach(s=>{ ctx.beginPath(); ctx.arc(s.x,s.y,3.2,0,Math.PI*2); ctx.fill(); });
+      // energiepijlen (warmte)
+      if(p.type!=='iso'){
+        const o=6*Math.sin(t*4);
+        arrow(ctx,p.x,375+o*0.3,p.x,342,'#dc2626',4);
+        text(ctx,'warmte in',p.x+10,378,{size:12,color:'#dc2626',weight:600});
+        arrow(ctx,p.x+70,200,p.x+108+o,200,'#dc2626',4);
+        text(ctx,'warmte uit',p.x+114,184,{size:12,color:'#dc2626',weight:600,align:'right'});
+      } else {
+        text(ctx,'geen warmte in of uit',p.x,82,{size:12,color:'#51606E',align:'center'});
+      }
+      if(p.type==='open') text(ctx,'stoom ontsnapt',p.x-112,90,{size:12,color:'#2563eb',weight:600});
+      if(p.type==='gesloten') text(ctx,'stoom blijft binnen',p.x-112,90,{size:12,color:'#2563eb',weight:600});
+    });
+    text(ctx,'stippellijn = grens van het systeem',W-12,H-12,{size:12,color:'#51606E',align:'right'});
+  }
+  let last=performance.now();
+  function loop(now){ const dt=Math.min(0.05,(now-last)/1000); last=now; if(isActive('s1')) draw(dt); requestAnimationFrame(loop); }
+  requestAnimationFrame(loop);
+})();
+
+//////////////////// 2 — WELK SYSTEEM? ////////////////////
+(function(){
+  const items=[
+    {wat:'Een kampvuur',sub:'hout verbrandt, rook stijgt op',j:'open',u:'Er gaan rook en gassen weg (materie) en er komt warmte en licht vrij (energie).'},
+    {wat:'Een gesloten blikje frisdrank in de koelkast',sub:'',j:'gesloten',u:'Er kan geen frisdrank in of uit, maar het blikje geeft wel warmte af aan de koelkast.'},
+    {wat:'Een mens',sub:'die eet, drinkt en ademt',j:'open',u:'Je neemt voedsel en zuurstof op en geeft koolstofdioxide en warmte af: materie én energie.'},
+    {wat:'Een goed gesloten thermosfles met thee',sub:'(ideaal)',j:'geïsoleerd',u:'De vacuümwand laat (bijna) geen warmte door en de dop houdt alles binnen.'},
+    {wat:'De aarde',sub:'met haar atmosfeer',j:'gesloten',u:'De aarde krijgt stralingsenergie van de zon en straalt energie uit. Er komt (bijna) geen materie bij of weg.'},
+    {wat:'Een auto met draaiende motor',sub:'',j:'open',u:'Er gaat brandstof in en uitlaatgassen uit (materie), en er komt warmte vrij (energie).'},
+    {wat:'Een pot soep met deksel op het vuur',sub:'',j:'gesloten',u:'Warmte gaat erin en eruit, maar het deksel houdt de stoom binnen.'},
+    {wat:'Een kamer met een open raam',sub:'',j:'open',u:'Lucht gaat naar binnen en naar buiten, en ook warmte.'},
+    {wat:'Het heelal',sub:'',j:'geïsoleerd',u:'Er is niets buiten het heelal: er kan geen energie of materie in of uit.'},
+  ];
+  const lijst=document.getElementById('s2-lijst');
+  function bouw(){
+    lijst.innerHTML='';
+    items.forEach(it=>{
+      const r=document.createElement('div'); r.className='sort-item';
+      r.innerHTML=`<div class="wat">${it.wat}${it.sub?'<small>'+it.sub+'</small>':''}</div>`;
+      const k=document.createElement('div'); k.className='keuzes';
+      const u=document.createElement('div'); u.className='uitleg';
+      ['open','gesloten','geïsoleerd'].forEach(opt=>{
+        const b=document.createElement('button'); b.className='btn'; b.textContent=opt;
+        b.onclick=()=>{ if(k.dataset.klaar) return; k.dataset.klaar=1;
+          [...k.children].forEach(bb=>{ if(bb.textContent===it.j) bb.classList.add('goed'); else if(bb===b) bb.classList.add('fout'); });
+          u.innerHTML=(opt===it.j?'<b style="color:var(--ok-text)">Juist.</b> ':'<b style="color:var(--flag-text)">Niet juist: het is een '+it.j+' systeem.</b> ')+it.u; };
+        k.appendChild(b); });
+      r.appendChild(k); r.appendChild(u); lijst.appendChild(r);
+    });
+  }
+  bouw(); document.getElementById('s2-reset').onclick=bouw;
+})();
+
+//////////////////// SVG-HULP ////////////////////
+function sA(x1,y1,x2,y2,col,w=3.5){ const a=Math.atan2(y2-y1,x2-x1), s=10;
+  const p1=[x2-s*Math.cos(a-0.42),y2-s*Math.sin(a-0.42)], p2=[x2-s*Math.cos(a+0.42),y2-s*Math.sin(a+0.42)];
+  return `<line x1="${x1}" y1="${y1}" x2="${x2-6*Math.cos(a)}" y2="${y2-6*Math.sin(a)}" stroke="${col}" stroke-width="${w}" stroke-linecap="round"/><polygon points="${x2},${y2} ${p1} ${p2}" fill="${col}"/>`; }
+const sT=(x,y,t,col='#1D2A36',size=13,anchor='middle',w=600)=>`<text x="${x}" y="${y}" fill="${col}" font-size="${size}" font-weight="${w}" text-anchor="${anchor}" font-family="Inter, sans-serif">${t}</text>`;
+const svgW=(inner,h=170)=>`<svg viewBox="0 0 300 ${h}" xmlns="http://www.w3.org/2000/svg">${inner}</svg>`;
+
+//////////////////// 3 — POTENTIËLE ENERGIE IN VELDEN ////////////////////
+(function(){
+  const k=[
+    {titel:'Zwaarteveld', svg:svgW(`<line x1="20" y1="150" x2="280" y2="150" stroke="#cfd8e2" stroke-width="4"/><rect x="60" y="126" width="30" height="24" rx="4" fill="#94a3b8"/><rect x="190" y="40" width="30" height="24" rx="4" fill="#94a3b8"/><line x1="205" y1="64" x2="205" y2="146" stroke="#94a3b8" stroke-dasharray="5 5"/>`+sA(150,120,150,60,'#2563eb')+sT(150,52,'jij tilt op','#2563eb')+sA(240,52,240,100,'#dc2626')+sT(262,118,'Fz','#dc2626')),
+     tekst:'Je tilt een steen op, <b>tegen de zwaartekracht in</b>. De energie die je levert, zit opgeslagen als <b>gravitationele potentiële energie</b>. Laat je de steen los, dan valt hij en wordt die energie kinetische energie.'},
+    {titel:'Magnetisch veld', svg:svgW(`<rect x="40" y="70" width="40" height="30" fill="#dc2626"/><rect x="80" y="70" width="40" height="30" fill="#2563eb"/>${sT(60,90,'N','#fff')}${sT(100,90,'Z','#fff')}<rect x="180" y="70" width="40" height="30" fill="#dc2626"/><rect x="220" y="70" width="40" height="30" fill="#2563eb"/>${sT(200,90,'N','#fff')}${sT(240,90,'Z','#fff')}`+sA(150,130,90,130,'#1D2A36',2.5)+sA(150,130,210,130,'#1D2A36',2.5)+sT(150,154,'je trekt ze uit elkaar','#51606E',12,'middle',500)+sT(150,52,'Z trekt N aan','#51606E',12,'middle',500)),
+     tekst:'Twee magneten <b>trekken elkaar aan</b>. Trek je ze uit elkaar, dan lever je energie. Die zit opgeslagen in het <b>magnetisch veld</b>. Laat je los, dan schieten ze naar elkaar toe.'},
+    {titel:'Elektrisch veld', svg:svgW(`<circle cx="80" cy="85" r="22" fill="#dc2626"/>${sT(80,92,'+','#fff',22)}<circle cx="220" cy="85" r="22" fill="#2563eb"/>${sT(220,92,'−','#fff',22)}`+sA(150,130,104,130,'#1D2A36',2.5)+sA(150,130,196,130,'#1D2A36',2.5)+sT(150,154,'je trekt ze uit elkaar','#51606E',12,'middle',500)+sT(150,40,'+ en − trekken elkaar aan','#51606E',12,'middle',500)),
+     tekst:'Een positieve en een negatieve lading <b>trekken elkaar aan</b>. Trek je ze uit elkaar, dan zit de energie die je levert opgeslagen in het <b>elektrisch veld</b>.'},
+  ];
+  document.getElementById('s3-cards').innerHTML=k.map(x=>`<div class="card">${x.svg}<div class="txt"><h4>${x.titel}</h4><p>${x.tekst}</p></div></div>`).join('');
+})();
+
+//////////////////// 4 — VORMEN VAN ENERGIE ////////////////////
+(function(){
+  const ic={
+    grav:`<rect x="130" y="30" width="40" height="30" rx="4" fill="#2563eb"/><line x1="40" y1="140" x2="260" y2="140" stroke="#cfd8e2" stroke-width="4"/><line x1="150" y1="64" x2="150" y2="136" stroke="#2563eb" stroke-dasharray="5 5"/>${sT(178,104,'h','#2563eb',15,'start')}`,
+    kin:`<circle cx="120" cy="90" r="24" fill="#0891b2"/>${sA(150,90,230,90,'#0891b2',4)}${sT(190,78,'v','#0891b2',15)}<line x1="40" y1="70" x2="80" y2="70" stroke="#94a3b8" stroke-width="2"/><line x1="30" y1="90" x2="82" y2="90" stroke="#94a3b8" stroke-width="2"/><line x1="40" y1="110" x2="80" y2="110" stroke="#94a3b8" stroke-width="2"/>`,
+    elas:`<path d="M40 90 l12 -20 l16 40 l16 -40 l16 40 l16 -40 l16 40 l16 -40 l16 40 l12 -20" fill="none" stroke="#7c3aed" stroke-width="4"/><rect x="200" y="70" width="40" height="40" rx="4" fill="#7c3aed"/><line x1="30" y1="50" x2="30" y2="130" stroke="#1D2A36" stroke-width="5"/>`,
+    chem:`<rect x="70" y="60" width="160" height="60" rx="10" fill="#16a34a"/><rect x="230" y="78" width="12" height="24" rx="3" fill="#16a34a"/>${sT(150,98,'+  −','#fff',22)}`,
+    therm:`<rect x="138" y="30" width="24" height="100" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="3"/><circle cx="150" cy="135" r="20" fill="#dc2626"/><rect x="145" y="70" width="10" height="60" fill="#dc2626"/>`,
+    straal:`<circle cx="150" cy="90" r="30" fill="#fbbf24"/>${[0,1,2,3,4,5,6,7].map(i=>{const a=i*Math.PI/4;return `<line x1="${150+42*Math.cos(a)}" y1="${90+42*Math.sin(a)}" x2="${150+62*Math.cos(a)}" y2="${90+62*Math.sin(a)}" stroke="#d97706" stroke-width="4" stroke-linecap="round"/>`}).join('')}`,
+    kern:`<circle cx="150" cy="90" r="14" fill="#be185d"/><circle cx="138" cy="82" r="9" fill="#2563eb"/><circle cx="162" cy="96" r="9" fill="#2563eb"/><circle cx="160" cy="80" r="9" fill="#be185d"/><circle cx="140" cy="100" r="9" fill="#be185d"/><ellipse cx="150" cy="90" rx="70" ry="24" fill="none" stroke="#94a3b8" stroke-width="2"/><ellipse cx="150" cy="90" rx="70" ry="24" fill="none" stroke="#94a3b8" stroke-width="2" transform="rotate(60 150 90)"/>`,
+    elek:`<path d="M160 25 L115 100 h30 l-12 60 l55 -85 h-32 z" fill="#ca8a04"/>`,
+  };
+  const info=[
+    ['grav','Een voorwerp op een <b>hoogte</b>, in het zwaarteveld.','water in een stuwmeer, een boek op een kast'],
+    ['kin','Een voorwerp dat <b>beweegt</b>.','een rijdende fiets, wind, stromend water'],
+    ['elas','Een <b>vervormd</b> elastisch voorwerp.','een ingedrukte veer, een gespannen boog'],
+    ['chem','Opgeslagen in de <b>bindingen</b> tussen atomen. Komt vrij bij een chemische reactie.','voedsel, benzine, hout, een batterij'],
+    ['therm','De energie van de <b>bewegende deeltjes</b> in een stof. Hoe warmer, hoe sneller ze bewegen.','warm water, een hete kookplaat'],
+    ['straal','Energie die zich verplaatst als <b>straling</b>, ook door het luchtledige.','licht van de zon, wifi, röntgenstralen'],
+    ['kern','Opgeslagen in de <b>kern</b> van atomen. Komt vrij bij kernsplijting of kernfusie.','een kerncentrale, de zon'],
+    ['elek','Energie van <b>bewegende ladingen</b> (elektrische stroom).','het stopcontact, een opgeladen gsm'],
+  ];
+  document.getElementById('s4-cards').innerHTML=info.map(([k,t,vb])=>`<div class="card">${svgW(ic[k],170)}<div class="txt"><h4 style="color:${VORM[k].kleur}">${VORM[k].naam[0].toUpperCase()+VORM[k].naam.slice(1)}</h4><p>${t}</p><div class="vb"><b>Voorbeeld:</b> ${vb}</div></div></div>`).join('');
+})();
+
+//////////////////// 5 — ENERGIEOMZETTINGEN + ENERGIEBALANS ////////////////////
+(function(){
+  // nuttig: percentage nuttige energie (benaderend, ter illustratie)
+  const vb=[
+    {t:'Fietsen met een dynamo en lampje',keten:['chem','kin','elek','straal'],nuttig:['straal',10],uitleg:'Je spieren zetten chemische energie (voedsel) om in kinetische energie. De dynamo maakt daar elektrische energie van, het lampje stralingsenergie. Bij elke stap ontstaat ook thermische energie.'},
+    {t:'Zonnepaneel',keten:['straal','elek'],nuttig:['elek',20],uitleg:'Het zonnepaneel zet stralingsenergie van de zon om in elektrische energie. De rest wordt vooral thermische energie: het paneel wordt warm.'},
+    {t:'Kerncentrale',keten:['kern','therm','kin','elek'],nuttig:['elek',33],uitleg:'Kernsplijting maakt thermische energie vrij. Die maakt stoom die een turbine laat draaien (kinetische energie). De generator zet dat om in elektrische energie. Een groot deel gaat als warmte weg via de koeltoren.'},
+    {t:'Boogschutter',keten:['chem','elas','kin'],nuttig:['kin',25],uitleg:'Je spieren spannen de boog (chemische → elastische energie). Laat je los, dan wordt de elastische energie kinetische energie van de pijl.'},
+    {t:'Achtbaan naar beneden',keten:['grav','kin'],nuttig:['kin',85],uitleg:'Bovenaan heeft het karretje veel gravitationele energie. Naar beneden wordt die kinetische energie. Door wrijving ontstaat ook wat thermische energie.'},
+    {t:'Zaklamp met batterij (ledlamp)',keten:['chem','elek','straal'],nuttig:['straal',30],uitleg:'De batterij zet chemische energie om in elektrische energie. De led zet die om in licht (stralingsenergie) en warmte.'},
+    {t:'Waterkoker',keten:['elek','therm'],nuttig:['therm',90],uitleg:'Elektrische energie wordt thermische energie van het water. Hier is de thermische energie juist nuttig! Een klein deel warmt de kan en de keuken op.'},
+  ];
+  const chips=document.getElementById('s5-chips'), c=document.getElementById('c5'), ctx=hiDPI(c), W=c._w, H=c._h;
+  let cur=0;
+  vb.forEach((v,i)=>{ const b=document.createElement('button'); b.className='btn'+(i===0?' on':''); b.textContent=v.t; b.onclick=()=>{ cur=i; [...chips.children].forEach((x,j)=>x.classList.toggle('on',j===i)); toon(); }; chips.appendChild(b); });
+  function toon(){
+    const v=vb[cur];
+    document.getElementById('s5-titel').textContent=v.t;
+    document.getElementById('s5-keten').innerHTML=v.keten.map(k=>`<span class="vorm" style="color:${VORM[k].kleur};border-color:${VORM[k].kleur}">${VORM[k].kort}</span>`).join('<span class="pijl">→</span>');
+    // energiebalans als stroomdiagram
+    ctx.clearRect(0,0,W,H);
+    const [nv,pct]=v.nuttig, inK=v.keten[0], E=100, x0=20, x1=W-250, hTot=150, y0=40;
+    const hN=hTot*pct/100, hV=hTot-hN;
+    ctx.fillStyle=VORM[inK].kleur; ctx.globalAlpha=0.85; ctx.fillRect(x0,y0,170,hTot); ctx.globalAlpha=1;
+    text(ctx,'toegevoerd',x0+6,y0-8,{size:13,weight:700});
+    text(ctx,'100 %',x0+85,y0+hTot/2+6,{size:18,weight:700,color:'#fff',align:'center'});
+    text(ctx,VORM[inK].kort,x0+85,y0+hTot/2+26,{size:12,color:'#fff',align:'center',weight:600});
+    // stroom nuttig (boven)
+    ctx.fillStyle=VORM[nv].kleur; ctx.globalAlpha=0.75;
+    ctx.beginPath(); ctx.moveTo(x0+170,y0); ctx.bezierCurveTo(x0+300,y0,x1-120,y0-10,x1,y0-10); ctx.lineTo(x1,y0-10+hN); ctx.bezierCurveTo(x1-120,y0-10+hN,x0+300,y0+hN,x0+170,y0+hN); ctx.closePath(); ctx.fill();
+    // stroom niet nuttig (onder)
+    ctx.fillStyle='#dc2626'; ctx.globalAlpha=0.5;
+    ctx.beginPath(); ctx.moveTo(x0+170,y0+hN); ctx.bezierCurveTo(x0+300,y0+hN,x1-120,y0+hN+30,x1,y0+hN+30); ctx.lineTo(x1,y0+hTot+30); ctx.bezierCurveTo(x1-120,y0+hTot+30,x0+300,y0+hTot,x0+170,y0+hTot); ctx.closePath(); ctx.fill();
+    ctx.globalAlpha=1;
+    text(ctx,'nuttig: '+pct+' %',x1+10,y0-10+Math.max(hN/2,8)+5,{size:14,weight:700,color:VORM[nv].kleur});
+    text(ctx,VORM[nv].kort,x1+10,y0-10+Math.max(hN/2,8)+22,{size:12,color:'#51606E'});
+    text(ctx,'niet nuttig: '+(100-pct)+' %',x1+10,y0+hN+30+hV/2+5,{size:14,weight:700,color:'#dc2626'});
+    text(ctx,'vooral thermische energie',x1+10,y0+hN+30+hV/2+22,{size:12,color:'#51606E'});
+    text(ctx,'percentages zijn benaderend',W-10,H-6,{size:11,color:'#51606E',align:'right'});
+    document.getElementById('s5-read').innerHTML=`<span class="k">${v.uitleg}</span><br><span class="ok">${pct} % + ${100-pct} % = 100 %: er gaat geen energie verloren.</span>`;
+  }
+  toon();
+})();
+
+//////////////////// 6 — POMPCENTRALE ////////////////////
+(function(){
+  const c=document.getElementById('c6'), ctx=hiDPI(c), W=c._w, H=c._h;
+  const read=document.getElementById('s6-read');
+  let niveau=0.4, modus='stil', fase=0;   // niveau = vulling bovenste reservoir (0..1)
+  document.getElementById('s6-pomp').onclick=()=>modus='pomp';
+  document.getElementById('s6-turbine').onclick=()=>modus='turbine';
+  document.getElementById('s6-stop').onclick=()=>modus='stil';
+  const top={x:560,y:90,w:200,h:70}, onder={x:40,y:330,w:240,h:70}, huis={x:300,y:320};
+  // leiding: van bovenste reservoir langs de helling naar het centralegebouw
+  const pad=[[580,160],[520,200],[430,262],[360,305],[330,330]];
+  function draw(dt){
+    if(modus==='pomp'){ niveau=Math.min(1,niveau+dt*0.08); if(niveau>=1) modus='stil'; }
+    if(modus==='turbine'){ niveau=Math.max(0,niveau-dt*0.08); if(niveau<=0) modus='stil'; }
+    fase+=dt*(modus==='pomp'?-1:1)*90;
+    ctx.clearRect(0,0,W,H);
+    ctx.fillStyle='#eaf3fb'; ctx.fillRect(0,0,W,H);
+    // heuvel
+    ctx.fillStyle='#a3c48c'; ctx.beginPath(); ctx.moveTo(0,H); ctx.lineTo(0,400); ctx.lineTo(300,380); ctx.quadraticCurveTo(520,250,540,160); ctx.lineTo(W,160); ctx.lineTo(W,H); ctx.closePath(); ctx.fill();
+    // reservoirs
+    const bov=niveau, ond=1-niveau;
+    ctx.fillStyle='#e2e8f0'; ctx.fillRect(top.x,top.y,top.w,top.h); ctx.fillRect(onder.x,onder.y,onder.w,onder.h);
+    ctx.fillStyle='#3b82f6'; ctx.fillRect(top.x,top.y+top.h*(1-bov),top.w,top.h*bov); ctx.fillRect(onder.x,onder.y+onder.h*(1-ond),onder.w,onder.h*ond);
+    ctx.strokeStyle='#475569'; ctx.lineWidth=3; ctx.strokeRect(top.x,top.y,top.w,top.h); ctx.strokeRect(onder.x,onder.y,onder.w,onder.h);
+    text(ctx,'bovenste reservoir',top.x+top.w/2,top.y-10,{size:13,weight:700,align:'center'});
+    text(ctx,'onderste reservoir',onder.x+onder.w/2,onder.y-10,{size:13,weight:700,align:'center'});
+    // hoogteverschil
+    ctx.save(); ctx.strokeStyle='#1D2A36'; ctx.setLineDash([4,5]); ctx.beginPath(); ctx.moveTo(780,top.y+top.h); ctx.lineTo(780,onder.y+onder.h); ctx.stroke(); ctx.restore();
+    text(ctx,'h',770,280,{size:16,weight:700,align:'right'});
+    // leiding
+    ctx.strokeStyle='#64748b'; ctx.lineWidth=12; ctx.lineCap='round'; ctx.beginPath(); pad.forEach((p,i)=>i?ctx.lineTo(...p):ctx.moveTo(...p)); ctx.lineTo(onder.x+onder.w,360); ctx.stroke();
+    if(modus!=='stil'){
+      ctx.strokeStyle='#93c5fd'; ctx.lineWidth=6; ctx.setLineDash([10,12]); ctx.lineDashOffset=fase;
+      ctx.beginPath(); pad.forEach((p,i)=>i?ctx.lineTo(...p):ctx.moveTo(...p)); ctx.lineTo(onder.x+onder.w,360); ctx.stroke(); ctx.setLineDash([]);
+    }
+    // centrale
+    ctx.fillStyle='#f1f5f9'; ctx.strokeStyle='#1D2A36'; ctx.lineWidth=2; ctx.fillRect(huis.x-10,huis.y,80,60); ctx.strokeRect(huis.x-10,huis.y,80,60);
+    text(ctx,modus==='pomp'?'pomp':'turbine',huis.x+30,huis.y+36,{size:13,weight:700,align:'center'});
+    // hoogspanningsleiding
+    ctx.strokeStyle='#1D2A36'; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(huis.x+70,huis.y+10); ctx.lineTo(490,330); ctx.lineTo(540,250); ctx.stroke();
+    text(ctx,'⚡ net',548,250,{size:13,weight:700,color:'#ca8a04'});
+    if(modus==='pomp') arrow(ctx,520,300,440,326,'#ca8a04',4);
+    if(modus==='turbine') arrow(ctx,440,326,520,300,'#ca8a04',4);
+    text(ctx,'energie opgeslagen: '+Math.round(niveau*100)+' %',20,30,{size:15,weight:700});
+    const k = modus==='pomp'
+      ? ['elek','kin','grav'] : modus==='turbine' ? ['grav','kin','elek'] : null;
+    read.innerHTML = !k
+      ? '<span class="k">Kies <b>Water oppompen</b> of <b>Stroom maken</b>.</span>'
+      : `<span class="v">${modus==='pomp'?'Overschot aan elektrische energie: de pomp duwt water omhoog.':'Tekort aan elektrische energie: het water stroomt naar beneden door de turbine.'}</span><br>`+
+        `<span class="k">${k.map(x=>'<b style="color:'+VORM[x].kleur+'">'+VORM[x].kort+'</b>').join(' → ')}</span><br>`+
+        `<span class="k">${modus==='pomp'?'De energie zit nu opgeslagen als <b>gravitationele potentiële energie</b> van het water bovenaan.':'Een deel van de energie wordt ook thermische energie (wrijving in leiding, pomp en turbine).'}</span>`;
+  }
+  let last=performance.now();
+  function loop(now){ const dt=Math.min(0.05,(now-last)/1000); last=now; if(isActive('s6')) draw(dt); requestAnimationFrame(loop); }
+  requestAnimationFrame(loop);
+})();
+
+//////////////////// 7 — VERMOGEN: DE TRAP OP ////////////////////
+(function(){
+  const c=document.getElementById('c7'), ctx=hiDPI(c), W=c._w, H=c._h;
+  const m=document.getElementById('s7-m'), h=document.getElementById('s7-h'), ta=document.getElementById('s7-ta'), tb=document.getElementById('s7-tb');
+  const read=document.getElementById('s7-read'), go=document.getElementById('s7-go');
+  let t=0, run=false;
+  go.onclick=()=>{ t=0; run=true; };
+  function labels(){
+    document.getElementById('s7-m-l').textContent='Massa van elke leerling: '+m.value+' kg';
+    document.getElementById('s7-h-l').textContent='Hoogte van de trap: '+h.value+' m ('+(h.value/3)+' verdieping'+(h.value>3?'en':'')+')';
+    document.getElementById('s7-ta-l').textContent='Tijd van leerling A: '+ta.value+' s';
+    document.getElementById('s7-tb-l').textContent='Tijd van leerling B: '+tb.value+' s';
+  }
+  [m,h,ta,tb].forEach(e=>e.addEventListener('input',()=>{ labels(); run=false; t=0; })); labels();
+  function trap(x0,lab,col,frac){
+    const n=+h.value/3*4, sw=280/n, sh=300/n, yb=400;
+    ctx.fillStyle='#e2e8f0'; ctx.beginPath(); ctx.moveTo(x0,yb);
+    for(let i=0;i<n;i++){ ctx.lineTo(x0+i*sw,yb-(i+1)*sh); ctx.lineTo(x0+(i+1)*sw,yb-(i+1)*sh); }
+    ctx.lineTo(x0+n*sw,yb); ctx.closePath(); ctx.fill(); ctx.strokeStyle='#94a3b8'; ctx.lineWidth=2; ctx.stroke();
+    const px=x0+frac*n*sw, py=yb-Math.min(n,Math.ceil(frac*n+0.001))*sh*(frac>0?1:0)-(frac>0?0:0);
+    const y=yb-frac*300;
+    ctx.fillStyle=col; ctx.beginPath(); ctx.arc(px+8,y-46,10,0,Math.PI*2); ctx.fill();
+    ctx.strokeStyle=col; ctx.lineWidth=5; ctx.lineCap='round'; ctx.beginPath(); ctx.moveTo(px+8,y-36); ctx.lineTo(px+8,y-14); ctx.lineTo(px,y); ctx.moveTo(px+8,y-14); ctx.lineTo(px+16,y); ctx.stroke();
+    text(ctx,'leerling '+lab,x0+140,40,{size:16,weight:700,color:col,align:'center'});
+  }
+  function draw(dt){
+    if(run){ t+=dt; if(t>Math.max(+ta.value,+tb.value)+0.5) run=false; }
+    ctx.clearRect(0,0,W,H); ctx.fillStyle='#fbfcfe'; ctx.fillRect(0,0,W,H);
+    const fa=Math.min(1,t/ +ta.value), fb=Math.min(1,t/ +tb.value);
+    trap(60,'A','#2563eb',fa); trap(440,'B','#16a34a',fb);
+    text(ctx,'t = '+nl(t,1)+' s',W/2,24,{size:15,weight:700,align:'center'});
+    if(fa>=1) text(ctx,'boven na '+ta.value+' s',200,70,{size:13,color:'#2563eb',align:'center',weight:600});
+    if(fb>=1) text(ctx,'boven na '+tb.value+' s',580,70,{size:13,color:'#16a34a',align:'center',weight:600});
+    const E=+m.value*G*+h.value, PA=E/ +ta.value, PB=E/ +tb.value;
+    read.innerHTML=`<span class="k">energie (elk):</span> <span class="v">E = m · g · h = ${m.value} · 9,81 · ${h.value} = ${nl(E)} J</span><br>`+
+      `<span class="k">vermogen A:</span> <span class="v" style="color:#2563eb">P = ${nl(E)} J / ${ta.value} s = ${nl(PA)} W</span><br>`+
+      `<span class="k">vermogen B:</span> <span class="v" style="color:#16a34a">P = ${nl(E)} J / ${tb.value} s = ${nl(PB)} W</span><br>`+
+      (PA===PB?'<span class="ok">Zelfde tijd → zelfde vermogen.</span>':`<span class="ok">Leerling ${PA>PB?'A':'B'} heeft het grootste vermogen: ${PA>PB?'A':'B'} zet dezelfde energie sneller om.</span>`);
+  }
+  let last=performance.now();
+  function loop(now){ const dt=Math.min(0.05,(now-last)/1000); last=now; if(isActive('s7')) draw(dt); requestAnimationFrame(loop); }
+  requestAnimationFrame(loop);
+})();
+
+//////////////////// 8 + 9 — TOESTELLEN ////////////////////
+// rendement: nuttige vorm en benaderend rendement
+const TOESTELLEN=[
+  {naam:'ledlamp',P:8,nuttig:'straal',eta:30},
+  {naam:'gloeilamp',P:60,nuttig:'straal',eta:5},
+  {naam:'gsm-lader',P:20,nuttig:'chem',eta:80},
+  {naam:'laptop',P:60,nuttig:null,eta:null},
+  {naam:'televisie',P:100,nuttig:null,eta:null},
+  {naam:'stofzuiger',P:800,nuttig:'kin',eta:40},
+  {naam:'elektrische motor',P:1000,nuttig:'kin',eta:90},
+  {naam:'waterkoker',P:2000,nuttig:'therm',eta:90},
+  {naam:'oven',P:3000,nuttig:'therm',eta:60},
+];
+(function(){
+  const c=document.getElementById('c8'), ctx=hiDPI(c), W=c._w, H=c._h;
+  const sel=document.getElementById('s8-toestel'), tr=document.getElementById('s8-t'), read=document.getElementById('s8-read');
+  TOESTELLEN.forEach((t,i)=>{ const o=document.createElement('option'); o.value=i; o.textContent=t.naam+' ('+nl(t.P)+' W)'; sel.appendChild(o); });
+  sel.value=7;
+  function draw(){
+    const T=TOESTELLEN[+sel.value], min=+tr.value, s=min*60, E=T.P*s;
+    document.getElementById('s8-t-l').textContent='Werkingstijd: '+min+' min';
+    ctx.clearRect(0,0,W,H); ctx.fillStyle='#fbfcfe'; ctx.fillRect(0,0,W,H);
+    text(ctx,'Energie in '+min+' min',20,30,{size:15,weight:700});
+    const maxE=Math.max(...TOESTELLEN.map(q=>q.P))*s, x0=170, bw=W-x0-140;
+    TOESTELLEN.forEach((t,i)=>{
+      const e=t.P*s, y=56+i*36, w=Math.max(3,e/maxE*bw);
+      const on=i===+sel.value;
+      text(ctx,t.naam,x0-10,y+17,{size:13,weight:on?700:500,align:'right',color:on?'#1D2A36':'#51606E'});
+      ctx.fillStyle=on?'#2F6FB0':'#c9d6e4'; roundRect(ctx,x0,y+3,w,20,4); ctx.fill();
+      text(ctx,e>=1e6?nl(e/1e6,1)+' MJ':nl(e/1e3,1)+' kJ',x0+w+8,y+18,{size:12,weight:on?700:500,color:on?'#1D2A36':'#51606E'});
+    });
+    read.innerHTML=`<span class="k">Δt = ${min} min = ${min} · 60 s =</span> <span class="v">${nl(s)} s</span><br>`+
+      `<span class="k">E = P · Δt =</span> <span class="v">${nl(T.P)} W · ${nl(s)} s = ${nl(E)} J</span><br>`+
+      `<span class="k">=</span> <span class="v">${nl(E/1000,1)} kJ</span>`;
+  }
+  sel.oninput=draw; tr.oninput=draw; draw();
+})();
+
+(function(){
+  const c=document.getElementById('c9'), ctx=hiDPI(c), W=c._w, H=c._h;
+  const sel=document.getElementById('s9-toestel'), er=document.getElementById('s9-e'), read=document.getElementById('s9-read');
+  const lijst=TOESTELLEN.filter(t=>t.eta).concat([{naam:'benzinemotor (auto)',nuttig:'kin',eta:25,in:'chem'},{naam:'zonnepaneel',nuttig:'elek',eta:20,in:'straal'},{naam:'menselijk lichaam (spieren)',nuttig:'kin',eta:25,in:'chem'}]);
+  lijst.forEach((t,i)=>{ const o=document.createElement('option'); o.value=i; o.textContent=t.naam; sel.appendChild(o); });
+  function draw(){
+    const T=lijst[+sel.value], Ein=+er.value, En=Ein*T.eta/100, Ev=Ein-En, inK=T.in||'elek';
+    document.getElementById('s9-e-l').textContent='Toegevoerde energie: '+nl(Ein)+' J';
+    ctx.clearRect(0,0,W,H); ctx.fillStyle='#fbfcfe'; ctx.fillRect(0,0,W,H);
+    const x0=40, x1=W-260, y0=90, hT=220, hN=hT*T.eta/100;
+    ctx.fillStyle=VORM[inK].kleur; ctx.globalAlpha=0.85; ctx.fillRect(x0,y0,150,hT); ctx.globalAlpha=1;
+    text(ctx,'toegevoerd',x0,y0-30,{size:14,weight:700});
+    text(ctx,VORM[inK].kort,x0,y0-12,{size:12,color:'#51606E'});
+    text(ctx,nl(Ein)+' J',x0+75,y0+hT/2+6,{size:18,weight:700,color:'#fff',align:'center'});
+    ctx.fillStyle=VORM[T.nuttig].kleur; ctx.globalAlpha=0.75;
+    ctx.beginPath(); ctx.moveTo(x0+150,y0); ctx.bezierCurveTo(x0+300,y0,x1-140,y0-40,x1,y0-40); ctx.lineTo(x1,y0-40+hN); ctx.bezierCurveTo(x1-140,y0-40+hN,x0+300,y0+hN,x0+150,y0+hN); ctx.closePath(); ctx.fill();
+    ctx.fillStyle='#dc2626'; ctx.globalAlpha=0.5;
+    ctx.beginPath(); ctx.moveTo(x0+150,y0+hN); ctx.bezierCurveTo(x0+300,y0+hN,x1-140,y0+hN+40,x1,y0+hN+40); ctx.lineTo(x1,y0+hT+40); ctx.bezierCurveTo(x1-140,y0+hT+40,x0+300,y0+hT,x0+150,y0+hT); ctx.closePath(); ctx.fill();
+    ctx.globalAlpha=1;
+    text(ctx,'nuttig: '+nl(En)+' J',x1+12,y0-40+Math.max(hN/2,6)+4,{size:15,weight:700,color:VORM[T.nuttig].kleur});
+    text(ctx,VORM[T.nuttig].kort,x1+12,y0-40+Math.max(hN/2,6)+22,{size:12,color:'#51606E'});
+    text(ctx,'niet nuttig: '+nl(Ev)+' J',x1+12,y0+hN+40+(hT-hN)/2+4,{size:15,weight:700,color:'#dc2626'});
+    text(ctx,'thermische energie',x1+12,y0+hN+40+(hT-hN)/2+22,{size:12,color:'#51606E'});
+    text(ctx,'η ≈ '+T.eta+' %',W/2,40,{size:22,weight:700,align:'center'});
+    text(ctx,'rendementen zijn benaderend',W-10,H-8,{size:11,color:'#51606E',align:'right'});
+    read.innerHTML=`<span class="k">E<sub>nuttig</sub> =</span> <span class="v">${nl(En)} J (${VORM[T.nuttig].kort})</span><br>`+
+      `<span class="k">η = E<sub>nuttig</sub> / E<sub>toegevoerd</sub> · 100 % =</span><br><span class="v">${nl(En)} J / ${nl(Ein)} J · 100 % = ${T.eta} %</span><br>`+
+      `<span class="ok">${nl(En)} J + ${nl(Ev)} J = ${nl(Ein)} J (behoud van energie)</span>`;
+  }
+  sel.oninput=draw; er.oninput=draw; draw();
+})();
+
+//////////////////// 10 — OEFENEN ////////////////////
+(function(){
+  const box=document.getElementById('s10-q'), scoreEl=document.getElementById('s10-score');
+  let goed=0, totaal=0, vorige=-1;
+  const rnd=a=>a[Math.floor(Math.random()*a.length)];
+  const ri=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+  function telScore(ok){ totaal++; if(ok) goed++; scoreEl.textContent=goed+' / '+totaal+' juist'; }
+  function parse(s){ s=String(s).trim().replace(/\s/g,'').replace(',','.'); return s===''?NaN:+s; }
+
+  function keuze(opgave, opties, juist, uitleg){
+    box.innerHTML=`<div class="opgave">${opgave}</div>`;
+    const k=document.createElement('div'); k.className='keuzes';
+    const fb=document.createElement('div'); fb.className='feedback';
+    opties.forEach(o=>{ const b=document.createElement('button'); b.className='btn'; b.innerHTML=o;
+      b.onclick=()=>{ if(k.dataset.klaar) return; k.dataset.klaar=1; const ok=o===juist; telScore(ok);
+        [...k.children].forEach(bb=>{ if(bb.innerHTML===juist) bb.classList.add('goed'); else if(bb===b) bb.classList.add('fout'); });
+        fb.className='feedback '+(ok?'goed':'fout'); fb.innerHTML=(ok?'<b>Juist!</b>':'<b>Niet juist.</b>')+'<span class="uitleg">'+uitleg+'</span>'; };
+      k.appendChild(b); });
+    box.appendChild(k); box.appendChild(fb);
+  }
+  function rekenen(opgave, juist, eenheid, oplossing){
+    box.innerHTML=`<div class="opgave">${opgave}</div>`;
+    const w=document.createElement('div'); w.className='invul';
+    w.innerHTML=`<input type="text" inputmode="decimal" placeholder="jouw antwoord"><span class="eenheid">${eenheid}</span><button class="btn primary">Controleer</button>`;
+    const fb=document.createElement('div'); fb.className='feedback';
+    const inp=w.querySelector('input'), btn=w.querySelector('button');
+    function check(){ if(w.dataset.klaar) return; const v=parse(inp.value); if(isNaN(v)){ fb.className='feedback fout'; fb.innerHTML='Vul een getal in.'; return; }
+      w.dataset.klaar=1; const ok=Math.abs(v-juist)<=Math.abs(juist)*0.02+1e-9; telScore(ok);
+      inp.disabled=true; btn.disabled=true;
+      fb.className='feedback '+(ok?'goed':'fout'); fb.innerHTML=(ok?'<b>Juist!</b>':'<b>Niet juist.</b> Het antwoord is '+nl(juist, juist<10?2:(juist<1000?1:0))+' '+eenheid+'.')+'<span class="uitleg">'+oplossing+'</span>'; }
+    btn.onclick=check; inp.onkeydown=e=>{ if(e.key==='Enter') check(); };
+    box.appendChild(w); box.appendChild(fb); inp.focus();
+  }
+
+  const types=[
+    // 1. systeem herkennen
+    ()=>{ const it=rnd([
+        ['een brandende kaars','open','Er gaan gassen weg en er komen warmte en licht vrij.'],
+        ['een afgesloten fles water in de zon','gesloten','Er gaat geen water in of uit, maar de fles wordt wel warmer: alleen energie wordt uitgewisseld.'],
+        ['een plant','open','Een plant neemt water en CO₂ op en geeft zuurstof af (materie), en neemt licht op (energie).'],
+        ['een ideale koelbox die volledig dicht is','geïsoleerd','Er gaat (bijna) geen warmte en geen materie in of uit.'],
+        ['een kookpot zonder deksel op het vuur','open','Stoom ontsnapt (materie) en er gaat warmte in en uit (energie).'],
+        ['een opgeblazen ballon die in de zon opwarmt','gesloten','De lucht blijft in de ballon, maar er gaat wel warmte in.'],
+      ]);
+      keuze(`Welk soort systeem is <b>${it[0]}</b>?`,['open','gesloten','geïsoleerd'],it[1],it[2]); },
+    // 2. energieomzetting
+    ()=>{ const it=rnd([
+        ['een elektrische ventilator','elektrische → kinetische energie'],
+        ['een zonnepaneel','stralingsenergie → elektrische energie'],
+        ['een vallende appel','gravitationele → kinetische energie'],
+        ['een katapult die een steentje wegschiet','elastische → kinetische energie'],
+        ['een kampvuur','chemische → thermische energie en stralingsenergie'],
+        ['een windturbine','kinetische → elektrische energie'],
+        ['een batterij die een speelgoedauto laat rijden','chemische → elektrische → kinetische energie'],
+      ]);
+      const alle=['elektrische → kinetische energie','stralingsenergie → elektrische energie','gravitationele → kinetische energie','elastische → kinetische energie','chemische → thermische energie en stralingsenergie','kinetische → elektrische energie','chemische → elektrische → kinetische energie'];
+      const opties=[it[1],...alle.filter(a=>a!==it[1]).sort(()=>Math.random()-0.5).slice(0,3)].sort(()=>Math.random()-0.5);
+      keuze(`Welke energieomzetting gebeurt er bij <b>${it[0]}</b>? (De thermische energie die altijd ontstaat, laten we weg.)`,opties,it[1],`Bij ${it[0]}: ${it[1]}.`); },
+    // 3. vermogen: P = E / Δt (met tijd in minuten)
+    ()=>{ const T=rnd([['een waterkoker',2000],['een stofzuiger',800],['een föhn',1200],['een microgolfoven',900]]); const min=ri(2,6); const E=T[1]*min*60;
+      rekenen(`${T[0][0].toUpperCase()+T[0].slice(1)} zet in ${min} minuten ${nl(E/1000)} kJ elektrische energie om. Bereken het vermogen.`, T[1],'W',
+        `Δt = ${min} min = ${min*60} s en E = ${nl(E/1000)} kJ = ${nl(E)} J.<br>P = E / Δt = ${nl(E)} J / ${min*60} s = ${nl(T[1])} W.`); },
+    // 4. energie: E = P · Δt
+    ()=>{ const P=rnd([8,20,60,100]); const T={8:'een ledlamp',20:'een gsm-lader',60:'een laptop',100:'een televisie'}[P]; const uur=ri(2,5); const E=P*uur*3600;
+      rekenen(`${T[0].toUpperCase()+T.slice(1)} van ${P} W staat ${uur} uur aan. Hoeveel energie zet het toestel om? Geef je antwoord in kJ.`, E/1000,'kJ',
+        `Δt = ${uur} h = ${uur} · 3600 s = ${nl(uur*3600)} s.<br>E = P · Δt = ${P} W · ${nl(uur*3600)} s = ${nl(E)} J = ${nl(E/1000)} kJ.`); },
+    // 5. tijd: Δt = E / P
+    ()=>{ const P=rnd([500,1000,1500,2000]); const s=ri(3,12)*30; const E=P*s;
+      rekenen(`Een toestel met een vermogen van ${nl(P)} W zet ${nl(E/1000)} kJ energie om. Hoe lang werkt het toestel? Geef je antwoord in seconden.`, s,'s',
+        `E = ${nl(E/1000)} kJ = ${nl(E)} J.<br>Δt = E / P = ${nl(E)} J / ${nl(P)} W = ${nl(s)} s.`); },
+    // 6. vermogen trap: P = m g h / Δt
+    ()=>{ const m=ri(8,16)*5, h=ri(2,5)*3, t=ri(8,25); const E=m*G*h, P=E/t;
+      rekenen(`Een leerling van ${m} kg loopt een trap van ${h} m hoog op in ${t} s. Bereken zijn vermogen.`, P,'W',
+        `E = m · g · h = ${m} kg · 9,81 N/kg · ${h} m = ${nl(E,1)} J.<br>P = E / Δt = ${nl(E,1)} J / ${t} s = ${nl(P,1)} W.`); },
+    // 7. rendement berekenen
+    ()=>{ const Ein=ri(4,20)*100, eta=rnd([5,20,25,30,40,60,80,90]); const En=Ein*eta/100;
+      const T=rnd(['een lamp','een motor','een toestel']);
+      rekenen(`${T[0].toUpperCase()+T.slice(1)} krijgt ${nl(Ein)} J elektrische energie en levert ${nl(En)} J nuttige energie. Bereken het rendement.`, eta,'%',
+        `η = E<sub>nuttig</sub> / E<sub>toegevoerd</sub> · 100 % = ${nl(En)} J / ${nl(Ein)} J · 100 % = ${eta} %.`); },
+    // 8. nuttige energie uit rendement
+    ()=>{ const Ein=ri(2,12)*500, eta=rnd([20,25,30,40,80,90]); const En=Ein*eta/100;
+      rekenen(`Een motor heeft een rendement van ${eta} %. Hij krijgt ${nl(Ein)} J energie toegevoerd. Hoeveel nuttige energie levert hij?`, En,'J',
+        `E<sub>nuttig</sub> = η · E<sub>toegevoerd</sub> = ${eta/100===1?1:nl(eta/100,2)} · ${nl(Ein)} J = ${nl(En)} J.<br>De rest, ${nl(Ein-En)} J, wordt thermische energie.`); },
+  ];
+  function nieuw(){ let i; do{ i=Math.floor(Math.random()*types.length); }while(i===vorige); vorige=i; types[i](); }
+  document.getElementById('s10-nieuw').onclick=nieuw;
+  nieuw();
+})();
+</script>
+</body>
+</html>
