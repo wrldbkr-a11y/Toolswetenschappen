@@ -327,25 +327,30 @@ footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-di
     </div>
   </section>
 
-  <section class="scene" id="s11" data-title="Schijnbare verhoging — vis in water" data-cat="breking">
-    <div class="scene-head"><span class="num">9</span><h3>Schijnbare verhoging van een vis in water</h3></div>
-    <p class="scene-sub">Twee lichtstralen vertrekken uit hetzelfde punt van de vis, breken aan het wateroppervlak (weg van de normaal, water is dichter dan lucht) en waaieren daardoor uit. Het oog vangt beide stralen op en verlengt ze in gedachten rechtdoor terug — die verlengden snijden elkaar in een punt dat <strong>hoger</strong> ligt dan de echte vis.</p>
+  <section class="scene" id="s11" data-title="Schijnbare verhoging — voorwerp in water" data-cat="breking">
+    <div class="scene-head"><span class="num">9</span><h3>Schijnbare verhoging van een voorwerp in water</h3></div>
+    <p class="scene-sub">Twee lichtstralen vertrekken uit hetzelfde punt V van het voorwerp, breken aan het wateroppervlak (weg van de normaal, water is dichter dan lucht) en waaieren daardoor uit. Het oog vangt beide stralen op en verlengt ze in gedachten rechtdoor terug — die verlengden snijden elkaar in een punt V' dat <strong>hoger</strong> ligt dan het echte punt V. Klik stap voor stap verder om de tekening op te bouwen.</p>
     <div class="grid">
       <div class="canvas-wrap"><canvas id="c11" width="800" height="480"></canvas></div>
       <div class="controls">
         <div class="ctrl-group">
-          <label>Diepte van de vis</label>
-          <input type="range" id="s11-depth" min="90" max="180" value="130">
+          <label>Diepte van het voorwerp</label>
+          <input type="range" id="s11-depth" min="90" max="200" value="160">
         </div>
         <div class="ctrl-group">
           <label>Positie van het oog (kijkhoek)</label>
-          <input type="range" id="s11-eyepos" min="20" max="100" value="55">
+          <input type="range" id="s11-eyepos" min="120" max="330" value="250">
+        </div>
+        <div class="ctrl-row">
+          <button class="playbtn" id="s11-next">Volgende stap →</button>
+          <button class="playbtn secondary" id="s11-reset">↻ Reset</button>
         </div>
         <div class="readout" id="s11-read"></div>
         <div class="legend">
-          <div class="row"><span class="sw" style="background:var(--amber)"></span>Straal 1</div>
-          <div class="row"><span class="sw" style="background:#8b5cf6"></span>Straal 2</div>
-          <div class="row"><span class="sw" style="background:var(--cyan2)"></span>Terugverlengde (stippellijn) → beeldpunt</div>
+          <div class="row"><span class="sw" style="background:#2233dd"></span>Straal 1</div>
+          <div class="row"><span class="sw" style="background:#dd1a1a"></span>Straal 2</div>
+          <div class="row"><span class="sw" style="background:#54687a;opacity:.7"></span>Terugverlengden (stippellijn) → schijnbaar punt V'</div>
+          <div class="row"><span class="sw" style="background:var(--normal);border-top:2px dashed var(--normal)"></span>Normaal in elk invalspunt</div>
         </div>
       </div>
     </div>
@@ -418,8 +423,60 @@ footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-di
   </section>
 
 
+  <section class="scene" id="s14" data-title="Regenboog — in één druppel" data-cat="toepassingen">
+    <div class="scene-head"><span class="num">13</span><h3>De regenboog: wat gebeurt er in één regendruppel?</h3></div>
+    <p class="scene-sub">Zonlicht dat in een regendruppel valt, doet drie dingen: ① het <strong>breekt</strong> bij het binnengaan (lucht → water, naar de normaal toe) en wordt daarbij in kleuren gesplitst, ② het wordt aan de achterkant van de druppel <strong>weerkaatst</strong>, ③ het <strong>breekt</strong> opnieuw bij het buitengaan (water → lucht, weg van de normaal). Door de weerkaatsing keert het licht terug naar de kant van de zon: daarom zie je een regenboog alleen met de <strong>zon in je rug</strong>.</p>
+    <div class="grid">
+      <div class="canvas-wrap"><canvas id="c14" width="800" height="480"></canvas></div>
+      <div class="controls">
+        <div class="ctrl-group">
+          <label>Waar treft de zonnestraal de druppel?</label>
+          <input type="range" id="s14-b" min="10" max="98" value="86">
+        </div>
+        <div class="readout" id="s14-read"></div>
+        <div class="note">Is de weerkaatsing achteraan <strong>totale weerkaatsing</strong>? <strong>Nee.</strong> De straal treft de achterkant altijd onder een hoek die <em>kleiner</em> is dan de grenshoek. Een deel van het licht gaat er dus door (stippellijn). Daarom is een regenboog nooit heel fel.</div>
+        <div class="legend">
+          <div class="row"><span class="sw" style="background:#e6b400"></span>Wit zonlicht</div>
+          <div class="row"><span class="sw" style="background:linear-gradient(90deg,#e8261c,#7a2bd6)"></span>Kleuren (rood → violet), verschil overdreven getekend</div>
+          <div class="row"><span class="sw" style="background:var(--normal);border-top:2px dashed var(--normal)"></span>Normaal (door het middelpunt van de druppel)</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene" id="s15" data-title="Regenboog — ieder zijn eigen" data-cat="toepassingen">
+    <div class="scene-head"><span class="num">14</span><h3>Iedereen ziet zijn eigen regenboog</h3></div>
+    <p class="scene-sub">Denk een lijn van de zon, door je hoofd, naar de <strong>schaduw van je hoofd</strong>. Druppels die <strong>42°</strong> boven die lijn hangen, sturen <strong>rood</strong> licht naar jouw oog; druppels op <strong>40°</strong> sturen <strong>violet</strong>. Je buur staat op een andere plaats, dus zijn lijn ligt anders: hij krijgt licht van <strong>andere druppels</strong> en ziet zijn <strong>eigen regenboog</strong>. Wandel je verder, dan wandelt de regenboog mee.</p>
+    <div class="grid">
+      <div class="canvas-wrap"><canvas id="c15" width="800" height="480"></canvas></div>
+      <div class="controls">
+        <div class="ctrl-group">
+          <label>Hoogte van de zon</label>
+          <input type="range" id="s15-sun" min="0" max="55" value="15">
+        </div>
+        <div class="ctrl-group">
+          <label>Waar staat je buur?</label>
+          <input type="range" id="s15-buur" min="60" max="300" value="170">
+        </div>
+        <div class="readout" id="s15-read"></div>
+        <div class="note"><strong>Proef met een tuinsproeier</strong><br>
+          1. Kies een zonnig moment met de zon laag (ochtend of late namiddag).<br>
+          2. Ga met de <strong>zon in je rug</strong> staan.<br>
+          3. Spuit een <strong>fijne nevel</strong> vóór je uit en zoek de regenboog.<br>
+          4. Stap opzij: de regenboog <strong>schuift mee</strong>.<br>
+          5. Laat een klasgenoot naast je staan en wijs allebei naar de regenboog: jullie wijzen naar <strong>andere druppels</strong>.</div>
+        <div class="legend">
+          <div class="row"><span class="sw" style="background:#e6b400"></span>Zonlicht</div>
+          <div class="row"><span class="sw" style="background:#e8261c"></span>Rood licht naar het oog (42°)</div>
+          <div class="row"><span class="sw" style="background:#7a2bd6"></span>Violet licht naar het oog (40°)</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
   <section class="scene" id="s10" data-title="Beeldvorming — bolle lens" data-cat="lenzen">
-    <div class="scene-head"><span class="num">13</span><h3>Beeldvorming bij een bolle lens</h3></div>
+    <div class="scene-head"><span class="num">15</span><h3>Beeldvorming bij een bolle lens</h3></div>
     <p class="scene-sub">Een bolle (convergerende) lens heeft twee brandpunten, F1 en F2, symmetrisch t.o.v. het optisch middelpunt O op de hoofdas. Verschuif het voorwerp en bekijk hoe het beeld verandert: reëel of virtueel, rechtop of omgekeerd, vergroot of verkleind.</p>
     <div class="grid">
       <div class="canvas-wrap"><canvas id="c10" width="800" height="480"></canvas></div>
@@ -441,6 +498,7 @@ footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-di
             <label class="row"><input type="checkbox" id="s10-r3" checked><span class="sw" style="background:#8b5cf6"></span>Straal 3 — door F1 → evenwijdig</label>
           </div>
         </div>
+        <div class="note" id="s10-uitleg"></div>
       </div>
     </div>
   </section>
@@ -1363,6 +1421,16 @@ function snellRefractDeg(n1,n2,i){
   let mode='principal';
   const rayChk={1:document.getElementById('s10-r1'),2:document.getElementById('s10-r2'),3:document.getElementById('s10-r3')};
   function toonStraal(k){ return rayChk[k].checked; }
+  const uitleg=document.getElementById('s10-uitleg');
+  const RAYCOL={1:'#ff8a1e',2:'#00d9b0',3:'#8b5cf6'};
+  // wat doet elke hoofdstraal? (straal 3 hangt af van de plaats van het voorwerp)
+  function straalTekst(k,D){
+    if(k===1) return {kort:'1: evenwijdig → door F2', lang:'<strong>Straal 1</strong> loopt <strong>evenwijdig met de hoofdas</strong>. Na de lens gaat hij <strong>door het brandpunt F2</strong>.'};
+    if(k===2) return {kort:'2: door O → rechtdoor', lang:'<strong>Straal 2</strong> gaat <strong>door het optisch middelpunt O</strong>. Hij gaat <strong>rechtdoor</strong>: hij wordt niet gebroken.'};
+    return D<1
+      ? {kort:'3: uit richting F1 → evenwijdig', lang:'<strong>Straal 3</strong> komt <strong>uit de richting van F1</strong>: zijn verlengde gaat door F1 (stippellijn). Na de lens loopt hij <strong>evenwijdig met de hoofdas</strong>.'}
+      : {kort:'3: door F1 → evenwijdig', lang:'<strong>Straal 3</strong> gaat <strong>door het brandpunt F1</strong>. Na de lens loopt hij <strong>evenwijdig met de hoofdas</strong>.'};
+  }
 
   function toC(x,y){ return {x:lensX+x, y:axisY-y}; }
 
@@ -1473,6 +1541,21 @@ function snellRefractDeg(n1,n2,i){
       }
     });
 
+    // voorwerp tussen F1 en de lens: toon dat straal 3 uit de richting van F1 komt
+    if(!atFocus && D<1 && toonStraal(3)){
+      const F1c=toC(-f,0), Tc=toC(xo,ho);
+      dashedSeg(F1c.x,F1c.y,Tc.x,Tc.y,'#8b5cf6',1.6,0.55);
+    }
+    // wat doet elke getoonde straal: korte notitie op het canvas + uitleg in het paneel
+    const getoond=[1,2,3].filter(k=>toonStraal(k) && !(k===3 && atFocus));
+    ctx.save(); ctx.font='600 13px Inter, sans-serif'; ctx.textAlign='left';
+    getoond.forEach((k,j)=>{ ctx.fillStyle=RAYCOL[k]; ctx.fillText(straalTekst(k,D).kort,18,28+j*20); });
+    ctx.restore();
+    uitleg.innerHTML = getoond.length
+      ? getoond.map(k=>`<span style="color:${RAYCOL[k]}">●</span> `+straalTekst(k,D).lang).join('<br>')
+        + (atFocus && toonStraal(3) ? '<br><span style="color:#8b5cf6">●</span> <strong>Straal 3</strong> bestaat hier niet: het voorwerp staat in F1.' : '')
+      : 'Zet een straal aan om te zien wat hij doet.';
+
     const PcBase=toC(xo,0), PcTip=toC(xo,ho);
     drawArrowObj(PcBase.x,PcBase.y,PcTip.y,'#1a2430',false,1);
     labelNear(PcTip.x,PcTip.y, atFocus? 'voorwerp (in F1)':'voorwerp');
@@ -1546,13 +1629,16 @@ function snellRefractDeg(n1,n2,i){
   requestAnimationFrame(loop);
 })();
 
-//////////////////// SCENE 11 — SCHIJNBARE VERHOGING VAN EEN VIS ////////////////////
+//////////////////// SCENE 11 — SCHIJNBARE VERHOGING VAN EEN VOORWERP ////////////////////
 (function(){
   const canvas=document.getElementById('c11'); const ctx=hiDPI(canvas);
   const W=canvas._lw,H=canvas._lh;
-  const waterY=H*0.4, originX=W*0.4, eyeHeight=115, n=1.33;
+  const waterY=H*0.4, originX=W*0.2, eyeHeight=150, n=1.33;
+  const C1='#2233dd', C2='#dd1a1a', BW=125, BH=24;
   const depthSlider=document.getElementById('s11-depth'), eyeSlider=document.getElementById('s11-eyepos'), read=document.getElementById('s11-read');
   const critAngle=Math.asin(1/n);
+  const nextBtn=document.getElementById('s11-next'), resetBtn=document.getElementById('s11-reset');
+  let step=0; // 0..4
 
   function solveX1(depth,he,xe){
     const xmax=depth*Math.tan(critAngle);
@@ -1573,7 +1659,7 @@ function snellRefractDeg(n1,n2,i){
 
   function geo(){
     const depth=+depthSlider.value, xe=+eyeSlider.value;
-    const pupilOffset=46; // breedte van de oogpupil: beide stralen worden hierop gemikt, niet op één punt
+    const pupilOffset=80; // breedte van de oogpupil: beide stralen worden hierop gemikt, niet op één punt
     const x1=solveX1(depth,eyeHeight,xe-pupilOffset/2);
     const x2=solveX1(depth,eyeHeight,xe+pupilOffset/2);
     const a1=anglesFor(x1,depth), a2=anglesFor(x2,depth);
@@ -1600,20 +1686,22 @@ function snellRefractDeg(n1,n2,i){
     ctx.fillText('oog', x, y+34*scale);
     ctx.restore();
   }
-  function drawFish(x,y,scale,facing){
-    ctx.save(); ctx.translate(x,y); ctx.scale(facing,1);
-    ctx.fillStyle='#ff8a1e'; ctx.shadowColor='#ff8a1e'; ctx.shadowBlur=0;
-    ctx.beginPath();
-    ctx.moveTo(-16*scale,0);
-    ctx.quadraticCurveTo(-4*scale,-10*scale,14*scale,0);
-    ctx.quadraticCurveTo(-4*scale,10*scale,-16*scale,0);
-    ctx.closePath(); ctx.fill();
-    ctx.beginPath();
-    ctx.moveTo(14*scale,0); ctx.lineTo(22*scale,-7*scale); ctx.lineTo(22*scale,7*scale); ctx.closePath(); ctx.fill();
-    ctx.fillStyle='#0c1119'; ctx.beginPath(); ctx.arc(-10*scale,-1*scale,1.6*scale,0,Math.PI*2); ctx.fill();
+  // voorwerp in het water, zoals in de cursustekening; punt V = linkerbovenhoek
+  function drawObject(P,ghost,label){
+    ctx.save();
+    if(ghost){ ctx.fillStyle='rgba(46,163,192,0.30)'; ctx.strokeStyle='#1d6e86'; ctx.setLineDash([6,4]); ctx.lineWidth=1.6; }
+    else { ctx.fillStyle='#2ea3c0'; ctx.strokeStyle='#1d6e86'; ctx.lineWidth=1.2; }
+    ctx.fillRect(P.x,P.y+3,BW,BH); ctx.strokeRect(P.x,P.y+3,BW,BH);
     ctx.restore();
-    ctx.save(); ctx.fillStyle='#54687a'; ctx.font='11px Inter, sans-serif'; ctx.textAlign='center';
-    ctx.fillText('vis (werkelijke positie)', x, y+22);
+    ctx.save(); ctx.fillStyle='#1a2430'; ctx.beginPath(); ctx.arc(P.x,P.y,3.6,0,Math.PI*2); ctx.fill();
+    ctx.font='700 15px Inter, sans-serif'; ctx.textAlign='right'; ctx.fillText(ghost?"V'":'V',P.x-7,P.y+5);
+    if(label){ ctx.font='11px Inter, sans-serif'; ctx.textAlign='center'; ctx.fillStyle=ghost?'#1d4f61':'#ffffff';
+      ctx.fillText(label,P.x+BW/2,ghost?P.y+BH+18:P.y+BH-1); }
+    ctx.restore();
+  }
+  function tag(x,y,text,bg){
+    ctx.save(); ctx.font='700 13px Inter, sans-serif'; const w=ctx.measureText(text).width+18;
+    ctx.fillStyle=bg; ctx.fillRect(x-w,y-15,w,22); ctx.fillStyle='#1a2430'; ctx.textAlign='center'; ctx.fillText(text,x-w/2,y+1);
     ctx.restore();
   }
 
@@ -1635,51 +1723,65 @@ function snellRefractDeg(n1,n2,i){
     // surface line
     ctx.save(); ctx.strokeStyle='rgba(139,190,255,0.6)'; ctx.lineWidth=2.5;
     ctx.beginPath(); ctx.moveTo(0,waterY); ctx.lineTo(W,waterY); ctx.stroke(); ctx.restore();
-    ctx.save(); ctx.font='12px Inter, sans-serif';
-    ctx.fillStyle='#2f6fae'; ctx.fillText('water (dicht, n ≈ 1,33)', 16, waterY+20);
-    ctx.fillStyle='#35424f'; ctx.fillText('lucht (ijl, n ≈ 1,0)', 16, waterY-12);
-    ctx.restore();
+    tag(W-14,waterY-14,'lucht','#e8f6fb');
+    tag(W-14,waterY+26,'water','#fff6c8');
 
     const F={x:originX,y:waterY+depth};
     const X1={x:originX+x1,y:waterY};
     const X2={x:originX+x2,y:waterY};
     const E={x:originX+xe,y:waterY-eyeHeight};
+    drawObject(F,false,step>=4?'echt voorwerp':'');
 
-    // normaal bij X1
-    dashedNormal(ctx,X1.x,X1.y,60,60);
-    labelStub(X1.x,X1.y-64,'normaal');
-
-    // ray 1 (amber): incident F->X1, refracted X1->near E
-    glowLine(ctx,F.x,F.y,X1.x,X1.y,'#ff8a1e',2.3,0.85,7);
+    // stap 0: invallende stralen in het water
+    glowLine(ctx,F.x,F.y,X1.x,X1.y,C1,2.3,0.9,7);
+    glowLine(ctx,F.x,F.y,X2.x,X2.y,C2,2.3,0.9,7);
     const out1={x:X1.x+Math.tan(a1.r)*eyeHeight*1.05, y:X1.y-eyeHeight*1.05};
-    glowLine(ctx,X1.x,X1.y,out1.x,out1.y,'#ff8a1e',2.3,0.85,7);
-
-    // ray 2 (rose): incident F->X2, refracted X2->near E
-    glowLine(ctx,F.x,F.y,X2.x,X2.y,'#8b5cf6',2.3,0.85,7);
     const out2={x:X2.x+Math.tan(a2.r)*eyeHeight*1.05, y:X2.y-eyeHeight*1.05};
-    glowLine(ctx,X2.x,X2.y,out2.x,out2.y,'#8b5cf6',2.3,0.85,7);
 
-    // dashed backward extensions -> apparent point
-    ctx.save(); ctx.strokeStyle='#00d9b0'; ctx.globalAlpha=0.55; ctx.setLineDash([6,5]); ctx.lineWidth=1.7;
-    ctx.beginPath(); ctx.moveTo(X1.x,X1.y); ctx.lineTo(apparentX,apparentY); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(X2.x,X2.y); ctx.lineTo(apparentX,apparentY); ctx.stroke();
-    ctx.restore();
-
-    // apparent point marker
-    dot(ctx,apparentX,apparentY,4,'#00d9b0',14);
-    ctx.save(); ctx.fillStyle='#0f8a7a'; ctx.font='11px Inter, sans-serif'; ctx.textAlign='center';
-    ctx.fillText('schijnbaar beeldpunt (lijkt hoger)', apparentX, apparentY-14);
-    ctx.restore();
+    // stap 1: normaal in elk invalspunt
+    if(step>=1){
+      dashedNormal(ctx,X1.x,X1.y,60,60);
+      dashedNormal(ctx,X2.x,X2.y,60,60);
+      labelStub((X1.x+X2.x)/2,X1.y-64,'normalen');
+    }
+    // stap 2: gebroken stralen (weg van de normaal)
+    if(step>=2){
+      glowLine(ctx,X1.x,X1.y,out1.x,out1.y,C1,2.3,0.9,7);
+      glowLine(ctx,X2.x,X2.y,out2.x,out2.y,C2,2.3,0.9,7);
+    }
+    // stap 3: terugverlengden -> schijnbaar beeldpunt
+    if(step>=3){
+      ctx.save(); ctx.setLineDash([6,5]); ctx.lineWidth=1.8; ctx.globalAlpha=0.85;
+      ctx.strokeStyle=C1; ctx.beginPath(); ctx.moveTo(X1.x,X1.y); ctx.lineTo(apparentX,apparentY); ctx.stroke();
+      ctx.strokeStyle=C2; ctx.beginPath(); ctx.moveTo(X2.x,X2.y); ctx.lineTo(apparentX,apparentY); ctx.stroke();
+      ctx.restore();
+      if(step<4){
+        ctx.save(); ctx.fillStyle='#1a2430'; ctx.beginPath(); ctx.arc(apparentX,apparentY,3.6,0,Math.PI*2); ctx.fill();
+        ctx.font='700 15px Inter, sans-serif'; ctx.textAlign='right'; ctx.fillText("V'",apparentX-7,apparentY+5); ctx.restore();
+      }
+    }
+    // stap 4: schijnbare vis
+    if(step>=4){
+      drawObject({x:apparentX,y:apparentY},true,'schijnbaar voorwerp');
+    }
 
     // vertical guide comparing real vs apparent depth
     ctx.save(); ctx.strokeStyle='rgba(26,36,48,0.22)'; ctx.setLineDash([3,4]); ctx.lineWidth=1;
     ctx.beginPath(); ctx.moveTo(F.x,waterY); ctx.lineTo(F.x,F.y); ctx.stroke();
     ctx.restore();
 
-    drawFish(F.x,F.y,1,1);
-    drawEyeLocal(E.x,E.y,3.1, Math.atan2(E.y-((out1.y+out2.y)/2), E.x-((out1.x+out2.x)/2))+Math.PI);
+    drawEyeLocal(E.x,E.y,2.2, Math.atan2(E.y-((out1.y+out2.y)/2), E.x-((out1.x+out2.x)/2))+Math.PI);
 
-    read.innerHTML = `<span class="k">echte diepte</span> <span class="v">${depth.toFixed(0)} (schematisch)</span><br>`+
+    const steps=[
+      'Stap 0 van 4 — twee lichtstralen vertrekken uit punt V naar het wateroppervlak',
+      'Stap 1 van 4 — teken de normaal in elk invalspunt',
+      'Stap 2 van 4 — water → lucht (dicht → ijl): de stralen breken weg van de normaal',
+      'Stap 3 van 4 — verleng de gebroken stralen naar achter (stippellijn) tot ze snijden',
+      'Stap 4 van 4 — teken in V\' het schijnbaar voorwerp: het lijkt hoger te liggen',
+    ];
+    if(step<3){ read.innerHTML = `<span class="v">${steps[step]}</span>`; return; }
+    read.innerHTML = `<span class="v">${steps[step]}</span><br>`+
+      `<span class="k">echte diepte</span> <span class="v">${depth.toFixed(0)} (schematisch)</span><br>`+
       `<span class="k">schijnbare diepte</span> <span class="v">${apparentDepth.toFixed(0)} (schematisch)</span><br>`+
       `<span class="k">verhouding schijnbaar/echt</span> <span class="v">${(apparentDepth/depth).toFixed(2)}</span><br>`+
       `<span class="k">1/n (paraxiale benadering)</span> <span class="v">${(1/n).toFixed(2)}</span><br>`+
@@ -1696,16 +1798,18 @@ function snellRefractDeg(n1,n2,i){
     const g=geo();
     const F={x:originX,y:waterY+g.depth}, X1={x:originX+g.x1,y:waterY};
     const out1={x:X1.x+Math.tan(g.a1.r)*eyeHeight*1.05, y:X1.y-eyeHeight*1.05};
-    return [F,X1,out1];
-  },230,'#ff8a1e',5,null,550);
+    return step>=2 ? [F,X1,out1] : [F,X1];
+  },230,C1,5,null,550);
   const trav2=makeTraveler(()=>{
     const g=geo();
     const F={x:originX,y:waterY+g.depth}, X2={x:originX+g.x2,y:waterY};
     const out2={x:X2.x+Math.tan(g.a2.r)*eyeHeight*1.05, y:X2.y-eyeHeight*1.05};
-    return [F,X2,out2];
-  },230,'#8b5cf6',5,null,650);
+    return step>=2 ? [F,X2,out2] : [F,X2];
+  },230,C2,5,null,650);
 
   [depthSlider,eyeSlider].forEach(el=>el.addEventListener('input',draw));
+  nextBtn.addEventListener('click',()=>{ step=Math.min(step+1,4); draw(); });
+  resetBtn.addEventListener('click',()=>{ step=0; draw(); });
 
   function loop(now){
     if(document.getElementById('s11').classList.contains('active')){
@@ -2059,6 +2163,251 @@ function snellRefractDeg(n1,n2,i){
       draw();
       if(step>=3) travelers.forEach(t=>t(now,ctx));
     }
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+})();
+
+//////////////////// SCENE 14 — REGENBOOG: ÉÉN DRUPPEL ////////////////////
+(function(){
+  const canvas=document.getElementById('c14'); const ctx=hiDPI(canvas);
+  const W=canvas._lw,H=canvas._lh;
+  const C={x:450,y:180}, R=145;
+  const slider=document.getElementById('s14-b'), read=document.getElementById('s14-read');
+  // getekend met overdreven kleurverschil; de uitlezing gebruikt echte waarden
+  const COLORS=[
+    {c:'#e8261c',n:1.330},{c:'#f7861c',n:1.342},{c:'#e0b000',n:1.354},
+    {c:'#2fa84f',n:1.366},{c:'#2a6fdb',n:1.378},{c:'#7a2bd6',n:1.390},
+  ];
+  const N_ROOD=1.331, N_VIOLET=1.343;
+
+  function refract(d,nrm,n1,n2){ // nrm wijst tegen d in
+    const cosi=-(d.x*nrm.x+d.y*nrm.y), eta=n1/n2, k=1-eta*eta*(1-cosi*cosi);
+    if(k<0) return null;
+    const c=eta*cosi-Math.sqrt(k);
+    return {x:eta*d.x+c*nrm.x, y:eta*d.y+c*nrm.y};
+  }
+  function reflect(d,nrm){ const p=d.x*nrm.x+d.y*nrm.y; return {x:d.x-2*p*nrm.x, y:d.y-2*p*nrm.y}; }
+  function nextHit(p,d){ // tweede snijpunt met de cirkel, p ligt op de cirkel
+    const t=-2*((p.x-C.x)*d.x+(p.y-C.y)*d.y);
+    return {x:p.x+t*d.x, y:p.y+t*d.y};
+  }
+  const out=(p)=>({x:(p.x-C.x)/R, y:(p.y-C.y)/R});
+
+  function geo(){
+    const b=+slider.value/100;
+    const P={x:C.x-Math.sqrt(1-b*b)*R, y:C.y-b*R};
+    const nP=out(P);
+    const paths=COLORS.map(col=>{
+      const d1=refract({x:1,y:0},nP,1,col.n);
+      const Q=nextHit(P,d1);
+      const d2=reflect(d1,out(Q));
+      const S=nextHit(Q,d2);
+      const nS=out(S);
+      const d3=refract(d2,{x:-nS.x,y:-nS.y},col.n,1);
+      return {...col,d1,Q,d2,S,d3};
+    });
+    const red=paths[0];
+    const nQ=out(red.Q);
+    const dt=refract(red.d1,{x:-nQ.x,y:-nQ.y},red.n,1); // deel dat achteraan doorgaat
+    return {b,P,paths,dt};
+  }
+  function real(b,n){
+    const i=Math.asin(b), r=Math.asin(b/n);
+    return {i:i/D2R, r:r/D2R, g:Math.asin(1/n)/D2R, th:(4*r-2*i)/D2R};
+  }
+  function marker(x,y,k){
+    ctx.save(); ctx.fillStyle='#1a2430'; ctx.beginPath(); ctx.arc(x,y,11,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle='#fff'; ctx.font='700 13px Inter, sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillText(k,x,y+0.5); ctx.restore();
+  }
+  function label(x,y,t,color='#54687a',align='center'){
+    ctx.save(); ctx.fillStyle=color; ctx.font='12px Inter, sans-serif'; ctx.textAlign=align; ctx.fillText(t,x,y); ctx.restore();
+  }
+  function radial(p,lenOut,lenIn){
+    const u=out(p);
+    ctx.save(); ctx.strokeStyle='#5a7086'; ctx.setLineDash([5,5]); ctx.lineWidth=1.3;
+    ctx.beginPath(); ctx.moveTo(p.x+u.x*lenOut,p.y+u.y*lenOut); ctx.lineTo(p.x-u.x*lenIn,p.y-u.y*lenIn); ctx.stroke();
+    ctx.restore();
+  }
+
+  function draw(){
+    const g=geo(); const {P,paths,dt}=g;
+    clear(ctx,W,H);
+    // druppel
+    ctx.save();
+    const gr=ctx.createRadialGradient(C.x-50,C.y-50,20,C.x,C.y,R);
+    gr.addColorStop(0,'rgba(200,228,255,0.55)'); gr.addColorStop(1,'rgba(94,167,234,0.30)');
+    ctx.fillStyle=gr; ctx.strokeStyle='rgba(70,130,185,0.8)'; ctx.lineWidth=2.5;
+    ctx.beginPath(); ctx.arc(C.x,C.y,R,0,Math.PI*2); ctx.fill(); ctx.stroke();
+    ctx.restore();
+    label(16,H-16,'regendruppel sterk vergroot · kleurverschil overdreven getekend','#54687a','left');
+
+    // wit zonlicht
+    glowLine(ctx,0,P.y,P.x,P.y,'#e6b400',5,0.9,8,true,0.5);
+    label(14,P.y-12,'wit zonlicht','#8a6a00','left');
+
+    // normalen
+    const red=paths[0];
+    radial(P,50,70); radial(red.Q,45,60); radial(red.S,50,70);
+
+    // deel dat achteraan doorgaat
+    if(dt){
+      ctx.save(); ctx.strokeStyle='#e8261c'; ctx.globalAlpha=0.45; ctx.setLineDash([4,5]); ctx.lineWidth=1.6;
+      ctx.beginPath(); ctx.moveTo(red.Q.x,red.Q.y); ctx.lineTo(red.Q.x+dt.x*110,red.Q.y+dt.y*110); ctx.stroke(); ctx.restore();
+      label(Math.min(red.Q.x+dt.x*110+4,W-112),red.Q.y+dt.y*110+16,'deel gaat door','#b0413a','left');
+    }
+
+    // kleuren
+    paths.forEach(p=>{
+      ctx.save(); ctx.strokeStyle=p.c; ctx.lineWidth=2; ctx.globalAlpha=0.9; ctx.lineCap='round';
+      ctx.beginPath(); ctx.moveTo(P.x,P.y); ctx.lineTo(p.Q.x,p.Q.y); ctx.lineTo(p.S.x,p.S.y); ctx.stroke(); ctx.restore();
+      if(p.d3) glowLine(ctx,p.S.x,p.S.y,p.S.x+p.d3.x*170,p.S.y+p.d3.y*170,p.c,2,0.9,6,true,0.6);
+    });
+    const vio=paths[paths.length-1];
+    if(red.d3) label(red.S.x+red.d3.x*175+18,red.S.y+red.d3.y*175+6,'rood','#e8261c','left');
+    if(vio.d3) label(vio.S.x+vio.d3.x*175-8,vio.S.y+vio.d3.y*175,'violet','#7a2bd6','right');
+
+    // hoek tussen uittredend rood licht en de richting naar de zon
+    const R0=real(g.b,N_ROOD), V0=real(g.b,N_VIOLET);
+    if(red.d3){
+      const S=red.S;
+      ctx.save(); ctx.strokeStyle='#8a6a00'; ctx.globalAlpha=0.6; ctx.setLineDash([3,4]); ctx.lineWidth=1.2;
+      ctx.beginPath(); ctx.moveTo(S.x,S.y); ctx.lineTo(S.x-150,S.y); ctx.stroke(); ctx.restore();
+      label(S.x-150,S.y-6,'naar de zon','#8a6a00','left');
+      const a0=Math.PI, a1=Math.atan2(red.d3.y,red.d3.x);
+      ctx.save(); ctx.strokeStyle='#e8261c'; ctx.lineWidth=1.5;
+      ctx.beginPath(); ctx.arc(S.x,S.y,60,a1,a0,false); ctx.stroke(); ctx.restore();
+      const am=(a0+a1)/2;
+      ctx.save(); ctx.fillStyle='#e8261c'; ctx.font='700 13px Inter, sans-serif'; ctx.textAlign='center';
+      ctx.fillText(R0.th.toFixed(0)+'°',S.x+Math.cos(am)*82,S.y+Math.sin(am)*82+4); ctx.restore();
+    }
+
+    // stappen
+    marker(P.x-22,P.y-24,'1');
+    const uQ=out(red.Q); marker(red.Q.x+uQ.x*28,red.Q.y+uQ.y*28-14,'2');
+    const uS=out(red.S); marker(red.S.x+uS.x*30+16,red.S.y+uS.y*30,'3');
+
+    const nearMax = Math.abs(g.b-0.86)<=0.03;
+    read.innerHTML =
+      `<span class="k">① invalshoek</span> <span class="v">${R0.i.toFixed(0)}°</span><br>`+
+      `<span class="k">② hoek achteraan (rood)</span> <span class="v">${R0.r.toFixed(0)}°</span><br>`+
+      `<span class="k">grenshoek water</span> <span class="v">${R0.g.toFixed(0)}°</span><br>`+
+      `<span class="ok">${R0.r.toFixed(0)}° &lt; ${R0.g.toFixed(0)}° → géén totale weerkaatsing</span><br>`+
+      `<span class="k">③ hoek met zonlicht</span> <span class="v">rood ${R0.th.toFixed(1)}° · violet ${V0.th.toFixed(1)}°</span><br>`+
+      (nearMax ? `<span class="ok">maximum bereikt: hier bundelt het licht → regenboog (rood 42°, violet 40°)</span>`
+               : `<span class="k">schuif naar ≈ 86 %: daar is de hoek maximaal (≈ 42°)</span>`);
+  }
+
+  const tR=makeTraveler(()=>{ const g=geo(), p=g.paths[0]; if(!p.d3) return null;
+    return [{x:0,y:g.P.y},g.P,p.Q,p.S,{x:p.S.x+p.d3.x*170,y:p.S.y+p.d3.y*170}]; },220,'#e8261c',5,null,500);
+  const tV=makeTraveler(()=>{ const g=geo(), p=g.paths[g.paths.length-1]; if(!p.d3) return null;
+    return [{x:0,y:g.P.y},g.P,p.Q,p.S,{x:p.S.x+p.d3.x*170,y:p.S.y+p.d3.y*170}]; },220,'#7a2bd6',5,null,700);
+  slider.addEventListener('input',draw);
+  function loop(now){
+    if(document.getElementById('s14').classList.contains('active')){ draw(); tR(now,ctx); tV(now,ctx); }
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+})();
+
+//////////////////// SCENE 15 — IEDEREEN ZIJN EIGEN REGENBOOG ////////////////////
+(function(){
+  const canvas=document.getElementById('c15'); const ctx=hiDPI(canvas);
+  const W=canvas._lw,H=canvas._lh;
+  const ground=420, xA=110, eyeUp=74, Dx=360, rainX=380;
+  const sunS=document.getElementById('s15-sun'), buurS=document.getElementById('s15-buur'), read=document.getElementById('s15-read');
+  const RED='#e8261c', VIO='#7a2bd6', SUN='#e6b400';
+
+  function person(x,color,name){
+    const hy=ground-eyeUp;
+    ctx.save(); ctx.strokeStyle=color; ctx.fillStyle=color; ctx.lineWidth=5; ctx.lineCap='round';
+    ctx.beginPath(); ctx.arc(x,hy,10,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(x,hy+10); ctx.lineTo(x,ground-28); ctx.lineTo(x-12,ground);
+    ctx.moveTo(x,ground-28); ctx.lineTo(x+12,ground); ctx.moveTo(x,hy+24); ctx.lineTo(x+14,hy+44); ctx.stroke();
+    ctx.font='700 13px Inter, sans-serif'; ctx.textAlign='center'; ctx.fillText(name,x,ground+22);
+    ctx.restore();
+    return {x:x+3,y:hy};
+  }
+  function observer(E,color,h){
+    const sd={x:Math.cos(h*D2R), y:Math.sin(h*D2R)};
+    // lijn naar de schaduw van je hoofd
+    let t=900; if(sd.y>0) t=Math.min(t,(ground-E.y)/sd.y);
+    ctx.save(); ctx.strokeStyle=color; ctx.globalAlpha=0.55; ctx.setLineDash([6,5]); ctx.lineWidth=1.4;
+    ctx.beginPath(); ctx.moveTo(E.x,E.y); ctx.lineTo(E.x+sd.x*t,E.y+sd.y*t); ctx.stroke(); ctx.restore();
+    const res={};
+    [[42,RED],[40,VIO]].forEach(([ang,c])=>{
+      const e=(ang-h)*D2R; // hoogte boven de horizon
+      let dx=Dx, y=E.y-Math.tan(e)*Dx, ok=true;
+      if(y>ground){ dx=(ground-E.y)/Math.tan(-e); y=ground; ok=false; }
+      const D={x:E.x+dx,y};
+      glowLine(ctx,D.x,D.y,E.x,E.y,c,2.2,ok?0.95:0.35,6,ok,0.5);
+      if(ok){
+        glowLine(ctx,D.x-sd.x*80,D.y-sd.y*80,D.x,D.y,SUN,2.2,0.9,6,true,0.6);
+        ctx.save(); ctx.fillStyle='rgba(191,224,255,0.95)'; ctx.strokeStyle=c; ctx.lineWidth=2.4;
+        ctx.beginPath(); ctx.arc(D.x,D.y,6.5,0,Math.PI*2); ctx.fill(); ctx.stroke(); ctx.restore();
+      }
+      res[ang]={D,ok,elev:ang-h,sd};
+    });
+    return res;
+  }
+  function geo(){ return {h:+sunS.value, xB:xA+ +buurS.value}; }
+
+  function draw(){
+    const {h,xB}=geo();
+    clear(ctx,W,H);
+    // grond en regen
+    ctx.fillStyle='#d3e6bb'; ctx.fillRect(0,ground,W,H-ground);
+    ctx.fillStyle='rgba(120,160,210,0.12)'; ctx.fillRect(rainX,20,W-rainX-10,ground-20);
+    ctx.save(); ctx.strokeStyle='rgba(110,150,200,0.45)'; ctx.lineWidth=1.2;
+    for(let k=0;k<120;k++){ const x=rainX+8+(k*67)%(W-rainX-26), y=30+(k*41)%(ground-60);
+      ctx.beginPath(); ctx.moveTo(x,y); ctx.lineTo(x-3,y+10); ctx.stroke(); }
+    ctx.restore();
+    ctx.save(); ctx.fillStyle='#4a6b8f'; ctx.font='12px Inter, sans-serif'; ctx.textAlign='right';
+    ctx.fillText('regendruppels',W-20,38); ctx.restore();
+    // zon + evenwijdig zonlicht
+    const sd={x:Math.cos(h*D2R), y:Math.sin(h*D2R)};
+    dot(ctx,40,52,22,'#ffd21f',0);
+    ctx.save(); ctx.fillStyle='#8a6a00'; ctx.font='700 13px Inter, sans-serif'; ctx.fillText('zon ('+h+'°)',70,40); ctx.restore();
+    [0,1].forEach(k=>{ const x0=60, y0=95+k*45; glowLine(ctx,x0,y0,x0+sd.x*190,y0+sd.y*190,SUN,2.4,0.85,6,true,0.85); });
+
+    const EA=person(xA,'#1a2430','jij');
+    const EB=person(xB,'#1f8a4c','je buur');
+    const A=observer(EA,'#1a2430',h);
+    const B=observer(EB,'#1f8a4c',h);
+
+    // hoek 42° bij 'jij'
+    if(A[42].ok){
+      const a0=h*D2R, a1=-(42-h)*D2R;
+      ctx.save(); ctx.strokeStyle=RED; ctx.lineWidth=1.5; ctx.beginPath(); ctx.arc(EA.x,EA.y,62,a1,a0,false); ctx.stroke();
+      const am=(a0+a1)/2; ctx.fillStyle=RED; ctx.font='700 13px Inter, sans-serif'; ctx.textAlign='center';
+      ctx.fillText('42°',EA.x+Math.cos(am)*80,EA.y+Math.sin(am)*80+4); ctx.restore();
+    }
+    ctx.save(); ctx.fillStyle='#54687a'; ctx.font='11px Inter, sans-serif';
+    if(A[42].ok){ ctx.textAlign='center';
+      ctx.fillText('druppels voor jou',A[42].D.x,A[42].D.y-14);
+      ctx.fillStyle='#1f8a4c'; ctx.fillText('druppels voor je buur',B[42].D.x,B[40].D.y+22); }
+    ctx.restore();
+
+    const elev=42-h;
+    read.innerHTML =
+      `<span class="k">rood zie je op</span> <span class="v">42° − ${h}° = ${Math.abs(elev)}° ${elev>=0?'boven':'onder'} de horizon</span><br>`+
+      `<span class="ok">jij en je buur kijken naar andere druppels → ieder zijn eigen regenboog</span>`+
+      (elev<0 ? `<br><span class="flag">Zon hoger dan 42°: in de lucht zie je geen regenboog.</span><br><span class="k">In nevel vlak vóór je (tuinsproeier) zie je hem wel: kijk naar beneden.</span>` : ``);
+  }
+
+  function trav(who,ang,color,delay){
+    return makeTraveler(()=>{
+      const {h,xB}=geo(); const x=who==='A'?xA:xB; const E={x:x+3,y:ground-eyeUp};
+      const sd={x:Math.cos(h*D2R), y:Math.sin(h*D2R)}; const e=(ang-h)*D2R;
+      const D={x:E.x+Dx, y:E.y-Math.tan(e)*Dx}; if(D.y>ground) return null;
+      return [{x:D.x-sd.x*80,y:D.y-sd.y*80},D,E];
+    },200,color,4.5,null,delay);
+  }
+  const travs=[trav('A',42,RED,500),trav('A',40,VIO,800),trav('B',42,RED,650),trav('B',40,VIO,950)];
+  [sunS,buurS].forEach(el=>el.addEventListener('input',draw));
+  function loop(now){
+    if(document.getElementById('s15').classList.contains('active')){ draw(); travs.forEach(t=>t(now,ctx)); }
     requestAnimationFrame(loop);
   }
   requestAnimationFrame(loop);
