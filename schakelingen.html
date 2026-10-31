@@ -161,7 +161,7 @@ footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-di
       <div class="canvas-wrap"><canvas id="c-ohm" width="800" height="380"></canvas></div>
       <div class="controls">
         <div class="ctrl-group"><label id="ohm-U-l">Spanning U</label><input type="range" id="ohm-U" min="0" max="12" step="0.5" value="6"></div>
-        <div class="ctrl-group"><label id="ohm-R-l">Weerstand R</label><input type="range" id="ohm-R" min="1" max="20" step="1" value="4"></div>
+        <div class="ctrl-group"><label id="ohm-R-l">Weerstand R</label><input type="range" id="ohm-R" min="0" max="8" step="1" value="2"></div>
         <div class="readout" id="ohm-read"></div>
         <div class="note"><strong>Omvormen:</strong> U = R · I &nbsp;·&nbsp; I = U / R &nbsp;·&nbsp; R = U / I.<br>In de U(I)-grafiek is R de richtingscoëfficiënt: hoe steiler de rechte, hoe groter R.</div>
       </div>
@@ -352,7 +352,7 @@ function sliders(div,ids,R,cb,pref){
   const Us=document.getElementById('ohm-U'), Rs=document.getElementById('ohm-R'), read=document.getElementById('ohm-read');
   function meter(x,y,t){ ctx.fillStyle='#fff'; ctx.strokeStyle='#1D2A36'; ctx.lineWidth=2.2; ctx.beginPath(); ctx.arc(x,y,17,0,7); ctx.fill(); ctx.stroke(); text(ctx,t,x,y+5,{weight:700,align:'center'}); }
   function draw(){
-    const U=+Us.value, R=+Rs.value, I=U/R;
+    const RV=[47,68,100,150,220,330,470,680,1000], U=+Us.value, R=RV[+Rs.value], I=U/R;
     document.getElementById('ohm-U-l').textContent='Spanning U = '+nl(U,1)+' V';
     document.getElementById('ohm-R-l').textContent='Weerstand R = '+R+' Ω';
     ctx.clearRect(0,0,W,H); ctx.fillStyle='#fff'; ctx.fillRect(0,0,W,H);
@@ -362,20 +362,20 @@ function sliders(div,ids,R,cb,pref){
     ctx.lineWidth=3; ctx.beginPath(); ctx.moveTo(175,270); ctx.lineTo(175,310); ctx.stroke(); ctx.lineWidth=6; ctx.beginPath(); ctx.moveTo(191,280); ctx.lineTo(191,300); ctx.stroke();
     ctx.fillStyle='#fff'; ctx.strokeStyle='#2F6FB0'; ctx.lineWidth=2.5; ctx.fillRect(190,78,80,24); ctx.strokeRect(190,78,80,24); text(ctx,'R',230,95,{weight:700,align:'center'});
     d(180,90,180,150); d(280,90,280,150); d(180,150,213,150); d(247,150,280,150); meter(230,150,'V');
-    text(ctx,nl(U,1)+' V',230,190,{weight:700,align:'center',color:'#B45309'}); text(ctx,nl(I)+' A',137,60,{weight:700,align:'center',color:'#1D4ED8'});
+    text(ctx,nl(U,1)+' V',230,190,{weight:700,align:'center',color:'#B45309'}); text(ctx,nl(I*1000,0)+' mA',137,60,{weight:700,align:'center',color:'#1D4ED8'});
     text(ctx,'U = '+nl(U,1)+' V',183,340,{weight:600,align:'center'});
-    if(I>0){ const L=Math.min(60,10+I*8); arrow(ctx,60,70,60+L,70,'#1D4ED8',2.5); }
+    if(I>0){ const L=Math.min(60,10+I*200); arrow(ctx,60,70,60+L,70,'#1D4ED8',2.5); }
     // grafiek U(I)
-    const gx=420,gy=320,gw=340,gh=270, Imax=12, Umax=12;
-    ctx.strokeStyle='#E2E8F0'; ctx.lineWidth=1; for(let i=0;i<=12;i+=2){ ctx.beginPath(); ctx.moveTo(gx+i/Imax*gw,gy); ctx.lineTo(gx+i/Imax*gw,gy-gh); ctx.stroke(); ctx.beginPath(); ctx.moveTo(gx,gy-i/Umax*gh); ctx.lineTo(gx+gw,gy-i/Umax*gh); ctx.stroke();
-      text(ctx,String(i),gx+i/Imax*gw,gy+16,{size:11,align:'center',color:'#51606E'}); text(ctx,String(i),gx-8,gy-i/Umax*gh+4,{size:11,align:'right',color:'#51606E'}); }
+    const gx=420,gy=320,gw=340,gh=270, Imax=0.3, Umax=12;
+    ctx.strokeStyle='#E2E8F0'; ctx.lineWidth=1; for(let i=0;i<=6;i++){ const ia=i*0.05, u=i*2; ctx.beginPath(); ctx.moveTo(gx+ia/Imax*gw,gy); ctx.lineTo(gx+ia/Imax*gw,gy-gh); ctx.stroke(); ctx.beginPath(); ctx.moveTo(gx,gy-u/Umax*gh); ctx.lineTo(gx+gw,gy-u/Umax*gh); ctx.stroke();
+      text(ctx,String(i*50),gx+ia/Imax*gw,gy+16,{size:11,align:'center',color:'#51606E'}); text(ctx,String(u),gx-8,gy-u/Umax*gh+4,{size:11,align:'right',color:'#51606E'}); }
     arrow(ctx,gx,gy,gx+gw+18,gy,'#1D2A36',1.6); arrow(ctx,gx,gy,gx,gy-gh-18,'#1D2A36',1.6);
-    text(ctx,'I (A)',gx+gw+14,gy+34,{size:12,weight:600,align:'center'}); text(ctx,'U (V)',gx,gy-gh-24,{size:12,weight:600,align:'center'});
+    text(ctx,'I (mA)',gx+gw+14,gy+34,{size:12,weight:600,align:'center'}); text(ctx,'U (V)',gx,gy-gh-24,{size:12,weight:600,align:'center'});
     const Iend=Math.min(Imax,Umax/R); ctx.strokeStyle='#2F6FB0'; ctx.lineWidth=2.5; ctx.beginPath(); ctx.moveTo(gx,gy); ctx.lineTo(gx+Iend/Imax*gw,gy-Iend*R/Umax*gh); ctx.stroke();
     const px=gx+Math.min(I,Imax)/Imax*gw, py=gy-U/Umax*gh; ctx.setLineDash([4,4]); ctx.strokeStyle='#94A3B8'; ctx.lineWidth=1.2; ctx.beginPath(); ctx.moveTo(px,gy); ctx.lineTo(px,py); ctx.lineTo(gx,py); ctx.stroke(); ctx.setLineDash([]);
     ctx.fillStyle='#dc2626'; ctx.beginPath(); ctx.arc(px,py,5,0,7); ctx.fill();
     text(ctx,'R = '+R+' Ω',gx+Iend/Imax*gw+6,gy-Iend*R/Umax*gh+(Iend>=Imax?14:-6),{size:12,weight:700,color:'#2F6FB0'});
-    read.innerHTML='I = U / R = '+nl(U,1)+' V / '+R+' Ω = <b>'+nl(I)+' A</b><br><span class="k">Dubbele spanning → dubbele stroom (zelfde R).</span>';
+    read.innerHTML='I = U / R = '+nl(U,1)+' V / '+R+' Ω = '+nl(I,4)+' A = <b>'+nl(I*1000,1)+' mA</b><br><span class="k">Dubbele spanning → dubbele stroom (zelfde R).</span>';
   }
   Us.oninput=Rs.oninput=draw; draw();
 })();
