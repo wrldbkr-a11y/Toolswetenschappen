@@ -412,6 +412,8 @@ td.ok-cel{background:var(--ok-bg);} td.fout-cel{background:var(--flag-bg);}
     </div>
     <h4 style="margin:22px 0 10px">Kringspieren en lengtespieren in de slokdarm</h4>
     <div class="canvas-wrap"><svg id="svg-slok" viewBox="0 0 900 470" style="display:block;width:100%;height:auto"></svg></div>
+    <h4 style="margin:18px 0 10px">Vergrootglas: één vaste plaats in de wand</h4>
+    <div class="canvas-wrap"><svg id="svg-slok-zoom" viewBox="0 0 900 330" style="display:block;width:100%;height:auto"></svg></div>
     <div class="grid" style="margin-top:14px;grid-template-columns:1fr 1fr">
       <div class="controls">
         <div class="ctrl-row"><button class="btn primary" id="slok-start">▶ Slikken</button><button class="btn" id="slok-pauze">⏸ Pauze</button></div>
@@ -1357,7 +1359,38 @@ $('gewrichten').innerHTML=[['schoudergewricht','kogelgewricht: bewegen in alle r
       for(let x=X0;x<X1;x+=6){ const a=f(x); h+=`<rect x="${x}" y="${y}" width="6.5" height="16" fill="${a>0.4?kl:kl0}" opacity="${0.3+0.7*a}"/>`; } };
     rij(330,'kringspieren',kring,'#b91c1c','#f3c4c4'); rij(390,'lengtespieren',lengte,'#1e40af','#c7d2fe');
     h+=`<g font-size="12" fill="#51606E"><text x="${X1}" y="322" text-anchor="end">donker = samengetrokken · licht = ontspannen</text><text x="${X0}" y="445">mond →</text><text x="${X1}" y="445" text-anchor="end">→ maag</text></g>`;
+    // vaste plaats markeren
+    const XZ=470, rz=r(XZ);
+    h+=`<circle cx="${XZ}" cy="${CY-rz-9}" r="17" fill="none" stroke="#d97706" stroke-width="3"/><circle cx="${XZ}" cy="${CY+rz+9}" r="17" fill="none" stroke="#d97706" stroke-width="3"/><path d="M${XZ+12},${CY+rz+21} l14,14" stroke="#d97706" stroke-width="4" stroke-linecap="round"/><text x="${XZ+30}" y="${CY+rz+52}" font-size="13" font-weight="700" fill="#b45309">vergrootglas</text>`;
     s.innerHTML=h;
+    // ----- vergrootglas -----
+    const c=kring(XZ), l=lengte(XZ), brokHier=Math.abs(p-XZ)<BR;
+    let fase=0; if(l>0.3) fase=1; else if(brokHier) fase=2; else if(c>0.3) fase=3; else if(p>XZ) fase=4;
+    const Lz=260*(1-0.28*l+0.1*c), Rz=Math.max(26,70*(1-0.55*c+0.25*l)), mx=230, my=165, xa=mx-Lz/2, xb=mx+Lz/2;
+    let z=`<rect width="900" height="330" fill="#fbfcfe"/>`;
+    // wand: buitenlaag lengtespieren, binnenlaag kringspieren
+    z+=`<path d="M${xa},${my-Rz-16} L${xb},${my-Rz-16} A14,${Rz+16} 0 0,1 ${xb},${my+Rz+16} L${xa},${my+Rz+16} A14,${Rz+16} 0 0,1 ${xa},${my-Rz-16}Z" fill="#fde7e2"/>`;
+    if(brokHier||fase===2) z+=`<ellipse cx="${mx+(XZ-p)*-1.2}" cy="${my}" rx="${Math.min(70,Rz)}" ry="${Math.max(10,Rz-8)}" fill="#a0723f" opacity=".85"/>`;
+    // lengtespiervezels
+    for(let k=0;k<7;k++){ const y=my-Rz-13+k*0; }
+    const lv=(y)=>{ z+=`<path d="M${xa},${y} L${xb},${y}" stroke="${l>0.3?'#1e3a8a':'#93a8d8'}" stroke-width="${3+5*l}" stroke-linecap="round"/>`;
+      for(let x=xa+8;x<xb-4;x+=10) z+=`<path d="M${x},${y-2} l4,4" stroke="#fff" stroke-width="1" opacity=".5"/>`; };
+    lv(my-Rz-12); lv(my-Rz-4); lv(my+Rz+4); lv(my+Rz+12);
+    // kringspieren
+    for(let k=0;k<5;k++){ const x=xa+Lz*(k+0.5)/5; z+=`<ellipse cx="${x}" cy="${my}" rx="${6+4*c}" ry="${Rz}" fill="none" stroke="${c>0.3?'#b91c1c':'#eba3a3'}" stroke-width="${3+6*c}"/>`; }
+    // pijlen
+    const pijl=(x1,y1,x2,y2,k)=>{ const a=Math.atan2(y2-y1,x2-x1); return `<path d="M${x1},${y1} L${x2},${y2}" stroke="${k}" stroke-width="3"/><path d="M${x2},${y2} l${-10*Math.cos(a-0.5)},${-10*Math.sin(a-0.5)} M${x2},${y2} l${-10*Math.cos(a+0.5)},${-10*Math.sin(a+0.5)}" stroke="${k}" stroke-width="3"/>`; };
+    if(fase===1){ z+=pijl(xa-50,my,xa-14,my,'#1e3a8a')+pijl(xb+50,my,xb+14,my,'#1e3a8a')+pijl(mx,my-Rz+18,mx,my-Rz-34,'#b91c1c')+pijl(mx,my+Rz-18,mx,my+Rz+34,'#b91c1c'); }
+    if(fase===3){ z+=pijl(mx,my-Rz-44,mx,my-Rz-6,'#b91c1c')+pijl(mx,my+Rz+44,mx,my+Rz+6,'#b91c1c')+pijl(xa-6,my,xa-46,my,'#1e3a8a')+pijl(xb+6,my,xb+46,my,'#1e3a8a'); }
+    const st=(t,y,kl,on)=>`<text x="${mx}" y="${y}" text-anchor="middle" font-size="14" font-weight="700" fill="${kl}">${t}</text>`;
+    z+=`<text x="${mx}" y="22" text-anchor="middle" font-size="14" font-weight="700" fill="#1e3a8a">lengtespieren: ${l>0.3?'trekken samen → korter':(fase===3?'ontspannen, worden uitgerekt':'ontspannen')}</text>`;
+    z+=`<text x="${mx}" y="318" text-anchor="middle" font-size="14" font-weight="700" fill="#b91c1c">kringspieren: ${c>0.3?'trekken samen → smaller':(fase===1?'ontspannen, worden uitgerekt':'ontspannen')}</text>`;
+    // stappen
+    const ST=['Rust: beide spierlagen ontspannen.','De brok komt eraan: de <b>lengtespieren trekken samen</b>. Dit stuk wordt korter en wijder. De ontspannen <b>kringspieren worden uitgerekt</b>.','De brok glijdt erdoor.','De brok is voorbij: de <b>kringspieren trekken samen</b>. Dit stuk wordt smal en duwt de brok verder. De ontspannen <b>lengtespieren worden uitgerekt</b>.','Rust: beide spierlagen weer ontspannen.'];
+    const kort=['rust','lengtespieren samen','brok passeert','kringspieren samen','rust'];
+    kort.forEach((t,i)=>{ const x=480+i*84, on=i===fase; z+=`<rect x="${x}" y="40" width="78" height="44" rx="8" fill="${on?'#fef3c7':'#f1f5f9'}" stroke="${on?'#d97706':'#cbd5e1'}" stroke-width="${on?2.5:1}"/><text x="${x+39}" y="${t.length>12?58:66}" text-anchor="middle" font-size="10.5" font-weight="${on?700:500}" fill="#1D2A36">${t.length>12?t.split(' ')[0]:t}</text>${t.length>12?`<text x="${x+39}" y="74" text-anchor="middle" font-size="10.5" font-weight="${on?700:500}" fill="#1D2A36">${t.split(' ').slice(1).join(' ')}</text>`:''}`; if(i<4) z+=`<path d="M${x+79},62 h4" stroke="#94a3b8" stroke-width="2"/>`; });
+    z+=`<foreignObject x="480" y="100" width="410" height="200"><div xmlns="http://www.w3.org/1999/xhtml" style="font:15px/1.55 Inter,sans-serif;color:#1D2A36">${ST[fase]}<br/><span style="color:#51606E;font-size:13.5px">Trekt de ene laag samen, dan ontspant de andere en wordt ze uitgerekt. Kringspieren en lengtespieren zijn <b>antagonisten</b>.</span></div></foreignObject>`;
+    $('svg-slok-zoom').innerHTML=z;
     read.innerHTML=(p<X0||p>X1)?'Klik op <b>Slikken</b> en volg de brok. Kijk naar de kleuren in de wand: <b style="color:#b91c1c">rood</b> zijn de kringspieren, <b style="color:#1e40af">blauw</b> de lengtespieren. Donker = samengetrokken.':
       '<b style="color:#b91c1c">Achter de brok:</b> de <b>kringspieren trekken samen</b> en de lengtespieren ontspannen. De slokdarm wordt daar <b>smal</b> en duwt de brok verder.<br><b style="color:#1e40af">Voor de brok:</b> de <b>lengtespieren trekken samen</b> en de kringspieren ontspannen. De slokdarm wordt daar <b>korter en wijder</b> (kijk naar de streepjes), zodat de brok erin kan.<br>Kringspieren en lengtespieren zijn <b>antagonisten</b>. Deze golf heet <b>peristaltiek</b> en gebeurt <b>onbewust</b>.';
   });
