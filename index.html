@@ -110,6 +110,9 @@ const TOOLS = [
   { vak:"Fysica", icoon:"krachten", jaren:[3], titel:"Krachten samenstellen en ontbinden",
     tekst:"Stap voor stap twee krachten samenstellen of een kracht ontbinden.",
     open:"krachten-construeren.html", bestand:"krachten-construeren.html" },
+  { vak:"Fysica", icoon:"beweging", jaren:[3], titel:"Traagheid, resulterende kracht en beweging",
+    tekst:"Wat is traagheid? Hoe bepaalt de resulterende kracht of iets sneller, trager of even snel beweegt?",
+    open:"krachten-beweging.html", bestand:"krachten-beweging.html" },
   { vak:"Fysica", icoon:"elektroscoop", jaren:[5], titel:"Elektrostatica",
     tekst:"De elektroscoop en hoe lading zich verdeelt over bollen.",
     open:"elektrostatica.html", bestand:"elektrostatica.html" },
@@ -190,6 +193,12 @@ const ICONEN = {
     <path d="M8 29 L26 17 L38 17" stroke-width="2.2"/>
     <text x="10.5" y="9" font-size="7" font-style="italic" font-family="Georgia,serif">v</text>
     <text x="41" y="47.5" font-size="7" font-style="italic" font-family="Georgia,serif">t</text>`,
+  /* blok op de grond met resulterende kracht en snelheidsstreepjes */
+  beweging: `<path d="M3 39 H45"/>
+    <rect x="13" y="22" width="17" height="17" rx="2" ${Z(.15)}/>
+    <rect x="13" y="22" width="17" height="17" rx="2"/>
+    <path d="M30 30.5 L44 30.5" stroke-width="2.4" ${A}/>
+    <path d="M3 26 H9 M5 32 H10" stroke-width="1.2" opacity=".55"/>`,
   /* parallellogram van krachten met resultante */
   krachten: `<path d="M8 40 L36 33 L42 12 L14 19 Z" ${Z(.08)}/>
     <path d="M36 33 L42 12 M14 19 L42 12" stroke-width="1" stroke-dasharray="2 2.5" opacity=".6"/>
