@@ -12,7 +12,7 @@
 :root{
   --bg:#EEF2F5; --paper:#FFFFFF; --ink:#1D2A36; --muted:#51606E; --line:#CBD5DE;
   color-scheme:light;
-  --fysica:#2F6FB0; --chemie:#2E8B57; --algemeen:#B7790F;
+  --fysica:#2F6FB0; --chemie:#2E8B57; --biologie:#5B8C2A; --algemeen:#B7790F;
   box-sizing:border-box;
   padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
 }
@@ -90,7 +90,8 @@ footer{margin-top:3rem; color:var(--muted); font-size:.9rem; max-width:40rem}
 const VAKKEN = [
   { naam: "Algemeen", kleur: "--algemeen", perJaar: false },  /* geen jaarkopjes, alles naast elkaar */
   { naam: "Fysica",   kleur: "--fysica" },
-  { naam: "Chemie",   kleur: "--chemie" }
+  { naam: "Chemie",   kleur: "--chemie" },
+  { naam: "Biologie", kleur: "--biologie" }
 ];
 
 const TOOLS = [
@@ -138,6 +139,9 @@ const TOOLS = [
     tekst:"Redeneren met formules en ze omvormen. Ook voorvoegsels en eenheden.",
     open:"formuleredeneertool.html", bestand:"formuleredeneertool.html" },
 
+  { vak:"Biologie", icoon:"blad", jaren:[3], titel:"Water, prikkels en reacties",
+    tekst:"Waterhuishouding van planten, homeostase en feedback, receptoren en het oog, spieren als effectoren.",
+    open:"biologie-prikkels.html", bestand:"biologie-prikkels.html" },
   { vak:"Chemie", icoon:"woorden", jaren:[3], titel:"Nieuwe woorden leren",
     tekst:"Leertips voor de chemiewoorden: lange woorden knippen, patronen en zinnen om mee te beginnen.",
     open:"chemie-woorden-leren.html", bestand:"chemie-woorden-leren.html" },
@@ -176,6 +180,9 @@ const DEFS = `<defs><marker id="PIJL" viewBox="0 0 10 10" refX="8.5" refY="5" ma
 const T = 'fill="currentColor" stroke="none"';           /* gevulde vorm */
 const Z = (o) => `fill="currentColor" stroke="none" opacity="${o}"`; /* zachte tint */
 const ICONEN = {
+  /* blad met nerven en een oog-achtige druppel */
+  blad: `<path d="M8 40 C8 18 24 6 42 6 C42 26 30 40 8 40Z" ${Z(.15)}/><path d="M8 40 C8 18 24 6 42 6 C42 26 30 40 8 40Z"/>
+    <path d="M8 40 L36 12 M17 31 L17 22 M24 24 L24 15 M17 31 L26 31 M24 24 L33 24" stroke-width="1.3"/>`,
   /* atoom: kern met elektronen op een schil */
   atoomlading: `<circle cx="24" cy="24" r="17" stroke-dasharray="3 3" opacity=".6"/>
     <circle cx="24" cy="24" r="6" ${Z(.25)}/><circle cx="24" cy="24" r="6"/>
