@@ -1360,7 +1360,7 @@ $('gewrichten').innerHTML=[['schoudergewricht','kogelgewricht: bewegen in alle r
     rij(330,'kringspieren',kring,'#b91c1c','#f3c4c4'); rij(390,'lengtespieren',lengte,'#1e40af','#c7d2fe');
     h+=`<g font-size="12" fill="#51606E"><text x="${X1}" y="322" text-anchor="end">donker = samengetrokken · licht = ontspannen</text><text x="${X0}" y="445">mond →</text><text x="${X1}" y="445" text-anchor="end">→ maag</text></g>`;
     // vaste plaats markeren
-    const XZ=470, rz=r(XZ);
+    const XZ=260, rz=r(XZ);
     h+=`<circle cx="${XZ}" cy="${CY-rz-9}" r="17" fill="none" stroke="#d97706" stroke-width="3"/><circle cx="${XZ}" cy="${CY+rz+9}" r="17" fill="none" stroke="#d97706" stroke-width="3"/><path d="M${XZ+12},${CY+rz+21} l14,14" stroke="#d97706" stroke-width="4" stroke-linecap="round"/><text x="${XZ+30}" y="${CY+rz+52}" font-size="13" font-weight="700" fill="#b45309">vergrootglas</text>`;
     s.innerHTML=h;
     // ----- vergrootglas -----
