@@ -113,6 +113,9 @@ const TOOLS = [
   { vak:"Fysica", icoon:"beweging", jaren:[3], titel:"Traagheid, resulterende kracht en beweging",
     tekst:"Wat is traagheid? Hoe bepaalt de resulterende kracht of iets sneller, trager of even snel beweegt?",
     open:"krachten-beweging.html", bestand:"krachten-beweging.html" },
+  { vak:"Fysica", icoon:"druk", jaren:[4], titel:"Druk",
+    tekst:"Druk bij vaste stoffen, gassen en vloeistoffen, het beginsel van Pascal en de archimedeskracht.",
+    open:"druk.html", bestand:"druk.html" },
   { vak:"Fysica", icoon:"energie", jaren:[4], titel:"Energie, vermogen en rendement",
     tekst:"Open, gesloten en geïsoleerde systemen, vormen van energie, energieomzettingen, vermogen en rendement.",
     open:"energie-vermogen.html", bestand:"energie-vermogen.html" },
@@ -202,6 +205,12 @@ const ICONEN = {
     <rect x="13" y="22" width="17" height="17" rx="2"/>
     <path d="M30 30.5 L44 30.5" stroke-width="2.4" ${A}/>
     <path d="M3 26 H9 M5 32 H10" stroke-width="1.2" opacity=".55"/>`,
+  /* vat met vloeistof en drukpijlen op een punt */
+  druk: `<path d="M8 10 V42 H40 V10"/>
+    <rect x="9" y="17" width="30" height="24" ${Z(.15)}/>
+    <path d="M9 17 H39" stroke-width="1" opacity=".6"/>
+    <circle cx="24" cy="30" r="2" ${T}/>
+    <path d="M24 21 V26.5 M24 39 V33.5 M15 30 H20.5 M33 30 H27.5" stroke-width="1.6"/>`,
   /* bliksemschicht in een batterij: energie */
   energie: `<rect x="6" y="14" width="32" height="22" rx="3" ${Z(.12)}/>
     <rect x="6" y="14" width="32" height="22" rx="3"/>

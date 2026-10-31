@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Druk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EEF2F5; --panel:#FFFFFF; --panel-2:#F5F8FB; --line:#D3DCE5;
+  --text:#1D2A36; --text-dim:#51606E;
+  --accent:#2F6FB0; --accent-dark:#245A91; --accent-soft:#E4EEF8;
+  --ok-text:#1F7A4A; --ok-bg:#E3F3E9; --flag-text:#B3362B; --flag-bg:#FBE6E3;
+  --energie:#d97706; --materie:#2563eb; --warmte:#dc2626;
+  --font:'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:var(--font);}
+body{-webkit-font-smoothing:antialiased;line-height:1.55;}
+.top{max-width:1180px;margin:0 auto;padding:36px 24px 0;}
+.top h1{font-size:2rem;font-weight:700;letter-spacing:-0.015em;margin:0 0 8px;}
+.top .intro{color:var(--text-dim);max-width:70ch;font-size:15px;line-height:1.6;margin:0;}
+.top .intro strong{color:var(--text);}
+nav{display:flex;flex-wrap:wrap;gap:8px;}
+.catnav{gap:4px;margin:22px 0 14px;border-bottom:1px solid var(--line);}
+.catnav button{font-family:var(--font);font-weight:500;font-size:15px;background:none;border:none;border-bottom:2px solid transparent;margin-bottom:-1px;color:var(--text-dim);padding:9px 14px;cursor:pointer;}
+.catnav button:hover{color:var(--text);}
+.catnav button.active{color:var(--text);font-weight:600;border-bottom-color:var(--accent);}
+#nav button{display:flex;align-items:center;gap:9px;font-family:var(--font);font-size:14px;font-weight:500;background:var(--panel);border:1px solid var(--line);color:var(--text-dim);padding:9px 14px 9px 10px;border-radius:10px;cursor:pointer;text-align:left;transition:border-color .15s, background .15s;}
+#nav button .nr{flex:none;min-width:24px;height:24px;border-radius:12px;padding:0 6px;display:inline-flex;align-items:center;justify-content:center;background:var(--accent-soft);color:var(--accent-dark);font-size:12px;font-weight:700;}
+#nav button:hover{border-color:var(--accent);color:var(--text);}
+#nav button.active{background:var(--accent-soft);border-color:var(--accent);color:var(--text);font-weight:600;}
+#nav button.active .nr{background:var(--accent);color:#fff;}
+main{max-width:1180px;margin:0 auto;padding:26px 24px 70px;}
+.scene{display:none;}
+.scene.active{display:block;animation:fade .25s ease;}
+@keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+.scene-head{display:flex;align-items:center;gap:10px;margin-bottom:4px;flex-wrap:wrap;}
+.scene-head .num{min-width:28px;height:28px;border-radius:14px;padding:0 7px;display:inline-flex;align-items:center;justify-content:center;background:var(--accent);color:#fff;font-size:13px;font-weight:700;}
+.scene-head h3{font-size:1.5rem;letter-spacing:-0.01em;margin:0;font-weight:700;}
+.scene-sub{color:var(--text-dim);font-size:15px;margin:4px 0 18px;max-width:75ch;line-height:1.55;}
+.scene-sub strong{color:var(--text);}
+.lpd{display:inline-block;font-size:12px;font-weight:600;color:var(--accent-dark);background:var(--accent-soft);padding:2px 8px;border-radius:999px;margin-left:4px;}
+.grid{display:grid;grid-template-columns:1fr 310px;gap:18px;align-items:start;}
+@media(max-width:860px){.grid{grid-template-columns:1fr;}}
+.canvas-wrap{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;}
+canvas{display:block;width:100%;height:auto;}
+.controls{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 16px 18px;display:flex;flex-direction:column;gap:14px;}
+.ctrl-group label{display:block;font-size:13px;font-weight:600;color:var(--text);margin-bottom:6px;}
+.ctrl-group input[type=range]{width:100%;accent-color:var(--accent);}
+.ctrl-group select{width:100%;font-family:var(--font);font-size:14px;padding:8px 9px;border:1px solid var(--line);border-radius:8px;background:#fff;}
+.ctrl-row{display:flex;gap:8px;flex-wrap:wrap;}
+.ctrl-row .btn{flex:1;}
+.btn{background:#fff;border:1px solid var(--line);color:var(--text);border-radius:8px;padding:9px 12px;font-family:var(--font);font-weight:600;font-size:14px;cursor:pointer;}
+.btn:hover{border-color:var(--accent);}
+.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent);}
+.btn.primary:hover{background:var(--accent-dark);border-color:var(--accent-dark);}
+.btn.on{background:var(--accent-soft);border-color:var(--accent);}
+.readout{background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:14px;line-height:1.75;font-variant-numeric:tabular-nums;}
+.readout .k{color:var(--text-dim);}
+.readout .v{color:var(--text);font-weight:600;}
+.readout .ok{color:var(--ok-text);font-weight:700;}
+.readout .flag{color:var(--flag-text);font-weight:700;}
+.note{background:var(--panel-2);border-left:4px solid var(--accent);border-radius:0 8px 8px 0;padding:10px 12px;font-size:14px;color:var(--text-dim);line-height:1.6;}
+.note strong{color:var(--text);}
+.formule{font-size:15px;font-weight:700;color:var(--text);background:#fff;border:1px solid var(--line);border-radius:8px;padding:8px 12px;text-align:center;}
+table.tab{border-collapse:collapse;width:100%;font-size:14px;}
+table.tab th,table.tab td{border:1px solid var(--line);padding:6px 8px;text-align:center;}
+table.tab th{background:var(--panel-2);font-weight:600;}
+table.tab td.ja{color:var(--ok-text);font-weight:700;}
+table.tab td.nee{color:var(--flag-text);font-weight:700;}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden;}
+.card svg{display:block;width:100%;height:auto;background:#fbfcfe;border-bottom:1px solid #E6ECF2;}
+.card .txt{padding:12px 16px 14px;}
+.card h4{margin:0 0 4px;font-size:1rem;font-weight:700;}
+.card p{margin:0;font-size:14px;color:var(--text-dim);line-height:1.55;}
+.card p b{color:var(--text);}
+.card .vb{margin-top:6px;font-size:13.5px;color:var(--text);}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;}
+.chips .btn{font-weight:500;}
+.keten{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:6px 0 4px;}
+.keten .vorm{padding:8px 12px;border-radius:10px;font-weight:700;font-size:14px;border:2px solid;}
+.keten .pijl{font-size:20px;color:var(--text-dim);}
+.oef{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px;}
+.oef-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px;}
+.score{font-size:14px;font-weight:600;color:var(--ok-text);background:var(--ok-bg);padding:3px 10px;border-radius:999px;}
+.opgave{font-size:16px;line-height:1.6;margin:4px 0 12px;}
+.keuzes{display:flex;flex-wrap:wrap;gap:8px;}
+.keuzes .btn{font-weight:500;}
+.btn.goed{background:var(--ok-bg);border-color:var(--ok-text);color:var(--ok-text);font-weight:700;}
+.btn.fout{background:var(--flag-bg);border-color:var(--flag-text);color:var(--flag-text);}
+.invul{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+.invul input{font-family:var(--font);font-size:16px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;width:180px;}
+.invul input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft);}
+.invul .eenheid{font-weight:600;}
+.feedback{margin-top:10px;font-size:14.5px;line-height:1.6;}
+.feedback.goed{color:var(--ok-text);}
+.feedback.fout{color:var(--flag-text);}
+.feedback .uitleg{color:var(--text);display:block;margin-top:4px;}
+.sort-lijst{display:flex;flex-direction:column;gap:10px;}
+.sort-item{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px;}
+.sort-item .wat{font-weight:600;}
+.sort-item .wat small{display:block;font-weight:400;color:var(--text-dim);}
+.sort-item .uitleg{flex-basis:100%;font-size:14px;color:var(--text);}
+footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-dim);font-size:12px;}
+.tag{display:inline-block;font-size:12px;font-weight:700;padding:2px 8px;border-radius:999px;margin-bottom:6px;background:var(--accent-soft);color:var(--accent-dark);}
+.tag.rood{background:var(--flag-bg);color:var(--flag-text);}
+.tag.groen{background:var(--ok-bg);color:var(--ok-text);}
+.sort-item .keuzes{flex-wrap:wrap;}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <h1>Druk</h1>
+  <p class="intro"><strong>Thema 1 · Druk (4de jaar).</strong> Druk bij vaste stoffen, gassen en vloeistoffen, en de archimedeskracht. Werk de tabbladen van links naar rechts af.</p>
+  <nav id="catnav" class="catnav"></nav>
+  <nav id="nav"></nav>
+</header>
+
+<main>
+
+  <!-- ================= VASTE STOFFEN ================= -->
+  <section class="scene" id="s1" data-title="Wat is druk?" data-cat="vast">
+    <div class="scene-head"><span class="num">1</span><h3>Druk bij vaste stoffen</h3></div>
+    <p class="scene-sub"><strong>Druk</strong> is de kracht per oppervlakte-eenheid. Dezelfde kracht op een <strong>kleinere oppervlakte</strong> geeft een <strong>grotere druk</strong>. Leg bakstenen op zacht zand en kijk hoe diep ze wegzakken.</p>
+    <div class="grid">
+      <div class="canvas-wrap"><canvas id="c1" width="800" height="420"></canvas></div>
+      <div class="controls">
+        <div class="formule">p = F / A &nbsp;&nbsp; [p] = N/m² = Pa (pascal)</div>
+        <div class="ctrl-group"><label>Welk vlak ligt op het zand?</label>
+          <div class="ctrl-row">
+            <button class="btn on" data-vlak="0">plat</button>
+            <button class="btn" data-vlak="1">op de zijkant</button>
+            <button class="btn" data-vlak="2">rechtop</button>
+          </div>
+        </div>
+        <div class="ctrl-group"><label id="s1-n-l"></label><input type="range" id="s1-n" min="1" max="3" step="1" value="1"></div>
+        <div class="readout" id="s1-read"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene" id="s2" data-title="Redeneren met druk" data-cat="vast">
+    <div class="scene-head"><span class="num">2</span><h3>Redeneren: wat gebeurt er met de druk?</h3></div>
+    <p class="scene-sub">Druk is <strong>recht evenredig</strong> met de kracht en <strong>omgekeerd evenredig</strong> met de oppervlakte. Kies hoe F en A veranderen en voorspel eerst zelf wat er met p gebeurt.</p>
+    <div class="grid">
+      <div class="canvas-wrap"><canvas id="c2" width="800" height="300"></canvas></div>
+      <div class="controls">
+        <div class="ctrl-group"><label>Kracht F wordt</label><select id="s2-f"></select></div>
+        <div class="ctrl-group"><label>Oppervlakte A wordt</label><select id="s2-a"></select></div>
+        <div class="readout" id="s2-read"></div>
+      </div>
+    </div>
+    <h3 style="margin:26px 0 10px;font-size:1.15rem">Drukverhogend of drukverlagend?</h3>
+    <div class="cards" id="s2-cards"></div>
+  </section>
+
+  <!-- ================= GASSEN ================= -->
+  <section class="scene" id="s3" data-title="Hoe ontstaat gasdruk?" data-cat="gas">
+    <div class="scene-head"><span class="num">3</span><h3>Hoe ontstaat druk in een gas?</h3></div>
+    <p class="scene-sub">Een gas bestaat uit deeltjes die snel en kriskras bewegen. Ze <strong>botsen</strong> voortdurend tegen de wand. Al die botsingen samen duwen op de wand: dat is de <strong>gasdruk</strong>.</p>
+    <div class="grid">
+      <div class="canvas-wrap"><canvas id="c3" width="800" height="420"></canvas></div>
+      <div class="controls">
+        <div class="ctrl-group"><label id="s3-t-l"></label><input type="range" id="s3-t" min="-50" max="200" step="10" value="20"></div>
+        <div class="ctrl-group"><label id="s3-v-l"></label><input type="range" id="s3-v" min="40" max="100" step="5" value="100"></div>
+        <div class="readout" id="s3-read"></div>
+        <div class="note"><strong>Warmer</strong> → de deeltjes bewegen sneller → ze botsen vaker en harder → <strong>hogere druk</strong>.<br><strong>Kleiner volume</strong> → de deeltjes botsen vaker tegen de wand → <strong>hogere druk</strong>.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene" id="s4" data-title="Luchtdruk" data-cat="gas">
+    <div class="scene-head"><span class="num">4</span><h3>Luchtdruk</h3></div>
+    <p class="scene-sub">De lucht boven ons drukt op alles: dat is de <strong>luchtdruk</strong> of <strong>atmosferische druk</strong>. Hoe <strong>hoger</strong> je komt, hoe minder lucht er boven je is, en hoe <strong>kleiner</strong> de luchtdruk. Ook het weer (hoge- en lagedrukgebied) en de temperatuur hebben invloed.</p>
+    <div class="grid">
+      <div class="canvas-wrap"><canvas id="c4" width="800" height="420"></canvas></div>
+      <div class="controls">
+        <div class="ctrl-group"><label id="s4-h-l"></label><input type="range" id="s4-h" min="0" max="8848" step="1" value="0"></div>
+        <div class="readout" id="s4-read"></div>
+        <div class="ctrl-group"><label id="s4-a-l"></label><input type="range" id="s4-a" min="5" max="100" step="5" value="20"></div>
+        <div class="readout" id="s4-read2"></div>
+      </div>
+    </div>
+    <h3 style="margin:26px 0 10px;font-size:1.15rem">Luchtdruk in het dagelijks leven</h3>
+    <div class="cards" id="s4-cards"></div>
+  </section>
+
+  <section class="scene" id="s5" data-title="Overdruk en onderdruk" data-cat="gas">
+    <div class="scene-head"><span class="num">5</span><h3>Gasdruk meten: overdruk en onderdruk</h3></div>
+    <p class="scene-sub">Luchtdruk meet je met een <strong>barometer</strong>, de druk van een gas in een vat met een <strong>manometer</strong>. De <strong>normdruk</strong> is <strong>1013 hPa = 101 325 Pa</strong>. Is de druk in een vat <strong>groter</strong> dan de luchtdruk, dan is er <strong>overdruk</strong>. Is ze <strong>kleiner</strong>, dan is er <strong>onderdruk</strong>.</p>
+    <div class="grid">
+      <div class="canvas-wrap"><canvas id="c5" width="800" height="380"></canvas></div>
+      <div class="controls">
+        <div class="ctrl-group"><label id="s5-p-l"></label><input type="range" id="s5-p" min="200" max="2500" step="50" value="1600"></div>
+        <div class="readout" id="s5-read"></div>
+        <div class="note">Een open U-buis-manometer vergelijkt de gasdruk met de luchtdruk. Het vloeistofniveau is <strong>lager</strong> aan de kant met de <strong>grootste</strong> druk.</div>
+      </div>
+    </div>
+    <h3 style="margin:26px 0 10px;font-size:1.15rem">Overdruk of onderdruk?</h3>
+    <div class="sort-lijst" id="s5-lijst"></div>
+  </section>
+
+  <!-- ================= VLOEISTOFFEN ================= -->
+  <section class="scene" id="s6" data-title="Hydrostatische druk" data-cat="vloei">
+    <div class="scene-head"><span class="num">6</span><h3>Hydrostatische druk</h3></div>
+    <p class="scene-sub">Een vloeistof drukt door haar eigen <strong>gewicht</strong> op alles wat erin zit: de <strong>hydrostatische druk</strong>. Ze hangt af van de <strong>massadichtheid ρ</strong>, de <strong>zwaarteveldsterkte g</strong> en de <strong>diepte h</strong>. Ze hangt <strong>niet</strong> af van de vorm van het vat of van de hoeveelheid vloeistof.</p>
+    <div class="grid">
+      <div class="canvas-wrap"><canvas id="c6" width="800" height="430"></canvas></div>
+      <div class="controls">
+        <div class="formule">p<sub>h</sub> = ρ · g · h</div>
+        <div class="ctrl-row">
+          <button class="btn on" data-v6="sonde">druksonde</button>
+          <button class="btn" data-v6="vorm">vorm van het vat</button>
+        </div>
+        <div class="ctrl-group"><label>Vloeistof</label><select id="s6-vl"></select></div>
+        <div class="ctrl-group"><label>Plaats</label><select id="s6-g"></select></div>
+        <div class="ctrl-group"><label id="s6-h-l"></label><input type="range" id="s6-h" min="0" max="100" step="5" value="50"></div>
+        <div class="readout" id="s6-read"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene" id="s7" data-title="Pascal en hydraulica" data-cat="vloei">
+    <div class="scene-head"><span class="num">7</span><h3>Beginsel van Pascal en het hydraulisch systeem</h3></div>
+    <p class="scene-sub"><strong>Beginsel van Pascal:</strong> een druk die je uitoefent op een ingesloten vloeistof, plant zich <strong>onverminderd</strong> en in <strong>alle richtingen</strong> voort. In een hydraulisch systeem is de druk dus overal even groot. Met een kleine kracht op een kleine zuiger maak je zo een grote kracht op een grote zuiger.</p>
+    <div class="grid">
+      <div class="canvas-wrap"><canvas id="c7" width="800" height="430"></canvas></div>
+      <div class="controls">
+        <div class="formule">F₁ / A₁ = F₂ / A₂</div>
+        <div class="ctrl-group"><label id="s7-f-l"></label><input type="range" id="s7-f" min="50" max="500" step="50" value="200"></div>
+        <div class="ctrl-group"><label id="s7-a1-l"></label><input type="range" id="s7-a1" min="5" max="40" step="5" value="10"></div>
+        <div class="ctrl-group"><label id="s7-a2-l"></label><input type="range" id="s7-a2" min="50" max="500" step="50" value="200"></div>
+        <div class="ctrl-row"><button class="btn primary" id="s7-duw">▼ Duw de kleine zuiger in</button><button class="btn" id="s7-reset">↻</button></div>
+        <div class="readout" id="s7-read"></div>
+        <div class="note">Je wint aan kracht, maar je verliest aan afstand: de grote zuiger stijgt <strong>veel minder</strong> dan de kleine zuiger daalt. Toepassingen: autokrik, remmen van een auto, graafmachine.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= ARCHIMEDES ================= -->
+  <section class="scene" id="s8" data-title="Waar komt de archimedeskracht vandaan?" data-cat="arch">
+    <div class="scene-head"><span class="num">8</span><h3>Waar komt de archimedeskracht vandaan?</h3></div>
+    <p class="scene-sub">Een voorwerp in een vloeistof krijgt van onder een <strong>grotere</strong> hydrostatische druk dan van boven, want onderaan is het dieper. De krachten opzij heffen elkaar op. Wat overblijft, is een kracht <strong>naar boven</strong>: de <strong>archimedeskracht F<sub>A</sub></strong>.</p>
+    <div class="grid">
+      <div class="canvas-wrap"><canvas id="c8" width="800" height="430"></canvas></div>
+      <div class="controls">
+        <div class="formule">F<sub>A</sub> = ρ<sub>vl</sub> · g · V<sub>ondergedompeld</sub></div>
+        <div class="ctrl-group"><label id="s8-d-l"></label><input type="range" id="s8-d" min="0" max="20" step="1" value="5"></div>
+        <div class="readout" id="s8-read"></div>
+        <div class="note"><strong>Kenmerken van de archimedeskracht:</strong><br>· aangrijpingspunt: in het zwaartepunt van de verplaatste vloeistof<br>· richting: verticaal<br>· zin: naar boven<br>· grootte: het gewicht van de verplaatste vloeistof, F<sub>A</sub> = ρ<sub>vl</sub> · g · V</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene" id="s9" data-title="Zinken, zweven, stijgen, drijven" data-cat="arch">
+    <div class="scene-head"><span class="num">9</span><h3>Zinken, zweven, stijgen of drijven?</h3></div>
+    <p class="scene-sub">Vergelijk de <strong>zwaartekracht F<sub>z</sub></strong> met de <strong>archimedeskracht F<sub>A</sub></strong> als het voorwerp helemaal onder water zit. Of: vergelijk de massadichtheid van het voorwerp met die van de vloeistof.</p>
+    <div class="grid">
+      <div class="canvas-wrap"><canvas id="c9" width="800" height="430"></canvas></div>
+      <div class="controls">
+        <div class="ctrl-group"><label>Voorwerp (V = 1,0 dm³)</label><select id="s9-st"></select></div>
+        <div class="ctrl-group"><label>Vloeistof</label><select id="s9-vl"></select></div>
+        <div class="ctrl-row"><button class="btn primary" id="s9-los">▶ Loslaten onder water</button></div>
+        <div class="readout" id="s9-read"></div>
+        <table class="tab">
+          <tr><th>F<sub>z</sub> &gt; F<sub>A</sub></th><td>zinken</td><td>ρ<sub>v</sub> &gt; ρ<sub>vl</sub></td></tr>
+          <tr><th>F<sub>z</sub> = F<sub>A</sub></th><td>zweven</td><td>ρ<sub>v</sub> = ρ<sub>vl</sub></td></tr>
+          <tr><th>F<sub>z</sub> &lt; F<sub>A</sub></th><td>stijgen, dan drijven</td><td>ρ<sub>v</sub> &lt; ρ<sub>vl</sub></td></tr>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene" id="s10" data-title="De vis en zijn zwemblaas" data-cat="arch">
+    <div class="scene-head"><span class="num">10</span><h3>Hoe kan een vis zinken, zweven of stijgen?</h3></div>
+    <p class="scene-sub">Een vis heeft een <strong>zwemblaas</strong> met gas. Pompt de vis meer gas in zijn zwemblaas, dan wordt zijn <strong>volume groter</strong> terwijl zijn massa (bijna) gelijk blijft. Dan wordt <strong>F<sub>A</sub> groter</strong>: de vis stijgt. Met minder gas wordt F<sub>A</sub> kleiner en zinkt hij.</p>
+    <div class="grid">
+      <div class="canvas-wrap"><canvas id="c10" width="800" height="400"></canvas></div>
+      <div class="controls">
+        <div class="ctrl-group"><label id="s10-b-l"></label><input type="range" id="s10-b" min="0" max="12" step="1" value="7"></div>
+        <div class="readout" id="s10-read"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene" id="s11" data-title="Archimedeskracht in gassen" data-cat="arch">
+    <div class="scene-head"><span class="num">11</span><h3>Archimedeskracht in gassen: de heteluchtballon</h3></div>
+    <p class="scene-sub">Ook in een <strong>gas</strong> krijgt een voorwerp een archimedeskracht: het gewicht van de verplaatste lucht. Warme lucht is <strong>minder dicht</strong> dan koude lucht. Verwarm je de lucht in de ballon, dan wordt de ballon lichter terwijl F<sub>A</sub> gelijk blijft.</p>
+    <div class="grid">
+      <div class="canvas-wrap"><canvas id="c11" width="800" height="430"></canvas></div>
+      <div class="controls">
+        <div class="formule">F<sub>A</sub> = ρ<sub>lucht</sub> · g · V<sub>ballon</sub></div>
+        <div class="ctrl-group"><label id="s11-t-l"></label><input type="range" id="s11-t" min="20" max="120" step="5" value="60"></div>
+        <div class="readout" id="s11-read"></div>
+        <div class="note">Ballon: V = 2500 m³, ballon + mand + passagiers: 600 kg. Buitenlucht: 20 °C, ρ = 1,20 kg/m³.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= OEFENEN ================= -->
+  <section class="scene" id="s12" data-title="Oefenen" data-cat="oefenen">
+    <div class="scene-head"><span class="num">12</span><h3>Oefenen</h3></div>
+    <p class="scene-sub">Gemengde opgaven over het hele thema. Gebruik g = 9,81 N/kg. Kies eventueel een onderdeel.</p>
+    <div class="chips" id="s12-chips"></div>
+    <div class="oef">
+      <div class="oef-head">
+        <div class="score" id="s12-score">0 / 0 juist</div>
+        <button class="btn primary" id="s12-nieuw">Nieuwe opgave →</button>
+      </div>
+      <div id="s12-q"></div>
+    </div>
+  </section>
+
+</main>
+
+<footer>gemaakt voor klasgebruik — fysica 4de jaar: druk</footer>
+
+<script>
+//////////////////// NAVIGATIE ////////////////////
+const scenes=[...document.querySelectorAll('.scene')];
+const nav=document.getElementById('nav'), catNav=document.getElementById('catnav');
+const categories=[
+  {id:'vast',label:'1 · Vaste stoffen'},
+  {id:'gas',label:'2 · Gassen'},
+  {id:'vloei',label:'3 · Vloeistoffen'},
+  {id:'arch',label:'4 · Archimedeskracht'},
+  {id:'oefenen',label:'Oefenen'},
+];
+let currentIndex=0, activeCat=scenes[0].dataset.cat;
+function renderCatNav(){ catNav.innerHTML=''; categories.forEach(cat=>{ const b=document.createElement('button'); b.textContent=cat.label; b.classList.toggle('active',cat.id===activeCat); b.addEventListener('click',()=>{ const i=scenes.findIndex(s=>s.dataset.cat===cat.id); if(i>=0) activate(i); }); catNav.appendChild(b); }); }
+function renderSectionNav(){ nav.innerHTML=''; scenes.forEach((sc,i)=>{ if(sc.dataset.cat!==activeCat) return; const b=document.createElement('button'); b.innerHTML='<span class="nr">'+(i+1)+'</span>'+sc.dataset.title; b.classList.toggle('active',i===currentIndex); b.addEventListener('click',()=>activate(i)); nav.appendChild(b); }); }
+function activate(i){ currentIndex=i; scenes.forEach((sc,j)=>sc.classList.toggle('active',j===i)); activeCat=scenes[i].dataset.cat; renderCatNav(); renderSectionNav(); }
+activate(0);
+const isActive=id=>document.getElementById(id).classList.contains('active');
+
+//////////////////// HULPFUNCTIES ////////////////////
+function hiDPI(canvas){ const dpr=window.devicePixelRatio||1, w=canvas.width, h=canvas.height; canvas.width=w*dpr; canvas.height=h*dpr; const ctx=canvas.getContext('2d'); ctx.scale(dpr,dpr); canvas._w=w; canvas._h=h; return ctx; }
+function arrow(ctx,x1,y1,x2,y2,color,width=4){
+  const len=Math.hypot(x2-x1,y2-y1); if(len<2) return;
+  const a=Math.atan2(y2-y1,x2-x1), hs=Math.min(14,4+width*2.2);
+  ctx.save(); ctx.strokeStyle=color; ctx.fillStyle=color; ctx.lineWidth=width; ctx.lineCap='round';
+  ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2-Math.cos(a)*hs*0.8,y2-Math.sin(a)*hs*0.8); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(x2,y2); ctx.lineTo(x2-hs*Math.cos(a-0.42),y2-hs*Math.sin(a-0.42)); ctx.lineTo(x2-hs*Math.cos(a+0.42),y2-hs*Math.sin(a+0.42)); ctx.closePath(); ctx.fill();
+  ctx.restore();
+}
+function text(ctx,t,x,y,{size=14,weight=500,color='#1D2A36',align='left'}={}){ ctx.save(); ctx.font=`${weight} ${size}px Inter, sans-serif`; ctx.fillStyle=color; ctx.textAlign=align; ctx.fillText(t,x,y); ctx.restore(); }
+function roundRect(ctx,x,y,w,h,r){ ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); }
+function nl(v,d=0){ const s=Math.abs(v).toFixed(d).split('.'); s[0]=s[0].replace(/\B(?=(\d{3})+(?!\d))/g,' '); return (v<0?'−':'')+s.join(','); }
+function loopFor(id,fn){ let last=performance.now(); (function lp(now){ const dt=Math.min(0.05,(now-last)/1000); last=now; if(isActive(id)) fn(dt); requestAnimationFrame(lp); })(last); }
+const G=9.81, PATM=101325;
+const VLOEISTOFFEN=[
+  {naam:'water',rho:1000,kleur:'rgba(59,130,246,0.35)'},
+  {naam:'zeewater',rho:1030,kleur:'rgba(14,116,144,0.38)'},
+  {naam:'spijsolie',rho:920,kleur:'rgba(234,179,8,0.40)'},
+  {naam:'alcohol',rho:790,kleur:'rgba(167,139,250,0.30)'},
+  {naam:'kwik',rho:13600,kleur:'rgba(148,163,184,0.75)'},
+];
+// SVG-hulp voor kaarten
+function sA(x1,y1,x2,y2,col,w=3.5){ const a=Math.atan2(y2-y1,x2-x1), s=10; const p1=[x2-s*Math.cos(a-0.42),y2-s*Math.sin(a-0.42)], p2=[x2-s*Math.cos(a+0.42),y2-s*Math.sin(a+0.42)];
+  return `<line x1="${x1}" y1="${y1}" x2="${x2-6*Math.cos(a)}" y2="${y2-6*Math.sin(a)}" stroke="${col}" stroke-width="${w}" stroke-linecap="round"/><polygon points="${x2},${y2} ${p1} ${p2}" fill="${col}"/>`; }
+const sT=(x,y,t,col='#1D2A36',size=13,anchor='middle',w=600)=>`<text x="${x}" y="${y}" fill="${col}" font-size="${size}" font-weight="${w}" text-anchor="${anchor}" font-family="Inter, sans-serif">${t}</text>`;
+const svgW=(inner,h=170)=>`<svg viewBox="0 0 300 ${h}" xmlns="http://www.w3.org/2000/svg">${inner}</svg>`;
+const kaart=(svg,tag,titel,tekst)=>`<div class="card">${svg}<div class="txt">${tag?`<span class="tag ${tag.cls||''}">${tag.t}</span>`:''}<h4>${titel}</h4><p>${tekst}</p></div></div>`;
+
+//////////////////// 1 — DRUK BIJ VASTE STOFFEN ////////////////////
+(function(){
+  const c=document.getElementById('c1'), ctx=hiDPI(c), W=c._w, H=c._h;
+  const nS=document.getElementById('s1-n'), read=document.getElementById('s1-read');
+  // baksteen 20 cm × 10 cm × 5 cm, 2 kg; w = breedte vooraanzicht, h = hoogte, d = diepte (cm)
+  const VLAKKEN=[{naam:'plat',w:20,h:5,d:10},{naam:'op de zijkant',w:20,h:10,d:5},{naam:'rechtop',w:10,h:20,d:5}];
+  let vlak=0, diepte=0;
+  document.querySelectorAll('[data-vlak]').forEach(b=>b.onclick=()=>{ vlak=+b.dataset.vlak; document.querySelectorAll('[data-vlak]').forEach(o=>o.classList.toggle('on',o===b)); diepte=0; });
+  nS.oninput=()=>{ diepte=0; };
+  const S=7, ZAND=310, PMAX=3*2*G/0.005;
+  function steen(x,y,v){ // x = linkeronderhoek vooraanzicht
+    const w=v.w*S, h=v.h*S, dx=v.d*S*0.45, dy=-v.d*S*0.35;
+    ctx.fillStyle='#b4532a'; ctx.strokeStyle='#7c2d12'; ctx.lineWidth=1.5;
+    ctx.fillRect(x,y-h,w,h); ctx.strokeRect(x,y-h,w,h);
+    ctx.fillStyle='#c96a3f'; ctx.beginPath(); ctx.moveTo(x,y-h); ctx.lineTo(x+dx,y-h+dy); ctx.lineTo(x+w+dx,y-h+dy); ctx.lineTo(x+w,y-h); ctx.closePath(); ctx.fill(); ctx.stroke();
+    ctx.fillStyle='#9a4522'; ctx.beginPath(); ctx.moveTo(x+w,y-h); ctx.lineTo(x+w+dx,y-h+dy); ctx.lineTo(x+w+dx,y+dy); ctx.lineTo(x+w,y); ctx.closePath(); ctx.fill(); ctx.stroke();
+    return h;
+  }
+  loopFor('s1',dt=>{
+    const v=VLAKKEN[vlak], n=+nS.value, A=v.w*v.d, F=n*2*G, p=F/(A/1e4);
+    const doel=p/PMAX*70; diepte+=(doel-diepte)*Math.min(1,dt*3);
+    document.getElementById('s1-n-l').textContent='Aantal bakstenen op elkaar: '+n+' (elk 2 kg)';
+    ctx.clearRect(0,0,W,H); ctx.fillStyle='#f3f7fb'; ctx.fillRect(0,0,W,H);
+    // zand
+    ctx.fillStyle='#e9d29a'; ctx.fillRect(0,ZAND,W,H-ZAND);
+    const w=v.w*S, x0=W/2-w/2, yb=ZAND+diepte;
+    ctx.fillStyle='#d9bd7a'; ctx.fillRect(x0,ZAND,w,diepte); // kuil
+    let y=yb; for(let i=0;i<n;i++){ y-=steen(x0,y,v); }
+    // bergjes zand naast de kuil
+    ctx.fillStyle='#e9d29a'; ctx.beginPath(); ctx.ellipse(x0-8,ZAND,14,diepte*0.25+1,0,Math.PI,0); ctx.fill(); ctx.beginPath(); ctx.ellipse(x0+w+8,ZAND,14,diepte*0.25+1,0,Math.PI,0); ctx.fill();
+    // kracht
+    arrow(ctx,W/2,y-60,W/2,y-8,'#2563eb',5); text(ctx,'F = '+nl(F,1)+' N',W/2+12,y-30,{size:15,weight:700,color:'#2563eb'});
+    // diepte-aanduiding
+    text(ctx,'indrukking in het zand',x0+w+40,ZAND+28,{size:12,color:'#7c5a1a'});
+    ctx.strokeStyle='#7c5a1a'; ctx.lineWidth=1.5; ctx.beginPath(); ctx.moveTo(x0+w+30,ZAND); ctx.lineTo(x0+w+30,yb); ctx.stroke();
+    text(ctx,'contactoppervlak: '+v.w+' cm × '+v.d+' cm = '+A+' cm²',20,30,{size:14,weight:600});
+    read.innerHTML=`<span class="k">A =</span> <span class="v">${A} cm² = ${nl(A/1e4,3)} m²</span><br>`+
+      `<span class="k">F = m · g =</span> <span class="v">${n*2} kg · 9,81 N/kg = ${nl(F,1)} N</span><br>`+
+      `<span class="k">p = F / A =</span> <span class="v">${nl(F,1)} N / ${nl(A/1e4,3)} m² = ${nl(p)} Pa</span><br>`+
+      `<span class="ok">${vlak===2?'Kleinste oppervlakte → grootste druk.':vlak===0?'Grootste oppervlakte → kleinste druk.':'Halve oppervlakte van plat → dubbele druk.'}</span>`;
+  });
+})();
+
+//////////////////// 2 — REDENEREN MET DRUK ////////////////////
+(function(){
+  const c=document.getElementById('c2'), ctx=hiDPI(c), W=c._w, H=c._h;
+  const fS=document.getElementById('s2-f'), aS=document.getElementById('s2-a'), read=document.getElementById('s2-read');
+  const F=[['3 keer zo klein',1/3],['2 keer zo klein',1/2],['niet anders',1],['2 keer zo groot',2],['3 keer zo groot',3],['4 keer zo groot',4]];
+  [fS,aS].forEach(s=>F.forEach(([t,v],i)=>{ const o=document.createElement('option'); o.value=i; o.textContent=t; s.appendChild(o); }));
+  fS.value=3; aS.value=2;
+  function breuk(x){ for(let d=1;d<=12;d++){ const n=Math.round(x*d); if(Math.abs(n/d-x)<1e-9) return d===1?String(n):n+'/'+d; } return nl(x,2); }
+  function beschrijf(x){ if(Math.abs(x-1)<1e-9) return 'blijft <b>gelijk</b>'; if(x>1) return 'wordt <b>'+breuk(x)+' keer zo groot</b>'; return 'wordt <b>'+breuk(1/x)+' keer zo klein</b>'; }
+  function blok(cx,fF,fA,titel){
+    const w=60*Math.sqrt(fA*2), y=230;
+    ctx.fillStyle='#e9d29a'; ctx.fillRect(cx-150,y,300,30);
+    ctx.fillStyle='#94a3b8'; ctx.fillRect(cx-w/2,y-60,w,60);
+    ctx.fillStyle='#2F6FB0'; ctx.fillRect(cx-w/2,y-4,w,4);
+    arrow(ctx,cx,y-70-40*fF,cx,y-66,'#2563eb',4);
+    text(ctx,titel,cx,28,{size:16,weight:700,align:'center'});
+    text(ctx,'blauw = contactoppervlak A',cx,y+48,{size:11,color:'#51606E',align:'center'});
+  }
+  function draw(){
+    const fF=F[+fS.value][1], fA=F[+aS.value][1], fp=fF/fA;
+    ctx.clearRect(0,0,W,H); ctx.fillStyle='#fbfcfe'; ctx.fillRect(0,0,W,H);
+    blok(200,1,1,'voor'); blok(600,fF,fA,'na');
+    text(ctx,'→',400,170,{size:40,align:'center',color:'#51606E'});
+    read.innerHTML=`<span class="k">F wordt ×${breuk(fF)}, A wordt ×${breuk(fA)}</span><br>`+
+      `<span class="k">p wordt ×${breuk(fF)} / ${breuk(fA)} = ×${breuk(fp)}</span><br>`+
+      `<span class="ok">De druk ${beschrijf(fp)}.</span>`;
+  }
+  fS.oninput=draw; aS.oninput=draw; draw();
+  const V='#dc2626', L='#16a34a';
+  document.getElementById('s2-cards').innerHTML=[
+    kaart(svgW(`<path d="M40 100 L230 80 L260 100 Z" fill="#cbd5e1" stroke="#475569" stroke-width="2"/><rect x="20" y="92" width="60" height="16" rx="5" fill="#7c2d12"/>`+sA(150,40,150,84,'#2563eb')+sT(150,130,'heel smalle snijkant','#51606E',12,'middle',500)),{t:'drukverhogend',cls:'rood'},'Een scherp mes','De snijkant heeft een <b>heel kleine oppervlakte</b>. Met een kleine kracht maak je zo een <b>grote druk</b>: het mes snijdt makkelijk.'),
+    kaart(svgW(`<rect x="110" y="40" width="80" height="16" rx="8" fill="#dc2626"/><path d="M146 56 L150 120 L154 56 Z" fill="#64748b"/><rect x="40" y="120" width="220" height="30" fill="#e7c9a0"/>`+sT(150,30,'brede kop: lage druk op je duim','#51606E',12,'middle',500)+sT(150,166,'scherpe punt: hoge druk','#51606E',12,'middle',500)),{t:'allebei',cls:''},'Een punaise','De <b>punt</b> is heel klein: <b>drukverhogend</b>, zodat ze in het hout gaat. De <b>brede kop</b> is <b>drukverlagend</b>, zodat je duim geen pijn doet.'),
+    kaart(svgW(`<rect x="0" y="120" width="300" height="50" fill="#f1f5f9"/><ellipse cx="150" cy="118" rx="80" ry="12" fill="#475569"/><rect x="138" y="40" width="24" height="76" rx="8" fill="#1d4ed8"/>`+sT(150,30,'grote oppervlakte','#51606E',12,'middle',500)),{t:'drukverlagend',cls:'groen'},'Sneeuwschoenen','Je gewicht wordt verdeeld over een <b>grote oppervlakte</b>. De druk op de sneeuw is klein, zodat je niet wegzakt.'),
+    kaart(svgW(`<rect x="0" y="130" width="300" height="40" fill="#a3866b"/><rect x="60" y="60" width="180" height="40" rx="6" fill="#ca8a04"/><rect x="40" y="100" width="220" height="30" rx="15" fill="#334155"/>`+[60,90,120,150,180,210,240].map(x=>`<circle cx="${x}" cy="115" r="9" fill="#94a3b8"/>`).join('')),{t:'drukverlagend',cls:'groen'},'Rupsbanden','Een zware graafmachine rijdt op <b>brede rupsbanden</b>. De grote oppervlakte maakt de druk op de grond klein, zodat de machine niet wegzakt in de modder.'),
+  ].join('');
+})();
+
+//////////////////// 3 — GASDRUK: DEELTJESMODEL ////////////////////
+(function(){
+  const c=document.getElementById('c3'), ctx=hiDPI(c), W=c._w, H=c._h;
+  const tS=document.getElementById('s3-t'), vS=document.getElementById('s3-v'), read=document.getElementById('s3-read');
+  const L=60, T=60, B=380, RMAX=560; let wandX=RMAX;
+  const N=70, deel=[];
+  for(let i=0;i<N;i++){ const a=Math.random()*Math.PI*2; deel.push({x:L+20+Math.random()*(RMAX-L-40),y:T+20+Math.random()*(B-T-40),dx:Math.cos(a),dy:Math.sin(a)}); }
+  let botsTeller=0, botsPerS=0, klok=0, flits=[];
+  loopFor('s3',dt=>{
+    const TC=+tS.value, TK=TC+273, V=+vS.value;
+    document.getElementById('s3-t-l').textContent='Temperatuur: '+TC+' °C';
+    document.getElementById('s3-v-l').textContent='Volume: '+V+' %';
+    const doelX=L+(RMAX-L)*V/100; wandX+=(doelX-wandX)*Math.min(1,dt*4);
+    const snel=60*Math.sqrt(TK/293)*2.2;
+    ctx.clearRect(0,0,W,H); ctx.fillStyle='#fbfcfe'; ctx.fillRect(0,0,W,H);
+    ctx.fillStyle='#eef4fb'; ctx.fillRect(L,T,wandX-L,B-T);
+    ctx.strokeStyle='#334155'; ctx.lineWidth=5; ctx.beginPath(); ctx.moveTo(wandX+30,T); ctx.lineTo(L,T); ctx.lineTo(L,B); ctx.lineTo(wandX+30,B); ctx.stroke();
+    // zuiger
+    ctx.fillStyle='#64748b'; ctx.fillRect(wandX,T+3,16,B-T-6); ctx.fillRect(wandX+16,(T+B)/2-8,W-wandX-60,16);
+    text(ctx,'zuiger',wandX+40,(T+B)/2-16,{size:12,color:'#51606E'});
+    deel.forEach(d=>{
+      d.x+=d.dx*snel*dt; d.y+=d.dy*snel*dt;
+      const r=5;
+      if(d.x<L+r){ d.x=L+r; d.dx=Math.abs(d.dx); botsTeller++; flits.push({x:L,y:d.y,t:0.15}); }
+      if(d.x>wandX-r){ d.x=wandX-r; d.dx=-Math.abs(d.dx); botsTeller++; flits.push({x:wandX,y:d.y,t:0.15}); }
+      if(d.y<T+r){ d.y=T+r; d.dy=Math.abs(d.dy); botsTeller++; flits.push({x:d.x,y:T,t:0.15}); }
+      if(d.y>B-r){ d.y=B-r; d.dy=-Math.abs(d.dy); botsTeller++; flits.push({x:d.x,y:B,t:0.15}); }
+      ctx.fillStyle='#2563eb'; ctx.beginPath(); ctx.arc(d.x,d.y,5,0,Math.PI*2); ctx.fill();
+    });
+    flits.forEach(f=>{ f.t-=dt; ctx.fillStyle=`rgba(220,38,38,${Math.max(0,f.t/0.15)})`; ctx.beginPath(); ctx.arc(f.x,f.y,7,0,Math.PI*2); ctx.fill(); });
+    flits=flits.filter(f=>f.t>0);
+    klok+=dt; if(klok>=1){ botsPerS=botsTeller/klok; botsTeller=0; klok=0; }
+    // drukmeter (relatief t.o.v. 20 °C en 100 %)
+    const prel=(TK/293)*(100/V);
+    const mx=700, my=150, R=55;
+    ctx.fillStyle='#fff'; ctx.strokeStyle='#334155'; ctx.lineWidth=3; ctx.beginPath(); ctx.arc(mx,my,R,0,Math.PI*2); ctx.fill(); ctx.stroke();
+    for(let k=0;k<=4;k++){ const a=Math.PI*0.75+k/4*Math.PI*1.5; ctx.beginPath(); ctx.moveTo(mx+Math.cos(a)*(R-4),my+Math.sin(a)*(R-4)); ctx.lineTo(mx+Math.cos(a)*(R-12),my+Math.sin(a)*(R-12)); ctx.stroke(); }
+    const a=Math.PI*0.75+Math.min(prel/4,1)*Math.PI*1.5;
+    ctx.strokeStyle='#dc2626'; ctx.beginPath(); ctx.moveTo(mx,my); ctx.lineTo(mx+Math.cos(a)*(R-14),my+Math.sin(a)*(R-14)); ctx.stroke();
+    text(ctx,'druk',mx,my+R+20,{size:13,weight:700,align:'center'});
+    text(ctx,'× '+nl(prel,2),mx,my+R+40,{size:15,weight:700,align:'center',color:'#dc2626'});
+    text(ctx,'rode flitsjes = botsingen tegen de wand',20,30,{size:13,color:'#51606E'});
+    read.innerHTML=`<span class="k">botsingen tegen de wand:</span> <span class="v">± ${nl(botsPerS)} per seconde</span><br>`+
+      `<span class="k">druk t.o.v. 20 °C en 100 %:</span> <span class="v">× ${nl(prel,2)}</span><br>`+
+      `<span class="k">(T in kelvin: ${TK} K / 293 K · 100 % / ${V} %)</span>`;
+  });
+})();
+
+//////////////////// 4 — LUCHTDRUK ////////////////////
+(function(){
+  const c=document.getElementById('c4'), ctx=hiDPI(c), W=c._w, H=c._h;
+  const hS=document.getElementById('s4-h'), aS=document.getElementById('s4-a');
+  const pVan=h=>101325*Math.pow(1-2.25577e-5*h,5.25588); // standaardatmosfeer
+  const yVan=h=>390-h/8848*320;
+  loopFor('s4',()=>{
+    const h=+hS.value, p=pVan(h);
+    document.getElementById('s4-h-l').textContent='Hoogte: '+nl(h)+' m';
+    ctx.clearRect(0,0,W,H);
+    const g=ctx.createLinearGradient(0,0,0,H); g.addColorStop(0,'#c7dcf3'); g.addColorStop(1,'#eef5fc'); ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+    // luchtdeeltjes: dichter bij de grond
+    for(let k=0;k<260;k++){ const x=(k*97)%W, hh=-8400*Math.log(1-((k*0.6180339)%1)*0.97); if(hh>9500) continue; const y=yVan(hh)+((k*37)%9); ctx.fillStyle='rgba(37,99,235,0.35)'; ctx.beginPath(); ctx.arc(x,y,2.2,0,Math.PI*2); ctx.fill(); }
+    // berg
+    ctx.fillStyle='#8a9a7b'; ctx.beginPath(); ctx.moveTo(60,H); ctx.lineTo(60,390); ctx.lineTo(250,250); ctx.lineTo(330,yVan(8848)); ctx.lineTo(420,180); ctx.lineTo(560,390); ctx.lineTo(560,H); ctx.closePath(); ctx.fill();
+    ctx.fillStyle='#fff'; ctx.beginPath(); ctx.moveTo(305,yVan(7400)); ctx.lineTo(330,yVan(8848)); ctx.lineTo(352,yVan(7600)); ctx.closePath(); ctx.fill();
+    ctx.fillStyle='#6b7f5c'; ctx.fillRect(0,390,W,H-390);
+    // referenties
+    [[0,'zeeniveau'],[694,'Signaal van Botrange (694 m)'],[4808,'Mont Blanc (4808 m)'],[8848,'Mount Everest (8848 m)']].forEach(([hh,t])=>{ const y=yVan(hh); ctx.strokeStyle='rgba(29,42,54,0.25)'; ctx.setLineDash([4,5]); ctx.beginPath(); ctx.moveTo(560,y); ctx.lineTo(W-10,y); ctx.stroke(); ctx.setLineDash([]); text(ctx,t,W-12,y-5,{size:11,color:'#51606E',align:'right'}); });
+    // klimmer
+    const y=yVan(h); ctx.fillStyle='#dc2626'; ctx.beginPath(); ctx.arc(600,y,9,0,Math.PI*2); ctx.fill();
+    ctx.strokeStyle='#dc2626'; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(560,y); ctx.lineTo(620,y); ctx.stroke();
+    // barometer
+    const bx=130, by=110, R=56;
+    ctx.fillStyle='#fff'; ctx.strokeStyle='#334155'; ctx.lineWidth=3; ctx.beginPath(); ctx.arc(bx,by,R,0,Math.PI*2); ctx.fill(); ctx.stroke();
+    const frac=(p-25000)/(105000-25000), a=Math.PI*0.75+frac*Math.PI*1.5;
+    ctx.strokeStyle='#dc2626'; ctx.beginPath(); ctx.moveTo(bx,by); ctx.lineTo(bx+Math.cos(a)*(R-12),by+Math.sin(a)*(R-12)); ctx.stroke();
+    text(ctx,nl(p/100)+' hPa',bx,by+R+22,{size:16,weight:700,align:'center'});
+    text(ctx,'barometer',bx,by-R-8,{size:12,color:'#51606E',align:'center'});
+    document.getElementById('s4-read').innerHTML=`<span class="k">luchtdruk op ${nl(h)} m:</span> <span class="v">${nl(p/100)} hPa = ${nl(p)} Pa</span><br><span class="k">dat is</span> <span class="v">${nl(p/PATM*100)} %</span> <span class="k">van de normdruk (benadering)</span>`;
+    const A=+aS.value, F=PATM*A/1e4;
+    document.getElementById('s4-a-l').textContent='Kracht door de luchtdruk op een zuignap van '+A+' cm²';
+    document.getElementById('s4-read2').innerHTML=`<span class="k">F = p · A =</span> <span class="v">101 325 Pa · ${nl(A/1e4,4)} m² = ${nl(F)} N</span><br><span class="k">Dat is evenveel als het gewicht van ± ${nl(F/G)} kg!</span>`;
+  });
+  document.getElementById('s4-cards').innerHTML=[
+    kaart(svgW(`<path d="M110 20 L190 20 L185 110 L115 110 Z" fill="rgba(59,130,246,0.35)" stroke="#334155" stroke-width="3"/><rect x="100" y="110" width="100" height="5" fill="#f59e0b"/>`+sA(150,165,150,120,'#dc2626')+sT(205,150,'luchtdruk','#dc2626',13,'start')),null,'Kaartje onder een omgekeerd glas','Vul een glas helemaal met water, leg er een kaartje op en draai om. De <b>luchtdruk</b> duwt van onder tegen het kaartje (± 101 000 Pa). Het water duwt van boven veel minder hard (± 1000 Pa). Het kaartje blijft hangen.'),
+    kaart(svgW(`<rect x="230" y="10" width="20" height="150" fill="#cbd5e1"/><path d="M228 40 Q170 85 228 130 Z" fill="#fca5a5" stroke="#dc2626" stroke-width="2"/><rect x="150" y="78" width="40" height="14" rx="6" fill="#dc2626"/>`+sA(80,60,165,72,'#2563eb')+sA(80,110,165,98,'#2563eb')+sT(60,90,'luchtdruk','#2563eb',13,'middle')+sT(210,88,'lage','#dc2626',11)+sT(210,100,'druk','#dc2626',11)),null,'Een zuignap','Je duwt de lucht onder de zuignap weg. Daar is nu een <b>lage druk (onderdruk)</b>. De luchtdruk aan de buitenkant is veel groter en <b>duwt de zuignap vast</b> tegen de muur.'),
+    kaart(svgW(`<rect x="0" y="0" width="300" height="170" fill="#eef5fc"/><path d="M40 160 L150 30 L260 160 Z" fill="#8a9a7b"/><path d="M130 54 L150 30 L170 54 Z" fill="#fff"/>`+sT(150,22,'minder lucht boven je','#51606E',12,'middle',500)),null,'Hoogte en weer','Hoe <b>hoger</b> je komt, hoe <b>minder lucht</b> boven je en hoe <b>lager</b> de luchtdruk. De luchtdruk hangt ook af van het <b>weer</b> (hogedruk- en lagedrukgebieden) en van de <b>temperatuur</b>.'),
+    kaart(svgW(`<rect x="110" y="40" width="80" height="110" rx="14" fill="rgba(59,130,246,0.15)" stroke="#334155" stroke-width="3"/><rect x="130" y="24" width="40" height="18" rx="4" fill="#334155"/>`+[0,1,2,3,4,5,6,7].map(i=>`<circle cx="${125+(i%4)*17}" cy="${65+Math.floor(i/4)*45+(i%2)*12}" r="5" fill="#2563eb"/>`).join('')+sT(240,90,'warm','#dc2626',14,'middle',700)),null,'Een gesloten fles in de zon','De lucht in de fles wordt warmer. De deeltjes bewegen sneller en botsen <b>harder en vaker</b> tegen de wand. De druk in de fles stijgt.'),
+  ].join('');
+})();
+
+//////////////////// 5 — OVERDRUK EN ONDERDRUK ////////////////////
+(function(){
+  const c=document.getElementById('c5'), ctx=hiDPI(c), W=c._w, H=c._h;
+  const pS=document.getElementById('s5-p'), read=document.getElementById('s5-read');
+  let dh=0;
+  loopFor('s5',dt=>{
+    const p=+pS.value, diff=p-1013;
+    document.getElementById('s5-p-l').textContent='Druk van het gas in het vat: '+nl(p)+' hPa';
+    const doel=Math.max(-85,Math.min(85,diff/1013*90)); dh+=(doel-dh)*Math.min(1,dt*4);
+    ctx.clearRect(0,0,W,H); ctx.fillStyle='#fbfcfe'; ctx.fillRect(0,0,W,H);
+    // vat
+    ctx.fillStyle='rgba(148,163,184,0.25)'; roundRect(ctx,60,90,200,200,20); ctx.fill(); ctx.strokeStyle='#334155'; ctx.lineWidth=4; roundRect(ctx,60,90,200,200,20); ctx.stroke();
+    const n=Math.round(14*p/1013); for(let k=0;k<Math.min(n,60);k++){ ctx.fillStyle='#2563eb'; ctx.beginPath(); ctx.arc(80+(k*53)%160,110+(k*37)%160,4,0,Math.PI*2); ctx.fill(); }
+    text(ctx,'gas',160,320,{size:14,weight:700,align:'center'});
+    // U-buis: gasleiding komt bovenaan in het linkerbeen, rechterbeen is open
+    const xl=390, xr=520, yb=320, mid=230, tw=26, pt=110;
+    const yl=mid+dh, yr=mid-dh; // niveaus links (gaskant) en rechts (open kant)
+    ctx.fillStyle='rgba(220,38,38,0.55)';
+    ctx.fillRect(xl-tw/2,yl,tw,yb-yl); ctx.fillRect(xr-tw/2,yr,tw,yb-yr); ctx.fillRect(xl-tw/2,yb,xr-xl+tw,tw);
+    ctx.strokeStyle='#334155'; ctx.lineWidth=3; ctx.beginPath();
+    ctx.moveTo(260,pt); ctx.lineTo(xl+tw/2,pt); ctx.lineTo(xl+tw/2,yb); ctx.lineTo(xr-tw/2,yb); ctx.lineTo(xr-tw/2,60);
+    ctx.moveTo(260,pt+tw); ctx.lineTo(xl-tw/2,pt+tw); ctx.lineTo(xl-tw/2,yb+tw); ctx.lineTo(xr+tw/2,yb+tw); ctx.lineTo(xr+tw/2,60);
+    ctx.stroke();
+    text(ctx,'open: luchtdruk',xr,48,{size:12,color:'#51606E',align:'center'});
+    if(Math.abs(dh)>3){ ctx.strokeStyle='#1D2A36'; ctx.lineWidth=1.5; ctx.setLineDash([4,4]); ctx.beginPath(); ctx.moveTo(xl,yl); ctx.lineTo(xr+60,yl); ctx.moveTo(xr,yr); ctx.lineTo(xr+60,yr); ctx.stroke(); ctx.setLineDash([]);
+      text(ctx,'Δh',xr+66,(yl+yr)/2+5,{size:14,weight:700}); }
+    text(ctx,'U-buis-manometer',455,30,{size:13,weight:600,align:'center',color:'#51606E'});
+    const soort=Math.abs(diff)<25?'geen over- of onderdruk':diff>0?'overdruk':'onderdruk';
+    text(ctx,soort.toUpperCase(),640,190,{size:20,weight:700,color:soort==='overdruk'?'#dc2626':soort==='onderdruk'?'#2563eb':'#1F7A4A'});
+    read.innerHTML=`<span class="k">gasdruk:</span> <span class="v">${nl(p)} hPa</span><br><span class="k">luchtdruk:</span> <span class="v">1013 hPa</span><br>`+
+      `<span class="k">verschil:</span> <span class="v">${diff>0?'+':''}${nl(diff)} hPa</span><br><span class="ok">${soort==='overdruk'?'Gasdruk groter dan luchtdruk → overdruk.':soort==='onderdruk'?'Gasdruk kleiner dan luchtdruk → onderdruk.':'Gasdruk ≈ luchtdruk.'}</span>`;
+  });
+  const items=[
+    ['Een opgepompte fietsband','overdruk','De lucht in de band heeft een grotere druk dan de luchtdruk.'],
+    ['Een stofzuiger','onderdruk','In de stofzuiger is de druk lager; de luchtdruk duwt lucht en stof naar binnen.'],
+    ['Drinken met een rietje','onderdruk','Je maakt een lage druk in je mond; de luchtdruk duwt de drank omhoog.'],
+    ['Een spuitbus','overdruk','Het gas in de bus staat onder hoge druk en duwt de inhoud naar buiten.'],
+    ['Vacuümverpakte koffie','onderdruk','Er is (bijna) geen lucht meer in het pak; de luchtdruk duwt het pak hard.'],
+    ['Een snelkookpan','overdruk','De damp in de pan heeft een hogere druk; daardoor kookt het water bij een hogere temperatuur.'],
+    ['Een injectiespuit vullen','onderdruk','Je trekt de zuiger uit: de druk in de spuit daalt en de luchtdruk duwt de vloeistof erin.'],
+    ['Een opgeblazen ballon','overdruk','De gespannen ballon drukt op de lucht binnenin: die druk is groter dan de luchtdruk.'],
+  ];
+  const lijst=document.getElementById('s5-lijst');
+  items.forEach(([wat,j,u])=>{
+    const r=document.createElement('div'); r.className='sort-item'; r.innerHTML=`<div class="wat">${wat}</div>`;
+    const k=document.createElement('div'); k.className='keuzes'; const ue=document.createElement('div'); ue.className='uitleg';
+    ['overdruk','onderdruk'].forEach(o=>{ const b=document.createElement('button'); b.className='btn'; b.textContent=o;
+      b.onclick=()=>{ if(k.dataset.klaar) return; k.dataset.klaar=1; [...k.children].forEach(bb=>{ if(bb.textContent===j) bb.classList.add('goed'); else if(bb===b) bb.classList.add('fout'); });
+        ue.innerHTML=(o===j?'<b style="color:var(--ok-text)">Juist.</b> ':'<b style="color:var(--flag-text)">Niet juist: '+j+'.</b> ')+u; };
+      k.appendChild(b); });
+    r.appendChild(k); r.appendChild(ue); lijst.appendChild(r);
+  });
+})();
+
+//////////////////// 6 — HYDROSTATISCHE DRUK ////////////////////
+(function(){
+  const c=document.getElementById('c6'), ctx=hiDPI(c), W=c._w, H=c._h;
+  const vl=document.getElementById('s6-vl'), gS=document.getElementById('s6-g'), hS=document.getElementById('s6-h'), read=document.getElementById('s6-read');
+  VLOEISTOFFEN.forEach((v,i)=>{ const o=document.createElement('option'); o.value=i; o.textContent=v.naam+' (ρ = '+nl(v.rho)+' kg/m³)'; vl.appendChild(o); });
+  const PLAATS=[['aarde',9.81],['maan',1.62],['Mars',3.71]];
+  PLAATS.forEach(([n,g],i)=>{ const o=document.createElement('option'); o.value=i; o.textContent=n+' (g = '+nl(g,2)+' N/kg)'; gS.appendChild(o); });
+  let modus='sonde';
+  document.querySelectorAll('[data-v6]').forEach(b=>b.onclick=()=>{ modus=b.dataset.v6; document.querySelectorAll('[data-v6]').forEach(o=>o.classList.toggle('on',o===b)); upd(); });
+  function sonde(x,y){ ctx.fillStyle='#1D2A36'; ctx.beginPath(); ctx.arc(x,y,9,0,Math.PI*2); ctx.fill(); ctx.fillStyle='#fbbf24'; ctx.beginPath(); ctx.arc(x,y,5,0,Math.PI*2); ctx.fill(); }
+  function upd(){
+    const V=VLOEISTOFFEN[+vl.value], [pl,g]=PLAATS[+gS.value], hcm=+hS.value, h=hcm/100, ph=V.rho*g*h;
+    ctx.clearRect(0,0,W,H); ctx.fillStyle='#fbfcfe'; ctx.fillRect(0,0,W,H);
+    if(modus==='sonde'){
+      document.getElementById('s6-h-l').textContent='Diepte van de sonde: h = '+hcm+' cm';
+      const x0=200, y0=60, bw=360, bh=320, top=y0+20;
+      ctx.fillStyle=V.kleur; ctx.fillRect(x0,top,bw,bh-20);
+      ctx.strokeStyle='#334155'; ctx.lineWidth=4; ctx.beginPath(); ctx.moveTo(x0,y0); ctx.lineTo(x0,y0+bh); ctx.lineTo(x0+bw,y0+bh); ctx.lineTo(x0+bw,y0); ctx.stroke();
+      const sy=top+h*(bh-20), sx=x0+bw/2;
+      ctx.strokeStyle='#1D2A36'; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(sx,20); ctx.lineTo(sx,sy); ctx.stroke(); sonde(sx,sy);
+      // diepte
+      ctx.strokeStyle='#dc2626'; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(x0+bw+30,top); ctx.lineTo(x0+bw+30,sy); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(x0+bw+22,top); ctx.lineTo(x0+bw+38,top); ctx.moveTo(x0+bw+22,sy); ctx.lineTo(x0+bw+38,sy); ctx.stroke();
+      text(ctx,'h = '+hcm+' cm',x0+bw+44,(top+sy)/2+5,{size:15,weight:700,color:'#dc2626'});
+      // drukpijlen rond de sonde: in alle richtingen even groot
+      const L=Math.min(60,8+ph/400);
+      if(hcm>0) [0,1,2,3,4,5,6,7].forEach(k=>{ const a=k*Math.PI/4; arrow(ctx,sx+Math.cos(a)*(L+14),sy+Math.sin(a)*(L+14),sx+Math.cos(a)*13,sy+Math.sin(a)*13,'#2563eb',2.5); });
+      text(ctx,V.naam+' · '+pl,x0,y0-12,{size:14,weight:700});
+    } else {
+      document.getElementById('s6-h-l').textContent='Hoogte van de vloeistof: h = '+hcm+' cm';
+      const yb=380, hp=h*280;
+      const vaten=[
+        {x:120,pad:(y)=>[[60,40],[180,40]],teken(){ ctx.beginPath(); ctx.moveTo(60,90); ctx.lineTo(60,yb); ctx.lineTo(180,yb); ctx.lineTo(180,90); }, vul(){ ctx.fillRect(60,yb-hp,120,hp); }},
+        {x:400,teken(){ ctx.beginPath(); ctx.moveTo(388,90); ctx.lineTo(388,yb); ctx.lineTo(412,yb); ctx.lineTo(412,90); }, vul(){ ctx.fillRect(388,yb-hp,24,hp); }},
+        {x:650,teken(){ ctx.beginPath(); ctx.moveTo(540,90); ctx.lineTo(620,yb); ctx.lineTo(680,yb); ctx.lineTo(760,90); }, vul(){ const t=yb-hp, f=(yb-t)/(yb-90); ctx.beginPath(); ctx.moveTo(620-80*f,t); ctx.lineTo(620,yb); ctx.lineTo(680,yb); ctx.lineTo(680+80*f,t); ctx.closePath(); ctx.fill(); }},
+      ];
+      vaten.forEach(v=>{ ctx.fillStyle=V.kleur; v.vul(); ctx.strokeStyle='#334155'; ctx.lineWidth=4; v.teken(); ctx.stroke(); sonde(v.x,yb-10); text(ctx,nl(V.rho*g*(h),0)+' Pa',v.x,yb+30,{size:15,weight:700,align:'center',color:'#2563eb'}); });
+      ctx.strokeStyle='rgba(220,38,38,0.6)'; ctx.setLineDash([6,5]); ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(40,yb-hp); ctx.lineTo(W-20,yb-hp); ctx.stroke(); ctx.setLineDash([]);
+      text(ctx,'Even hoog gevuld → even grote druk op de bodem, hoe het vat er ook uitziet.',W/2,40,{size:14,weight:700,align:'center'});
+    }
+    read.innerHTML=`<span class="k">p<sub>h</sub> = ρ · g · h</span><br><span class="v">= ${nl(V.rho)} kg/m³ · ${nl(g,2)} N/kg · ${nl(h,2)} m</span><br><span class="v">= ${nl(ph)} Pa</span><br>`+
+      `<span class="k">totale druk p = p<sub>atm</sub> + p<sub>h</sub></span><br><span class="v">= 101 325 Pa + ${nl(ph)} Pa = ${nl(PATM+ph)} Pa</span>`;
+  }
+  [vl,gS,hS].forEach(e=>e.oninput=upd); upd();
+})();
+
+//////////////////// 7 — PASCAL EN HYDRAULICA ////////////////////
+(function(){
+  const c=document.getElementById('c7'), ctx=hiDPI(c), W=c._w, H=c._h;
+  const fS=document.getElementById('s7-f'), a1S=document.getElementById('s7-a1'), a2S=document.getElementById('s7-a2'), read=document.getElementById('s7-read');
+  let s=0, doel=0; const D1=10; // kleine zuiger zakt 10 cm
+  document.getElementById('s7-duw').onclick=()=>{ doel=1; };
+  document.getElementById('s7-reset').onclick=()=>{ doel=0; s=0; };
+  [fS,a1S,a2S].forEach(e=>e.oninput=()=>{ doel=0; s=0; });
+  loopFor('s7',dt=>{
+    s+=(doel-s)*Math.min(1,dt*1.5);
+    const F1=+fS.value, A1=+a1S.value, A2=+a2S.value, p=F1/(A1/1e4), F2=p*A2/1e4, d2=D1*A1/A2;
+    document.getElementById('s7-f-l').textContent='Kracht op de kleine zuiger: F₁ = '+F1+' N';
+    document.getElementById('s7-a1-l').textContent='Oppervlakte kleine zuiger: A₁ = '+A1+' cm²';
+    document.getElementById('s7-a2-l').textContent='Oppervlakte grote zuiger: A₂ = '+A2+' cm²';
+    ctx.clearRect(0,0,W,H); ctx.fillStyle='#fbfcfe'; ctx.fillRect(0,0,W,H);
+    const w1=Math.sqrt(A1)*9, w2=Math.sqrt(A2)*9, x1=180, x2=560, yb=380, y0=220, PX=6;
+    const z1=y0+s*D1*PX, z2=y0-s*d2*PX;
+    ctx.fillStyle='rgba(234,179,8,0.45)';
+    ctx.fillRect(x1-w1/2,z1,w1,yb-z1); ctx.fillRect(x2-w2/2,z2,w2,yb-z2); ctx.fillRect(x1-w1/2,yb-40,x2-x1+w1/2+w2/2,40);
+    ctx.strokeStyle='#334155'; ctx.lineWidth=4;
+    ctx.beginPath(); ctx.moveTo(x1-w1/2,80); ctx.lineTo(x1-w1/2,yb); ctx.lineTo(x2+w2/2,yb); ctx.lineTo(x2+w2/2,80);
+    ctx.moveTo(x1+w1/2,80); ctx.lineTo(x1+w1/2,yb-40); ctx.lineTo(x2-w2/2,yb-40); ctx.lineTo(x2-w2/2,80); ctx.stroke();
+    ctx.fillStyle='#64748b'; ctx.fillRect(x1-w1/2,z1-12,w1,12); ctx.fillRect(x2-w2/2,z2-12,w2,12);
+    // auto op de grote zuiger
+    ctx.fillStyle='#ef4444'; roundRect(ctx,x2-70,z2-62,140,36,8); ctx.fill(); roundRect(ctx,x2-40,z2-84,80,26,8); ctx.fill();
+    ctx.fillStyle='#1D2A36'; ctx.beginPath(); ctx.arc(x2-40,z2-24,11,0,Math.PI*2); ctx.arc(x2+40,z2-24,11,0,Math.PI*2); ctx.fill();
+    arrow(ctx,x1,z1-90,x1,z1-14,'#2563eb',5); text(ctx,'F₁ = '+F1+' N',x1-w1/2-10,z1-60,{size:15,weight:700,color:'#2563eb',align:'right'});
+    arrow(ctx,x2+w2/2+30,z2+20,x2+w2/2+30,z2-70,'#dc2626',5); text(ctx,'F₂ = '+nl(F2)+' N',x2+w2/2+40,z2-30,{size:15,weight:700,color:'#dc2626'});
+    text(ctx,'p = '+nl(p)+' Pa overal in de olie',(x1+x2)/2,yb-12,{size:13,weight:700,align:'center'});
+    read.innerHTML=`<span class="k">p = F₁ / A₁ =</span> <span class="v">${F1} N / ${nl(A1/1e4,4)} m² = ${nl(p)} Pa</span><br>`+
+      `<span class="k">F₂ = p · A₂ =</span> <span class="v">${nl(p)} Pa · ${nl(A2/1e4,4)} m² = ${nl(F2)} N</span><br>`+
+      `<span class="ok">De kracht wordt ${nl(A2/A1,1)} keer zo groot (A₂ / A₁).</span><br>`+
+      `<span class="k">Kleine zuiger 10 cm omlaag → grote zuiger ${nl(d2,2)} cm omhoog.</span>`;
+  });
+})();
+
+//////////////////// 8 — VERKLARING ARCHIMEDESKRACHT ////////////////////
+(function(){
+  const c=document.getElementById('c8'), ctx=hiDPI(c), W=c._w, H=c._h;
+  const dS=document.getElementById('s8-d'), read=document.getElementById('s8-read');
+  const rho=1000, A=0.01, hb=0.10, S=12; // blok 10 cm × 10 cm × 10 cm
+  function upd(){
+    const d=+dS.value/100, p1=rho*G*d, p2=rho*G*(d+hb), F1=p1*A, F2=p2*A, FA=F2-F1;
+    document.getElementById('s8-d-l').textContent='Diepte van de bovenkant: '+(+dS.value)+' cm';
+    ctx.clearRect(0,0,W,H); ctx.fillStyle='#fbfcfe'; ctx.fillRect(0,0,W,H);
+    const top=50; ctx.fillStyle='rgba(59,130,246,0.30)'; ctx.fillRect(40,top,W-80,H-70);
+    ctx.strokeStyle='rgba(59,130,246,0.8)'; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(40,top); ctx.lineTo(W-40,top); ctx.stroke();
+    text(ctx,'water',50,top+20,{size:13,color:'#1d4ed8',weight:600});
+    const bx=W/2-60, by=top+d*100*S, bs=hb*100*S;
+    ctx.fillStyle='#e2e8f0'; ctx.strokeStyle='#334155'; ctx.lineWidth=2; ctx.fillRect(bx,by,120,bs); ctx.strokeRect(bx,by,120,bs);
+    const k=0.035;
+    // boven: naar beneden
+    [0.2,0.5,0.8].forEach(f=>arrow(ctx,bx+120*f,by-8-Math.max(4,p1*k),bx+120*f,by-4,'#16a34a',3));
+    // onder: naar boven
+    [0.2,0.5,0.8].forEach(f=>arrow(ctx,bx+120*f,by+bs+8+p2*k,bx+120*f,by+bs+4,'#dc2626',3));
+    // zijkanten: lengte groeit met de diepte en heffen elkaar op
+    [0.15,0.5,0.85].forEach(f=>{ const pp=rho*G*(d+hb*f), L=pp*k; const y=by+bs*f;
+      arrow(ctx,bx-8-L,y,bx-4,y,'#94a3b8',2.5); arrow(ctx,bx+128+L,y,bx+124,y,'#94a3b8',2.5); });
+    text(ctx,'F boven = '+nl(F1,1)+' N',bx+130+20,by-14,{size:14,weight:700,color:'#16a34a'});
+    text(ctx,'F onder = '+nl(F2,1)+' N',bx+130+20,by+bs+30,{size:14,weight:700,color:'#dc2626'});
+    // resultaat
+    arrow(ctx,W-110,by+bs/2+50,W-110,by+bs/2-50,'#7c3aed',6); text(ctx,'FA',W-96,by+bs/2+5,{size:16,weight:700,color:'#7c3aed'});
+    read.innerHTML=`<span class="k">blok: 10 cm × 10 cm × 10 cm (V = 1 dm³)</span><br>`+
+      `<span class="k">p boven = ρ·g·h₁ =</span> <span class="v">${nl(p1)} Pa</span><br>`+
+      `<span class="k">p onder = ρ·g·h₂ =</span> <span class="v">${nl(p2)} Pa</span><br>`+
+      `<span class="k">F<sub>A</sub> = F onder − F boven =</span> <span class="v">${nl(F2,2)} N − ${nl(F1,2)} N = ${nl(FA,2)} N</span><br>`+
+      `<span class="ok">= ρ<sub>vl</sub>·g·V = 1000 · 9,81 · 0,001 = 9,81 N, op elke diepte!</span>`;
+  }
+  dS.oninput=upd; upd();
+})();
+
+//////////////////// 9 — ZINKEN, ZWEVEN, STIJGEN, DRIJVEN ////////////////////
+(function(){
+  const c=document.getElementById('c9'), ctx=hiDPI(c), W=c._w, H=c._h;
+  const stS=document.getElementById('s9-st'), vlS=document.getElementById('s9-vl'), read=document.getElementById('s9-read');
+  const STOFFEN=[['kurk',240,'#d4a373'],['dennenhout',500,'#c08552'],['kaarsvet (paraffine)',900,'#fef3c7'],['ijs',917,'#e0f2fe'],['afgesteld blokje (ρ = 1000)',1000,'#a5b4fc'],['pvc',1380,'#cbd5e1'],['aluminium',2700,'#d1d5db'],['ijzer',7870,'#6b7280']];
+  STOFFEN.forEach(([n,r],i)=>{ const o=document.createElement('option'); o.value=i; o.textContent=n+' (ρ = '+nl(r)+' kg/m³)'; stS.appendChild(o); });
+  VLOEISTOFFEN.slice(0,4).forEach((v,i)=>{ const o=document.createElement('option'); o.value=i; o.textContent=v.naam+' (ρ = '+nl(v.rho)+' kg/m³)'; vlS.appendChild(o); });
+  stS.value=2;
+  const V=0.001, ZIJ=10, S=12, SURF=90, BODEM=400; // blok 10 cm, 12 px per cm
+  let y=0, v=0, actief=false;
+  function reset(){ y=250; v=0; actief=false; }
+  reset();
+  document.getElementById('s9-los').onclick=()=>{ reset(); actief=true; };
+  stS.oninput=reset; vlS.oninput=reset;
+  loopFor('s9',dt=>{
+    const [naam,rv,kl]=STOFFEN[+stS.value], VL=VLOEISTOFFEN[+vlS.value], rl=VL.rho, m=rv*V, Fz=m*G;
+    const hpx=ZIJ*S;
+    const onder=Math.min(1,Math.max(0,(y+hpx/2-SURF)/hpx));
+    const FA=rl*G*V*onder;
+    if(actief){
+      const a=(FA-Fz)/m - 3*v; // demping door de vloeistof
+      v+=a*dt; y-=v*dt*60;
+      if(y+hpx/2>BODEM){ y=BODEM-hpx/2; if(v<0) v=0; }
+    }
+    ctx.clearRect(0,0,W,H); ctx.fillStyle='#fbfcfe'; ctx.fillRect(0,0,W,H);
+    ctx.fillStyle=VL.kleur; ctx.fillRect(150,SURF,500,BODEM-SURF);
+    ctx.strokeStyle='#334155'; ctx.lineWidth=4; ctx.beginPath(); ctx.moveTo(150,40); ctx.lineTo(150,BODEM); ctx.lineTo(650,BODEM); ctx.lineTo(650,40); ctx.stroke();
+    const x=400;
+    ctx.fillStyle=kl; ctx.strokeStyle='#334155'; ctx.lineWidth=2; ctx.fillRect(x-hpx/2,y-hpx/2,hpx,hpx); ctx.strokeRect(x-hpx/2,y-hpx/2,hpx,hpx);
+    const K=6, cap=170;
+    const LZ=Math.min(cap,Fz*K,H-12-y);
+    arrow(ctx,x-25,y,x-25,y+LZ,'#2563eb',5); text(ctx,'Fz = '+nl(Fz,2)+' N'+(LZ<Fz*K-1?' (pijl ingekort)':''),x-35,y+LZ-4,{size:14,weight:700,color:'#2563eb',align:'right'});
+    if(FA>0.01){ arrow(ctx,x+20,y,x+20,y-Math.min(cap,FA*K),'#7c3aed',5); text(ctx,'FA = '+nl(FA,2)+' N',x+28,y-Math.min(cap,FA*K)+14,{size:14,weight:700,color:'#7c3aed'}); }
+    const op=y+hpx/2>=BODEM-0.5;
+    if(op && Fz>FA) { const FN=Fz-FA, LN=Math.min(cap,FN*K,y+hpx/2-40); arrow(ctx,x+50,y+hpx/2,x+50,y+hpx/2-LN,'#16a34a',4); text(ctx,'FN = '+nl(FN,2)+' N',x+58,y+hpx/2-LN+14,{size:13,weight:700,color:'#16a34a'}); }
+    let toestand;
+    const d=rv-rl;
+    if(Math.abs(d)<1) toestand='zweeft'; else if(d>0) toestand=op?'ligt op de bodem (gezonken)':'zinkt'; else toestand=(onder<0.999 && Math.abs(v)<0.05)?'drijft':'stijgt';
+    if(!actief) toestand='wordt onder water vastgehouden';
+    text(ctx,toestand.toUpperCase(),W/2,30,{size:18,weight:700,align:'center'});
+    const FAvol=rl*G*V;
+    read.innerHTML=`<span class="k">F<sub>z</sub> = m·g =</span> <span class="v">${nl(m,3)} kg · 9,81 = ${nl(Fz,2)} N</span><br>`+
+      `<span class="k">F<sub>A</sub> volledig onder =</span> <span class="v">${nl(rl)} · 9,81 · 0,001 = ${nl(FAvol,2)} N</span><br>`+
+      (Math.abs(d)<1?'<span class="ok">F<sub>z</sub> = F<sub>A</sub> → het blokje zweeft.</span>':
+       d>0?'<span class="flag">F<sub>z</sub> &gt; F<sub>A</sub> (ρ<sub>v</sub> &gt; ρ<sub>vl</sub>) → zinken.</span>':
+       `<span class="ok">F<sub>z</sub> &lt; F<sub>A</sub> (ρ<sub>v</sub> &lt; ρ<sub>vl</sub>) → stijgen en drijven.</span><br><span class="k">Bij drijven is F<sub>A</sub> = F<sub>z</sub>: ${nl(rv/rl*100)} % zit onder water (ρ<sub>v</sub> / ρ<sub>vl</sub>).</span>`);
+  });
+})();
+
+//////////////////// 10 — DE VIS ////////////////////
+(function(){
+  const c=document.getElementById('c10'), ctx=hiDPI(c), W=c._w, H=c._h;
+  const bS=document.getElementById('s10-b'), read=document.getElementById('s10-read');
+  bS.step='0.5'; bS.value='6.5';
+  const RT=1070, VT=0.0005, mT=RT*VT; // weefsel van de vis
+  let y=220, v=0;
+  loopFor('s10',dt=>{
+    const f=+bS.value/100, V=VT/(1-f), rv=mT/V, Fz=mT*G, FA=1000*G*V;
+    document.getElementById('s10-b-l').textContent='Gas in de zwemblaas: '+nl(+bS.value,1)+' % van het volume';
+    const a=(FA-Fz)/mT - 2.5*v; v+=a*dt; y-=v*dt*80; if(y<70){y=70; v=Math.min(v,0);} if(y>350){y=350; v=Math.max(v,0);}
+    ctx.clearRect(0,0,W,H); ctx.fillStyle='rgba(59,130,246,0.22)'; ctx.fillRect(0,40,W,H-40);
+    ctx.fillStyle='#a3866b'; ctx.fillRect(0,H-30,W,30);
+    const x=W/2, s=1+f*1.5;
+    ctx.save(); ctx.translate(x,y); ctx.scale(s,s);
+    ctx.fillStyle='#f97316'; ctx.beginPath(); ctx.ellipse(0,0,70,32,0,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(62,0); ctx.lineTo(100,-28); ctx.lineTo(100,28); ctx.closePath(); ctx.fill();
+    ctx.fillStyle='#fff'; ctx.beginPath(); ctx.arc(-44,-8,7,0,Math.PI*2); ctx.fill(); ctx.fillStyle='#111'; ctx.beginPath(); ctx.arc(-46,-8,3.5,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle='rgba(255,255,255,0.85)'; ctx.strokeStyle='#64748b'; ctx.lineWidth=1.5; ctx.beginPath(); ctx.ellipse(8,-2,6+f*260,4+f*110,0,0,Math.PI*2); ctx.fill(); ctx.stroke();
+    ctx.restore();
+    text(ctx,'zwemblaas',x+8,y+4,{size:11,color:'#334155',align:'center'});
+    const K=25;
+    arrow(ctx,x-130,y,x-130,y+Fz*K,'#2563eb',5); text(ctx,'Fz = '+nl(Fz,2)+' N',x-140,y+Fz*K,{size:14,weight:700,color:'#2563eb',align:'right'});
+    arrow(ctx,x+150,y,x+150,y-FA*K,'#7c3aed',5); text(ctx,'FA = '+nl(FA,2)+' N',x+160,y-FA*K+14,{size:14,weight:700,color:'#7c3aed'});
+    const d=rv-1000, toestand=Math.abs(d)<2?'zweeft':d>0?'zinkt':'stijgt';
+    text(ctx,'De vis '+toestand,20,28,{size:18,weight:700});
+    read.innerHTML=`<span class="k">massa vis:</span> <span class="v">${nl(mT,3)} kg (blijft gelijk)</span><br>`+
+      `<span class="k">volume vis:</span> <span class="v">${nl(V*1000,3)} dm³</span><br>`+
+      `<span class="k">gemiddelde ρ<sub>vis</sub>:</span> <span class="v">${nl(rv)} kg/m³</span> <span class="k">(water: 1000)</span><br>`+
+      `<span class="${Math.abs(d)<2?'ok':d>0?'flag':'ok'}">${Math.abs(d)<2?'F<sub>z</sub> = F<sub>A</sub>: de vis zweeft.':d>0?'F<sub>z</sub> &gt; F<sub>A</sub>: de vis zinkt.':'F<sub>A</sub> &gt; F<sub>z</sub>: de vis stijgt.'}</span>`;
+  });
+})();
+
+//////////////////// 11 — HETELUCHTBALLON ////////////////////
+(function(){
+  const c=document.getElementById('c11'), ctx=hiDPI(c), W=c._w, H=c._h;
+  const tS=document.getElementById('s11-t'), read=document.getElementById('s11-read');
+  const V=2500, M=600, RHO=1.20;
+  let hoogte=0, v=0;
+  loopFor('s11',dt=>{
+    const T=+tS.value, rin=RHO*293/(273+T), mtot=M+rin*V, Fz=mtot*G, FA=RHO*G*V;
+    document.getElementById('s11-t-l').textContent='Temperatuur van de lucht in de ballon: '+T+' °C';
+    const rel=(FA-Fz)/Fz;
+    const a=rel*30-0.8*v; v+=a*dt; hoogte+=v*dt*20; if(hoogte<0){ hoogte=0; v=Math.max(0,v); } if(hoogte>260){ hoogte=260; v=Math.min(0,v); }
+    ctx.clearRect(0,0,W,H); const g=ctx.createLinearGradient(0,0,0,H); g.addColorStop(0,'#bfdbfe'); g.addColorStop(1,'#eff6ff'); ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+    ctx.fillStyle='#86a873'; ctx.fillRect(0,H-40,W,40);
+    const x=W/2, yb=H-40-hoogte; // onderkant mand
+    const warm=Math.min(1,(T-20)/100);
+    ctx.fillStyle=`rgb(${200+55*warm},${120-40*warm},${80-40*warm})`;
+    ctx.beginPath(); ctx.moveTo(x-30,yb-60); ctx.bezierCurveTo(x-120,yb-140,x-110,yb-290,x,yb-290); ctx.bezierCurveTo(x+110,yb-290,x+120,yb-140,x+30,yb-60); ctx.closePath(); ctx.fill();
+    ctx.strokeStyle='rgba(255,255,255,0.6)'; ctx.lineWidth=2; [-50,0,50].forEach(o=>{ ctx.beginPath(); ctx.moveTo(x+o*0.4,yb-62); ctx.quadraticCurveTo(x+o*1.3,yb-180,x+o*0.3,yb-288); ctx.stroke(); });
+    ctx.strokeStyle='#7c5a1a'; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(x-30,yb-60); ctx.lineTo(x-18,yb-24); ctx.moveTo(x+30,yb-60); ctx.lineTo(x+18,yb-24); ctx.stroke();
+    ctx.fillStyle='#92400e'; ctx.fillRect(x-20,yb-24,40,24);
+    if(T>20){ ctx.fillStyle='#f59e0b'; ctx.beginPath(); ctx.moveTo(x-6,yb-30); ctx.quadraticCurveTo(x,yb-52-warm*20,x+6,yb-30); ctx.fill(); }
+    const K=0.0035, cy=yb-170;
+    arrow(ctx,x-170,cy,x-170,cy+Fz*K,'#2563eb',5); text(ctx,'Fz = '+nl(Fz)+' N',x-180,cy+Fz*K,{size:14,weight:700,color:'#2563eb',align:'right'});
+    arrow(ctx,x+170,cy,x+170,cy-FA*K,'#7c3aed',5); text(ctx,'FA = '+nl(FA)+' N',x+180,cy-FA*K+14,{size:14,weight:700,color:'#7c3aed'});
+    const toestand=Math.abs(rel)<0.005?'zweeft':rel>0?'stijgt':(hoogte<=0?'blijft op de grond':'daalt');
+    text(ctx,'De ballon '+toestand,20,30,{size:18,weight:700});
+    read.innerHTML=`<span class="k">ρ lucht in de ballon:</span> <span class="v">${nl(rin,3)} kg/m³</span><br>`+
+      `<span class="k">totale massa:</span> <span class="v">600 + ${nl(rin*V)} = ${nl(mtot)} kg</span><br>`+
+      `<span class="k">F<sub>z</sub> =</span> <span class="v">${nl(Fz)} N</span><br>`+
+      `<span class="k">F<sub>A</sub> = 1,20 · 9,81 · 2500 =</span> <span class="v">${nl(FA)} N</span><br>`+
+      `<span class="${toestand==='stijgt'||toestand==='zweeft'?'ok':'flag'}">${toestand==='zweeft'?'F<sub>A</sub> ≈ F<sub>z</sub> → de ballon zweeft.':rel>0?'F<sub>A</sub> &gt; F<sub>z</sub> → de ballon stijgt.':(toestand==='blijft op de grond'?'F<sub>z</sub> &gt; F<sub>A</sub> → de ballon komt niet van de grond.':'F<sub>z</sub> &gt; F<sub>A</sub> → de ballon daalt.')}</span>`;
+  });
+})();
+
+//////////////////// 12 — OEFENEN ////////////////////
+(function(){
+  const box=document.getElementById('s12-q'), scoreEl=document.getElementById('s12-score'), chips=document.getElementById('s12-chips');
+  let goed=0, totaal=0, filter='alles', vorige=-1;
+  const rnd=a=>a[Math.floor(Math.random()*a.length)], ri=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+  const tel=ok=>{ totaal++; if(ok) goed++; scoreEl.textContent=goed+' / '+totaal+' juist'; };
+  const parse=s=>{ s=String(s).trim().replace(/\s/g,'').replace(',','.'); return s===''?NaN:+s; };
+  function keuze(opgave,opties,juist,uitleg){
+    box.innerHTML=`<div class="opgave">${opgave}</div>`;
+    const k=document.createElement('div'); k.className='keuzes'; const fb=document.createElement('div'); fb.className='feedback';
+    opties.forEach(o=>{ const b=document.createElement('button'); b.className='btn'; b.innerHTML=o; b.dataset.o=o;
+      b.onclick=()=>{ if(k.dataset.klaar) return; k.dataset.klaar=1; const ok=o===juist; tel(ok);
+        [...k.children].forEach(bb=>{ if(bb.dataset.o===juist) bb.classList.add('goed'); else if(bb===b) bb.classList.add('fout'); });
+        fb.className='feedback '+(ok?'goed':'fout'); fb.innerHTML=(ok?'<b>Juist!</b>':'<b>Niet juist.</b>')+'<span class="uitleg">'+uitleg+'</span>'; };
+      k.appendChild(b); });
+    box.appendChild(k); box.appendChild(fb);
+  }
+  function rekenen(opgave,juist,eenheid,oplossing,dec){
+    box.innerHTML=`<div class="opgave">${opgave}</div>`;
+    const w=document.createElement('div'); w.className='invul';
+    w.innerHTML=`<input type="text" inputmode="decimal" placeholder="jouw antwoord"><span class="eenheid">${eenheid}</span><button class="btn primary">Controleer</button>`;
+    const fb=document.createElement('div'); fb.className='feedback'; const inp=w.querySelector('input'), btn=w.querySelector('button');
+    function check(){ if(w.dataset.klaar) return; const v=parse(inp.value); if(isNaN(v)){ fb.className='feedback fout'; fb.innerHTML='Vul een getal in.'; return; }
+      w.dataset.klaar=1; const ok=Math.abs(v-juist)<=Math.abs(juist)*0.02+1e-9; tel(ok); inp.disabled=true; btn.disabled=true;
+      fb.className='feedback '+(ok?'goed':'fout'); fb.innerHTML=(ok?'<b>Juist!</b>':'<b>Niet juist.</b> Het antwoord is '+nl(juist,dec??(Math.abs(juist)<10?2:Math.abs(juist)<1000?1:0))+' '+eenheid+'.')+'<span class="uitleg">'+oplossing+'</span>'; }
+    btn.onclick=check; inp.onkeydown=e=>{ if(e.key==='Enter') check(); };
+    box.appendChild(w); box.appendChild(fb); inp.focus();
+  }
+  const OEF={
+    vast:[
+      ()=>{ const m=ri(2,40), A=rnd([20,50,80,100,200,250,400]); const F=m*G, p=F/(A/1e4);
+        rekenen(`Een kist van ${m} kg staat op de grond. De contactoppervlakte is ${A} cm². Bereken de druk op de grond.`,p,'Pa',
+          `F = m · g = ${m} kg · 9,81 N/kg = ${nl(F,1)} N<br>A = ${A} cm² = ${nl(A/1e4,4)} m²<br>p = F / A = ${nl(F,1)} N / ${nl(A/1e4,4)} m² = ${nl(p)} Pa`,0); },
+      ()=>{ const p=rnd([2000,5000,12000,25000,40000]), A=rnd([50,100,150,300]); const F=p*A/1e4;
+        rekenen(`Een voorwerp oefent een druk van ${nl(p)} Pa uit op een oppervlakte van ${A} cm². Hoe groot is de kracht?`,F,'N',
+          `A = ${A} cm² = ${nl(A/1e4,4)} m²<br>F = p · A = ${nl(p)} Pa · ${nl(A/1e4,4)} m² = ${nl(F,1)} N`); },
+      ()=>{ const F=rnd([200,450,600,800,1200]), p=rnd([5000,10000,20000,40000]); const A=F/p*1e4;
+        rekenen(`Een kracht van ${F} N veroorzaakt een druk van ${nl(p)} Pa. Hoe groot is de oppervlakte? Geef je antwoord in cm².`,A,'cm²',
+          `A = F / p = ${F} N / ${nl(p)} Pa = ${nl(F/p,4)} m² = ${nl(A,1)} cm²`); },
+      ()=>{ const fF=rnd([1,2,3,4]), fA=rnd([1,2,4]); const x=fF/fA; const naam=v=>v===1?'blijft gelijk':v>1?(Number.isInteger(v)?v:nl(v,1))+' keer zo groot':(Number.isInteger(1/v)?1/v:nl(1/v,1))+' keer zo klein';
+        const juist='p '+naam(x); const opts=[...new Set([juist,'p '+naam(fF*fA),'p '+naam(fA/fF),'p blijft gelijk','p '+naam(2*x)])].slice(0,4).sort(()=>Math.random()-0.5);
+        if(!opts.includes(juist)) opts[0]=juist;
+        keuze(`De kracht wordt <b>${fF===1?'niet veranderd':fF+' keer zo groot'}</b> en de oppervlakte wordt <b>${fA===1?'niet veranderd':fA+' keer zo groot'}</b>. Wat gebeurt er met de druk?`,opts,juist,`p = F / A: p wordt ×${fF} / ${fA} → ${juist}.`); },
+    ],
+    gas:[
+      ()=>{ const it=rnd([['een tafelblad van 1,2 m × 0,80 m',0.96],['een venster van 1,5 m × 1,2 m',1.8],['een zuignap van 30 cm²',0.003],['de palm van je hand (± 80 cm²)',0.008]]);
+        const F=PATM*it[1]; rekenen(`Hoe groot is de kracht van de luchtdruk (101 325 Pa) op ${it[0]}?`,F,'N',`A = ${nl(it[1],4)} m²<br>F = p · A = 101 325 Pa · ${nl(it[1],4)} m² = ${nl(F)} N`); },
+      ()=>{ const it=rnd([['een opgepompte voetbal','overdruk'],['een vacuümpomp die een glazen stolp leegpompt','onderdruk'],['drinken met een rietje (in je mond)','onderdruk'],['een fles bruisend water voor je hem opent','overdruk'],['een zuignap tegen de muur (onder de zuignap)','onderdruk'],['een autoband','overdruk']]);
+        keuze(`Is er overdruk of onderdruk bij <b>${it[0]}</b>?`,['overdruk','onderdruk'],it[1],it[1]==='overdruk'?'De druk is groter dan de luchtdruk.':'De druk is kleiner dan de luchtdruk.'); },
+      ()=>{ const it=rnd([
+          ['Je klimt een hoge berg op. Wat gebeurt er met de luchtdruk?','ze daalt','Hoe hoger, hoe minder lucht boven je, hoe lager de luchtdruk.'],
+          ['Een gesloten fles met lucht staat in de zon. Wat gebeurt er met de druk in de fles?','ze stijgt','De deeltjes bewegen sneller en botsen vaker en harder tegen de wand.'],
+          ['Je duwt de zuiger van een afgesloten spuit in (temperatuur gelijk). Wat gebeurt er met de druk?','ze stijgt','Kleiner volume: de deeltjes botsen vaker tegen de wand.'],
+          ['Een afgesloten pak chips gaat van de zee mee naar de top van een berg. Wat gebeurt er met de luchtdruk buiten het pak?','ze daalt','Op de berg is de luchtdruk lager. Daarom bolt het pak op.']]);
+        keuze(it[0],['ze stijgt','ze daalt','ze blijft gelijk'],it[1],it[2]); },
+    ],
+    vloei:[
+      ()=>{ const V=rnd(VLOEISTOFFEN.slice(0,4)), h=rnd([0.5,1.2,2,3.5,5,8,12]); const p=V.rho*G*h;
+        rekenen(`Bereken de hydrostatische druk op ${nl(h,1)} m diepte in ${V.naam} (ρ = ${nl(V.rho)} kg/m³).`,p,'Pa',`p<sub>h</sub> = ρ · g · h = ${nl(V.rho)} · 9,81 · ${nl(h,1)} = ${nl(p)} Pa`,0); },
+      ()=>{ const h=ri(2,40); const p=1000*G*h;
+        rekenen(`Een duiker meet in een meer (zoet water, ρ = 1000 kg/m³) een hydrostatische druk van ${nl(p)} Pa. Hoe diep zit hij?`,h,'m',`h = p<sub>h</sub> / (ρ · g) = ${nl(p)} / (1000 · 9,81) = ${nl(h,1)} m`); },
+      ()=>{ const V=rnd(VLOEISTOFFEN.slice(0,4)), h=rnd([0.5,1,2]); const p=V.rho*G*h;
+        rekenen(`Op ${nl(h,1)} m diepte in een onbekende vloeistof is de hydrostatische druk ${nl(p)} Pa. Bereken de massadichtheid van de vloeistof.`,V.rho,'kg/m³',`ρ = p<sub>h</sub> / (g · h) = ${nl(p)} / (9,81 · ${nl(h,1)}) = ${nl(V.rho)} kg/m³ (${V.naam})`,0); },
+      ()=>{ const h=ri(2,30); const ph=1030*G*h, pt=PATM+ph;
+        rekenen(`Bereken de totale druk op ${h} m diepte in zeewater (ρ = 1030 kg/m³). De luchtdruk is 101 325 Pa.`,pt,'Pa',`p<sub>h</sub> = 1030 · 9,81 · ${h} = ${nl(ph)} Pa<br>p = p<sub>atm</sub> + p<sub>h</sub> = 101 325 + ${nl(ph)} = ${nl(pt)} Pa`,0); },
+      ()=>{ const F1=rnd([50,100,150,200,300]), A1=rnd([5,10,20]), A2=rnd([200,400,500,1000]); const F2=F1*A2/A1;
+        rekenen(`In een hydraulische krik duw je met ${F1} N op de kleine zuiger (A₁ = ${A1} cm²). De grote zuiger heeft A₂ = ${A2} cm². Hoe groot is de kracht op de grote zuiger?`,F2,'N',`F₁ / A₁ = F₂ / A₂ → F₂ = F₁ · A₂ / A₁ = ${F1} · ${A2} / ${A1} = ${nl(F2)} N`,0); },
+      ()=>{ keuze('Drie vaten met een verschillende vorm zijn even hoog gevuld met water. Waar is de druk op de bodem het grootst?',['in het breedste vat','in het smalste vat','overal even groot'],'overal even groot','De hydrostatische druk hangt alleen af van ρ, g en h, niet van de vorm of de hoeveelheid vloeistof.'); },
+    ],
+    arch:[
+      ()=>{ const V=rnd(VLOEISTOFFEN.slice(0,4)), vol=rnd([50,120,250,400,750]); const FA=V.rho*G*vol/1e6;
+        rekenen(`Een voorwerp van ${vol} cm³ zit helemaal ondergedompeld in ${V.naam} (ρ = ${nl(V.rho)} kg/m³). Bereken de archimedeskracht.`,FA,'N',`V = ${vol} cm³ = ${nl(vol/1e6,6)} m³<br>F<sub>A</sub> = ρ<sub>vl</sub> · g · V = ${nl(V.rho)} · 9,81 · ${nl(vol/1e6,6)} = ${nl(FA,2)} N`); },
+      ()=>{ const vol=rnd([0.2,0.5,1.5,2,3]); const FA=1000*G*vol/1000;
+        rekenen(`Een voorwerp ondervindt in water (ρ = 1000 kg/m³) een archimedeskracht van ${nl(FA,2)} N als het helemaal onder water zit. Bereken zijn volume in dm³.`,vol,'dm³',`V = F<sub>A</sub> / (ρ · g) = ${nl(FA,2)} / (1000 · 9,81) = ${nl(vol/1000,4)} m³ = ${nl(vol,1)} dm³`); },
+      ()=>{ const it=rnd([['een blok ijs (ρ = 917 kg/m³) in water (ρ = 1000 kg/m³)','drijft'],['een ijzeren spijker (ρ = 7870 kg/m³) in water','zinkt'],['een kurk (ρ = 240 kg/m³) in olie (ρ = 920 kg/m³)','drijft'],['een stuk kaarsvet (ρ = 900 kg/m³) in alcohol (ρ = 790 kg/m³)','zinkt'],['een ei (ρ = 1030 kg/m³) in zeewater (ρ = 1030 kg/m³)','zweeft'],['een ei (ρ = 1030 kg/m³) in zoet water (ρ = 1000 kg/m³)','zinkt']]);
+        keuze(`Wat doet <b>${it[0]}</b>?`,['zinkt','zweeft','drijft'],it[1],it[1]==='zinkt'?'ρ<sub>voorwerp</sub> &gt; ρ<sub>vloeistof</sub>, dus F<sub>z</sub> &gt; F<sub>A</sub>.':it[1]==='zweeft'?'ρ<sub>voorwerp</sub> = ρ<sub>vloeistof</sub>, dus F<sub>z</sub> = F<sub>A</sub>.':'ρ<sub>voorwerp</sub> &lt; ρ<sub>vloeistof</sub>: het voorwerp stijgt en drijft.'); },
+      ()=>{ const V=rnd([2,4,6,8]); const FA=1.29*G*V;
+        rekenen(`Een heliumballon heeft een volume van ${V} m³. Bereken de archimedeskracht van de lucht op de ballon (ρ<sub>lucht</sub> = 1,29 kg/m³).`,FA,'N',`F<sub>A</sub> = ρ<sub>lucht</sub> · g · V = 1,29 · 9,81 · ${V} = ${nl(FA,1)} N`); },
+      ()=>{ keuze('Een vis pompt extra gas in zijn zwemblaas. Wat gebeurt er?',['zijn volume en F<sub>A</sub> worden groter: hij stijgt','zijn massa wordt groter: hij zinkt','er verandert niets'],'zijn volume en F<sub>A</sub> worden groter: hij stijgt','Meer gas → groter volume bij (bijna) dezelfde massa → F<sub>A</sub> wordt groter dan F<sub>z</sub>.'); },
+    ],
+  };
+  const DELEN=[['alles','alles'],['vast','vaste stoffen'],['gas','gassen'],['vloei','vloeistoffen'],['arch','archimedeskracht']];
+  DELEN.forEach(([id,t])=>{ const b=document.createElement('button'); b.className='btn'+(id==='alles'?' on':''); b.textContent=t; b.onclick=()=>{ filter=id; [...chips.children].forEach(x=>x.classList.toggle('on',x===b)); nieuw(); }; chips.appendChild(b); });
+  function nieuw(){ const pool=filter==='alles'?Object.values(OEF).flat():OEF[filter]; let i; do{ i=Math.floor(Math.random()*pool.length); }while(pool.length>1 && i===vorige); vorige=i; pool[i](); }
+  document.getElementById('s12-nieuw').onclick=nieuw; nieuw();
+})();
+</script>
+</body>
+</html>
