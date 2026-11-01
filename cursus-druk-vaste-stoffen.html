@@ -87,7 +87,16 @@ footer{max-width:900px;margin:0 auto;padding:0 24px 40px;color:var(--text-dim);f
   .printblad table.cornell td{border:1px solid #555;vertical-align:top;padding:2mm 3mm;font-size:11pt;}
   .printblad table.cornell td.v{width:32%;font-weight:600;}
   .printblad .samenv{border:1px solid #555;height:38mm;margin-top:4mm;padding:2mm 3mm;font-weight:600;}
+  /* volledige cursus afdrukken */
+  body:not(.print-oef):not(.print-cornell) #banner, body:not(.print-oef):not(.print-cornell) nav.inhoud,
+  body:not(.print-oef):not(.print-cornell) .toolknop, body:not(.print-oef):not(.print-cornell) button,
+  body:not(.print-oef):not(.print-cornell) .onder, body:not(.print-oef):not(.print-cornell) footer{display:none !important;}
+  body:not(.print-oef):not(.print-cornell) .blok{box-shadow:none;border:none;padding:0;margin:0 0 6mm;}
+  body:not(.print-oef):not(.print-cornell) figure, body:not(.print-oef):not(.print-cornell) .kader, body:not(.print-oef):not(.print-cornell) .denk, body:not(.print-oef):not(.print-cornell) .oef{break-inside:avoid;}
+  body:not(.print-oef):not(.print-cornell) .schrijflijnen{display:block;}
 }
+.schrijflijnen{display:none;}
+.schrijflijnen div{border-bottom:1px solid #999;height:9mm;}
 </style>
 </head>
 <body>
@@ -96,6 +105,7 @@ footer{max-width:900px;margin:0 auto;padding:0 24px 40px;color:var(--text-dim);f
   <div class="eyebrow">Fysica 4de jaar · Thema 1 Druk · Hoofdstuk 1</div>
   <h1>Druk bij vaste stoffen</h1>
   <p class="intro">Werk dit hoofdstuk samen met de tool <a href="druk.html">Druk</a>. Oefeningen maak je op papier.</p>
+  <p><button class="knop licht" onclick="window.print()">🖨 Druk de cursus af</button></p>
   <nav class="inhoud" id="inhoud"></nav>
 </header>
 <main id="cursus">
@@ -152,7 +162,7 @@ footer{max-width:900px;margin:0 auto;padding:0 24px 40px;color:var(--text-dim);f
 <section class="blok" id="deel3" data-vrij="deel3">
 <h2><span class="nr">3</span>Drukverhogend en drukverlagend</h2>
 <p>Uit p = F / A volgt: hoe <b>kleiner</b> de oppervlakte, hoe <b>groter</b> de druk. Hoe <b>groter</b> de oppervlakte, hoe <b>kleiner</b> de druk.</p>
-<div class="kader"><div class="kop">Drukverhogend en drukverlagend</div><p><b>Drukverhogend</b>: een kleine oppervlakte zorgt voor een grote druk. Bv. een scherp mes, de punt van een spijker of naald, de noppen onder voetbalschoenen.</p><p><b>Drukverlagend</b>: een grote oppervlakte zorgt voor een kleine druk. Bv. sneeuwschoenen, rupsbanden, brede schouderbanden van een rugzak, brede banden van een tractor.</p></div>
+<div class="kader"><div class="kop">Drukverhogend en drukverlagend</div><p><b>Drukverhogend</b>: een kleine oppervlakte zorgt voor een grote druk. Bv. een scherp mes, de punt van een spijker of naald, de noppen onder voetbalschoenen, de smalle stalen wielen van een tram van de MIVB op de rails.</p><p><b>Drukverlagend</b>: een grote oppervlakte zorgt voor een kleine druk. Bv. sneeuwschoenen, rupsbanden, brede schouderbanden van een rugzak, brede banden van een tractor.</p></div>
 <a class="toolknop" href="druk.html#s2" target="_blank" rel="noopener">▶ Bekijk de voorbeelden in de tool</a>
 <div class="denk" data-vrij="denk_3">
   <div class="vraag"><div class="kop">Denkvraag</div><p>Een punaise is tegelijk drukverhogend én drukverlagend. Hoe kan dat?</p></div>

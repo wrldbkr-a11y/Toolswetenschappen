@@ -87,7 +87,16 @@ footer{max-width:900px;margin:0 auto;padding:0 24px 40px;color:var(--text-dim);f
   .printblad table.cornell td{border:1px solid #555;vertical-align:top;padding:2mm 3mm;font-size:11pt;}
   .printblad table.cornell td.v{width:32%;font-weight:600;}
   .printblad .samenv{border:1px solid #555;height:38mm;margin-top:4mm;padding:2mm 3mm;font-weight:600;}
+  /* volledige cursus afdrukken */
+  body:not(.print-oef):not(.print-cornell) #banner, body:not(.print-oef):not(.print-cornell) nav.inhoud,
+  body:not(.print-oef):not(.print-cornell) .toolknop, body:not(.print-oef):not(.print-cornell) button,
+  body:not(.print-oef):not(.print-cornell) .onder, body:not(.print-oef):not(.print-cornell) footer{display:none !important;}
+  body:not(.print-oef):not(.print-cornell) .blok{box-shadow:none;border:none;padding:0;margin:0 0 6mm;}
+  body:not(.print-oef):not(.print-cornell) figure, body:not(.print-oef):not(.print-cornell) .kader, body:not(.print-oef):not(.print-cornell) .denk, body:not(.print-oef):not(.print-cornell) .oef{break-inside:avoid;}
+  body:not(.print-oef):not(.print-cornell) .schrijflijnen{display:block;}
 }
+.schrijflijnen{display:none;}
+.schrijflijnen div{border-bottom:1px solid #999;height:9mm;}
 </style>
 </head>
 <body>
@@ -96,6 +105,7 @@ footer{max-width:900px;margin:0 auto;padding:0 24px 40px;color:var(--text-dim);f
   <div class="eyebrow">Fysica 3de jaar · Krachten</div>
   <h1>Krachten, traagheid en beweging</h1>
   <p class="intro">Werk dit hoofdstuk samen met de tools <a href="krachten-construeren.html">Krachten samenstellen</a> en <a href="krachten-beweging.html">Traagheid, resulterende kracht en beweging</a>. Oefeningen maak je op papier.</p>
+  <p><button class="knop licht" onclick="window.print()">🖨 Druk de cursus af</button></p>
   <nav class="inhoud" id="inhoud"></nav>
 </header>
 <main id="cursus">
@@ -139,7 +149,7 @@ footer{max-width:900px;margin:0 auto;padding:0 24px 40px;color:var(--text-dim);f
 </section>
 <section class="blok" id="deel3" data-vrij="deel3">
 <h2><span class="nr">3</span>Traagheid</h2>
-<p>Zit je in een bus die plots vertrekt, dan val je naar achter. Remt de bus, dan val je naar voor. Niemand duwt je: je lichaam wil gewoon blijven doen wat het deed. Dat noemen we <b>traagheid</b>.</p>
+<p>Sta je in een bus of tram van de MIVB die plots vertrekt, dan val je naar achter. Remt de tram, dan val je naar voor. Niemand duwt je: je lichaam wil gewoon blijven doen wat het deed. Dat noemen we <b>traagheid</b>.</p>
 <div class="kader"><div class="kop">Traagheid</div><p>Elk voorwerp verzet zich tegen een verandering van zijn snelheid: het wil blijven <b>stilstaan</b>, of <b>even snel rechtdoor</b> blijven bewegen. Traagheid is <b>geen kracht</b>.</p><p>Hoe <b>groter de massa</b>, hoe <b>groter de traagheid</b>: een zwaar voorwerp is moeilijk in beweging te brengen en moeilijk te stoppen.</p></div>
 <a class="toolknop" href="krachten-beweging.html#s1" target="_blank" rel="noopener">▶ Bekijk de bus in de tool</a> <a class="toolknop" href="krachten-beweging.html#s2" target="_blank" rel="noopener">▶ Vergelijk een lege en een volle kar</a>
 <div class="denk" data-vrij="denk_3">

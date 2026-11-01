@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Krachten tussen ladingen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F4F3EF; --panel:#FFFFFF; --panel-2:#F8F7F3; --line:#D9D6CC;
+  --text:#1D2A36; --text-dim:#51606E;
+  --accent:#1F3A5F; --accent-dark:#152A45; --accent-soft:#EAEFF5;
+  --ok:#1F7A4A; --ok-bg:#E3F3E9; --warn:#9A5B00; --warn-bg:#FFF4D6;
+  --font:'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+  --serif:'Source Serif 4', Cambria, Georgia, 'Times New Roman', serif;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:var(--font);}
+body{-webkit-font-smoothing:antialiased;line-height:1.65;font-size:17px;}
+main p, main li, main td, .intro{font-family:var(--serif);}
+.top{max-width:900px;margin:0 auto;padding:36px 24px 0;}
+.top .eyebrow{font-size:13px;font-weight:700;color:var(--accent-dark);letter-spacing:.04em;text-transform:uppercase;margin-bottom:6px;}
+.top h1{font-size:2rem;font-weight:700;letter-spacing:-0.015em;margin:0 0 8px;line-height:1.2;}
+.top .intro{color:var(--text-dim);font-size:15px;margin:0;}
+.inhoud{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0 0;padding-bottom:14px;border-bottom:1px solid var(--line);}
+.inhoud{flex-direction:column;gap:2px;}
+.inhoud a{display:flex;align-items:baseline;gap:10px;font-size:15px;font-weight:500;text-decoration:none;color:var(--text);padding:3px 0;border-bottom:1px dotted var(--line);}
+.inhoud a:hover{border-color:var(--accent);color:var(--text);}
+.inhoud a .nr{color:var(--accent);font-weight:700;font-variant-numeric:tabular-nums;}
+.inhoud a.slot{opacity:.55;}
+main{max-width:900px;margin:0 auto;padding:22px 24px 80px;}
+section.blok{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:26px 30px;margin-bottom:22px;scroll-margin-top:16px;}
+section.blok > h2{font-size:1.45rem;margin:0 0 14px;display:flex;align-items:baseline;gap:12px;letter-spacing:-0.01em;padding-bottom:8px;border-bottom:1px solid var(--line);}
+section.blok > h2 .nr{color:var(--accent);font-weight:700;font-variant-numeric:tabular-nums;}
+h3{font-size:1.1rem;margin:22px 0 8px;}
+p{margin:0 0 12px;}
+ul.doelen{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px;}
+ul.doelen li{background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:9px 12px 9px 40px;position:relative;}
+ul.doelen li::before{content:'✓';position:absolute;left:14px;top:9px;color:var(--accent);font-weight:700;}
+.figuur{margin:12px 0 16px;text-align:center;}
+.figuur svg{max-width:100%;height:auto;background:#fff;border:1px solid var(--line);border-radius:2px;}
+.figuur figcaption{font-family:var(--serif);font-size:14px;color:var(--text-dim);margin-top:6px;text-align:left;max-width:640px;margin-left:auto;margin-right:auto;}
+.figuur figcaption b.fnr{color:var(--text);}
+.kader{border:1px solid var(--accent);border-left:4px solid var(--accent);background:var(--accent-soft);border-radius:2px;padding:12px 16px;margin:14px 0;}
+.kader .kop{font-weight:700;color:var(--accent-dark);margin-bottom:4px;}
+.kader p:last-child{margin-bottom:0;}
+.formule{display:inline-block;font-size:19px;font-weight:700;background:#fff;border:1px solid var(--line);border-radius:8px;padding:6px 14px;margin:4px 0 8px;}
+.toolknop{display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-weight:600;font-size:14px;color:var(--accent-dark);background:#fff;border:1px solid var(--accent);border-radius:8px;padding:8px 14px;margin:6px 8px 10px 0;}
+.toolknop:hover{background:var(--accent-soft);}
+.denk{border:1px solid var(--line);border-radius:10px;margin:16px 0;overflow:hidden;}
+.denk .vraag{background:var(--warn-bg);padding:12px 16px;}
+.denk .vraag .kop{font-size:12px;font-weight:700;color:var(--warn);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px;}
+.denk .vraag p:last-child{margin:0;}
+.denk .onder{padding:10px 16px;background:#fff;}
+.denk button,.knop{font-family:var(--font);font-size:14px;font-weight:600;background:var(--accent);color:#fff;border:1px solid var(--accent);border-radius:8px;padding:8px 14px;cursor:pointer;}
+.denk button:hover,.knop:hover{background:var(--accent-dark);}
+.knop.licht{background:#fff;color:var(--text);border-color:var(--line);}
+.knop.licht:hover{border-color:var(--accent);background:#fff;}
+.slotje{color:var(--text-dim);font-size:14px;}
+.redenering{margin-top:10px;}
+.redenering ol{margin:0;padding-left:0;list-style:none;counter-reset:st;}
+.redenering ol li{counter-increment:st;position:relative;padding:8px 0 8px 40px;border-top:1px dashed var(--line);}
+.redenering ol li:first-child{border-top:none;}
+.redenering ol li::before{content:counter(st);position:absolute;left:4px;top:8px;width:24px;height:24px;border-radius:12px;background:var(--ok-bg);color:var(--ok);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;}
+.redenering .stap{font-weight:700;}
+.redenering .besluit{background:var(--ok-bg);border-radius:8px;padding:8px 12px;margin-top:6px;color:var(--ok);font-weight:600;}
+.oef{border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:12px 0;}
+.oef .titel{font-weight:700;margin-bottom:4px;}
+.oef .titel .nr{display:inline-flex;min-width:26px;height:26px;border-radius:13px;align-items:center;justify-content:center;background:var(--accent-soft);color:var(--accent-dark);font-size:13px;margin-right:8px;}
+.oef ol.deelvragen{margin:6px 0 4px;padding-left:22px;}
+.gesloten-deel{color:var(--text-dim);font-size:15px;display:flex;align-items:center;gap:10px;}
+.stappenplan{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 14px;}
+.stappenplan span{background:var(--panel-2);border:1px solid var(--line);border-radius:999px;padding:3px 12px;font-size:13px;font-weight:600;}
+table.vb{border-collapse:collapse;margin:6px 0 12px;font-size:15px;}
+table.vb td{padding:3px 12px 3px 0;vertical-align:top;}
+table.vb td:first-child{font-weight:700;color:var(--accent-dark);white-space:nowrap;}
+.leerkracht-banner{background:#7c3aed;color:#fff;text-align:center;font-size:14px;font-weight:600;padding:6px;}
+footer{max-width:900px;margin:0 auto;padding:0 24px 40px;color:var(--text-dim);font-size:12px;}
+/* ---------- afdrukken ---------- */
+.printblad{display:none;}
+@media print{
+  @page{size:A4;margin:16mm 15mm;}
+  body{background:#fff;font-size:12pt;}
+  body.print-oef > *:not(#print-oef), body.print-cornell > *:not(#print-cornell){display:none !important;}
+  body.print-oef #print-oef, body.print-cornell #print-cornell{display:block;}
+  .printblad h1{font-size:16pt;margin:0 0 2mm;}
+  .printblad .naam{display:flex;gap:10mm;font-size:11pt;margin:0 0 5mm;}
+  .printblad .oef{border:none;border-top:1px solid #999;border-radius:0;padding:3mm 0;margin:0;break-inside:avoid;}
+  .printblad table.cornell{width:100%;border-collapse:collapse;}
+  .printblad table.cornell td{border:1px solid #555;vertical-align:top;padding:2mm 3mm;font-size:11pt;}
+  .printblad table.cornell td.v{width:32%;font-weight:600;}
+  .printblad .samenv{border:1px solid #555;height:38mm;margin-top:4mm;padding:2mm 3mm;font-weight:600;}
+  /* volledige cursus afdrukken */
+  body:not(.print-oef):not(.print-cornell) #banner, body:not(.print-oef):not(.print-cornell) nav.inhoud,
+  body:not(.print-oef):not(.print-cornell) .toolknop, body:not(.print-oef):not(.print-cornell) button,
+  body:not(.print-oef):not(.print-cornell) .onder, body:not(.print-oef):not(.print-cornell) footer{display:none !important;}
+  body:not(.print-oef):not(.print-cornell) .blok{box-shadow:none;border:none;padding:0;margin:0 0 6mm;}
+  body:not(.print-oef):not(.print-cornell) figure, body:not(.print-oef):not(.print-cornell) .kader, body:not(.print-oef):not(.print-cornell) .denk, body:not(.print-oef):not(.print-cornell) .oef{break-inside:avoid;}
+  body:not(.print-oef):not(.print-cornell) .schrijflijnen{display:block;}
+}
+.schrijflijnen{display:none;}
+.oef .tekst{font-family:var(--serif);}
+.def{border:1px solid var(--line);border-left:4px solid var(--accent);background:#fff;padding:10px 16px;margin:14px 0;}
+.def .kop{font-family:var(--font);font-size:14px;font-weight:700;color:var(--accent);margin-bottom:2px;}
+.def.wet{border-left-color:#8A2B2B;} .def.wet .kop{color:#8A2B2B;}
+.def p:last-child{margin-bottom:0;}
+.vgl{display:flex;align-items:center;justify-content:center;position:relative;margin:12px 0 16px;font-family:var(--serif);font-size:21px;}
+.vgl .n{position:absolute;right:0;font-size:16px;color:var(--text-dim);}
+.voorbeeld{background:var(--panel-2);border:1px solid var(--line);padding:12px 16px;margin:14px 0;}
+.voorbeeld .kop{font-family:var(--font);font-size:14px;font-weight:700;margin-bottom:4px;}
+.verdieping{border:1px dashed #8a7f63;background:#FBF8F0;padding:10px 16px;margin:14px 0;}
+.verdieping .kop{font-family:var(--font);font-size:13px;font-weight:700;color:#6b5d33;text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px;}
+.begrippen{columns:2;font-family:var(--serif);} .begrippen p{break-inside:avoid;margin:0 0 6px;}
+@media(max-width:640px){.begrippen{columns:1;}}
+.schrijflijnen div{border-bottom:1px solid #999;height:9mm;}
+</style>
+</head>
+<body>
+<div id="banner"></div>
+<header class="top">
+  <div class="eyebrow">Fysica 5de jaar · Thema 1 Elektrostatica · Hoofdstuk 2</div>
+  <h1>Krachten tussen ladingen</h1>
+  <p class="intro">Deze cursus hoort bij de tool <a href="krachten-op-ladingen.html">Krachten op ladingen</a>. Oefeningen maak je op papier.</p>
+  <p><button class="knop licht" onclick="window.print()">Cursus afdrukken</button></p>
+  <nav class="inhoud" id="inhoud"></nav>
+</header>
+<main id="cursus">
+<section class="blok" id="lesdoelen">
+<h2>Lesdoelen</h2>
+<p>De lesdoelen volgen het leerstofoverzicht. Na dit hoofdstuk kan je:</p>
+<ul class="doelen">
+<li>de richting, de zin en de grootte bepalen van de coulombkracht die twee ladingen op elkaar uitoefenen, en de formule van de coulombkracht omvormen om andere grootheden te berekenen;</li>
+<li>redeneervragen over de coulombkracht tussen twee ladingen oplossen;</li>
+<li>de richting, de zin en de grootte bepalen van de coulombkracht die meerdere ladingen op één lijn op elkaar uitoefenen, en de formule omvormen;</li>
+<li>in een geometrie van drie ladingen die niet op één lijn liggen, de resulterende coulombkracht op één welbepaalde lading tekenen (eenvoudige opgaven).</li></ul>
+<p>Leerboek p. 27–32. Oefeningen in het leerboek: 1 tot en met 11 (p. 31–32).</p>
+</section>
+<section class="blok" id="voorkennis">
+<h2>Voorkennis</h2>
+<ul class="doelen">
+<li>Gelijke ladingen stoten elkaar af, tegengestelde ladingen trekken elkaar aan (hoofdstuk 1).</li>
+<li>Een kracht is een vector: aangrijpingspunt, richting, zin en grootte. De kracht begint op het voorwerp waarop ze werkt.</li>
+<li>Krachten samenstellen: kop-staartmethode, parallellogrammethode en de stelling van Pythagoras.</li>
+<li>Voorvoegsels: μ (micro) = 10⁻⁶, n (nano) = 10⁻⁹, m (milli) = 10⁻³. Afstanden in m.</li></ul>
+</section>
+<section class="blok" id="deel21" data-vrij="deel21">
+<h2><span class="nr">2.1</span>Krachten tussen twee ladingen</h2>
+<h3>2.1.1 De wet van Coulomb</h3>
+<p>Twee geladen voorwerpen oefenen een kracht op elkaar uit: de <b>coulombkracht</b> of elektrische kracht. Als de voorwerpen klein zijn tegenover hun afstand, noemen we ze <b>puntladingen</b>.</p>
+<figure class="figuur"><svg viewBox="0 0 720 240" width="720" xmlns="http://www.w3.org/2000/svg" font-family="Inter,sans-serif"><defs><marker id="pijl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="context-stroke"/></marker></defs><line x1="200" y1="40" x2="360" y2="40" stroke="#CBD5E1" stroke-dasharray="4 4"/><line x1="200" y1="40" x2="130" y2="40" stroke="#1D4ED8" stroke-width="3" marker-end="url(#pijl)"/><line x1="360" y1="40" x2="430" y2="40" stroke="#1D4ED8" stroke-width="3" marker-end="url(#pijl)"/><circle cx="200" cy="40" r="11" fill="#d64550"/><path d="M195,40 H205" stroke="#fff" stroke-width="2.4"/><path d="M200,35 V45" stroke="#fff" stroke-width="2.4"/><circle cx="360" cy="40" r="11" fill="#d64550"/><path d="M355,40 H365" stroke="#fff" stroke-width="2.4"/><path d="M360,35 V45" stroke="#fff" stroke-width="2.4"/><text x="450" y="45" font-size="13" fill="#1D2A36" text-anchor="start" font-weight="600">gelijke ladingen: afstoting</text><line x1="200" y1="110" x2="360" y2="110" stroke="#CBD5E1" stroke-dasharray="4 4"/><line x1="200" y1="110" x2="130" y2="110" stroke="#1D4ED8" stroke-width="3" marker-end="url(#pijl)"/><line x1="360" y1="110" x2="430" y2="110" stroke="#1D4ED8" stroke-width="3" marker-end="url(#pijl)"/><circle cx="200" cy="110" r="11" fill="#2a6f97"/><path d="M195,110 H205" stroke="#fff" stroke-width="2.4"/><circle cx="360" cy="110" r="11" fill="#2a6f97"/><path d="M355,110 H365" stroke="#fff" stroke-width="2.4"/><text x="450" y="115" font-size="13" fill="#1D2A36" text-anchor="start" font-weight="600">gelijke ladingen: afstoting</text><line x1="200" y1="180" x2="360" y2="180" stroke="#CBD5E1" stroke-dasharray="4 4"/><line x1="200" y1="180" x2="260" y2="180" stroke="#1D4ED8" stroke-width="3" marker-end="url(#pijl)"/><line x1="360" y1="180" x2="300" y2="180" stroke="#1D4ED8" stroke-width="3" marker-end="url(#pijl)"/><circle cx="200" cy="180" r="11" fill="#d64550"/><path d="M195,180 H205" stroke="#fff" stroke-width="2.4"/><path d="M200,175 V185" stroke="#fff" stroke-width="2.4"/><circle cx="360" cy="180" r="11" fill="#2a6f97"/><path d="M355,180 H365" stroke="#fff" stroke-width="2.4"/><text x="450" y="185" font-size="13" fill="#1D2A36" text-anchor="start" font-weight="600">tegengestelde ladingen: aantrekking</text><text x="280" y="228" font-size="13" fill="#51606E" text-anchor="middle" font-weight="400">De krachten liggen op de verbindingslijn, zijn even groot en tegengesteld.</text></svg><figcaption>Richting en zin van de coulombkracht. Elke kracht begint op de lading waarop ze werkt.</figcaption></figure>
+<div class="def"><div class="kop">Richting en zin van de coulombkracht</div><p>De coulombkracht ligt op de <b>verbindingslijn</b> van de twee ladingen. Gelijke ladingen <b>stoten af</b>, tegengestelde ladingen <b>trekken aan</b>. De kracht van Q₁ op Q₂ en die van Q₂ op Q₁ zijn <b>even groot</b> en <b>tegengesteld</b> (actie en reactie).</p></div>
+<div class="def wet"><div class="kop">Wet van Coulomb</div><p>De grootte van de coulombkracht is recht evenredig met het product van de ladingen en omgekeerd evenredig met het kwadraat van de afstand.</p></div>
+<div class="vgl"><span class="f"><i>F</i> = <i>k</i> · |<i>Q</i>₁| · |<i>Q</i>₂| / <i>r</i>²</span></div>
+<table class="vb"><tr><td><i>F</i></td><td>grootte van de coulombkracht, in N</td></tr><tr><td><i>Q</i>₁, <i>Q</i>₂</td><td>de ladingen, in C (zonder teken: het teken bepaalt alleen de zin)</td></tr>
+<tr><td><i>r</i></td><td>afstand tussen de middelpunten van de ladingen, in m</td></tr><tr><td><i>k</i></td><td>constante van Coulomb, 8,99 · 10⁹ N·m²/C²</td></tr></table>
+<div class="voorbeeld"><div class="kop">Twee ladingen</div><p>Een lading van +2,0 μC en een lading van −3,0 μC liggen 30 cm uit elkaar. Bepaal de coulombkracht.</p><p>Gegeven: |<i>Q</i>₁| = 2,0 · 10⁻⁶ C, |<i>Q</i>₂| = 3,0 · 10⁻⁶ C, <i>r</i> = 0,30 m. Gevraagd: <i>F</i>.<br>Oplossing: <i>F</i> = 8,99 · 10⁹ · 2,0 · 10⁻⁶ · 3,0 · 10⁻⁶ / 0,30² = 0,60 N.<br>Antwoord: elke lading ondervindt een kracht van 0,60 N. De ladingen zijn tegengesteld: de krachten zijn <b>aantrekkend</b>.</p></div>
+<h3>2.1.2 De formule omvormen</h3>
+<p>Ken je de kracht, dan kan je een lading of de afstand berekenen:</p>
+<div class="vgl"><span class="f">|<i>Q</i>₁| = <i>F</i> · <i>r</i>² / (<i>k</i> · |<i>Q</i>₂|) &nbsp;&nbsp;&nbsp; <i>r</i> = √( <i>k</i> · |<i>Q</i>₁| · |<i>Q</i>₂| / <i>F</i> )</span></div>
+<div class="voorbeeld"><div class="kop">Twee gelijke ladingen</div><p>Twee gelijke ladingen op 5,0 cm van elkaar stoten elkaar af met een kracht van 0,90 N. Hoe groot is elke lading?</p><p>Omdat <i>Q</i>₁ = <i>Q</i>₂ = <i>Q</i>: <i>Q</i>² = <i>F</i> · <i>r</i>² / <i>k</i> = 0,90 · 0,050² / 8,99 · 10⁹ = 2,5 · 10⁻¹³ C².<br><i>Q</i> = 5,0 · 10⁻⁷ C = 0,50 μC. Beide ladingen hebben hetzelfde teken (afstoting), maar welk teken kan je niet weten.</p></div>
+<h3>2.1.3 Redeneren met de wet van Coulomb</h3>
+<p>Vaak hoef je niet te rekenen. Kijk hoe <i>F</i> afhangt van elke grootheid (figuur 2.2):</p>
+<ul><li><i>Q</i>₁ of <i>Q</i>₂ wordt <b>×&nbsp;n</b> → <i>F</i> wordt <b>×&nbsp;n</b>;</li><li><i>r</i> wordt <b>×&nbsp;n</b> → <i>F</i> wordt <b>÷&nbsp;n²</b>.</li></ul>
+<figure class="figuur"><svg viewBox="0 0 560 250" width="560" xmlns="http://www.w3.org/2000/svg" font-family="Inter,sans-serif"><defs><marker id="pijl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="context-stroke"/></marker></defs><path d="M70,20 V220 H510" fill="none" stroke="#1D2A36" stroke-width="2"/><path d="M175.6,24.7 L177.8,32.6 L180.0,40.0 L182.2,47.0 L184.4,53.6 L186.6,59.8 L188.8,65.7 L191.0,71.2 L193.2,76.5 L195.4,81.5 L197.6,86.2 L199.8,90.7 L202.0,95.0 L204.2,99.1 L206.4,102.9 L208.6,106.6 L210.8,110.1 L213.0,113.5 L215.2,116.7 L217.4,119.8 L219.6,122.7 L221.8,125.5 L224.0,128.2 L226.2,130.7 L228.4,133.2 L230.6,135.6 L232.8,137.8 L235.0,140.0 L237.2,142.1 L239.4,144.1 L241.6,146.0 L243.8,147.9 L246.0,149.7 L248.2,151.4 L250.4,153.1 L252.6,154.7 L254.8,156.2 L257.0,157.7 L259.2,159.2 L261.4,160.5 L263.6,161.9 L265.8,163.2 L268.0,164.4 L270.2,165.7 L272.4,166.8 L274.6,168.0 L276.8,169.1 L279.0,170.1 L281.2,171.2 L283.4,172.2 L285.6,173.1 L287.8,174.1 L290.0,175.0 L292.2,175.9 L294.4,176.7 L296.6,177.6 L298.8,178.4 L301.0,179.2 L303.2,180.0 L305.4,180.7 L307.6,181.4 L309.8,182.1 L312.0,182.8 L314.2,183.5 L316.4,184.1 L318.6,184.8 L320.8,185.4 L323.0,186.0 L325.2,186.6 L327.4,187.1 L329.6,187.7 L331.8,188.2 L334.0,188.8 L336.2,189.3 L338.4,189.8 L340.6,190.3 L342.8,190.7 L345.0,191.2 L347.2,191.7 L349.4,192.1 L351.6,192.5 L353.8,193.0 L356.0,193.4 L358.2,193.8 L360.4,194.2 L362.6,194.6 L364.8,194.9 L367.0,195.3 L369.2,195.7 L371.4,196.0 L373.6,196.4 L375.8,196.7 L378.0,197.0 L380.2,197.4 L382.4,197.7 L384.6,198.0 L386.8,198.3 L389.0,198.6 L391.2,198.9 L393.4,199.2 L395.6,199.5 L397.8,199.7 L400.0,200.0 L402.2,200.3 L404.4,200.5 L406.6,200.8 L408.8,201.0 L411.0,201.3 L413.2,201.5 L415.4,201.7 L417.6,202.0 L419.8,202.2 L422.0,202.4 L424.2,202.6 L426.4,202.9 L428.6,203.1 L430.8,203.3 L433.0,203.5 L435.2,203.7 L437.4,203.9 L439.6,204.1 L441.8,204.2 L444.0,204.4 L446.2,204.6 L448.4,204.8 L450.6,205.0 L452.8,205.1 L455.0,205.3 L457.2,205.5 L459.4,205.6 L461.6,205.8 L463.8,206.0 L466.0,206.1 L468.2,206.3 L470.4,206.4 L472.6,206.6 L474.8,206.7 L477.0,206.9 L479.2,207.0 L481.4,207.1 L483.6,207.3 L485.8,207.4 L488.0,207.5 L490.2,207.7 L492.4,207.8 L494.6,207.9 L496.8,208.0 L499.0,208.2 L501.2,208.3 L503.4,208.4 L505.6,208.5 L507.8,208.6 L510.0,208.8" fill="none" stroke="#1D4ED8" stroke-width="3"/><line x1="180.0" y1="40.0" x2="180.0" y2="220" stroke="#94A3B8" stroke-dasharray="4 3"/><circle cx="180.0" cy="40.0" r="5" fill="#1D4ED8"/><text x="188.0" y="32.0" font-size="14" fill="#1D4ED8" text-anchor="start" font-weight="600">F</text><text x="180.0" y="238" font-size="13" fill="#1D2A36" text-anchor="middle" font-weight="600">r</text><line x1="290.0" y1="175.0" x2="290.0" y2="220" stroke="#94A3B8" stroke-dasharray="4 3"/><circle cx="290.0" cy="175.0" r="5" fill="#1D4ED8"/><text x="298.0" y="167.0" font-size="14" fill="#1D4ED8" text-anchor="start" font-weight="600">F/4</text><text x="290.0" y="238" font-size="13" fill="#1D2A36" text-anchor="middle" font-weight="600">2r</text><line x1="400.0" y1="200.0" x2="400.0" y2="220" stroke="#94A3B8" stroke-dasharray="4 3"/><circle cx="400.0" cy="200.0" r="5" fill="#1D4ED8"/><text x="408.0" y="192.0" font-size="14" fill="#1D4ED8" text-anchor="start" font-weight="600">F/9</text><text x="400.0" y="238" font-size="13" fill="#1D2A36" text-anchor="middle" font-weight="600">3r</text><text x="60" y="30" font-size="15" fill="#1D2A36" text-anchor="end" font-weight="600">F</text><text x="510" y="238" font-size="13" fill="#51606E" text-anchor="end" font-weight="400">afstand</text></svg><figcaption>De coulombkracht in functie van de afstand. Dubbele afstand: vier keer kleinere kracht.</figcaption></figure>
+<a class="toolknop" href="krachten-op-ladingen.html" target="_blank" rel="noopener">▶ Tool: krachten op ladingen</a>
+<div class="denk" data-vrij="denk_1">
+  <div class="vraag"><div class="kop">Denkvraag</div><p>Je verdubbelt beide ladingen en ook de afstand ertussen. Wat gebeurt er met de coulombkracht?</p></div>
+  <div class="onder"><div class="redenering"><ol><li><span class="stap">Ladingen</span> Elke lading × 2: het product |<i>Q</i>₁| · |<i>Q</i>₂| wordt × 4.</li><li><span class="stap">Afstand</span> <i>r</i> × 2: <i>r</i>² wordt × 4.</li><li><span class="stap">Samen</span> <i>F</i> wordt × 4 / 4 = × 1.</li></ol><div class="besluit">De kracht blijft even groot.</div></div></div>
+</div>
+<div class="verdieping"><div class="kop">Verdieping · Elektrische kracht tegenover zwaartekracht</div><p>In een waterstofatoom trekken het proton en het elektron elkaar aan met de coulombkracht en met de gravitatiekracht. De coulombkracht is ongeveer 2,3 · 10³⁹ keer groter. Daarom bepalen elektrische krachten hoe atomen en moleculen samenhangen.</p></div>
+</section>
+<section class="blok" id="deel22" data-vrij="deel22">
+<h2><span class="nr">2.2</span>Krachten tussen meerdere ladingen</h2>
+<h3>2.2.1 Ladingen op één lijn</h3>
+<p>Werken er meerdere ladingen op één lading, dan bepaal je elke coulombkracht <b>afzonderlijk</b>, alsof de andere ladingen er niet zijn. De resulterende kracht is de <b>vectoriële som</b> van die krachten.</p>
+<div class="def"><div class="kop">Superpositie</div><p>De resulterende coulombkracht op een lading is de vectoriële som van de coulombkrachten die alle andere ladingen afzonderlijk op die lading uitoefenen.</p></div>
+<div class="vgl"><span class="f"><b>F</b><sub>r</sub> = <b>F</b><sub>1</sub> + <b>F</b><sub>2</sub> + …</span></div>
+<p>Liggen alle ladingen op één lijn, dan liggen alle krachten op die lijn. Kies een positieve zin (bv. naar rechts) en tel de krachten op met hun teken.</p>
+<figure class="figuur"><svg viewBox="0 0 640 230" width="640" xmlns="http://www.w3.org/2000/svg" font-family="Inter,sans-serif"><defs><marker id="pijl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="context-stroke"/></marker></defs><line x1="40" y1="70" x2="600" y2="70" stroke="#CBD5E1"/><line x1="220.0" y1="70" x2="366.0" y2="70" stroke="#d64550" stroke-width="5" marker-end="url(#pijl)"/><text x="295.0" y="56" font-size="13" fill="#d64550" text-anchor="middle" font-weight="600">F<tspan baseline-shift="sub" font-size="10">r</tspan> = 4,0 N</text><circle cx="70" cy="70" r="11" fill="#d64550"/><path d="M65,70 H75" stroke="#fff" stroke-width="2.4"/><path d="M70,65 V75" stroke="#fff" stroke-width="2.4"/><text x="70" y="104" font-size="13" fill="#1D2A36" text-anchor="middle" font-weight="600">Q₁ = +4,0 μC</text><circle cx="220.0" cy="70" r="11" fill="#d64550"/><path d="M215.0,70 H225.0" stroke="#fff" stroke-width="2.4"/><path d="M220.0,65 V75" stroke="#fff" stroke-width="2.4"/><text x="220.0" y="104" font-size="13" fill="#1D2A36" text-anchor="middle" font-weight="600">Q₂ = +1,0 μC</text><circle cx="520.0" cy="70" r="11" fill="#2a6f97"/><path d="M515.0,70 H525.0" stroke="#fff" stroke-width="2.4"/><text x="520.0" y="104" font-size="13" fill="#1D2A36" text-anchor="middle" font-weight="600">Q₃ = −2,0 μC</text><text x="145.0" y="126" font-size="12" fill="#51606E" text-anchor="middle" font-weight="400">10 cm</text><text x="370.0" y="126" font-size="12" fill="#51606E" text-anchor="middle" font-weight="400">20 cm</text><text x="70" y="180" font-size="13" fill="#1D2A36" text-anchor="start" font-weight="600">krachten op Q₂ (kop-staart):</text><line x1="260" y1="175" x2="390" y2="175" stroke="#1D4ED8" stroke-width="2.5" marker-end="url(#pijl)"/><text x="325" y="165" font-size="12" fill="#1D4ED8" text-anchor="middle" font-weight="600">F₁₂ = 3,6 N</text><line x1="390" y1="175" x2="406" y2="175" stroke="#0F766E" stroke-width="2.5" marker-end="url(#pijl)"/><text x="460" y="165" font-size="12" fill="#0F766E" text-anchor="middle" font-weight="600">F₃₂ = 0,45 N</text><line x1="260" y1="197" x2="406" y2="197" stroke="#d64550" stroke-width="4" marker-end="url(#pijl)"/><text x="333" y="217" font-size="12" fill="#d64550" text-anchor="middle" font-weight="600">F<tspan baseline-shift="sub" font-size="10">r</tspan></text></svg><figcaption>Drie ladingen op één lijn. Onderaan: de twee krachten op Q₂ kop aan staart samengesteld.</figcaption></figure>
+<div class="voorbeeld"><div class="kop">Kracht op de middelste lading</div><p>Bepaal de resulterende kracht op <i>Q</i>₂ in figuur 2.3.</p><p><i>F</i>₁₂ = 8,99 · 10⁹ · 4,0 · 10⁻⁶ · 1,0 · 10⁻⁶ / 0,10² = 3,6 N, naar rechts (Q₁ en Q₂ stoten af).<br><i>F</i>₃₂ = 8,99 · 10⁹ · 2,0 · 10⁻⁶ · 1,0 · 10⁻⁶ / 0,20² = 0,45 N, naar rechts (Q₃ trekt Q₂ aan).<br><i>F</i><sub>r</sub> = 3,6 N + 0,45 N = 4,0 N, naar rechts.</p></div>
+<h3>2.2.2 Ladingen die niet op één lijn liggen</h3>
+<p>Liggen de ladingen niet op één lijn, dan teken je elke kracht vanuit de lading waarop ze werkt en stel je ze samen met de <b>parallellogrammethode</b>. Staan de twee krachten loodrecht op elkaar, dan bereken je de grootte met de stelling van Pythagoras.</p>
+<figure class="figuur"><svg viewBox="0 0 640 290" width="640" xmlns="http://www.w3.org/2000/svg" font-family="Inter,sans-serif"><defs><marker id="pijl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="context-stroke"/></marker></defs><line x1="300" y1="200" x2="300" y2="40.0" stroke="#CBD5E1" stroke-dasharray="4 4"/><line x1="300" y1="200" x2="420.0" y2="200" stroke="#CBD5E1" stroke-dasharray="4 4"/><line x1="300" y1="200" x2="300" y2="250.57999999999998" stroke="#1D4ED8" stroke-width="2.5" marker-end="url(#pijl)"/><text x="310" y="246.57999999999998" font-size="13" fill="#1D4ED8" text-anchor="start" font-weight="600">F₁₃</text><line x1="300" y1="200" x2="210.08999999999997" y2="200" stroke="#0F766E" stroke-width="2.5" marker-end="url(#pijl)"/><text x="255.045" y="190" font-size="13" fill="#0F766E" text-anchor="middle" font-weight="600">F₂₃</text><line x1="210.08999999999997" y1="200" x2="210.08999999999997" y2="250.57999999999998" stroke="#94A3B8" stroke-dasharray="5 4"/><line x1="300" y1="250.57999999999998" x2="210.08999999999997" y2="250.57999999999998" stroke="#94A3B8" stroke-dasharray="5 4"/><line x1="300" y1="200" x2="210.08999999999997" y2="250.57999999999998" stroke="#d64550" stroke-width="5" marker-end="url(#pijl)"/><text x="202.08999999999997" y="268.58" font-size="14" fill="#d64550" text-anchor="start" font-weight="600">F<tspan baseline-shift="sub" font-size="10">r</tspan></text><circle cx="300" cy="40.0" r="11" fill="#d64550"/><path d="M295,40.0 H305" stroke="#fff" stroke-width="2.4"/><path d="M300,35.0 V45.0" stroke="#fff" stroke-width="2.4"/><text x="318" y="45.0" font-size="13" fill="#1D2A36" text-anchor="start" font-weight="600">Q₁ = +3,0 μC</text><circle cx="420.0" cy="200" r="11" fill="#d64550"/><path d="M415.0,200 H425.0" stroke="#fff" stroke-width="2.4"/><path d="M420.0,195 V205" stroke="#fff" stroke-width="2.4"/><text x="420.0" y="228" font-size="13" fill="#1D2A36" text-anchor="middle" font-weight="600">Q₂ = +3,0 μC</text><circle cx="300" cy="200" r="11" fill="#d64550"/><path d="M295,200 H305" stroke="#fff" stroke-width="2.4"/><path d="M300,195 V205" stroke="#fff" stroke-width="2.4"/><text x="316" y="190" font-size="13" fill="#1D2A36" text-anchor="start" font-weight="600">Q₃ = +1,0 μC</text><text x="280" y="130" font-size="12" fill="#51606E" text-anchor="end" font-weight="400">40 cm</text><text x="370" y="216" font-size="12" fill="#51606E" text-anchor="middle" font-weight="400">30 cm</text></svg><figcaption>Drie ladingen in een rechthoekige driehoek. De resulterende kracht op Q₃ is de diagonaal van het parallellogram.</figcaption></figure>
+<div class="voorbeeld"><div class="kop">Drie ladingen in een driehoek</div><p>Bepaal de resulterende kracht op <i>Q</i>₃ in figuur 2.4.</p><p><i>F</i>₁₃ = 8,99 · 10⁹ · 3,0 · 10⁻⁶ · 1,0 · 10⁻⁶ / 0,40² = 0,17 N, naar beneden (afstoting, weg van Q₁).<br><i>F</i>₂₃ = 8,99 · 10⁹ · 3,0 · 10⁻⁶ · 1,0 · 10⁻⁶ / 0,30² = 0,30 N, naar links (afstoting, weg van Q₂).<br>De krachten staan loodrecht: <i>F</i><sub>r</sub> = √(0,17² + 0,30²) = 0,34 N, schuin naar linksonder.</p></div>
+<a class="toolknop" href="krachten-op-ladingen.html" target="_blank" rel="noopener">▶ Tool: oefen met meerdere ladingen</a>
+<div class="denk" data-vrij="denk_2">
+  <div class="vraag"><div class="kop">Denkvraag</div><p>In figuur 2.3 vervang je Q₃ door een positieve lading van +2,0 μC. Wordt de resulterende kracht op Q₂ groter of kleiner? Verandert de zin?</p></div>
+  <div class="onder"><div class="redenering"><ol><li><span class="stap">F₁₂</span> Verandert niet: 3,6 N naar rechts.</li><li><span class="stap">F₃₂</span> Q₃ stoot Q₂ nu af: 0,45 N naar links.</li><li><span class="stap">Samen</span> 3,6 N − 0,45 N = 3,1 N, nog altijd naar rechts.</li></ol><div class="besluit">De resulterende kracht wordt kleiner (3,1 N), de zin blijft naar rechts.</div></div></div>
+</div>
+</section>
+<section class="blok" id="oefeningen" data-vrij="oefeningen">
+<h2>Oefeningen</h2>
+<p>Maak deze oefeningen op papier. Gebruik: gegeven, gevraagd, formule, oplossing, antwoord met eenheid. Teken bij elke opgave eerst de krachten, vertrekkend op de lading waarop ze werken. Maak ook de oefeningen 1 tot en met 11 in het leerboek (p. 31–32).</p>
+<p><button class="knop licht" data-print="oef">Oefeningen afdrukken</button></p>
+<div class="oef" data-vrij="opl_1">
+  <div class="titel"><span class="nr">1</span>Basis</div>
+  <div class="tekst">Twee ladingen van +5,0 nC en +8,0 nC liggen 4,0 cm uit elkaar. Bereken de coulombkracht. Is ze aantrekkend of afstotend?</div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">Oplossing</span> <i>F</i> = 8,99 · 10⁹ · 5,0 · 10⁻⁹ · 8,0 · 10⁻⁹ / 0,040² = 2,2 · 10⁻⁴ N</li><li><span class="stap">Zin</span> Gelijke ladingen: afstotend.</li></ol><div class="besluit"><i>F</i> = 2,2 · 10⁻⁴ N, afstotend</div></div>
+</div>
+<div class="oef" data-vrij="opl_2">
+  <div class="titel"><span class="nr">2</span>Afstand berekenen</div>
+  <div class="tekst">Een elektron en een proton trekken elkaar aan met een kracht van 8,2 · 10⁻⁸ N. Hoe ver liggen ze uit elkaar?</div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">Formule</span> <i>r</i> = √(<i>k</i> · <i>e</i> · <i>e</i> / <i>F</i>)</li><li><span class="stap">Oplossing</span> <i>r</i> = √(8,99 · 10⁹ · (1,602 · 10⁻¹⁹)² / 8,2 · 10⁻⁸) = 5,3 · 10⁻¹¹ m</li></ol><div class="besluit"><i>r</i> = 5,3 · 10⁻¹¹ m (de straal van een waterstofatoom)</div></div>
+</div>
+<div class="oef" data-vrij="opl_3">
+  <div class="titel"><span class="nr">3</span>Redeneren</div>
+  <div class="tekst">Wat gebeurt er met de coulombkracht?<ol class="deelvragen" type="a"><li>De afstand wordt 3 keer zo groot.</li><li>Eén lading wordt 4 keer zo groot en de afstand 2 keer zo groot.</li><li>De afstand wordt gehalveerd.</li><li>Je maakt één lading 2 keer zo groot en de andere 2 keer zo klein.</li></ol></div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">a</span> ÷ 9</li><li><span class="stap">b</span> × 4 / 4 = × 1: blijft gelijk</li><li><span class="stap">c</span> × 4</li><li><span class="stap">d</span> × 2 / 2 = × 1: blijft gelijk</li></ol><div class="besluit">Factor van de ladingen boven, factor van de afstand in het kwadraat onder.</div></div>
+</div>
+<div class="oef" data-vrij="opl_4">
+  <div class="titel"><span class="nr">4</span>Tegenstrijdig?</div>
+  <div class="tekst">Een lading van 1,0 μC ligt naast een lading van 4,0 μC. Lisa zegt: "De grote lading duwt harder op de kleine dan omgekeerd." Klopt dat?</div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">Wet van Coulomb</span> In <i>F</i> = <i>k</i>|<i>Q</i>₁||<i>Q</i>₂|/<i>r</i>² zit het product van beide ladingen: voor beide ladingen dezelfde waarde.</li><li><span class="stap">Actie-reactie</span> De krachten zijn even groot en tegengesteld.</li></ol><div class="besluit">Lisa heeft geen gelijk: beide krachten zijn even groot.</div></div>
+</div>
+<div class="oef" data-vrij="opl_5">
+  <div class="titel"><span class="nr">5</span>Op één lijn</div>
+  <div class="tekst">Q₁ = +2,0 μC ligt in x = 0, Q₂ = −1,0 μC in x = 20 cm en Q₃ = +4,0 μC in x = 40 cm. Bereken de resulterende kracht op Q₂.</div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">F₁₂</span> 8,99 · 10⁹ · 2,0 · 10⁻⁶ · 1,0 · 10⁻⁶ / 0,20² = 0,45 N naar links (aantrekking naar Q₁)</li><li><span class="stap">F₃₂</span> 8,99 · 10⁹ · 4,0 · 10⁻⁶ · 1,0 · 10⁻⁶ / 0,20² = 0,90 N naar rechts (aantrekking naar Q₃)</li><li><span class="stap">Samen</span> 0,90 N − 0,45 N = 0,45 N</li></ol><div class="besluit"><i>F</i><sub>r</sub> = 0,45 N naar rechts</div></div>
+</div>
+<div class="oef" data-vrij="opl_6">
+  <div class="titel"><span class="nr">6</span>Waar is de kracht nul?</div>
+  <div class="tekst">Q₁ = +1,0 μC ligt in x = 0, Q₂ = +4,0 μC in x = 30 cm. Waar tussen beide moet je een kleine positieve lading leggen opdat de resulterende kracht erop nul is?</div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">Voorwaarde</span> <i>k</i> · 1,0 · q / x² = <i>k</i> · 4,0 · q / (0,30 − x)²</li><li><span class="stap">Oplossing</span> (0,30 − x)² = 4x² → 0,30 − x = 2x → x = 0,10 m</li></ol><div class="besluit">Op 10 cm van Q₁ (dichter bij de kleinste lading).</div></div>
+</div>
+<div class="oef" data-vrij="opl_7">
+  <div class="titel"><span class="nr">7</span>Niet op één lijn</div>
+  <div class="tekst">Drie ladingen liggen op de hoekpunten van een vierkant met zijde 10 cm: Q₁ = +2,0 μC linksboven, Q₂ = +2,0 μC rechtsonder, Q₃ = −1,0 μC linksonder. Teken de krachten op Q₃ en bereken de resulterende kracht.</div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">F₁₃</span> 8,99 · 10⁹ · 2,0 · 10⁻⁶ · 1,0 · 10⁻⁶ / 0,10² = 1,8 N, naar boven (aantrekking naar Q₁)</li><li><span class="stap">F₂₃</span> 1,8 N, naar rechts (aantrekking naar Q₂)</li><li><span class="stap">Samen</span> <i>F</i><sub>r</sub> = √(1,8² + 1,8²) = 2,5 N</li></ol><div class="besluit"><i>F</i><sub>r</sub> = 2,5 N, schuin naar rechtsboven (45°), naar het midden van het vierkant</div></div>
+</div>
+<div class="oef" data-vrij="opl_8">
+  <div class="titel"><span class="nr">8</span>Brussel · twee bollen van het Atomium</div>
+  <div class="tekst">Stel dat twee naburige bollen van het Atomium elk een lading van +1,0 mC krijgen (in werkelijkheid zijn ze niet geladen). Neem aan dat hun middelpunten 30 m uit elkaar liggen.<ol class="deelvragen" type="a"><li>Bereken de coulombkracht tussen de bollen.</li><li>Vergelijk met het gewicht van een fles water van 1 kg (9,8 N).</li><li>Mag je de bollen hier als puntladingen beschouwen? Verklaar.</li></ol></div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">a</span> <i>F</i> = 8,99 · 10⁹ · (1,0 · 10⁻³)² / 30² = 10 N</li><li><span class="stap">b</span> Ongeveer even groot als het gewicht van 1 kg: klein, ondanks de grote lading.</li><li><span class="stap">c</span> Ongeveer: de afstand is een stuk groter dan de bollen zelf. Hoe groter de afstand tegenover de afmetingen, hoe beter de benadering.</li></ol><div class="besluit">1 mC is in de elektrostatica een enorme lading; toch is de kracht op 30 m maar 10 N.</div></div>
+</div>
+</section>
+<section class="blok" id="begrippen">
+<h2>Begrippenlijst</h2>
+<div class="begrippen">
+<p><b>coulombkracht</b> — kracht tussen twee geladen voorwerpen</p>
+<p><b>constante van Coulomb</b> — <i>k</i> = 8,99 · 10⁹ N·m²/C²</p>
+<p><b>puntlading</b> — geladen voorwerp dat klein is tegenover de afstanden in de opgave</p>
+<p><b>superpositie</b> — de resulterende kracht is de vectoriële som van de afzonderlijke krachten</p>
+<p><b>verbindingslijn</b> — rechte door de middelpunten van de twee ladingen: de richting van de coulombkracht</p>
+</div>
+</section>
+<section class="blok" id="cornell">
+<h2>Cornellschema</h2>
+<p>Op het bord bouwen we samen een Cornellschema op. Dek thuis de rechterkolom af en overhoor jezelf.</p>
+<p><button class="knop licht" data-print="cornell">Cornellblad afdrukken</button></p>
+</section>
+<section class="blok" id="samenvatting" data-vrij="samenvatting">
+<h2>Samenvatting</h2>
+<div class="kader"><div class="kop">Samenvatting</div><p><b>Wet van Coulomb</b>: <i>F</i> = <i>k</i> · |<i>Q</i>₁| · |<i>Q</i>₂| / <i>r</i>², met <i>k</i> = 8,99 · 10⁹ N·m²/C². Richting: de verbindingslijn. Zin: gelijke ladingen stoten af, tegengestelde trekken aan. Beide krachten zijn even groot en tegengesteld.</p>
+<p><b>Redeneren</b>: lading × n → <i>F</i> × n; afstand × n → <i>F</i> ÷ n².</p>
+<p><b>Meerdere ladingen</b>: bepaal elke kracht afzonderlijk en tel ze vectorieel op. Op één lijn: optellen met teken. Loodrecht: Pythagoras. Algemeen: parallellogrammethode.</p></div>
+</section>
+
+</main>
+<footer>Cursus fysica 5de jaar — gemaakt voor klasgebruik, bij de tools op Oefentools wetenschappen.</footer>
+
+<div class="printblad" id="print-oef"></div>
+<div class="printblad" id="print-cornell"></div>
+
+<script>
+/* =====================================================================
+   VRIJGAVE — hier zet de leerkracht onderdelen open of dicht.
+   true  = zichtbaar voor de leerlingen
+   false = nog gesloten (de leerling ziet een slotje)
+   Tip: met ?leerkracht achter de link zie je als leerkracht alles,
+        bv. .../cursus-coulomb.html?leerkracht
+   ===================================================================== */
+const VRIJGAVE = {
+  deel21: true,              // 2.1 Krachten tussen twee ladingen
+  deel22: false,             // 2.2 Krachten tussen meerdere ladingen
+  denk_1: false,             // redenering denkvraag 1
+  denk_2: false,             // redenering denkvraag 2
+  oefeningen: false,         // de oefeningen zelf (opgaven)
+  opl_1: false,              // oplossing oefening 1
+  opl_2: false,              // oplossing oefening 2
+  opl_3: false,              // oplossing oefening 3
+  opl_4: false,              // oplossing oefening 4
+  opl_5: false,              // oplossing oefening 5
+  opl_6: false,              // oplossing oefening 6
+  opl_7: false,              // oplossing oefening 7
+  opl_8: false,              // oplossing oefening 8
+  samenvatting: false,       // samenvatting
+};
+
+/* ===================================================================== */
+const LK = new URLSearchParams(location.search).has('leerkracht');
+const open = id => LK || VRIJGAVE[id] === true;
+if(LK) document.getElementById('banner').innerHTML='<div class="leerkracht-banner">Leerkrachtweergave: alles is zichtbaar, ook wat voor leerlingen nog gesloten is.</div>';
+
+// delen open of dicht
+document.querySelectorAll('section.blok[data-vrij]').forEach(el=>{
+  if(open(el.dataset.vrij)) return;
+  const kop=el.querySelector(':scope > h2');
+  [...el.children].forEach(c=>{ if(c!==kop) c.style.display='none'; });
+  const m=document.createElement('p'); m.className='gesloten-deel'; m.innerHTML='Dit deel wordt opengesteld wanneer we het in de les behandelen.';
+  el.appendChild(m);
+});
+
+// denkvragen: redenering pas tonen na vrijgave
+document.querySelectorAll('.denk').forEach(d=>{
+  const id=d.dataset.vrij, red=d.querySelector('.redenering'), onder=d.querySelector('.onder');
+  red.hidden=true;
+  if(open(id)){
+    const b=document.createElement('button'); b.textContent='Toon de redenering';
+    b.onclick=()=>{ red.hidden=!red.hidden; b.textContent=red.hidden?'Toon de redenering':'Verberg de redenering'; };
+    onder.prepend(b);
+  } else {
+    onder.innerHTML='<span class="slotje">Denk eerst zelf na. We bespreken dit samen in de les; daarna verschijnt hier de redenering.</span>';
+  }
+});
+
+// oplossingen van oefeningen
+document.querySelectorAll('.oef[data-vrij]').forEach(o=>{
+  const id=o.dataset.vrij, opl=o.querySelector('.redenering'), onder=o.querySelector('.onder');
+  opl.hidden=true;
+  if(open(id)){
+    const b=document.createElement('button'); b.className='knop licht'; b.textContent='Toon de oplossing';
+    b.onclick=()=>{ opl.hidden=!opl.hidden; b.textContent=opl.hidden?'Toon de oplossing':'Verberg de oplossing'; };
+    onder.appendChild(b);
+  } else onder.innerHTML='<span class="slotje">De oplossing verschijnt nadat we de oefening besproken hebben.</span>';
+});
+
+// academische nummering: definities, wetten, vergelijkingen, figuren, voorbeelden
+const HFST = '2';
+const tel = {def:0, vgl:0, fig:0, vb:0};
+document.querySelectorAll('.def, .vgl, figure.figuur, .voorbeeld').forEach(el=>{
+  if(el.classList.contains('vgl')){ tel.vgl++; const n=document.createElement('span'); n.className='n'; n.textContent='('+HFST+'.'+tel.vgl+')'; el.appendChild(n); el.id=el.id||('vgl'+tel.vgl); }
+  else if(el.classList.contains('def')){ tel.def++; const k=el.querySelector('.kop'); k.textContent=(el.classList.contains('wet')?'Wet ':'Definitie ')+HFST+'.'+tel.def+(k.textContent?' · '+k.textContent:''); }
+  else if(el.classList.contains('voorbeeld')){ tel.vb++; const k=el.querySelector('.kop'); k.textContent='Voorbeeld '+HFST+'.'+tel.vb+(k.textContent?' · '+k.textContent:''); }
+  else { tel.fig++; const c=el.querySelector('figcaption'); if(c) c.innerHTML='<b class="fnr">Figuur '+HFST+'.'+tel.fig+'.</b> '+c.innerHTML; }
+});
+
+// inhoudstafel
+const inh=document.getElementById('inhoud');
+document.querySelectorAll('section.blok').forEach(s=>{
+  const a=document.createElement('a'); a.href='#'+s.id;
+  const nr=s.querySelector('h2 .nr'); const tekst=s.querySelector('h2').textContent.replace(nr?nr.textContent:'','').trim();
+  a.innerHTML=(nr?'<span class="nr">'+nr.textContent+'</span>':'')+tekst;
+  if(s.dataset.vrij && !open(s.dataset.vrij)) a.classList.add('slot');
+  inh.appendChild(a);
+});
+
+// afdrukbare bladen
+function vulPrint(){
+  const oefs=[...document.querySelectorAll('#oefeningen .oef')].map(o=>{ const k=o.cloneNode(true); k.querySelectorAll('.redenering,.onder').forEach(x=>x.remove()); k.removeAttribute('data-vrij'); return k.outerHTML; }).join('');
+  document.getElementById('print-oef').innerHTML=`<h1>Krachten tussen ladingen · oefeningen</h1><div class="naam"><span>Naam: ______________________</span><span>Klas: ______</span><span>Datum: __________</span></div><p>Maak elke oefening in je schrift. Gebruik telkens: gegeven · gevraagd · formule · oplossing · antwoord met eenheid.</p>`+oefs;
+  const vragen=CORNELL.map(v=>`<tr><td class="v">${v[0]}</td><td style="height:${Math.round((v[1]||32)*1.35)}mm"></td></tr>`).join('');
+  document.getElementById('print-cornell').innerHTML=`<h1>Krachten tussen ladingen · Cornellblad</h1><div class="naam"><span>Naam: ______________________</span><span>Klas: ______</span></div><table class="cornell"><tr><td class="v">Vragen</td><td><b>Notities</b> (samen opgebouwd in de les)</td></tr>${vragen}</table><div class="samenv">Samenvatting in mijn eigen woorden:</div>`;
+}
+const CORNELL = [["Wat zegt de wet van Coulomb? Formule en eenheden?", 30], ["Richting en zin van de coulombkracht?", 24], ["Hoe vorm je de formule om naar Q of r?", 24], ["Wat gebeurt er met F als Q of r verandert?", 26], ["Hoe bepaal je de kracht van meerdere ladingen op één lijn?", 30], ["En als ze niet op één lijn liggen?", 30]];
+function druk(soort){ vulPrint(); document.body.classList.add('print-'+soort); setTimeout(()=>{ window.print(); document.body.classList.remove('print-'+soort); },50); }
+document.querySelectorAll('[data-print]').forEach(b=>b.onclick=()=>druk(b.dataset.print));
+</script>
+</body>
+</html>
