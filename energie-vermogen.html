@@ -581,16 +581,40 @@ const svgW=(inner,h=170)=>`<svg viewBox="0 0 300 ${h}" xmlns="http://www.w3.org/
     document.getElementById('s7-tb-l').textContent='Tijd van leerling B: '+tb.value+' s';
   }
   [m,h,ta,tb].forEach(e=>e.addEventListener('input',()=>{ labels(); run=false; t=0; })); labels();
+  // trap: vaste trede (14 px hoog, 14 px diep), 4 treden per 3 m -> een hogere trap is ook echt hoger getekend
+  const SW=14, SH=14, YB=410;
+  function trede(x0,j){ return [x0+(j-0.5)*SW, YB-Math.max(0,j)*SH]; }   // midden van trede j (j<=0: vloer)
+  function been(ctx,hx,hy,fx,fy,L1,L2){ // twee segmenten, knie naar voren (inverse kinematica)
+    const dx=fx-hx, dy=fy-hy, d=Math.min(Math.hypot(dx,dy),L1+L2-0.01), a=Math.atan2(dy,dx);
+    const b=Math.acos((L1*L1+d*d-L2*L2)/(2*L1*d)), kx=hx+L1*Math.cos(a-b), ky=hy+L1*Math.sin(a-b);
+    ctx.beginPath(); ctx.moveTo(hx,hy); ctx.lineTo(kx,ky); ctx.lineTo(fx,fy); ctx.lineTo(fx+6,fy); ctx.stroke();
+  }
   function trap(x0,lab,col,frac){
-    const n=+h.value/3*4, sw=280/n, sh=300/n, yb=400;
-    ctx.fillStyle='#e2e8f0'; ctx.beginPath(); ctx.moveTo(x0,yb);
-    for(let i=0;i<n;i++){ ctx.lineTo(x0+i*sw,yb-(i+1)*sh); ctx.lineTo(x0+(i+1)*sw,yb-(i+1)*sh); }
-    ctx.lineTo(x0+n*sw,yb); ctx.closePath(); ctx.fill(); ctx.strokeStyle='#94a3b8'; ctx.lineWidth=2; ctx.stroke();
-    const px=x0+frac*n*sw, py=yb-Math.min(n,Math.ceil(frac*n+0.001))*sh*(frac>0?1:0)-(frac>0?0:0);
-    const y=yb-frac*300;
-    ctx.fillStyle=col; ctx.beginPath(); ctx.arc(px+8,y-46,10,0,Math.PI*2); ctx.fill();
-    ctx.strokeStyle=col; ctx.lineWidth=5; ctx.lineCap='round'; ctx.beginPath(); ctx.moveTo(px+8,y-36); ctx.lineTo(px+8,y-14); ctx.lineTo(px,y); ctx.moveTo(px+8,y-14); ctx.lineTo(px+16,y); ctx.stroke();
+    const n=+h.value/3*4;
+    ctx.fillStyle='#e2e8f0'; ctx.beginPath(); ctx.moveTo(x0,YB);
+    for(let i=0;i<n;i++){ ctx.lineTo(x0+i*SW,YB-(i+1)*SH); ctx.lineTo(x0+(i+1)*SW,YB-(i+1)*SH); }
+    ctx.lineTo(x0+n*SW,YB); ctx.closePath(); ctx.fill(); ctx.strokeStyle='#94a3b8'; ctx.lineWidth=2; ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x0-50,YB); ctx.lineTo(x0+n*SW,YB); ctx.moveTo(x0+n*SW,YB-n*SH); ctx.lineTo(x0+n*SW+30,YB-n*SH); ctx.stroke();
+    // voeten: elk voet zet telkens 2 treden; voet 0 op even, voet 1 op oneven treden
+    const st=frac*n, k=Math.min(Math.floor(st),n), p=st-k, e=p*p*(3-2*p);
+    const voet=par=>{
+      if(k>=n) return trede(x0,par===n%2?n:n-1);
+      if(k%2===par) return trede(x0,k);
+      const [ax,ay]=trede(x0,k-1), [bx,by]=trede(x0,Math.min(k+1,n));
+      return [ax+(bx-ax)*e, ay+(by-ay)*e - Math.sin(Math.PI*p)*SH*0.9];
+    };
+    const [f0x,f0y]=voet(0), [f1x,f1y]=voet(1);
+    const L1=18, L2=18, hx=(f0x+f1x)/2+4, hy=Math.max(f0y,f1y)-31;
+    const sx=hx+5, sy=hy-30, swing=(k<n?Math.sin(Math.PI*p):0)*(k%2?1:-1);
+    ctx.strokeStyle=col; ctx.lineWidth=5; ctx.lineCap='round'; ctx.lineJoin='round';
+    // arm achter, been, romp, been, arm voor
+    const arm=(r)=>{ const a=Math.PI/2-0.15+r*0.7; ctx.beginPath(); ctx.moveTo(sx,sy+3); const ex=sx+Math.cos(a)*15, ey=sy+3+Math.sin(a)*15; ctx.lineTo(ex,ey); ctx.lineTo(ex+Math.cos(a-0.45)*12, ey+Math.sin(a-0.45)*12); ctx.stroke(); };
+    ctx.globalAlpha=0.55; arm(swing); been(ctx,hx,hy,f1x,f1y,L1,L2); ctx.globalAlpha=1;
+    ctx.beginPath(); ctx.moveTo(hx,hy); ctx.lineTo(sx,sy); ctx.stroke();
+    been(ctx,hx,hy,f0x,f0y,L1,L2); arm(-swing);
+    ctx.fillStyle=col; ctx.beginPath(); ctx.arc(sx+2,sy-12,9.5,0,Math.PI*2); ctx.fill();
     text(ctx,'leerling '+lab,x0+140,40,{size:16,weight:700,color:col,align:'center'});
+    text(ctx,h.value+' m',x0+n*SW+34,YB-n*SH+5,{size:13,weight:600,color:'#51606E'});
   }
   function draw(dt){
     if(run){ t+=dt; if(t>Math.max(+ta.value,+tb.value)+0.5) run=false; }
