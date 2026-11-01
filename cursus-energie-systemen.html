@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Energie in systemen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EEF2F5; --panel:#FFFFFF; --panel-2:#F5F8FB; --line:#D3DCE5;
+  --text:#1D2A36; --text-dim:#51606E;
+  --accent:#2F6FB0; --accent-dark:#245A91; --accent-soft:#E4EEF8;
+  --ok:#1F7A4A; --ok-bg:#E3F3E9; --warn:#9A5B00; --warn-bg:#FFF4D6;
+  --font:'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:var(--font);}
+body{-webkit-font-smoothing:antialiased;line-height:1.6;font-size:16px;}
+.top{max-width:900px;margin:0 auto;padding:36px 24px 0;}
+.top .eyebrow{font-size:13px;font-weight:700;color:var(--accent-dark);letter-spacing:.04em;text-transform:uppercase;margin-bottom:6px;}
+.top h1{font-size:2rem;font-weight:700;letter-spacing:-0.015em;margin:0 0 8px;line-height:1.2;}
+.top .intro{color:var(--text-dim);font-size:15px;margin:0;}
+.inhoud{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0 0;padding-bottom:14px;border-bottom:1px solid var(--line);}
+.inhoud a{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:500;text-decoration:none;color:var(--text-dim);background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:7px 12px;}
+.inhoud a:hover{border-color:var(--accent);color:var(--text);}
+.inhoud a .nr{min-width:22px;height:22px;border-radius:11px;display:inline-flex;align-items:center;justify-content:center;background:var(--accent-soft);color:var(--accent-dark);font-size:12px;font-weight:700;padding:0 6px;}
+.inhoud a.slot{opacity:.55;}
+main{max-width:900px;margin:0 auto;padding:22px 24px 80px;}
+section.blok{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:22px 24px;margin-bottom:22px;scroll-margin-top:16px;}
+section.blok > h2{font-size:1.45rem;margin:0 0 12px;display:flex;align-items:center;gap:10px;letter-spacing:-0.01em;}
+section.blok > h2 .nr{min-width:30px;height:30px;border-radius:15px;display:inline-flex;align-items:center;justify-content:center;background:var(--accent);color:#fff;font-size:14px;font-weight:700;padding:0 8px;}
+h3{font-size:1.1rem;margin:22px 0 8px;}
+p{margin:0 0 12px;}
+ul.doelen{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px;}
+ul.doelen li{background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:9px 12px 9px 40px;position:relative;}
+ul.doelen li::before{content:'✓';position:absolute;left:14px;top:9px;color:var(--accent);font-weight:700;}
+.figuur{margin:12px 0 16px;text-align:center;}
+.figuur svg{max-width:100%;height:auto;background:#fbfcfe;border:1px solid var(--line);border-radius:10px;}
+.figuur figcaption{font-size:13px;color:var(--text-dim);margin-top:4px;}
+.kader{border-left:4px solid var(--accent);background:var(--accent-soft);border-radius:0 10px 10px 0;padding:12px 16px;margin:14px 0;}
+.kader .kop{font-weight:700;color:var(--accent-dark);margin-bottom:4px;}
+.kader p:last-child{margin-bottom:0;}
+.formule{display:inline-block;font-size:19px;font-weight:700;background:#fff;border:1px solid var(--line);border-radius:8px;padding:6px 14px;margin:4px 0 8px;}
+.toolknop{display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-weight:600;font-size:14px;color:var(--accent-dark);background:#fff;border:1px solid var(--accent);border-radius:8px;padding:8px 14px;margin:6px 8px 10px 0;}
+.toolknop:hover{background:var(--accent-soft);}
+.denk{border:1px solid var(--line);border-radius:10px;margin:16px 0;overflow:hidden;}
+.denk .vraag{background:var(--warn-bg);padding:12px 16px;}
+.denk .vraag .kop{font-size:12px;font-weight:700;color:var(--warn);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px;}
+.denk .vraag p:last-child{margin:0;}
+.denk .onder{padding:10px 16px;background:#fff;}
+.denk button,.knop{font-family:var(--font);font-size:14px;font-weight:600;background:var(--accent);color:#fff;border:1px solid var(--accent);border-radius:8px;padding:8px 14px;cursor:pointer;}
+.denk button:hover,.knop:hover{background:var(--accent-dark);}
+.knop.licht{background:#fff;color:var(--text);border-color:var(--line);}
+.knop.licht:hover{border-color:var(--accent);background:#fff;}
+.slotje{color:var(--text-dim);font-size:14px;}
+.redenering{margin-top:10px;}
+.redenering ol{margin:0;padding-left:0;list-style:none;counter-reset:st;}
+.redenering ol li{counter-increment:st;position:relative;padding:8px 0 8px 40px;border-top:1px dashed var(--line);}
+.redenering ol li:first-child{border-top:none;}
+.redenering ol li::before{content:counter(st);position:absolute;left:4px;top:8px;width:24px;height:24px;border-radius:12px;background:var(--ok-bg);color:var(--ok);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;}
+.redenering .stap{font-weight:700;}
+.redenering .besluit{background:var(--ok-bg);border-radius:8px;padding:8px 12px;margin-top:6px;color:var(--ok);font-weight:600;}
+.oef{border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:12px 0;}
+.oef .titel{font-weight:700;margin-bottom:4px;}
+.oef .titel .nr{display:inline-flex;min-width:26px;height:26px;border-radius:13px;align-items:center;justify-content:center;background:var(--accent-soft);color:var(--accent-dark);font-size:13px;margin-right:8px;}
+.oef ol.deelvragen{margin:6px 0 4px;padding-left:22px;}
+.gesloten-deel{color:var(--text-dim);font-size:15px;display:flex;align-items:center;gap:10px;}
+.stappenplan{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 14px;}
+.stappenplan span{background:var(--panel-2);border:1px solid var(--line);border-radius:999px;padding:3px 12px;font-size:13px;font-weight:600;}
+table.vb{border-collapse:collapse;margin:6px 0 12px;font-size:15px;}
+table.vb td{padding:3px 12px 3px 0;vertical-align:top;}
+table.vb td:first-child{font-weight:700;color:var(--accent-dark);white-space:nowrap;}
+.leerkracht-banner{background:#7c3aed;color:#fff;text-align:center;font-size:14px;font-weight:600;padding:6px;}
+footer{max-width:900px;margin:0 auto;padding:0 24px 40px;color:var(--text-dim);font-size:12px;}
+/* ---------- afdrukken ---------- */
+.printblad{display:none;}
+@media print{
+  @page{size:A4;margin:16mm 15mm;}
+  body{background:#fff;font-size:12pt;}
+  body.print-oef > *:not(#print-oef), body.print-cornell > *:not(#print-cornell){display:none !important;}
+  body.print-oef #print-oef, body.print-cornell #print-cornell{display:block;}
+  .printblad h1{font-size:16pt;margin:0 0 2mm;}
+  .printblad .naam{display:flex;gap:10mm;font-size:11pt;margin:0 0 5mm;}
+  .printblad .oef{border:none;border-top:1px solid #999;border-radius:0;padding:3mm 0;margin:0;break-inside:avoid;}
+  .printblad table.cornell{width:100%;border-collapse:collapse;}
+  .printblad table.cornell td{border:1px solid #555;vertical-align:top;padding:2mm 3mm;font-size:11pt;}
+  .printblad table.cornell td.v{width:32%;font-weight:600;}
+  .printblad .samenv{border:1px solid #555;height:38mm;margin-top:4mm;padding:2mm 3mm;font-weight:600;}
+  /* volledige cursus afdrukken */
+  body:not(.print-oef):not(.print-cornell) #banner, body:not(.print-oef):not(.print-cornell) nav.inhoud,
+  body:not(.print-oef):not(.print-cornell) .toolknop, body:not(.print-oef):not(.print-cornell) button,
+  body:not(.print-oef):not(.print-cornell) .onder, body:not(.print-oef):not(.print-cornell) footer{display:none !important;}
+  body:not(.print-oef):not(.print-cornell) .blok{box-shadow:none;border:none;padding:0;margin:0 0 6mm;}
+  body:not(.print-oef):not(.print-cornell) figure, body:not(.print-oef):not(.print-cornell) .kader, body:not(.print-oef):not(.print-cornell) .denk, body:not(.print-oef):not(.print-cornell) .oef{break-inside:avoid;}
+  body:not(.print-oef):not(.print-cornell) .schrijflijnen{display:block;}
+}
+.schrijflijnen{display:none;}
+.schrijflijnen div{border-bottom:1px solid #999;height:9mm;}
+</style>
+</head>
+<body>
+<div id="banner"></div>
+<header class="top">
+  <div class="eyebrow">Fysica 4de jaar · Thema 2 Energie en vermogen · Hoofdstuk 1</div>
+  <h1>Energie in systemen</h1>
+  <p class="intro">Werk dit hoofdstuk samen met de tool <a href="energie-vermogen.html">Energie en vermogen</a>. Oefeningen maak je op papier.</p>
+  <p><button class="knop licht" onclick="window.print()">🖨 Druk de cursus af</button></p>
+  <nav class="inhoud" id="inhoud"></nav>
+</header>
+<main id="cursus">
+<section class="blok" id="lesdoelen">
+<h2>Lesdoelen</h2>
+<p>Na dit hoofdstuk kan je:</p><ul class="doelen"><li>het verschil uitleggen tussen een <b>open</b>, <b>gesloten</b> en <b>geïsoleerd</b> systeem;</li><li>uitleggen waarom een <b>zwaarteveld</b>, een <b>magnetisch veld</b> en een <b>elektrisch veld</b> potentiële energie bevatten;</li><li>in voorbeelden uit het dagelijks leven de <b>energieomzetting</b> noteren met gravitationele, elastische, kinetische, chemische, thermische, stralings-, kern- en elektrische energie;</li><li>uitleggen hoe een <b>waterreservoir op een heuvel</b> energie kan opslaan;</li><li>de formules voor <b>gravitationele potentiële energie</b>, <b>kinetische energie</b> en <b>elastische potentiële energie</b> gebruiken en omvormen.</li></ul>
+</section>
+<section class="blok" id="deel1" data-vrij="deel1">
+<h2><span class="nr">1</span>Systemen</h2>
+<p>Wil je energie bestuderen, dan kies je eerst een <b>systeem</b>: het deel van de wereld waar je naar kijkt, bv. een pot soep, een fiets met fietser of een gsm. Alles daarbuiten is de <b>omgeving</b>. Tussen systeem en omgeving kunnen energie en materie uitgewisseld worden.</p>
+<table class="vb"><tr><td>Open systeem</td><td>wisselt <b>energie én materie</b> uit met de omgeving</td><td>een kokende pot zonder deksel: warmte gaat naar buiten en waterdamp ontsnapt</td></tr>
+<tr><td>Gesloten systeem</td><td>wisselt <b>enkel energie</b> uit, geen materie</td><td>een pot met een goed sluitend deksel: warmte gaat erin en eruit, het water blijft erin</td></tr>
+<tr><td>Geïsoleerd systeem</td><td>wisselt <b>niets</b> uit: geen energie en geen materie</td><td>een (ideale) thermosfles die goed dicht is</td></tr></table>
+<p>Een volmaakt geïsoleerd systeem bestaat in werkelijkheid niet: ook een thermosfles koelt na een tijd af. Het is een model dat je gebruikt als de uitwisseling heel klein is.</p>
+<a class="toolknop" href="energie-vermogen.html#s1" target="_blank" rel="noopener">▶ Vergelijk de drie systemen in de tool</a>
+<a class="toolknop" href="energie-vermogen.html#s2" target="_blank" rel="noopener">▶ Oefen: welk systeem is het?</a>
+<div class="denk" data-vrij="denk_1">
+  <div class="vraag"><div class="kop">Denkvraag</div><p>Is een mens een open, gesloten of geïsoleerd systeem?</p></div>
+  <div class="onder"><div class="redenering"><ol><li><span class="stap">Wisselt een mens energie uit?</span> Ja: je geeft warmte af aan de omgeving en je neemt energie op via voedsel.</li><li><span class="stap">Wisselt een mens materie uit?</span> Ja: je eet, drinkt, ademt in en uit en zweet.</li><li><span class="stap">Besluit</span> Er is uitwisseling van energie én materie.</li></ol><div class="besluit">Een mens is een open systeem.</div></div></div>
+</div>
+</section>
+<section class="blok" id="deel2" data-vrij="deel2">
+<h2><span class="nr">2</span>Potentiële energie in velden</h2>
+<p>Til je een boek op, dan krijgt het energie: laat je het los, dan valt het en krijgt het snelheid. Die energie zat "opgeslagen" omdat het boek zich in het <b>zwaarteveld</b> van de aarde bevindt. In een veld werkt er een kracht op afstand. Verplaats je een voorwerp tegen die kracht in, dan sla je energie op in het systeem. Die energie noem je <b>potentiële energie</b>.</p>
+<ul><li><b>Zwaarteveld</b>: de aarde trekt aan elke massa. Een voorwerp hoger tillen slaat gravitationele potentiële energie op.</li>
+<li><b>Magnetisch veld</b>: twee magneten trekken elkaar aan. Trek je ze uit elkaar, dan sla je energie op. Laat je los, dan klikken ze tegen elkaar.</li>
+<li><b>Elektrisch veld</b>: een positieve en een negatieve lading trekken elkaar aan. Haal je ze uit elkaar, dan sla je elektrische potentiële energie op.</li></ul>
+<div class="kader"><div class="kop">Potentiële energie in een veld</div><p>Een veld oefent een kracht uit op afstand. Verplaats je een voorwerp tegen die kracht in, dan neemt de <b>potentiële energie</b> toe. Laat je los, dan doet de kracht het voorwerp bewegen en wordt die energie omgezet, bv. in kinetische energie.</p></div>
+<a class="toolknop" href="energie-vermogen.html#s3" target="_blank" rel="noopener">▶ Bekijk potentiële energie in de drie velden</a>
+<div class="denk" data-vrij="denk_2">
+  <div class="vraag"><div class="kop">Denkvraag</div><p>Twee magneten stoten elkaar af. Wanneer bevat dit systeem de meeste potentiële energie: als de magneten dicht bij elkaar of ver uit elkaar zijn?</p></div>
+  <div class="onder"><div class="redenering"><ol><li><span class="stap">Welke kracht werkt er?</span> De magneten stoten elkaar af: de kracht duwt ze uit elkaar.</li><li><span class="stap">Wanneer doe je moeite?</span> Je moet tegen die kracht in werken om ze dichter bij elkaar te brengen.</li><li><span class="stap">Wat gebeurt er bij loslaten?</span> Laat je ze dicht bij elkaar los, dan vliegen ze uit elkaar: de opgeslagen energie wordt kinetische energie.</li></ol><div class="besluit">Dicht bij elkaar bevat het systeem de meeste potentiële energie.</div></div></div>
+</div>
+</section>
+<section class="blok" id="deel3" data-vrij="deel3">
+<h2><span class="nr">3</span>Vormen van energie en omzettingen</h2>
+<h3>Vormen van energie</h3>
+<table class="vb"><tr><td>gravitationele potentiële energie</td><td>door de hoogte in het zwaarteveld</td><td>water achter een stuwdam</td></tr>
+<tr><td>elastische potentiële energie</td><td>door vervorming</td><td>een uitgerekte elastiek, een ingedrukte veer</td></tr>
+<tr><td>kinetische energie</td><td>door beweging</td><td>een rijdende tram</td></tr>
+<tr><td>chemische energie</td><td>opgeslagen in stoffen</td><td>voedsel, benzine, een batterij</td></tr>
+<tr><td>thermische energie</td><td>door de beweging van de deeltjes (temperatuur)</td><td>warm water</td></tr>
+<tr><td>stralingsenergie</td><td>energie van licht en andere straling</td><td>zonlicht</td></tr>
+<tr><td>kernenergie</td><td>opgeslagen in atoomkernen</td><td>uranium in een kerncentrale</td></tr>
+<tr><td>elektrische energie</td><td>door elektrische stroom</td><td>stroom uit het stopcontact</td></tr></table>
+<div class="kader"><div class="kop">Wet van behoud van energie</div><p>Energie kan niet ontstaan en niet verdwijnen. Ze kan enkel <b>omgezet</b> worden van de ene vorm in de andere of <b>overgedragen</b> worden van het ene voorwerp naar het andere.</p></div>
+<h3>Energieomzettingen</h3>
+<p>Een tram van de MIVB zet <b>elektrische energie</b> om in <b>kinetische energie</b>; een deel wordt <b>thermische energie</b> (de motor en de remmen warmen op). Een zonnepaneel op een dak in Schaarbeek zet <b>stralingsenergie</b> om in <b>elektrische energie</b>. Fietsen: de <b>chemische energie</b> uit je voedsel wordt <b>kinetische energie</b> en thermische energie (je krijgt het warm).</p>
+<a class="toolknop" href="energie-vermogen.html#s5" target="_blank" rel="noopener">▶ Stel energieketens op in de tool</a>
+<h3>Energie opslaan in een waterreservoir op een heuvel</h3>
+<p>Stroom kan je moeilijk in grote hoeveelheden bewaren. Een <b>pompcentrale</b>, zoals die van Coo in de Ardennen, gebruikt twee waterbekkens op een verschillende hoogte:</p>
+<ul><li>Is er een <b>overschot</b> aan elektrische energie (bv. ’s nachts of als het hard waait), dan pompen elektrische pompen water naar het bovenste bekken: <b>elektrische energie → gravitationele potentiële energie</b>.</li>
+<li>Is er een <b>tekort</b>, dan stroomt het water naar beneden door een turbine met generator: <b>gravitationele potentiële energie → kinetische energie → elektrische energie</b>.</li></ul>
+<p>Er gaat telkens een deel verloren als thermische energie (wrijving in de leidingen, de pomp en de turbine).</p>
+<a class="toolknop" href="energie-vermogen.html#s6" target="_blank" rel="noopener">▶ Bedien de pompcentrale in de tool</a>
+<div class="denk" data-vrij="denk_3">
+  <div class="vraag"><div class="kop">Denkvraag</div><p>Een leerling zegt: "Bij een pompcentrale verdwijnt er energie, want je krijgt minder elektrische energie terug dan je erin stopt." Klopt dat met de wet van behoud van energie?</p></div>
+  <div class="onder"><div class="redenering"><ol><li><span class="stap">Wat zegt de wet?</span> Energie kan niet verdwijnen, enkel omgezet worden.</li><li><span class="stap">Waar gaat het verschil naartoe?</span> Een deel van de energie wordt thermische energie door wrijving in de leidingen, de pomp en de turbine.</li><li><span class="stap">Herformuleer</span> De energie is niet weg, maar ze is niet meer in een nuttige vorm.</li></ol><div class="besluit">De energie verdwijnt niet: een deel wordt thermische energie. Die is wel niet meer nuttig.</div></div></div>
+</div>
+</section>
+<section class="blok" id="deel4" data-vrij="deel4">
+<h2><span class="nr">4</span>Formules van energie</h2>
+<table class="vb"><tr><td>Gravitationele potentiële energie</td><td><b>E<sub>pot,g</sub> = m · g · h</b></td><td>m in kg · g in N/kg · h in m</td></tr>
+<tr><td>Kinetische energie</td><td><b>E<sub>k</sub> = ½ · m · v²</b></td><td>m in kg · v in m/s</td></tr>
+<tr><td>Elastische potentiële energie</td><td><b>E<sub>pot,el</sub> = ½ · k · x²</b></td><td>k: veerconstante in N/m · x: uitrekking of indrukking in m</td></tr></table>
+<p>Energie druk je uit in <b>joule</b> (J). Let op: v en x staan in het <b>kwadraat</b>. Een 2 keer zo grote snelheid geeft een 4 keer zo grote kinetische energie.</p>
+<h3>Omvormen</h3>
+<p>m = E<sub>pot,g</sub> / (g · h) &nbsp;·&nbsp; h = E<sub>pot,g</sub> / (m · g)<br>
+m = 2 · E<sub>k</sub> / v² &nbsp;·&nbsp; v = √(2 · E<sub>k</sub> / m)<br>
+k = 2 · E<sub>pot,el</sub> / x² &nbsp;·&nbsp; x = √(2 · E<sub>pot,el</sub> / k)</p>
+<p>Zet snelheden in km/h eerst om naar m/s: delen door 3,6. Bv. 36 km/h = 10 m/s.</p>
+<div class="denk" data-vrij="denk_4">
+  <div class="vraag"><div class="kop">Denkvraag</div><p>Een auto rijdt eerst 30 km/h in een zone 30 in Elsene, daarna 60 km/h op een invalsweg. Hoeveel keer zo groot is zijn kinetische energie bij 60 km/h? Wat betekent dat voor het remmen?</p></div>
+  <div class="onder"><div class="redenering"><ol><li><span class="stap">Factor van v</span> v wordt × 2.</li><li><span class="stap">Wat zegt de formule?</span> E<sub>k</sub> = ½ · m · v²: v staat in het kwadraat, dus E<sub>k</sub> wordt × 2² = × 4.</li><li><span class="stap">Remmen</span> Bij het remmen moet al die kinetische energie omgezet worden (in thermische energie in de remmen).</li></ol><div class="besluit">De kinetische energie wordt 4 keer zo groot. Daarom is de remafstand bij 60 km/h veel groter dan bij 30 km/h.</div></div></div>
+</div>
+</section>
+<section class="blok" id="oefeningen" data-vrij="oefeningen">
+<h2>Oefeningen op papier</h2>
+<p>Maak deze oefeningen <b>op papier</b>, in je schrift. Gebruik telkens het stappenplan. De oplossingen verschijnen hier nadat we de oefeningen in de les besproken hebben.</p>
+<div class="stappenplan"><span>1 · gegeven</span><span>2 · gevraagd</span><span>3 · formule</span><span>4 · oplossing</span><span>5 · antwoord met eenheid</span></div>
+<p><button class="knop licht" data-print="oef">🖨 Druk de oefeningen af</button></p>
+<div class="oef" data-vrij="opl_1">
+  <div class="titel"><span class="nr">1</span>Welk systeem?</div>
+  <div class="tekst">Open, gesloten of geïsoleerd? Leg uit.<ol class="deelvragen" type="a"><li>een kop thee zonder deksel</li><li>een gesloten blikje frisdrank in de koelkast</li><li>een plant</li><li>een goed afgesloten thermosfles met soep (ideaal)</li></ol></div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">a</span> open: warmte en waterdamp gaan naar buiten</li><li><span class="stap">b</span> gesloten: het blikje koelt af (energie), maar er gaat geen materie in of uit</li><li><span class="stap">c</span> open: de plant neemt licht, water en CO₂ op en geeft O₂ en waterdamp af</li><li><span class="stap">d</span> geïsoleerd: geen uitwisseling van energie of materie</li></ol><div class="besluit">Kijk naar energie én materie.</div></div>
+</div>
+<div class="oef" data-vrij="opl_2">
+  <div class="titel"><span class="nr">2</span>Energieomzettingen</div>
+  <div class="tekst">Noteer de belangrijkste energieomzetting.<ol class="deelvragen" type="a"><li>een ledlamp</li><li>een batterij die een zaklamp laat branden</li><li>een appel die van een boom valt</li><li>een boogschutter laat de pees los</li><li>een kerncentrale</li><li>een waterkoker</li></ol></div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">a</span> elektrische → stralingsenergie (+ thermische)</li><li><span class="stap">b</span> chemische → elektrische → stralingsenergie (+ thermische)</li><li><span class="stap">c</span> gravitationele potentiële → kinetische</li><li><span class="stap">d</span> elastische potentiële → kinetische (van de pijl)</li><li><span class="stap">e</span> kernenergie → thermische → kinetische (turbine) → elektrische</li><li><span class="stap">f</span> elektrische → thermische</li></ol><div class="besluit">Bij bijna elke omzetting ontstaat er ook wat thermische energie.</div></div>
+</div>
+<div class="oef" data-vrij="opl_3">
+  <div class="titel"><span class="nr">3</span>Op het Atomium</div>
+  <div class="tekst">Een leerling van 55 kg neemt de lift naar een uitkijkplatform op 90 m hoogte. Bereken de toename van zijn gravitationele potentiële energie.</div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">Gegeven</span> m = 55 kg · g = 9,81 N/kg · h = 90 m</li><li><span class="stap">Formule</span> E<sub>pot,g</sub> = m · g · h</li><li><span class="stap">Oplossing</span> E<sub>pot,g</sub> = 55 · 9,81 · 90 = 48 560 J</li></ol><div class="besluit">E<sub>pot,g</sub> = 4,9 · 10⁴ J</div></div>
+</div>
+<div class="oef" data-vrij="opl_4">
+  <div class="titel"><span class="nr">4</span>Tram</div>
+  <div class="tekst">Een tram van 40 ton rijdt 36 km/h. Bereken zijn kinetische energie.</div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">Gegeven</span> m = 40 ton = 40 000 kg · v = 36 km/h = 10 m/s</li><li><span class="stap">Formule</span> E<sub>k</sub> = ½ · m · v²</li><li><span class="stap">Oplossing</span> E<sub>k</sub> = ½ · 40 000 · 10² = 2 000 000 J</li></ol><div class="besluit">E<sub>k</sub> = 2,0 · 10⁶ J</div></div>
+</div>
+<div class="oef" data-vrij="opl_5">
+  <div class="titel"><span class="nr">5</span>Veer</div>
+  <div class="tekst">Een veer met een veerconstante van 200 N/m wordt 5,0 cm ingedrukt. Bereken de elastische potentiële energie.</div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">Gegeven</span> k = 200 N/m · x = 5,0 cm = 0,050 m</li><li><span class="stap">Formule</span> E<sub>pot,el</sub> = ½ · k · x²</li><li><span class="stap">Oplossing</span> E<sub>pot,el</sub> = ½ · 200 · 0,050² = 0,25 J</li></ol><div class="besluit">E<sub>pot,el</sub> = 0,25 J</div></div>
+</div>
+<div class="oef" data-vrij="opl_6">
+  <div class="titel"><span class="nr">6</span>Snelheid berekenen</div>
+  <div class="tekst">Een voetbal van 0,45 kg heeft na een trap een kinetische energie van 20 J. Bereken zijn snelheid.</div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">Formule</span> v = √(2 · E<sub>k</sub> / m)</li><li><span class="stap">Oplossing</span> v = √(2 · 20 / 0,45) = √88,9 = 9,4 m/s</li></ol><div class="besluit">v = 9,4 m/s</div></div>
+</div>
+<div class="oef" data-vrij="opl_7">
+  <div class="titel"><span class="nr">7</span>Hoogte berekenen</div>
+  <div class="tekst">Een boek van 2,0 kg ligt op een kast. Zijn gravitationele potentiële energie ten opzichte van de vloer is 30 J. Hoe hoog is de kast?</div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">Formule</span> h = E<sub>pot,g</sub> / (m · g)</li><li><span class="stap">Oplossing</span> h = 30 / (2,0 · 9,81) = 1,53 m</li></ol><div class="besluit">h = 1,5 m</div></div>
+</div>
+<div class="oef" data-vrij="opl_8">
+  <div class="titel"><span class="nr">8</span>Pompcentrale</div>
+  <div class="tekst">Een pompcentrale pompt ’s nachts 1000 m³ water (1000 ton) 250 m omhoog.<ol class="deelvragen" type="a"><li>Hoeveel gravitationele potentiële energie wordt er opgeslagen?</li><li>Welke energieomzetting gebeurt er ’s nachts? En overdag, bij een tekort?</li></ol></div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">a</span> m = 1 000 000 kg → E<sub>pot,g</sub> = 1 000 000 · 9,81 · 250 = 2,45 · 10⁹ J</li><li><span class="stap">b</span> ’s Nachts: elektrische → gravitationele potentiële energie. Bij een tekort: gravitationele potentiële → kinetische → elektrische energie (+ thermische).</li></ol><div class="besluit">E<sub>pot,g</sub> = 2,5 · 10⁹ J</div></div>
+</div>
+<div class="oef" data-vrij="opl_9">
+  <div class="titel"><span class="nr">9</span>Redeneren</div>
+  <div class="tekst">Wat gebeurt er met de energie?<ol class="deelvragen" type="a"><li>Een fietser rijdt 3 keer zo snel: wat gebeurt er met E<sub>k</sub>?</li><li>Je tilt een doos 2 keer zo hoog: wat gebeurt er met E<sub>pot,g</sub>?</li><li>Je drukt een veer 2 keer zo ver in: wat gebeurt er met E<sub>pot,el</sub>?</li></ol></div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">a</span> v × 3 → E<sub>k</sub> × 3² = × 9</li><li><span class="stap">b</span> h × 2 → E<sub>pot,g</sub> × 2</li><li><span class="stap">c</span> x × 2 → E<sub>pot,el</sub> × 2² = × 4</li></ol><div class="besluit">Let op de kwadraten bij v en x.</div></div>
+</div><a class="toolknop" href="energie-vermogen.html#s10" target="_blank" rel="noopener">▶ Extra oefenen in de tool</a>
+</section>
+<section class="blok" id="samenvatting" data-vrij="samenvatting">
+<h2>Samenvatting</h2>
+<div class="kader"><div class="kop">Samenvatting</div><p><b>Open</b> systeem: energie en materie uitwisselen · <b>gesloten</b>: enkel energie · <b>geïsoleerd</b>: niets.</p>
+<p>In een zwaarteveld, magnetisch veld en elektrisch veld werkt een kracht op afstand: verplaats je tegen die kracht in, dan sla je <b>potentiële energie</b> op.</p>
+<p><b>Behoud van energie</b>: energie wordt enkel omgezet of overgedragen. Er ontstaat bijna altijd ook thermische energie.</p>
+<p><b>Pompcentrale</b>: overschot → water omhoog pompen (elektrisch → gravitationeel); tekort → water door turbine (gravitationeel → elektrisch).</p>
+<p><b>E<sub>pot,g</sub> = m · g · h</b> · <b>E<sub>k</sub> = ½ · m · v²</b> · <b>E<sub>pot,el</sub> = ½ · k · x²</b></p></div>
+</section>
+
+</main>
+<footer>Cursus fysica — gemaakt voor klasgebruik, bij de tools op Oefentools wetenschappen.</footer>
+
+<div class="printblad" id="print-oef"></div>
+<div class="printblad" id="print-cornell"></div>
+
+<script>
+/* =====================================================================
+   VRIJGAVE — hier zet de leerkracht onderdelen open of dicht.
+   true  = zichtbaar voor de leerlingen
+   false = nog gesloten (de leerling ziet een slotje)
+   Tip: met ?leerkracht achter de link zie je als leerkracht alles,
+        bv. .../cursus-energie-systemen.html?leerkracht
+   ===================================================================== */
+const VRIJGAVE = {
+  deel1: true,               // Systemen
+  deel2: false,              // Potentiële energie in velden
+  deel3: false,              // Vormen van energie en omzettingen
+  deel4: false,              // Formules van energie
+  denk_1: false,             // redenering denkvraag 1
+  denk_2: false,             // redenering denkvraag 2
+  denk_3: false,             // redenering denkvraag 3
+  denk_4: false,             // redenering denkvraag 4
+  oefeningen: false,         // de oefeningen zelf (opgaven)
+  opl_1: false,              // oplossing oefening 1
+  opl_2: false,              // oplossing oefening 2
+  opl_3: false,              // oplossing oefening 3
+  opl_4: false,              // oplossing oefening 4
+  opl_5: false,              // oplossing oefening 5
+  opl_6: false,              // oplossing oefening 6
+  opl_7: false,              // oplossing oefening 7
+  opl_8: false,              // oplossing oefening 8
+  opl_9: false,              // oplossing oefening 9
+  samenvatting: false,       // samenvatting
+};
+
+/* ===================================================================== */
+const LK = new URLSearchParams(location.search).has('leerkracht');
+const open = id => LK || VRIJGAVE[id] === true;
+if(LK) document.getElementById('banner').innerHTML='<div class="leerkracht-banner">Leerkrachtweergave: alles is zichtbaar, ook wat voor leerlingen nog gesloten is.</div>';
+
+// delen open of dicht
+document.querySelectorAll('section.blok[data-vrij]').forEach(el=>{
+  if(open(el.dataset.vrij)) return;
+  const kop=el.querySelector(':scope > h2');
+  [...el.children].forEach(c=>{ if(c!==kop) c.style.display='none'; });
+  const m=document.createElement('p'); m.className='gesloten-deel'; m.innerHTML='🔒 Dit deel wordt opengesteld wanneer we het in de les behandelen.';
+  el.appendChild(m);
+});
+
+// denkvragen: redenering pas tonen na vrijgave
+document.querySelectorAll('.denk').forEach(d=>{
+  const id=d.dataset.vrij, red=d.querySelector('.redenering'), onder=d.querySelector('.onder');
+  red.hidden=true;
+  if(open(id)){
+    const b=document.createElement('button'); b.textContent='Toon de redenering';
+    b.onclick=()=>{ red.hidden=!red.hidden; b.textContent=red.hidden?'Toon de redenering':'Verberg de redenering'; };
+    onder.prepend(b);
+  } else {
+    onder.innerHTML='<span class="slotje">💬 Denk eerst zelf na. We bespreken dit samen in de les; daarna verschijnt hier de redenering.</span>';
+  }
+});
+
+// oplossingen van oefeningen
+document.querySelectorAll('.oef[data-vrij]').forEach(o=>{
+  const id=o.dataset.vrij, opl=o.querySelector('.redenering'), onder=o.querySelector('.onder');
+  opl.hidden=true;
+  if(open(id)){
+    const b=document.createElement('button'); b.className='knop licht'; b.textContent='Toon de oplossing';
+    b.onclick=()=>{ opl.hidden=!opl.hidden; b.textContent=opl.hidden?'Toon de oplossing':'Verberg de oplossing'; };
+    onder.appendChild(b);
+  } else onder.innerHTML='<span class="slotje">🔒 De oplossing verschijnt nadat we de oefening besproken hebben.</span>';
+});
+
+// inhoudstafel
+const inh=document.getElementById('inhoud');
+document.querySelectorAll('section.blok').forEach(s=>{
+  const a=document.createElement('a'); a.href='#'+s.id;
+  const nr=s.querySelector('h2 .nr'); const tekst=s.querySelector('h2').textContent.replace(nr?nr.textContent:'','').trim();
+  a.innerHTML=(nr?'<span class="nr">'+nr.textContent+'</span>':'')+tekst;
+  if(s.dataset.vrij && !open(s.dataset.vrij)) a.classList.add('slot');
+  inh.appendChild(a);
+});
+
+// afdrukbare bladen
+function vulPrint(){
+  const oefs=[...document.querySelectorAll('#oefeningen .oef')].map(o=>{ const k=o.cloneNode(true); k.querySelectorAll('.redenering,.onder').forEach(x=>x.remove()); k.removeAttribute('data-vrij'); return k.outerHTML; }).join('');
+  document.getElementById('print-oef').innerHTML=`<h1>Energie in systemen · oefeningen</h1><div class="naam"><span>Naam: ______________________</span><span>Klas: ______</span><span>Datum: __________</span></div><p>Maak elke oefening in je schrift. Gebruik telkens: gegeven · gevraagd · formule · oplossing · antwoord met eenheid.</p>`+oefs;
+  const vragen=CORNELL.map(v=>`<tr><td class="v">${v[0]}</td><td style="height:${Math.round((v[1]||32)*1.35)}mm"></td></tr>`).join('');
+  document.getElementById('print-cornell').innerHTML=`<h1>Energie in systemen · Cornellblad</h1><div class="naam"><span>Naam: ______________________</span><span>Klas: ______</span></div><table class="cornell"><tr><td class="v">Vragen</td><td><b>Notities</b> (samen opgebouwd in de les)</td></tr>${vragen}</table><div class="samenv">Samenvatting in mijn eigen woorden:</div>`;
+}
+const CORNELL = [];
+function druk(soort){ vulPrint(); document.body.classList.add('print-'+soort); setTimeout(()=>{ window.print(); document.body.classList.remove('print-'+soort); },50); }
+document.querySelectorAll('[data-print]').forEach(b=>b.onclick=()=>druk(b.dataset.print));
+</script>
+</body>
+</html>

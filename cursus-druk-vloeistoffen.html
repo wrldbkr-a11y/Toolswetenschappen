@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Druk bij vloeistoffen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EEF2F5; --panel:#FFFFFF; --panel-2:#F5F8FB; --line:#D3DCE5;
+  --text:#1D2A36; --text-dim:#51606E;
+  --accent:#2F6FB0; --accent-dark:#245A91; --accent-soft:#E4EEF8;
+  --ok:#1F7A4A; --ok-bg:#E3F3E9; --warn:#9A5B00; --warn-bg:#FFF4D6;
+  --font:'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:var(--font);}
+body{-webkit-font-smoothing:antialiased;line-height:1.6;font-size:16px;}
+.top{max-width:900px;margin:0 auto;padding:36px 24px 0;}
+.top .eyebrow{font-size:13px;font-weight:700;color:var(--accent-dark);letter-spacing:.04em;text-transform:uppercase;margin-bottom:6px;}
+.top h1{font-size:2rem;font-weight:700;letter-spacing:-0.015em;margin:0 0 8px;line-height:1.2;}
+.top .intro{color:var(--text-dim);font-size:15px;margin:0;}
+.inhoud{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0 0;padding-bottom:14px;border-bottom:1px solid var(--line);}
+.inhoud a{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:500;text-decoration:none;color:var(--text-dim);background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:7px 12px;}
+.inhoud a:hover{border-color:var(--accent);color:var(--text);}
+.inhoud a .nr{min-width:22px;height:22px;border-radius:11px;display:inline-flex;align-items:center;justify-content:center;background:var(--accent-soft);color:var(--accent-dark);font-size:12px;font-weight:700;padding:0 6px;}
+.inhoud a.slot{opacity:.55;}
+main{max-width:900px;margin:0 auto;padding:22px 24px 80px;}
+section.blok{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:22px 24px;margin-bottom:22px;scroll-margin-top:16px;}
+section.blok > h2{font-size:1.45rem;margin:0 0 12px;display:flex;align-items:center;gap:10px;letter-spacing:-0.01em;}
+section.blok > h2 .nr{min-width:30px;height:30px;border-radius:15px;display:inline-flex;align-items:center;justify-content:center;background:var(--accent);color:#fff;font-size:14px;font-weight:700;padding:0 8px;}
+h3{font-size:1.1rem;margin:22px 0 8px;}
+p{margin:0 0 12px;}
+ul.doelen{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px;}
+ul.doelen li{background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:9px 12px 9px 40px;position:relative;}
+ul.doelen li::before{content:'✓';position:absolute;left:14px;top:9px;color:var(--accent);font-weight:700;}
+.figuur{margin:12px 0 16px;text-align:center;}
+.figuur svg{max-width:100%;height:auto;background:#fbfcfe;border:1px solid var(--line);border-radius:10px;}
+.figuur figcaption{font-size:13px;color:var(--text-dim);margin-top:4px;}
+.kader{border-left:4px solid var(--accent);background:var(--accent-soft);border-radius:0 10px 10px 0;padding:12px 16px;margin:14px 0;}
+.kader .kop{font-weight:700;color:var(--accent-dark);margin-bottom:4px;}
+.kader p:last-child{margin-bottom:0;}
+.formule{display:inline-block;font-size:19px;font-weight:700;background:#fff;border:1px solid var(--line);border-radius:8px;padding:6px 14px;margin:4px 0 8px;}
+.toolknop{display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-weight:600;font-size:14px;color:var(--accent-dark);background:#fff;border:1px solid var(--accent);border-radius:8px;padding:8px 14px;margin:6px 8px 10px 0;}
+.toolknop:hover{background:var(--accent-soft);}
+.denk{border:1px solid var(--line);border-radius:10px;margin:16px 0;overflow:hidden;}
+.denk .vraag{background:var(--warn-bg);padding:12px 16px;}
+.denk .vraag .kop{font-size:12px;font-weight:700;color:var(--warn);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px;}
+.denk .vraag p:last-child{margin:0;}
+.denk .onder{padding:10px 16px;background:#fff;}
+.denk button,.knop{font-family:var(--font);font-size:14px;font-weight:600;background:var(--accent);color:#fff;border:1px solid var(--accent);border-radius:8px;padding:8px 14px;cursor:pointer;}
+.denk button:hover,.knop:hover{background:var(--accent-dark);}
+.knop.licht{background:#fff;color:var(--text);border-color:var(--line);}
+.knop.licht:hover{border-color:var(--accent);background:#fff;}
+.slotje{color:var(--text-dim);font-size:14px;}
+.redenering{margin-top:10px;}
+.redenering ol{margin:0;padding-left:0;list-style:none;counter-reset:st;}
+.redenering ol li{counter-increment:st;position:relative;padding:8px 0 8px 40px;border-top:1px dashed var(--line);}
+.redenering ol li:first-child{border-top:none;}
+.redenering ol li::before{content:counter(st);position:absolute;left:4px;top:8px;width:24px;height:24px;border-radius:12px;background:var(--ok-bg);color:var(--ok);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;}
+.redenering .stap{font-weight:700;}
+.redenering .besluit{background:var(--ok-bg);border-radius:8px;padding:8px 12px;margin-top:6px;color:var(--ok);font-weight:600;}
+.oef{border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:12px 0;}
+.oef .titel{font-weight:700;margin-bottom:4px;}
+.oef .titel .nr{display:inline-flex;min-width:26px;height:26px;border-radius:13px;align-items:center;justify-content:center;background:var(--accent-soft);color:var(--accent-dark);font-size:13px;margin-right:8px;}
+.oef ol.deelvragen{margin:6px 0 4px;padding-left:22px;}
+.gesloten-deel{color:var(--text-dim);font-size:15px;display:flex;align-items:center;gap:10px;}
+.stappenplan{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 14px;}
+.stappenplan span{background:var(--panel-2);border:1px solid var(--line);border-radius:999px;padding:3px 12px;font-size:13px;font-weight:600;}
+table.vb{border-collapse:collapse;margin:6px 0 12px;font-size:15px;}
+table.vb td{padding:3px 12px 3px 0;vertical-align:top;}
+table.vb td:first-child{font-weight:700;color:var(--accent-dark);white-space:nowrap;}
+.leerkracht-banner{background:#7c3aed;color:#fff;text-align:center;font-size:14px;font-weight:600;padding:6px;}
+footer{max-width:900px;margin:0 auto;padding:0 24px 40px;color:var(--text-dim);font-size:12px;}
+/* ---------- afdrukken ---------- */
+.printblad{display:none;}
+@media print{
+  @page{size:A4;margin:16mm 15mm;}
+  body{background:#fff;font-size:12pt;}
+  body.print-oef > *:not(#print-oef), body.print-cornell > *:not(#print-cornell){display:none !important;}
+  body.print-oef #print-oef, body.print-cornell #print-cornell{display:block;}
+  .printblad h1{font-size:16pt;margin:0 0 2mm;}
+  .printblad .naam{display:flex;gap:10mm;font-size:11pt;margin:0 0 5mm;}
+  .printblad .oef{border:none;border-top:1px solid #999;border-radius:0;padding:3mm 0;margin:0;break-inside:avoid;}
+  .printblad table.cornell{width:100%;border-collapse:collapse;}
+  .printblad table.cornell td{border:1px solid #555;vertical-align:top;padding:2mm 3mm;font-size:11pt;}
+  .printblad table.cornell td.v{width:32%;font-weight:600;}
+  .printblad .samenv{border:1px solid #555;height:38mm;margin-top:4mm;padding:2mm 3mm;font-weight:600;}
+  /* volledige cursus afdrukken */
+  body:not(.print-oef):not(.print-cornell) #banner, body:not(.print-oef):not(.print-cornell) nav.inhoud,
+  body:not(.print-oef):not(.print-cornell) .toolknop, body:not(.print-oef):not(.print-cornell) button,
+  body:not(.print-oef):not(.print-cornell) .onder, body:not(.print-oef):not(.print-cornell) footer{display:none !important;}
+  body:not(.print-oef):not(.print-cornell) .blok{box-shadow:none;border:none;padding:0;margin:0 0 6mm;}
+  body:not(.print-oef):not(.print-cornell) figure, body:not(.print-oef):not(.print-cornell) .kader, body:not(.print-oef):not(.print-cornell) .denk, body:not(.print-oef):not(.print-cornell) .oef{break-inside:avoid;}
+  body:not(.print-oef):not(.print-cornell) .schrijflijnen{display:block;}
+}
+.schrijflijnen{display:none;}
+.schrijflijnen div{border-bottom:1px solid #999;height:9mm;}
+</style>
+</head>
+<body>
+<div id="banner"></div>
+<header class="top">
+  <div class="eyebrow">Fysica 4de jaar · Thema 1 Druk · Hoofdstuk 3</div>
+  <h1>Druk bij vloeistoffen</h1>
+  <p class="intro">Werk dit hoofdstuk samen met de tool <a href="druk.html">Druk</a>. Oefeningen maak je op papier.</p>
+  <p><button class="knop licht" onclick="window.print()">🖨 Druk de cursus af</button></p>
+  <nav class="inhoud" id="inhoud"></nav>
+</header>
+<main id="cursus">
+<section class="blok" id="lesdoelen">
+<h2>Lesdoelen</h2>
+<p>Na dit hoofdstuk kan je:</p><ul class="doelen"><li>uitleggen hoe <b>hydrostatische druk</b> ontstaat;</li><li>noteren van welke factoren de hydrostatische druk <b>wel</b> en <b>niet</b> afhangt;</li><li>van een tekening van een proefopstelling afleiden welke <b>factor</b> onderzocht wordt;</li><li>beredeneren wat het effect is op de hydrostatische druk als één factor verandert;</li><li>de formule <b>p<sub>h</sub> = ρ · g · h</b> gebruiken en omvormen om ρ, g en h te berekenen;</li><li>het <b>beginsel van Pascal</b> noteren;</li><li>uitleggen waarvan de <b>totale druk</b> in een vloeistof afhangt en die druk berekenen;</li><li>uitleggen wat de functie is van een <b>hydraulisch systeem</b> en er krachten en oppervlakten mee berekenen.</li></ul>
+</section>
+<section class="blok" id="deel1" data-vrij="deel1">
+<h2><span class="nr">1</span>Hydrostatische druk</h2>
+<p>Duik je naar de bodem van een zwembad, dan voel je de druk op je oren toenemen. Boven je ligt een steeds dikkere laag water. Het gewicht van die laag water oefent een kracht uit op alles eronder. De druk die zo ontstaat, noem je de <b>hydrostatische druk</b>.</p>
+<div class="kader"><div class="kop">Definitie</div><p>De <b>hydrostatische druk</b> is de druk in een vloeistof die ontstaat door het gewicht van de vloeistof boven dat punt.</p></div>
+<figure class="figuur"><svg viewBox="0 0 600 230" width="600" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="600" height="230" fill="#fff"/><rect x="0" y="196" width="600" height="34" fill="#eef2f7"/><rect x="120" y="40" width="90" height="156" fill="#cfe5f7" stroke="#475569" stroke-width="3"/><circle cx="210" cy="80" r="3.5" fill="#1e5a8a"/><path d="M212,80 Q234.0,74 252,196" fill="none" stroke="#3b82c4" stroke-width="3"/><circle cx="210" cy="125" r="3.5" fill="#1e5a8a"/><path d="M212,125 Q258.75,119 297,196" fill="none" stroke="#3b82c4" stroke-width="3"/><circle cx="210" cy="170" r="3.5" fill="#1e5a8a"/><path d="M212,170 Q289.0,164 352,196" fill="none" stroke="#3b82c4" stroke-width="3"/><text x="165" y="30" text-anchor="middle" font-size="13" font-weight="400" font-family="Inter,sans-serif" fill="#1e5a8a">water</text><text x="400" y="70" text-anchor="middle" font-size="14" font-weight="400" font-family="Inter,sans-serif" fill="#1D2A36">Hoe dieper het gaatje,</text><text x="400" y="90" text-anchor="middle" font-size="14" font-weight="400" font-family="Inter,sans-serif" fill="#1D2A36">hoe verder het water spuit:</text><text x="400" y="110" text-anchor="middle" font-size="14" font-weight="400" font-family="Inter,sans-serif" fill="#1D2A36">de hydrostatische druk</text><text x="400" y="130" text-anchor="middle" font-size="14" font-weight="400" font-family="Inter,sans-serif" fill="#1D2A36">neemt toe met de diepte.</text></svg><figcaption>Een vat met drie gaatjes: uit het onderste gaatje spuit het water het verst.</figcaption></figure>
+<h3>Waarvan hangt de hydrostatische druk af?</h3>
+<table class="vb"><tr><td>wel</td><td>de <b>diepte h</b> onder het vloeistofoppervlak · de <b>massadichtheid ρ</b> van de vloeistof · de <b>zwaarteveldsterkte g</b></td></tr>
+<tr><td>niet</td><td>de <b>vorm</b> van het vat · de <b>hoeveelheid</b> vloeistof · de <b>richting</b> waarin je meet (op dezelfde diepte is de druk in alle richtingen even groot)</td></tr></table>
+<div class="formule">p<sub>h</sub> = ρ · g · h</div>
+<table class="vb"><tr><td>p<sub>h</sub></td><td>hydrostatische druk, in pascal (Pa)</td></tr><tr><td>ρ</td><td>massadichtheid van de vloeistof, in kg/m³ (water: 1000 kg/m³)</td></tr><tr><td>g</td><td>zwaarteveldsterkte, in N/kg (op aarde 9,81 N/kg)</td></tr><tr><td>h</td><td>diepte onder het vloeistofoppervlak, in m</td></tr></table>
+<p>Omvormen: <b>ρ = p<sub>h</sub> / (g · h)</b> &nbsp;·&nbsp; <b>g = p<sub>h</sub> / (ρ · h)</b> &nbsp;·&nbsp; <b>h = p<sub>h</sub> / (ρ · g)</b></p>
+<h3>Proefopstelling lezen</h3>
+<p>Met een drukdoosje en een U-buis meet je de druk in een vloeistof. Wil je één factor onderzoeken, dan verander je enkel die factor en hou je de rest gelijk. Kijk dus wat er tussen de tekeningen <b>verschilt</b>: de diepte, de vloeistof of de richting van het drukdoosje.</p>
+<p>Vivaqua bewaart het Brusselse drinkwater in reservoirs die hoger liggen dan de huizen. Hoe groter het hoogteverschil tussen het water in het reservoir en jouw kraan, hoe groter de hydrostatische druk aan de kraan.</p>
+<a class="toolknop" href="druk.html#s6" target="_blank" rel="noopener">▶ Onderzoek de hydrostatische druk in de tool</a>
+<div class="denk" data-vrij="denk_1">
+  <div class="vraag"><div class="kop">Denkvraag</div><p>Je meet de hydrostatische druk op 2,0 m diepte in zoet water. Daarna meet je op 4,0 m diepte in zeewater, dat een iets grotere massadichtheid heeft. Is de druk 2 keer zo groot, iets meer of iets minder?</p></div>
+  <div class="onder"><div class="redenering"><ol><li><span class="stap">Factor van h</span> h wordt × 2, dus p<sub>h</sub> wordt daardoor × 2.</li><li><span class="stap">Factor van ρ</span> ρ van zeewater (ongeveer 1030 kg/m³) is iets groter dan die van zoet water. Ook dat maakt p<sub>h</sub> groter.</li><li><span class="stap">Combineer</span> p<sub>h</sub> wordt × 2 · 1,03 ≈ × 2,06.</li></ol><div class="besluit">De druk wordt iets meer dan 2 keer zo groot.</div></div></div>
+</div>
+</section>
+<section class="blok" id="deel2" data-vrij="deel2">
+<h2><span class="nr">2</span>Beginsel van Pascal en hydraulica</h2>
+<div class="kader"><div class="kop">Beginsel van Pascal</div><p>Een druk die je uitoefent op een ingesloten vloeistof, plant zich <b>onverminderd</b> en in <b>alle richtingen</b> voort door de hele vloeistof.</p></div>
+<h3>Totale druk in een vloeistof</h3>
+<p>Op het oppervlak van een open vloeistof botsen luchtdeeltjes: daar heerst de luchtdruk p₀. Volgens Pascal plant die druk zich door de hele vloeistof voort. Daarbij komt nog de hydrostatische druk. De <b>totale druk</b> op diepte h is dus:</p>
+<div class="formule">p<sub>tot</sub> = p₀ + ρ · g · h</div>
+<p>De totale druk hangt af van de <b>luchtdruk</b> boven de vloeistof en van de <b>hydrostatische druk</b> (dus van ρ, g en h). Omvormen: p<sub>h</sub> = p<sub>tot</sub> − p₀ en p₀ = p<sub>tot</sub> − p<sub>h</sub>.</p>
+<h3>Hydraulische systemen</h3>
+<figure class="figuur"><svg viewBox="0 0 600 250" width="600" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="600" height="250" fill="#fff"/><path d="M110,90 L110,200 L470,200 L470,110 L370,110 L370,170 L150,170 L150,90 Z" fill="#fde68a" stroke="#475569" stroke-width="3"/><rect x="108" y="78" width="44" height="14" fill="#64748b"/><rect x="368" y="98" width="104" height="14" fill="#64748b"/><line x1="130" y1="85" x2="130.0" y2="125.4" stroke="#d64550" stroke-width="4" stroke-linecap="round"/><path d="M130.0,135.0 L124.8,124.2 L135.2,124.2Z" fill="#d64550"/><circle cx="130" cy="85" r="4" fill="#d64550"/><text x="143" y="125" text-anchor="start" font-size="16" font-weight="700" font-family="Inter,sans-serif" fill="#d64550">F₁</text><text x="90" y="150" text-anchor="middle" font-size="14" font-weight="700" font-family="Inter,sans-serif" fill="#1D2A36">A₁</text><line x1="420" y1="105" x2="420.0" y2="44.6" stroke="#d64550" stroke-width="4" stroke-linecap="round"/><path d="M420.0,35.0 L425.2,45.8 L414.8,45.8Z" fill="#d64550"/><circle cx="420" cy="105" r="4" fill="#d64550"/><text x="433" y="50" text-anchor="start" font-size="16" font-weight="700" font-family="Inter,sans-serif" fill="#d64550">F₂</text><text x="490" y="150" text-anchor="start" font-size="14" font-weight="700" font-family="Inter,sans-serif" fill="#1D2A36">A₂</text><text x="300" y="230" text-anchor="middle" font-size="13" font-weight="400" font-family="Inter,sans-serif" fill="#64748b">kleine zuiger: kleine kracht · grote zuiger: grote kracht · overal dezelfde druk</text></svg><figcaption>Hydraulische pers: een kleine kracht op de kleine zuiger zorgt voor een grote kracht van de grote zuiger.</figcaption></figure>
+<p>In een hydraulisch systeem zit een vloeistof (meestal olie) tussen twee zuigers. Duw je op de kleine zuiger, dan ontstaat er een druk in de olie. Volgens Pascal is die druk overal even groot, ook onder de grote zuiger. Omdat de grote zuiger een grotere oppervlakte heeft, is de kracht daar groter.</p>
+<div class="formule">F₁ / A₁ = F₂ / A₂</div>
+<p>De <b>functie</b> van een hydraulisch systeem is dus een <b>kracht vergroten</b>. Voorbeelden: een garagekrik, de remmen van een auto, de arm van een graafmachine, de hefbrug in een garage. Is A₂ 50 keer zo groot als A₁, dan is ook F₂ 50 keer zo groot als F₁.</p>
+<a class="toolknop" href="druk.html#s7" target="_blank" rel="noopener">▶ Probeer de hydraulische pers in de tool</a>
+<div class="denk" data-vrij="denk_2">
+  <div class="vraag"><div class="kop">Denkvraag</div><p>Met een hydraulische krik til je met een kleine kracht een auto op. Krijg je dan energie "gratis"? Kijk naar hoe ver de zuigers bewegen.</p></div>
+  <div class="onder"><div class="redenering"><ol><li><span class="stap">Hoeveel olie verplaatst?</span> Duw je de kleine zuiger naar beneden, dan duw je een bepaalde hoeveelheid olie weg. Diezelfde hoeveelheid olie komt onder de grote zuiger.</li><li><span class="stap">Hoe ver beweegt de grote zuiger?</span> De grote zuiger is breder, dus diezelfde hoeveelheid olie tilt hem maar een klein stukje op.</li><li><span class="stap">Besluit</span> Kleine kracht over een lange afstand aan de ene kant, grote kracht over een korte afstand aan de andere kant.</li></ol><div class="besluit">Je wint kracht, maar je moet de kleine zuiger veel verder duwen. Energie krijg je niet gratis.</div></div></div>
+</div>
+</section>
+<section class="blok" id="oefeningen" data-vrij="oefeningen">
+<h2>Oefeningen op papier</h2>
+<p>Maak deze oefeningen <b>op papier</b>, in je schrift. Gebruik telkens het stappenplan. De oplossingen verschijnen hier nadat we de oefeningen in de les besproken hebben.</p>
+<div class="stappenplan"><span>1 · gegeven</span><span>2 · gevraagd</span><span>3 · formule</span><span>4 · oplossing</span><span>5 · antwoord met eenheid</span></div>
+<p><button class="knop licht" data-print="oef">🖨 Druk de oefeningen af</button></p>
+<div class="oef" data-vrij="opl_1">
+  <div class="titel"><span class="nr">1</span>Zwembad</div>
+  <div class="tekst">Bereken de hydrostatische druk op de bodem van een zwembad van 4,0 m diep.</div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">Gegeven</span> ρ = 1000 kg/m³ · g = 9,81 N/kg · h = 4,0 m</li><li><span class="stap">Gevraagd</span> p<sub>h</sub></li><li><span class="stap">Formule</span> p<sub>h</sub> = ρ · g · h</li><li><span class="stap">Oplossing</span> p<sub>h</sub> = 1000 · 9,81 · 4,0 = 39 240 Pa</li></ol><div class="besluit">p<sub>h</sub> = 3,9 · 10⁴ Pa</div></div>
+</div>
+<div class="oef" data-vrij="opl_2">
+  <div class="titel"><span class="nr">2</span>Duiken in zee</div>
+  <div class="tekst">Een duiker zwemt 10 m diep in zee (ρ = 1030 kg/m³). De luchtdruk is 101 300 Pa.<ol class="deelvragen" type="a"><li>Bereken de hydrostatische druk.</li><li>Bereken de totale druk.</li><li>Hoeveel keer zo groot is de totale druk als de luchtdruk?</li></ol></div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">a</span> p<sub>h</sub> = 1030 · 9,81 · 10 = 101 043 Pa</li><li><span class="stap">b</span> p<sub>tot</sub> = 101 300 + 101 043 = 202 343 Pa ≈ 2,02 · 10⁵ Pa</li><li><span class="stap">c</span> 202 343 / 101 300 ≈ 2,0</li></ol><div class="besluit">Op 10 m diepte in zee is de totale druk ongeveer 2 keer de luchtdruk.</div></div>
+</div>
+<div class="oef" data-vrij="opl_3">
+  <div class="titel"><span class="nr">3</span>Hoe diep?</div>
+  <div class="tekst">Op welke diepte in water is de hydrostatische druk 50 kPa?</div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">Gegeven</span> p<sub>h</sub> = 50 kPa = 50 000 Pa · ρ = 1000 kg/m³ · g = 9,81 N/kg</li><li><span class="stap">Formule</span> h = p<sub>h</sub> / (ρ · g)</li><li><span class="stap">Oplossing</span> h = 50 000 / (1000 · 9,81) = 5,10 m</li></ol><div class="besluit">h = 5,1 m</div></div>
+</div>
+<div class="oef" data-vrij="opl_4">
+  <div class="titel"><span class="nr">4</span>Welke vloeistof?</div>
+  <div class="tekst">Op 20 cm diepte in een onbekende vloeistof meet je een hydrostatische druk van 1570 Pa. Bereken de massadichtheid van de vloeistof.</div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">Gegeven</span> p<sub>h</sub> = 1570 Pa · h = 20 cm = 0,20 m · g = 9,81 N/kg</li><li><span class="stap">Formule</span> ρ = p<sub>h</sub> / (g · h)</li><li><span class="stap">Oplossing</span> ρ = 1570 / (9,81 · 0,20) = 800 kg/m³</li></ol><div class="besluit">ρ = 8,0 · 10² kg/m³ (bv. alcohol)</div></div>
+</div>
+<div class="oef" data-vrij="opl_5">
+  <div class="titel"><span class="nr">5</span>Op de maan</div>
+  <div class="tekst">Een astronaut meet op de maan in een vat water op 1,0 m diepte een hydrostatische druk van 1620 Pa. Bereken de zwaarteveldsterkte op de maan.</div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">Gegeven</span> p<sub>h</sub> = 1620 Pa · ρ = 1000 kg/m³ · h = 1,0 m</li><li><span class="stap">Formule</span> g = p<sub>h</sub> / (ρ · h)</li><li><span class="stap">Oplossing</span> g = 1620 / (1000 · 1,0) = 1,62 N/kg</li></ol><div class="besluit">g<sub>maan</sub> = 1,62 N/kg</div></div>
+</div>
+<div class="oef" data-vrij="opl_6">
+  <div class="titel"><span class="nr">6</span>Proefopstelling</div>
+  <div class="tekst">Welke factor wordt onderzocht? Wat is het besluit?<ol class="deelvragen" type="a"><li>Het drukdoosje zit telkens 10 cm diep: eerst in water, daarna in zout water.</li><li>Het drukdoosje zit in water, eerst 5 cm, dan 10 cm, dan 15 cm diep.</li><li>Het drukdoosje zit telkens 10 cm diep in water, maar de opening wijst naar boven, opzij en naar onder.</li><li>Drie vaten met een verschillende vorm zijn tot dezelfde hoogte gevuld met water. Je meet de druk op de bodem.</li></ol></div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">a</span> de massadichtheid: in zout water is de druk groter</li><li><span class="stap">b</span> de diepte: hoe dieper, hoe groter de druk</li><li><span class="stap">c</span> de richting: de druk is in alle richtingen even groot</li><li><span class="stap">d</span> de vorm van het vat: de druk op de bodem is overal even groot</li></ol><div class="besluit">De hydrostatische druk hangt af van ρ, g en h, niet van de richting en niet van de vorm of de hoeveelheid.</div></div>
+</div>
+<div class="oef" data-vrij="opl_7">
+  <div class="titel"><span class="nr">7</span>Redeneren</div>
+  <div class="tekst">Wat gebeurt er met de hydrostatische druk? <ol class="deelvragen" type="a"><li>De diepte wordt 3 keer zo groot.</li><li>Je meet op dezelfde diepte in een vloeistof met een 2 keer zo kleine massadichtheid.</li><li>Je giet water bij in een breed vat, maar meet op dezelfde diepte onder het oppervlak.</li></ol></div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">a</span> p<sub>h</sub> × 3</li><li><span class="stap">b</span> p<sub>h</sub> × 1/2: de druk wordt 2 keer zo klein</li><li><span class="stap">c</span> p<sub>h</sub> blijft gelijk: de diepte onder het oppervlak verandert niet</li></ol><div class="besluit">p<sub>h</sub> is recht evenredig met ρ, g en h.</div></div>
+</div>
+<div class="oef" data-vrij="opl_8">
+  <div class="titel"><span class="nr">8</span>Garagekrik</div>
+  <div class="tekst">In een garage in Anderlecht tilt een hydraulische krik een auto van 1200 kg op. De grote zuiger heeft een oppervlakte van 200 cm², de kleine zuiger 4,0 cm².<ol class="deelvragen" type="a"><li>Hoe groot moet de kracht van de grote zuiger zijn?</li><li>Welke kracht moet de garagist op de kleine zuiger uitoefenen?</li></ol></div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">a</span> F₂ = m · g = 1200 · 9,81 = 11 772 N</li><li><span class="stap">b</span> F₁ / A₁ = F₂ / A₂ → F₁ = F₂ · A₁ / A₂ = 11 772 · 4,0 / 200 = 235 N</li></ol><div class="besluit">F₂ = 1,18 · 10⁴ N en F₁ = 2,4 · 10² N: 50 keer kleiner.</div></div>
+</div>
+<div class="oef" data-vrij="opl_9">
+  <div class="titel"><span class="nr">9</span>Reservoir</div>
+  <div class="tekst">Het wateroppervlak in een drinkwaterreservoir ligt 40 m hoger dan een kraan op het gelijkvloers. Hoe groot is de hydrostatische druk aan die kraan als de kraan dicht is?</div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">Gegeven</span> ρ = 1000 kg/m³ · g = 9,81 N/kg · h = 40 m</li><li><span class="stap">Formule</span> p<sub>h</sub> = ρ · g · h</li><li><span class="stap">Oplossing</span> p<sub>h</sub> = 1000 · 9,81 · 40 = 392 400 Pa</li></ol><div class="besluit">p<sub>h</sub> = 3,9 · 10⁵ Pa, bijna 4 keer de luchtdruk.</div></div>
+</div><a class="toolknop" href="druk.html#s12" target="_blank" rel="noopener">▶ Extra oefenen in de tool (kies: vloeistoffen)</a>
+</section>
+<section class="blok" id="samenvatting" data-vrij="samenvatting">
+<h2>Samenvatting</h2>
+<div class="kader"><div class="kop">Samenvatting</div><p><b>Hydrostatische druk</b> ontstaat door het gewicht van de vloeistof erboven: <b>p<sub>h</sub> = ρ · g · h</b>.</p>
+<p>Hangt af van diepte, massadichtheid en zwaarteveldsterkte; <b>niet</b> van vorm, hoeveelheid of richting.</p>
+<p><b>Pascal</b>: een druk op een ingesloten vloeistof plant zich onverminderd in alle richtingen voort.</p>
+<p><b>Totale druk</b>: p<sub>tot</sub> = p₀ + ρ · g · h.</p>
+<p><b>Hydraulisch systeem</b>: vergroot een kracht. <b>F₁ / A₁ = F₂ / A₂</b>.</p></div>
+</section>
+
+</main>
+<footer>Cursus fysica — gemaakt voor klasgebruik, bij de tools op Oefentools wetenschappen.</footer>
+
+<div class="printblad" id="print-oef"></div>
+<div class="printblad" id="print-cornell"></div>
+
+<script>
+/* =====================================================================
+   VRIJGAVE — hier zet de leerkracht onderdelen open of dicht.
+   true  = zichtbaar voor de leerlingen
+   false = nog gesloten (de leerling ziet een slotje)
+   Tip: met ?leerkracht achter de link zie je als leerkracht alles,
+        bv. .../cursus-druk-vloeistoffen.html?leerkracht
+   ===================================================================== */
+const VRIJGAVE = {
+  deel1: true,               // Hydrostatische druk
+  deel2: false,              // Beginsel van Pascal en hydraulica
+  denk_1: false,             // redenering denkvraag 1
+  denk_2: false,             // redenering denkvraag 2
+  oefeningen: false,         // de oefeningen zelf (opgaven)
+  opl_1: false,              // oplossing oefening 1
+  opl_2: false,              // oplossing oefening 2
+  opl_3: false,              // oplossing oefening 3
+  opl_4: false,              // oplossing oefening 4
+  opl_5: false,              // oplossing oefening 5
+  opl_6: false,              // oplossing oefening 6
+  opl_7: false,              // oplossing oefening 7
+  opl_8: false,              // oplossing oefening 8
+  opl_9: false,              // oplossing oefening 9
+  samenvatting: false,       // samenvatting
+};
+
+/* ===================================================================== */
+const LK = new URLSearchParams(location.search).has('leerkracht');
+const open = id => LK || VRIJGAVE[id] === true;
+if(LK) document.getElementById('banner').innerHTML='<div class="leerkracht-banner">Leerkrachtweergave: alles is zichtbaar, ook wat voor leerlingen nog gesloten is.</div>';
+
+// delen open of dicht
+document.querySelectorAll('section.blok[data-vrij]').forEach(el=>{
+  if(open(el.dataset.vrij)) return;
+  const kop=el.querySelector(':scope > h2');
+  [...el.children].forEach(c=>{ if(c!==kop) c.style.display='none'; });
+  const m=document.createElement('p'); m.className='gesloten-deel'; m.innerHTML='🔒 Dit deel wordt opengesteld wanneer we het in de les behandelen.';
+  el.appendChild(m);
+});
+
+// denkvragen: redenering pas tonen na vrijgave
+document.querySelectorAll('.denk').forEach(d=>{
+  const id=d.dataset.vrij, red=d.querySelector('.redenering'), onder=d.querySelector('.onder');
+  red.hidden=true;
+  if(open(id)){
+    const b=document.createElement('button'); b.textContent='Toon de redenering';
+    b.onclick=()=>{ red.hidden=!red.hidden; b.textContent=red.hidden?'Toon de redenering':'Verberg de redenering'; };
+    onder.prepend(b);
+  } else {
+    onder.innerHTML='<span class="slotje">💬 Denk eerst zelf na. We bespreken dit samen in de les; daarna verschijnt hier de redenering.</span>';
+  }
+});
+
+// oplossingen van oefeningen
+document.querySelectorAll('.oef[data-vrij]').forEach(o=>{
+  const id=o.dataset.vrij, opl=o.querySelector('.redenering'), onder=o.querySelector('.onder');
+  opl.hidden=true;
+  if(open(id)){
+    const b=document.createElement('button'); b.className='knop licht'; b.textContent='Toon de oplossing';
+    b.onclick=()=>{ opl.hidden=!opl.hidden; b.textContent=opl.hidden?'Toon de oplossing':'Verberg de oplossing'; };
+    onder.appendChild(b);
+  } else onder.innerHTML='<span class="slotje">🔒 De oplossing verschijnt nadat we de oefening besproken hebben.</span>';
+});
+
+// inhoudstafel
+const inh=document.getElementById('inhoud');
+document.querySelectorAll('section.blok').forEach(s=>{
+  const a=document.createElement('a'); a.href='#'+s.id;
+  const nr=s.querySelector('h2 .nr'); const tekst=s.querySelector('h2').textContent.replace(nr?nr.textContent:'','').trim();
+  a.innerHTML=(nr?'<span class="nr">'+nr.textContent+'</span>':'')+tekst;
+  if(s.dataset.vrij && !open(s.dataset.vrij)) a.classList.add('slot');
+  inh.appendChild(a);
+});
+
+// afdrukbare bladen
+function vulPrint(){
+  const oefs=[...document.querySelectorAll('#oefeningen .oef')].map(o=>{ const k=o.cloneNode(true); k.querySelectorAll('.redenering,.onder').forEach(x=>x.remove()); k.removeAttribute('data-vrij'); return k.outerHTML; }).join('');
+  document.getElementById('print-oef').innerHTML=`<h1>Druk bij vloeistoffen · oefeningen</h1><div class="naam"><span>Naam: ______________________</span><span>Klas: ______</span><span>Datum: __________</span></div><p>Maak elke oefening in je schrift. Gebruik telkens: gegeven · gevraagd · formule · oplossing · antwoord met eenheid.</p>`+oefs;
+  const vragen=CORNELL.map(v=>`<tr><td class="v">${v[0]}</td><td style="height:${Math.round((v[1]||32)*1.35)}mm"></td></tr>`).join('');
+  document.getElementById('print-cornell').innerHTML=`<h1>Druk bij vloeistoffen · Cornellblad</h1><div class="naam"><span>Naam: ______________________</span><span>Klas: ______</span></div><table class="cornell"><tr><td class="v">Vragen</td><td><b>Notities</b> (samen opgebouwd in de les)</td></tr>${vragen}</table><div class="samenv">Samenvatting in mijn eigen woorden:</div>`;
+}
+const CORNELL = [];
+function druk(soort){ vulPrint(); document.body.classList.add('print-'+soort); setTimeout(()=>{ window.print(); document.body.classList.remove('print-'+soort); },50); }
+document.querySelectorAll('[data-print]').forEach(b=>b.onclick=()=>druk(b.dataset.print));
+</script>
+</body>
+</html>

@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Druk bij gassen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EEF2F5; --panel:#FFFFFF; --panel-2:#F5F8FB; --line:#D3DCE5;
+  --text:#1D2A36; --text-dim:#51606E;
+  --accent:#2F6FB0; --accent-dark:#245A91; --accent-soft:#E4EEF8;
+  --ok:#1F7A4A; --ok-bg:#E3F3E9; --warn:#9A5B00; --warn-bg:#FFF4D6;
+  --font:'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:var(--font);}
+body{-webkit-font-smoothing:antialiased;line-height:1.6;font-size:16px;}
+.top{max-width:900px;margin:0 auto;padding:36px 24px 0;}
+.top .eyebrow{font-size:13px;font-weight:700;color:var(--accent-dark);letter-spacing:.04em;text-transform:uppercase;margin-bottom:6px;}
+.top h1{font-size:2rem;font-weight:700;letter-spacing:-0.015em;margin:0 0 8px;line-height:1.2;}
+.top .intro{color:var(--text-dim);font-size:15px;margin:0;}
+.inhoud{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0 0;padding-bottom:14px;border-bottom:1px solid var(--line);}
+.inhoud a{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:500;text-decoration:none;color:var(--text-dim);background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:7px 12px;}
+.inhoud a:hover{border-color:var(--accent);color:var(--text);}
+.inhoud a .nr{min-width:22px;height:22px;border-radius:11px;display:inline-flex;align-items:center;justify-content:center;background:var(--accent-soft);color:var(--accent-dark);font-size:12px;font-weight:700;padding:0 6px;}
+.inhoud a.slot{opacity:.55;}
+main{max-width:900px;margin:0 auto;padding:22px 24px 80px;}
+section.blok{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:22px 24px;margin-bottom:22px;scroll-margin-top:16px;}
+section.blok > h2{font-size:1.45rem;margin:0 0 12px;display:flex;align-items:center;gap:10px;letter-spacing:-0.01em;}
+section.blok > h2 .nr{min-width:30px;height:30px;border-radius:15px;display:inline-flex;align-items:center;justify-content:center;background:var(--accent);color:#fff;font-size:14px;font-weight:700;padding:0 8px;}
+h3{font-size:1.1rem;margin:22px 0 8px;}
+p{margin:0 0 12px;}
+ul.doelen{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px;}
+ul.doelen li{background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:9px 12px 9px 40px;position:relative;}
+ul.doelen li::before{content:'✓';position:absolute;left:14px;top:9px;color:var(--accent);font-weight:700;}
+.figuur{margin:12px 0 16px;text-align:center;}
+.figuur svg{max-width:100%;height:auto;background:#fbfcfe;border:1px solid var(--line);border-radius:10px;}
+.figuur figcaption{font-size:13px;color:var(--text-dim);margin-top:4px;}
+.kader{border-left:4px solid var(--accent);background:var(--accent-soft);border-radius:0 10px 10px 0;padding:12px 16px;margin:14px 0;}
+.kader .kop{font-weight:700;color:var(--accent-dark);margin-bottom:4px;}
+.kader p:last-child{margin-bottom:0;}
+.formule{display:inline-block;font-size:19px;font-weight:700;background:#fff;border:1px solid var(--line);border-radius:8px;padding:6px 14px;margin:4px 0 8px;}
+.toolknop{display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-weight:600;font-size:14px;color:var(--accent-dark);background:#fff;border:1px solid var(--accent);border-radius:8px;padding:8px 14px;margin:6px 8px 10px 0;}
+.toolknop:hover{background:var(--accent-soft);}
+.denk{border:1px solid var(--line);border-radius:10px;margin:16px 0;overflow:hidden;}
+.denk .vraag{background:var(--warn-bg);padding:12px 16px;}
+.denk .vraag .kop{font-size:12px;font-weight:700;color:var(--warn);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px;}
+.denk .vraag p:last-child{margin:0;}
+.denk .onder{padding:10px 16px;background:#fff;}
+.denk button,.knop{font-family:var(--font);font-size:14px;font-weight:600;background:var(--accent);color:#fff;border:1px solid var(--accent);border-radius:8px;padding:8px 14px;cursor:pointer;}
+.denk button:hover,.knop:hover{background:var(--accent-dark);}
+.knop.licht{background:#fff;color:var(--text);border-color:var(--line);}
+.knop.licht:hover{border-color:var(--accent);background:#fff;}
+.slotje{color:var(--text-dim);font-size:14px;}
+.redenering{margin-top:10px;}
+.redenering ol{margin:0;padding-left:0;list-style:none;counter-reset:st;}
+.redenering ol li{counter-increment:st;position:relative;padding:8px 0 8px 40px;border-top:1px dashed var(--line);}
+.redenering ol li:first-child{border-top:none;}
+.redenering ol li::before{content:counter(st);position:absolute;left:4px;top:8px;width:24px;height:24px;border-radius:12px;background:var(--ok-bg);color:var(--ok);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;}
+.redenering .stap{font-weight:700;}
+.redenering .besluit{background:var(--ok-bg);border-radius:8px;padding:8px 12px;margin-top:6px;color:var(--ok);font-weight:600;}
+.oef{border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:12px 0;}
+.oef .titel{font-weight:700;margin-bottom:4px;}
+.oef .titel .nr{display:inline-flex;min-width:26px;height:26px;border-radius:13px;align-items:center;justify-content:center;background:var(--accent-soft);color:var(--accent-dark);font-size:13px;margin-right:8px;}
+.oef ol.deelvragen{margin:6px 0 4px;padding-left:22px;}
+.gesloten-deel{color:var(--text-dim);font-size:15px;display:flex;align-items:center;gap:10px;}
+.stappenplan{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 14px;}
+.stappenplan span{background:var(--panel-2);border:1px solid var(--line);border-radius:999px;padding:3px 12px;font-size:13px;font-weight:600;}
+table.vb{border-collapse:collapse;margin:6px 0 12px;font-size:15px;}
+table.vb td{padding:3px 12px 3px 0;vertical-align:top;}
+table.vb td:first-child{font-weight:700;color:var(--accent-dark);white-space:nowrap;}
+.leerkracht-banner{background:#7c3aed;color:#fff;text-align:center;font-size:14px;font-weight:600;padding:6px;}
+footer{max-width:900px;margin:0 auto;padding:0 24px 40px;color:var(--text-dim);font-size:12px;}
+/* ---------- afdrukken ---------- */
+.printblad{display:none;}
+@media print{
+  @page{size:A4;margin:16mm 15mm;}
+  body{background:#fff;font-size:12pt;}
+  body.print-oef > *:not(#print-oef), body.print-cornell > *:not(#print-cornell){display:none !important;}
+  body.print-oef #print-oef, body.print-cornell #print-cornell{display:block;}
+  .printblad h1{font-size:16pt;margin:0 0 2mm;}
+  .printblad .naam{display:flex;gap:10mm;font-size:11pt;margin:0 0 5mm;}
+  .printblad .oef{border:none;border-top:1px solid #999;border-radius:0;padding:3mm 0;margin:0;break-inside:avoid;}
+  .printblad table.cornell{width:100%;border-collapse:collapse;}
+  .printblad table.cornell td{border:1px solid #555;vertical-align:top;padding:2mm 3mm;font-size:11pt;}
+  .printblad table.cornell td.v{width:32%;font-weight:600;}
+  .printblad .samenv{border:1px solid #555;height:38mm;margin-top:4mm;padding:2mm 3mm;font-weight:600;}
+  /* volledige cursus afdrukken */
+  body:not(.print-oef):not(.print-cornell) #banner, body:not(.print-oef):not(.print-cornell) nav.inhoud,
+  body:not(.print-oef):not(.print-cornell) .toolknop, body:not(.print-oef):not(.print-cornell) button,
+  body:not(.print-oef):not(.print-cornell) .onder, body:not(.print-oef):not(.print-cornell) footer{display:none !important;}
+  body:not(.print-oef):not(.print-cornell) .blok{box-shadow:none;border:none;padding:0;margin:0 0 6mm;}
+  body:not(.print-oef):not(.print-cornell) figure, body:not(.print-oef):not(.print-cornell) .kader, body:not(.print-oef):not(.print-cornell) .denk, body:not(.print-oef):not(.print-cornell) .oef{break-inside:avoid;}
+  body:not(.print-oef):not(.print-cornell) .schrijflijnen{display:block;}
+}
+.schrijflijnen{display:none;}
+.schrijflijnen div{border-bottom:1px solid #999;height:9mm;}
+</style>
+</head>
+<body>
+<div id="banner"></div>
+<header class="top">
+  <div class="eyebrow">Fysica 4de jaar · Thema 1 Druk · Hoofdstuk 2</div>
+  <h1>Druk bij gassen</h1>
+  <p class="intro">Werk dit hoofdstuk samen met de tool <a href="druk.html">Druk</a>. Oefeningen maak je op papier.</p>
+  <p><button class="knop licht" onclick="window.print()">🖨 Druk de cursus af</button></p>
+  <nav class="inhoud" id="inhoud"></nav>
+</header>
+<main id="cursus">
+<section class="blok" id="lesdoelen">
+<h2>Lesdoelen</h2>
+<p>Na dit hoofdstuk kan je:</p><ul class="doelen"><li>omschrijven hoe de <b>druk in een gas</b> ontstaat;</li><li>verklaren waarom een <b>kaartje</b> onder een omgekeerd glas vol water blijft hangen;</li><li>verklaren hoe een <b>zuignap</b> werkt;</li><li>met het <b>deeltjesmodel</b> verklaren waarom de druk van een ingesloten gas toeneemt bij een hogere temperatuur;</li><li>uitleggen van welke factoren de grootte van de <b>luchtdruk</b> afhangt;</li><li>de <b>kracht</b> berekenen die een gas uitoefent op een oppervlak;</li><li>noteren met welke toestellen je <b>luchtdruk</b> en <b>gasdruk</b> meet;</li><li>uitleggen wat <b>overdruk</b> en <b>onderdruk</b> zijn en van een toepassing zeggen om welke van de twee het gaat;</li><li>de grootte van de <b>normdruk</b> noteren en gebruiken in toepassingen.</li></ul>
+</section>
+<section class="blok" id="deel1" data-vrij="deel1">
+<h2><span class="nr">1</span>Hoe ontstaat gasdruk?</h2>
+<p>Een gas bestaat uit deeltjes die kriskras door elkaar bewegen. Ze botsen voortdurend tegen elkaar en tegen de wand van het vat. Bij elke botsing oefent een deeltje een kleine <b>kracht</b> uit op de wand. Al die botsingen samen zorgen voor een kracht op elke vierkante meter wand: dat is de <b>gasdruk</b>.</p>
+<div class="kader"><div class="kop">Definitie</div><p>De <b>druk van een gas</b> ontstaat doordat de gasdeeltjes tegen de wand botsen en er zo een kracht op uitoefenen. De gasdruk is die kracht per oppervlakte-eenheid.</p></div>
+<p>Let op de woorden: het zijn de <b>deeltjes</b> (of het gas) die een kracht uitoefenen. De druk zelf duwt niet: druk vertelt hoe groot de kracht is per m².</p>
+<h3>Wanneer wordt de gasdruk groter?</h3>
+<p>De druk in een gesloten vat wordt groter als de deeltjes vaker of harder tegen de wand botsen:</p>
+<ul><li><b>meer deeltjes</b> in hetzelfde vat (je pompt een band op) → vaker botsingen → grotere druk;</li>
+<li><b>kleiner volume</b> met dezelfde deeltjes (je duwt een fietspomp in) → vaker botsingen → grotere druk;</li>
+<li><b>hogere temperatuur</b> → de deeltjes bewegen sneller → ze botsen vaker én harder → grotere druk.</li></ul>
+<a class="toolknop" href="druk.html#s3" target="_blank" rel="noopener">▶ Bekijk de botsende deeltjes in de tool</a>
+<div class="denk" data-vrij="denk_1">
+  <div class="vraag"><div class="kop">Denkvraag</div><p>Een gesloten spuitbus ligt in de zon op de vensterbank. Op de bus staat: "Niet blootstellen aan temperaturen boven 50 °C." Waarom is dat gevaarlijk?</p></div>
+  <div class="onder"><div class="redenering"><ol><li><span class="stap">Wat gebeurt er met de deeltjes?</span> Door de warmte stijgt de temperatuur van het gas. De deeltjes bewegen sneller.</li><li><span class="stap">Wat betekent dat voor de botsingen?</span> Ze botsen vaker en harder tegen de wand van de bus.</li><li><span class="stap">Wat volgt daaruit?</span> De kracht per m² op de wand, dus de druk, wordt groter. Het volume van de bus kan niet mee groter worden.</li></ol><div class="besluit">De druk in de bus stijgt zo sterk dat de bus kan openbarsten.</div></div></div>
+</div>
+</section>
+<section class="blok" id="deel2" data-vrij="deel2">
+<h2><span class="nr">2</span>Luchtdruk, kaartje en zuignap</h2>
+<p>Rond de aarde ligt een laag lucht van vele kilometers dik. De luchtdeeltjes botsen tegen alles wat ze raken: tegen jou, tegen een muur, tegen het wateroppervlak. De druk die daardoor ontstaat, noem je de <b>luchtdruk</b> of <b>atmosferische druk</b>.</p>
+<h3>Waarvan hangt de luchtdruk af?</h3>
+<ul><li><b>Hoogte</b>: hoe hoger je komt, hoe minder lucht er boven je is en hoe ijler de lucht. De luchtdruk daalt. Aan de top van het Atomium is de luchtdruk al ongeveer 1 % lager dan op de grond; op de top van een hoge berg is hij veel lager.</li>
+<li><b>Temperatuur en weer</b>: warme lucht stijgt op en zorgt vaak voor een lagere luchtdruk (lagedrukgebied: regen en wind); koude, dalende lucht geeft een hogere luchtdruk (hogedrukgebied: droog weer).</li></ul>
+<h3>Kracht door een gas berekenen</h3>
+<p>Ken je de druk van een gas, dan bereken je de kracht van het gas op een oppervlak met dezelfde formule als bij vaste stoffen:</p>
+<div class="formule">F = p · A</div>
+<p>Bv. de lucht oefent op een tafelblad van 1,0 m² een kracht uit van 101 300 Pa · 1,0 m² ≈ 1,0 · 10⁵ N. Dat is het gewicht van een massa van 10 ton! Het tafelblad breekt niet, want de lucht oefent ook langs onder een even grote kracht uit.</p>
+<a class="toolknop" href="druk.html#s4" target="_blank" rel="noopener">▶ Ontdek de luchtdruk in de tool</a>
+<h3>Het kaartje onder het glas</h3>
+<figure class="figuur"><svg viewBox="0 0 600 230" width="600" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="600" height="230" fill="#fff"/><path d="M230,30 L370,30 L360,150 L240,150 Z" fill="#cfe5f7" stroke="#475569" stroke-width="3"/><text x="300" y="95" text-anchor="middle" font-size="14" font-weight="400" font-family="Inter,sans-serif" fill="#1e5a8a">water</text><rect x="220" y="150" width="160" height="7" fill="#f3e3b5" stroke="#8a6d2b" stroke-width="1.5"/><text x="430" y="158" text-anchor="start" font-size="13" font-weight="400" font-family="Inter,sans-serif" fill="#1D2A36">kaartje</text><circle cx="240" cy="195" r="3.2" fill="#94a3b8"/><circle cx="270" cy="210" r="3.2" fill="#94a3b8"/><circle cx="300" cy="190" r="3.2" fill="#94a3b8"/><circle cx="330" cy="205" r="3.2" fill="#94a3b8"/><circle cx="360" cy="192" r="3.2" fill="#94a3b8"/><circle cx="255" cy="180" r="3.2" fill="#94a3b8"/><circle cx="345" cy="178" r="3.2" fill="#94a3b8"/><circle cx="300" cy="212" r="3.2" fill="#94a3b8"/><circle cx="390" cy="200" r="3.2" fill="#94a3b8"/><circle cx="210" cy="205" r="3.2" fill="#94a3b8"/><text x="110" y="205" text-anchor="middle" font-size="13" font-weight="400" font-family="Inter,sans-serif" fill="#64748b">luchtdeeltjes botsen</text><text x="110" y="222" text-anchor="middle" font-size="13" font-weight="400" font-family="Inter,sans-serif" fill="#64748b">tegen het kaartje</text><line x1="300" y1="157" x2="300.0" y2="121.6" stroke="#2563eb" stroke-width="4" stroke-linecap="round"/><path d="M300.0,112.0 L305.2,122.8 L294.8,122.8Z" fill="#2563eb"/><circle cx="300" cy="157" r="4" fill="#2563eb"/><text x="318" y="130" text-anchor="start" font-size="16" font-weight="700" font-family="Inter,sans-serif" fill="#2563eb">F</text><text x="330" y="135" text-anchor="start" font-size="11" font-weight="400" font-family="Inter,sans-serif" fill="#2563eb">lucht</text><text x="300" y="20" text-anchor="middle" font-size="14" font-weight="700" font-family="Inter,sans-serif" fill="#1D2A36">Een omgekeerd glas vol water met een kaartje eronder</text></svg><figcaption>De lucht onder het kaartje oefent een kracht naar boven uit op het kaartje. In het glas zit alleen water en geen lucht.</figcaption></figure>
+<p>Vul een glas helemaal met water, leg er een kaartje op en draai het om. Het kaartje valt niet. Onder het kaartje botsen luchtdeeltjes tegen het kaartje: de lucht oefent er een kracht naar boven op uit. In het glas zit geen lucht, enkel water. De kracht van de lucht naar boven is veel groter dan het gewicht van het water, dus het kaartje blijft hangen.</p>
+<h3>De zuignap</h3>
+<p>Druk je een zuignap tegen een tegel, dan duw je de lucht eronder weg. Onder de zuignap zitten dan bijna geen luchtdeeltjes meer: de druk is daar veel lager. Aan de buitenkant botsen wél veel luchtdeeltjes tegen de zuignap. De lucht buiten oefent dus een veel grotere kracht uit op de zuignap dan de lucht binnen. Daardoor zit de zuignap vast.</p>
+<div class="denk" data-vrij="denk_2">
+  <div class="vraag"><div class="kop">Denkvraag</div><p>Waarom kan je met een rietje drinken? Je "zuigt" het drinken toch niet echt omhoog?</p></div>
+  <div class="onder"><div class="redenering"><ol><li><span class="stap">Wat doe je met je mond?</span> Je maakt je mond groter en haalt lucht uit het rietje weg. In het rietje daalt de druk.</li><li><span class="stap">Wat gebeurt er boven het drinken in het glas?</span> Daar blijft de luchtdruk gewoon even groot. De lucht oefent daar een kracht uit op het oppervlak van het drinken.</li><li><span class="stap">Vergelijk.</span> Buiten het rietje is de druk op het drinken groter dan in het rietje. Het drinken wordt het rietje in geduwd door de lucht buiten het rietje.</li></ol><div class="besluit">De lucht boven het glas duwt het drinken omhoog in het rietje, omdat de druk in het rietje lager is.</div></div></div>
+</div>
+</section>
+<section class="blok" id="deel3" data-vrij="deel3">
+<h2><span class="nr">3</span>Gasdruk meten: overdruk en onderdruk</h2>
+<h3>Toestellen</h3>
+<table class="vb"><tr><td>Barometer</td><td>meet de <b>luchtdruk</b> (de druk van de atmosfeer)</td></tr>
+<tr><td>Manometer</td><td>meet de <b>druk van een gas in een vat</b>, bv. in een band, een gasfles of een snelkookpan</td></tr></table>
+<p>Naast pascal (Pa) en hectopascal (hPa) zie je bij een manometer vaak de eenheid <b>bar</b>: 1 bar = 100 000 Pa = 1000 hPa.</p>
+<div class="kader"><div class="kop">Normdruk</div><p>De gemiddelde luchtdruk op zeeniveau noem je de <b>normdruk</b>:</p><p><b>p₀ = 1013 hPa = 101 300 Pa ≈ 1 bar</b></p></div>
+<h3>Overdruk en onderdruk</h3>
+<p>Je vergelijkt de druk van een gas met de luchtdruk buiten:</p>
+<ul><li><b>Overdruk</b>: de druk van het gas is <b>groter</b> dan de luchtdruk. Bv. een opgepompte band, een spuitbus, een snelkookpan, een fles bruisend water, een opgeblazen ballon.</li>
+<li><b>Onderdruk</b>: de druk van het gas is <b>kleiner</b> dan de luchtdruk. Bv. onder een zuignap, in een rietje als je drinkt, in een stofzuiger, in vacuümverpakte koffie.</li></ul>
+<p>Een bandenmanometer toont meestal de <b>overdruk</b>: hoeveel de druk in de band groter is dan de luchtdruk. Staat er 2,0 bar, dan is de druk in de band 2,0 bar + 1,0 bar = 3,0 bar.</p>
+<a class="toolknop" href="druk.html#s5" target="_blank" rel="noopener">▶ Oefen overdruk en onderdruk in de tool</a>
+<div class="denk" data-vrij="denk_3">
+  <div class="vraag"><div class="kop">Denkvraag</div><p>Een Brusselse koffiebranderij verpakt haar koffie vacuüm. Waarom voelt zo’n pak keihard aan, en wordt het zacht zodra je er een gaatje in prikt?</p></div>
+  <div class="onder"><div class="redenering"><ol><li><span class="stap">Hoe groot is de druk in het pak?</span> Er is bijna alle lucht uit gezogen: in het pak is er onderdruk.</li><li><span class="stap">Wat doet de lucht buiten?</span> Buiten botsen veel meer luchtdeeltjes tegen het pak. De lucht buiten oefent een veel grotere kracht uit dan de lucht binnen en drukt de koffie stevig samen.</li><li><span class="stap">Wat verandert er met het gaatje?</span> Er stroomt lucht binnen tot de druk binnen en buiten gelijk is. De krachten binnen en buiten zijn dan even groot.</li></ol><div class="besluit">Door de onderdruk drukt de lucht buiten het pak samen. Met een gaatje verdwijnt de onderdruk en wordt het pak zacht.</div></div></div>
+</div>
+</section>
+<section class="blok" id="oefeningen" data-vrij="oefeningen">
+<h2>Oefeningen op papier</h2>
+<p>Maak deze oefeningen <b>op papier</b>, in je schrift. Gebruik telkens het stappenplan. De oplossingen verschijnen hier nadat we de oefeningen in de les besproken hebben.</p>
+<div class="stappenplan"><span>1 · gegeven</span><span>2 · gevraagd</span><span>3 · formule</span><span>4 · oplossing</span><span>5 · antwoord met eenheid</span></div>
+<p><button class="knop licht" data-print="oef">🖨 Druk de oefeningen af</button></p>
+<div class="oef" data-vrij="opl_1">
+  <div class="titel"><span class="nr">1</span>Omzetten</div>
+  <div class="tekst">Zet om.<ol class="deelvragen" type="a"><li>1013 hPa = … Pa</li><li>2,5 bar = … Pa</li><li>95 kPa = … hPa</li><li>120 000 Pa = … bar</li></ol></div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">a</span> 1013 · 100 = 101 300 Pa</li><li><span class="stap">b</span> 2,5 · 100 000 = 250 000 Pa</li><li><span class="stap">c</span> 95 kPa = 95 000 Pa = 950 hPa</li><li><span class="stap">d</span> 120 000 / 100 000 = 1,2 bar</li></ol><div class="besluit">1 hPa = 100 Pa · 1 kPa = 1000 Pa · 1 bar = 100 000 Pa</div></div>
+</div>
+<div class="oef" data-vrij="opl_2">
+  <div class="titel"><span class="nr">2</span>Kracht op een raam</div>
+  <div class="tekst">Een raam van een klaslokaal is 1,2 m breed en 0,80 m hoog. De luchtdruk is 101 300 Pa.<ol class="deelvragen" type="a"><li>Bereken de kracht die de buitenlucht op het raam uitoefent.</li><li>Waarom breekt het raam niet?</li></ol></div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">Gegeven</span> p = 101 300 Pa · A = 1,2 m · 0,80 m = 0,96 m²</li><li><span class="stap">Formule</span> F = p · A</li><li><span class="stap">a</span> F = 101 300 Pa · 0,96 m² = 97 248 N ≈ 9,7 · 10⁴ N</li><li><span class="stap">b</span> De lucht binnen oefent een even grote kracht uit in de andere zin. De twee krachten heffen elkaar op.</li></ol><div class="besluit">F ≈ 9,7 · 10⁴ N, maar de lucht aan beide kanten oefent een even grote kracht uit.</div></div>
+</div>
+<div class="oef" data-vrij="opl_3">
+  <div class="titel"><span class="nr">3</span>De zuignap</div>
+  <div class="tekst">Een zuignap heeft een oppervlakte van 12 cm². Neem aan dat er onder de zuignap geen lucht meer zit. De luchtdruk is 100 000 Pa.<ol class="deelvragen" type="a"><li>Hoe groot is de kracht van de buitenlucht op de zuignap?</li><li>Hoeveel kilogram zou je er in theorie aan kunnen hangen?</li></ol></div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">Gegeven</span> p = 100 000 Pa · A = 12 cm² = 0,0012 m²</li><li><span class="stap">a</span> F = p · A = 100 000 Pa · 0,0012 m² = 120 N</li><li><span class="stap">b</span> m = F / g = 120 N / 9,81 N/kg = 12 kg</li></ol><div class="besluit">F = 120 N; in theorie 12 kg. In werkelijkheid minder, want er sluipt altijd wat lucht onder de zuignap.</div></div>
+</div>
+<div class="oef" data-vrij="opl_4">
+  <div class="titel"><span class="nr">4</span>Overdruk of onderdruk?</div>
+  <div class="tekst">Is er overdruk of onderdruk? Leg telkens kort uit.<ol class="deelvragen" type="a"><li>een opgepompte fietsband</li><li>drinken met een rietje</li><li>een stofzuiger die aanstaat</li><li>een spuitbus met slagroom</li><li>vacuümverpakte kaas</li><li>een fles bruisend water die nog dicht is</li></ol></div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">a</span> overdruk: er is extra lucht in de band gepompt</li><li><span class="stap">b</span> onderdruk in het rietje</li><li><span class="stap">c</span> onderdruk in de stofzuiger: de lucht buiten duwt stof en lucht naar binnen</li><li><span class="stap">d</span> overdruk: het gas duwt de slagroom naar buiten</li><li><span class="stap">e</span> onderdruk: de lucht is eruit gezogen</li><li><span class="stap">f</span> overdruk: er zit extra koolstofdioxide in</li></ol><div class="besluit">Groter dan de luchtdruk: overdruk. Kleiner dan de luchtdruk: onderdruk.</div></div>
+</div>
+<div class="oef" data-vrij="opl_5">
+  <div class="titel"><span class="nr">5</span>Chips in het vliegtuig</div>
+  <div class="tekst">Je neemt een gesloten zak chips mee op een vliegtuig. Hoog in de lucht staat de zak bol. Verklaar met het deeltjesmodel. In de cabine is de luchtdruk lager dan op de grond.</div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">In de zak</span> De lucht in de zak is ingesloten op de grond: daarin zitten nog evenveel deeltjes als op de grond.</li><li><span class="stap">In de cabine</span> De luchtdruk in de cabine is lager: er botsen minder luchtdeeltjes per seconde tegen de buitenkant van de zak.</li><li><span class="stap">Vergelijk</span> Binnen is de kracht op de wand van de zak groter dan buiten, dus de zak zet uit.</li></ol><div class="besluit">De lucht in de zak oefent een grotere kracht uit dan de lucht in de cabine: de zak staat bol.</div></div>
+</div>
+<div class="oef" data-vrij="opl_6">
+  <div class="titel"><span class="nr">6</span>Band in de zomer</div>
+  <div class="tekst">Kenza pompt ’s morgens haar fietsband op. ’s Middags staat de fiets in de volle zon. Wat gebeurt er met de druk in de band? Verklaar met het deeltjesmodel.</div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">Temperatuur</span> De lucht in de band warmt op: de deeltjes bewegen sneller.</li><li><span class="stap">Botsingen</span> Ze botsen vaker en harder tegen de binnenkant van de band.</li><li><span class="stap">Druk</span> De kracht per m² op de band neemt toe.</li></ol><div class="besluit">De druk in de band stijgt.</div></div>
+</div>
+<div class="oef" data-vrij="opl_7">
+  <div class="titel"><span class="nr">7</span>Bandenmanometer</div>
+  <div class="tekst">De manometer van een tankstation toont 2,2 bar voor een autoband. De luchtdruk is 1,0 bar.<ol class="deelvragen" type="a"><li>Toont de manometer de overdruk of de echte druk in de band?</li><li>Hoe groot is de echte druk in de band, in bar en in Pa?</li></ol></div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">a</span> De overdruk: hoeveel de druk groter is dan de luchtdruk.</li><li><span class="stap">b</span> p = 2,2 bar + 1,0 bar = 3,2 bar = 320 000 Pa</li></ol><div class="besluit">De echte druk in de band is 3,2 bar = 3,2 · 10⁵ Pa.</div></div>
+</div>
+<div class="oef" data-vrij="opl_8">
+  <div class="titel"><span class="nr">8</span>Snelkookpan</div>
+  <div class="tekst">In een snelkookpan is er een overdruk van 80 kPa. Het deksel heeft een oppervlakte van 0,050 m². Hoe groot is de extra kracht van het gas in de pan op het deksel, bovenop de kracht van de buitenlucht?</div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">Gegeven</span> p (overdruk) = 80 kPa = 80 000 Pa · A = 0,050 m²</li><li><span class="stap">Gevraagd</span> F</li><li><span class="stap">Formule</span> F = p · A</li><li><span class="stap">Oplossing</span> F = 80 000 Pa · 0,050 m² = 4000 N</li></ol><div class="besluit">F = 4,0 · 10³ N. Daarom moet het deksel goed vergrendeld zijn.</div></div>
+</div><a class="toolknop" href="druk.html#s12" target="_blank" rel="noopener">▶ Extra oefenen in de tool (kies: gassen)</a>
+</section>
+<section class="blok" id="samenvatting" data-vrij="samenvatting">
+<h2>Samenvatting</h2>
+<div class="kader"><div class="kop">Samenvatting</div><p>Gasdruk ontstaat doordat <b>gasdeeltjes tegen de wand botsen</b> en er een kracht op uitoefenen. Meer deeltjes, een kleiner volume of een hogere temperatuur → grotere druk.</p>
+<p>De <b>luchtdruk</b> daalt met de hoogte en hangt af van temperatuur en weer. Kracht door een gas: <b>F = p · A</b>.</p>
+<p>Kaartje en zuignap: de lucht aan de kant met de grootste druk oefent de grootste kracht uit.</p>
+<p><b>Barometer</b>: luchtdruk. <b>Manometer</b>: gasdruk in een vat. <b>Normdruk</b>: p₀ = 1013 hPa ≈ 1 bar.</p>
+<p><b>Overdruk</b>: groter dan de luchtdruk. <b>Onderdruk</b>: kleiner dan de luchtdruk.</p></div>
+</section>
+
+</main>
+<footer>Cursus fysica — gemaakt voor klasgebruik, bij de tools op Oefentools wetenschappen.</footer>
+
+<div class="printblad" id="print-oef"></div>
+<div class="printblad" id="print-cornell"></div>
+
+<script>
+/* =====================================================================
+   VRIJGAVE — hier zet de leerkracht onderdelen open of dicht.
+   true  = zichtbaar voor de leerlingen
+   false = nog gesloten (de leerling ziet een slotje)
+   Tip: met ?leerkracht achter de link zie je als leerkracht alles,
+        bv. .../cursus-druk-gassen.html?leerkracht
+   ===================================================================== */
+const VRIJGAVE = {
+  deel1: true,               // Hoe ontstaat gasdruk?
+  deel2: false,              // Luchtdruk, kaartje en zuignap
+  deel3: false,              // Gasdruk meten: overdruk en onderdruk
+  denk_1: false,             // redenering denkvraag 1
+  denk_2: false,             // redenering denkvraag 2
+  denk_3: false,             // redenering denkvraag 3
+  oefeningen: false,         // de oefeningen zelf (opgaven)
+  opl_1: false,              // oplossing oefening 1
+  opl_2: false,              // oplossing oefening 2
+  opl_3: false,              // oplossing oefening 3
+  opl_4: false,              // oplossing oefening 4
+  opl_5: false,              // oplossing oefening 5
+  opl_6: false,              // oplossing oefening 6
+  opl_7: false,              // oplossing oefening 7
+  opl_8: false,              // oplossing oefening 8
+  samenvatting: false,       // samenvatting
+};
+
+/* ===================================================================== */
+const LK = new URLSearchParams(location.search).has('leerkracht');
+const open = id => LK || VRIJGAVE[id] === true;
+if(LK) document.getElementById('banner').innerHTML='<div class="leerkracht-banner">Leerkrachtweergave: alles is zichtbaar, ook wat voor leerlingen nog gesloten is.</div>';
+
+// delen open of dicht
+document.querySelectorAll('section.blok[data-vrij]').forEach(el=>{
+  if(open(el.dataset.vrij)) return;
+  const kop=el.querySelector(':scope > h2');
+  [...el.children].forEach(c=>{ if(c!==kop) c.style.display='none'; });
+  const m=document.createElement('p'); m.className='gesloten-deel'; m.innerHTML='🔒 Dit deel wordt opengesteld wanneer we het in de les behandelen.';
+  el.appendChild(m);
+});
+
+// denkvragen: redenering pas tonen na vrijgave
+document.querySelectorAll('.denk').forEach(d=>{
+  const id=d.dataset.vrij, red=d.querySelector('.redenering'), onder=d.querySelector('.onder');
+  red.hidden=true;
+  if(open(id)){
+    const b=document.createElement('button'); b.textContent='Toon de redenering';
+    b.onclick=()=>{ red.hidden=!red.hidden; b.textContent=red.hidden?'Toon de redenering':'Verberg de redenering'; };
+    onder.prepend(b);
+  } else {
+    onder.innerHTML='<span class="slotje">💬 Denk eerst zelf na. We bespreken dit samen in de les; daarna verschijnt hier de redenering.</span>';
+  }
+});
+
+// oplossingen van oefeningen
+document.querySelectorAll('.oef[data-vrij]').forEach(o=>{
+  const id=o.dataset.vrij, opl=o.querySelector('.redenering'), onder=o.querySelector('.onder');
+  opl.hidden=true;
+  if(open(id)){
+    const b=document.createElement('button'); b.className='knop licht'; b.textContent='Toon de oplossing';
+    b.onclick=()=>{ opl.hidden=!opl.hidden; b.textContent=opl.hidden?'Toon de oplossing':'Verberg de oplossing'; };
+    onder.appendChild(b);
+  } else onder.innerHTML='<span class="slotje">🔒 De oplossing verschijnt nadat we de oefening besproken hebben.</span>';
+});
+
+// inhoudstafel
+const inh=document.getElementById('inhoud');
+document.querySelectorAll('section.blok').forEach(s=>{
+  const a=document.createElement('a'); a.href='#'+s.id;
+  const nr=s.querySelector('h2 .nr'); const tekst=s.querySelector('h2').textContent.replace(nr?nr.textContent:'','').trim();
+  a.innerHTML=(nr?'<span class="nr">'+nr.textContent+'</span>':'')+tekst;
+  if(s.dataset.vrij && !open(s.dataset.vrij)) a.classList.add('slot');
+  inh.appendChild(a);
+});
+
+// afdrukbare bladen
+function vulPrint(){
+  const oefs=[...document.querySelectorAll('#oefeningen .oef')].map(o=>{ const k=o.cloneNode(true); k.querySelectorAll('.redenering,.onder').forEach(x=>x.remove()); k.removeAttribute('data-vrij'); return k.outerHTML; }).join('');
+  document.getElementById('print-oef').innerHTML=`<h1>Druk bij gassen · oefeningen</h1><div class="naam"><span>Naam: ______________________</span><span>Klas: ______</span><span>Datum: __________</span></div><p>Maak elke oefening in je schrift. Gebruik telkens: gegeven · gevraagd · formule · oplossing · antwoord met eenheid.</p>`+oefs;
+  const vragen=CORNELL.map(v=>`<tr><td class="v">${v[0]}</td><td style="height:${Math.round((v[1]||32)*1.35)}mm"></td></tr>`).join('');
+  document.getElementById('print-cornell').innerHTML=`<h1>Druk bij gassen · Cornellblad</h1><div class="naam"><span>Naam: ______________________</span><span>Klas: ______</span></div><table class="cornell"><tr><td class="v">Vragen</td><td><b>Notities</b> (samen opgebouwd in de les)</td></tr>${vragen}</table><div class="samenv">Samenvatting in mijn eigen woorden:</div>`;
+}
+const CORNELL = [];
+function druk(soort){ vulPrint(); document.body.classList.add('print-'+soort); setTimeout(()=>{ window.print(); document.body.classList.remove('print-'+soort); },50); }
+document.querySelectorAll('[data-print]').forEach(b=>b.onclick=()=>druk(b.dataset.print));
+</script>
+</body>
+</html>

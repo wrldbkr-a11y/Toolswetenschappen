@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Archimedeskracht</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EEF2F5; --panel:#FFFFFF; --panel-2:#F5F8FB; --line:#D3DCE5;
+  --text:#1D2A36; --text-dim:#51606E;
+  --accent:#2F6FB0; --accent-dark:#245A91; --accent-soft:#E4EEF8;
+  --ok:#1F7A4A; --ok-bg:#E3F3E9; --warn:#9A5B00; --warn-bg:#FFF4D6;
+  --font:'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:var(--font);}
+body{-webkit-font-smoothing:antialiased;line-height:1.6;font-size:16px;}
+.top{max-width:900px;margin:0 auto;padding:36px 24px 0;}
+.top .eyebrow{font-size:13px;font-weight:700;color:var(--accent-dark);letter-spacing:.04em;text-transform:uppercase;margin-bottom:6px;}
+.top h1{font-size:2rem;font-weight:700;letter-spacing:-0.015em;margin:0 0 8px;line-height:1.2;}
+.top .intro{color:var(--text-dim);font-size:15px;margin:0;}
+.inhoud{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0 0;padding-bottom:14px;border-bottom:1px solid var(--line);}
+.inhoud a{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:500;text-decoration:none;color:var(--text-dim);background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:7px 12px;}
+.inhoud a:hover{border-color:var(--accent);color:var(--text);}
+.inhoud a .nr{min-width:22px;height:22px;border-radius:11px;display:inline-flex;align-items:center;justify-content:center;background:var(--accent-soft);color:var(--accent-dark);font-size:12px;font-weight:700;padding:0 6px;}
+.inhoud a.slot{opacity:.55;}
+main{max-width:900px;margin:0 auto;padding:22px 24px 80px;}
+section.blok{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:22px 24px;margin-bottom:22px;scroll-margin-top:16px;}
+section.blok > h2{font-size:1.45rem;margin:0 0 12px;display:flex;align-items:center;gap:10px;letter-spacing:-0.01em;}
+section.blok > h2 .nr{min-width:30px;height:30px;border-radius:15px;display:inline-flex;align-items:center;justify-content:center;background:var(--accent);color:#fff;font-size:14px;font-weight:700;padding:0 8px;}
+h3{font-size:1.1rem;margin:22px 0 8px;}
+p{margin:0 0 12px;}
+ul.doelen{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px;}
+ul.doelen li{background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:9px 12px 9px 40px;position:relative;}
+ul.doelen li::before{content:'✓';position:absolute;left:14px;top:9px;color:var(--accent);font-weight:700;}
+.figuur{margin:12px 0 16px;text-align:center;}
+.figuur svg{max-width:100%;height:auto;background:#fbfcfe;border:1px solid var(--line);border-radius:10px;}
+.figuur figcaption{font-size:13px;color:var(--text-dim);margin-top:4px;}
+.kader{border-left:4px solid var(--accent);background:var(--accent-soft);border-radius:0 10px 10px 0;padding:12px 16px;margin:14px 0;}
+.kader .kop{font-weight:700;color:var(--accent-dark);margin-bottom:4px;}
+.kader p:last-child{margin-bottom:0;}
+.formule{display:inline-block;font-size:19px;font-weight:700;background:#fff;border:1px solid var(--line);border-radius:8px;padding:6px 14px;margin:4px 0 8px;}
+.toolknop{display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-weight:600;font-size:14px;color:var(--accent-dark);background:#fff;border:1px solid var(--accent);border-radius:8px;padding:8px 14px;margin:6px 8px 10px 0;}
+.toolknop:hover{background:var(--accent-soft);}
+.denk{border:1px solid var(--line);border-radius:10px;margin:16px 0;overflow:hidden;}
+.denk .vraag{background:var(--warn-bg);padding:12px 16px;}
+.denk .vraag .kop{font-size:12px;font-weight:700;color:var(--warn);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px;}
+.denk .vraag p:last-child{margin:0;}
+.denk .onder{padding:10px 16px;background:#fff;}
+.denk button,.knop{font-family:var(--font);font-size:14px;font-weight:600;background:var(--accent);color:#fff;border:1px solid var(--accent);border-radius:8px;padding:8px 14px;cursor:pointer;}
+.denk button:hover,.knop:hover{background:var(--accent-dark);}
+.knop.licht{background:#fff;color:var(--text);border-color:var(--line);}
+.knop.licht:hover{border-color:var(--accent);background:#fff;}
+.slotje{color:var(--text-dim);font-size:14px;}
+.redenering{margin-top:10px;}
+.redenering ol{margin:0;padding-left:0;list-style:none;counter-reset:st;}
+.redenering ol li{counter-increment:st;position:relative;padding:8px 0 8px 40px;border-top:1px dashed var(--line);}
+.redenering ol li:first-child{border-top:none;}
+.redenering ol li::before{content:counter(st);position:absolute;left:4px;top:8px;width:24px;height:24px;border-radius:12px;background:var(--ok-bg);color:var(--ok);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;}
+.redenering .stap{font-weight:700;}
+.redenering .besluit{background:var(--ok-bg);border-radius:8px;padding:8px 12px;margin-top:6px;color:var(--ok);font-weight:600;}
+.oef{border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:12px 0;}
+.oef .titel{font-weight:700;margin-bottom:4px;}
+.oef .titel .nr{display:inline-flex;min-width:26px;height:26px;border-radius:13px;align-items:center;justify-content:center;background:var(--accent-soft);color:var(--accent-dark);font-size:13px;margin-right:8px;}
+.oef ol.deelvragen{margin:6px 0 4px;padding-left:22px;}
+.gesloten-deel{color:var(--text-dim);font-size:15px;display:flex;align-items:center;gap:10px;}
+.stappenplan{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 14px;}
+.stappenplan span{background:var(--panel-2);border:1px solid var(--line);border-radius:999px;padding:3px 12px;font-size:13px;font-weight:600;}
+table.vb{border-collapse:collapse;margin:6px 0 12px;font-size:15px;}
+table.vb td{padding:3px 12px 3px 0;vertical-align:top;}
+table.vb td:first-child{font-weight:700;color:var(--accent-dark);white-space:nowrap;}
+.leerkracht-banner{background:#7c3aed;color:#fff;text-align:center;font-size:14px;font-weight:600;padding:6px;}
+footer{max-width:900px;margin:0 auto;padding:0 24px 40px;color:var(--text-dim);font-size:12px;}
+/* ---------- afdrukken ---------- */
+.printblad{display:none;}
+@media print{
+  @page{size:A4;margin:16mm 15mm;}
+  body{background:#fff;font-size:12pt;}
+  body.print-oef > *:not(#print-oef), body.print-cornell > *:not(#print-cornell){display:none !important;}
+  body.print-oef #print-oef, body.print-cornell #print-cornell{display:block;}
+  .printblad h1{font-size:16pt;margin:0 0 2mm;}
+  .printblad .naam{display:flex;gap:10mm;font-size:11pt;margin:0 0 5mm;}
+  .printblad .oef{border:none;border-top:1px solid #999;border-radius:0;padding:3mm 0;margin:0;break-inside:avoid;}
+  .printblad table.cornell{width:100%;border-collapse:collapse;}
+  .printblad table.cornell td{border:1px solid #555;vertical-align:top;padding:2mm 3mm;font-size:11pt;}
+  .printblad table.cornell td.v{width:32%;font-weight:600;}
+  .printblad .samenv{border:1px solid #555;height:38mm;margin-top:4mm;padding:2mm 3mm;font-weight:600;}
+  /* volledige cursus afdrukken */
+  body:not(.print-oef):not(.print-cornell) #banner, body:not(.print-oef):not(.print-cornell) nav.inhoud,
+  body:not(.print-oef):not(.print-cornell) .toolknop, body:not(.print-oef):not(.print-cornell) button,
+  body:not(.print-oef):not(.print-cornell) .onder, body:not(.print-oef):not(.print-cornell) footer{display:none !important;}
+  body:not(.print-oef):not(.print-cornell) .blok{box-shadow:none;border:none;padding:0;margin:0 0 6mm;}
+  body:not(.print-oef):not(.print-cornell) figure, body:not(.print-oef):not(.print-cornell) .kader, body:not(.print-oef):not(.print-cornell) .denk, body:not(.print-oef):not(.print-cornell) .oef{break-inside:avoid;}
+  body:not(.print-oef):not(.print-cornell) .schrijflijnen{display:block;}
+}
+.schrijflijnen{display:none;}
+.schrijflijnen div{border-bottom:1px solid #999;height:9mm;}
+</style>
+</head>
+<body>
+<div id="banner"></div>
+<header class="top">
+  <div class="eyebrow">Fysica 4de jaar · Thema 1 Druk · Hoofdstuk 4</div>
+  <h1>Archimedeskracht</h1>
+  <p class="intro">Werk dit hoofdstuk samen met de tool <a href="druk.html">Druk</a>. Oefeningen maak je op papier.</p>
+  <p><button class="knop licht" onclick="window.print()">🖨 Druk de cursus af</button></p>
+  <nav class="inhoud" id="inhoud"></nav>
+</header>
+<main id="cursus">
+<section class="blok" id="lesdoelen">
+<h2>Lesdoelen</h2>
+<p>Na dit hoofdstuk kan je:</p><ul class="doelen"><li>noteren wat de <b>archimedeskracht</b> in vloeistoffen is;</li><li>de kenmerken van de <b>archimedeskrachtvector</b> noteren;</li><li>de formule <b>F<sub>A</sub> = ρ<sub>vl</sub> · g · V<sub>ond</sub></b> gebruiken en omvormen om ρ, g en V te berekenen;</li><li>de formule voor de archimedeskracht verklaren aan de hand van een tekening;</li><li>met de archimedeskracht en een krachtenbalans uitleggen wanneer een voorwerp <b>zinkt, zweeft, stijgt of drijft</b>;</li><li>uitleggen hoe een <b>vis</b> kan zinken, zweven of stijgen;</li><li>uitleggen wat de wet van Archimedes bij <b>gassen</b> inhoudt en ze in formulevorm gebruiken;</li><li>uitleggen wanneer een voorwerp in een gas zal <b>dalen, zweven of opstijgen</b>.</li></ul>
+</section>
+<section class="blok" id="deel1" data-vrij="deel1">
+<h2><span class="nr">1</span>Archimedeskracht in vloeistoffen</h2>
+<p>Til je iemand op in het zwembad, dan lijkt die persoon veel lichter. Het water oefent een kracht naar boven uit op alles wat erin zit. Die kracht noem je de <b>archimedeskracht</b> (of opwaartse kracht).</p>
+<h3>Waar komt ze vandaan?</h3>
+<figure class="figuur"><svg viewBox="0 0 600 260" width="600" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="600" height="260" fill="#fff"/><rect x="20" y="40" width="560" height="210" fill="#dbeafe"/><text x="560" y="60" text-anchor="end" font-size="13" font-weight="400" font-family="Inter,sans-serif" fill="#1e5a8a">water</text><rect x="90" y="100" width="120" height="90" fill="#e7c9a9" stroke="#7c2d12" stroke-width="2"/><line x1="150" y1="100" x2="150.0" y2="114.4" stroke="#2563eb" stroke-width="3" stroke-linecap="round"/><path d="M150.0,124.0 L144.8,113.2 L155.2,113.2Z" fill="#2563eb"/><circle cx="150" cy="100" r="4" fill="#2563eb"/><text x="222" y="108" text-anchor="start" font-size="15" font-weight="700" font-family="Inter,sans-serif" fill="#2563eb">F</text><text x="232" y="112" text-anchor="start" font-size="10" font-weight="400" font-family="Inter,sans-serif" fill="#2563eb">boven</text><line x1="150" y1="190" x2="150.0" y2="149.6" stroke="#2563eb" stroke-width="3" stroke-linecap="round"/><path d="M150.0,140.0 L155.2,150.8 L144.8,150.8Z" fill="#2563eb"/><circle cx="150" cy="190" r="4" fill="#2563eb"/><text x="222" y="186" text-anchor="start" font-size="15" font-weight="700" font-family="Inter,sans-serif" fill="#2563eb">F</text><text x="232" y="190" text-anchor="start" font-size="10" font-weight="400" font-family="Inter,sans-serif" fill="#2563eb">onder</text><text x="150" y="228" text-anchor="middle" font-size="12" font-weight="400" font-family="Inter,sans-serif" fill="#64748b">onderaan dieper → grotere druk</text><rect x="380" y="100" width="120" height="90" fill="#e7c9a9" stroke="#7c2d12" stroke-width="2"/><line x1="440" y1="145" x2="440.0" y2="104.6" stroke="#16a34a" stroke-width="4" stroke-linecap="round"/><path d="M440.0,95.0 L445.2,105.8 L434.8,105.8Z" fill="#16a34a"/><text x="512" y="104" text-anchor="start" font-size="16" font-weight="700" font-family="Inter,sans-serif" fill="#16a34a">F</text><text x="523" y="108" text-anchor="start" font-size="11" font-weight="400" font-family="Inter,sans-serif" fill="#16a34a">A</text><line x1="440" y1="145" x2="440.0" y2="205.4" stroke="#d64550" stroke-width="4" stroke-linecap="round"/><path d="M440.0,215.0 L434.8,204.2 L445.2,204.2Z" fill="#d64550"/><text x="452" y="214" text-anchor="start" font-size="16" font-weight="700" font-family="Inter,sans-serif" fill="#d64550">F</text><text x="463" y="218" text-anchor="start" font-size="11" font-weight="400" font-family="Inter,sans-serif" fill="#d64550">z</text><circle cx="440" cy="145" r="4" fill="#1D2A36"/><text x="150" y="28" text-anchor="middle" font-size="14" font-weight="700" font-family="Inter,sans-serif" fill="#1D2A36">drukkrachten op het blok</text><text x="440" y="28" text-anchor="middle" font-size="14" font-weight="700" font-family="Inter,sans-serif" fill="#1D2A36">archimedeskracht en zwaartekracht</text></svg><figcaption>Links: het water oefent op het ondervlak een grotere kracht uit dan op het bovenvlak. Rechts: het resultaat is de archimedeskracht naar boven.</figcaption></figure>
+<p>Neem een blok in water. Op het <b>bovenvlak</b> oefent het water een kracht naar beneden uit. Op het <b>ondervlak</b> oefent het water een kracht naar boven uit. Het ondervlak ligt dieper, dus daar is de hydrostatische druk groter en ook de kracht. De krachten op de zijvlakken heffen elkaar op. Wat overblijft is een kracht naar boven: de archimedeskracht.</p>
+<p>Reken je dat uit voor een blok met grondvlak A en hoogte h (het bovenvlak op diepte h₁, het ondervlak op diepte h₂ = h₁ + h):</p>
+<p>F<sub>A</sub> = F<sub>onder</sub> − F<sub>boven</sub> = ρ · g · h₂ · A − ρ · g · h₁ · A = ρ · g · (h₂ − h₁) · A = ρ · g · h · A = <b>ρ · g · V</b></p>
+<div class="kader"><div class="kop">Definitie</div><p>De <b>archimedeskracht</b> is de kracht naar boven die een vloeistof (of gas) uitoefent op een voorwerp dat er geheel of gedeeltelijk in ondergedompeld is. Ze is even groot als het gewicht van de verplaatste vloeistof.</p></div>
+<div class="formule">F<sub>A</sub> = ρ<sub>vl</sub> · g · V<sub>ond</sub></div>
+<table class="vb"><tr><td>F<sub>A</sub></td><td>archimedeskracht, in N</td></tr><tr><td>ρ<sub>vl</sub></td><td>massadichtheid van de <b>vloeistof</b> (niet van het voorwerp!), in kg/m³</td></tr><tr><td>g</td><td>zwaarteveldsterkte, in N/kg</td></tr><tr><td>V<sub>ond</sub></td><td>volume van het <b>ondergedompelde deel</b> van het voorwerp, in m³</td></tr></table>
+<p>Omvormen: ρ<sub>vl</sub> = F<sub>A</sub> / (g · V<sub>ond</sub>) &nbsp;·&nbsp; g = F<sub>A</sub> / (ρ<sub>vl</sub> · V<sub>ond</sub>) &nbsp;·&nbsp; V<sub>ond</sub> = F<sub>A</sub> / (ρ<sub>vl</sub> · g). Denk aan omzetten: 1 dm³ = 1 L = 0,001 m³ en 1 cm³ = 1 mL = 10⁻⁶ m³.</p>
+<div class="kader"><div class="kop">Kenmerken van de archimedeskrachtvector</div><p><b>Aangrijpingspunt</b>: in het midden van het ondergedompelde deel van het voorwerp<br><b>Richting</b>: verticaal<br><b>Zin</b>: naar boven<br><b>Grootte</b>: F<sub>A</sub> = ρ<sub>vl</sub> · g · V<sub>ond</sub></p></div>
+<a class="toolknop" href="druk.html#s8" target="_blank" rel="noopener">▶ Bekijk in de tool waar de archimedeskracht vandaan komt</a>
+<div class="denk" data-vrij="denk_1">
+  <div class="vraag"><div class="kop">Denkvraag</div><p>Een ijzeren en een houten blokje hebben hetzelfde volume. Je duwt ze allebei helemaal onder water. Op welk blokje is de archimedeskracht het grootst?</p></div>
+  <div class="onder"><div class="redenering"><ol><li><span class="stap">Wat staat er in de formule?</span> F<sub>A</sub> = ρ<sub>vl</sub> · g · V<sub>ond</sub>: de massadichtheid van de vloeistof, g en het ondergedompelde volume.</li><li><span class="stap">Wat is gelijk?</span> Zelfde vloeistof (water), zelfde g, zelfde ondergedompeld volume.</li><li><span class="stap">Wat speelt geen rol?</span> Het materiaal van het voorwerp staat niet in de formule.</li></ol><div class="besluit">De archimedeskracht is op beide blokjes even groot. Het ijzer zinkt toch, omdat zijn zwaartekracht veel groter is.</div></div></div>
+</div>
+</section>
+<section class="blok" id="deel2" data-vrij="deel2">
+<h2><span class="nr">2</span>Zinken, zweven, stijgen en drijven</h2>
+<p>Op een voorwerp in een vloeistof werken twee krachten: de <b>zwaartekracht F<sub>z</sub></b> naar beneden en de <b>archimedeskracht F<sub>A</sub></b> naar boven. Vergelijk ze als het voorwerp <b>helemaal ondergedompeld</b> is:</p>
+<table class="vb"><tr><td>F<sub>A</sub> &lt; F<sub>z</sub></td><td>het voorwerp <b>zinkt</b></td><td>ρ<sub>voorwerp</sub> &gt; ρ<sub>vl</sub></td></tr>
+<tr><td>F<sub>A</sub> = F<sub>z</sub></td><td>het voorwerp <b>zweeft</b></td><td>ρ<sub>voorwerp</sub> = ρ<sub>vl</sub></td></tr>
+<tr><td>F<sub>A</sub> &gt; F<sub>z</sub></td><td>het voorwerp <b>stijgt</b></td><td>ρ<sub>voorwerp</sub> &lt; ρ<sub>vl</sub></td></tr></table>
+<p>Een voorwerp dat stijgt, komt aan het oppervlak en steekt er gedeeltelijk boven uit. Dan wordt V<sub>ond</sub> kleiner en dus ook F<sub>A</sub>, tot F<sub>A</sub> = F<sub>z</sub>. Het voorwerp <b>drijft</b>.</p>
+<div class="kader"><div class="kop">Drijven</div><p>Een drijvend voorwerp is in evenwicht: <b>F<sub>A</sub> = F<sub>z</sub></b>. Het verplaatst precies zijn eigen gewicht aan vloeistof.</p></div>
+<p>Een binnenvaartschip in de haven van Brussel is van staal, en staal zinkt. Toch drijft het schip: de holle romp verplaatst heel veel water. Laad je het schip vol, dan wordt F<sub>z</sub> groter. Het schip zakt dieper tot het genoeg extra water verplaatst.</p>
+<a class="toolknop" href="druk.html#s9" target="_blank" rel="noopener">▶ Laat voorwerpen zinken, zweven en drijven in de tool</a>
+<h3>De vis en zijn zwemblaas</h3>
+<p>Een vis heeft een <b>zwemblaas</b>: een zakje met gas in zijn buik. De massa van de vis verandert niet, dus F<sub>z</sub> blijft gelijk. Wel kan de vis het volume van de zwemblaas veranderen:</p>
+<ul><li>zwemblaas groter → V<sub>ond</sub> groter → F<sub>A</sub> groter → de vis <b>stijgt</b>;</li>
+<li>zwemblaas kleiner → V<sub>ond</sub> kleiner → F<sub>A</sub> kleiner → de vis <b>zinkt</b>;</li>
+<li>F<sub>A</sub> precies gelijk aan F<sub>z</sub> → de vis <b>zweeft</b>.</li></ul>
+<a class="toolknop" href="druk.html#s10" target="_blank" rel="noopener">▶ Bestuur de vis in de tool</a>
+<div class="denk" data-vrij="denk_2">
+  <div class="vraag"><div class="kop">Denkvraag</div><p>Een duikboot werkt een beetje zoals een vis, maar het volume van de duikboot kan niet veranderen. Hoe kan een duikboot dan toch zinken en stijgen?</p></div>
+  <div class="onder"><div class="redenering"><ol><li><span class="stap">Wat kan niet veranderen?</span> Het volume van de duikboot, dus ook F<sub>A</sub> als hij helemaal onder water is.</li><li><span class="stap">Wat kan wél veranderen?</span> De massa: een duikboot heeft tanks die hij met zeewater kan vullen of met perslucht kan leegblazen.</li><li><span class="stap">Krachtenbalans</span> Tanks vol water: F<sub>z</sub> &gt; F<sub>A</sub>, de duikboot zinkt. Tanks leeggeblazen: F<sub>z</sub> &lt; F<sub>A</sub>, hij stijgt.</li></ol><div class="besluit">Een vis verandert F<sub>A</sub> (het volume), een duikboot verandert F<sub>z</sub> (de massa).</div></div></div>
+</div>
+</section>
+<section class="blok" id="deel3" data-vrij="deel3">
+<h2><span class="nr">3</span>Archimedeskracht in gassen</h2>
+<p>Ook een gas oefent een archimedeskracht uit. De wet van Archimedes geldt dus ook in lucht:</p>
+<div class="formule">F<sub>A</sub> = ρ<sub>gas</sub> · g · V</div>
+<p>Lucht heeft een kleine massadichtheid (ongeveer 1,29 kg/m³). Daarom is de archimedeskracht in lucht meestal klein en merk je ze niet. Voor een voorwerp met een groot volume en een kleine massa, zoals een ballon, maakt ze wel het verschil:</p>
+<table class="vb"><tr><td>F<sub>A</sub> &lt; F<sub>z</sub></td><td>het voorwerp <b>daalt</b></td></tr><tr><td>F<sub>A</sub> = F<sub>z</sub></td><td>het voorwerp <b>zweeft</b></td></tr><tr><td>F<sub>A</sub> &gt; F<sub>z</sub></td><td>het voorwerp <b>stijgt op</b></td></tr></table>
+<p>Een heliumballon stijgt op omdat helium veel lichter is dan lucht: de ballon met helium heeft een kleinere massa dan de lucht die hij verplaatst. Een heteluchtballon warmt de lucht in de ballon op. Warme lucht is ijler, dus de massa in de ballon wordt kleiner terwijl F<sub>A</sub> gelijk blijft.</p>
+<a class="toolknop" href="druk.html#s11" target="_blank" rel="noopener">▶ Laat een ballon opstijgen in de tool</a>
+<div class="denk" data-vrij="denk_3">
+  <div class="vraag"><div class="kop">Denkvraag</div><p>Een heteluchtballon zweeft boven het Zoniënwoud. De piloot wil dalen. Wat moet hij doen, en waarom?</p></div>
+  <div class="onder"><div class="redenering"><ol><li><span class="stap">Wat is er nu aan de hand?</span> De ballon zweeft: F<sub>A</sub> = F<sub>z</sub>.</li><li><span class="stap">Wat kan de piloot veranderen?</span> De temperatuur van de lucht in de ballon: de brander uitzetten of een klep openen.</li><li><span class="stap">Wat gebeurt er dan?</span> De lucht in de ballon koelt af en wordt dichter: er komt koudere lucht bij, de massa in de ballon wordt groter. F<sub>z</sub> wordt groter dan F<sub>A</sub>.</li></ol><div class="besluit">De piloot laat de lucht in de ballon afkoelen: de ballon wordt zwaarder en daalt.</div></div></div>
+</div>
+</section>
+<section class="blok" id="oefeningen" data-vrij="oefeningen">
+<h2>Oefeningen op papier</h2>
+<p>Maak deze oefeningen <b>op papier</b>, in je schrift. Gebruik telkens het stappenplan. De oplossingen verschijnen hier nadat we de oefeningen in de les besproken hebben.</p>
+<div class="stappenplan"><span>1 · gegeven</span><span>2 · gevraagd</span><span>3 · formule</span><span>4 · oplossing</span><span>5 · antwoord met eenheid</span></div>
+<p><button class="knop licht" data-print="oef">🖨 Druk de oefeningen af</button></p>
+<div class="oef" data-vrij="opl_1">
+  <div class="titel"><span class="nr">1</span>Steen in water</div>
+  <div class="tekst">Een steen met een volume van 0,50 dm³ ligt helemaal onder water. Bereken de archimedeskracht.</div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">Gegeven</span> V<sub>ond</sub> = 0,50 dm³ = 5,0 · 10⁻⁴ m³ · ρ<sub>vl</sub> = 1000 kg/m³ · g = 9,81 N/kg</li><li><span class="stap">Formule</span> F<sub>A</sub> = ρ<sub>vl</sub> · g · V<sub>ond</sub></li><li><span class="stap">Oplossing</span> F<sub>A</sub> = 1000 · 9,81 · 5,0 · 10⁻⁴ = 4,9 N</li></ol><div class="besluit">F<sub>A</sub> = 4,9 N</div></div>
+</div>
+<div class="oef" data-vrij="opl_2">
+  <div class="titel"><span class="nr">2</span>Zinkt de steen?</div>
+  <div class="tekst">Dezelfde steen heeft een massa van 1,3 kg.<ol class="deelvragen" type="a"><li>Bereken de zwaartekracht op de steen.</li><li>Zinkt de steen? Leg uit met de krachtenbalans.</li><li>Hoe groot is de kracht die je nodig hebt om de steen onder water omhoog te houden?</li></ol></div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">a</span> F<sub>z</sub> = 1,3 · 9,81 = 12,8 N</li><li><span class="stap">b</span> F<sub>z</sub> = 12,8 N &gt; F<sub>A</sub> = 4,9 N: de steen zinkt.</li><li><span class="stap">c</span> F = F<sub>z</sub> − F<sub>A</sub> = 12,75 − 4,91 = 7,8 N</li></ol><div class="besluit">Onder water heb je maar 7,8 N nodig in plaats van 12,8 N.</div></div>
+</div>
+<div class="oef" data-vrij="opl_3">
+  <div class="titel"><span class="nr">3</span>Volume berekenen</div>
+  <div class="tekst">Op een voorwerp dat helemaal onder water zit, werkt een archimedeskracht van 2,0 N. Bereken het volume van het voorwerp in cm³.</div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">Formule</span> V<sub>ond</sub> = F<sub>A</sub> / (ρ<sub>vl</sub> · g)</li><li><span class="stap">Oplossing</span> V = 2,0 / (1000 · 9,81) = 2,04 · 10⁻⁴ m³ = 204 cm³</li></ol><div class="besluit">V = 2,0 · 10² cm³</div></div>
+</div>
+<div class="oef" data-vrij="opl_4">
+  <div class="titel"><span class="nr">4</span>Welke vloeistof?</div>
+  <div class="tekst">Een blokje van 100 cm³ zit helemaal ondergedompeld in een vloeistof. De archimedeskracht is 0,78 N. Bereken de massadichtheid van de vloeistof.</div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">Gegeven</span> V<sub>ond</sub> = 100 cm³ = 1,00 · 10⁻⁴ m³ · F<sub>A</sub> = 0,78 N · g = 9,81 N/kg</li><li><span class="stap">Formule</span> ρ<sub>vl</sub> = F<sub>A</sub> / (g · V<sub>ond</sub>)</li><li><span class="stap">Oplossing</span> ρ<sub>vl</sub> = 0,78 / (9,81 · 1,00 · 10⁻⁴) = 795 kg/m³</li></ol><div class="besluit">ρ<sub>vl</sub> = 8,0 · 10² kg/m³</div></div>
+</div>
+<div class="oef" data-vrij="opl_5">
+  <div class="titel"><span class="nr">5</span>Zinken, zweven of stijgen?</div>
+  <div class="tekst">Drie voorwerpen worden helemaal onder water geduwd en losgelaten. Bereken telkens F<sub>z</sub> en F<sub>A</sub> en zeg wat er gebeurt.<ol class="deelvragen" type="a"><li>m = 200 g, V = 250 cm³</li><li>m = 300 g, V = 300 cm³</li><li>m = 500 g, V = 200 cm³</li></ol></div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">a</span> F<sub>z</sub> = 0,200 · 9,81 = 1,96 N · F<sub>A</sub> = 1000 · 9,81 · 2,50 · 10⁻⁴ = 2,45 N → stijgt (en gaat drijven)</li><li><span class="stap">b</span> F<sub>z</sub> = 2,94 N · F<sub>A</sub> = 2,94 N → zweeft</li><li><span class="stap">c</span> F<sub>z</sub> = 4,91 N · F<sub>A</sub> = 1,96 N → zinkt</li></ol><div class="besluit">Vergelijk F<sub>A</sub> met F<sub>z</sub> (of ρ<sub>voorwerp</sub> met ρ<sub>vl</sub>).</div></div>
+</div>
+<div class="oef" data-vrij="opl_6">
+  <div class="titel"><span class="nr">6</span>Binnenvaartschip</div>
+  <div class="tekst">Een binnenvaartschip met een massa van 1500 ton drijft in het kanaal in Brussel (ρ = 1000 kg/m³).<ol class="deelvragen" type="a"><li>Hoe groot is de archimedeskracht op het schip?</li><li>Hoeveel m³ water verplaatst het schip?</li><li>Het schip laadt 500 ton zand. Hoeveel water verplaatst het nu?</li></ol></div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">a</span> Het schip drijft: F<sub>A</sub> = F<sub>z</sub> = 1 500 000 · 9,81 = 1,47 · 10⁷ N</li><li><span class="stap">b</span> V<sub>ond</sub> = F<sub>A</sub> / (ρ · g) = m / ρ = 1 500 000 / 1000 = 1500 m³</li><li><span class="stap">c</span> m = 2000 ton → V<sub>ond</sub> = 2 000 000 / 1000 = 2000 m³</li></ol><div class="besluit">Een drijvend schip verplaatst zijn eigen massa aan water: 1500 m³, en 2000 m³ als het geladen is.</div></div>
+</div>
+<div class="oef" data-vrij="opl_7">
+  <div class="titel"><span class="nr">7</span>De vis</div>
+  <div class="tekst">Leg met de krachtenbalans uit wat een vis doet met zijn zwemblaas om (a) naar de bodem te zakken en (b) op dezelfde diepte te blijven.</div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">a</span> Zwemblaas kleiner maken → V kleiner → F<sub>A</sub> kleiner dan F<sub>z</sub> → de vis zinkt.</li><li><span class="stap">b</span> Het volume zo regelen dat F<sub>A</sub> = F<sub>z</sub> → de vis zweeft.</li></ol><div class="besluit">De vis verandert zijn volume en dus F<sub>A</sub>; F<sub>z</sub> blijft gelijk.</div></div>
+</div>
+<div class="oef" data-vrij="opl_8">
+  <div class="titel"><span class="nr">8</span>Heliumballon</div>
+  <div class="tekst">Een heliumballon heeft een volume van 6,0 L. De ballon met het helium heeft een massa van 5,0 g. De massadichtheid van lucht is 1,29 kg/m³.<ol class="deelvragen" type="a"><li>Bereken de archimedeskracht op de ballon.</li><li>Bereken de zwaartekracht op de ballon.</li><li>Stijgt de ballon?</li></ol></div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">a</span> V = 6,0 L = 6,0 · 10⁻³ m³ → F<sub>A</sub> = 1,29 · 9,81 · 6,0 · 10⁻³ = 0,076 N</li><li><span class="stap">b</span> F<sub>z</sub> = 0,0050 · 9,81 = 0,049 N</li><li><span class="stap">c</span> F<sub>A</sub> &gt; F<sub>z</sub>: de ballon stijgt op.</li></ol><div class="besluit">De ballon stijgt: F<sub>A</sub> = 0,076 N &gt; F<sub>z</sub> = 0,049 N.</div></div>
+</div>
+<div class="oef" data-vrij="opl_9">
+  <div class="titel"><span class="nr">9</span>Heteluchtballon</div>
+  <div class="tekst">Een heteluchtballon heeft een volume van 2500 m³. De buitenlucht heeft een massadichtheid van 1,2 kg/m³.<ol class="deelvragen" type="a"><li>Bereken de archimedeskracht.</li><li>Hoe groot mag de totale massa (ballon, mand, mensen én de warme lucht erin) ten hoogste zijn om te kunnen opstijgen?</li></ol></div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">a</span> F<sub>A</sub> = 1,2 · 9,81 · 2500 = 29 430 N</li><li><span class="stap">b</span> Opstijgen als F<sub>z</sub> &lt; F<sub>A</sub>: m &lt; F<sub>A</sub> / g = 29 430 / 9,81 = 3000 kg</li></ol><div class="besluit">F<sub>A</sub> = 2,9 · 10⁴ N; de totale massa moet kleiner zijn dan 3,0 · 10³ kg.</div></div>
+</div><a class="toolknop" href="druk.html#s12" target="_blank" rel="noopener">▶ Extra oefenen in de tool (kies: archimedeskracht)</a>
+</section>
+<section class="blok" id="samenvatting" data-vrij="samenvatting">
+<h2>Samenvatting</h2>
+<div class="kader"><div class="kop">Samenvatting</div><p>De <b>archimedeskracht</b> is de opwaartse kracht van een vloeistof of gas op een ondergedompeld voorwerp. Ze ontstaat doordat de druk onderaan groter is dan bovenaan.</p>
+<p><b>F<sub>A</sub> = ρ<sub>vl</sub> · g · V<sub>ond</sub></b>: even groot als het gewicht van de verplaatste vloeistof. Aangrijpingspunt in het midden van het ondergedompelde deel, verticaal, naar boven.</p>
+<p>Helemaal ondergedompeld: F<sub>A</sub> &lt; F<sub>z</sub> <b>zinkt</b> · F<sub>A</sub> = F<sub>z</sub> <b>zweeft</b> · F<sub>A</sub> &gt; F<sub>z</sub> <b>stijgt</b>. Drijven: F<sub>A</sub> = F<sub>z</sub> met een deel boven het oppervlak.</p>
+<p>Vis: verandert met de zwemblaas zijn volume en dus F<sub>A</sub>.</p>
+<p>In een gas: <b>F<sub>A</sub> = ρ<sub>gas</sub> · g · V</b>; dalen, zweven of opstijgen.</p></div>
+</section>
+
+</main>
+<footer>Cursus fysica — gemaakt voor klasgebruik, bij de tools op Oefentools wetenschappen.</footer>
+
+<div class="printblad" id="print-oef"></div>
+<div class="printblad" id="print-cornell"></div>
+
+<script>
+/* =====================================================================
+   VRIJGAVE — hier zet de leerkracht onderdelen open of dicht.
+   true  = zichtbaar voor de leerlingen
+   false = nog gesloten (de leerling ziet een slotje)
+   Tip: met ?leerkracht achter de link zie je als leerkracht alles,
+        bv. .../cursus-archimedes.html?leerkracht
+   ===================================================================== */
+const VRIJGAVE = {
+  deel1: true,               // Archimedeskracht in vloeistoffen
+  deel2: false,              // Zinken, zweven, stijgen en drijven
+  deel3: false,              // Archimedeskracht in gassen
+  denk_1: false,             // redenering denkvraag 1
+  denk_2: false,             // redenering denkvraag 2
+  denk_3: false,             // redenering denkvraag 3
+  oefeningen: false,         // de oefeningen zelf (opgaven)
+  opl_1: false,              // oplossing oefening 1
+  opl_2: false,              // oplossing oefening 2
+  opl_3: false,              // oplossing oefening 3
+  opl_4: false,              // oplossing oefening 4
+  opl_5: false,              // oplossing oefening 5
+  opl_6: false,              // oplossing oefening 6
+  opl_7: false,              // oplossing oefening 7
+  opl_8: false,              // oplossing oefening 8
+  opl_9: false,              // oplossing oefening 9
+  samenvatting: false,       // samenvatting
+};
+
+/* ===================================================================== */
+const LK = new URLSearchParams(location.search).has('leerkracht');
+const open = id => LK || VRIJGAVE[id] === true;
+if(LK) document.getElementById('banner').innerHTML='<div class="leerkracht-banner">Leerkrachtweergave: alles is zichtbaar, ook wat voor leerlingen nog gesloten is.</div>';
+
+// delen open of dicht
+document.querySelectorAll('section.blok[data-vrij]').forEach(el=>{
+  if(open(el.dataset.vrij)) return;
+  const kop=el.querySelector(':scope > h2');
+  [...el.children].forEach(c=>{ if(c!==kop) c.style.display='none'; });
+  const m=document.createElement('p'); m.className='gesloten-deel'; m.innerHTML='🔒 Dit deel wordt opengesteld wanneer we het in de les behandelen.';
+  el.appendChild(m);
+});
+
+// denkvragen: redenering pas tonen na vrijgave
+document.querySelectorAll('.denk').forEach(d=>{
+  const id=d.dataset.vrij, red=d.querySelector('.redenering'), onder=d.querySelector('.onder');
+  red.hidden=true;
+  if(open(id)){
+    const b=document.createElement('button'); b.textContent='Toon de redenering';
+    b.onclick=()=>{ red.hidden=!red.hidden; b.textContent=red.hidden?'Toon de redenering':'Verberg de redenering'; };
+    onder.prepend(b);
+  } else {
+    onder.innerHTML='<span class="slotje">💬 Denk eerst zelf na. We bespreken dit samen in de les; daarna verschijnt hier de redenering.</span>';
+  }
+});
+
+// oplossingen van oefeningen
+document.querySelectorAll('.oef[data-vrij]').forEach(o=>{
+  const id=o.dataset.vrij, opl=o.querySelector('.redenering'), onder=o.querySelector('.onder');
+  opl.hidden=true;
+  if(open(id)){
+    const b=document.createElement('button'); b.className='knop licht'; b.textContent='Toon de oplossing';
+    b.onclick=()=>{ opl.hidden=!opl.hidden; b.textContent=opl.hidden?'Toon de oplossing':'Verberg de oplossing'; };
+    onder.appendChild(b);
+  } else onder.innerHTML='<span class="slotje">🔒 De oplossing verschijnt nadat we de oefening besproken hebben.</span>';
+});
+
+// inhoudstafel
+const inh=document.getElementById('inhoud');
+document.querySelectorAll('section.blok').forEach(s=>{
+  const a=document.createElement('a'); a.href='#'+s.id;
+  const nr=s.querySelector('h2 .nr'); const tekst=s.querySelector('h2').textContent.replace(nr?nr.textContent:'','').trim();
+  a.innerHTML=(nr?'<span class="nr">'+nr.textContent+'</span>':'')+tekst;
+  if(s.dataset.vrij && !open(s.dataset.vrij)) a.classList.add('slot');
+  inh.appendChild(a);
+});
+
+// afdrukbare bladen
+function vulPrint(){
+  const oefs=[...document.querySelectorAll('#oefeningen .oef')].map(o=>{ const k=o.cloneNode(true); k.querySelectorAll('.redenering,.onder').forEach(x=>x.remove()); k.removeAttribute('data-vrij'); return k.outerHTML; }).join('');
+  document.getElementById('print-oef').innerHTML=`<h1>Archimedeskracht · oefeningen</h1><div class="naam"><span>Naam: ______________________</span><span>Klas: ______</span><span>Datum: __________</span></div><p>Maak elke oefening in je schrift. Gebruik telkens: gegeven · gevraagd · formule · oplossing · antwoord met eenheid.</p>`+oefs;
+  const vragen=CORNELL.map(v=>`<tr><td class="v">${v[0]}</td><td style="height:${Math.round((v[1]||32)*1.35)}mm"></td></tr>`).join('');
+  document.getElementById('print-cornell').innerHTML=`<h1>Archimedeskracht · Cornellblad</h1><div class="naam"><span>Naam: ______________________</span><span>Klas: ______</span></div><table class="cornell"><tr><td class="v">Vragen</td><td><b>Notities</b> (samen opgebouwd in de les)</td></tr>${vragen}</table><div class="samenv">Samenvatting in mijn eigen woorden:</div>`;
+}
+const CORNELL = [];
+function druk(soort){ vulPrint(); document.body.classList.add('print-'+soort); setTimeout(()=>{ window.print(); document.body.classList.remove('print-'+soort); },50); }
+document.querySelectorAll('[data-print]').forEach(b=>b.onclick=()=>druk(b.dataset.print));
+</script>
+</body>
+</html>
