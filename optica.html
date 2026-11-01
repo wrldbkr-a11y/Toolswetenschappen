@@ -688,7 +688,9 @@ function activate(i){
   renderCatNav();
   renderSectionNav();
 }
-activate(0);
+// directe link naar een onderdeel, bv. optica.html#s12
+function vanHash(){ const k=scenes.findIndex(sc=>sc.id===location.hash.slice(1)); activate(k>=0?k:0); }
+vanHash(); window.addEventListener('hashchange', vanHash);
 
 //////////////////// HELPERS ////////////////////
 const D2R = Math.PI/180;
