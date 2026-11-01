@@ -158,6 +158,18 @@ button{cursor:pointer}
 .item.juist{border-left-color:var(--good);background:var(--good-soft)}
 .item.fout{border-left-color:var(--bad);background:var(--bad-soft)}
 .item .uitleg{font-size:.95rem}
+.items.met-foto{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;padding:0;list-style:none}
+.item .foto{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:8px;background:var(--surface-2)}
+.item .bron{font-size:.72rem;color:var(--muted);margin-top:-4px}
+.keten{border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:12px 0}
+.keten h4{margin:0 0 4px;font-family:var(--f-display)}
+.keten .stappen{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;margin:10px 0}
+.keten .stap{border:2px solid var(--line);border-radius:10px;padding:8px 10px;display:flex;flex-direction:column;gap:6px}
+.keten .stap b{font-family:var(--f-display)}
+.keten select{border:2px solid var(--line);border-radius:8px;padding:5px 6px;background:var(--surface)}
+.keten .stap.ok{border-color:var(--good);background:var(--good-soft)}
+.keten .stap.nok{border-color:var(--bad);background:var(--bad-soft)}
+.keten .stap .uitleg{font-size:.9rem}
 .item .uitleg b{font-family:var(--f-display)}
 .item.juist .uitleg b{color:var(--good)}
 .item.fout .uitleg b{color:var(--bad)}
@@ -257,6 +269,7 @@ tr.groep td{background:var(--surface-2);font-weight:700}
       <div class="blok-kop"><span class="letter">B</span><h2>Oefenen</h2></div>
       <div class="oefening" id="oef-eig"></div>
       <div class="oefening" id="oef-dag"></div>
+      <div class="oefening" id="oef-keten"></div>
     </section>
     <section class="ikkan" id="ikkanov"></section>
   </main>
@@ -546,12 +559,12 @@ function r(id){ const t=TECH[id]; return `<tr><td><b>${t.naam}</b></td><td>${t.m
 function sorteer(el, cfg){
   function render(){
     const items = shuffle(cfg.items);
-    el.innerHTML = `<div class="oef-kop"><h3>${cfg.titel}</h3><span class="score" data-score>0 / ${items.length}</span></div><p>${cfg.opdracht}</p><ul class="items"></ul><button class="knop opnieuw" type="button">↺ Opnieuw</button>`;
+    el.innerHTML = `<div class="oef-kop"><h3>${cfg.titel}</h3><span class="score" data-score>0 / ${items.length}</span></div><p>${cfg.opdracht}</p><ul class="items${cfg.foto?' met-foto':''}"></ul><button class="knop opnieuw" type="button">↺ Opnieuw</button>`;
     const ul = el.querySelector('.items'); let juist=0, klaar=0;
     scores[cfg.id] = {juist:0,totaal:items.length,klaar:false};
     items.forEach(it => {
       const li = document.createElement('li'); li.className='item';
-      li.innerHTML = `<span class="zin">${it.tekst}</span><div class="opties">${cfg.opties.map(o=>`<button type="button" data-k="${o.k}">${o.label}</button>`).join('')}</div><div class="uitleg" hidden></div>`;
+      li.innerHTML = `${it.img?`<img class="foto" src="${it.img}" alt="${it.tekst}" loading="lazy"><span class="bron">${it.bron||''}</span>`:''}<span class="zin">${it.tekst}</span><div class="opties">${cfg.opties.map(o=>`<button type="button" data-k="${o.k}">${o.label}</button>`).join('')}</div><div class="uitleg" hidden></div>`;
       li.querySelectorAll('.opties button').forEach(b => b.addEventListener('click', () => {
         const ok = b.dataset.k===it.antwoord;
         li.classList.add(ok?'juist':'fout'); b.classList.add('gekozen');
@@ -584,26 +597,62 @@ sorteer($('#oef-eig'), {
     {tekst:'Adsorberen', antwoord:'a', uitleg:'Sommige stoffen blijven aan de actieve kool hangen, andere niet.'}
   ]
 });
+const FOTO_ITEMS = [{"tekst": "Bloem voor een cake", "antwoord": "zeven", "uitleg": "De klontjes zijn groter dan de gaatjes van de zeef."}, {"tekst": "Koffie", "antwoord": "filtreren", "uitleg": "Het koffiedik blijft in het papieren filter. De koffie die erdoor loopt, is het filtraat."}, {"tekst": "Oude wijn", "antwoord": "decanteren", "uitleg": "Het depot is naar de bodem gezakt. Je giet de wijn erboven voorzichtig af."}, {"tekst": "Bloedstaal", "antwoord": "centrifugeren", "uitleg": "Het buisje draait heel snel rond. De zwaardere bloedcellen gaan naar de bodem."}, {"tekst": "Zeezout", "antwoord": "uitdampen", "uitleg": "De zon laat het water verdampen. Het zout blijft over."}, {"tekst": "Jenever", "antwoord": "destilleren", "uitleg": "Alcohol kookt bij een lagere temperatuur dan water. De damp wordt in een koeler weer vloeibaar."}, {"tekst": "Thee", "antwoord": "extraheren", "uitleg": "Heet water lost kleur- en smaakstoffen uit de blaadjes op. De blaadjes blijven over."}, {"tekst": "Waterfilterkan", "antwoord": "adsorberen", "uitleg": "Smaakstoffen blijven aan de actieve kool in het filter hangen."}];
 const TK = Object.keys(TECH).map(k=>({k,label:TECH[k].naam}));
 sorteer($('#oef-dag'), {
-  id:'dag', titel:'Oefening 2 · Welke scheidingstechniek?',
-  opdracht:'Welke scheidingstechniek wordt hier gebruikt?',
+  id:'dag', titel:'Oefening 2 · Welke scheidingstechniek?', foto:true,
+  opdracht:'Bekijk de foto. Welke scheidingstechniek wordt hier gebruikt?',
   opties:TK,
-  items:[
-    {tekst:'Je zeeft bloem voordat je een cake bakt.', antwoord:'zeven', uitleg:'De klontjes zijn groter dan de gaatjes.'},
-    {tekst:'Een papieren koffiefilter houdt het koffiedik tegen.', antwoord:'filtreren', uitleg:'Het koffiedik is te groot voor de gaatjes in het papier. De koffie is het filtraat.'},
-    {tekst:'Je giet wijn voorzichtig in een karaf. Het depot blijft in de fles.', antwoord:'decanteren', uitleg:'Het depot is gezakt. Je giet de vloeistof erboven af.'},
-    {tekst:'In een melkerij scheidt een snel draaiende machine de room van de melk.', antwoord:'centrifugeren', uitleg:'Snel draaien versnelt het scheiden volgens massadichtheid.'},
-    {tekst:'In zoutpannen aan zee laat de zon het water verdampen. Het zout blijft over.', antwoord:'uitdampen', uitleg:'Het water verdampt, het zout blijft achter.'},
-    {tekst:'In een stokerij maakt men jenever.', antwoord:'destilleren', uitleg:'De alcohol kookt bij een lagere temperatuur dan water en wordt in een koeler opgevangen.'},
-    {tekst:'Je zet thee.', antwoord:'extraheren', uitleg:'Heet water lost kleur- en smaakstoffen uit de blaadjes op.'},
-    {tekst:'Een dampkap met koolstoffilter haalt geuren uit de lucht.', antwoord:'adsorberen', uitleg:'De geurstoffen blijven aan de actieve kool hangen.'},
-    {tekst:'In een ziekenhuislabo scheidt men bloedcellen van bloedplasma.', antwoord:'centrifugeren', uitleg:'De zwaardere bloedcellen worden naar de bodem van het buisje geduwd.'},
-    {tekst:'Je maakt gedestilleerd water voor een stoomstrijkijzer.', antwoord:'destilleren', uitleg:'Het water verdampt en wordt in de koeler weer vloeibaar. De kalk blijft achter.'},
-    {tekst:'Je haalt kiezels uit het zand van de zandbak.', antwoord:'zeven', uitleg:'De kiezels zijn groter dan de gaatjes.'},
-    {tekst:'Een waterfilterkan met actieve kool haalt smaakstoffen uit kraantjeswater.', antwoord:'adsorberen', uitleg:'De stoffen hechten aan de actieve kool.'}
-  ]
+  items:FOTO_ITEMS
 });
+
+/* ---------------- challenge in het klein: drie technieken na elkaar ---------------- */
+const KETENS = [
+  {titel:'Uitdaging 1 · Zuiver zout', mengsel:'Een emmer met water, zout, zand en kiezels.', doel:'Je wilt zuiver zout overhouden.',
+   stappen:[['zeven','De kiezels blijven op de zeef liggen: ze zijn groter dan de gaatjes (deeltjesgrootte).'],
+            ['filtreren','Het zand blijft op het filtreerpapier. Het zoutwater gaat erdoor: het filtraat (deeltjesgrootte).'],
+            ['uitdampen','Het water verdampt. Het zout blijft achter als residu (kooktemperatuur).']]},
+  {titel:'Uitdaging 2 · Helder water uit de vijver', mengsel:'Bruin vijverwater met modder. Het water ruikt vreemd.', doel:'Je wilt helder water zonder kleur en zonder geur.',
+   stappen:[['decanteren','Je laat de modder bezinken en giet het water erboven af (massadichtheid).'],
+            ['filtreren','De fijne deeltjes die nog zweven, blijven op het filtreerpapier (deeltjesgrootte).'],
+            ['adsorberen','Kleur- en geurstoffen zijn opgelost. Ze blijven aan actieve kool hangen (adsorptievermogen).']]},
+  {titel:'Uitdaging 3 · Drinkwater uit zee', mengsel:'Troebel zeewater met schelpjes en zand.', doel:'Je wilt zuiver drinkwater.',
+   stappen:[['zeven','De schelpjes blijven op de zeef liggen (deeltjesgrootte).'],
+            ['filtreren','Het zand blijft op het filtreerpapier (deeltjesgrootte).'],
+            ['destilleren','Het water verdampt, wordt in de koeler weer vloeibaar en is het destillaat. Het zout blijft achter (kooktemperatuur).']]}
+];
+function ketens(){
+  const el = $('#oef-keten');
+  const opt = '<option value="">kies …</option>' + Object.keys(TECH).map(k=>`<option value="${k}">${TECH[k].naam.toLowerCase()}</option>`).join('');
+  el.innerHTML = `<div class="oef-kop"><h3>Oefening 3 · Drie technieken na elkaar</h3><span class="score" data-score>0 / ${KETENS.length}</span></div>
+    <p>Soms heb je meer dan één scheidingstechniek nodig. Kies voor elke uitdaging drie technieken, in de juiste volgorde. Denk eerst: wat haal je er bij elke stap uit?</p>` +
+    KETENS.map((k,i)=>`<div class="keten" data-i="${i}"><h4>${k.titel}</h4><p><b>Mengsel:</b> ${k.mengsel}<br><b>Doel:</b> ${k.doel}</p>
+      <div class="stappen">${k.stappen.map((_,j)=>`<label class="stap"><b>Stap ${j+1}</b><select>${opt}</select><span class="uitleg" hidden></span></label>`).join('')}</div>
+      <div class="knoppen"><button class="knop hoofd" type="button" data-a="check">Controleer</button><button class="knop" type="button" data-a="toon">Toon de oplossing</button></div>
+      <div class="fb" aria-live="polite"></div></div>`).join('');
+  const goed = new Set();
+  scores.keten = {juist:0,totaal:KETENS.length,klaar:false};
+  el.querySelectorAll('.keten').forEach(box => {
+    const k = KETENS[+box.dataset.i], stappen = [...box.querySelectorAll('.stap')];
+    const toon = (alles) => {
+      let ok = 0;
+      stappen.forEach((st,j) => {
+        const sel = st.querySelector('select'), u = st.querySelector('.uitleg');
+        if (alles) sel.value = k.stappen[j][0];
+        const juist = sel.value === k.stappen[j][0]; if (juist) ok++;
+        st.classList.toggle('ok', juist); st.classList.toggle('nok', !juist);
+        u.hidden = !(juist || alles); u.textContent = k.stappen[j][1];
+      });
+      box.querySelector('.fb').textContent = ok===3 ? (alles ? 'Dit is de oplossing. Lees bij elke stap wat je eruit haalt.' : 'Alles juist! Lees bij elke stap waarom.') : `${ok} van de 3 stappen juist. Denk na: wat moet er eerst uit?`;
+      if (ok===3 && !alles) goed.add(box.dataset.i);
+      scores.keten = {juist:goed.size,totaal:KETENS.length,klaar:goed.size===KETENS.length};
+      el.querySelector('[data-score]').textContent = `${goed.size} / ${KETENS.length}`; updateIkKan();
+    };
+    box.querySelector('[data-a="check"]').addEventListener('click', () => toon(false));
+    box.querySelector('[data-a="toon"]').addEventListener('click', () => toon(true));
+  });
+}
+ketens();
 
 /* ik kan */
 function regel(label, s){
@@ -620,7 +669,8 @@ function updateIkKan(){
     ${regel('Ik kan de definitie van scheidingstechniek noteren (3.1).', scores.def)}
     ${regel('Ik noteer op welke stofeigenschap elke techniek gebaseerd is.', scores.eig)}
     ${regel('Ik kan de onderdelen van elke techniek benoemen (aantal technieken getest bij 3.2 en 3.3).', lab)}
-    ${regel('Ik herken de scheidingstechniek in een voorbeeld uit het dagelijks leven.', scores.dag)}</ul>
+    ${regel('Ik herken de scheidingstechniek in een voorbeeld uit het dagelijks leven.', scores.dag)}
+    ${regel('Ik kan drie scheidingstechnieken na elkaar gebruiken om een mengsel te scheiden.', scores.keten)}</ul>
     <p>Kan je het principe ook uitleggen? Kies een techniek, bekijk de tekening en vertel aan een klasgenoot wat er gebeurt en waarom.</p>`;
 }
 updateIkKan();
