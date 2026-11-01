@@ -1869,7 +1869,7 @@ render();
       <button class="btn-reset" id="d3-auto">⏸ Stop met draaien</button>
       <button class="btn-reset" id="d3-zicht">↺ Beginzicht</button>
     </div>
-    <p class="canvas-hint">Sleep om het veld te draaien, scroll of knijp om in of uit te zoomen. Ladingen en punten verplaats je in de 2D-tekening; de instellingen rechts werken ook hier.</p>`;
+    <p class="canvas-hint">Sleep om het veld te draaien, scroll of knijp om in of uit te zoomen. Neem een lading of punt vast om het te verschuiven (in het vlak van de 2D-tekening); de instellingen rechts werken ook hier.</p>`;
   const c=blok.querySelector('canvas'), ctx=c.getContext('2d');
   const dpr=window.devicePixelRatio||1, CW=c.width, CH=c.height;
   c.width=CW*dpr; c.height=CH*dpr; ctx.scale(dpr,dpr);
@@ -1881,9 +1881,38 @@ render();
 
   // slepen en zoomen (muis en touch)
   let drag=null, pinch=null;
-  c.addEventListener('pointerdown',e=>{ drag={x:e.clientX,y:e.clientY}; c.setPointerCapture(e.pointerId); c.style.cursor='grabbing'; if(auto){ auto=false; autoBtn.textContent='⟳ Automatisch draaien'; } });
-  c.addEventListener('pointermove',e=>{ if(!drag) return; yaw+=(e.clientX-drag.x)*0.008; pitch=Math.max(-1.4,Math.min(1.4,pitch+(e.clientY-drag.y)*0.008)); drag={x:e.clientX,y:e.clientY}; });
-  c.addEventListener('pointerup',()=>{ drag=null; c.style.cursor='grab'; });
+  // ---------- ladingen en punten vastnemen in 3D (in het vlak z = 0) ----------
+  let greep=null;
+  function schermPos(e){ const r=c.getBoundingClientRect(); return [(e.clientX-r.left)*CW/r.width, (e.clientY-r.top)*CH/r.height]; }
+  function terugVlak(sx,sy){ // schermpunt -> punt [px,py,0] in het vlak z = 0
+    const A=camAfst, X=(sx-CW/2)/(schaal*zoom), Y=-(sy-CH/2)/(schaal*zoom);
+    const cy=Math.cos(yaw), sy_=Math.sin(yaw), cp=Math.cos(pitch), sp=Math.sin(pitch);
+    const a1=X*sy_*cp-A*cy, b1=X*sp, c1=-X*A, a2=Y*sy_*cp+A*sy_*sp, b2=Y*sp-A*cp, c2=-Y*A, det=a1*b2-a2*b1;
+    if(Math.abs(det)<1e-6*A*A) return null;
+    return [(c1*b2-c2*b1)/det, (a1*c2-a2*c1)/det];
+  }
+  function zetSlider(id,v){ const el=document.getElementById(id); if(!el) return; el.value=v; el.dispatchEvent(new Event('input')); }
+  function grepen(){ // per situatie: welke punten kan je vastnemen en wat gebeurt er als je ze verschuift
+    const m=state.mode, h=[];
+    if((m==='punt'||m==='bol') && state.test) h.push({p:[state.test.xcm,-state.test.ycm,0], zet:(x,y)=>{ const r=Math.hypot(x,y), minR=(m==='bol'?0.5:chargeRadiusPx()/SCALE+0.5); if(r<minR) return; state.test={xcm:Math.max(-32,Math.min(32,x)), ycm:Math.max(-24,Math.min(24,-y))}; render(); }});
+    if(m==='coulomb' && window.cbState) h.push({p:[window.cbState.r*0.6,0,0], zet:x=>zetSlider('cb_rSlider', Math.round(Math.max(8,Math.min(24,x/0.6))*2)/2)});
+    if(m==='zwaarte' && window.gvState) h.push({p:[6.371+window.gvState.h/1000,0,0], zet:x=>zetSlider('gv_hSlider', Math.round(Math.max(0,Math.min(36000,(x-6.371)*1000))/100)*100)});
+    if(m==='meer' && window.mlState){ const ml=window.mlState;
+      ml.q.forEach(q=>h.push({p:[q.x,-q.y,0], zet:(x,y)=>{ q.x=Math.max(-14,Math.min(14,x)); q.y=Math.max(-10,Math.min(10,-y)); window.mlTeken&&window.mlTeken(); }}));
+      if(ml.P) h.push({p:[ml.P.x,-ml.P.y,0], zet:(x,y)=>{ ml.P={x:Math.max(-15,Math.min(15,x)), y:Math.max(-11,Math.min(11,-y))}; window.mlTeken&&window.mlTeken(); }});
+    }
+    return h;
+  }
+  c.addEventListener('pointerdown',e=>{
+    c.setPointerCapture(e.pointerId); if(auto){ auto=false; autoBtn.textContent='⟳ Automatisch draaien'; }
+    const [sx,sy]=schermPos(e);
+    let best=null, bd=22; grepen().forEach((g,i)=>{ const q=proj(g.p), d=Math.hypot(q.x-sx,q.y-sy); if(d<bd){ bd=d; best=i; } });
+    if(best!==null){ greep=best; c.style.cursor='move'; return; }
+    drag={x:e.clientX,y:e.clientY}; c.style.cursor='grabbing'; });
+  c.addEventListener('pointermove',e=>{
+    if(greep!==null){ const g=grepen()[greep]; const pt=terugVlak(...schermPos(e)); if(g&&pt) g.zet(pt[0],pt[1]); return; }
+    if(!drag) return; yaw+=(e.clientX-drag.x)*0.008; pitch=Math.max(-1.4,Math.min(1.4,pitch+(e.clientY-drag.y)*0.008)); drag={x:e.clientX,y:e.clientY}; });
+  c.addEventListener('pointerup',()=>{ drag=null; greep=null; c.style.cursor='grab'; });
   c.addEventListener('wheel',e=>{ e.preventDefault(); zoom=Math.max(0.5,Math.min(2.5,zoom*(e.deltaY<0?1.1:0.9))); },{passive:false});
   c.addEventListener('touchmove',e=>{ if(e.touches.length===2){ e.preventDefault(); const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY); if(pinch) zoom=Math.max(0.5,Math.min(2.5,zoom*d/pinch)); pinch=d; drag=null; } },{passive:false});
   c.addEventListener('touchend',()=>{ pinch=null; });
@@ -2240,7 +2269,7 @@ document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
   if(m==='meer') tekenMl(); if(m==='faraday') fdTeken();
 }));
 (function lus(now){ if(state.mode==='energie') enTeken(now); requestAnimationFrame(lus); })(performance.now());
-window.mlVeld=veld;
+window.mlVeld=veld; window.mlTeken=()=>tekenMl();
 })();
 </script>
 
