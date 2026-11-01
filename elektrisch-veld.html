@@ -774,9 +774,8 @@ function drawTestCharge(){
     const sign = F > 0 ? 1 : -1;
     // grootte groeit kwadratisch versneld bij het naderen (klein van ver, snel groter dichtbij),
     // maar verzadigt naar een maximum zodat de pijl op het scherm blijft
-    const minLen = 16, maxExtra = 184, Fk = 4; // Fk: kracht waarbij de helft van de maximale lengte bereikt is
-    const frac = Math.abs(F) / (Math.abs(F) + Fk);
-    let len = minLen + maxExtra * frac * frac;
+    // lengte evenredig met de kracht (8 px per newton), begrensd door de rand van de tekening
+    let len = Math.max(6, 8*Math.abs(F));
     len = Math.min(len, maxLenToEdge(px, py, ux*sign, uy*sign));
     const ex = px + ux*sign*len, ey = py + uy*sign*len;
     fctx.strokeStyle = '#e0983b';
@@ -1454,6 +1453,8 @@ function formatUnit(value, unit){
   return nl(value/1e-6,2) + ' µ' + unit;
 }
 function xP(){ return XB + st.r*SCALE; }
+// pijllengte evenredig met de grootte: 60 px bij Q_b = 5 µC op 14 cm (E ≈ 2,3 · 10^6 N/C)
+const PX_PER_E = 60 / (k*5e-6/0.14/0.14);
 
 // lengte van een pijl: klein bij zwakke grootheid, versneld groeiend, begrensd
 function arrowLen(v, vk){
@@ -1526,8 +1527,9 @@ function draw(){
   // veld E in P: pijl begint in P zelf (op de lijn), met of zonder proeflading
   if(sB !== 0){
     const E = k*Math.abs(st.Qb)*1e-6/Math.pow(st.r/100,2);
-    const L = arrowLen(E, 2e6) + 18;
-    const x1 = Math.max(12, Math.min(W-12, xp + dirE*L));
+    let L = Math.max(6, E*PX_PER_E);
+    L = dirE>0 ? Math.min(L, W-12-xp) : Math.min(L, xp-XB-24);
+    const x1 = xp + dirE*L;
     drawArrow(xp, x1, Y_LINE, EC, 3.5);
     const xl = (xp+x1)/2 + dirE*16;
     label(xl, Y_LINE+30, 'E', '', '', EC, 16, true);
@@ -1541,7 +1543,7 @@ function draw(){
   // krachten (alleen met proeflading): op een rij boven de ladingen
   if(met && sB !== 0 && sP !== 0){
     const F = k*Math.abs(st.Qb)*Math.abs(st.Qp)*1e-12/Math.pow(st.r/100,2);
-    const Lraw = arrowLen(F, 2);
+    const Lraw = Math.max(6, F*PX_PER_E*1e6);
     const gapHalf = Math.max(10, (xp - XB)/2 - 4);
     const dirP = sP*dirE;      // kracht op Q_p
     const dirB = -dirP;        // reactiekracht op Q_b
@@ -1755,7 +1757,7 @@ function draw(){
 
   // veld g in P: pijl begint in P, wijst naar de Aarde
   const g = gField();
-  const L = arrowLen(g, 5) + 18;
+  const L = Math.max(10, 85*g/9.82);   // evenredig met g: 85 px aan het aardoppervlak
   const x1 = Math.max(12, xp - L);
   drawArrow(xp, x1, Y_LINE, EC, 3.5);
   const xl = (xp + x1)/2 - 30;
@@ -1766,7 +1768,7 @@ function draw(){
   // krachten (alleen met proefmassa), op een rij boven
   if(met){
     const F = st.m * g;
-    const Lraw = arrowLen(F, 60);
+    const Lraw = Math.max(6, 0.4*F);   // evenredig met F
     const gapHalf = Math.max(10, (xp - XE)/2 - 4);
     ctx.strokeStyle = '#e3b0b4'; ctx.lineWidth = 1.2; ctx.setLineDash([2,3]);
     ctx.beginPath(); ctx.moveTo(xp, Y_F); ctx.lineTo(xp, Y_LINE-14); ctx.stroke();
@@ -1933,8 +1935,9 @@ render();
       const p=[state.test.xcm,-state.test.ycm,0], r=Math.hypot(p[0],p[1]);
       const binnen=isBol && r<state.R;
       bol(p,0.55,state.qtSign>0?POS:NEG,1,state.qtSign>0?'+':'−');
-      if(!binnen && r>0.5){ const u=norm(p), s=Q>0?1:-1; pijl(p,[p[0]+u[0]*3*s,p[1]+u[1]*3*s,0],EVEC,3); label([p[0]+u[0]*3.6*s,p[1]+u[1]*3.6*s+0.6,0],'E',EVEC);
-        const sf=s*(state.qtSign>0?1:-1); pijl(p,[p[0]+u[0]*2.2*sf,p[1]+u[1]*2.2*sf+0.0001,0],FVEC,3); label([p[0]+u[0]*2.8*sf,p[1]+u[1]*2.8*sf-0.8,0],'F',FVEC); }
+      if(!binnen && r>0.5){ const u=norm(p), s=Q>0?1:-1, E=Math.abs(EsignedAt(r)), LE=Math.max(0.4,Math.min(10,3*E/1e7)), LF=Math.max(0.4,Math.min(10,3*E*state.qtMag/1e7)); // evenredig: 3 eenheden per 10^7 N/C
+        pijl(p,[p[0]+u[0]*LE*s,p[1]+u[1]*LE*s,0],EVEC,3); label([p[0]+u[0]*(LE+0.6)*s,p[1]+u[1]*(LE+0.6)*s+0.6,0],'E',EVEC);
+        const sf=s*(state.qtSign>0?1:-1); pijl(p,[p[0]+u[0]*LF*sf,p[1]+u[1]*LF*sf+0.0001,0],FVEC,3); label([p[0]+u[0]*(LF+0.6)*sf,p[1]+u[1]*(LF+0.6)*sf-0.8,0],'F',FVEC); }
     }
     return 15;
   }
@@ -1968,8 +1971,9 @@ render();
     const P=[r,0,0], s=Qb>0?1:-1;
     if(st.mode==='met'){ bol(P,0.55,st.Qp>0?POS:st.Qp<0?NEG:'#98a2b3',1,st.Qp>0?'+':st.Qp<0?'−':''); label([r,-1.5,0],'Qp',st.Qp>0?POS:NEG); }
     else { bol(P,0.28,'#1D2A36',1); label([r,-1.2,0],'P'); }
-    if(Qb!==0){ pijl(P,[r+3*s,0,0],EVEC,3); label([r+3.6*s,0.7,0],'E',EVEC);
-      if(st.mode==='met' && st.Qp!==0){ const sf=s*(st.Qp>0?1:-1); pijl([r,0.25,0],[r+2.4*sf,0.25,0],FVEC,3); label([r+3*sf,-0.9,0],'Fc',FVEC); } }
+    if(Qb!==0){ const E=8.99e9*Math.abs(Qb)*1e-6/Math.pow(st.r/100,2), Eref=8.99e9*5e-6/0.0196; // evenredig, 3 eenheden bij Qb = 5 µC op 14 cm
+      const LE=Math.max(0.4,Math.min(12,3*E/Eref)); pijl(P,[r+LE*s,0,0],EVEC,3); label([r+(LE+0.6)*s,0.7,0],'E',EVEC);
+      if(st.mode==='met' && st.Qp!==0){ const sf=s*(st.Qp>0?1:-1), LF=Math.max(0.4,Math.min(12,3*E*Math.abs(st.Qp)/Eref)); pijl([r,0.25,0],[r+LF*sf,0.25,0],FVEC,3); label([r+(LF+0.6)*sf,-0.9,0],'Fc',FVEC); } }
     return 17;
   }
 
@@ -1977,14 +1981,14 @@ render();
     const st=window.gvState; if(!st) return 15;
     const RE=6.371, r=RE+st.h/1000; // eenheid: 1000 km
     bol([0,0,0],RE,'#3b82c4',1,'');
-    const n=40, rUit=Math.max(RE*2.2,r+4);
+    const n=40, rUit=RE+36+4; // vaste schaal: de Aarde verandert niet van grootte als P verschuift
     fibonacci(n).forEach(u=>veldlijn([u[0]*rUit,u[1]*rUit,u[2]*rUit],[u[0]*RE*1.02,u[1]*RE*1.02,u[2]*RE*1.02],LIJN,true));
     label([0,-RE-1.4,0],'Aarde','#1d4ed8');
     const P=[r,0,0];
     if(st.mode==='met'){ bol(P,0.5,'#4a5a76',1); label([r,-1.4,0],'m'); } else { bol(P,0.25,'#1D2A36',1); label([r,-1.2,0],'P'); }
-    const L=Math.min(3.5,1.2+3*Math.pow(RE/r,2));
+    const L=Math.max(0.4,6*Math.pow(RE/r,2)); // evenredig met g = g0·(R/r)²
     pijl(P,[r-L,0,0],EVEC,3); label([r-L-0.6,0.8,0],'g',EVEC);
-    if(st.mode==='met'){ pijl([r,0.3,0],[r-L*0.8,0.3,0],FVEC,3); label([r-L*0.8-0.6,-0.8,0],'Fz',FVEC); }
+    if(st.mode==='met'){ const LF=Math.max(0.4,L*st.m/10); pijl([r,0.3,0],[r-LF,0.3,0],FVEC,3); label([r-LF-0.6,-0.8,0],'Fz',FVEC); }
     return rUit;
   }
 
@@ -1995,18 +1999,18 @@ render();
     const Q3=st.q.map(c=>({p:[c.x,-c.y,0],Q:c.Q})), key=JSON.stringify(st.q);
     if(key!==meerKey){
       const f=p=>{ let e=[0,0,0]; Q3.forEach(c=>{ const d=[p[0]-c.p[0],p[1]-c.p[1],p[2]-c.p[2]], r=Math.hypot(...d); if(r<1e-6) return; const k=c.Q/(r*r*r); e=[e[0]+k*d[0],e[1]+k*d[1],e[2]+k*d[2]]; }); return e; };
-      const pos=Q3.filter(c=>c.Q>0).reduce((a,c)=>a+c.Q,0), neg=-Q3.filter(c=>c.Q<0).reduce((a,c)=>a+c.Q,0), vanPos=pos>=neg, dir=vanPos?1:-1;
       meerLijnen=[];
-      Q3.forEach(c=>{ if((c.Q>0)!==vanPos) return; fibonacci(2*Math.abs(c.Q)+6).forEach(u=>{
-        let p=[c.p[0]+u[0]*0.5,c.p[1]+u[1]*0.5,c.p[2]+u[2]*0.5]; const pts=[p.slice()];
+      Q3.forEach(c=>{ const dir=c.Q>0?1:-1; fibonacci(2*Math.abs(c.Q)+6).forEach(u=>{
+        let p=[c.p[0]+u[0]*0.5,c.p[1]+u[1]*0.5,c.p[2]+u[2]*0.5]; const pts=[p.slice()]; let op=null;
         for(let i=0;i<900;i++){ const e=norm(f(p)); p=[p[0]+dir*e[0]*0.1,p[1]+dir*e[1]*0.1,p[2]+dir*e[2]*0.1]; if(i%7===6) pts.push(p.slice());
-          if(Math.hypot(...p)>17) break; if(Q3.some(q=>q!==c&&Math.hypot(q.p[0]-p[0],q.p[1]-p[1],q.p[2]-p[2])<0.6)) break; }
+          if(Math.hypot(...p)>17) break; op=Q3.find(q=>q!==c&&Math.hypot(q.p[0]-p[0],q.p[1]-p[1],q.p[2]-p[2])<0.6); if(op) break; }
+        if(dir<0 && op && op.Q>0) return; // die lijn is al getekend vanuit de positieve lading
         pts.push(p.slice()); meerLijnen.push({pts,dir}); }); });
       meerKey=key;
     }
     meerLijnen.forEach(l=>{ for(let i=1;i<l.pts.length;i++) lijn(l.pts[i-1],l.pts[i],LIJN,1.4,0.8); const m=Math.floor(l.pts.length/2); if(l.pts.length>3){ const a=l.pts[m], b=l.pts[m+1]; items.push({t:'a',a:l.dir>0?a:b,b:l.dir>0?b:a,kleur:LIJN,punt:1,klein:true}); } });
     Q3.forEach(c=>bol(c.p,1.1,c.Q>0?POS:NEG,1,c.Q>0?'+':'−'));
-    if(st.P&&window.mlVeld){ const P=[st.P.x,-st.P.y,0], e=window.mlVeld(st.P.x,st.P.y), u=norm([e[0],-e[1],0]); bol(P,0.3,'#1D2A36',1); pijl(P,[P[0]+u[0]*3,P[1]+u[1]*3,0],EVEC,3); label([P[0]+u[0]*3.7,P[1]+u[1]*3.7+0.5,0],'E',EVEC); label([P[0]-0.8,P[1]+0.9,0],'P'); }
+    if(st.P&&window.mlVeld){ const P=[st.P.x,-st.P.y,0], e=window.mlVeld(st.P.x,st.P.y), u=norm([e[0],-e[1],0]), LE=Math.max(0.4,Math.min(9,3*Math.hypot(e[0],e[1])/1e7)); bol(P,0.3,'#1D2A36',1); pijl(P,[P[0]+u[0]*LE,P[1]+u[1]*LE,0],EVEC,3); label([P[0]+u[0]*(LE+0.7),P[1]+u[1]*(LE+0.7)+0.5,0],'E',EVEC); label([P[0]-0.8,P[1]+0.9,0],'P'); }
     return 16;
   }
   // ---------- tekenen ----------
@@ -2086,9 +2090,13 @@ function lijn(x,y,dir,maxN=1600){ const pts=[[x,y]]; for(let i=0;i<maxN;i++){ le
 let cacheKey='', cacheLijnen=[];
 function alleLijnen(){
   const key=JSON.stringify(ml.q); if(key===cacheKey) return cacheLijnen;
-  const pos=ml.q.filter(c=>c.Q>0).reduce((a,c)=>a+c.Q,0), neg=-ml.q.filter(c=>c.Q<0).reduce((a,c)=>a+c.Q,0), vanPos=pos>=neg, out=[];
-  ml.q.forEach(c=>{ if((c.Q>0)!==vanPos) return; const n=3*Math.abs(c.Q)+2;
-    for(let i=0;i<n;i++){ const a=(i+0.5)*2*Math.PI/n; out.push({pts:lijn(c.x+0.4*Math.cos(a),c.y+0.4*Math.sin(a),vanPos?1:-1),dir:vanPos?1:-1}); } });
+  const out=[];
+  // lijnen vertrekken uit elke positieve lading; uit elke negatieve lading volgen we de lijn achteruit
+  // en houden we enkel de lijnen die niet op een positieve lading uitkomen (die van buitenaf binnenkomen)
+  ml.q.forEach(c=>{ const n=3*Math.abs(c.Q)+2, dir=c.Q>0?1:-1;
+    for(let i=0;i<n;i++){ const a=(i+0.5)*2*Math.PI/n, pts=lijn(c.x+0.4*Math.cos(a),c.y+0.4*Math.sin(a),dir);
+      if(dir<0){ const [x,y]=pts[pts.length-1]; if(ml.q.some(d=>d.Q>0&&Math.hypot(d.x-x,d.y-y)<0.5)) continue; }
+      out.push({pts,dir}); } });
   cacheKey=key; cacheLijnen=out; return out;
 }
 const mcv=document.getElementById('ml_cv'), mctx=hd(mcv), MW=mcv._w, MH=mcv._h;
@@ -2102,7 +2110,7 @@ function tekenMl(){
     const voor=lijn(px,py,1,900), achter=lijn(px,py,-1,900);
     tekenPad(ctx,achter.slice().reverse().concat(voor),ACC,3,1,false);
     const [ex,ey]=veld(px,py), E=Math.hypot(ex,ey), [X,Y]=toPx(px,py);
-    if(E>0){ const ux=ex/E, uy=ey/E, L=Math.max(30,Math.min(75,18*Math.log10(E)-60));
+    if(E>0){ const ux=ex/E, uy=ey/E, L=Math.max(6,Math.min(170,E*4e-6)); // evenredig: 40 px per 10^7 N/C
       ctx.setLineDash([5,5]); ctx.strokeStyle='#94a3b8'; ctx.lineWidth=1.2; ctx.beginPath(); ctx.moveTo(X-ux*110,Y-uy*110); ctx.lineTo(X+ux*110,Y+uy*110); ctx.stroke(); ctx.setLineDash([]);
       if(ml.bijdr) ml.q.forEach((c,i)=>{ const dx=(px-c.x)*0.01, dy=(py-c.y)*0.01, r2=dx*dx+dy*dy, f=8.99e9*c.Q*1e-6/(r2*Math.sqrt(r2)), e=[f*dx,f*dy], Ei=Math.hypot(...e), Li=L*Ei/E;
         pijl(ctx,X,Y,X+e[0]/Ei*Li,Y+e[1]/Ei*Li,c.Q>0?'#e88a93':'#7fb0cf',2); txt(ctx,'E'+'₁₂₃'[i],X+e[0]/Ei*(Li+12),Y+e[1]/Ei*(Li+12)+4,{c:c.Q>0?POS:NEG,s:12,a:'center'}); });
