@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atomen en elementen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EEF2F5; --panel:#FFFFFF; --panel-2:#F5F8FB; --line:#D3DCE5;
+  --text:#1D2A36; --text-dim:#51606E;
+  --accent:#2F6FB0; --accent-dark:#245A91; --accent-soft:#E4EEF8;
+  --ok:#1F7A4A; --ok-bg:#E3F3E9; --warn:#9A5B00; --warn-bg:#FFF4D6;
+  --font:'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:var(--font);}
+body{-webkit-font-smoothing:antialiased;line-height:1.6;font-size:16px;}
+.top{max-width:900px;margin:0 auto;padding:36px 24px 0;}
+.top .eyebrow{font-size:13px;font-weight:700;color:var(--accent-dark);letter-spacing:.04em;text-transform:uppercase;margin-bottom:6px;}
+.top h1{font-size:2rem;font-weight:700;letter-spacing:-0.015em;margin:0 0 8px;line-height:1.2;}
+.top .intro{color:var(--text-dim);font-size:15px;margin:0;}
+.inhoud{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0 0;padding-bottom:14px;border-bottom:1px solid var(--line);}
+.inhoud a{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:500;text-decoration:none;color:var(--text-dim);background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:7px 12px;}
+.inhoud a:hover{border-color:var(--accent);color:var(--text);}
+.inhoud a .nr{min-width:22px;height:22px;border-radius:11px;display:inline-flex;align-items:center;justify-content:center;background:var(--accent-soft);color:var(--accent-dark);font-size:12px;font-weight:700;padding:0 6px;}
+.inhoud a.slot{opacity:.55;}
+main{max-width:900px;margin:0 auto;padding:22px 24px 80px;}
+section.blok{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:22px 24px;margin-bottom:22px;scroll-margin-top:16px;}
+section.blok > h2{font-size:1.45rem;margin:0 0 12px;display:flex;align-items:center;gap:10px;letter-spacing:-0.01em;}
+section.blok > h2 .nr{min-width:30px;height:30px;border-radius:15px;display:inline-flex;align-items:center;justify-content:center;background:var(--accent);color:#fff;font-size:14px;font-weight:700;padding:0 8px;}
+h3{font-size:1.1rem;margin:22px 0 8px;}
+p{margin:0 0 12px;}
+ul.doelen{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px;}
+ul.doelen li{background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:9px 12px 9px 40px;position:relative;}
+ul.doelen li::before{content:'✓';position:absolute;left:14px;top:9px;color:var(--accent);font-weight:700;}
+.figuur{margin:12px 0 16px;text-align:center;}
+.figuur svg{max-width:100%;height:auto;background:#fbfcfe;border:1px solid var(--line);border-radius:10px;}
+.figuur figcaption{font-size:13px;color:var(--text-dim);margin-top:4px;}
+.kader{border-left:4px solid var(--accent);background:var(--accent-soft);border-radius:0 10px 10px 0;padding:12px 16px;margin:14px 0;}
+.kader .kop{font-weight:700;color:var(--accent-dark);margin-bottom:4px;}
+.kader p:last-child{margin-bottom:0;}
+.formule{display:inline-block;font-size:19px;font-weight:700;background:#fff;border:1px solid var(--line);border-radius:8px;padding:6px 14px;margin:4px 0 8px;}
+.toolknop{display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-weight:600;font-size:14px;color:var(--accent-dark);background:#fff;border:1px solid var(--accent);border-radius:8px;padding:8px 14px;margin:6px 8px 10px 0;}
+.toolknop:hover{background:var(--accent-soft);}
+.denk{border:1px solid var(--line);border-radius:10px;margin:16px 0;overflow:hidden;}
+.denk .vraag{background:var(--warn-bg);padding:12px 16px;}
+.denk .vraag .kop{font-size:12px;font-weight:700;color:var(--warn);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px;}
+.denk .vraag p:last-child{margin:0;}
+.denk .onder{padding:10px 16px;background:#fff;}
+.denk button,.knop{font-family:var(--font);font-size:14px;font-weight:600;background:var(--accent);color:#fff;border:1px solid var(--accent);border-radius:8px;padding:8px 14px;cursor:pointer;}
+.denk button:hover,.knop:hover{background:var(--accent-dark);}
+.knop.licht{background:#fff;color:var(--text);border-color:var(--line);}
+.knop.licht:hover{border-color:var(--accent);background:#fff;}
+.slotje{color:var(--text-dim);font-size:14px;}
+.redenering{margin-top:10px;}
+.redenering ol{margin:0;padding-left:0;list-style:none;counter-reset:st;}
+.redenering ol li{counter-increment:st;position:relative;padding:8px 0 8px 40px;border-top:1px dashed var(--line);}
+.redenering ol li:first-child{border-top:none;}
+.redenering ol li::before{content:counter(st);position:absolute;left:4px;top:8px;width:24px;height:24px;border-radius:12px;background:var(--ok-bg);color:var(--ok);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;}
+.redenering .stap{font-weight:700;}
+.redenering .besluit{background:var(--ok-bg);border-radius:8px;padding:8px 12px;margin-top:6px;color:var(--ok);font-weight:600;}
+.oef{border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:12px 0;}
+.oef .titel{font-weight:700;margin-bottom:4px;}
+.oef .titel .nr{display:inline-flex;min-width:26px;height:26px;border-radius:13px;align-items:center;justify-content:center;background:var(--accent-soft);color:var(--accent-dark);font-size:13px;margin-right:8px;}
+.oef ol.deelvragen{margin:6px 0 4px;padding-left:22px;}
+.gesloten-deel{color:var(--text-dim);font-size:15px;display:flex;align-items:center;gap:10px;}
+.stappenplan{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 14px;}
+.stappenplan span{background:var(--panel-2);border:1px solid var(--line);border-radius:999px;padding:3px 12px;font-size:13px;font-weight:600;}
+table.vb{border-collapse:collapse;margin:6px 0 12px;font-size:15px;}
+table.vb td{padding:3px 12px 3px 0;vertical-align:top;}
+table.vb td:first-child{font-weight:700;color:var(--accent-dark);white-space:nowrap;}
+.leerkracht-banner{background:#7c3aed;color:#fff;text-align:center;font-size:14px;font-weight:600;padding:6px;}
+footer{max-width:900px;margin:0 auto;padding:0 24px 40px;color:var(--text-dim);font-size:12px;}
+/* ---------- afdrukken ---------- */
+.printblad{display:none;}
+@media print{
+  @page{size:A4;margin:16mm 15mm;}
+  body{background:#fff;font-size:12pt;}
+  body.print-oef > *:not(#print-oef), body.print-cornell > *:not(#print-cornell){display:none !important;}
+  body.print-oef #print-oef, body.print-cornell #print-cornell{display:block;}
+  .printblad h1{font-size:16pt;margin:0 0 2mm;}
+  .printblad .naam{display:flex;gap:10mm;font-size:11pt;margin:0 0 5mm;}
+  .printblad .oef{border:none;border-top:1px solid #999;border-radius:0;padding:3mm 0;margin:0;break-inside:avoid;}
+  .printblad table.cornell{width:100%;border-collapse:collapse;}
+  .printblad table.cornell td{border:1px solid #555;vertical-align:top;padding:2mm 3mm;font-size:11pt;}
+  .printblad table.cornell td.v{width:32%;font-weight:600;}
+  .printblad .samenv{border:1px solid #555;height:38mm;margin-top:4mm;padding:2mm 3mm;font-weight:600;}
+  /* volledige cursus afdrukken */
+  body:not(.print-oef):not(.print-cornell) #banner, body:not(.print-oef):not(.print-cornell) nav.inhoud,
+  body:not(.print-oef):not(.print-cornell) .toolknop, body:not(.print-oef):not(.print-cornell) button,
+  body:not(.print-oef):not(.print-cornell) .onder, body:not(.print-oef):not(.print-cornell) footer{display:none !important;}
+  body:not(.print-oef):not(.print-cornell) .blok{box-shadow:none;border:none;padding:0;margin:0 0 6mm;}
+  body:not(.print-oef):not(.print-cornell) figure, body:not(.print-oef):not(.print-cornell) .kader, body:not(.print-oef):not(.print-cornell) .denk, body:not(.print-oef):not(.print-cornell) .oef{break-inside:avoid;}
+  body:not(.print-oef):not(.print-cornell) .schrijflijnen{display:block;}
+}
+.schrijflijnen{display:none;}
+.schrijflijnen div{border-bottom:1px solid #999;height:9mm;}
+</style>
+</head>
+<body>
+<div id="banner"></div>
+<header class="top">
+  <div class="eyebrow">Chemie 3de jaar · Thema 2 De atoombouw en het PSE · Hoofdstuk 1</div>
+  <h1>Atomen en elementen</h1>
+  <p class="intro">Werk dit hoofdstuk samen met de tool <a href="chemie-atoommodellen.html">Atomen en elementen</a>. Oefeningen maak je op papier.</p>
+  <p><button class="knop licht" onclick="window.print()">🖨 Druk de cursus af</button></p>
+  <nav class="inhoud" id="inhoud"></nav>
+</header>
+<main id="cursus">
+<section class="blok" id="lesdoelen">
+<h2>Lesdoelen</h2>
+<p>Na dit hoofdstuk kan je:</p><ul class="doelen"><li>uitleggen waarom het atoommodel een <b>dynamisch model</b> is;</li><li>de namen van de <b>atoommodellen</b> en hun kenmerken noteren en ze <b>chronologisch</b> rangschikken;</li><li>het <b>chemisch symbool</b> noteren als de naam gegeven is, en omgekeerd.</li></ul>
+</section>
+<section class="blok" id="voorkennis">
+<h2>Voorkennis</h2>
+<p>Dit moet je al kennen. Twijfel je? Herhaal het dan eerst.</p><ul><li>Het <b>deeltjesmodel</b>: alle stoffen bestaan uit heel kleine deeltjes.</li><li>Zuivere stof en mengsel (thema 1).</li><li>Een <b>model</b> is een vereenvoudigde voorstelling van de werkelijkheid.</li></ul>
+</section>
+<section class="blok" id="deel1" data-vrij="deel1">
+<h2><span class="nr">1</span>Het atoommodel als dynamisch model</h2>
+<p>Een atoom is zo klein dat niemand het echt kan zien: op de dikte van een blad papier passen ongeveer een miljoen atomen naast elkaar. Daarom maken wetenschappers een <b>atoommodel</b>: een vereenvoudigde voorstelling van hoe een atoom eruitziet.</p>
+<div class="kader"><div class="kop">Onthoud</div><p>Het atoommodel is <b>dynamisch</b>: het verandert telkens als nieuwe experimenten nieuwe dingen tonen. Een oud model wordt dan aangepast of vervangen.</p><p>Let op: "dynamisch" betekent hier <b>niet</b> dat atomen bewegen. Het betekent dat het <b>model</b> verandert in de loop van de tijd.</p></div>
+<figure class="figuur"><svg viewBox="0 0 640 215" width="640" xmlns="http://www.w3.org/2000/svg"><rect width="640" height="215" fill="#fff"/><circle cx="55" cy="80" r="30" fill="#e2e8f0" stroke="#1D2A36" stroke-width="2" stroke-dasharray="5 4"/><circle cx="160" cy="80" r="30" fill="#94a3b8" stroke="#1D2A36" stroke-width="2"/><circle cx="150" cy="70" r="8" fill="#e2e8f0" opacity=".7"/><circle cx="265" cy="80" r="32" fill="#fecaca" stroke="#1D2A36" stroke-width="2"/><circle cx="251" cy="68" r="4.5" fill="#2563eb"/><circle cx="275" cy="64" r="4.5" fill="#2563eb"/><circle cx="281" cy="88" r="4.5" fill="#2563eb"/><circle cx="259" cy="94" r="4.5" fill="#2563eb"/><circle cx="247" cy="86" r="4.5" fill="#2563eb"/><circle cx="269" cy="78" r="4.5" fill="#2563eb"/><text x="287.0" y="58.0" fill="#dc2626" font-size="13" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">+</text><text x="241.0" y="104.0" fill="#dc2626" font-size="13" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">+</text><circle cx="370" cy="80" r="34" fill="none" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="3 4"/><circle cx="370" cy="80" r="6" fill="#ef4444"/><circle cx="396.3" cy="88.2" r="4.5" fill="#2563eb"/><circle cx="348.6" cy="95.4" r="4.5" fill="#2563eb"/><circle cx="360.4" cy="57.4" r="4.5" fill="#2563eb"/><circle cx="391.4" cy="64.6" r="4.5" fill="#2563eb"/><circle cx="475" cy="80" r="18" fill="none" stroke="#94a3b8" stroke-width="1.5"/><circle cx="475" cy="80" r="34" fill="none" stroke="#94a3b8" stroke-width="1.5"/><circle cx="475" cy="80" r="7" fill="#ef4444"/><circle cx="475.0" cy="98.0" r="4.5" fill="#2563eb"/><circle cx="475.0" cy="62.0" r="4.5" fill="#2563eb"/><circle cx="509.0" cy="80.0" r="4.5" fill="#2563eb"/><circle cx="458.0" cy="109.4" r="4.5" fill="#2563eb"/><circle cx="458.0" cy="50.6" r="4.5" fill="#2563eb"/><defs><radialGradient id="wolk"><stop offset="0" stop-color="#2563eb" stop-opacity=".75"/><stop offset="1" stop-color="#2563eb" stop-opacity="0"/></radialGradient></defs><circle cx="585" cy="80" r="38" fill="url(#wolk)"/><circle cx="585" cy="80" r="5" fill="#ef4444"/><line x1="20.0" y1="150.0" x2="625.0" y2="150.0" stroke="#1D2A36" stroke-width="2" stroke-linecap="round"/><path d="M635.5,150.0 L621.0,154.3 L621.0,145.7Z" fill="#1D2A36"/><circle cx="55.0" cy="150.0" r="4" fill="#1D2A36"/><text x="55.0" y="172.0" fill="#64748b" font-size="12" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">± 400 v.C.</text><text x="55.0" y="190.0" fill="#1D2A36" font-size="13" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">Democritus</text><text x="55.0" y="206.0" fill="#2563eb" font-size="11" font-weight="600" text-anchor="middle" font-family="Inter,sans-serif">atomos-idee</text><circle cx="160.0" cy="150.0" r="4" fill="#1D2A36"/><text x="160.0" y="172.0" fill="#64748b" font-size="12" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">1803</text><text x="160.0" y="190.0" fill="#1D2A36" font-size="13" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">Dalton</text><text x="160.0" y="206.0" fill="#2563eb" font-size="11" font-weight="600" text-anchor="middle" font-family="Inter,sans-serif">bolletjesmodel</text><circle cx="265.0" cy="150.0" r="4" fill="#1D2A36"/><text x="265.0" y="172.0" fill="#64748b" font-size="12" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">1904</text><text x="265.0" y="190.0" fill="#1D2A36" font-size="13" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">Thomson</text><text x="265.0" y="206.0" fill="#2563eb" font-size="11" font-weight="600" text-anchor="middle" font-family="Inter,sans-serif">krentenbolmodel</text><circle cx="370.0" cy="150.0" r="4" fill="#1D2A36"/><text x="370.0" y="172.0" fill="#64748b" font-size="12" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">1911</text><text x="370.0" y="190.0" fill="#1D2A36" font-size="13" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">Rutherford</text><text x="370.0" y="206.0" fill="#2563eb" font-size="11" font-weight="600" text-anchor="middle" font-family="Inter,sans-serif">kernmodel</text><circle cx="475.0" cy="150.0" r="4" fill="#1D2A36"/><text x="475.0" y="172.0" fill="#64748b" font-size="12" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">1913</text><text x="475.0" y="190.0" fill="#1D2A36" font-size="13" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">Bohr</text><text x="475.0" y="206.0" fill="#2563eb" font-size="11" font-weight="600" text-anchor="middle" font-family="Inter,sans-serif">schillenmodel</text><circle cx="585.0" cy="150.0" r="4" fill="#1D2A36"/><text x="585.0" y="172.0" fill="#64748b" font-size="12" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">1926</text><text x="585.0" y="190.0" fill="#1D2A36" font-size="13" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">Schrödinger</text><text x="585.0" y="206.0" fill="#2563eb" font-size="11" font-weight="600" text-anchor="middle" font-family="Inter,sans-serif">elektronenwolkmodel</text></svg><figcaption>De atoommodellen door de tijd. Elektronen zijn blauw, positieve lading rood.</figcaption></figure>
+<table class="vb"><tr><td><b>Model</b></td><td><b>Wie en wanneer</b></td><td><b>Kenmerk</b></td><td><b>Waarom een nieuw model?</b></td></tr><tr><td>atomos-idee</td><td>Democritus, ± 400 v.C.</td><td>alles bestaat uit ondeelbare deeltjes: atomen</td><td>alleen een idee, geen experimenten</td></tr><tr><td>bolletjesmodel</td><td>Dalton, 1803</td><td>een atoom is een massief, ondeelbaar bolletje; elk element heeft zijn eigen soort atomen</td><td>Thomson ontdekte het elektron: het atoom is dus deelbaar</td></tr><tr><td>krentenbolmodel</td><td>Thomson, 1904</td><td>een positief geladen bol met negatieve elektronen erin, zoals krenten in een krentenbol</td><td>goudfolie-experiment van Rutherford</td></tr><tr><td>kernmodel</td><td>Rutherford, 1911</td><td>een heel kleine, positieve <b>kern</b>; de elektronen bewegen errond; het atoom is vooral lege ruimte</td><td>waarom vallen de elektronen niet in de kern?</td></tr><tr><td>schillenmodel</td><td>Bohr, 1913</td><td>de elektronen bewegen op vaste afstanden rond de kern: de <b>schillen</b></td><td>elektronen hebben geen vaste baan</td></tr><tr><td>elektronenwolkmodel</td><td>Schrödinger, 1926</td><td>je weet alleen waar een elektron waarschijnlijk is: een <b>wolk</b></td><td>het huidige model</td></tr></table>
+<p>Wij werken verder met het <b>model van Bohr</b>: het is eenvoudig en goed genoeg voor wat we doen.</p>
+<a class="toolknop" href="chemie-atoommodellen.html#ikkan11" target="_blank" rel="noopener">▶ Klik door de tijdlijn van de atoommodellen</a>
+<div class="denk" data-vrij="denk_1">
+  <div class="vraag"><div class="kop">Denkvraag</div><p>Rutherford schoot heel kleine positieve deeltjes op een dun goudfolie. Bijna alle deeltjes gingen er rechtdoor. Een paar kaatsten terug. Wat besloot hij?</p></div>
+  <div class="onder"><div class="redenering"><ol><li><span class="stap">Bijna alles rechtdoor</span> Het atoom is vooral lege ruimte.</li><li><span class="stap">Een paar terug</span> Ze botsten op iets heel kleins, zwaars en positiefs: de kern.</li><li><span class="stap">Gevolg</span> Het krentenbolmodel van Thomson klopte niet meer.</li></ol><div class="besluit">Het atoom heeft een kleine positieve kern met veel lege ruimte errond: het kernmodel.</div></div></div>
+</div>
+</section>
+<section class="blok" id="deel2" data-vrij="deel2">
+<h2><span class="nr">2</span>Symbolen van de elementen</h2>
+<p>Een <b>element</b> is een soort atoom. Elk element heeft een <b>chemisch symbool</b>.</p>
+<div class="kader"><div class="kop">De regels</div><ul><li>Een symbool heeft <b>1 of 2 letters</b>.</li><li>De eerste letter is altijd een <b>hoofdletter</b>.</li><li>De tweede letter is altijd een <b>kleine letter</b>.</li></ul><p><b>Co</b> is kobalt (een element). <b>CO</b> is koolstofmonoxide (een stof uit C en O). Eén hoofdletter maakt het verschil.</p></div>
+<h3>Symbolen uit het Latijn</h3>
+<table class="vb"><tr><td><b>Symbool</b></td><td><b>Naam</b></td><td><b>Latijn</b></td></tr><tr><td>Na</td><td>natrium</td><td>natrium</td></tr><tr><td>K</td><td>kalium</td><td>kalium</td></tr><tr><td>Fe</td><td>ijzer</td><td>ferrum</td></tr><tr><td>Cu</td><td>koper</td><td>cuprum</td></tr><tr><td>Ag</td><td>zilver</td><td>argentum</td></tr><tr><td>Au</td><td>goud</td><td>aurum</td></tr><tr><td>Hg</td><td>kwik</td><td>hydrargyrum</td></tr><tr><td>Pb</td><td>lood</td><td>plumbum</td></tr><tr><td>Sn</td><td>tin</td><td>stannum</td></tr></table>
+<h3>De elementen 1 tot 20</h3>
+<table class="vb"><tr><td><b>Z</b></td><td><b>Symbool</b></td><td><b>Naam</b></td><td><b>Z</b></td><td><b>Symbool</b></td><td><b>Naam</b></td></tr><tr><td>1</td><td>H</td><td>waterstof</td><td>11</td><td>Na</td><td>natrium</td></tr><tr><td>2</td><td>He</td><td>helium</td><td>12</td><td>Mg</td><td>magnesium</td></tr><tr><td>3</td><td>Li</td><td>lithium</td><td>13</td><td>Al</td><td>aluminium</td></tr><tr><td>4</td><td>Be</td><td>beryllium</td><td>14</td><td>Si</td><td>silicium</td></tr><tr><td>5</td><td>B</td><td>boor</td><td>15</td><td>P</td><td>fosfor</td></tr><tr><td>6</td><td>C</td><td>koolstof</td><td>16</td><td>S</td><td>zwavel</td></tr><tr><td>7</td><td>N</td><td>stikstof</td><td>17</td><td>Cl</td><td>chloor</td></tr><tr><td>8</td><td>O</td><td>zuurstof</td><td>18</td><td>Ar</td><td>argon</td></tr><tr><td>9</td><td>F</td><td>fluor</td><td>19</td><td>K</td><td>kalium</td></tr><tr><td>10</td><td>Ne</td><td>neon</td><td>20</td><td>Ca</td><td>calcium</td></tr></table>
+<a class="toolknop" href="chemie-atoommodellen.html#ikkan12" target="_blank" rel="noopener">▶ Leer de symbolen met de tegels in de tool</a>
+<div class="denk" data-vrij="denk_2">
+  <div class="vraag"><div class="kop">Denkvraag</div><p>Een leerling schrijft het symbool van chloor als "CL". Waarom is dat fout?</p></div>
+  <div class="onder"><div class="redenering"><ol><li><span class="stap">Regel</span> De tweede letter is altijd een kleine letter.</li><li><span class="stap">Gevolg</span> CL lijkt op twee elementen C en L, en L bestaat niet.</li></ol><div class="besluit">Chloor schrijf je Cl.</div></div></div>
+</div>
+</section>
+<section class="blok" id="oefeningen" data-vrij="oefeningen">
+<h2>Oefeningen op papier</h2>
+<p>Maak deze oefeningen <b>op papier</b>. Gebruik bij thema 2 je <b>PSE</b>. De oplossingen verschijnen hier nadat we de oefeningen in de les besproken hebben.</p>
+<p><button class="knop licht" data-print="oef">🖨 Druk de oefeningen af</button></p>
+<div class="oef" data-vrij="opl_1">
+  <div class="titel"><span class="nr">1</span>Dynamisch model</div>
+  <div class="tekst">Leg in je eigen woorden uit waarom het atoommodel een dynamisch model is. Wat betekent "dynamisch" hier <b>niet</b>?</div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">Dynamisch</span> Het model verandert telkens als nieuwe experimenten nieuwe dingen tonen.</li><li><span class="stap">Niet</span> Het betekent niet dat atomen bewegen.</li></ol><div class="besluit">Het model verandert, niet het atoom.</div></div>
+</div>
+<div class="oef" data-vrij="opl_2">
+  <div class="titel"><span class="nr">2</span>Chronologisch rangschikken</div>
+  <div class="tekst">Zet de modellen in de juiste volgorde: <i>schillenmodel – bolletjesmodel – elektronenwolkmodel – kernmodel – atomos-idee – krentenbolmodel</i>. Noteer bij elk de wetenschapper.</div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">Volgorde</span> atomos-idee (Democritus) → bolletjesmodel (Dalton) → krentenbolmodel (Thomson) → kernmodel (Rutherford) → schillenmodel (Bohr) → elektronenwolkmodel (Schrödinger)</li></ol><div class="besluit">D – D – T – R – B – S.</div></div>
+</div>
+<div class="oef" data-vrij="opl_3">
+  <div class="titel"><span class="nr">3</span>Welk model?</div>
+  <div class="tekst">Noteer de naam van elk atoommodel.<figure class="figuur"><svg viewBox="0 0 640 215" width="640" xmlns="http://www.w3.org/2000/svg"><rect width="640" height="215" fill="#fff"/><circle cx="55" cy="80" r="30" fill="#e2e8f0" stroke="#1D2A36" stroke-width="2" stroke-dasharray="5 4"/><circle cx="160" cy="80" r="30" fill="#94a3b8" stroke="#1D2A36" stroke-width="2"/><circle cx="150" cy="70" r="8" fill="#e2e8f0" opacity=".7"/><circle cx="265" cy="80" r="32" fill="#fecaca" stroke="#1D2A36" stroke-width="2"/><circle cx="251" cy="68" r="4.5" fill="#2563eb"/><circle cx="275" cy="64" r="4.5" fill="#2563eb"/><circle cx="281" cy="88" r="4.5" fill="#2563eb"/><circle cx="259" cy="94" r="4.5" fill="#2563eb"/><circle cx="247" cy="86" r="4.5" fill="#2563eb"/><circle cx="269" cy="78" r="4.5" fill="#2563eb"/><text x="287.0" y="58.0" fill="#dc2626" font-size="13" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">+</text><text x="241.0" y="104.0" fill="#dc2626" font-size="13" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">+</text><circle cx="370" cy="80" r="34" fill="none" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="3 4"/><circle cx="370" cy="80" r="6" fill="#ef4444"/><circle cx="396.3" cy="88.2" r="4.5" fill="#2563eb"/><circle cx="348.6" cy="95.4" r="4.5" fill="#2563eb"/><circle cx="360.4" cy="57.4" r="4.5" fill="#2563eb"/><circle cx="391.4" cy="64.6" r="4.5" fill="#2563eb"/><circle cx="475" cy="80" r="18" fill="none" stroke="#94a3b8" stroke-width="1.5"/><circle cx="475" cy="80" r="34" fill="none" stroke="#94a3b8" stroke-width="1.5"/><circle cx="475" cy="80" r="7" fill="#ef4444"/><circle cx="475.0" cy="98.0" r="4.5" fill="#2563eb"/><circle cx="475.0" cy="62.0" r="4.5" fill="#2563eb"/><circle cx="509.0" cy="80.0" r="4.5" fill="#2563eb"/><circle cx="458.0" cy="109.4" r="4.5" fill="#2563eb"/><circle cx="458.0" cy="50.6" r="4.5" fill="#2563eb"/><defs><radialGradient id="wolk"><stop offset="0" stop-color="#2563eb" stop-opacity=".75"/><stop offset="1" stop-color="#2563eb" stop-opacity="0"/></radialGradient></defs><circle cx="585" cy="80" r="38" fill="url(#wolk)"/><circle cx="585" cy="80" r="5" fill="#ef4444"/><line x1="20.0" y1="150.0" x2="625.0" y2="150.0" stroke="#1D2A36" stroke-width="2" stroke-linecap="round"/><path d="M635.5,150.0 L621.0,154.3 L621.0,145.7Z" fill="#1D2A36"/><circle cx="55.0" cy="150.0" r="4" fill="#1D2A36"/><text x="55.0" y="172.0" fill="#64748b" font-size="12" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">± 400 v.C.</text><text x="55.0" y="190.0" fill="#1D2A36" font-size="13" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">?</text><text x="55.0" y="206.0" fill="#2563eb" font-size="11" font-weight="600" text-anchor="middle" font-family="Inter,sans-serif"></text><circle cx="160.0" cy="150.0" r="4" fill="#1D2A36"/><text x="160.0" y="172.0" fill="#64748b" font-size="12" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">1803</text><text x="160.0" y="190.0" fill="#1D2A36" font-size="13" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">?</text><text x="160.0" y="206.0" fill="#2563eb" font-size="11" font-weight="600" text-anchor="middle" font-family="Inter,sans-serif"></text><circle cx="265.0" cy="150.0" r="4" fill="#1D2A36"/><text x="265.0" y="172.0" fill="#64748b" font-size="12" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">1904</text><text x="265.0" y="190.0" fill="#1D2A36" font-size="13" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">?</text><text x="265.0" y="206.0" fill="#2563eb" font-size="11" font-weight="600" text-anchor="middle" font-family="Inter,sans-serif"></text><circle cx="370.0" cy="150.0" r="4" fill="#1D2A36"/><text x="370.0" y="172.0" fill="#64748b" font-size="12" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">1911</text><text x="370.0" y="190.0" fill="#1D2A36" font-size="13" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">?</text><text x="370.0" y="206.0" fill="#2563eb" font-size="11" font-weight="600" text-anchor="middle" font-family="Inter,sans-serif"></text><circle cx="475.0" cy="150.0" r="4" fill="#1D2A36"/><text x="475.0" y="172.0" fill="#64748b" font-size="12" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">1913</text><text x="475.0" y="190.0" fill="#1D2A36" font-size="13" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">?</text><text x="475.0" y="206.0" fill="#2563eb" font-size="11" font-weight="600" text-anchor="middle" font-family="Inter,sans-serif"></text><circle cx="585.0" cy="150.0" r="4" fill="#1D2A36"/><text x="585.0" y="172.0" fill="#64748b" font-size="12" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">1926</text><text x="585.0" y="190.0" fill="#1D2A36" font-size="13" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">?</text><text x="585.0" y="206.0" fill="#2563eb" font-size="11" font-weight="600" text-anchor="middle" font-family="Inter,sans-serif"></text></svg><figcaption></figcaption></figure></div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">Van links naar rechts</span> atomos-idee · bolletjesmodel · krentenbolmodel · kernmodel · schillenmodel · elektronenwolkmodel</li></ol><figure class="oplfig"><svg viewBox="0 0 640 215" width="640" xmlns="http://www.w3.org/2000/svg"><rect width="640" height="215" fill="#fff"/><circle cx="55" cy="80" r="30" fill="#e2e8f0" stroke="#1D2A36" stroke-width="2" stroke-dasharray="5 4"/><circle cx="160" cy="80" r="30" fill="#94a3b8" stroke="#1D2A36" stroke-width="2"/><circle cx="150" cy="70" r="8" fill="#e2e8f0" opacity=".7"/><circle cx="265" cy="80" r="32" fill="#fecaca" stroke="#1D2A36" stroke-width="2"/><circle cx="251" cy="68" r="4.5" fill="#2563eb"/><circle cx="275" cy="64" r="4.5" fill="#2563eb"/><circle cx="281" cy="88" r="4.5" fill="#2563eb"/><circle cx="259" cy="94" r="4.5" fill="#2563eb"/><circle cx="247" cy="86" r="4.5" fill="#2563eb"/><circle cx="269" cy="78" r="4.5" fill="#2563eb"/><text x="287.0" y="58.0" fill="#dc2626" font-size="13" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">+</text><text x="241.0" y="104.0" fill="#dc2626" font-size="13" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">+</text><circle cx="370" cy="80" r="34" fill="none" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="3 4"/><circle cx="370" cy="80" r="6" fill="#ef4444"/><circle cx="396.3" cy="88.2" r="4.5" fill="#2563eb"/><circle cx="348.6" cy="95.4" r="4.5" fill="#2563eb"/><circle cx="360.4" cy="57.4" r="4.5" fill="#2563eb"/><circle cx="391.4" cy="64.6" r="4.5" fill="#2563eb"/><circle cx="475" cy="80" r="18" fill="none" stroke="#94a3b8" stroke-width="1.5"/><circle cx="475" cy="80" r="34" fill="none" stroke="#94a3b8" stroke-width="1.5"/><circle cx="475" cy="80" r="7" fill="#ef4444"/><circle cx="475.0" cy="98.0" r="4.5" fill="#2563eb"/><circle cx="475.0" cy="62.0" r="4.5" fill="#2563eb"/><circle cx="509.0" cy="80.0" r="4.5" fill="#2563eb"/><circle cx="458.0" cy="109.4" r="4.5" fill="#2563eb"/><circle cx="458.0" cy="50.6" r="4.5" fill="#2563eb"/><defs><radialGradient id="wolk"><stop offset="0" stop-color="#2563eb" stop-opacity=".75"/><stop offset="1" stop-color="#2563eb" stop-opacity="0"/></radialGradient></defs><circle cx="585" cy="80" r="38" fill="url(#wolk)"/><circle cx="585" cy="80" r="5" fill="#ef4444"/><line x1="20.0" y1="150.0" x2="625.0" y2="150.0" stroke="#1D2A36" stroke-width="2" stroke-linecap="round"/><path d="M635.5,150.0 L621.0,154.3 L621.0,145.7Z" fill="#1D2A36"/><circle cx="55.0" cy="150.0" r="4" fill="#1D2A36"/><text x="55.0" y="172.0" fill="#64748b" font-size="12" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">± 400 v.C.</text><text x="55.0" y="190.0" fill="#1D2A36" font-size="13" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">Democritus</text><text x="55.0" y="206.0" fill="#2563eb" font-size="11" font-weight="600" text-anchor="middle" font-family="Inter,sans-serif">atomos-idee</text><circle cx="160.0" cy="150.0" r="4" fill="#1D2A36"/><text x="160.0" y="172.0" fill="#64748b" font-size="12" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">1803</text><text x="160.0" y="190.0" fill="#1D2A36" font-size="13" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">Dalton</text><text x="160.0" y="206.0" fill="#2563eb" font-size="11" font-weight="600" text-anchor="middle" font-family="Inter,sans-serif">bolletjesmodel</text><circle cx="265.0" cy="150.0" r="4" fill="#1D2A36"/><text x="265.0" y="172.0" fill="#64748b" font-size="12" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">1904</text><text x="265.0" y="190.0" fill="#1D2A36" font-size="13" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">Thomson</text><text x="265.0" y="206.0" fill="#2563eb" font-size="11" font-weight="600" text-anchor="middle" font-family="Inter,sans-serif">krentenbolmodel</text><circle cx="370.0" cy="150.0" r="4" fill="#1D2A36"/><text x="370.0" y="172.0" fill="#64748b" font-size="12" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">1911</text><text x="370.0" y="190.0" fill="#1D2A36" font-size="13" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">Rutherford</text><text x="370.0" y="206.0" fill="#2563eb" font-size="11" font-weight="600" text-anchor="middle" font-family="Inter,sans-serif">kernmodel</text><circle cx="475.0" cy="150.0" r="4" fill="#1D2A36"/><text x="475.0" y="172.0" fill="#64748b" font-size="12" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">1913</text><text x="475.0" y="190.0" fill="#1D2A36" font-size="13" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">Bohr</text><text x="475.0" y="206.0" fill="#2563eb" font-size="11" font-weight="600" text-anchor="middle" font-family="Inter,sans-serif">schillenmodel</text><circle cx="585.0" cy="150.0" r="4" fill="#1D2A36"/><text x="585.0" y="172.0" fill="#64748b" font-size="12" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">1926</text><text x="585.0" y="190.0" fill="#1D2A36" font-size="13" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">Schrödinger</text><text x="585.0" y="206.0" fill="#2563eb" font-size="11" font-weight="600" text-anchor="middle" font-family="Inter,sans-serif">elektronenwolkmodel</text></svg><figcaption></figcaption></figure><div class="besluit">Kijk naar de kern, de schillen en de plaats van de elektronen.</div></div>
+</div>
+<div class="oef" data-vrij="opl_4">
+  <div class="titel"><span class="nr">4</span>Kenmerken</div>
+  <div class="tekst">Bij welk model hoort de zin?<ol class="deelvragen" type="a"><li>Het atoom is een positieve bol met elektronen erin.</li><li>Elektronen bewegen op vaste afstanden van de kern.</li><li>Het atoom is vooral lege ruimte met een kleine kern.</li><li>Een atoom is een massief bolletje.</li><li>Je weet alleen waar een elektron waarschijnlijk is.</li></ol></div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">a</span> krentenbolmodel (Thomson)</li><li><span class="stap">b</span> schillenmodel (Bohr)</li><li><span class="stap">c</span> kernmodel (Rutherford)</li><li><span class="stap">d</span> bolletjesmodel (Dalton)</li><li><span class="stap">e</span> elektronenwolkmodel (Schrödinger)</li></ol><div class="besluit">Elk model voegt iets nieuws toe.</div></div>
+</div>
+<div class="oef" data-vrij="opl_5">
+  <div class="titel"><span class="nr">5</span>Symbool en naam</div>
+  <div class="tekst">Noteer het symbool of de naam.<ol class="deelvragen" type="a"><li>zuurstof</li><li>Fe</li><li>natrium</li><li>Ca</li><li>koper</li><li>Pb</li><li>stikstof</li><li>Ag</li><li>chloor</li><li>Hg</li><li>kalium</li><li>Au</li></ol></div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">a–d</span> O · ijzer · Na · calcium</li><li><span class="stap">e–h</span> Cu · lood · N · zilver</li><li><span class="stap">i–l</span> Cl · kwik · K · goud</li></ol><div class="besluit">Leer vooral de Latijnse symbolen goed.</div></div>
+</div>
+<div class="oef" data-vrij="opl_6">
+  <div class="titel"><span class="nr">6</span>Juist of fout geschreven?</div>
+  <div class="tekst">Is het symbool juist geschreven? Verbeter waar nodig.<ol class="deelvragen" type="a"><li>MG (magnesium)</li><li>s (zwavel)</li><li>Ne (neon)</li><li>CO (kobalt)</li><li>He (helium)</li></ol></div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">a</span> fout: Mg</li><li><span class="stap">b</span> fout: S</li><li><span class="stap">c</span> juist</li><li><span class="stap">d</span> fout: Co (CO is koolstofmonoxide)</li><li><span class="stap">e</span> juist</li></ol><div class="besluit">Hoofdletter + kleine letter.</div></div>
+</div>
+<div class="oef" data-vrij="opl_7">
+  <div class="titel"><span class="nr">7</span>Redeneren: het model van Thomson</div>
+  <div class="tekst">Waarom was het krentenbolmodel van Thomson na het goudfolie-experiment niet meer goed?</div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">Thomson</span> De positieve lading is gelijk verdeeld over de hele bol.</li><li><span class="stap">Experiment</span> Een paar deeltjes kaatsten terug: er moet een kleine plaats zijn met veel positieve lading en massa.</li></ol><div class="besluit">Het experiment toonde een kleine positieve kern: het model moest veranderen.</div></div>
+</div><a class="toolknop" href="chemie-atoommodellen.html" target="_blank" rel="noopener">▶ Oefen verder in de tool</a>
+</section>
+<section class="blok" id="samenvatting" data-vrij="samenvatting">
+<h2>Samenvatting</h2>
+<div class="kader"><div class="kop">Samenvatting</div><p>Het <b>atoommodel is dynamisch</b>: het verandert door nieuwe experimenten.</p>
+<p>Democritus (atomos-idee) → Dalton (bolletjesmodel, 1803) → Thomson (krentenbolmodel, 1904) → Rutherford (kernmodel, 1911) → Bohr (schillenmodel, 1913) → Schrödinger (elektronenwolkmodel, 1926).</p>
+<p><b>Symbool</b>: 1 of 2 letters, eerst een hoofdletter, dan een kleine letter. Latijn: Na, K, Fe, Cu, Ag, Au, Hg, Pb, Sn.</p></div>
+</section>
+
+</main>
+<footer>Cursus fysica — gemaakt voor klasgebruik, bij de tools op Oefentools wetenschappen.</footer>
+
+<div class="printblad" id="print-oef"></div>
+<div class="printblad" id="print-cornell"></div>
+
+<script>
+/* =====================================================================
+   VRIJGAVE — hier zet de leerkracht onderdelen open of dicht.
+   true  = zichtbaar voor de leerlingen
+   false = nog gesloten (de leerling ziet een slotje)
+   Tip: met ?leerkracht achter de link zie je als leerkracht alles,
+        bv. .../cursus-chemie-atomen-elementen.html?leerkracht
+   ===================================================================== */
+const VRIJGAVE = {
+  deel1: true,               // Het atoommodel als dynamisch model
+  deel2: false,              // Symbolen van de elementen
+  denk_1: false,             // redenering denkvraag 1
+  denk_2: false,             // redenering denkvraag 2
+  oefeningen: false,         // de oefeningen zelf (opgaven)
+  opl_1: false,              // oplossing oefening 1
+  opl_2: false,              // oplossing oefening 2
+  opl_3: false,              // oplossing oefening 3
+  opl_4: false,              // oplossing oefening 4
+  opl_5: false,              // oplossing oefening 5
+  opl_6: false,              // oplossing oefening 6
+  opl_7: false,              // oplossing oefening 7
+  samenvatting: false,       // samenvatting
+};
+
+/* ===================================================================== */
+const LK = new URLSearchParams(location.search).has('leerkracht');
+const open = id => LK || VRIJGAVE[id] === true;
+if(LK) document.getElementById('banner').innerHTML='<div class="leerkracht-banner">Leerkrachtweergave: alles is zichtbaar, ook wat voor leerlingen nog gesloten is.</div>';
+
+// delen open of dicht
+document.querySelectorAll('section.blok[data-vrij]').forEach(el=>{
+  if(open(el.dataset.vrij)) return;
+  const kop=el.querySelector(':scope > h2');
+  [...el.children].forEach(c=>{ if(c!==kop) c.style.display='none'; });
+  const m=document.createElement('p'); m.className='gesloten-deel'; m.innerHTML='🔒 Dit deel wordt opengesteld wanneer we het in de les behandelen.';
+  el.appendChild(m);
+});
+
+// denkvragen: redenering pas tonen na vrijgave
+document.querySelectorAll('.denk').forEach(d=>{
+  const id=d.dataset.vrij, red=d.querySelector('.redenering'), onder=d.querySelector('.onder');
+  red.hidden=true;
+  if(open(id)){
+    const b=document.createElement('button'); b.textContent='Toon de redenering';
+    b.onclick=()=>{ red.hidden=!red.hidden; b.textContent=red.hidden?'Toon de redenering':'Verberg de redenering'; };
+    onder.prepend(b);
+  } else {
+    onder.innerHTML='<span class="slotje">💬 Denk eerst zelf na. We bespreken dit samen in de les; daarna verschijnt hier de redenering.</span>';
+  }
+});
+
+// oplossingen van oefeningen
+document.querySelectorAll('.oef[data-vrij]').forEach(o=>{
+  const id=o.dataset.vrij, opl=o.querySelector('.redenering'), onder=o.querySelector('.onder');
+  opl.hidden=true;
+  if(open(id)){
+    const b=document.createElement('button'); b.className='knop licht'; b.textContent='Toon de oplossing';
+    b.onclick=()=>{ opl.hidden=!opl.hidden; b.textContent=opl.hidden?'Toon de oplossing':'Verberg de oplossing'; };
+    onder.appendChild(b);
+  } else onder.innerHTML='<span class="slotje">🔒 De oplossing verschijnt nadat we de oefening besproken hebben.</span>';
+});
+
+// inhoudstafel
+const inh=document.getElementById('inhoud');
+document.querySelectorAll('section.blok').forEach(s=>{
+  const a=document.createElement('a'); a.href='#'+s.id;
+  const nr=s.querySelector('h2 .nr'); const tekst=s.querySelector('h2').textContent.replace(nr?nr.textContent:'','').trim();
+  a.innerHTML=(nr?'<span class="nr">'+nr.textContent+'</span>':'')+tekst;
+  if(s.dataset.vrij && !open(s.dataset.vrij)) a.classList.add('slot');
+  inh.appendChild(a);
+});
+
+// afdrukbare bladen
+function vulPrint(){
+  const oefs=[...document.querySelectorAll('#oefeningen .oef')].map(o=>{ const k=o.cloneNode(true); k.querySelectorAll('.redenering,.onder').forEach(x=>x.remove()); k.removeAttribute('data-vrij'); return k.outerHTML; }).join('');
+  document.getElementById('print-oef').innerHTML=`<h1>Atomen en elementen · oefeningen</h1><div class="naam"><span>Naam: ______________________</span><span>Klas: ______</span><span>Datum: __________</span></div><p>Maak elke oefening in je schrift. Gebruik telkens: gegeven · gevraagd · formule · oplossing · antwoord met eenheid.</p>`+oefs;
+  const vragen=CORNELL.map(v=>`<tr><td class="v">${v[0]}</td><td style="height:${Math.round((v[1]||32)*1.35)}mm"></td></tr>`).join('');
+  document.getElementById('print-cornell').innerHTML=`<h1>Atomen en elementen · Cornellblad</h1><div class="naam"><span>Naam: ______________________</span><span>Klas: ______</span></div><table class="cornell"><tr><td class="v">Vragen</td><td><b>Notities</b> (samen opgebouwd in de les)</td></tr>${vragen}</table><div class="samenv">Samenvatting in mijn eigen woorden:</div>`;
+}
+const CORNELL = [];
+function druk(soort){ vulPrint(); document.body.classList.add('print-'+soort); setTimeout(()=>{ window.print(); document.body.classList.remove('print-'+soort); },50); }
+document.querySelectorAll('[data-print]').forEach(b=>b.onclick=()=>druk(b.dataset.print));
+</script>
+</body>
+</html>

@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chemie als wetenschap</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EEF2F5; --panel:#FFFFFF; --panel-2:#F5F8FB; --line:#D3DCE5;
+  --text:#1D2A36; --text-dim:#51606E;
+  --accent:#2F6FB0; --accent-dark:#245A91; --accent-soft:#E4EEF8;
+  --ok:#1F7A4A; --ok-bg:#E3F3E9; --warn:#9A5B00; --warn-bg:#FFF4D6;
+  --font:'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:var(--font);}
+body{-webkit-font-smoothing:antialiased;line-height:1.6;font-size:16px;}
+.top{max-width:900px;margin:0 auto;padding:36px 24px 0;}
+.top .eyebrow{font-size:13px;font-weight:700;color:var(--accent-dark);letter-spacing:.04em;text-transform:uppercase;margin-bottom:6px;}
+.top h1{font-size:2rem;font-weight:700;letter-spacing:-0.015em;margin:0 0 8px;line-height:1.2;}
+.top .intro{color:var(--text-dim);font-size:15px;margin:0;}
+.inhoud{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0 0;padding-bottom:14px;border-bottom:1px solid var(--line);}
+.inhoud a{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:500;text-decoration:none;color:var(--text-dim);background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:7px 12px;}
+.inhoud a:hover{border-color:var(--accent);color:var(--text);}
+.inhoud a .nr{min-width:22px;height:22px;border-radius:11px;display:inline-flex;align-items:center;justify-content:center;background:var(--accent-soft);color:var(--accent-dark);font-size:12px;font-weight:700;padding:0 6px;}
+.inhoud a.slot{opacity:.55;}
+main{max-width:900px;margin:0 auto;padding:22px 24px 80px;}
+section.blok{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:22px 24px;margin-bottom:22px;scroll-margin-top:16px;}
+section.blok > h2{font-size:1.45rem;margin:0 0 12px;display:flex;align-items:center;gap:10px;letter-spacing:-0.01em;}
+section.blok > h2 .nr{min-width:30px;height:30px;border-radius:15px;display:inline-flex;align-items:center;justify-content:center;background:var(--accent);color:#fff;font-size:14px;font-weight:700;padding:0 8px;}
+h3{font-size:1.1rem;margin:22px 0 8px;}
+p{margin:0 0 12px;}
+ul.doelen{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px;}
+ul.doelen li{background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:9px 12px 9px 40px;position:relative;}
+ul.doelen li::before{content:'✓';position:absolute;left:14px;top:9px;color:var(--accent);font-weight:700;}
+.figuur{margin:12px 0 16px;text-align:center;}
+.figuur svg{max-width:100%;height:auto;background:#fbfcfe;border:1px solid var(--line);border-radius:10px;}
+.figuur figcaption{font-size:13px;color:var(--text-dim);margin-top:4px;}
+.kader{border-left:4px solid var(--accent);background:var(--accent-soft);border-radius:0 10px 10px 0;padding:12px 16px;margin:14px 0;}
+.kader .kop{font-weight:700;color:var(--accent-dark);margin-bottom:4px;}
+.kader p:last-child{margin-bottom:0;}
+.formule{display:inline-block;font-size:19px;font-weight:700;background:#fff;border:1px solid var(--line);border-radius:8px;padding:6px 14px;margin:4px 0 8px;}
+.toolknop{display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-weight:600;font-size:14px;color:var(--accent-dark);background:#fff;border:1px solid var(--accent);border-radius:8px;padding:8px 14px;margin:6px 8px 10px 0;}
+.toolknop:hover{background:var(--accent-soft);}
+.denk{border:1px solid var(--line);border-radius:10px;margin:16px 0;overflow:hidden;}
+.denk .vraag{background:var(--warn-bg);padding:12px 16px;}
+.denk .vraag .kop{font-size:12px;font-weight:700;color:var(--warn);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px;}
+.denk .vraag p:last-child{margin:0;}
+.denk .onder{padding:10px 16px;background:#fff;}
+.denk button,.knop{font-family:var(--font);font-size:14px;font-weight:600;background:var(--accent);color:#fff;border:1px solid var(--accent);border-radius:8px;padding:8px 14px;cursor:pointer;}
+.denk button:hover,.knop:hover{background:var(--accent-dark);}
+.knop.licht{background:#fff;color:var(--text);border-color:var(--line);}
+.knop.licht:hover{border-color:var(--accent);background:#fff;}
+.slotje{color:var(--text-dim);font-size:14px;}
+.redenering{margin-top:10px;}
+.redenering ol{margin:0;padding-left:0;list-style:none;counter-reset:st;}
+.redenering ol li{counter-increment:st;position:relative;padding:8px 0 8px 40px;border-top:1px dashed var(--line);}
+.redenering ol li:first-child{border-top:none;}
+.redenering ol li::before{content:counter(st);position:absolute;left:4px;top:8px;width:24px;height:24px;border-radius:12px;background:var(--ok-bg);color:var(--ok);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;}
+.redenering .stap{font-weight:700;}
+.redenering .besluit{background:var(--ok-bg);border-radius:8px;padding:8px 12px;margin-top:6px;color:var(--ok);font-weight:600;}
+.oef{border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:12px 0;}
+.oef .titel{font-weight:700;margin-bottom:4px;}
+.oef .titel .nr{display:inline-flex;min-width:26px;height:26px;border-radius:13px;align-items:center;justify-content:center;background:var(--accent-soft);color:var(--accent-dark);font-size:13px;margin-right:8px;}
+.oef ol.deelvragen{margin:6px 0 4px;padding-left:22px;}
+.gesloten-deel{color:var(--text-dim);font-size:15px;display:flex;align-items:center;gap:10px;}
+.stappenplan{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 14px;}
+.stappenplan span{background:var(--panel-2);border:1px solid var(--line);border-radius:999px;padding:3px 12px;font-size:13px;font-weight:600;}
+table.vb{border-collapse:collapse;margin:6px 0 12px;font-size:15px;}
+table.vb td{padding:3px 12px 3px 0;vertical-align:top;}
+table.vb td:first-child{font-weight:700;color:var(--accent-dark);white-space:nowrap;}
+.leerkracht-banner{background:#7c3aed;color:#fff;text-align:center;font-size:14px;font-weight:600;padding:6px;}
+footer{max-width:900px;margin:0 auto;padding:0 24px 40px;color:var(--text-dim);font-size:12px;}
+/* ---------- afdrukken ---------- */
+.printblad{display:none;}
+@media print{
+  @page{size:A4;margin:16mm 15mm;}
+  body{background:#fff;font-size:12pt;}
+  body.print-oef > *:not(#print-oef), body.print-cornell > *:not(#print-cornell){display:none !important;}
+  body.print-oef #print-oef, body.print-cornell #print-cornell{display:block;}
+  .printblad h1{font-size:16pt;margin:0 0 2mm;}
+  .printblad .naam{display:flex;gap:10mm;font-size:11pt;margin:0 0 5mm;}
+  .printblad .oef{border:none;border-top:1px solid #999;border-radius:0;padding:3mm 0;margin:0;break-inside:avoid;}
+  .printblad table.cornell{width:100%;border-collapse:collapse;}
+  .printblad table.cornell td{border:1px solid #555;vertical-align:top;padding:2mm 3mm;font-size:11pt;}
+  .printblad table.cornell td.v{width:32%;font-weight:600;}
+  .printblad .samenv{border:1px solid #555;height:38mm;margin-top:4mm;padding:2mm 3mm;font-weight:600;}
+  /* volledige cursus afdrukken */
+  body:not(.print-oef):not(.print-cornell) #banner, body:not(.print-oef):not(.print-cornell) nav.inhoud,
+  body:not(.print-oef):not(.print-cornell) .toolknop, body:not(.print-oef):not(.print-cornell) button,
+  body:not(.print-oef):not(.print-cornell) .onder, body:not(.print-oef):not(.print-cornell) footer{display:none !important;}
+  body:not(.print-oef):not(.print-cornell) .blok{box-shadow:none;border:none;padding:0;margin:0 0 6mm;}
+  body:not(.print-oef):not(.print-cornell) figure, body:not(.print-oef):not(.print-cornell) .kader, body:not(.print-oef):not(.print-cornell) .denk, body:not(.print-oef):not(.print-cornell) .oef{break-inside:avoid;}
+  body:not(.print-oef):not(.print-cornell) .schrijflijnen{display:block;}
+}
+.schrijflijnen{display:none;}
+.schrijflijnen div{border-bottom:1px solid #999;height:9mm;}
+</style>
+</head>
+<body>
+<div id="banner"></div>
+<header class="top">
+  <div class="eyebrow">Chemie 3de jaar · Thema 1 Van mengsels tot zuivere stoffen · Hoofdstuk 1</div>
+  <h1>Chemie als wetenschap</h1>
+  <p class="intro">Werk dit hoofdstuk samen met de tool <a href="chemie-stoffen.html">Chemie en veiligheid</a>. Oefeningen maak je op papier.</p>
+  <p><button class="knop licht" onclick="window.print()">🖨 Druk de cursus af</button></p>
+  <nav class="inhoud" id="inhoud"></nav>
+</header>
+<main id="cursus">
+<section class="blok" id="lesdoelen">
+<h2>Lesdoelen</h2>
+<p>Na dit hoofdstuk kan je:</p><ul class="doelen"><li>beschrijven wat in de <b>chemie</b> bestudeerd wordt;</li><li>het verschil uitleggen tussen een <b>fysisch</b> en een <b>chemisch verschijnsel</b>;</li><li>de <b>gevarensymbolen</b> herkennen en benoemen;</li><li><b>H-zinnen</b> en <b>P-zinnen</b> op een etiket indelen als <b>gevaar</b> of <b>voorzorg</b>.</li></ul>
+</section>
+<section class="blok" id="voorkennis">
+<h2>Voorkennis</h2>
+<p>Dit moet je al kennen. Twijfel je? Herhaal het dan eerst.</p><ul><li>Alles rondom je bestaat uit <b>stoffen</b>: water, zout, ijzer, lucht …</li><li>Een stof kan <b>vast</b>, <b>vloeibaar</b> of <b>gasvormig</b> zijn (aggregatietoestanden).</li><li>In het labo volg je altijd de <b>veiligheidsregels</b>: labojas, veiligheidsbril, niet eten of drinken.</li></ul>
+</section>
+<section class="blok" id="deel1" data-vrij="deel1">
+<h2><span class="nr">1</span>Fysica of chemie?</h2>
+<p>Fysica en chemie zijn allebei <b>natuurwetenschappen</b>. Ze bestuderen <b>verschijnselen</b>: dingen die in de natuur gebeuren. Er is één groot verschil.</p>
+<figure class="figuur"><svg viewBox="0 0 640 200" width="640" xmlns="http://www.w3.org/2000/svg"><rect width="640" height="200" fill="#fff"/><text x="160.0" y="22.0" fill="#2563eb" font-size="15" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">fysisch verschijnsel</text><text x="480.0" y="22.0" fill="#dc2626" font-size="15" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">chemisch verschijnsel</text><rect x="60" y="70" width="56" height="56" rx="8" fill="#e0f2fe" stroke="#60a5fa" stroke-width="2.5"/><line x1="130.0" y1="100.0" x2="180.0" y2="100.0" stroke="#1D2A36" stroke-width="2.5" stroke-linecap="round"/><path d="M160.5,100.0 L146.0,104.3 L146.0,95.7Z" fill="#1D2A36"/><ellipse cx="240" cy="118" rx="48" ry="12" fill="#bfdbfe" stroke="#60a5fa" stroke-width="2"/><text x="88.0" y="150.0" fill="#1D2A36" font-size="13" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">ijs</text><text x="240.0" y="150.0" fill="#1D2A36" font-size="13" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">water</text><text x="160.0" y="185.0" fill="#64748b" font-size="13" font-weight="600" text-anchor="middle" font-family="Inter,sans-serif">nog altijd water: geen nieuwe stof</text><rect x="380" y="74" width="46" height="58" fill="#fff" stroke="#475569" stroke-width="2"/><line x1="387.0" y1="86.0" x2="419.0" y2="86.0" stroke="#94a3b8" stroke-width="1.2" stroke-linecap="round"/><line x1="387.0" y1="96.0" x2="419.0" y2="96.0" stroke="#94a3b8" stroke-width="1.2" stroke-linecap="round"/><line x1="387.0" y1="106.0" x2="419.0" y2="106.0" stroke="#94a3b8" stroke-width="1.2" stroke-linecap="round"/><line x1="387.0" y1="116.0" x2="419.0" y2="116.0" stroke="#94a3b8" stroke-width="1.2" stroke-linecap="round"/><line x1="440.0" y1="100.0" x2="490.0" y2="100.0" stroke="#1D2A36" stroke-width="2.5" stroke-linecap="round"/><path d="M470.5,100.0 L456.0,104.3 L456.0,95.7Z" fill="#1D2A36"/><path d="M515,128 q20,-10 40,-2 q16,-6 30,2 z" fill="#4b5563"/><circle cx="545" cy="104" r="9" fill="#cbd5e1" opacity=".8"/><circle cx="553" cy="84" r="11" fill="#cbd5e1" opacity=".8"/><circle cx="541" cy="62" r="13" fill="#cbd5e1" opacity=".8"/><text x="403.0" y="150.0" fill="#1D2A36" font-size="13" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">papier</text><text x="550.0" y="150.0" fill="#1D2A36" font-size="13" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">as en rook</text><text x="480.0" y="185.0" fill="#64748b" font-size="13" font-weight="600" text-anchor="middle" font-family="Inter,sans-serif">nieuwe stoffen ontstaan</text><line x1="320.0" y1="40.0" x2="320.0" y2="190.0" stroke="#e5e7eb" stroke-width="2" stroke-linecap="round"/></svg><figcaption>Links blijft het dezelfde stof, rechts ontstaan nieuwe stoffen.</figcaption></figure>
+<table class="vb"><tr><td><b></b></td><td><b>Fysisch verschijnsel</b></td><td><b>Chemisch verschijnsel</b></td></tr><tr><td>Wat gebeurt er?</td><td>de stof blijft <b>dezelfde stof</b></td><td>er ontstaat een <b>nieuwe stof</b></td></tr><tr><td>Voorbeelden</td><td>ijs smelt, water kookt, suiker lost op, glas breekt</td><td>papier verbrandt, ijzer roest, brood bakt, melk wordt zuur</td></tr></table>
+<div class="kader"><div class="kop">Vraag jezelf af: is er een nieuwe stof ontstaan?</div><p>Ja → chemie. Nee → fysica. Een nieuwe stof herken je vaak aan: <b>een andere kleur</b>, <b>een gas</b> (bubbels), <b>een nieuwe geur</b>, <b>licht of warmte</b>, of <b>het gaat niet meer terug</b>.</p></div>
+<div class="kader"><div class="kop">Definitie</div><p><b>Chemie</b> is de wetenschap van de stoffen. Ze onderzoekt drie dingen van stoffen:</p><ul><li>hun <b>samenstelling</b>: uit welke deeltjes bestaat een stof?</li><li>hun <b>eigenschappen</b>: hoe herken je een stof?</li><li>hun <b>omzettingen</b>: hoe verandert een stof in een nieuwe stof?</li></ul></div>
+<a class="toolknop" href="chemie-stoffen.html#ikkan11" target="_blank" rel="noopener">▶ Bekijk de filmpjes over samenstelling, eigenschappen en omzettingen</a>
+<div class="denk" data-vrij="denk_1">
+  <div class="vraag"><div class="kop">Denkvraag</div><p>Je laat een fiets een hele winter buiten staan aan het Flageyplein. De ketting wordt bruin en ruw. Is dat fysica of chemie?</p></div>
+  <div class="onder"><div class="redenering"><ol><li><span class="stap">Kijk naar de stof</span> Het glanzende ijzer verandert in een bruine, brokkelige stof: roest.</li><li><span class="stap">Gaat het terug?</span> Nee, roest wordt niet vanzelf weer ijzer.</li><li><span class="stap">Nieuwe stof?</span> Ja: een andere kleur en het gaat niet terug.</li></ol><div class="besluit">Roesten is een chemisch verschijnsel: er ontstaat een nieuwe stof.</div></div></div>
+</div>
+<div class="denk" data-vrij="denk_2">
+  <div class="vraag"><div class="kop">Denkvraag</div><p>Suiker lost op in je thee. Je ziet de suiker niet meer. Is er een nieuwe stof ontstaan?</p></div>
+  <div class="onder"><div class="redenering"><ol><li><span class="stap">Proef het</span> De thee smaakt zoet: de suiker is er nog.</li><li><span class="stap">Kan het terug?</span> Laat je het water verdampen, dan blijft de suiker over.</li></ol><div class="besluit">Oplossen is een fysisch verschijnsel: de suiker blijft suiker.</div></div></div>
+</div>
+</section>
+<section class="blok" id="deel2" data-vrij="deel2">
+<h2><span class="nr">2</span>Veilig werken: gevarensymbolen en H- en P-zinnen</h2>
+<p>Veel stoffen zijn gevaarlijk: in het labo, maar ook thuis (ontstopper, bleekwater, aanstekergas). Op de verpakking staat dan een <b>gevarensymbool</b>: een zwarte tekening in een <b>rode ruit</b> op een witte achtergrond.</p>
+<figure class="figuur"><svg viewBox="0 0 640 278" width="640" xmlns="http://www.w3.org/2000/svg"><rect width="640" height="278" fill="#fff"/><g transform="translate(22,10) scale(0.86)"><polygon points="50,5 95,50 50,95 5,50" fill="#fff" stroke="#d6001c" stroke-width="6" stroke-linejoin="round"/><g fill="#111"><circle cx="44" cy="60" r="10"/><path d="M51 52 L56 45 M60 40 l6-6 M64 48 l9-2 M61 56 l9 3 M37 43 l-4-7 M30 55 l-8-1 M47 40 l1-9 M58 66 l7 4" stroke="#111" stroke-width="3" stroke-linecap="round"/><circle cx="68" cy="38" r="2.4"/><circle cx="31" cy="66" r="2.2"/><circle cx="56" cy="32" r="2"/></g></g><text x="65.0" y="110.0" fill="#1D2A36" font-size="12" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">ontplofbaar</text><g transform="translate(146,10) scale(0.86)"><polygon points="50,5 95,50 50,95 5,50" fill="#fff" stroke="#d6001c" stroke-width="6" stroke-linejoin="round"/><g fill="#111"><path d="M50 24 C60 37 66 45 62 59 C60 67 54 71 50 71 C42 71 37 65 37 57 C37 49 43 45 45 37 C48 43 50 45 53 43 C54 37 52 31 50 24 Z"/><rect x="34" y="74" width="32" height="4"/></g></g><text x="189.0" y="110.0" fill="#1D2A36" font-size="12" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">ontvlambaar</text><g transform="translate(270,10) scale(0.86)"><polygon points="50,5 95,50 50,95 5,50" fill="#fff" stroke="#d6001c" stroke-width="6" stroke-linejoin="round"/><g fill="#111"><g transform="translate(15 -5) scale(.7)"><path d="M50 24 C60 37 66 45 62 59 C60 67 54 71 50 71 C42 71 37 65 37 57 C37 49 43 45 45 37 C48 43 50 45 53 43 C54 37 52 31 50 24 Z"/></g><circle cx="50" cy="63" r="9" fill="none" stroke="#111" stroke-width="4.5"/><rect x="36" y="77" width="28" height="3.5"/></g></g><text x="313.0" y="110.0" fill="#1D2A36" font-size="12" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">oxiderend</text><g transform="translate(394,10) scale(0.86)"><polygon points="50,5 95,50 50,95 5,50" fill="#fff" stroke="#d6001c" stroke-width="6" stroke-linejoin="round"/><g fill="#111"><g transform="rotate(-18 50 58)"><rect x="28" y="50" width="40" height="17" rx="8.5"/><rect x="66" y="54" width="7" height="9"/><rect x="72" y="51" width="4" height="15" rx="1"/></g></g></g><text x="437.0" y="110.0" fill="#1D2A36" font-size="12" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">gas onder druk</text><g transform="translate(518,10) scale(0.86)"><polygon points="50,5 95,50 50,95 5,50" fill="#fff" stroke="#d6001c" stroke-width="6" stroke-linejoin="round"/><g fill="#111"><g transform="rotate(-35 36 32)"><rect x="31" y="22" width="9" height="20" rx="2"/></g><g transform="rotate(35 64 32)"><rect x="60" y="22" width="9" height="20" rx="2"/></g><path d="M42 44 v6 M44 48 v7 M58 44 v6 M56 48 v7" stroke="#111" stroke-width="2.5" stroke-linecap="round"/><path d="M29 64 h8 l2 3 l2-3 h7 v10 h-19 z"/><path d="M54 74 v-7 l3-4 h11 l2 3 h3 v8 z"/><path d="M60 63 v-4 M64 63 v-5 M68 64 v-4" stroke="#111" stroke-width="2.5" stroke-linecap="round"/></g></g><text x="561.0" y="110.0" fill="#1D2A36" font-size="12" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">bijtend</text><g transform="translate(22,146) scale(0.86)"><polygon points="50,5 95,50 50,95 5,50" fill="#fff" stroke="#d6001c" stroke-width="6" stroke-linejoin="round"/><g fill="#111"><circle cx="50" cy="42" r="12.5"/><rect x="44" y="50" width="12" height="9" rx="2"/><circle cx="45" cy="41" r="3.4" fill="#fff"/><circle cx="55" cy="41" r="3.4" fill="#fff"/><path d="M48.5 50 l1.5-3 l1.5 3 z" fill="#fff"/><path d="M35 61 L65 74 M65 61 L35 74" stroke="#111" stroke-width="5" stroke-linecap="round"/><circle cx="33" cy="60" r="3"/><circle cx="67" cy="60" r="3"/><circle cx="33" cy="75" r="3"/><circle cx="67" cy="75" r="3"/></g></g><text x="65.0" y="246.0" fill="#1D2A36" font-size="12" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">giftig</text><g transform="translate(146,146) scale(0.86)"><polygon points="50,5 95,50 50,95 5,50" fill="#fff" stroke="#d6001c" stroke-width="6" stroke-linejoin="round"/><g fill="#111"><rect x="45" y="27" width="10" height="32" rx="3"/><circle cx="50" cy="69" r="5.5"/></g></g><text x="189.0" y="246.0" fill="#1D2A36" font-size="12" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">schadelijk</text><text x="189.0" y="260.0" fill="#1D2A36" font-size="12" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">of irriterend</text><g transform="translate(270,146) scale(0.86)"><polygon points="50,5 95,50 50,95 5,50" fill="#fff" stroke="#d6001c" stroke-width="6" stroke-linejoin="round"/><g fill="#111"><circle cx="50" cy="29" r="7.5"/><path d="M34 76 C34 54 40 40 50 40 C60 40 66 54 66 76 Z"/><path d="M50 49 l2.6 6 6.4 .4 -5 4 1.7 6.2 -5.7-3.5 -5.7 3.5 1.7-6.2 -5-4 6.4-.4 z" fill="#fff"/></g></g><text x="313.0" y="246.0" fill="#1D2A36" font-size="12" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">gevaar voor</text><text x="313.0" y="260.0" fill="#1D2A36" font-size="12" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">de gezondheid</text><g transform="translate(394,146) scale(0.86)"><polygon points="50,5 95,50 50,95 5,50" fill="#fff" stroke="#d6001c" stroke-width="6" stroke-linejoin="round"/><g fill="#111"><path d="M37 74 V40 M37 50 l-7-7 M37 46 l8-9 M37 58 l9-5 M37 62 l-6-4" stroke="#111" stroke-width="3" stroke-linecap="round" fill="none"/><ellipse cx="57" cy="67" rx="10" ry="5"/><path d="M66 67 l8-5 v10 z"/><path d="M50 65 l3 3 M53 65 l-3 3" stroke="#fff" stroke-width="1.4"/><path d="M31 76 h38" stroke="#111" stroke-width="3" stroke-linecap="round"/></g></g><text x="437.0" y="246.0" fill="#1D2A36" font-size="12" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">gevaarlijk voor</text><text x="437.0" y="260.0" fill="#1D2A36" font-size="12" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">het milieu</text></svg><figcaption>De negen gevarensymbolen.</figcaption></figure>
+<table class="vb"><tr><td><b>Symbool</b></td><td><b>Betekenis</b></td><td><b>Voorbeeld</b></td></tr><tr><td>ontplofbaar</td><td>kan ontploffen door een schok, wrijving, vuur of warmte</td><td>vuurwerk</td></tr><tr><td>ontvlambaar</td><td>vat heel gemakkelijk vlam</td><td>aceton, alcohol, aanstekergas, benzine</td></tr><tr><td>oxiderend</td><td>helpt een brand: het vuur wordt groter</td><td>geconcentreerd waterstofperoxide</td></tr><tr><td>gas onder druk</td><td>de fles kan ontploffen bij warmte</td><td>gasfles met propaan of CO₂</td></tr><tr><td>bijtend</td><td>beschadigt huid en ogen ernstig, tast metalen aan</td><td>ontstopper, zoutzuur</td></tr><tr><td>giftig</td><td>een kleine hoeveelheid kan al dodelijk zijn</td><td>methanol, rattengif</td></tr><tr><td>schadelijk of irriterend</td><td>irriteert huid of ogen, minder erg dan giftig</td><td>sommige wasmiddelen</td></tr><tr><td>gevaar voor de gezondheid</td><td>kan je op lange termijn ernstig ziek maken</td><td>benzine, terpentine</td></tr><tr><td>gevaarlijk voor het milieu</td><td>giftig voor planten en dieren, vooral in water</td><td>bleekwater, insectengif</td></tr></table>
+<h3>H-zinnen en P-zinnen</h3>
+<p>Op het etiket staan ook korte zinnen met een code.</p>
+<table class="vb"><tr><td><b>Code</b></td><td><b>Komt van</b></td><td><b>Betekent</b></td><td><b>Voorbeeld</b></td></tr><tr><td><b>H</b>-zin</td><td><i>hazard</i></td><td><b>gevaar</b>: wat kan de stof doen?</td><td>H314: veroorzaakt ernstige brandwonden</td></tr><tr><td><b>P</b>-zin</td><td><i>precaution</i></td><td><b>voorzorg</b>: wat moet jij doen?</td><td>P280: draag handschoenen en een veiligheidsbril</td></tr></table>
+<figure class="figuur"><svg viewBox="0 0 640 250" width="640" xmlns="http://www.w3.org/2000/svg"><rect width="640" height="250" fill="#fff"/><rect x="20" y="10" width="600" height="230" rx="10" fill="#fff" stroke="#475569" stroke-width="2"/><text x="40.0" y="44.0" fill="#1D2A36" font-size="22" font-weight="800" text-anchor="start" font-family="Inter,sans-serif">Buisvrij ontstopper</text><text x="40.0" y="66.0" fill="#64748b" font-size="13" font-weight="600" text-anchor="start" font-family="Inter,sans-serif">bevat natriumhydroxide</text><g transform="translate(40,82) scale(0.9)"><polygon points="50,5 95,50 50,95 5,50" fill="#fff" stroke="#d6001c" stroke-width="6" stroke-linejoin="round"/><g fill="#111"><g transform="rotate(-35 36 32)"><rect x="31" y="22" width="9" height="20" rx="2"/></g><g transform="rotate(35 64 32)"><rect x="60" y="22" width="9" height="20" rx="2"/></g><path d="M42 44 v6 M44 48 v7 M58 44 v6 M56 48 v7" stroke="#111" stroke-width="2.5" stroke-linecap="round"/><path d="M29 64 h8 l2 3 l2-3 h7 v10 h-19 z"/><path d="M54 74 v-7 l3-4 h11 l2 3 h3 v8 z"/><path d="M60 63 v-4 M64 63 v-5 M68 64 v-4" stroke="#111" stroke-width="2.5" stroke-linecap="round"/></g></g><text x="150.0" y="110.0" fill="#dc2626" font-size="18" font-weight="800" text-anchor="start" font-family="Inter,sans-serif">GEVAAR</text><text x="150.0" y="140.0" fill="#dc2626" font-size="12" font-weight="800" text-anchor="start" font-family="Inter,sans-serif">H290</text><text x="268.0" y="140.0" fill="#1D2A36" font-size="12" font-weight="500" text-anchor="start" font-family="Inter,sans-serif">Kan bijtend zijn voor metalen.</text><text x="150.0" y="160.0" fill="#dc2626" font-size="12" font-weight="800" text-anchor="start" font-family="Inter,sans-serif">H314</text><text x="268.0" y="160.0" fill="#1D2A36" font-size="12" font-weight="500" text-anchor="start" font-family="Inter,sans-serif">Veroorzaakt ernstige brandwonden en oogletsel.</text><text x="150.0" y="180.0" fill="#2563eb" font-size="12" font-weight="800" text-anchor="start" font-family="Inter,sans-serif">P102</text><text x="268.0" y="180.0" fill="#1D2A36" font-size="12" font-weight="500" text-anchor="start" font-family="Inter,sans-serif">Buiten het bereik van kinderen houden.</text><text x="150.0" y="200.0" fill="#2563eb" font-size="12" font-weight="800" text-anchor="start" font-family="Inter,sans-serif">P280</text><text x="268.0" y="200.0" fill="#1D2A36" font-size="12" font-weight="500" text-anchor="start" font-family="Inter,sans-serif">Handschoenen en oogbescherming dragen.</text><text x="150.0" y="220.0" fill="#2563eb" font-size="12" font-weight="800" text-anchor="start" font-family="Inter,sans-serif">P305+P351+P338</text><text x="268.0" y="220.0" fill="#1D2A36" font-size="12" font-weight="500" text-anchor="start" font-family="Inter,sans-serif">In de ogen: voorzichtig spoelen met water …</text></svg><figcaption>Het etiket van een ontstopper: symbool, signaalwoord, H-zinnen (rood) en P-zinnen (blauw).</figcaption></figure>
+<a class="toolknop" href="chemie-stoffen.html#ikkan12" target="_blank" rel="noopener">▶ Oefen met de gevarensymbolen en het etiket</a>
+<div class="denk" data-vrij="denk_3">
+  <div class="vraag"><div class="kop">Denkvraag</div><p>Op een fles staat: "H225 Licht ontvlambare vloeistof en damp" en "P210 Verwijderd houden van warmte en open vuur". Welke zin zegt wat jij moet doen? Welk gevarensymbool verwacht je?</p></div>
+  <div class="onder"><div class="redenering"><ol><li><span class="stap">H225</span> Een H-zin: dat is het gevaar (de stof vat gemakkelijk vlam).</li><li><span class="stap">P210</span> Een P-zin: dat is de voorzorg, wat jij moet doen.</li><li><span class="stap">Symbool</span> Gemakkelijk vlam vatten: het symbool met de vlam.</li></ol><div class="besluit">P210 zegt wat jij moet doen. Je verwacht het symbool ontvlambaar.</div></div></div>
+</div>
+</section>
+<section class="blok" id="oefeningen" data-vrij="oefeningen">
+<h2>Oefeningen op papier</h2>
+<p>Maak deze oefeningen <b>op papier</b>. Gebruik bij thema 2 je <b>PSE</b>. De oplossingen verschijnen hier nadat we de oefeningen in de les besproken hebben.</p>
+<p><button class="knop licht" data-print="oef">🖨 Druk de oefeningen af</button></p>
+<div class="oef" data-vrij="opl_1">
+  <div class="titel"><span class="nr">1</span>Fysisch of chemisch?</div>
+  <div class="tekst">Is het een fysisch of een chemisch verschijnsel?<ol class="deelvragen" type="a"><li>Een kaars brandt.</li><li>Kaarsvet smelt.</li><li>Een appel wordt bruin als je hem doorsnijdt.</li><li>Water bevriest in de vriezer.</li><li>Een bruistablet in water geeft bubbels.</li><li>Je maalt koffiebonen tot poeder.</li></ol></div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">a</span> chemisch: er ontstaan rook en gassen, licht en warmte</li><li><span class="stap">b</span> fysisch: vast wordt vloeibaar, nog altijd kaarsvet</li><li><span class="stap">c</span> chemisch: andere kleur, gaat niet terug</li><li><span class="stap">d</span> fysisch: water wordt ijs</li><li><span class="stap">e</span> chemisch: er ontstaat een gas</li><li><span class="stap">f</span> fysisch: kleinere stukjes van dezelfde stof</li></ol><div class="besluit">Nieuwe stof → chemisch; dezelfde stof → fysisch.</div></div>
+</div>
+<div class="oef" data-vrij="opl_2">
+  <div class="titel"><span class="nr">2</span>Wat onderzoekt de chemie?</div>
+  <div class="tekst">Gaat de onderzoeksvraag over de <b>samenstelling</b>, de <b>eigenschappen</b> of de <b>omzettingen</b> van een stof?<ol class="deelvragen" type="a"><li>Bij welke temperatuur kookt alcohol?</li><li>Uit welke deeltjes bestaat water?</li><li>Wat ontstaat er als je aardgas verbrandt?</li><li>Lost zout op in water?</li></ol></div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">a</span> eigenschappen</li><li><span class="stap">b</span> samenstelling</li><li><span class="stap">c</span> omzettingen</li><li><span class="stap">d</span> eigenschappen</li></ol><div class="besluit">Samenstelling = deeltjes · eigenschappen = herkennen · omzettingen = nieuwe stof.</div></div>
+</div>
+<div class="oef" data-vrij="opl_3">
+  <div class="titel"><span class="nr">3</span>Gevarensymbolen benoemen</div>
+  <div class="tekst">Noteer de naam van elk gevarensymbool.<figure class="figuur"><svg viewBox="0 0 640 278" width="640" xmlns="http://www.w3.org/2000/svg"><rect width="640" height="278" fill="#fff"/><g transform="translate(22,10) scale(0.86)"><polygon points="50,5 95,50 50,95 5,50" fill="#fff" stroke="#d6001c" stroke-width="6" stroke-linejoin="round"/><g fill="#111"><g transform="rotate(-35 36 32)"><rect x="31" y="22" width="9" height="20" rx="2"/></g><g transform="rotate(35 64 32)"><rect x="60" y="22" width="9" height="20" rx="2"/></g><path d="M42 44 v6 M44 48 v7 M58 44 v6 M56 48 v7" stroke="#111" stroke-width="2.5" stroke-linecap="round"/><path d="M29 64 h8 l2 3 l2-3 h7 v10 h-19 z"/><path d="M54 74 v-7 l3-4 h11 l2 3 h3 v8 z"/><path d="M60 63 v-4 M64 63 v-5 M68 64 v-4" stroke="#111" stroke-width="2.5" stroke-linecap="round"/></g></g><circle cx="30" cy="20" r="11" fill="#1D2A36"/><text x="30.0" y="24.5" fill="#fff" font-size="12" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">1</text><g transform="translate(146,10) scale(0.86)"><polygon points="50,5 95,50 50,95 5,50" fill="#fff" stroke="#d6001c" stroke-width="6" stroke-linejoin="round"/><g fill="#111"><path d="M50 24 C60 37 66 45 62 59 C60 67 54 71 50 71 C42 71 37 65 37 57 C37 49 43 45 45 37 C48 43 50 45 53 43 C54 37 52 31 50 24 Z"/><rect x="34" y="74" width="32" height="4"/></g></g><circle cx="154" cy="20" r="11" fill="#1D2A36"/><text x="154.0" y="24.5" fill="#fff" font-size="12" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">2</text><g transform="translate(270,10) scale(0.86)"><polygon points="50,5 95,50 50,95 5,50" fill="#fff" stroke="#d6001c" stroke-width="6" stroke-linejoin="round"/><g fill="#111"><circle cx="50" cy="42" r="12.5"/><rect x="44" y="50" width="12" height="9" rx="2"/><circle cx="45" cy="41" r="3.4" fill="#fff"/><circle cx="55" cy="41" r="3.4" fill="#fff"/><path d="M48.5 50 l1.5-3 l1.5 3 z" fill="#fff"/><path d="M35 61 L65 74 M65 61 L35 74" stroke="#111" stroke-width="5" stroke-linecap="round"/><circle cx="33" cy="60" r="3"/><circle cx="67" cy="60" r="3"/><circle cx="33" cy="75" r="3"/><circle cx="67" cy="75" r="3"/></g></g><circle cx="278" cy="20" r="11" fill="#1D2A36"/><text x="278.0" y="24.5" fill="#fff" font-size="12" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">3</text><g transform="translate(394,10) scale(0.86)"><polygon points="50,5 95,50 50,95 5,50" fill="#fff" stroke="#d6001c" stroke-width="6" stroke-linejoin="round"/><g fill="#111"><path d="M37 74 V40 M37 50 l-7-7 M37 46 l8-9 M37 58 l9-5 M37 62 l-6-4" stroke="#111" stroke-width="3" stroke-linecap="round" fill="none"/><ellipse cx="57" cy="67" rx="10" ry="5"/><path d="M66 67 l8-5 v10 z"/><path d="M50 65 l3 3 M53 65 l-3 3" stroke="#fff" stroke-width="1.4"/><path d="M31 76 h38" stroke="#111" stroke-width="3" stroke-linecap="round"/></g></g><circle cx="402" cy="20" r="11" fill="#1D2A36"/><text x="402.0" y="24.5" fill="#fff" font-size="12" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">4</text><g transform="translate(518,10) scale(0.86)"><polygon points="50,5 95,50 50,95 5,50" fill="#fff" stroke="#d6001c" stroke-width="6" stroke-linejoin="round"/><g fill="#111"><rect x="45" y="27" width="10" height="32" rx="3"/><circle cx="50" cy="69" r="5.5"/></g></g><circle cx="526" cy="20" r="11" fill="#1D2A36"/><text x="526.0" y="24.5" fill="#fff" font-size="12" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">5</text><g transform="translate(22,146) scale(0.86)"><polygon points="50,5 95,50 50,95 5,50" fill="#fff" stroke="#d6001c" stroke-width="6" stroke-linejoin="round"/><g fill="#111"><circle cx="44" cy="60" r="10"/><path d="M51 52 L56 45 M60 40 l6-6 M64 48 l9-2 M61 56 l9 3 M37 43 l-4-7 M30 55 l-8-1 M47 40 l1-9 M58 66 l7 4" stroke="#111" stroke-width="3" stroke-linecap="round"/><circle cx="68" cy="38" r="2.4"/><circle cx="31" cy="66" r="2.2"/><circle cx="56" cy="32" r="2"/></g></g><circle cx="30" cy="156" r="11" fill="#1D2A36"/><text x="30.0" y="160.5" fill="#fff" font-size="12" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">6</text><g transform="translate(146,146) scale(0.86)"><polygon points="50,5 95,50 50,95 5,50" fill="#fff" stroke="#d6001c" stroke-width="6" stroke-linejoin="round"/><g fill="#111"><g transform="rotate(-18 50 58)"><rect x="28" y="50" width="40" height="17" rx="8.5"/><rect x="66" y="54" width="7" height="9"/><rect x="72" y="51" width="4" height="15" rx="1"/></g></g></g><circle cx="154" cy="156" r="11" fill="#1D2A36"/><text x="154.0" y="160.5" fill="#fff" font-size="12" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">7</text><g transform="translate(270,146) scale(0.86)"><polygon points="50,5 95,50 50,95 5,50" fill="#fff" stroke="#d6001c" stroke-width="6" stroke-linejoin="round"/><g fill="#111"><circle cx="50" cy="29" r="7.5"/><path d="M34 76 C34 54 40 40 50 40 C60 40 66 54 66 76 Z"/><path d="M50 49 l2.6 6 6.4 .4 -5 4 1.7 6.2 -5.7-3.5 -5.7 3.5 1.7-6.2 -5-4 6.4-.4 z" fill="#fff"/></g></g><circle cx="278" cy="156" r="11" fill="#1D2A36"/><text x="278.0" y="160.5" fill="#fff" font-size="12" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">8</text><g transform="translate(394,146) scale(0.86)"><polygon points="50,5 95,50 50,95 5,50" fill="#fff" stroke="#d6001c" stroke-width="6" stroke-linejoin="round"/><g fill="#111"><g transform="translate(15 -5) scale(.7)"><path d="M50 24 C60 37 66 45 62 59 C60 67 54 71 50 71 C42 71 37 65 37 57 C37 49 43 45 45 37 C48 43 50 45 53 43 C54 37 52 31 50 24 Z"/></g><circle cx="50" cy="63" r="9" fill="none" stroke="#111" stroke-width="4.5"/><rect x="36" y="77" width="28" height="3.5"/></g></g><circle cx="402" cy="156" r="11" fill="#1D2A36"/><text x="402.0" y="160.5" fill="#fff" font-size="12" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">9</text></svg><figcaption></figcaption></figure></div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">1–3</span> bijtend · ontvlambaar · giftig</li><li><span class="stap">4–6</span> gevaarlijk voor het milieu · schadelijk of irriterend · ontplofbaar</li><li><span class="stap">7–9</span> gas onder druk · gevaar voor de gezondheid · oxiderend</li></ol><figure class="oplfig"><svg viewBox="0 0 640 278" width="640" xmlns="http://www.w3.org/2000/svg"><rect width="640" height="278" fill="#fff"/><g transform="translate(22,10) scale(0.86)"><polygon points="50,5 95,50 50,95 5,50" fill="#fff" stroke="#d6001c" stroke-width="6" stroke-linejoin="round"/><g fill="#111"><g transform="rotate(-35 36 32)"><rect x="31" y="22" width="9" height="20" rx="2"/></g><g transform="rotate(35 64 32)"><rect x="60" y="22" width="9" height="20" rx="2"/></g><path d="M42 44 v6 M44 48 v7 M58 44 v6 M56 48 v7" stroke="#111" stroke-width="2.5" stroke-linecap="round"/><path d="M29 64 h8 l2 3 l2-3 h7 v10 h-19 z"/><path d="M54 74 v-7 l3-4 h11 l2 3 h3 v8 z"/><path d="M60 63 v-4 M64 63 v-5 M68 64 v-4" stroke="#111" stroke-width="2.5" stroke-linecap="round"/></g></g><text x="65.0" y="110.0" fill="#1D2A36" font-size="12" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">bijtend</text><g transform="translate(146,10) scale(0.86)"><polygon points="50,5 95,50 50,95 5,50" fill="#fff" stroke="#d6001c" stroke-width="6" stroke-linejoin="round"/><g fill="#111"><path d="M50 24 C60 37 66 45 62 59 C60 67 54 71 50 71 C42 71 37 65 37 57 C37 49 43 45 45 37 C48 43 50 45 53 43 C54 37 52 31 50 24 Z"/><rect x="34" y="74" width="32" height="4"/></g></g><text x="189.0" y="110.0" fill="#1D2A36" font-size="12" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">ontvlambaar</text><g transform="translate(270,10) scale(0.86)"><polygon points="50,5 95,50 50,95 5,50" fill="#fff" stroke="#d6001c" stroke-width="6" stroke-linejoin="round"/><g fill="#111"><circle cx="50" cy="42" r="12.5"/><rect x="44" y="50" width="12" height="9" rx="2"/><circle cx="45" cy="41" r="3.4" fill="#fff"/><circle cx="55" cy="41" r="3.4" fill="#fff"/><path d="M48.5 50 l1.5-3 l1.5 3 z" fill="#fff"/><path d="M35 61 L65 74 M65 61 L35 74" stroke="#111" stroke-width="5" stroke-linecap="round"/><circle cx="33" cy="60" r="3"/><circle cx="67" cy="60" r="3"/><circle cx="33" cy="75" r="3"/><circle cx="67" cy="75" r="3"/></g></g><text x="313.0" y="110.0" fill="#1D2A36" font-size="12" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">giftig</text><g transform="translate(394,10) scale(0.86)"><polygon points="50,5 95,50 50,95 5,50" fill="#fff" stroke="#d6001c" stroke-width="6" stroke-linejoin="round"/><g fill="#111"><path d="M37 74 V40 M37 50 l-7-7 M37 46 l8-9 M37 58 l9-5 M37 62 l-6-4" stroke="#111" stroke-width="3" stroke-linecap="round" fill="none"/><ellipse cx="57" cy="67" rx="10" ry="5"/><path d="M66 67 l8-5 v10 z"/><path d="M50 65 l3 3 M53 65 l-3 3" stroke="#fff" stroke-width="1.4"/><path d="M31 76 h38" stroke="#111" stroke-width="3" stroke-linecap="round"/></g></g><text x="437.0" y="110.0" fill="#1D2A36" font-size="12" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">gevaarlijk voor</text><text x="437.0" y="124.0" fill="#1D2A36" font-size="12" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">het milieu</text><g transform="translate(518,10) scale(0.86)"><polygon points="50,5 95,50 50,95 5,50" fill="#fff" stroke="#d6001c" stroke-width="6" stroke-linejoin="round"/><g fill="#111"><rect x="45" y="27" width="10" height="32" rx="3"/><circle cx="50" cy="69" r="5.5"/></g></g><text x="561.0" y="110.0" fill="#1D2A36" font-size="12" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">schadelijk</text><text x="561.0" y="124.0" fill="#1D2A36" font-size="12" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">of irriterend</text><g transform="translate(22,146) scale(0.86)"><polygon points="50,5 95,50 50,95 5,50" fill="#fff" stroke="#d6001c" stroke-width="6" stroke-linejoin="round"/><g fill="#111"><circle cx="44" cy="60" r="10"/><path d="M51 52 L56 45 M60 40 l6-6 M64 48 l9-2 M61 56 l9 3 M37 43 l-4-7 M30 55 l-8-1 M47 40 l1-9 M58 66 l7 4" stroke="#111" stroke-width="3" stroke-linecap="round"/><circle cx="68" cy="38" r="2.4"/><circle cx="31" cy="66" r="2.2"/><circle cx="56" cy="32" r="2"/></g></g><text x="65.0" y="246.0" fill="#1D2A36" font-size="12" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">ontplofbaar</text><g transform="translate(146,146) scale(0.86)"><polygon points="50,5 95,50 50,95 5,50" fill="#fff" stroke="#d6001c" stroke-width="6" stroke-linejoin="round"/><g fill="#111"><g transform="rotate(-18 50 58)"><rect x="28" y="50" width="40" height="17" rx="8.5"/><rect x="66" y="54" width="7" height="9"/><rect x="72" y="51" width="4" height="15" rx="1"/></g></g></g><text x="189.0" y="246.0" fill="#1D2A36" font-size="12" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">gas onder druk</text><g transform="translate(270,146) scale(0.86)"><polygon points="50,5 95,50 50,95 5,50" fill="#fff" stroke="#d6001c" stroke-width="6" stroke-linejoin="round"/><g fill="#111"><circle cx="50" cy="29" r="7.5"/><path d="M34 76 C34 54 40 40 50 40 C60 40 66 54 66 76 Z"/><path d="M50 49 l2.6 6 6.4 .4 -5 4 1.7 6.2 -5.7-3.5 -5.7 3.5 1.7-6.2 -5-4 6.4-.4 z" fill="#fff"/></g></g><text x="313.0" y="246.0" fill="#1D2A36" font-size="12" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">gevaar voor</text><text x="313.0" y="260.0" fill="#1D2A36" font-size="12" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">de gezondheid</text><g transform="translate(394,146) scale(0.86)"><polygon points="50,5 95,50 50,95 5,50" fill="#fff" stroke="#d6001c" stroke-width="6" stroke-linejoin="round"/><g fill="#111"><g transform="translate(15 -5) scale(.7)"><path d="M50 24 C60 37 66 45 62 59 C60 67 54 71 50 71 C42 71 37 65 37 57 C37 49 43 45 45 37 C48 43 50 45 53 43 C54 37 52 31 50 24 Z"/></g><circle cx="50" cy="63" r="9" fill="none" stroke="#111" stroke-width="4.5"/><rect x="36" y="77" width="28" height="3.5"/></g></g><text x="437.0" y="246.0" fill="#1D2A36" font-size="12" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">oxiderend</text></svg><figcaption></figcaption></figure><div class="besluit">Kijk naar de tekening in de rode ruit.</div></div>
+</div>
+<div class="oef" data-vrij="opl_4">
+  <div class="titel"><span class="nr">4</span>Welk symbool hoort erbij?</div>
+  <div class="tekst">Welk gevarensymbool verwacht je op de verpakking?<ol class="deelvragen" type="a"><li>een spuitbus met haarlak</li><li>gootsteenontstopper</li><li>een fles met benzine</li><li>insectengif dat in het water niet mag komen</li></ol></div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">a</span> ontvlambaar (en gas onder druk)</li><li><span class="stap">b</span> bijtend</li><li><span class="stap">c</span> ontvlambaar, gevaar voor de gezondheid</li><li><span class="stap">d</span> gevaarlijk voor het milieu</li></ol><div class="besluit">Denk na wat de stof kan doen.</div></div>
+</div>
+<div class="oef" data-vrij="opl_5">
+  <div class="titel"><span class="nr">5</span>H of P?</div>
+  <div class="tekst">Is het een H-zin (gevaar) of een P-zin (voorzorg)?<ol class="deelvragen" type="a"><li>Veroorzaakt ernstige oogirritatie.</li><li>Na het werken handen grondig wassen.</li><li>Giftig bij inslikken.</li><li>Niet roken.</li><li>Zeer giftig voor in het water levende organismen.</li></ol></div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">a</span> H</li><li><span class="stap">b</span> P</li><li><span class="stap">c</span> H</li><li><span class="stap">d</span> P</li><li><span class="stap">e</span> H</li></ol><div class="besluit">Zegt de zin wat de stof doet (H) of wat jij moet doen (P)?</div></div>
+</div>
+<div class="oef" data-vrij="opl_6">
+  <div class="titel"><span class="nr">6</span>Redeneren: veilig in het labo</div>
+  <div class="tekst">Op een fles in het labo staat het symbool <b>bijtend</b>. Je klasgenoot wil de stof zonder bril overgieten. Wat zeg je? Noteer twee voorzorgen.</div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">Gevaar</span> Een bijtende stof beschadigt je ogen en huid ernstig.</li><li><span class="stap">Voorzorg</span> Draag een veiligheidsbril en handschoenen; giet langzaam boven de tafel, niet boven ooghoogte.</li></ol><div class="besluit">Bijtend → altijd bril en handschoenen.</div></div>
+</div><a class="toolknop" href="chemie-stoffen.html" target="_blank" rel="noopener">▶ Oefen verder in de tool</a>
+</section>
+<section class="blok" id="samenvatting" data-vrij="samenvatting">
+<h2>Samenvatting</h2>
+<div class="kader"><div class="kop">Samenvatting</div><p><b>Fysisch verschijnsel</b>: dezelfde stof blijft. <b>Chemisch verschijnsel</b>: er ontstaat een nieuwe stof (kleur, gas, geur, licht/warmte, niet terug).</p>
+<p><b>Chemie</b> = de wetenschap van de stoffen: samenstelling, eigenschappen, omzettingen.</p>
+<p><b>Gevarensymbolen</b>: zwarte tekening in een rode ruit (9 soorten). <b>H-zin</b> = gevaar (hazard). <b>P-zin</b> = voorzorg (precaution).</p></div>
+</section>
+
+</main>
+<footer>Cursus fysica — gemaakt voor klasgebruik, bij de tools op Oefentools wetenschappen.</footer>
+
+<div class="printblad" id="print-oef"></div>
+<div class="printblad" id="print-cornell"></div>
+
+<script>
+/* =====================================================================
+   VRIJGAVE — hier zet de leerkracht onderdelen open of dicht.
+   true  = zichtbaar voor de leerlingen
+   false = nog gesloten (de leerling ziet een slotje)
+   Tip: met ?leerkracht achter de link zie je als leerkracht alles,
+        bv. .../cursus-chemie-wetenschap.html?leerkracht
+   ===================================================================== */
+const VRIJGAVE = {
+  deel1: true,               // Fysica of chemie?
+  deel2: false,              // Veilig werken: gevarensymbolen en H- en P-zinnen
+  denk_1: false,             // redenering denkvraag 1
+  denk_2: false,             // redenering denkvraag 2
+  denk_3: false,             // redenering denkvraag 3
+  oefeningen: false,         // de oefeningen zelf (opgaven)
+  opl_1: false,              // oplossing oefening 1
+  opl_2: false,              // oplossing oefening 2
+  opl_3: false,              // oplossing oefening 3
+  opl_4: false,              // oplossing oefening 4
+  opl_5: false,              // oplossing oefening 5
+  opl_6: false,              // oplossing oefening 6
+  samenvatting: false,       // samenvatting
+};
+
+/* ===================================================================== */
+const LK = new URLSearchParams(location.search).has('leerkracht');
+const open = id => LK || VRIJGAVE[id] === true;
+if(LK) document.getElementById('banner').innerHTML='<div class="leerkracht-banner">Leerkrachtweergave: alles is zichtbaar, ook wat voor leerlingen nog gesloten is.</div>';
+
+// delen open of dicht
+document.querySelectorAll('section.blok[data-vrij]').forEach(el=>{
+  if(open(el.dataset.vrij)) return;
+  const kop=el.querySelector(':scope > h2');
+  [...el.children].forEach(c=>{ if(c!==kop) c.style.display='none'; });
+  const m=document.createElement('p'); m.className='gesloten-deel'; m.innerHTML='🔒 Dit deel wordt opengesteld wanneer we het in de les behandelen.';
+  el.appendChild(m);
+});
+
+// denkvragen: redenering pas tonen na vrijgave
+document.querySelectorAll('.denk').forEach(d=>{
+  const id=d.dataset.vrij, red=d.querySelector('.redenering'), onder=d.querySelector('.onder');
+  red.hidden=true;
+  if(open(id)){
+    const b=document.createElement('button'); b.textContent='Toon de redenering';
+    b.onclick=()=>{ red.hidden=!red.hidden; b.textContent=red.hidden?'Toon de redenering':'Verberg de redenering'; };
+    onder.prepend(b);
+  } else {
+    onder.innerHTML='<span class="slotje">💬 Denk eerst zelf na. We bespreken dit samen in de les; daarna verschijnt hier de redenering.</span>';
+  }
+});
+
+// oplossingen van oefeningen
+document.querySelectorAll('.oef[data-vrij]').forEach(o=>{
+  const id=o.dataset.vrij, opl=o.querySelector('.redenering'), onder=o.querySelector('.onder');
+  opl.hidden=true;
+  if(open(id)){
+    const b=document.createElement('button'); b.className='knop licht'; b.textContent='Toon de oplossing';
+    b.onclick=()=>{ opl.hidden=!opl.hidden; b.textContent=opl.hidden?'Toon de oplossing':'Verberg de oplossing'; };
+    onder.appendChild(b);
+  } else onder.innerHTML='<span class="slotje">🔒 De oplossing verschijnt nadat we de oefening besproken hebben.</span>';
+});
+
+// inhoudstafel
+const inh=document.getElementById('inhoud');
+document.querySelectorAll('section.blok').forEach(s=>{
+  const a=document.createElement('a'); a.href='#'+s.id;
+  const nr=s.querySelector('h2 .nr'); const tekst=s.querySelector('h2').textContent.replace(nr?nr.textContent:'','').trim();
+  a.innerHTML=(nr?'<span class="nr">'+nr.textContent+'</span>':'')+tekst;
+  if(s.dataset.vrij && !open(s.dataset.vrij)) a.classList.add('slot');
+  inh.appendChild(a);
+});
+
+// afdrukbare bladen
+function vulPrint(){
+  const oefs=[...document.querySelectorAll('#oefeningen .oef')].map(o=>{ const k=o.cloneNode(true); k.querySelectorAll('.redenering,.onder').forEach(x=>x.remove()); k.removeAttribute('data-vrij'); return k.outerHTML; }).join('');
+  document.getElementById('print-oef').innerHTML=`<h1>Chemie als wetenschap · oefeningen</h1><div class="naam"><span>Naam: ______________________</span><span>Klas: ______</span><span>Datum: __________</span></div><p>Maak elke oefening in je schrift. Gebruik telkens: gegeven · gevraagd · formule · oplossing · antwoord met eenheid.</p>`+oefs;
+  const vragen=CORNELL.map(v=>`<tr><td class="v">${v[0]}</td><td style="height:${Math.round((v[1]||32)*1.35)}mm"></td></tr>`).join('');
+  document.getElementById('print-cornell').innerHTML=`<h1>Chemie als wetenschap · Cornellblad</h1><div class="naam"><span>Naam: ______________________</span><span>Klas: ______</span></div><table class="cornell"><tr><td class="v">Vragen</td><td><b>Notities</b> (samen opgebouwd in de les)</td></tr>${vragen}</table><div class="samenv">Samenvatting in mijn eigen woorden:</div>`;
+}
+const CORNELL = [];
+function druk(soort){ vulPrint(); document.body.classList.add('print-'+soort); setTimeout(()=>{ window.print(); document.body.classList.remove('print-'+soort); },50); }
+document.querySelectorAll('[data-print]').forEach(b=>b.onclick=()=>druk(b.dataset.print));
+</script>
+</body>
+</html>
