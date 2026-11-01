@@ -183,7 +183,7 @@ td.ok-cel{background:var(--ok-bg);} td.fout-cel{background:var(--flag-bg);}
 
   <section class="scene" id="p2" data-title="Bouw van een blad" data-cat="water">
     <div class="scene-head"><span class="num">2</span><h3>Aanpassingen van het blad: de weefsels</h3></div>
-    <p class="scene-sub">Een stukje blad, sterk vergroot en opengesneden. Bovenaan en onderaan ligt een <strong>epidermis</strong>. Daartussen liggen <strong>parenchymcellen</strong> vol bladgroenkorrels. Onderaan zitten de <strong>huidmondjes</strong>, elk tussen twee <strong>sluitcellen</strong>.</p>
+    <p class="scene-sub">Een stukje blad, sterk vergroot en opengesneden. Bovenaan en onderaan ligt een <strong>epidermis</strong>. Daartussen ligt <strong>vulweefsel</strong> vol bladgroenkorrels. Onderaan zitten de <strong>huidmondjes</strong>, elk tussen twee <strong>sluitcellen</strong>.</p>
     <div class="grid">
       <div class="figwrap" id="fig-blad"></div>
       <div class="controls" id="ctl-blad"></div>
@@ -631,7 +631,7 @@ labelFig({wrap:'fig-plant',ctl:'ctl-plant',inner:PLANT.svg(),w:640,h:640,ml:150,
 labelFig({wrap:'fig-blad',ctl:'ctl-blad',img:IMG.blad,w:900,h:897,ml:300,mr:300,fs:24,r:13,gap:44,
   punten:[
     {naam:'epidermis',x:70,y:240,kant:'l',info:'Eén laag doorzichtige cellen aan de boven- en onderkant van het blad. Ze <b>beschermt</b> het blad en laat het licht door. Een waslaagje erop beperkt de verdamping.'},
-    {naam:'parenchymcellen',x:150,y:380,kant:'l',info:'Cellen vol <b>bladgroenkorrels</b>. Bovenaan staan ze dicht tegen elkaar (veel fotosynthese), onderaan liggen ze losser met luchtholtes ertussen voor de gasuitwisseling.'},
+    {naam:'vulweefsel',x:150,y:380,kant:'l',info:'Cellen vol <b>bladgroenkorrels</b>. Bovenaan staan ze dicht tegen elkaar (veel fotosynthese), onderaan liggen ze losser met luchtholtes ertussen voor de gasuitwisseling.'},
     {naam:'sluitcellen',x:280,y:762,kant:'l',info:'Twee boonvormige cellen die samen een huidmondje vormen. Ze kunnen het huidmondje <b>openen en sluiten</b>.'},
     {naam:'huidmondje',x:323,y:782,kant:'r',ly:820,info:'De opening tussen twee sluitcellen. Langs hier <b>komt CO₂ binnen</b> en gaan <b>O₂ en waterdamp naar buiten</b>.'},
     {naam:'vacuole',x:470,y:500,kant:'r',info:'Grote blaas met celvocht (vooral water). De druk van de vacuole tegen de celwand heet <b>turgor</b>.'},
@@ -647,12 +647,12 @@ labelFig({wrap:'fig-blad',ctl:'ctl-blad',img:IMG.blad,w:900,h:897,ml:300,mr:300,
   labelFig({wrap:'fig-stengel',ctl:'ctl-stengel',inner:STENGEL.svg,w:800,h:800,ml:200,mr:330,fs:22,r:12,gap:42,
     punten:[
       {naam:'epidermis',...pt(pol(352,-62)),kant:'r',info:'De buitenste laag cellen. Ze beschermt de stengel. Aan de buitenkant ligt een waslaag (cuticula).'},
-      {naam:'cortex',...pt(pol(318,40)),kant:'r',info:'Laag parenchymcellen tussen de epidermis en de vaatbundels. Ze geven steun en kunnen stoffen opslaan.'},
+      {naam:'cortex',...pt(pol(318,40)),kant:'r',info:'Laag vulweefsel tussen de epidermis en de vaatbundels. Ze geven steun en kunnen stoffen opslaan.'},
       {naam:'vaatbundel',...pt(L2(2,-41)),kant:'r',info:'Een bundel met <b>houtvaten</b>, <b>deelweefsel</b> en <b>zeefvaten</b>. In de stengel liggen de vaatbundels in een <b>kring</b>.'},
       {naam:'zeefvaten',...pt(L(22,8)),kant:'r',info:'Levende cellen met zeefplaten. Ze vervoeren de <b>assimilaten</b> (vooral suikers) door de plant. Ze liggen aan de <b>buitenkant</b> van de vaatbundel.'},
       {naam:'deelweefsel',...pt(L3(-0.5,10)),kant:'r',info:'Cellen die blijven <b>delen</b>. Naar binnen maken ze nieuwe houtvaten, naar buiten nieuwe zeefvaten. Zo wordt de stengel dikker.'},
       {naam:'houtvaten',...pt(L2(-34,0)),kant:'r',info:'Dode, holle buizen met verdikte wanden. Ze vervoeren <b>water en mineralen</b> omhoog. Ze liggen aan de <b>binnenkant</b> van de vaatbundel.'},
-      {naam:'parenchymcellen',x:400,y:400,kant:'l',info:'Grote parenchymcellen in het midden van de stengel (het merg) en in de cortex. Ze kunnen stoffen opslaan.'},
+      {naam:'vulweefsel',x:400,y:400,kant:'l',info:'Grote cellen van het vulweefsel in het midden van de stengel (het merg) en in de cortex. Ze kunnen stoffen opslaan.'},
     ]});
 })();
 
@@ -687,7 +687,7 @@ labelFig({wrap:'fig-wortel',ctl:'ctl-wortel',inner:`<g transform="translate(-60,
   punten:[
     {naam:'wortelhaartjes',x:-60+1.15*700,y:-60+1.15*262,kant:'r',info:'Een lange, dunne uitstulping van een epidermiscel. Duizenden wortelhaartjes geven een <b>grote oppervlakte</b> om water en mineralen op te nemen.'},
     {naam:'epidermis',x:-60+1.15*636,y:-60+1.15*455,kant:'r',info:'De buitenste cellaag van de wortel. Sommige cellen vormen een wortelhaartje.'},
-    {naam:'cortex',x:-60+1.15*540,y:-60+1.15*560,kant:'r',info:'Grote parenchymcellen. Het water gaat door de cortex naar het midden van de wortel.'},
+    {naam:'cortex',x:-60+1.15*540,y:-60+1.15*560,kant:'r',info:'Grote cellen van het vulweefsel. Het water gaat door de cortex naar het midden van de wortel.'},
     {naam:'houtvaten',x:-60+1.15*430,y:-60+1.15*430,kant:'l',ly:450,info:'In het midden liggen de houtvaten in een <b>ster</b>. Ze vervoeren water en mineralen <b>omhoog</b> naar de stengel.'},
     {naam:'zeefvaten',x:-60+1.15*448,y:-60+1.15*400,kant:'r',ly:360,info:'Tussen de armen van de ster liggen de zeefvaten. Ze brengen <b>assimilaten</b> uit het blad naar de wortel.'},
     {naam:'vaatbundel',x:-60+1.15*400,y:-60+1.15*318,kant:'l',ly:330,info:'In de wortel ligt één vaatbundel in het midden (centrale cilinder), met houtvaten en zeefvaten naast elkaar.'},
