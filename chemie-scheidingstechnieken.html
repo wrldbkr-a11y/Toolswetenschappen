@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<style>*,*::before,*::after{box-sizing:border-box}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<style>*,*::before,*::after{box-sizing:border-box}body{margin:0}img{max-width:100%}[hidden]{display:none!important}.tip details{margin-top:6px}.tip summary{cursor:pointer;font-weight:700;color:var(--accent)}
+</style>
 <title>Scheidingstechnieken</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=JetBrains+Mono:wght@500;700&display=swap">
@@ -266,7 +267,17 @@ tr.groep td{background:var(--surface-2);font-weight:700}
       <div class="tabelwrap"><table id="overzicht"></table></div>
     </section>
     <section class="blok">
-      <div class="blok-kop"><span class="letter">B</span><h2>Oefenen</h2></div>
+      <div class="blok-kop"><span class="letter">B</span><h2>Scheiden in Brussel</h2></div>
+      <p>Scheidingstechnieken zie je niet alleen in het labo. Ook in Brussel worden elke dag mengsels gescheiden.</p>
+      <div class="tip"><b>Waterzuiveringsstation Brussel-Noord (Haren)</b><p>Het grootste zuiveringsstation van België zuivert het afvalwater van het grootste deel van Brussel. Eerst houden <b>roosters</b> grof afval tegen, zoals takken en plastic. Daarna zakt het <b>zand</b> naar de bodem en wordt het <b>vet</b> dat bovenaan drijft, afgeschept. Bacteriën breken daarna de opgeloste vuilstoffen af. Het slib dat ontstaat, laat men opnieuw <b>bezinken</b>. Het gezuiverde water gaat naar de Zenne.</p>
+      <details><summary>Denk na: welke scheidingstechnieken herken je? Op welke stofeigenschap zijn ze gebaseerd?</summary><p>Roosters: <b>zeven</b> (deeltjesgrootte). Zand laten bezinken en vet afscheppen: zoals bij <b>decanteren</b> (massadichtheid). Het slib laten bezinken: opnieuw <b>decanteren</b>. Het werk van de bacteriën is geen scheidingstechniek: daar ontstaan nieuwe stoffen.</p></details></div>
+      <div class="tip"><b>Kraantjeswater van Vivaqua</b><p>Een deel van het Brusselse kraantjeswater komt uit de <b>Maas</b>. In de fabriek van Tailfer maakt Vivaqua er drinkwater van. Een van de stappen is een filter met <b>actieve kool</b>: resten van vervuiling en pesticiden blijven daaraan hangen.</p>
+      <details><summary>Denk na: welke techniek is dit? Waarom is gewoon filtreren niet genoeg?</summary><p>Dit is <b>adsorberen</b>. Pesticiden en andere resten zijn <b>opgelost</b> in het water: het is een homogeen mengsel. De deeltjes zijn te klein om tegen te houden met filtreerpapier. Ze blijven wel aan het oppervlak van de actieve kool hangen.</p></details></div>
+      <div class="tip"><b>Brouwerij Cantillon (Anderlecht)</b><p>Cantillon is de laatste brouwerij in Brussel die nog lambiek brouwt zoals vroeger. Zoals in elke brouwerij begint het brouwen met gemalen graan en <b>heet water</b>. De suikers uit het graan lossen op: zo ontstaat de <b>wort</b>. Daarna haalt men de vaste graanresten uit de wort.</p>
+      <details><summary>Denk na: welke twee scheidingstechnieken gebruikt de brouwer?</summary><p>Suikers oplossen in heet water: <b>extraheren</b> (oplosbaarheid). De vaste graanresten tegenhouden: <b>filtreren</b> of <b>zeven</b> (deeltjesgrootte).</p></details></div>
+    </section>
+    <section class="blok">
+      <div class="blok-kop"><span class="letter">C</span><h2>Oefenen</h2></div>
       <div class="oefening" id="oef-eig"></div>
       <div class="oefening" id="oef-dag"></div>
       <div class="oefening" id="oef-keten"></div>
@@ -342,7 +353,7 @@ const druppels = (x,y,n=3) => Array.from({length:n},(_,i)=>`<circle cx="${x}" cy
 
 /* ---------------- technieken ---------------- */
 const TECH = {
-zeven:{ naam:'Zeven', groep:'het', mengsel:'heterogeen: vaste stof in vaste stof (grof mengsel)', eig:'verschil in deeltjesgrootte', vb:'bloem zeven voor een cake, kiezels uit zand halen',
+zeven:{ naam:'Zeven', groep:'het', mengsel:'heterogeen: vaste stof in vaste stof (grof mengsel)', eig:'verschil in deeltjesgrootte', vb:'bloem zeven voor een cake, kiezels uit zand halen, de roosters in het waterzuiveringsstation Brussel-Noord die takken en plastic tegenhouden',
   caps:['Je doet een mengsel van zand en kiezels in de zeef.','Je schudt de zeef. De kleine zandkorrels vallen door de gaatjes.','De grote kiezels blijven op de zeef liggen. Ze zijn groter dan de gaatjes.'],
   svg:()=>`<defs><clipPath id="zclip"><path d="M120 95 Q210 170 300 95 Z"/></clipPath></defs>
     <path d="M130 205 Q210 255 290 205 Z" fill="var(--surface)" stroke="var(--glas)" stroke-width="2.5"/>
@@ -423,7 +434,7 @@ destilleren:{ naam:'Destilleren', groep:'hom', mengsel:'homogeen: oplossing (vas
     ${erlen(322,190)}`,
   labels:[{naam:'thermometer',p:[110,44],t:[126,30]},{naam:'destillatiekolf',p:[84,138],t:[6,60]},{naam:'residu',p:[110,174],t:[6,184]},{naam:'bunsenbrander',p:[116,228],t:[140,252]},{naam:'koeler',p:[228,138],t:[236,100]},{naam:'koelwater uit',p:[164,80],t:[182,72]},{naam:'koelwater in',p:[280,190],t:[262,214],a:'end'},{naam:'destillaat',p:[320,246],t:[412,214],a:'end'}]},
 
-extraheren:{ naam:'Extraheren', groep:'hom', mengsel:'een bestanddeel uit een mengsel halen met een oplosmiddel', eig:'verschil in oplosbaarheid', vb:'thee of koffie zetten, bouillon trekken uit groenten',
+extraheren:{ naam:'Extraheren', groep:'hom', mengsel:'een bestanddeel uit een mengsel halen met een oplosmiddel', eig:'verschil in oplosbaarheid', vb:'wort maken in brouwerij Cantillon in Anderlecht (suikers uit het graan lossen op in heet water), thee of koffie zetten, bouillon trekken uit groenten',
   caps:['Je hangt een theezakje in heet water. Het water is het extractiemiddel.','Kleur- en smaakstoffen uit de theeblaadjes lossen op in het water. De blaadjes zelf lossen niet op.','Je haalt het zakje eruit. De thee is het extract. De gebruikte blaadjes zijn het residu.'],
   svg:()=>`<path d="M30 210 V142 Q30 122 50 122 H100 Q120 122 120 142 V210 Z" fill="var(--surface)" stroke="var(--glas)" stroke-width="2.5"/>
     <path d="M120 150 L148 128" stroke="var(--glas)" stroke-width="6" stroke-linecap="round"/><path d="M42 122 Q75 96 108 122" ${G}/>
@@ -436,7 +447,7 @@ extraheren:{ naam:'Extraheren', groep:'hom', mengsel:'een bestanddeel uit een me
     <g data-s="2"><ellipse cx="345" cy="216" rx="44" ry="8" fill="var(--surface)" stroke="var(--glas)" stroke-width="2"/><rect x="330" y="178" width="30" height="34" rx="3" fill="#8b6b3d" stroke="var(--glas)" stroke-width="1.2"/><line x1="345" y1="178" x2="360" y2="150" stroke="var(--muted)" stroke-width="1.5"/><rect x="356" y="140" width="18" height="12" fill="#d9a521"/></g>`,
   labels:[{naam:'extractiemiddel (water)',p:[75,175],t:[75,236],a:'middle'},{naam:'extract',p:[215,175],t:[215,236],a:'middle'},{naam:'residu',p:[338,195],t:[345,252],a:'middle'},{naam:'bekerglas',p:[258,100],t:[300,90]}]},
 
-adsorberen:{ naam:'Adsorberen', groep:'hom', mengsel:'homogeen: oplossing met kleur-, geur- of giftige stoffen', eig:'verschil in adsorptievermogen (hoe goed een stof aan actieve kool blijft hangen)', vb:'een dampkap met koolstoffilter, een waterfilterkan, een gasmasker',
+adsorberen:{ naam:'Adsorberen', groep:'hom', mengsel:'homogeen: oplossing met kleur-, geur- of giftige stoffen', eig:'verschil in adsorptievermogen (hoe goed een stof aan actieve kool blijft hangen)', vb:'een dampkap met koolstoffilter, een waterfilterkan, een gasmasker, Brussels kraantjeswater: Vivaqua filtert Maaswater door actieve kool',
   caps:['Water met een opgeloste kleurstof gaat in een trechter met filtreerpapier en actieve kool. De gekleurde vloeistof zit tussen de korrels.','Het water stroomt tussen de korrels naar beneden. De kleurstofdeeltjes blijven aan het oppervlak van de actieve kool hangen. Onderaan is het water al kleurloos.','Het filtraat is kleurloos. De kleurstof is geadsorbeerd: ze zit vast aan de actieve kool.'],
   svg:()=>`<defs><linearGradient id="adsgrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8e5bb5"/><stop offset=".55" stop-color="#b48ad6"/><stop offset="1" stop-color="var(--water)"/></linearGradient></defs>
     ${statief}${trechter}
