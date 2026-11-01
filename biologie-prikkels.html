@@ -183,16 +183,19 @@ td.ok-cel{background:var(--ok-bg);} td.fout-cel{background:var(--flag-bg);}
 
   <section class="scene" id="p2" data-title="Bouw van een blad" data-cat="water">
     <div class="scene-head"><span class="num">2</span><h3>Aanpassingen van het blad: de weefsels</h3></div>
-    <p class="scene-sub">Een stukje blad, sterk vergroot en opengesneden. Bovenaan en onderaan ligt een <strong>epidermis</strong>. Daartussen ligt <strong>vulweefsel</strong> vol bladgroenkorrels. Onderaan zitten de <strong>huidmondjes</strong>, elk tussen twee <strong>sluitcellen</strong>.</p>
+    <p class="scene-sub">Een stukje blad, sterk vergroot en opengesneden. Bovenaan en onderaan ligt <strong>dekweefsel</strong> met een <strong>waslaagje</strong>. Daartussen ligt <strong>vulweefsel</strong> vol bladgroenkorrels. Onderaan zitten de <strong>huidmondjes</strong>, elk tussen twee <strong>sluitcellen</strong>.</p>
     <div class="grid">
-      <div class="figwrap" id="fig-blad"></div>
+      <div><div class="ctrl-row" style="margin-bottom:8px"><button class="btn on" id="blad-2d">Tekening</button><button class="btn" id="blad-3d">3D-model</button></div>
+        <div class="figwrap" id="fig-blad"></div>
+        <div class="figwrap" id="blad3d-wrap" style="display:none"><canvas id="blad3d" width="900" height="640" style="display:block;width:100%;height:auto;cursor:grab;touch-action:none"></canvas></div></div>
       <div class="controls" id="ctl-blad"></div>
+      <div class="controls" id="ctl-blad3d" style="display:none"></div>
     </div>
   </section>
 
   <section class="scene" id="p3" data-title="Huidmondjes" data-cat="water">
     <div class="scene-head"><span class="num">3</span><h3>Gasuitwisseling via de huidmondjes</h3></div>
-    <p class="scene-sub">Een huidmondje is een opening tussen twee boonvormige <strong>sluitcellen</strong>. Je kijkt hier van onder op de epidermis van een blad, door een microscoop. Verander de omstandigheden en kijk wat er gebeurt met de <strong>vacuole</strong>, de <strong>turgor</strong> en de opening.</p>
+    <p class="scene-sub">Een huidmondje is een opening tussen twee boonvormige <strong>sluitcellen</strong>. Je kijkt hier van onder op het dekweefsel van een blad, door een microscoop. Verander de omstandigheden en kijk wat er gebeurt met de <strong>vacuole</strong>, de <strong>turgor</strong> en de opening.</p>
     <div class="grid">
       <div class="canvas-wrap"><svg id="svg-stoma" viewBox="0 0 820 520" style="display:block;width:100%;height:auto"></svg></div>
       <div class="controls">
@@ -206,7 +209,7 @@ td.ok-cel{background:var(--ok-bg);} td.fout-cel{background:var(--flag-bg);}
 
   <section class="scene" id="p4" data-title="Stengel" data-cat="water">
     <div class="scene-head"><span class="num">4</span><h3>Aanpassingen van de stengel: dwarsdoorsnede</h3></div>
-    <p class="scene-sub">In de stengel liggen de <strong>vaatbundels</strong> in een kring. Elke vaatbundel bevat <strong>houtvaten</strong> (naar binnen) en <strong>zeefvaten</strong> (naar buiten). Daartussen ligt het <strong>deelweefsel</strong>: cellen die blijven delen, zodat de stengel dikker kan worden. Rond de vaatbundels liggen de <strong>cortex</strong> en de <strong>epidermis</strong>.</p>
+    <p class="scene-sub">In de stengel liggen de <strong>vaatbundels</strong> in een kring. Elke vaatbundel bevat <strong>houtvaten</strong> (naar binnen) en <strong>zeefvaten</strong> (naar buiten). Daartussen ligt het <strong>deelweefsel</strong>: cellen die blijven delen, zodat de stengel dikker kan worden. Rond de vaatbundels liggen de <strong>cortex</strong> en het <strong>dekweefsel</strong>.</p>
     <div class="grid">
       <div class="figwrap" id="fig-stengel"></div>
       <div class="controls" id="ctl-stengel"></div>
@@ -217,7 +220,7 @@ td.ok-cel{background:var(--ok-bg);} td.fout-cel{background:var(--flag-bg);}
 
   <section class="scene" id="p5" data-title="Wortel" data-cat="water">
     <div class="scene-head"><span class="num">5</span><h3>Aanpassingen van de wortel: dwarsdoorsnede</h3></div>
-    <p class="scene-sub">De <strong>wortelhaartjes</strong> zijn uitstulpingen van epidermiscellen. Ze vergroten de oppervlakte waarmee de wortel water en mineralen opneemt. Het water gaat door de <strong>cortex</strong> naar de <strong>houtvaten</strong> in het midden. In de wortel ligt één <strong>vaatbundel</strong> in het midden, met houtvaten en zeefvaten <strong>naast elkaar</strong>.</p>
+    <p class="scene-sub">De <strong>wortelhaartjes</strong> zijn uitstulpingen van cellen van het dekweefsel. Ze vergroten de oppervlakte waarmee de wortel water en mineralen opneemt. Het water gaat door de <strong>cortex</strong> naar de <strong>houtvaten</strong> in het midden. In de wortel ligt één <strong>vaatbundel</strong> in het midden, met houtvaten en zeefvaten <strong>naast elkaar</strong>.</p>
     <div class="grid">
       <div class="figwrap" id="fig-wortel"></div>
       <div class="controls" id="ctl-wortel"></div>
@@ -628,14 +631,106 @@ labelFig({wrap:'fig-plant',ctl:'ctl-plant',inner:PLANT.svg(),w:640,h:640,ml:150,
   ]});
 
 //////////////////// BLAD ////////////////////
-labelFig({wrap:'fig-blad',ctl:'ctl-blad',img:IMG.blad,w:900,h:897,ml:300,mr:300,fs:24,r:13,gap:44,
+labelFig({wrap:'fig-blad',ctl:'ctl-blad',img:IMG.blad,w:900,h:897,ml:300,mr:300,fs:26,r:24,gap:46,
   punten:[
-    {naam:'epidermis',x:70,y:240,kant:'l',info:'Eén laag doorzichtige cellen aan de boven- en onderkant van het blad. Ze <b>beschermt</b> het blad en laat het licht door. Een waslaagje erop beperkt de verdamping.'},
+    {naam:'dekweefsel',x:70,y:240,kant:'l',info:'Eén laag doorzichtige cellen aan de boven- en onderkant van het blad. Ze <b>beschermt</b> het blad en laat het licht door. Een waslaagje erop beperkt de verdamping.'},
     {naam:'vulweefsel',x:150,y:380,kant:'l',info:'Cellen vol <b>bladgroenkorrels</b>. Bovenaan staan ze dicht tegen elkaar (veel fotosynthese), onderaan liggen ze losser met luchtholtes ertussen voor de gasuitwisseling.'},
     {naam:'sluitcellen',x:280,y:762,kant:'l',info:'Twee boonvormige cellen die samen een huidmondje vormen. Ze kunnen het huidmondje <b>openen en sluiten</b>.'},
     {naam:'huidmondje',x:323,y:782,kant:'r',ly:820,info:'De opening tussen twee sluitcellen. Langs hier <b>komt CO₂ binnen</b> en gaan <b>O₂ en waterdamp naar buiten</b>.'},
     {naam:'vacuole',x:470,y:500,kant:'r',info:'Grote blaas met celvocht (vooral water). De druk van de vacuole tegen de celwand heet <b>turgor</b>.'},
   ],noot:'Tekening: Zephyris, Wikimedia Commons, CC BY-SA 3.0 (zonder Engelse namen).'});
+
+//////////////////// BLAD IN 3D ////////////////////
+(function(){
+  const cv=$('blad3d'), ctx=cv.getContext('2d'), CW=cv.width, CH=cv.height, ctl=$('ctl-blad3d');
+  const dpr=window.devicePixelRatio||1; cv.width=CW*dpr; cv.height=CH*dpr; ctx.scale(dpr,dpr);
+  $('blad-2d').onclick=()=>{ $('blad-2d').classList.add('on'); $('blad-3d').classList.remove('on'); $('fig-blad').style.display=''; $('ctl-blad').style.display=''; $('blad3d-wrap').style.display='none'; ctl.style.display='none'; };
+  $('blad-3d').onclick=()=>{ $('blad-3d').classList.add('on'); $('blad-2d').classList.remove('on'); $('fig-blad').style.display='none'; $('ctl-blad').style.display='none'; $('blad3d-wrap').style.display=''; ctl.style.display=''; teken(); };
+  const LAGEN=[
+    {id:'was', naam:'waslaagje', kleur:'#e0f2fe', info:'Een dun, doorzichtig <b>waslaagje</b> op het dekweefsel. Het laat geen water door en <b>beperkt de verdamping</b>.'},
+    {id:'dek', naam:'dekweefsel', kleur:'#bfe3c0', info:'Eén laag doorzichtige cellen aan de boven- en onderkant. Het <b>dekweefsel</b> beschermt het blad en laat het licht door.'},
+    {id:'pal', naam:'vulweefsel (dicht)', kleur:'#4caf50', info:'Bovenaan: lange cellen <b>dicht tegen elkaar</b>, vol bladgroenkorrels. Hier gebeurt de meeste <b>fotosynthese</b>.'},
+    {id:'spo', naam:'vulweefsel (los)', kleur:'#8bc34a', info:'Onderaan: losse, ronde cellen met <b>luchtholtes</b> ertussen. Zo kunnen CO₂, O₂ en waterdamp zich verspreiden.'},
+    {id:'nerf', naam:'vaatbundel (nerf)', kleur:'#f5deb3', info:'Een <b>nerf</b> is een vaatbundel in het blad.'},
+    {id:'hout', naam:'houtvaten', kleur:'#3b82f6', info:'<b>Houtvaten</b> brengen water en mineralen aan (bovenaan in de nerf).'},
+    {id:'zeef', naam:'zeefvaten', kleur:'#f59e0b', info:'<b>Zeefvaten</b> voeren de assimilaten (suikers) af (onderaan in de nerf).'},
+    {id:'sluit', naam:'sluitcellen en huidmondjes', kleur:'#15803d', info:'Onderaan in het dekweefsel: twee <b>sluitcellen</b> rond een <b>huidmondje</b>. Langs hier komt CO₂ binnen en gaan O₂ en waterdamp naar buiten.'},
+  ];
+  let sel=null, uit=0, yaw=-0.65, pitch=0.42, zoom=1, drag=null, auto=true;
+  // ----- model opbouwen: lijst van primitieven {soort:'box'|'bol'|'cil', laag, ...}, eenheden: x 0..10, z 0..6, y 0..6
+  const M=[];
+  const box=(laag,x0,y0,z0,x1,y1,z1,kleur,alfa=1)=>M.push({soort:'box',laag,a:[x0,y0,z0],b:[x1,y1,z1],kleur,alfa});
+  const bol=(laag,x,y,z,r,kleur,sy=1)=>M.push({soort:'bol',laag,c:[x,y,z],r,kleur,sy});
+  const cil=(laag,x,y,r,z0,z1,kleur,alfa=1)=>M.push({soort:'cil',laag,x,y,r,z0,z1,kleur,alfa});
+  box('was',0,6.0,0,10,6.12,6,'#e0f2fe',0.55); box('was',0,-0.12,0,10,0,6,'#e0f2fe',0.55);
+  for(let i=0;i<10;i++) for(let k=0;k<6;k++){ box('dek',i+0.03,5.45,k+0.03,i+0.97,6.0,k+0.97,'#cdebd0'); }
+  for(let i=0;i<10;i++) for(let k=0;k<6;k++){ const gat=(k===2||k===4)&&(i===2||i===7); if(gat) continue; box('dek',i+0.03,0,k+0.03,i+0.97,0.5,k+0.97,'#cdebd0'); }
+  for(let i=0;i<14;i++) for(let k=0;k<8;k++){ const x=0.15+i*0.7, z=0.15+k*0.72; box('pal',x,3.3,z,x+0.55,5.4,z+0.6,'#4caf50'); }
+  const rnd=(n)=>{ const v=Math.sin(n*12.9898)*43758.5453; return v-Math.floor(v); };
+  for(let i=0;i<9;i++) for(let k=0;k<5;k++){ const x=0.7+i*1.08+rnd(i*7+k)*0.25, z=0.7+k*1.15+rnd(k*3+i)*0.25, y=1.2+((i+k)%2)*1.1+rnd(i+k*11)*0.3; if(Math.abs(x-6.5)<1.3) continue; bol('spo',x,y,z,0.5+rnd(i*5+k)*0.12,'#8bc34a'); }
+  cil('nerf',6.5,1.9,1.15,0,6,'#f5deb3',0.45);
+  [[6.15,2.45],[6.55,2.55],[6.95,2.4]].forEach(([x,y])=>cil('hout',x,y,0.24,0,6,'#3b82f6'));
+  [[6.25,1.4],[6.75,1.35]].forEach(([x,y])=>cil('zeef',x,y,0.2,0,6,'#f59e0b'));
+  [[2.5,2.5],[2.5,4.5],[7.5,2.5],[7.5,4.5]].forEach(([x,z])=>{ for(const s of [-1,1]) for(let t=-1;t<=1;t++) bol('sluit',x+s*0.28-s*Math.abs(t)*0.08,0.28,z+t*0.3,0.2,'#15803d'); });
+  // ----- projectie
+  const laagIndex=Object.fromEntries(LAGEN.map((l,i)=>[l.id,i]));
+  const uitY={was:1.6,dek:1.0,pal:0.6,spo:0,nerf:0,hout:0,zeef:0,sluit:1.0};
+  function P(p,laag){ let [x,y,z]=p; x-=5; z-=3; y-=3; if(laag) y+=uit*(uitY[laag]||0)*(p[1]<3?-1:1)*(laag==='was'||laag==='dek'||laag==='sluit'?1:1);
+    const cy=Math.cos(yaw), sy=Math.sin(yaw), cp=Math.cos(pitch), sp=Math.sin(pitch);
+    const X=x*cy-z*sy, Z=x*sy+z*cy, Y=y*cp+Z*sp, D=-y*sp+Z*cp;
+    const f=26/(26+D), s=46*zoom; return {x:CW/2+X*f*s, y:CH/2-Y*f*s, d:D, f}; }
+  function kleurMix(hex,l){ const n=parseInt(hex.slice(1),16); let r=n>>16,g=(n>>8)&255,b=n&255; r=Math.min(255,r*l)|0; g=Math.min(255,g*l)|0; b=Math.min(255,b*l)|0; return `rgb(${r},${g},${b})`; }
+  const LICHT=[0.35,0.85,0.4]; const norm=v=>{const l=Math.hypot(...v); return v.map(x=>x/l);};
+  function roteer(n){ const cy=Math.cos(yaw), sy=Math.sin(yaw), cp=Math.cos(pitch), sp=Math.sin(pitch); const X=n[0]*cy-n[2]*sy, Z=n[0]*sy+n[2]*cy, Y=n[1]*cp+Z*sp, D=-n[1]*sp+Z*cp; return [X,Y,D]; }
+  function teken(){
+    const items=[];
+    M.forEach(m=>{
+      const zicht = sel? (m.laag===sel || (sel==='nerf' && (m.laag==='hout'||m.laag==='zeef'))) : true;
+      const alfaF = zicht?1:0.12;
+      if(m.soort==='box'){
+        const [x0,y0,z0]=m.a, [x1,y1,z1]=m.b;
+        const V=[[x0,y0,z0],[x1,y0,z0],[x1,y1,z0],[x0,y1,z0],[x0,y0,z1],[x1,y0,z1],[x1,y1,z1],[x0,y1,z1]].map(p=>P(p,m.laag));
+        const F=[[0,1,2,3,[0,0,-1]],[5,4,7,6,[0,0,1]],[4,0,3,7,[-1,0,0]],[1,5,6,2,[1,0,0]],[3,2,6,7,[0,1,0]],[4,5,1,0,[0,-1,0]]];
+        F.forEach(f=>{ const nr=roteer(f[4]); if(nr[2]>0.0001) return; // achterkant
+          const l=0.55+0.45*Math.max(0,f[4][0]*LICHT[0]+f[4][1]*LICHT[1]+f[4][2]*LICHT[2]);
+          const pts=f.slice(0,4).map(i=>V[i]); items.push({d:pts.reduce((a,p)=>a+p.d,0)/4, t:'poly', pts, kleur:kleurMix(m.kleur,l), alfa:m.alfa*alfaF}); });
+      } else if(m.soort==='bol'){
+        const c=P(m.c,m.laag); items.push({d:c.d, t:'bol', x:c.x, y:c.y, r:m.r*46*zoom*c.f, kleur:m.kleur, alfa:alfaF});
+      } else {
+        const N=16, ring=(z)=>Array.from({length:N},(_,k)=>P([m.x+m.r*Math.cos(k/N*2*Math.PI), m.y+m.r*Math.sin(k/N*2*Math.PI), z],m.laag));
+        const A=ring(m.z0), B=ring(m.z1);
+        for(let k=0;k<N;k++){ const k2=(k+1)%N, a=k/N*2*Math.PI+Math.PI/N, n=[Math.cos(a),Math.sin(a),0], nr=roteer(n); if(nr[2]>0.05 && m.alfa===1) continue;
+          const l=0.55+0.45*Math.max(0,n[0]*LICHT[0]+n[1]*LICHT[1]);
+          const pts=[A[k],A[k2],B[k2],B[k]]; items.push({d:pts.reduce((s,p)=>s+p.d,0)/4,t:'poly',pts,kleur:kleurMix(m.kleur,l),alfa:m.alfa*alfaF}); }
+        const front=roteer([0,0,-1])[2]<0?A:B; items.push({d:front.reduce((s,p)=>s+p.d,0)/N-0.01,t:'poly',pts:front,kleur:kleurMix(m.kleur,1.05),alfa:m.alfa*alfaF});
+      }
+    });
+    items.sort((a,b)=>b.d-a.d);
+    ctx.clearRect(0,0,CW,CH); ctx.fillStyle='#f8fafc'; ctx.fillRect(0,0,CW,CH);
+    items.forEach(it=>{ ctx.globalAlpha=it.alfa;
+      if(it.t==='poly'){ ctx.beginPath(); it.pts.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y)); ctx.closePath(); ctx.fillStyle=it.kleur; ctx.fill(); ctx.strokeStyle='rgba(20,60,30,0.35)'; ctx.lineWidth=0.8; ctx.stroke(); }
+      else { const g=ctx.createRadialGradient(it.x-it.r*0.35,it.y-it.r*0.35,it.r*0.1,it.x,it.y,it.r); g.addColorStop(0,'#ffffff'); g.addColorStop(0.25,it.kleur); g.addColorStop(1,kleurMix(it.kleur,0.55)); ctx.fillStyle=g; ctx.beginPath(); ctx.arc(it.x,it.y,it.r,0,7); ctx.fill(); }
+    });
+    ctx.globalAlpha=1;
+    ctx.fillStyle='#51606E'; ctx.font='600 14px Inter, sans-serif'; ctx.fillText('Sleep om te draaien · scroll om te zoomen',14,CH-14);
+  }
+  // ----- besturing
+  ctl.innerHTML=`<div class="ctrl-row"><button class="btn" id="b3-auto">⏸ Stop met draaien</button><button class="btn" id="b3-uit">Lagen uit elkaar</button></div>
+    <div class="chips" id="b3-chips">${LAGEN.map(l=>`<button class="chip" data-l="${l.id}" style="border-left:10px solid ${l.kleur}">${l.naam}</button>`).join('')}</div>
+    <div class="readout" id="b3-read">Klik op een weefsel om het apart te bekijken.</div>`;
+  const read=$('b3-read');
+  ctl.querySelectorAll('[data-l]').forEach(b=>b.onclick=()=>{ sel = sel===b.dataset.l?null:b.dataset.l; ctl.querySelectorAll('[data-l]').forEach(x=>x.classList.toggle('on',x.dataset.l===sel)); const L=LAGEN.find(l=>l.id===sel); read.innerHTML=L?`<b>${L.naam}</b><br>${L.info}`:'Klik op een weefsel om het apart te bekijken.'; teken(); });
+  let doelUit=0; $('b3-uit').onclick=()=>{ doelUit=doelUit?0:1; $('b3-uit').textContent=doelUit?'Lagen samen':'Lagen uit elkaar'; };
+  $('b3-auto').onclick=()=>{ auto=!auto; $('b3-auto').textContent=auto?'⏸ Stop met draaien':'⟳ Automatisch draaien'; };
+  cv.addEventListener('pointerdown',e=>{ drag={x:e.clientX,y:e.clientY}; cv.setPointerCapture(e.pointerId); auto=false; $('b3-auto').textContent='⟳ Automatisch draaien'; cv.style.cursor='grabbing'; });
+  cv.addEventListener('pointermove',e=>{ if(!drag) return; yaw+=(e.clientX-drag.x)*0.01; pitch=Math.max(-1.3,Math.min(1.3,pitch+(e.clientY-drag.y)*0.01)); drag={x:e.clientX,y:e.clientY}; teken(); });
+  cv.addEventListener('pointerup',()=>{ drag=null; cv.style.cursor='grab'; });
+  cv.addEventListener('wheel',e=>{ e.preventDefault(); zoom=Math.max(0.6,Math.min(2.2,zoom*(e.deltaY<0?1.1:0.9))); teken(); },{passive:false});
+  let last=performance.now();
+  (function lus(now){ const dt=Math.min(0.05,(now-last)/1000); last=now;
+    if($('blad3d-wrap').style.display!=='none' && $('p2').classList.contains('active')){ let ver=false; if(auto){ yaw+=dt*0.3; ver=true; } if(Math.abs(uit-doelUit)>0.001){ uit+=(doelUit-uit)*Math.min(1,dt*5); ver=true; } if(ver) teken(); }
+    requestAnimationFrame(lus); })(last);
+})();
 
 //////////////////// STENGEL ////////////////////
 (function(){
@@ -644,10 +739,10 @@ labelFig({wrap:'fig-blad',ctl:'ctl-blad',img:IMG.blad,w:900,h:897,ml:300,mr:300,
   const B2=STENGEL.bundels[7]; const a2=B2[2]*Math.PI/180, L2=(s,t)=>[B2[0]+Math.cos(a2)*s-Math.sin(a2)*t,B2[1]+Math.sin(a2)*s+Math.cos(a2)*t];
   const pol=(r,deg)=>[400+r*Math.cos(deg*Math.PI/180),400+r*Math.sin(deg*Math.PI/180)];
   const pt=(p)=>({x:p[0],y:p[1]});
-  labelFig({wrap:'fig-stengel',ctl:'ctl-stengel',inner:STENGEL.svg,w:800,h:800,ml:200,mr:330,fs:22,r:12,gap:42,
+  labelFig({wrap:'fig-stengel',ctl:'ctl-stengel',inner:STENGEL.svg,w:800,h:800,ml:200,mr:330,fs:24,r:22,gap:44,
     punten:[
-      {naam:'epidermis',...pt(pol(352,-62)),kant:'r',info:'De buitenste laag cellen. Ze beschermt de stengel. Aan de buitenkant ligt een waslaag (cuticula).'},
-      {naam:'cortex',...pt(pol(318,40)),kant:'r',info:'Laag vulweefsel tussen de epidermis en de vaatbundels. Ze geven steun en kunnen stoffen opslaan.'},
+      {naam:'dekweefsel',...pt(pol(352,-62)),kant:'r',info:'De buitenste laag cellen. Ze beschermt de stengel. Aan de buitenkant ligt een waslaagje.'},
+      {naam:'cortex',...pt(pol(318,40)),kant:'r',info:'Laag vulweefsel tussen het dekweefsel en de vaatbundels. Ze geven steun en kunnen stoffen opslaan.'},
       {naam:'vaatbundel',...pt(L2(2,-41)),kant:'r',info:'Een bundel met <b>houtvaten</b>, <b>deelweefsel</b> en <b>zeefvaten</b>. In de stengel liggen de vaatbundels in een <b>kring</b>.'},
       {naam:'zeefvaten',...pt(L(22,8)),kant:'r',info:'Levende cellen met zeefplaten. Ze vervoeren de <b>assimilaten</b> (vooral suikers) door de plant. Ze liggen aan de <b>buitenkant</b> van de vaatbundel.'},
       {naam:'deelweefsel',...pt(L3(-0.5,10)),kant:'r',info:'Cellen die blijven <b>delen</b>. Naar binnen maken ze nieuwe houtvaten, naar buiten nieuwe zeefvaten. Zo wordt de stengel dikker.'},
@@ -683,10 +778,10 @@ labelFig({wrap:'fig-blad',ctl:'ctl-blad',img:IMG.blad,w:900,h:897,ml:300,mr:300,
 })();
 
 //////////////////// WORTEL ////////////////////
-labelFig({wrap:'fig-wortel',ctl:'ctl-wortel',inner:`<g transform="translate(-60,-60) scale(1.15)">${WORTEL.svg}</g>`,w:800,h:800,ml:230,mr:250,fs:22,r:12,gap:42,
+labelFig({wrap:'fig-wortel',ctl:'ctl-wortel',inner:`<g transform="translate(-60,-60) scale(1.15)">${WORTEL.svg}</g>`,w:800,h:800,ml:230,mr:250,fs:24,r:22,gap:44,
   punten:[
-    {naam:'wortelhaartjes',x:-60+1.15*700,y:-60+1.15*262,kant:'r',info:'Een lange, dunne uitstulping van een epidermiscel. Duizenden wortelhaartjes geven een <b>grote oppervlakte</b> om water en mineralen op te nemen.'},
-    {naam:'epidermis',x:-60+1.15*636,y:-60+1.15*455,kant:'r',info:'De buitenste cellaag van de wortel. Sommige cellen vormen een wortelhaartje.'},
+    {naam:'wortelhaartjes',x:-60+1.15*700,y:-60+1.15*262,kant:'r',info:'Een lange, dunne uitstulping van een cel van het dekweefsel. Duizenden wortelhaartjes geven een <b>grote oppervlakte</b> om water en mineralen op te nemen.'},
+    {naam:'dekweefsel',x:-60+1.15*636,y:-60+1.15*455,kant:'r',info:'De buitenste cellaag van de wortel. Sommige cellen vormen een wortelhaartje.'},
     {naam:'cortex',x:-60+1.15*540,y:-60+1.15*560,kant:'r',info:'Grote cellen van het vulweefsel. Het water gaat door de cortex naar het midden van de wortel.'},
     {naam:'houtvaten',x:-60+1.15*430,y:-60+1.15*430,kant:'l',ly:450,info:'In het midden liggen de houtvaten in een <b>ster</b>. Ze vervoeren water en mineralen <b>omhoog</b> naar de stengel.'},
     {naam:'zeefvaten',x:-60+1.15*448,y:-60+1.15*400,kant:'r',ly:360,info:'Tussen de armen van de ster liggen de zeefvaten. Ze brengen <b>assimilaten</b> uit het blad naar de wortel.'},
@@ -738,7 +833,7 @@ labelFig({wrap:'fig-wortel',ctl:'ctl-wortel',inner:`<g transform="translate(-60,
       const kl=d.soort==='CO₂'?'#475569':d.soort==='O₂'?'#dc2626':'#2563eb';
       h+=`<g opacity="${op}"><circle cx="${x}" cy="${y}" r="13" fill="#fff" stroke="${kl}" stroke-width="2"/><text x="${x}" y="${y+4}" text-anchor="middle" font-size="10" font-weight="700" fill="${kl}">${d.soort}</text></g>`; });
     // labels
-    h+=`<g font-size="15" font-weight="700" fill="#1D2A36" stroke="#fff" stroke-width="4" paint-order="stroke"><text x="${C[0]-rxo-150}" y="120">sluitcel</text><text x="${C[0]+130}" y="470">opening</text><text x="40" y="490">epidermiscellen</text></g>
+    h+=`<g font-size="15" font-weight="700" fill="#1D2A36" stroke="#fff" stroke-width="4" paint-order="stroke"><text x="${C[0]-rxo-150}" y="120">sluitcel</text><text x="${C[0]+130}" y="470">opening</text><text x="40" y="490">cellen dekweefsel</text></g>
       <path d="M${C[0]-rxo-90},126 L${C[0]-rxo+10},${C[1]-40}" stroke="#1D2A36" stroke-width="1.5"/><path d="M${C[0]+128},464 L${C[0]+3},${C[1]+30}" stroke="#1D2A36" stroke-width="1.5"/>`;
     h+=`<g transform="translate(640,30)"><rect width="160" height="58" rx="8" fill="#fff" opacity=".9"/><text x="12" y="24" font-size="14" font-weight="700">turgor</text><rect x="12" y="34" width="136" height="12" rx="6" fill="#e2e8f0"/><rect x="12" y="34" width="${136*(0.15+0.85*o)}" height="12" rx="6" fill="#2563eb"/></g>`;
     s.innerHTML=h;
