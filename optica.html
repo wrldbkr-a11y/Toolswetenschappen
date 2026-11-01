@@ -206,10 +206,10 @@ footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-di
     <div class="scene-head"><span class="num">4</span><h3>Zonsverduistering en maansverduistering</h3></div>
     <p class="scene-sub">De maan draait rond de aarde. Staat de <strong>maan tussen de zon en de aarde</strong>, dan valt de schaduw van de maan op de aarde: een <strong>zonsverduistering</strong>. Staat de <strong>aarde tussen de zon en de maan</strong>, dan komt de maan in de schaduw van de aarde: een <strong>maansverduistering</strong>. De tekening is niet op schaal.</p>
     <div class="grid">
-      <div class="canvas-wrap"><canvas id="cz4" width="800" height="420"></canvas></div>
+      <div class="canvas-wrap"><canvas id="cz4" width="800" height="420"></canvas><div id="z4-3d" style="display:none;width:100%;aspect-ratio:800/420;border-radius:12px;overflow:hidden;cursor:grab"></div></div>
       <div class="controls">
         <div class="ctrl-group"><label>Plaats van de maan in haar baan</label><input type="range" id="z4-a" min="0" max="359" value="0"></div>
-        <div class="ctrl-group"><label>Maan iets boven of onder de lijn zon–aarde</label><input type="range" id="z4-h" min="-40" max="40" value="0"></div>
+        <div class="ctrl-group"><label>Maan iets boven of onder de lijn zon–aarde</label><input type="range" id="z4-h" min="-40" max="40" value="0"></div><div class="ctrl-group"><label>Aarde hoger of lager</label><input type="range" id="z4-e" min="-60" max="60" value="0"></div><div class="ctrl-row" style="flex-wrap:wrap"><button class="playbtn" id="z4-2d">2D: zijaanzicht</button><button class="playbtn secondary" id="z4-3dknop">3D: schaduwkegel</button></div><label class="row" style="display:flex;gap:6px;align-items:center;font-size:14px"><input type="checkbox" id="z4-stralen" checked> toon de 4 randstralen</label>
         <div class="ctrl-row" style="flex-wrap:wrap">
           <button class="playbtn secondary" id="z4-zon">zonsverduistering</button>
           <button class="playbtn secondary" id="z4-maan">maansverduistering</button>
@@ -2674,21 +2674,42 @@ function zOog(ctx,x,y,dir=-1){ ctx.save(); ctx.translate(x,y); ctx.scale(dir,1);
 
 //////////////////// Z4 — ZONS- EN MAANSVERDUISTERING ////////////////////
 (function(){
-  const {ctx,W,H}=zCanvas('cz4'); const aS=document.getElementById('z4-a'), hS=document.getElementById('z4-h'), read=document.getElementById('z4-read');
-  document.getElementById('z4-zon').onclick=()=>{ aS.value=0; hS.value=0; };
-  document.getElementById('z4-maan').onclick=()=>{ aS.value=180; hS.value=0; };
-  const S={x:70,y:210,r:50}, E={x:470,y:210,r:26}, RB=120, RM=14;
-  function kegels(B,kleurK,kleurB){ // kern- en bijschaduw achter lichaam B
+  const {c:cv,ctx,W,H}=zCanvas('cz4'); const aS=document.getElementById('z4-a'), hS=document.getElementById('z4-h'), eS=document.getElementById('z4-e'), read=document.getElementById('z4-read');
+  const chk=document.getElementById('z4-stralen'), box3=document.getElementById('z4-3d');
+  const b2=document.getElementById('z4-2d'), b3=document.getElementById('z4-3dknop');
+  let weergave='2d';
+  b2.onclick=()=>{ weergave='2d'; b2.classList.remove('secondary'); b3.classList.add('secondary'); cv.style.display=''; box3.style.display='none'; };
+  b3.onclick=()=>{ weergave='3d'; b3.classList.remove('secondary'); b2.classList.add('secondary'); cv.style.display='none'; box3.style.display='block'; init3d(); };
+  document.getElementById('z4-zon').onclick=()=>{ aS.value=0; hS.value=0; eS.value=0; };
+  document.getElementById('z4-maan').onclick=()=>{ aS.value=180; hS.value=0; eS.value=0; };
+  const S={x:70,y:210,r:50}, EX=470, Y0=210, ER=26, RB=120, RM=14;
+  function lichamen(){
+    const a=+aS.value*Math.PI/180, h=+hS.value, e=+eS.value;
+    const E={x:EX,y:Y0+e,r:ER};
+    const M={x:EX-RB*Math.cos(a), y:Y0+RB*0.32*Math.sin(a)+h, r:RM, z:RB*Math.sin(a), y3:Y0+h};
+    return {a,E,M};
+  }
+  function geom(B){ // kern- en bijschaduw achter lichaam B
     const dx=B.x-S.x, dy=B.y-S.y, d=Math.hypot(dx,dy), ux=dx/d, uy=dy/d, nx=-uy, ny=ux;
-    const L=760; // tot buiten beeld
     const ru=s=>B.r - s*(S.r-B.r)/d, rp=s=>B.r + s*(S.r+B.r)/d;
-    const sU=Math.min(L, d*B.r/(S.r-B.r));
-    const P=(s,r)=>[B.x+ux*s+nx*r, B.y+uy*s+ny*r];
-    ctx.fillStyle=kleurB; ctx.beginPath(); ctx.moveTo(...P(0,B.r)); ctx.lineTo(...P(L,rp(L))); ctx.lineTo(...P(L,-rp(L))); ctx.lineTo(...P(0,-B.r)); ctx.closePath(); ctx.fill();
-    ctx.fillStyle=kleurK; ctx.beginPath(); ctx.moveTo(...P(0,B.r)); ctx.lineTo(...P(sU,ru(sU))); ctx.lineTo(...P(sU,-ru(sU))); ctx.lineTo(...P(0,-B.r)); ctx.closePath(); ctx.fill();
+    const sU=d*B.r/(S.r-B.r);
     return {ux,uy,nx,ny,d,ru,rp,sU};
   }
-  function inSchaduw(K,B,X){ // hoe ligt cirkel X t.o.v. de schaduw van B (K = kegels)
+  function kegels(B,K){
+    const L=900, sK=Math.min(L,K.sU), P=(s,r)=>[B.x+K.ux*s+K.nx*r, B.y+K.uy*s+K.ny*r];
+    ctx.fillStyle='rgba(100,116,139,0.45)'; ctx.beginPath(); ctx.moveTo(...P(0,B.r)); ctx.lineTo(...P(L,K.rp(L))); ctx.lineTo(...P(L,-K.rp(L))); ctx.lineTo(...P(0,-B.r)); ctx.closePath(); ctx.fill();
+    ctx.fillStyle='rgba(0,0,0,0.85)'; ctx.beginPath(); ctx.moveTo(...P(0,B.r)); ctx.lineTo(...P(sK,K.ru(sK))); ctx.lineTo(...P(sK,-K.ru(sK))); ctx.lineTo(...P(0,-B.r)); ctx.closePath(); ctx.fill();
+  }
+  function randstralen(B,K){ // 4 stralen vanuit de rand van de zon langs de rand van B
+    const sP=(k)=>[S.x+K.nx*S.r*k, S.y+K.ny*S.r*k], bP=(k)=>[B.x+K.nx*B.r*k, B.y+K.ny*B.r*k];
+    const verleng=(p,q)=>{ const vx=q[0]-p[0], vy=q[1]-p[1], t=(W+50-p[0])/vx; return [p[0]+vx*t, p[1]+vy*t]; };
+    [[1,1,false],[-1,-1,false],[1,-1,true],[-1,1,true]].forEach(([ks,kb,gekruist])=>{
+      const p=sP(ks), q=bP(kb), e=verleng(p,q);
+      ctx.save(); ctx.strokeStyle=gekruist?'#fde68a':'#fbbf24'; ctx.lineWidth=1.6; if(gekruist) ctx.setLineDash([6,4]);
+      ctx.beginPath(); ctx.moveTo(...p); ctx.lineTo(...e); ctx.stroke(); ctx.restore();
+    });
+  }
+  function inSchaduw(K,B,X){
     const vx=X.x-B.x, vy=X.y-B.y, s=vx*K.ux+vy*K.uy, a=Math.abs(vx*K.nx+vy*K.ny);
     if(s<=0) return 'geen';
     const ru=K.ru(s), rp=K.rp(s);
@@ -2697,37 +2718,101 @@ function zOog(ctx,x,y,dir=-1){ ctx.save(); ctx.translate(x,y); ctx.scale(dir,1);
     if(a-X.r<rp) return 'bij';
     return 'geen';
   }
-  zLoop('z4',()=>{
-    const a=+aS.value*Math.PI/180, h=+hS.value;
-    const M={x:E.x-RB*Math.cos(a), y:E.y+RB*0.32*Math.sin(a)+h, r:RM};
-    ctx.clearRect(0,0,W,H); ctx.fillStyle='#0b1220'; ctx.fillRect(0,0,W,H);
-    for(let k=0;k<60;k++){ ctx.fillStyle='rgba(255,255,255,0.5)'; ctx.fillRect((k*137)%W,(k*71)%H,1.5,1.5); }
-    const KE=kegels(E,'rgba(0,0,0,0.75)','rgba(71,85,105,0.45)');
-    const KM=kegels(M,'rgba(0,0,0,0.8)','rgba(100,116,139,0.45)');
-    // zon
-    const g=ctx.createRadialGradient(S.x,S.y,10,S.x,S.y,S.r+20); g.addColorStop(0,'#fff7cc'); g.addColorStop(0.7,'#fbbf24'); g.addColorStop(1,'rgba(251,191,36,0)'); ctx.fillStyle=g; ctx.beginPath(); ctx.arc(S.x,S.y,S.r+20,0,Math.PI*2); ctx.fill();
-    zText(ctx,'zon',S.x,S.y+S.r+28,{size:13,weight:700,color:'#fde68a',align:'center'});
-    // maanbaan
-    ctx.strokeStyle='rgba(203,213,225,0.35)'; ctx.setLineDash([4,6]); ctx.beginPath(); ctx.ellipse(E.x,E.y,RB,RB*0.32,0,0,Math.PI*2); ctx.stroke(); ctx.setLineDash([]);
-    const tekenAarde=()=>{ ctx.fillStyle='#3b82f6'; ctx.beginPath(); ctx.arc(E.x,E.y,E.r,0,Math.PI*2); ctx.fill(); ctx.fillStyle='rgba(0,0,0,0.45)'; ctx.beginPath(); ctx.arc(E.x,E.y,E.r,-Math.PI/2,Math.PI/2); ctx.fill(); zText(ctx,'aarde',E.x,E.y+E.r+18,{size:13,weight:700,color:'#bfdbfe',align:'center'}); };
-    const st=inSchaduw(KE,E,M);
-    const tekenMaan=()=>{ ctx.fillStyle=st==='volledig kern'?'#9a3412':st==='deels kern'?'#b45309':st==='bij'?'#94a3b8':'#e2e8f0'; ctx.beginPath(); ctx.arc(M.x,M.y,M.r,0,Math.PI*2); ctx.fill(); zText(ctx,'maan',M.x,M.y-M.r-6,{size:12,weight:700,color:'#e2e8f0',align:'center'}); };
-    if(Math.sin(a)<0){ tekenMaan(); tekenAarde(); } else { tekenAarde(); tekenMaan(); }
-    // beoordelen
-    const maanVoor = M.x<E.x;
-    let html='';
+  function beoordeel(E,M,KE,KM){
+    const maanVoor = M.x<E.x, st=inSchaduw(KE,E,M);
     if(maanVoor){
       const z=inSchaduw(KM,M,E);
-      if(z==='volledig kern'||z==='deels kern') html='<span class="ok">Zonsverduistering!</span><br><span class="k">Wie in de <b>kernschaduw</b> van de maan staat, ziet een <b>totale</b> zonsverduistering: de maan bedekt de hele zon. Wie in de <b>bijschaduw</b> staat, ziet een <b>gedeeltelijke</b> zonsverduistering: de maan bedekt maar een deel van de zon.</span>';
-      else if(z==='bij') html='<span class="ok">Gedeeltelijke zonsverduistering.</span><br><span class="k">Alleen de <b>bijschaduw</b> van de maan valt op de aarde. Daar zien de mensen maar een deel van de zon bedekt.</span>';
-      else html='<span class="k">De maan staat aan de kant van de zon, maar haar schaduw mist de aarde: <b>geen verduistering</b> (nieuwe maan).</span>';
-    } else {
-      if(st==='volledig kern') html='<span class="ok">Totale maansverduistering.</span><br><span class="k">De maan zit helemaal in de <b>kernschaduw</b> van de aarde. Ze wordt donker roodbruin: alleen wat licht dat door de atmosfeer van de aarde gebroken wordt, bereikt haar nog.</span>';
-      else if(st==='deels kern') html='<span class="ok">Gedeeltelijke maansverduistering.</span><br><span class="k">Een deel van de maan zit in de <b>kernschaduw</b> van de aarde.</span>';
-      else if(st==='bij') html='<span class="ok">Gedeeltelijke (bijschaduw)maansverduistering.</span><br><span class="k">De maan zit in de <b>bijschaduw</b> van de aarde: ze wordt maar een beetje donkerder.</span>';
-      else html='<span class="k">De maan valt niet in de schaduw van de aarde: <b>geen verduistering</b>.</span>';
+      if(z==='volledig kern'||z==='deels kern') return '<span class="ok">Zonsverduistering!</span><br><span class="k">Alleen wie in de <b>kernschaduw</b> van de maan staat (een klein gebied op aarde), ziet een <b>totale</b> zonsverduistering. Wie in de <b>bijschaduw</b> staat, ziet een <b>gedeeltelijke</b> zonsverduistering.</span>';
+      if(z==='bij') return '<span class="ok">Gedeeltelijke zonsverduistering.</span><br><span class="k">De kernschaduw mist de aarde; alleen de <b>bijschaduw</b> van de maan valt op de aarde.</span>';
+      return '<span class="k">De schaduw van de maan mist de aarde: <b>geen verduistering</b>.</span>';
     }
-    read.innerHTML=html;
+    if(st==='volledig kern') return '<span class="ok">Totale maansverduistering.</span><br><span class="k">De maan zit helemaal in de <b>kernschaduw</b> van de aarde.</span>';
+    if(st==='deels kern') return '<span class="ok">Gedeeltelijke maansverduistering.</span><br><span class="k">Een deel van de maan zit in de <b>kernschaduw</b> van de aarde.</span>';
+    if(st==='bij') return '<span class="ok">Bijschaduwverduistering.</span><br><span class="k">De maan zit alleen in de <b>bijschaduw</b> van de aarde: ze wordt maar een beetje donkerder.</span>';
+    return '<span class="k">De maan valt niet in de schaduw van de aarde: <b>geen verduistering</b>.</span>';
+  }
+
+  // ---------------- 3D ----------------
+  let R3=null;
+  function init3d(){
+    if(R3 || typeof THREE==='undefined'){ if(typeof THREE==='undefined') box3.innerHTML='<div style="padding:20px;color:#cbd5e1">De 3D-bibliotheek kon niet geladen worden.</div>'; return; }
+    const w=box3.clientWidth||800, h=box3.clientHeight||420;
+    const scene=new THREE.Scene(); scene.background=new THREE.Color(0x475569);
+    const camera=new THREE.PerspectiveCamera(40,w/h,1,5000);
+    const renderer=new THREE.WebGLRenderer({antialias:true}); renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2)); renderer.setSize(w,h); box3.appendChild(renderer.domElement); box3.style.position='relative'; const tip=document.createElement('div'); tip.textContent='Sleep om te draaien · scroll om te zoomen'; tip.style.cssText='position:absolute;left:12px;bottom:10px;color:#e2e8f0;font:600 12px Inter,sans-serif;pointer-events:none'; box3.appendChild(tip);
+    scene.add(new THREE.AmbientLight(0xffffff,0.25));
+    const zonlicht=new THREE.PointLight(0xffffff,1.6,0); scene.add(zonlicht);
+    const zon=new THREE.Mesh(new THREE.SphereGeometry(S.r,32,24), new THREE.MeshBasicMaterial({color:0xfde047})); scene.add(zon);
+    const aarde=new THREE.Mesh(new THREE.SphereGeometry(ER,48,32), new THREE.MeshLambertMaterial({color:0x3b82f6})); scene.add(aarde);
+    const maan=new THREE.Mesh(new THREE.SphereGeometry(RM,32,24), new THREE.MeshLambertMaterial({color:0xcbd5e1})); scene.add(maan);
+    const baan=new THREE.Line(new THREE.BufferGeometry().setFromPoints(Array.from({length:97},(_,k)=>new THREE.Vector3(RB*Math.cos(k/96*2*Math.PI),0,RB*Math.sin(k/96*2*Math.PI)))), new THREE.LineDashedMaterial({color:0x94a3b8,dashSize:6,gapSize:6})); baan.computeLineDistances(); scene.add(baan);
+    const kernMat=new THREE.MeshBasicMaterial({color:0x000000,transparent:true,opacity:0.85,depthWrite:false,side:THREE.DoubleSide});
+    const bijMat=new THREE.MeshBasicMaterial({color:0x1e293b,transparent:true,opacity:0.35,depthWrite:false,side:THREE.DoubleSide});
+    const kern=new THREE.Mesh(new THREE.BufferGeometry(),kernMat), bij=new THREE.Mesh(new THREE.BufferGeometry(),bijMat); scene.add(bij); scene.add(kern);
+    const vlek=new THREE.Mesh(new THREE.CircleGeometry(1,32), new THREE.MeshBasicMaterial({color:0x000000,side:THREE.DoubleSide})); scene.add(vlek);
+    const sph={r:560,th:0.45,ph:1.2}; let drag=null;
+    box3.addEventListener('pointerdown',e=>{ drag={x:e.clientX,y:e.clientY}; box3.setPointerCapture(e.pointerId); box3.style.cursor='grabbing'; });
+    box3.addEventListener('pointermove',e=>{ if(!drag) return; sph.th-=(e.clientX-drag.x)*0.008; sph.ph=Math.max(0.15,Math.min(Math.PI-0.15,sph.ph-(e.clientY-drag.y)*0.008)); drag={x:e.clientX,y:e.clientY}; });
+    box3.addEventListener('pointerup',()=>{ drag=null; box3.style.cursor='grab'; });
+    box3.addEventListener('wheel',e=>{ e.preventDefault(); sph.r=Math.max(250,Math.min(1400,sph.r*(e.deltaY>0?1.1:0.9))); },{passive:false});
+    // kegel (afgeknot) langs as van p0 met straal r0 tot p1 met straal r1
+    function kegelGeo(p0,p1,r0,r1){
+      const as=new THREE.Vector3().subVectors(p1,p0), L=as.length(), g=new THREE.CylinderGeometry(Math.max(r1,0.01),Math.max(r0,0.01),L,48,1,true);
+      g.translate(0,L/2,0); g.applyMatrix4(new THREE.Matrix4().makeRotationFromQuaternion(new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0,1,0),as.clone().normalize()))); g.translate(p0.x,p0.y,p0.z); return g;
+    }
+    R3={scene,camera,renderer,aarde,maan,zon,zonlicht,kern,bij,vlek,sph,kegelGeo,baan};
+  }
+  function teken3d(E,M){
+    const {scene,camera,renderer,aarde,maan,zon,zonlicht,kern,bij,vlek,sph,kegelGeo,baan}=R3;
+    const w=box3.clientWidth, h=box3.clientHeight; if(renderer.domElement.width!==Math.round(w*renderer.getPixelRatio())){ renderer.setSize(w,h); camera.aspect=w/h; camera.updateProjectionMatrix(); }
+    // 3D-coördinaten: x = 2D x - EX, y = -(2D y - Y0), z uit de maanbaan
+    const v=(x,y,z=0)=>new THREE.Vector3(x-EX,-(y-Y0),z);
+    const Sv=v(S.x,S.y), Ev=v(E.x,E.y), Mv=v(M.x,M.y3,M.z);
+    zon.position.copy(Sv); zonlicht.position.copy(Sv); aarde.position.copy(Ev); maan.position.copy(Mv); baan.position.set(0,-(M.y3-Y0),0);
+    const maanVoor=M.x<E.x, B=maanVoor?Mv:Ev, Br=maanVoor?RM:ER, X=maanVoor?Ev:Mv, Xr=maanVoor?ER:RM;
+    const as=new THREE.Vector3().subVectors(B,Sv), d=as.length(), u=as.clone().normalize();
+    const sU=d*Br/(S.r-Br), L=new THREE.Vector3().subVectors(X,B).length()+Xr+90;
+    const top=B.clone().addScaledVector(u,Math.min(sU,L));
+    kern.geometry.dispose(); kern.geometry=kegelGeo(B,top,Br,Math.max(0,Br-Math.min(sU,L)*(S.r-Br)/d));
+    bij.geometry.dispose(); bij.geometry=kegelGeo(B,B.clone().addScaledVector(u,L),Br,Br+L*(S.r+Br)/d);
+    // donkere vlek waar de as van de kernschaduw het andere lichaam raakt
+    const w2=new THREE.Vector3().subVectors(X,B), s=w2.dot(u), afst=w2.clone().addScaledVector(u,-s).length();
+    vlek.visible=false;
+    if(maanVoor && afst<Xr){
+      const tHit=s-Math.sqrt(Xr*Xr-afst*afst), ruHit=Br-tHit*(S.r-Br)/d;
+      if(tHit>0 && ruHit>0){
+        const P=B.clone().addScaledVector(u,tHit), n=new THREE.Vector3().subVectors(P,X).normalize();
+        vlek.visible=true; vlek.scale.setScalar(Math.max(ruHit,1.5));
+        vlek.position.copy(X.clone().addScaledVector(n,Xr*1.01)); vlek.lookAt(X.clone().addScaledVector(n,Xr*3));
+      }
+    }
+    camera.position.set(sph.r*Math.sin(sph.ph)*Math.sin(sph.th), sph.r*Math.cos(sph.ph), sph.r*Math.sin(sph.ph)*Math.cos(sph.th)).add(new THREE.Vector3(-170,0,0));
+    camera.lookAt(-170,0,0);
+    renderer.render(scene,camera);
+  }
+
+  zLoop('z4',()=>{
+    const {a,E,M}=lichamen();
+    const KE=geom(E), KM=geom(M), maanVoor=M.x<E.x;
+    read.innerHTML=beoordeel(E,M,KE,KM);
+    if(weergave==='3d'){ if(R3) teken3d(E,M); return; }
+    ctx.clearRect(0,0,W,H); ctx.fillStyle='#0b1220'; ctx.fillRect(0,0,W,H);
+    for(let k=0;k<60;k++){ ctx.fillStyle='rgba(255,255,255,0.5)'; ctx.fillRect((k*137)%W,(k*71)%H,1.5,1.5); }
+    // alleen de schaduw van het lichaam dat het dichtst bij de zon staat
+    const B=maanVoor?M:E, K=maanVoor?KM:KE;
+    kegels(B,K);
+    if(chk.checked) randstralen(B,K);
+    const g=ctx.createRadialGradient(S.x,S.y,10,S.x,S.y,S.r+20); g.addColorStop(0,'#fff7cc'); g.addColorStop(0.7,'#fbbf24'); g.addColorStop(1,'rgba(251,191,36,0)'); ctx.fillStyle=g; ctx.beginPath(); ctx.arc(S.x,S.y,S.r+20,0,Math.PI*2); ctx.fill();
+    zText(ctx,'zon',S.x,S.y+S.r+28,{size:13,weight:700,color:'#fde68a',align:'center'});
+    ctx.strokeStyle='rgba(203,213,225,0.35)'; ctx.setLineDash([4,6]); ctx.beginPath(); ctx.ellipse(E.x,M.y3,RB,RB*0.32,0,0,Math.PI*2); ctx.stroke(); ctx.setLineDash([]);
+    const st=inSchaduw(KE,E,M);
+    const tekenAarde=()=>{ ctx.fillStyle='#3b82f6'; ctx.beginPath(); ctx.arc(E.x,E.y,E.r,0,Math.PI*2); ctx.fill(); ctx.fillStyle='rgba(0,0,0,0.45)'; ctx.beginPath(); ctx.arc(E.x,E.y,E.r,-Math.PI/2,Math.PI/2); ctx.fill();
+      if(maanVoor){ const z=inSchaduw(KM,M,E); if(z==='volledig kern'||z==='deels kern'){ // kernschaduwvlek op de aarde
+        const s=(E.x-E.r-M.x)*KM.ux, ru=Math.max(2,KM.ru(s)); ctx.fillStyle='#000'; ctx.beginPath(); ctx.ellipse(E.x-E.r+3, M.y+KM.uy/KM.ux*(E.x-E.r-M.x), 3, ru, 0, 0, Math.PI*2); ctx.fill(); } }
+      zText(ctx,'aarde',E.x,E.y+E.r+18,{size:13,weight:700,color:'#bfdbfe',align:'center'}); };
+    const tekenMaan=()=>{ ctx.fillStyle=st==='volledig kern'?'#9a3412':st==='deels kern'?'#b45309':st==='bij'?'#94a3b8':'#e2e8f0'; ctx.beginPath(); ctx.arc(M.x,M.y,M.r,0,Math.PI*2); ctx.fill(); zText(ctx,'maan',M.x,M.y-M.r-6,{size:12,weight:700,color:'#e2e8f0',align:'center'}); };
+    if(Math.sin(a)<0){ tekenMaan(); tekenAarde(); } else { tekenAarde(); tekenMaan(); }
+    if(chk.checked){ zText(ctx,'volle lijn: randstralen kernschaduw · stippellijn: randstralen bijschaduw',W/2,H-12,{size:12,weight:600,color:'#94a3b8',align:'center'}); }
   });
 })();
 
