@@ -591,6 +591,7 @@ footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-di
           <label id="s10-do-label">Voorwerpsafstand</label>
           <input type="range" id="s10-do" min="0" max="7" step="1" value="4">
         </div>
+          <div class="ctrl-group"><label id="s10-p-label">Vertrekpunt van de stralen</label><input type="range" id="s10-p" min="1" max="4" step="1" value="4"><div class="note" style="margin-top:4px">Of klik op de pijl. Uit elk punt van de pijl vertrekken stralen; samen vormen ze het beeldpunt P'.</div></div>
         <div class="ctrl-row">
           <button class="playbtn" id="s10-mode-principal">3 hoofdstralen</button>
           <button class="playbtn secondary" id="s10-mode-all">alle stralen</button>
@@ -1541,6 +1542,9 @@ function snellRefractDeg(n1,n2,i){
   const f=90, ho=55;
   const Ds=[0.5,0.7,1.0,1.5,2.0,2.5,3.0,4.0];
 
+  const pSlider=document.getElementById('s10-p'), pLabel=document.getElementById('s10-p-label');
+  const PUNT={4:['de top van de pijl',1],3:['3/4 van de hoogte',0.75],2:['het midden van de pijl',0.5],1:['1/4 van de hoogte',0.25]};
+  function frac(){ return PUNT[+pSlider.value][1]; }
   const slider=document.getElementById('s10-do'), doLabel=document.getElementById('s10-do-label'), read=document.getElementById('s10-read');
   const btnP=document.getElementById('s10-mode-principal'), btnA=document.getElementById('s10-mode-all');
   let mode='principal';
@@ -1566,8 +1570,10 @@ function snellRefractDeg(n1,n2,i){
     const xi=atFocus? Infinity : f*D/(D-1);
     const hi=atFocus? NaN : ho/(1-D);
     // richting waarin alle stralen evenwijdig vertrekken als het voorwerp precies in F1 staat
-    const collimatedDir={x:f,y:-ho};
-    return {D,xo,xi,hi,real:!atFocus && xi>0,atFocus,collimatedDir};
+    const hp=ho*frac();                       // hoogte van het gekozen vertrekpunt P op de pijl
+    const hip=atFocus? NaN : hp/(1-D);         // hoogte van het beeldpunt P'
+    const collimatedDir={x:f,y:-hp};
+    return {D,xo,xi,hi,hp,hip,real:!atFocus && xi>0,atFocus,collimatedDir};
   }
 
   function rayPath(hCross,xi,hi,atFocus,collimatedDir){
@@ -1630,18 +1636,18 @@ function snellRefractDeg(n1,n2,i){
   }
 
   function draw(){
-    const {D,xo,xi,hi,real,atFocus,collimatedDir} = geo();
+    const {D,xo,xi,hi,hp,hip,real,atFocus,collimatedDir} = geo();
     clear(ctx,W,H);
     ctx.save(); ctx.strokeStyle='#31404f'; ctx.lineWidth=1.6; ctx.beginPath(); ctx.moveTo(20,axisY); ctx.lineTo(W-20,axisY); ctx.stroke(); ctx.restore();
     drawLens();
     drawPoint(lensX-f,axisY,'F1'); drawPoint(lensX+f,axisY,'F2'); drawPoint(lensX,axisY,'O');
 
-    const P={x:xo,y:ho};
+    const P={x:xo,y:hp};
     let rayDefs;
     if(mode==='principal'){
       rayDefs = atFocus
-        ? [{k:1,h:ho,color:'#ff8a1e',alpha:0.85,width:2.3},{k:2,h:0,color:'#00d9b0',alpha:0.85,width:2.3}]
-        : [{k:1,h:ho,color:'#ff8a1e',alpha:0.85,width:2.3},{k:2,h:0,color:'#00d9b0',alpha:0.85,width:2.3},{k:3,h:hi,color:'#8b5cf6',alpha:0.85,width:2.3}];
+        ? [{k:1,h:hp,color:'#ff8a1e',alpha:0.85,width:2.3},{k:2,h:0,color:'#00d9b0',alpha:0.85,width:2.3}]
+        : [{k:1,h:hp,color:'#ff8a1e',alpha:0.85,width:2.3},{k:2,h:0,color:'#00d9b0',alpha:0.85,width:2.3},{k:3,h:hip,color:'#8b5cf6',alpha:0.85,width:2.3}];
     } else {
       rayDefs=[];
       const N=13;
@@ -1649,14 +1655,14 @@ function snellRefractDeg(n1,n2,i){
         const h=-lensHalf*0.86 + (lensHalf*1.72)*(k/(N-1));
         rayDefs.push({h,color:'#ffc98a',alpha:0.3,width:1.4});
       }
-      rayDefs.push({k:1,h:ho,color:'#ff8a1e',alpha:0.95,width:2.3});
+      rayDefs.push({k:1,h:hp,color:'#ff8a1e',alpha:0.95,width:2.3});
       rayDefs.push({k:2,h:0,color:'#00d9b0',alpha:0.95,width:2.3});
-      if(!atFocus) rayDefs.push({k:3,h:hi,color:'#8b5cf6',alpha:0.95,width:2.3});
+      if(!atFocus) rayDefs.push({k:3,h:hip,color:'#8b5cf6',alpha:0.95,width:2.3});
     }
 
     rayDefs.forEach(rd=>{
       if(rd.k && !toonStraal(rd.k)) return;
-      const path=rayPath(rd.h,xi,hi,atFocus,collimatedDir);
+      const path=rayPath(rd.h,xi,hip,atFocus,collimatedDir);
       const Pc=toC(P.x,P.y), enterC=toC(path.enter.x,path.enter.y), outC=toC(path.outEnd.x,path.outEnd.y);
       glowLine(ctx,Pc.x,Pc.y,enterC.x,enterC.y,rd.color,rd.width,rd.alpha,7);
       glowLine(ctx,enterC.x,enterC.y,outC.x,outC.y,rd.color,rd.width,rd.alpha,7);
@@ -1668,7 +1674,7 @@ function snellRefractDeg(n1,n2,i){
 
     // voorwerp tussen F1 en de lens: toon dat straal 3 uit de richting van F1 komt
     if(!atFocus && D<1 && toonStraal(3)){
-      const F1c=toC(-f,0), Tc=toC(xo,ho);
+      const F1c=toC(-f,0), Tc=toC(xo,hp);
       dashedSeg(F1c.x,F1c.y,Tc.x,Tc.y,'#8b5cf6',1.6,0.55);
     }
     // wat doet elke getoonde straal: korte notitie op het canvas + uitleg in het paneel
@@ -1703,7 +1709,11 @@ function snellRefractDeg(n1,n2,i){
       const IcBase=toC(xi,0), IcTip=toC(xi,hi);
       drawArrowObj(IcBase.x,IcBase.y,IcTip.y, real?'#00d9b0':'#c23854', !real, real?0.95:0.8);
       labelNear(IcTip.x,IcTip.y, real?'beeld (reëel)':'beeld (virtueel)');
+      if(frac()<1){ const Q=toC(xi,hip); ctx.save(); ctx.fillStyle='#c2410c'; ctx.beginPath(); ctx.arc(Q.x,Q.y,5,0,Math.PI*2); ctx.fill();
+        ctx.font='700 13px Inter, sans-serif'; ctx.textAlign='left'; ctx.fillText("P'",Q.x+8,Q.y+4); ctx.restore(); }
     }
+    if(frac()<1){ const Pp=toC(xo,hp); ctx.save(); ctx.fillStyle='#c2410c'; ctx.beginPath(); ctx.arc(Pp.x,Pp.y,5,0,Math.PI*2); ctx.fill();
+      ctx.font='700 13px Inter, sans-serif'; ctx.textAlign='right'; ctx.fillText('P',Pp.x-8,Pp.y+4); ctx.restore(); }
 
     if(!allesAan){
       read.innerHTML = `<span class="k">voorwerpsafstand do</span> <span class="v">${atFocus?'1,00 × f (in F1)':D.toFixed(2)+' × f'}</span><br>`+
@@ -1729,10 +1739,10 @@ function snellRefractDeg(n1,n2,i){
     return makeTraveler(()=>{
       const g=geo();
       if(which==='ray3' && g.atFocus) return null;
-      const P={x:g.xo,y:ho};
+      const P={x:g.xo,y:g.hp};
       let hVal;
-      if(which==='ray1') hVal=ho; else if(which==='ray2') hVal=0; else hVal=g.hi;
-      const path=rayPath(hVal,g.xi,g.hi,g.atFocus,g.collimatedDir);
+      if(which==='ray1') hVal=g.hp; else if(which==='ray2') hVal=0; else hVal=g.hip;
+      const path=rayPath(hVal,g.xi,g.hip,g.atFocus,g.collimatedDir);
       const Pc=toC(P.x,P.y), enterC=toC(path.enter.x,path.enter.y), outC=toC(path.outEnd.x,path.outEnd.y);
       return [Pc,enterC,outC];
     }, 230, color, 5, null, 550);
@@ -1744,7 +1754,16 @@ function snellRefractDeg(n1,n2,i){
   slider.addEventListener('input',()=>{ updateDoLabel(); draw(); });
   btnP.addEventListener('click',()=>{ setMode('principal'); draw(); });
   btnA.addEventListener('click',()=>{ setMode('all'); draw(); });
-  setMode('principal'); updateDoLabel();
+  function updatePLabel(){ pLabel.textContent = 'Vertrekpunt van de stralen: '+PUNT[+pSlider.value][0]; }
+  pSlider.addEventListener('input',()=>{ updatePLabel(); draw(); });
+  // klik op de pijl om het vertrekpunt te kiezen
+  canvas.addEventListener('pointerdown',e=>{
+    const r=canvas.getBoundingClientRect(), x=(e.clientX-r.left)*W/r.width, y=(e.clientY-r.top)*H/r.height;
+    const g=geo(), B=toC(g.xo,0);
+    if(Math.abs(x-B.x)>18 || y>axisY+6 || y<axisY-ho-14) return;
+    const fr=Math.max(0,Math.min(1,(axisY-y)/ho)); pSlider.value=Math.max(1,Math.min(4,Math.round(fr*4))); updatePLabel(); draw();
+  });
+  setMode('principal'); updateDoLabel(); updatePLabel();
 
   function loop(now){
     if(document.getElementById('s10').classList.contains('active')){

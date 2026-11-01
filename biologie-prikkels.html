@@ -1027,10 +1027,10 @@ labelFig({wrap:'fig-oog',ctl:'ctl-oog',img:IMG.oog,w:900,h:791,ml:400,mr:260,fs:
     // voorwerp: kaars
     s+=`<rect x="-212" y="380" width="24" height="90" rx="4" fill="#f4e7c6" stroke="#b08b4a" stroke-width="2"/><path d="M-200,380 q-10,-22 0,-40 q10,18 0,40z" fill="#f59e0b"/><text x="-200" y="500" text-anchor="middle" font-size="18" font-weight="700" fill="#1D2A36">voorwerp</text>`;
     const top=[-200,345], bot=[-200,470];
-    const paden=[[top,[22,365],[113,375],[176,378],[650,445]],[top,[22,350],[113,350],[176,355],[650,445]],[bot,[22,420],[113,412],[176,410],[650,300]],[bot,[22,438],[113,438],[176,432],[650,300]]];
+    const paden=[[top,[22,365],[113,375],[176,378],[650,420]],[top,[22,350],[113,350],[176,355],[650,420]],[bot,[22,420],[113,412],[176,410],[650,340]],[bot,[22,438],[113,438],[176,432],[650,340]]];
     const grens=xmax+(stap>0?0:0);
     paden.forEach(p=>{ let d=`M${p[0]}`; for(let i=1;i<p.length;i++){ const [x0,y0]=p[i-1],[x1,y1]=p[i]; if(x0>=grens) break; if(x1<=grens) d+=` L${x1},${y1}`; else { const u=(grens-x0)/(x1-x0); d+=` L${x0+(x1-x0)*u},${y0+(y1-y0)*u}`; break; } } s+=`<path d="${d}" fill="none" stroke="#f59e0b" stroke-width="3.5" opacity=".9"/>`; });
-    if(stap>=5){ s+=`<g opacity="${anim}"><path d="M650,445 L650,300" stroke="#b45309" stroke-width="4"/><path d="M650,445 l-9,-14 l18,0z" fill="#b45309"/><text x="590" y="380" text-anchor="end" font-size="17" font-weight="700" fill="#7c2d12" stroke="#fff" stroke-width="4" paint-order="stroke">omgekeerd beeld</text></g>`; }
+    if(stap>=5){ s+=`<g opacity="${anim}"><rect x="645" y="340" width="10" height="57.6" rx="2" fill="#f4e7c6" stroke="#b08b4a" stroke-width="1.5"/><path d="M650,397.6 q-6.4,14 0,25.6 q6.4,-11.5 0,-25.6z" fill="#f59e0b"/><text x="590" y="380" text-anchor="end" font-size="17" font-weight="700" fill="#7c2d12" stroke="#fff" stroke-width="4" paint-order="stroke">omgekeerd beeld</text></g>`; }
     if(stap>=6){ for(let i=0;i<4;i++){ const u=((now/1000)*0.7+i/4)%1; s+=`<circle cx="${650+u*180}" cy="${512+u*70}" r="6" fill="#7c3aed" opacity="${1-u*0.5}"/>`; } s+=`<text x="860" y="660" text-anchor="end" font-size="17" font-weight="700" fill="#7c3aed" stroke="#fff" stroke-width="4" paint-order="stroke">impulsen naar de hersenen</text>`; }
     const p=OOGPUNTEN.find(q=>q.naam.startsWith(ST[stap][0].split(' ')[0]));
     if(p) s+=`<circle cx="${p.x}" cy="${p.y}" r="${16+3*Math.sin(now/200)}" fill="none" stroke="#d97706" stroke-width="4"/>`;
