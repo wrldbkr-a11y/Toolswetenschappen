@@ -152,6 +152,7 @@ function kaart(k, modus){
     <p>Maak deze oefeningen uit de cursus, <b>met je cursus dicht</b>:</p>
     <ul>${k.oef.map(([n, t]) => `<li>Oefening ${n} · ${e(t)}</li>`).join('')}</ul>
     <p>Kijk daarna na met de oplossingen in de cursus. Verbeter <b>in het groen</b>.</p>
+    ${na ? '' : `<p>${sNaam('fouten')} Had je een oefening fout? Schrijf er in het groen bij <b>waarom</b> het fout was. Bv. <i>Ik had fout omdat …</i> of <i>Ik vergat dat …</i></p>`}
     <div class="links"><a href="${k.cursus}#oefeningen" target="_blank" rel="noopener">📘 Oefeningen in de cursus</a></div>
     <div class="blok"><p>Lees de doelen van stap 1 opnieuw. Zet er nog eens <span class="schaal">✓ ~ ✗</span> naast, in het groen.</p></div>
   </section>
@@ -163,7 +164,7 @@ function kaart(k, modus){
       <li>je doelen met <span class="schaal">✓ ~ ✗</span> van deel 1 en deel 2</li>
       ${na ? '<li>je verbeterde toetsvragen</li>' : k.strat === 'toets' ? '' : '<li>je blad van <i>Toets jezelf</i>, met je aanvullingen in het groen</li>'}
       <li>je opdracht van deel 1 (${STRAT[k.strat][0].toLowerCase()})</li>
-      <li>je oefeningen van deel 2, met de verbetering in het groen</li>
+      <li>je oefeningen van deel 2, met de verbetering${na ? '' : ' en de reden van je fouten'} in het groen</li>
     </ul>
     <p>Kies in BookWidgets: <b>${e(k.titel)}</b> · <b>${na ? 'na de toets' : 'voor de toets'}</b>. Laad je foto's op${na ? '' : ', ten laatste de dag voor de toets'}.</p>
     <div class="links">${bw ? `<a href="${bw}" target="_blank" rel="noopener">📤 Naar BookWidgets</a>` : `<button class="knop" disabled>📤 Link naar BookWidgets volgt</button>`}</div>
