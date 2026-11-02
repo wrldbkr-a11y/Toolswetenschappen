@@ -97,6 +97,8 @@ kids.push(new Paragraph({ spacing: { before: 2400, after: 120 }, children: [new 
 kids.push(new Paragraph({ spacing: { after: 240 }, children: [new TextRun({ text: META.titel, font: SANS, bold: true, size: 64, color: '1D2A36' })] }));
 kids.push(new Paragraph({ border: { bottom: { style: BorderStyle.SINGLE, size: 6, color: NAVY, space: 6 } }, spacing: { after: 240 }, children: [new TextRun({ text: META.sub, font: SERIF, size: 26, color: DIM })] }));
 kids.push(par([{ t: META.intro }]));
+kids.push(new Paragraph({ spacing: { before: 600, after: 60 }, children: [new TextRun({ text: 'Gemaakt door de vakgroep wetenschappen · Maria Assumpta Lyceum · ontwikkeld met hulp van AI', font: SANS, size: 18, color: DIM })] }));
+kids.push(new Paragraph({ spacing: { after: 60 }, children: [new TextRun({ text: 'Licentie: CC BY-NC-SA 4.0. Je mag dit materiaal gebruiken en aanpassen, niet commercieel, met naamsvermelding en onder dezelfde licentie.', font: SANS, size: 18, color: DIM })] }));
 kids.push(new Paragraph({ spacing: { before: 600 }, children: [new TextRun({ text: 'Naam: ______________________________     Klas: ________', font: SANS, size: 22 })] }));
 kids.push(new Paragraph({ children: [new PageBreak()] }));
 kids.push(new Paragraph({ spacing: { after: 200 }, children: [new TextRun({ text: 'Inhoud', font: SANS, bold: true, size: 32, color: NAVY })] }));
