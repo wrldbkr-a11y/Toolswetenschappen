@@ -1,0 +1,120 @@
+  <div id="viewMeer" style="display:none;">
+  <p class="sub">Het veld van meerdere ladingen is de <b>vectorsom</b> van de velden van elke lading apart. Sleep de ladingen. Klik ergens in het veld om punt P te kiezen: je ziet de veldlijn door P en de veldvector <span class="vec">E</span>, die aan die veldlijn <b>raakt</b>.</p>
+  <div class="grid">
+    <div class="panel">
+      <h2>Veldlijnen — meerdere ladingen</h2>
+      <canvas id="ml_cv" width="600" height="440"></canvas>
+      <p class="canvas-hint">Sleep een lading om ze te verplaatsen. Klik op een lading om ze te kiezen, klik in het veld om P te plaatsen.</p>
+    </div>
+    <div class="panel">
+      <h2>Instellingen</h2>
+      <div class="seg" id="ml_preset" style="flex-wrap:wrap">
+        <button data-p="gelijk" class="active">twee positieve</button>
+        <button data-p="dipool">+ en −</button>
+        <button data-p="ongelijk">+6 en −2</button>
+        <button data-p="drie">drie ladingen</button>
+      </div>
+      <div class="field-row">
+        <div class="field-label"><span id="ml_selNaam">Gekozen lading</span><span class="val num" id="ml_qVal"></span></div>
+        <input type="range" id="ml_q" min="-8" max="8" step="1" value="4">
+      </div>
+      <label style="display:flex;gap:8px;align-items:center;font-size:0.88rem;margin-bottom:6px"><input type="checkbox" id="ml_bijdr"> toon de bijdragen van elke lading in P</label>
+      <button class="btn-reset" id="ml_clearP">P wissen</button>
+      <h2 style="margin-top:20px;">Uitlezing</h2>
+      <div class="readout" id="ml_readout"></div>
+    </div>
+  </div>
+  <div class="panel" style="margin-top:18px">
+    <h2>Kenmerken van elektrische veldlijnen</h2>
+    <ul class="points">
+      <li><b>Begin en einde.</b> Veldlijnen vertrekken bij een positieve lading en eindigen bij een negatieve lading (of lopen naar het oneindige).</li>
+      <li><b>Nooit snijden.</b> Twee veldlijnen snijden elkaar nooit: in elk punt heeft het veld maar één richting.</li>
+      <li><b>Dichtheid = sterkte.</b> Waar de veldlijnen dicht bij elkaar liggen, is het veld sterk. Meer lading geeft meer veldlijnen.</li>
+      <li><b>Veldvector.</b> <span class="vec">E</span> in een punt <b>raakt</b> aan de veldlijn door dat punt en wijst in de zin van de pijltjes.</li>
+      <li><b>Geleiders.</b> Veldlijnen staan loodrecht op het oppervlak van een geleider (zie tabblad Geleiders en isolatoren).</li>
+    </ul>
+  </div>
+  </div>
+
+  <div id="viewFaraday" style="display:none;">
+  <p class="sub">Een voorwerp tussen twee geladen platen. Wat gebeurt er met het veld in en rond het voorwerp?</p>
+  <div class="grid">
+    <div class="panel">
+      <h2 id="fd_title">Geleider in een homogeen veld</h2>
+      <canvas id="fd_cv" width="600" height="440"></canvas>
+    </div>
+    <div class="panel">
+      <h2>Voorwerp</h2>
+      <div class="seg" id="fd_keuze" style="flex-wrap:wrap">
+        <button data-v="geen">geen</button>
+        <button data-v="hol" class="active">holle geleider</button>
+        <button data-v="vol">volle geleider</button>
+        <button data-v="iso">isolator</button>
+      </div>
+      <div class="readout" id="fd_readout"></div>
+      <h2 style="margin-top:20px;">Kooi van Faraday in het dagelijks leven</h2>
+      <div class="seg" id="fd_vb" style="flex-wrap:wrap">
+        <button data-vb="auto">auto</button>
+        <button data-vb="vliegtuig">vliegtuig</button>
+        <button data-vb="micro">microgolfoven</button>
+        <button data-vb="coax">coaxkabel</button>
+      </div>
+      <div class="readout" id="fd_vbTekst"><span class="empty">Kies een voorbeeld.</span></div>
+    </div>
+  </div>
+  </div>
+
+  <div id="viewEnergie" style="display:none;">
+  <p class="sub">Een geladen deeltje tussen twee platen. Laat het los en volg de energie. We kiezen de potentiële energie <b>nul op de negatieve plaat</b>, zoals bij zwaartekracht nul op de grond.</p>
+  <div class="grid">
+    <div class="panel">
+      <h2>Homogeen veld: energie en potentiaal</h2>
+      <canvas id="en_cv" width="600" height="440"></canvas>
+      <p class="canvas-hint">Sleep het deeltje verticaal om de startplaats te kiezen.</p>
+    </div>
+    <div class="panel">
+      <h2>Instellingen</h2>
+      <div class="seg" id="en_deeltje">
+        <button data-d="p" class="active">proton (+e)</button>
+        <button data-d="e">elektron (−e)</button>
+        <button data-d="a">α-deeltje (+2e)</button>
+      </div>
+      <div class="field-row">
+        <div class="field-label"><span>Spanning U tussen de platen</span><span class="val num" id="en_UVal"></span></div>
+        <input type="range" id="en_U" min="100" max="1000" step="50" value="500">
+      </div>
+      <div class="field-row">
+        <div class="field-label"><span>Afstand tussen de platen</span><span class="val num" id="en_dVal"></span></div>
+        <input type="range" id="en_d" min="2" max="10" step="1" value="5">
+      </div>
+      <label style="display:flex;gap:8px;align-items:center;font-size:0.88rem;margin-bottom:6px"><input type="checkbox" id="en_eq" checked> toon equipotentiaalvlakken</label>
+      <div class="seg" style="margin-top:10px"><button id="en_los">▶ Loslaten</button><button id="en_reset">↻ Terug naar start</button></div>
+      <h2 style="margin-top:10px;">Uitlezing</h2>
+      <div class="readout" id="en_readout"></div>
+    </div>
+  </div>
+  <div class="grid-eq">
+    <div class="panel">
+      <h2>Analogie met het zwaarteveld</h2>
+      <table style="width:100%;border-collapse:collapse;font-size:0.88rem;line-height:1.5">
+        <tr style="text-align:left;border-bottom:1px solid var(--border)"><th></th><th>zwaarteveld</th><th>elektrisch veld</th></tr>
+        <tr><td>veld</td><td>g (N/kg)</td><td>E (N/C)</td></tr>
+        <tr><td>wat voelt het veld?</td><td>massa m</td><td>lading Q</td></tr>
+        <tr><td>kracht</td><td>F<sub>z</sub> = m · g</td><td>F<sub>E</sub> = Q · E</td></tr>
+        <tr><td>potentiële energie</td><td>E<sub>pot,g</sub> = m · g · h</td><td>E<sub>pot,E</sub> = Q · E · d</td></tr>
+        <tr><td>nulniveau</td><td>de grond</td><td>de negatieve plaat</td></tr>
+        <tr><td>arbeid van het veld</td><td colspan="2">W = −ΔE<sub>pot</sub>: wat het veld aan potentiële energie afneemt, komt erbij als kinetische energie.</td></tr>
+      </table>
+      <p class="canvas-hint">Verschil: massa's trekken elkaar altijd aan. Een negatieve lading beweegt in het elektrisch veld <b>tegen</b> de veldlijnen in.</p>
+    </div>
+    <div class="panel">
+      <h2>Samengevat</h2>
+      <ul class="points">
+        <li><b>Potentiaal</b> V in een punt = de potentiële energie per coulomb: V = E<sub>pot</sub> / Q. In een homogeen veld: V = E · d, met d de afstand tot de negatieve plaat.</li>
+        <li><b>Equipotentiaalvlak:</b> alle punten met dezelfde potentiaal. In een homogeen veld zijn dat vlakken evenwijdig met de platen, loodrecht op de veldlijnen.</li>
+        <li><b>Spanning</b> (potentiaalverschil): U<sub>AB</sub> = V<sub>A</sub> − V<sub>B</sub>. Doorloopt een lading Q het potentiaalverschil U<sub>AB</sub>, dan geldt ΔE<sub>kin</sub> = Q · U<sub>AB</sub>.</li>
+        <li><b>Elektronvolt:</b> 1 eV is de energie die een deeltje met lading e wint als het een spanning van 1 V doorloopt. 1 eV = 1,6 · 10<sup>−19</sup> J.</li>
+      </ul>
+    </div>
+  </div>
+  </div>

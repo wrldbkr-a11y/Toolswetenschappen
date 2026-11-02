@@ -1,0 +1,98 @@
+{
+ "zeven": {
+  "naam": "Zeven",
+  "groep": "het",
+  "mengsel": "heterogeen: vaste stof in vaste stof (grof mengsel)",
+  "eig": "verschil in deeltjesgrootte",
+  "vb": "bloem zeven voor een cake, kiezels uit zand halen, de roosters in waterzuiveringsstation Brussel-Noord",
+  "caps": [
+   "Je doet een mengsel van zand en kiezels in de zeef.",
+   "Je schudt de zeef. De kleine zandkorrels vallen door de gaatjes.",
+   "De grote kiezels blijven op de zeef liggen. Ze zijn groter dan de gaatjes."
+  ]
+ },
+ "decanteren": {
+  "naam": "Decanteren",
+  "groep": "het",
+  "mengsel": "heterogeen: suspensie (vaste stof in vloeistof)",
+  "eig": "verschil in massadichtheid",
+  "vb": "wijn in een karaf gieten zodat het depot in de fles blijft, vet van afgekoelde soep scheppen",
+  "caps": [
+   "Een suspensie: vaste deeltjes zweven in het water. Het mengsel is troebel.",
+   "Je laat het mengsel rusten. De zwaardere deeltjes zakken naar de bodem en vormen een bezinksel.",
+   "Je giet de bovenstaande vloeistof voorzichtig af langs een roerstaaf. Het bezinksel blijft in het eerste bekerglas."
+  ]
+ },
+ "filtreren": {
+  "naam": "Filtreren",
+  "groep": "het",
+  "mengsel": "heterogeen: suspensie (vaste stof in vloeistof)",
+  "eig": "verschil in deeltjesgrootte",
+  "vb": "koffiedik tegenhouden met een koffiefilter, een stofzuigerzak",
+  "caps": [
+   "Je giet de suspensie in een trechter met filtreerpapier.",
+   "Het water gaat door de heel kleine gaatjes van het papier. De vaste deeltjes zijn te groot en blijven hangen.",
+   "Op het filtreerpapier blijft het residu. De heldere vloeistof die doorloopt, is het filtraat."
+  ]
+ },
+ "centrifugeren": {
+  "naam": "Centrifugeren",
+  "groep": "het",
+  "mengsel": "heterogeen: suspensie of emulsie met heel fijne deeltjes",
+  "eig": "verschil in massadichtheid",
+  "vb": "room van melk scheiden in een melkerij, bloed scheiden in een labo",
+  "caps": [
+   "Je doet de suspensie in centrifugebuisjes en zet ze in de centrifuge.",
+   "De centrifuge draait heel snel rond. De zwaardere deeltjes worden naar de bodem van het buisje geduwd.",
+   "Na het centrifugeren zit het bezinksel onderaan het buisje. Daarboven zit de bovenstaande vloeistof."
+  ]
+ },
+ "uitdampen": {
+  "naam": "Uitdampen",
+  "groep": "hom",
+  "mengsel": "homogeen: oplossing van een vaste stof in een vloeistof",
+  "eig": "verschil in kooktemperatuur",
+  "vb": "zeezout winnen in zoutpannen, kalkvlekken op een opgedroogd glas",
+  "caps": [
+   "Je verwarmt een zoutoplossing in een verdampschaal.",
+   "Het water kookt en verdampt. De waterdamp ontsnapt in de lucht.",
+   "Al het water is weg. Het zout blijft achter in de schaal: dat is het residu. Het water ben je kwijt."
+  ]
+ },
+ "destilleren": {
+  "naam": "Destilleren",
+  "groep": "hom",
+  "mengsel": "homogeen: oplossing (vaste stof of vloeistof in een vloeistof)",
+  "eig": "verschil in kooktemperatuur",
+  "vb": "gedestilleerd water maken, sterke drank (jenever) maken, aardolie scheiden",
+  "caps": [
+   "In de destillatiekolf zit water met een opgeloste kleurstof.",
+   "Je verwarmt. Het water kookt eerst: het heeft de laagste kooktemperatuur. De damp stroomt naar de koeler.",
+   "In de koeler wordt de damp afgekoeld en weer vloeibaar. Dat zuivere water is het destillaat. De kleurstof blijft achter als residu."
+  ]
+ },
+ "extraheren": {
+  "naam": "Extraheren",
+  "groep": "hom",
+  "mengsel": "een bestanddeel uit een mengsel halen met een oplosmiddel",
+  "eig": "verschil in oplosbaarheid",
+  "vb": "thee of koffie zetten, wort maken in brouwerij Cantillon (Anderlecht)",
+  "caps": [
+   "Je hangt een theezakje in heet water. Het water is het extractiemiddel.",
+   "Kleur- en smaakstoffen uit de theeblaadjes lossen op in het water. De blaadjes zelf lossen niet op.",
+   "Je haalt het zakje eruit. De thee is het extract. De gebruikte blaadjes zijn het residu."
+  ]
+ },
+ "adsorberen": {
+  "naam": "Adsorberen",
+  "groep": "hom",
+  "mengsel": "homogeen: oplossing met kleur-, geur- of giftige stoffen",
+  "eig": "verschil in adsorptievermogen (hoe goed een stof aan actieve kool blijft hangen)",
+  "vb": "een dampkap met koolstoffilter, een waterfilterkan, Vivaqua filtert Maaswater door actieve kool",
+  "caps": [
+   "Water met een opgeloste kleurstof gaat in een trechter met filtreerpapier en actieve kool. De gekleurde vloeistof zit tussen de korrels.",
+   "Het water stroomt tussen de korrels naar beneden. De kleurstofdeeltjes blijven aan het oppervlak van de actieve kool hangen. Onderaan is het water al kleurloos.",
+   "Het filtraat is kleurloos. De kleurstof is geadsorbeerd: ze zit vast aan de actieve kool."
+  ]
+ }
+}
