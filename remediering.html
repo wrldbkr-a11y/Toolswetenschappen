@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Herstelopdracht – wetenschappen</title>
+<title>Remediëring – wetenschappen</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧭</text></svg>">
 <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
 <style>
@@ -56,6 +56,12 @@ dl.woorden dd i{color:var(--muted)}
 .fb{margin:.3rem 0;color:var(--muted)}
 .antw{background:#F3F6F9;border-radius:6px;padding:.5rem .8rem;margin-top:.4rem}
 h3.niv{font-size:1.05rem;margin:1.2rem 0 .2rem}
+.keuze{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin:.4rem 0 1rem}
+.keuze>div{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:.7rem .9rem;color:var(--muted)}
+.keuze b{color:var(--ink)}
+.modus{display:flex;gap:.5rem;margin:.6rem 0 0;flex-wrap:wrap}
+.modus a{flex:1 1 12rem;text-align:center;text-decoration:none;font-weight:700;padding:.6rem .8rem;border-radius:6px;border:2px solid var(--acc);color:var(--acc);background:#fff;min-height:44px}
+.modus a.aan{background:var(--acc);color:#fff}
 .lk{margin-top:2rem;padding-top:1rem;border-top:1px solid var(--line);color:var(--muted);font-size:.95rem}
 .ok{color:var(--groen);font-weight:700;margin-left:.5rem}
 @media print{.links,.lk,.terug,details.extra{display:none}.stap{break-inside:avoid}}
@@ -89,23 +95,28 @@ const open_ = v => { const id = 'a' + (++vnr); return `<div class="vraag"><span 
 const mc_ = v => `<div class="vraag" data-j="${v.j}"><span class="dok d3">DOK 3</span>${f(v.v)}
   <div class="opts">${v.o.map((o, i) => `<button data-i="${i}">${'ABCD'[i]}. ${f(o)}</button>`).join('')}</div><div class="fb" data-u="${f(v.u).replace(/"/g, '&quot;')}" hidden></div></div>`;
 function overzicht(){
-  document.title = 'Herstelopdracht – wetenschappen';
+  document.title = 'Remediëring – wetenschappen';
   const groepen = [...new Set(KAARTEN.map(k => k.groep))];
-  app.innerHTML = `<h1>Herstelopdracht</h1>
-  <p class="sub">Had je een lage score op een toets? Dan geeft je leerkracht je een link naar het hoofdstuk dat je opnieuw moet leren. Je kan het hoofdstuk ook hieronder kiezen. Elke opdracht duurt 2 dagen en eindigt met foto's die je inlevert.</p>
+  app.innerHTML = `<h1>Remediëring</h1>
+  <p class="sub">Kies het hoofdstuk. Daarna kies je:</p>
+  <div class="keuze"><div><b>📅 Voor de toets</b><br>Je bereidt je voor, gespreid over 2 dagen.</div><div><b>🔁 Na de toets</b><br>Je had een lage score. Je leert uit je fouten en levert je werk in.</div></div>
   ${groepen.map(g => `<div class="groep" style="--c:${KLEUR(g)}"><h2>${g}</h2><div class="knoppen">${
-    KAARTEN.filter(k => k.groep === g).map(k => `<a href="#${k.id}">${e(k.titel)}</a>`).join('')}</div></div>`).join('')}`;
+    KAARTEN.filter(k => k.groep === g).map(k => `<a href="#${k.id}/voor">${e(k.titel)}</a>`).join('')}</div></div>`).join('')}`;
   window.scrollTo(0, 0);
 }
 
-function kaart(k){
-  document.title = 'Herstelopdracht – ' + k.titel;
+function kaart(k, modus){
+  const na = modus === 'na';
+  document.title = 'Remediëring – ' + k.titel;
   const bw = BOOKWIDGETS[k.groep] || BOOKWIDGETS['alles'];
   const z = ZIN[k.strat] || [];
   app.innerHTML = `<a class="terug" href="#">← Alle hoofdstukken</a>
   <div style="color:${KLEUR(k.groep)};font-weight:700">${k.groep}</div>
   <h1>${e(k.titel)}</h1>
-  <p class="sub">Je werkt op papier, verspreid over <b>2 dagen</b> (${sNaam('spreiden')}). Neem je toets en je cursus erbij.</p>
+  <div class="modus"><a href="#${k.id}/voor" class="${na ? '' : 'aan'}">📅 Voor de toets</a><a href="#${k.id}/na" class="${na ? 'aan' : ''}">🔁 Na de toets</a></div>
+  <p class="sub" style="margin-top:.8rem">${na
+    ? `Je werkt op papier, verspreid over <b>2 dagen</b> (${sNaam('spreiden')}). Neem je verbeterde toets en je cursus erbij.`
+    : `Je werkt op papier, verspreid over <b>2 dagen</b> (${sNaam('spreiden')}). Begin minstens 3 dagen voor de toets. Neem je cursus erbij.`}</p>
 
   <section class="stap"><h2><span class="nr">1</span>Lees de doelen</h2>
     <p>${sNaam('doelen')} <span class="wat">${STRAT.doelen[1]}</span></p>
@@ -119,9 +130,12 @@ function kaart(k){
   </details>
 
   <section class="stap"><h2><span class="nr">2</span>Dag 1</h2>
-    <p>${sNaam('fouten')} <span class="wat">${STRAT.fouten[1]}</span></p>
+    ${na ? `<p>${sNaam('fouten')} <span class="wat">${STRAT.fouten[1]}</span></p>
     <p>Neem je toets. Schrijf bij elke fout over dit hoofdstuk:</p>
-    <div class="zin"><b>Zinsbouwers</b>Dit is fout omdat … · Het juiste antwoord is … want …</div>
+    <div class="zin"><b>Zinsbouwers</b>Dit is fout omdat … · Het juiste antwoord is … want …</div>`
+    : `<p>${sNaam('toets')} <span class="wat">${STRAT.toets[1]}</span></p>
+    <p>Neem een leeg blad. Schrijf bij elk doel van stap 1 op wat je erover weet, met je cursus dicht. Kijk daarna na in je cursus en vul aan in het groen.</p>
+    <div class="zin"><b>Zinsbouwers</b>Ik weet nog: … · Ik was vergeten dat …</div>`}
     <div class="blok">
       <p>${sNaam(k.strat)} <span class="wat">${STRAT[k.strat][1]}</span></p>
       <p>${e(k.opdr)}</p>
@@ -141,7 +155,7 @@ function kaart(k){
     <div class="blok"><p>Lees de doelen van stap 1 opnieuw. Zet er nog eens <span class="schaal">✓ ~ ✗</span> naast, in het groen.</p></div>
   </section>
 
-  <section class="stap"><h2><span class="nr">4</span>Inleveren</h2>
+${na ? `  <section class="stap"><h2><span class="nr">4</span>Inleveren</h2>
     <p>Neem duidelijke foto's van:</p>
     <ul class="check">
       <li>je doelen met <span class="schaal">✓ ~ ✗</span> van dag 1 en dag 2</li>
@@ -151,7 +165,11 @@ function kaart(k){
     </ul>
     <p>Kies in BookWidgets het hoofdstuk <b>${e(k.titel)}</b> en laad je foto's op.</p>
     <div class="links">${bw ? `<a href="${bw}" target="_blank" rel="noopener">📤 Naar BookWidgets</a>` : `<button class="knop" disabled>📤 Link naar BookWidgets volgt</button>`}</div>
-  </section>
+  </section>` : `  <section class="stap"><h2><span class="nr">4</span>Klaar voor de toets?</h2>
+    <p>Kijk naar je doelen van dag 2.</p>
+    <ul><li>Overal <span class="schaal">✓</span>? Dan ben je klaar. Herhaal de dag voor de toets nog eens kort: ${sNaam('toets')}.</li>
+    <li>Nog een <span class="schaal">~</span> of <span class="schaal">✗</span>? Oefen dat doel nog met de extra vragen hieronder.</li></ul>
+  </section>`}
 
   <details class="extra"><summary>Extra oefenen: vragen op niveau DOK 2 en DOK 3</summary>
     <p>Dit hoef je niet in te leveren. Schrijf je antwoord eerst zelf op papier. Kijk daarna pas naar het antwoord.</p>
@@ -169,7 +187,7 @@ function kaart(k){
     <div class="links"><a class="licht" href="${k.extra[0]}" target="_blank" rel="noopener">🧪 ${e(k.extra[1])}</a></div>
   </details>
 
-  <div class="lk">Voor de leerkracht: <button class="knop licht" id="kopieer">🔗 Kopieer de link naar deze opdracht</button><span class="ok" id="ok" hidden>Gekopieerd</span></div>`;
+  <div class="lk">Voor de leerkracht: <button class="knop licht" id="kopieer">🔗 Kopieer de link (${na ? 'na' : 'voor'} de toets)</button><span class="ok" id="ok" hidden>Gekopieerd</span></div>`;
   app.querySelectorAll('[data-toon]').forEach(b => b.onclick = () => { const a = document.getElementById(b.dataset.toon); a.hidden = !a.hidden; b.textContent = a.hidden ? 'Toon het antwoord' : 'Verberg het antwoord'; });
   app.querySelectorAll('.vraag[data-j]').forEach(q => q.querySelectorAll('.opts button').forEach(b => b.onclick = () => {
     const j = +q.dataset.j, i = +b.dataset.i;
@@ -179,15 +197,16 @@ function kaart(k){
     fb.innerHTML = i === j ? '<b style="color:var(--groen)">Juist.</b> ' + fb.dataset.u : '<b style="color:#b3261e">Nog niet.</b> Waarom is dit fout? Probeer opnieuw.';
   }));
   document.getElementById('kopieer').onclick = async () => {
-    try { await navigator.clipboard.writeText(location.href); document.getElementById('ok').hidden = false; }
+    try { await navigator.clipboard.writeText(location.href.split('#')[0] + '#' + k.id + '/' + (na ? 'na' : 'voor')); document.getElementById('ok').hidden = false; }
     catch (x) { prompt('Kopieer deze link:', location.href); }
   };
   window.scrollTo(0, 0);
 }
 
 function route(){
-  const k = KAARTEN.find(k => k.id === decodeURIComponent(location.hash.slice(1)));
-  k ? kaart(k) : overzicht();
+  const [id, m] = decodeURIComponent(location.hash.slice(1)).split('/');
+  const k = KAARTEN.find(k => k.id === id);
+  k ? kaart(k, m === 'na' ? 'na' : 'voor') : overzicht();
 }
 addEventListener('hashchange', route);
 route();
