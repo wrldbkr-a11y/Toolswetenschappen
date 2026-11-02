@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Receptoren bij de mens</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EEF2F5; --panel:#FFFFFF; --panel-2:#F5F8FB; --line:#D3DCE5;
+  --text:#1D2A36; --text-dim:#51606E;
+  --accent:#2F6FB0; --accent-dark:#245A91; --accent-soft:#E4EEF8;
+  --ok:#1F7A4A; --ok-bg:#E3F3E9; --warn:#9A5B00; --warn-bg:#FFF4D6;
+  --font:'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:var(--font);}
+body{-webkit-font-smoothing:antialiased;line-height:1.6;font-size:16px;}
+.top{max-width:900px;margin:0 auto;padding:36px 24px 0;}
+.top .eyebrow{font-size:13px;font-weight:700;color:var(--accent-dark);letter-spacing:.04em;text-transform:uppercase;margin-bottom:6px;}
+.top h1{font-size:2rem;font-weight:700;letter-spacing:-0.015em;margin:0 0 8px;line-height:1.2;}
+.top .intro{color:var(--text-dim);font-size:15px;margin:0;}
+.inhoud{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0 0;padding-bottom:14px;border-bottom:1px solid var(--line);}
+.inhoud a{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:500;text-decoration:none;color:var(--text-dim);background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:7px 12px;}
+.inhoud a:hover{border-color:var(--accent);color:var(--text);}
+.inhoud a .nr{min-width:22px;height:22px;border-radius:11px;display:inline-flex;align-items:center;justify-content:center;background:var(--accent-soft);color:var(--accent-dark);font-size:12px;font-weight:700;padding:0 6px;}
+.inhoud a.slot{opacity:.55;}
+main{max-width:900px;margin:0 auto;padding:22px 24px 80px;}
+section.blok{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:22px 24px;margin-bottom:22px;scroll-margin-top:16px;}
+section.blok > h2{font-size:1.45rem;margin:0 0 12px;display:flex;align-items:center;gap:10px;letter-spacing:-0.01em;}
+section.blok > h2 .nr{min-width:30px;height:30px;border-radius:15px;display:inline-flex;align-items:center;justify-content:center;background:var(--accent);color:#fff;font-size:14px;font-weight:700;padding:0 8px;}
+h3{font-size:1.1rem;margin:22px 0 8px;}
+p{margin:0 0 12px;}
+ul.doelen{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px;}
+ul.doelen li{background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:9px 12px 9px 40px;position:relative;}
+ul.doelen li::before{content:'✓';position:absolute;left:14px;top:9px;color:var(--accent);font-weight:700;}
+.figuur{margin:12px 0 16px;text-align:center;}
+.figuur svg{max-width:100%;height:auto;background:#fbfcfe;border:1px solid var(--line);border-radius:10px;}
+.figuur figcaption{font-size:13px;color:var(--text-dim);margin-top:4px;}
+.kader{border-left:4px solid var(--accent);background:var(--accent-soft);border-radius:0 10px 10px 0;padding:12px 16px;margin:14px 0;}
+.kader .kop{font-weight:700;color:var(--accent-dark);margin-bottom:4px;}
+.kader p:last-child{margin-bottom:0;}
+.formule{display:inline-block;font-size:19px;font-weight:700;background:#fff;border:1px solid var(--line);border-radius:8px;padding:6px 14px;margin:4px 0 8px;}
+.toolknop{display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-weight:600;font-size:14px;color:var(--accent-dark);background:#fff;border:1px solid var(--accent);border-radius:8px;padding:8px 14px;margin:6px 8px 10px 0;}
+.toolknop:hover{background:var(--accent-soft);}
+.denk{border:1px solid var(--line);border-radius:10px;margin:16px 0;overflow:hidden;}
+.denk .vraag{background:var(--warn-bg);padding:12px 16px;}
+.denk .vraag .kop{font-size:12px;font-weight:700;color:var(--warn);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px;}
+.denk .vraag p:last-child{margin:0;}
+.denk .onder{padding:10px 16px;background:#fff;}
+.denk button,.knop{font-family:var(--font);font-size:14px;font-weight:600;background:var(--accent);color:#fff;border:1px solid var(--accent);border-radius:8px;padding:8px 14px;cursor:pointer;}
+.denk button:hover,.knop:hover{background:var(--accent-dark);}
+.knop.licht{background:#fff;color:var(--text);border-color:var(--line);}
+.knop.licht:hover{border-color:var(--accent);background:#fff;}
+.slotje{color:var(--text-dim);font-size:14px;}
+.redenering{margin-top:10px;}
+.redenering ol{margin:0;padding-left:0;list-style:none;counter-reset:st;}
+.redenering ol li{counter-increment:st;position:relative;padding:8px 0 8px 40px;border-top:1px dashed var(--line);}
+.redenering ol li:first-child{border-top:none;}
+.redenering ol li::before{content:counter(st);position:absolute;left:4px;top:8px;width:24px;height:24px;border-radius:12px;background:var(--ok-bg);color:var(--ok);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;}
+.redenering .stap{font-weight:700;}
+.redenering .besluit{background:var(--ok-bg);border-radius:8px;padding:8px 12px;margin-top:6px;color:var(--ok);font-weight:600;}
+.oef{border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:12px 0;}
+.oef .titel{font-weight:700;margin-bottom:4px;}
+.oef .titel .nr{display:inline-flex;min-width:26px;height:26px;border-radius:13px;align-items:center;justify-content:center;background:var(--accent-soft);color:var(--accent-dark);font-size:13px;margin-right:8px;}
+.oef ol.deelvragen{margin:6px 0 4px;padding-left:22px;}
+.gesloten-deel{color:var(--text-dim);font-size:15px;display:flex;align-items:center;gap:10px;}
+.stappenplan{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 14px;}
+.stappenplan span{background:var(--panel-2);border:1px solid var(--line);border-radius:999px;padding:3px 12px;font-size:13px;font-weight:600;}
+table.vb{border-collapse:collapse;margin:6px 0 12px;font-size:15px;}
+table.vb td{padding:3px 12px 3px 0;vertical-align:top;}
+table.vb td:first-child{font-weight:700;color:var(--accent-dark);white-space:nowrap;}
+.leerkracht-banner{background:#7c3aed;color:#fff;text-align:center;font-size:14px;font-weight:600;padding:6px;}
+footer{max-width:900px;margin:0 auto;padding:0 24px 40px;color:var(--text-dim);font-size:12px;}
+/* ---------- afdrukken ---------- */
+.printblad{display:none;}
+@media print{
+  @page{size:A4;margin:16mm 15mm;}
+  body{background:#fff;font-size:12pt;}
+  body.print-oef > *:not(#print-oef), body.print-cornell > *:not(#print-cornell){display:none !important;}
+  body.print-oef #print-oef, body.print-cornell #print-cornell{display:block;}
+  .printblad h1{font-size:16pt;margin:0 0 2mm;}
+  .printblad .naam{display:flex;gap:10mm;font-size:11pt;margin:0 0 5mm;}
+  .printblad .oef{border:none;border-top:1px solid #999;border-radius:0;padding:3mm 0;margin:0;break-inside:avoid;}
+  .printblad table.cornell{width:100%;border-collapse:collapse;}
+  .printblad table.cornell td{border:1px solid #555;vertical-align:top;padding:2mm 3mm;font-size:11pt;}
+  .printblad table.cornell td.v{width:32%;font-weight:600;}
+  .printblad .samenv{border:1px solid #555;height:38mm;margin-top:4mm;padding:2mm 3mm;font-weight:600;}
+  /* volledige cursus afdrukken */
+  body:not(.print-oef):not(.print-cornell) #banner, body:not(.print-oef):not(.print-cornell) nav.inhoud,
+  body:not(.print-oef):not(.print-cornell) .toolknop, body:not(.print-oef):not(.print-cornell) button,
+  body:not(.print-oef):not(.print-cornell) .onder, body:not(.print-oef):not(.print-cornell) footer{display:none !important;}
+  body:not(.print-oef):not(.print-cornell) .blok{box-shadow:none;border:none;padding:0;margin:0 0 6mm;}
+  body:not(.print-oef):not(.print-cornell) figure, body:not(.print-oef):not(.print-cornell) .kader, body:not(.print-oef):not(.print-cornell) .denk, body:not(.print-oef):not(.print-cornell) .oef{break-inside:avoid;}
+  body:not(.print-oef):not(.print-cornell) .schrijflijnen{display:block;}
+}
+.schrijflijnen{display:none;}
+.schrijflijnen div{border-bottom:1px solid #999;height:9mm;}
+</style>
+</head>
+<body>
+<div id="banner"></div>
+<header class="top">
+  <div class="eyebrow">Biologie 3de jaar · Thema 2 Receptoren vangen prikkels op · Hoofdstuk 1</div>
+  <h1>Receptoren bij de mens</h1>
+  <p class="intro">Werk dit hoofdstuk samen met de tool <a href="biologie-prikkels.html#r1">Water, prikkels en reacties</a>. Oefeningen maak je op papier.</p>
+  <p><button class="knop licht" onclick="window.print()">🖨 Druk de cursus af</button></p>
+  <nav class="inhoud" id="inhoud"></nav>
+</header>
+<main id="cursus">
+<section class="blok" id="lesdoelen">
+<h2>Lesdoelen</h2>
+<p>Na dit hoofdstuk kan je:</p><ul class="doelen"><li>uitleggen welke <b>receptoren</b> welke prikkels opvangen en omzetten: foto-, mechano-, thermo-, chemo- en pijnreceptoren;</li><li>met 2 voorbeelden uitleggen wat een <b>prikkeldrempel</b> is;</li><li>met 2 voorbeelden uitleggen wat <b>prikkelgewenning</b> is en wat het effect is op de prikkeldrempel;</li><li>uitleggen wat een <b>prikkelfilter</b> is.</li></ul>
+</section>
+<section class="blok" id="voorkennis">
+<h2>Voorkennis</h2>
+<p>Dit moet je al kennen. Twijfel je? Herhaal het dan eerst.</p><ul><li><b>Prikkel</b>: een verandering in het extern of intern milieu (hoofdstuk feedbacksystemen).</li><li>Het schema prikkel → receptor → verwerking → effector → effect.</li></ul>
+</section>
+<section class="blok" id="deel1" data-vrij="deel1">
+<h2><span class="nr">1</span>Soorten receptoren</h2>
+<div class="kader"><div class="kop">Definitie</div><p>Een <b>receptor</b> is een cel of een groep cellen die één soort prikkel opvangt en omzet in een <b>impuls</b> (een zenuwsignaal).</p></div>
+<table class="vb grid"><tr><td><b>Receptor</b></td><td><b>Prikkel</b></td><td><b>Voorbeeld</b></td></tr><tr><td>fotoreceptoren</td><td>licht</td><td>staafjes en kegeltjes in het netvlies van het oog</td></tr><tr><td>mechanoreceptoren</td><td>druk, aanraking, trilling en geluid</td><td>tastlichaampjes in de huid, haarcellen in het oor</td></tr><tr><td>thermoreceptoren</td><td>warmte en koude</td><td>vrije zenuwuiteinden in de huid</td></tr><tr><td>chemoreceptoren</td><td>chemische stoffen (geur, smaak)</td><td>reukcellen in de neus, smaakpapillen op de tong</td></tr><tr><td>pijnreceptoren</td><td>beschadiging van weefsel</td><td>vrije zenuwuiteinden, bijna overal in het lichaam</td></tr></table>
+<p>Het woord helpt je: <i>foto</i> = licht, <i>mechano</i> = beweging, <i>thermo</i> = warmte, <i>chemo</i> = stof.</p>
+<a class="toolknop" href="biologie-prikkels.html#r1" target="_blank" rel="noopener">▶ Oefen: welke receptor vangt de prikkel op?</a>
+<div class="denk" data-vrij="denk_1">
+  <div class="vraag"><div class="kop">Denkvraag</div><p>Je hoort de metro aankomen in station De Brouckère. Welke receptoren vangen die prikkel op?</p></div>
+  <div class="onder"><div class="redenering"><ol><li><span class="stap">Prikkel</span> geluid: trillingen van de lucht</li><li><span class="stap">Receptor</span> trilling is beweging: mechanoreceptoren (haarcellen in het oor)</li></ol><div class="besluit">Geluid vang je op met mechanoreceptoren.</div></div></div>
+</div>
+</section>
+<section class="blok" id="deel2" data-vrij="deel2">
+<h2><span class="nr">2</span>Prikkeldrempel en prikkelgewenning</h2>
+<div class="kader"><div class="kop">Definitie</div><p>De <b>prikkeldrempel</b> is de kleinste sterkte die een prikkel moet hebben om een impuls te veroorzaken.</p></div>
+<figure class="figuur"><svg viewBox="0 0 720 245" width="720" xmlns="http://www.w3.org/2000/svg"><rect width="720" height="245" fill="#fff"/><line x1="70.0" y1="90.0" x2="590.0" y2="90.0" stroke="#dc2626" stroke-width="2.5" stroke-dasharray="8 6" stroke-linecap="round"/><text x="596.0" y="95.0" fill="#dc2626" font-size="13" font-weight="700" text-anchor="start" font-family="Inter,sans-serif">prikkeldrempel</text><rect x="110" y="140" width="60" height="50" rx="4" fill="#94a3b8"/><text x="140.0" y="230.0" fill="#64748b" font-size="13" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">geen impuls</text><rect x="230" y="100" width="60" height="90" rx="4" fill="#94a3b8"/><text x="260.0" y="230.0" fill="#64748b" font-size="13" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">geen impuls</text><rect x="350" y="65" width="60" height="125" rx="4" fill="#059669"/><text x="380.0" y="230.0" fill="#059669" font-size="13" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">impuls</text><rect x="470" y="40" width="60" height="150" rx="4" fill="#059669"/><text x="500.0" y="230.0" fill="#059669" font-size="13" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">impuls</text><path d="M70,30 V190 H590" fill="none" stroke="#1D2A36" stroke-width="2"/><text x="70.0" y="20.0" fill="#1D2A36" font-size="14" font-weight="700" text-anchor="start" font-family="Inter,sans-serif">sterkte van de prikkel</text><text x="590.0" y="210.0" fill="#64748b" font-size="13" font-weight="600" text-anchor="end" font-family="Inter,sans-serif">tijd →</text></svg><figcaption>Alleen een prikkel die sterker is dan de prikkeldrempel geeft een impuls.</figcaption></figure>
+<p>Voorbeelden: een heel zachte aanraking voel je niet. Een heel stil geluid hoor je niet.</p>
+<div class="kader"><div class="kop">Definitie</div><p><b>Prikkelgewenning</b>: als een prikkel lang duurt, went de receptor eraan. De <b>prikkeldrempel stijgt</b> en je neemt de prikkel niet meer waar.</p></div>
+<figure class="figuur"><svg viewBox="0 0 720 255" width="720" xmlns="http://www.w3.org/2000/svg"><rect width="720" height="255" fill="#fff"/><rect x="70" y="60" width="520" height="130" fill="#dbeafe" opacity=".7"/><path d="M70,90 C250,90 330,40 590,32" fill="none" stroke="#dc2626" stroke-width="2.5" stroke-dasharray="8 6"/><text x="586.0" y="24.0" fill="#dc2626" font-size="13" font-weight="700" text-anchor="end" font-family="Inter,sans-serif">prikkeldrempel stijgt</text><text x="80.0" y="52.0" fill="#2563eb" font-size="13" font-weight="700" text-anchor="start" font-family="Inter,sans-serif">een prikkel die even sterk blijft</text><text x="190.0" y="234.0" fill="#1D2A36" font-size="13" font-weight="700" text-anchor="start" font-family="Inter,sans-serif">eerst neem je ze waar, later niet meer: prikkelgewenning</text><path d="M70,30 V190 H590" fill="none" stroke="#1D2A36" stroke-width="2"/><text x="70.0" y="20.0" fill="#1D2A36" font-size="14" font-weight="700" text-anchor="start" font-family="Inter,sans-serif">sterkte van de prikkel</text><text x="590.0" y="210.0" fill="#64748b" font-size="13" font-weight="600" text-anchor="end" font-family="Inter,sans-serif">tijd →</text></svg><figcaption>Prikkelgewenning: de prikkel blijft even sterk, maar de drempel stijgt.</figcaption></figure>
+<p>Voorbeelden: na een paar minuten voel je je horloge niet meer. In een bakkerij ruik je de geur van brood na een tijd niet meer.</p>
+<a class="toolknop" href="biologie-prikkels.html#r2" target="_blank" rel="noopener">▶ Experimenteer met de prikkeldrempel in de tool</a>
+<div class="denk" data-vrij="denk_2">
+  <div class="vraag"><div class="kop">Denkvraag</div><p>Je stapt een bad in en het water voelt heel warm. Na vijf minuten voelt het gewoon aangenaam. Is het water afgekoeld?</p></div>
+  <div class="onder"><div class="redenering"><ol><li><span class="stap">Water</span> Het water is nauwelijks afgekoeld.</li><li><span class="stap">Receptoren</span> Je thermoreceptoren zijn gewend aan de warmte: hun prikkeldrempel is gestegen.</li></ol><div class="besluit">Dat is prikkelgewenning.</div></div></div>
+</div>
+</section>
+<section class="blok" id="deel3" data-vrij="deel3">
+<h2><span class="nr">3</span>De prikkelfilter</h2>
+<div class="kader"><div class="kop">Definitie</div><p>De <b>prikkelfilter</b>: je hersenen laten niet alle impulsen door tot je bewustzijn. Onbelangrijke prikkels worden weggefilterd.</p></div>
+<p>Zo hoor je het tikken van de klok niet, en voel je je kleren niet op je huid. Daardoor kan je je concentreren op wat belangrijk is.</p>
+<p>Let op het verschil: bij <b>prikkelgewenning</b> stuurt de <b>receptor</b> minder impulsen. Bij de <b>prikkelfilter</b> komen de impulsen wel aan, maar je <b>hersenen</b> letten er niet op.</p>
+<div class="denk" data-vrij="denk_3">
+  <div class="vraag"><div class="kop">Denkvraag</div><p>In een drukke klas hoor je plots je eigen naam, ook al was er veel lawaai. Hoe verklaar je dat?</p></div>
+  <div class="onder"><div class="redenering"><ol><li><span class="stap">Lawaai</span> Je hersenen filteren de onbelangrijke geluiden weg.</li><li><span class="stap">Je naam</span> Je naam is belangrijk voor jou: de prikkelfilter laat die impuls door.</li></ol><div class="besluit">De prikkelfilter kiest wat belangrijk is.</div></div></div>
+</div>
+</section>
+<section class="blok" id="oefeningen" data-vrij="oefeningen">
+<h2>Oefeningen op papier</h2>
+<p>Maak deze oefeningen <b>op papier</b>. De oplossingen verschijnen hier nadat we de oefeningen in de les besproken hebben.</p>
+<p><button class="knop licht" data-print="oef">🖨 Druk de oefeningen af</button></p>
+<div class="oef" data-vrij="opl_1">
+  <div class="titel"><span class="nr">1</span>Welke receptor?</div>
+  <div class="tekst"><ol class="deelvragen" type="a"><li>Je ziet een bliksemflits.</li><li>Je proeft citroensap.</li><li>Je brandt je aan een kopje thee.</li><li>Je voelt een mug op je arm.</li><li>Je voelt dat het buiten vriest.</li><li>Je ruikt gas.</li><li>Je snijdt je in je vinger.</li></ol></div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">a</span> fotoreceptoren</li><li><span class="stap">b</span> chemoreceptoren</li><li><span class="stap">c</span> thermoreceptoren en pijnreceptoren</li><li><span class="stap">d</span> mechanoreceptoren</li><li><span class="stap">e</span> thermoreceptoren</li><li><span class="stap">f</span> chemoreceptoren</li><li><span class="stap">g</span> pijnreceptoren</li></ol><div class="besluit">Kijk naar het soort prikkel.</div></div>
+</div>
+<div class="oef" data-vrij="opl_2">
+  <div class="titel"><span class="nr">2</span>Definities</div>
+  <div class="tekst">Noteer de definitie van receptor, prikkeldrempel, prikkelgewenning en prikkelfilter.</div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">Receptor</span> een cel of groep cellen die één soort prikkel opvangt en omzet in een impuls</li><li><span class="stap">Prikkeldrempel</span> de kleinste sterkte van een prikkel die een impuls veroorzaakt</li><li><span class="stap">Prikkelgewenning</span> bij een lange prikkel stijgt de prikkeldrempel: je neemt de prikkel niet meer waar</li><li><span class="stap">Prikkelfilter</span> de hersenen laten onbelangrijke impulsen niet door tot je bewustzijn</li></ol><div class="besluit"></div></div>
+</div>
+<div class="oef" data-vrij="opl_3">
+  <div class="titel"><span class="nr">3</span>Drempel of gewenning?</div>
+  <div class="tekst">Gaat het over de prikkeldrempel, prikkelgewenning of de prikkelfilter?<ol class="deelvragen" type="a"><li>Een stofje op je arm voel je niet.</li><li>Je voelt je ring na een tijd niet meer.</li><li>Tijdens een spannende film hoor je de auto's buiten niet.</li><li>In het zwembad lijkt het water eerst koud en later niet meer.</li></ol></div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">a</span> prikkeldrempel: de prikkel is te zwak</li><li><span class="stap">b</span> prikkelgewenning</li><li><span class="stap">c</span> prikkelfilter</li><li><span class="stap">d</span> prikkelgewenning</li></ol><div class="besluit">Gewenning: de receptor went. Filter: de hersenen letten niet op.</div></div>
+</div>
+<div class="oef" data-vrij="opl_4">
+  <div class="titel"><span class="nr">4</span>Grafiek lezen</div>
+  <div class="tekst">Teken een grafiek met een prikkeldrempel en vier prikkels van verschillende sterkte. Duid aan welke prikkels een impuls geven.</div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">Grafiek</span> een horizontale stippellijn voor de drempel en vier balkjes</li><li><span class="stap">Impuls</span> alleen de balkjes die boven de drempel uitkomen</li></ol><div class="besluit">Sterker dan de drempel → impuls.</div></div>
+</div>
+<div class="oef" data-vrij="opl_5">
+  <div class="titel"><span class="nr">5</span>Redeneren: gasgeur</div>
+  <div class="tekst">Aan aardgas wordt een sterk ruikende stof toegevoegd. Waarom is prikkelgewenning bij een gaslek gevaarlijk?</div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">Lek</span> Je ruikt eerst de gasgeur.</li><li><span class="stap">Gewenning</span> Na een tijd stijgt je prikkeldrempel en ruik je het gas niet meer, ook al is het er nog.</li></ol><div class="besluit">Je denkt dat het gas weg is, terwijl het er nog is.</div></div>
+</div>
+<div class="oef" data-vrij="opl_6">
+  <div class="titel"><span class="nr">6</span>Redeneren: verschil</div>
+  <div class="tekst">Leg het verschil uit tussen prikkelgewenning en de prikkelfilter. Waar gebeurt het telkens: in de receptor of in de hersenen?</div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">Prikkelgewenning</span> in de receptor: die stuurt minder impulsen, de drempel stijgt</li><li><span class="stap">Prikkelfilter</span> in de hersenen: de impulsen komen aan, maar worden niet bewust</li></ol><div class="besluit">Receptor tegenover hersenen.</div></div>
+</div><a class="toolknop" href="biologie-prikkels.html#r1" target="_blank" rel="noopener">▶ Oefen verder in de tool</a>
+</section>
+<section class="blok" id="samenvatting" data-vrij="samenvatting">
+<h2>Samenvatting</h2>
+<div class="kader"><div class="kop">Samenvatting</div><p><b>Receptor</b>: vangt één soort prikkel op en zet die om in een impuls. Foto (licht), mechano (druk, aanraking, geluid), thermo (warmte, koude), chemo (geur, smaak), pijn (beschadiging).</p>
+<p><b>Prikkeldrempel</b>: kleinste sterkte die een impuls geeft. <b>Prikkelgewenning</b>: bij een lange prikkel stijgt de drempel. <b>Prikkelfilter</b>: de hersenen houden onbelangrijke impulsen buiten je bewustzijn.</p></div>
+</section>
+
+</main>
+<footer>Cursus fysica — gemaakt voor klasgebruik, bij de tools op Oefentools wetenschappen.</footer>
+
+<div class="printblad" id="print-oef"></div>
+<div class="printblad" id="print-cornell"></div>
+
+<script>
+/* =====================================================================
+   VRIJGAVE — hier zet de leerkracht onderdelen open of dicht.
+   true  = zichtbaar voor de leerlingen
+   false = nog gesloten (de leerling ziet een slotje)
+   Tip: met ?leerkracht achter de link zie je als leerkracht alles,
+        bv. .../cursus-receptoren.html?leerkracht
+   ===================================================================== */
+const VRIJGAVE = {
+  deel1: true,               // Soorten receptoren
+  deel2: false,              // Prikkeldrempel en prikkelgewenning
+  deel3: false,              // De prikkelfilter
+  denk_1: false,             // redenering denkvraag 1
+  denk_2: false,             // redenering denkvraag 2
+  denk_3: false,             // redenering denkvraag 3
+  oefeningen: false,         // de oefeningen zelf (opgaven)
+  opl_1: false,              // oplossing oefening 1
+  opl_2: false,              // oplossing oefening 2
+  opl_3: false,              // oplossing oefening 3
+  opl_4: false,              // oplossing oefening 4
+  opl_5: false,              // oplossing oefening 5
+  opl_6: false,              // oplossing oefening 6
+  samenvatting: false,       // samenvatting
+};
+
+/* ===================================================================== */
+const LK = new URLSearchParams(location.search).has('leerkracht');
+const open = id => LK || VRIJGAVE[id] === true;
+if(LK) document.getElementById('banner').innerHTML='<div class="leerkracht-banner">Leerkrachtweergave: alles is zichtbaar, ook wat voor leerlingen nog gesloten is.</div>';
+
+// delen open of dicht
+document.querySelectorAll('section.blok[data-vrij]').forEach(el=>{
+  if(open(el.dataset.vrij)) return;
+  const kop=el.querySelector(':scope > h2');
+  [...el.children].forEach(c=>{ if(c!==kop) c.style.display='none'; });
+  const m=document.createElement('p'); m.className='gesloten-deel'; m.innerHTML='🔒 Dit deel wordt opengesteld wanneer we het in de les behandelen.';
+  el.appendChild(m);
+});
+
+// denkvragen: redenering pas tonen na vrijgave
+document.querySelectorAll('.denk').forEach(d=>{
+  const id=d.dataset.vrij, red=d.querySelector('.redenering'), onder=d.querySelector('.onder');
+  red.hidden=true;
+  if(open(id)){
+    const b=document.createElement('button'); b.textContent='Toon de redenering';
+    b.onclick=()=>{ red.hidden=!red.hidden; b.textContent=red.hidden?'Toon de redenering':'Verberg de redenering'; };
+    onder.prepend(b);
+  } else {
+    onder.innerHTML='<span class="slotje">💬 Denk eerst zelf na. We bespreken dit samen in de les; daarna verschijnt hier de redenering.</span>';
+  }
+});
+
+// oplossingen van oefeningen
+document.querySelectorAll('.oef[data-vrij]').forEach(o=>{
+  const id=o.dataset.vrij, opl=o.querySelector('.redenering'), onder=o.querySelector('.onder');
+  opl.hidden=true;
+  if(open(id)){
+    const b=document.createElement('button'); b.className='knop licht'; b.textContent='Toon de oplossing';
+    b.onclick=()=>{ opl.hidden=!opl.hidden; b.textContent=opl.hidden?'Toon de oplossing':'Verberg de oplossing'; };
+    onder.appendChild(b);
+  } else onder.innerHTML='<span class="slotje">🔒 De oplossing verschijnt nadat we de oefening besproken hebben.</span>';
+});
+
+// inhoudstafel
+const inh=document.getElementById('inhoud');
+document.querySelectorAll('section.blok').forEach(s=>{
+  const a=document.createElement('a'); a.href='#'+s.id;
+  const nr=s.querySelector('h2 .nr'); const tekst=s.querySelector('h2').textContent.replace(nr?nr.textContent:'','').trim();
+  a.innerHTML=(nr?'<span class="nr">'+nr.textContent+'</span>':'')+tekst;
+  if(s.dataset.vrij && !open(s.dataset.vrij)) a.classList.add('slot');
+  inh.appendChild(a);
+});
+
+// afdrukbare bladen
+function vulPrint(){
+  const oefs=[...document.querySelectorAll('#oefeningen .oef')].map(o=>{ const k=o.cloneNode(true); k.querySelectorAll('.redenering,.onder').forEach(x=>x.remove()); k.removeAttribute('data-vrij'); return k.outerHTML; }).join('');
+  document.getElementById('print-oef').innerHTML=`<h1>Receptoren bij de mens · oefeningen</h1><div class="naam"><span>Naam: ______________________</span><span>Klas: ______</span><span>Datum: __________</span></div><p>Maak elke oefening in je schrift. Gebruik telkens: gegeven · gevraagd · formule · oplossing · antwoord met eenheid.</p>`+oefs;
+  const vragen=CORNELL.map(v=>`<tr><td class="v">${v[0]}</td><td style="height:${Math.round((v[1]||32)*1.35)}mm"></td></tr>`).join('');
+  document.getElementById('print-cornell').innerHTML=`<h1>Receptoren bij de mens · Cornellblad</h1><div class="naam"><span>Naam: ______________________</span><span>Klas: ______</span></div><table class="cornell"><tr><td class="v">Vragen</td><td><b>Notities</b> (samen opgebouwd in de les)</td></tr>${vragen}</table><div class="samenv">Samenvatting in mijn eigen woorden:</div>`;
+}
+const CORNELL = [];
+function druk(soort){ vulPrint(); document.body.classList.add('print-'+soort); setTimeout(()=>{ window.print(); document.body.classList.remove('print-'+soort); },50); }
+document.querySelectorAll('[data-print]').forEach(b=>b.onclick=()=>druk(b.dataset.print));
+</script>
+</body>
+</html>

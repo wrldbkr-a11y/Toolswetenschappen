@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>De mens reageert op prikkels</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EEF2F5; --panel:#FFFFFF; --panel-2:#F5F8FB; --line:#D3DCE5;
+  --text:#1D2A36; --text-dim:#51606E;
+  --accent:#2F6FB0; --accent-dark:#245A91; --accent-soft:#E4EEF8;
+  --ok:#1F7A4A; --ok-bg:#E3F3E9; --warn:#9A5B00; --warn-bg:#FFF4D6;
+  --font:'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:var(--font);}
+body{-webkit-font-smoothing:antialiased;line-height:1.6;font-size:16px;}
+.top{max-width:900px;margin:0 auto;padding:36px 24px 0;}
+.top .eyebrow{font-size:13px;font-weight:700;color:var(--accent-dark);letter-spacing:.04em;text-transform:uppercase;margin-bottom:6px;}
+.top h1{font-size:2rem;font-weight:700;letter-spacing:-0.015em;margin:0 0 8px;line-height:1.2;}
+.top .intro{color:var(--text-dim);font-size:15px;margin:0;}
+.inhoud{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0 0;padding-bottom:14px;border-bottom:1px solid var(--line);}
+.inhoud a{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:500;text-decoration:none;color:var(--text-dim);background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:7px 12px;}
+.inhoud a:hover{border-color:var(--accent);color:var(--text);}
+.inhoud a .nr{min-width:22px;height:22px;border-radius:11px;display:inline-flex;align-items:center;justify-content:center;background:var(--accent-soft);color:var(--accent-dark);font-size:12px;font-weight:700;padding:0 6px;}
+.inhoud a.slot{opacity:.55;}
+main{max-width:900px;margin:0 auto;padding:22px 24px 80px;}
+section.blok{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:22px 24px;margin-bottom:22px;scroll-margin-top:16px;}
+section.blok > h2{font-size:1.45rem;margin:0 0 12px;display:flex;align-items:center;gap:10px;letter-spacing:-0.01em;}
+section.blok > h2 .nr{min-width:30px;height:30px;border-radius:15px;display:inline-flex;align-items:center;justify-content:center;background:var(--accent);color:#fff;font-size:14px;font-weight:700;padding:0 8px;}
+h3{font-size:1.1rem;margin:22px 0 8px;}
+p{margin:0 0 12px;}
+ul.doelen{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px;}
+ul.doelen li{background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:9px 12px 9px 40px;position:relative;}
+ul.doelen li::before{content:'✓';position:absolute;left:14px;top:9px;color:var(--accent);font-weight:700;}
+.figuur{margin:12px 0 16px;text-align:center;}
+.figuur svg{max-width:100%;height:auto;background:#fbfcfe;border:1px solid var(--line);border-radius:10px;}
+.figuur figcaption{font-size:13px;color:var(--text-dim);margin-top:4px;}
+.kader{border-left:4px solid var(--accent);background:var(--accent-soft);border-radius:0 10px 10px 0;padding:12px 16px;margin:14px 0;}
+.kader .kop{font-weight:700;color:var(--accent-dark);margin-bottom:4px;}
+.kader p:last-child{margin-bottom:0;}
+.formule{display:inline-block;font-size:19px;font-weight:700;background:#fff;border:1px solid var(--line);border-radius:8px;padding:6px 14px;margin:4px 0 8px;}
+.toolknop{display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-weight:600;font-size:14px;color:var(--accent-dark);background:#fff;border:1px solid var(--accent);border-radius:8px;padding:8px 14px;margin:6px 8px 10px 0;}
+.toolknop:hover{background:var(--accent-soft);}
+.denk{border:1px solid var(--line);border-radius:10px;margin:16px 0;overflow:hidden;}
+.denk .vraag{background:var(--warn-bg);padding:12px 16px;}
+.denk .vraag .kop{font-size:12px;font-weight:700;color:var(--warn);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px;}
+.denk .vraag p:last-child{margin:0;}
+.denk .onder{padding:10px 16px;background:#fff;}
+.denk button,.knop{font-family:var(--font);font-size:14px;font-weight:600;background:var(--accent);color:#fff;border:1px solid var(--accent);border-radius:8px;padding:8px 14px;cursor:pointer;}
+.denk button:hover,.knop:hover{background:var(--accent-dark);}
+.knop.licht{background:#fff;color:var(--text);border-color:var(--line);}
+.knop.licht:hover{border-color:var(--accent);background:#fff;}
+.slotje{color:var(--text-dim);font-size:14px;}
+.redenering{margin-top:10px;}
+.redenering ol{margin:0;padding-left:0;list-style:none;counter-reset:st;}
+.redenering ol li{counter-increment:st;position:relative;padding:8px 0 8px 40px;border-top:1px dashed var(--line);}
+.redenering ol li:first-child{border-top:none;}
+.redenering ol li::before{content:counter(st);position:absolute;left:4px;top:8px;width:24px;height:24px;border-radius:12px;background:var(--ok-bg);color:var(--ok);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;}
+.redenering .stap{font-weight:700;}
+.redenering .besluit{background:var(--ok-bg);border-radius:8px;padding:8px 12px;margin-top:6px;color:var(--ok);font-weight:600;}
+.oef{border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:12px 0;}
+.oef .titel{font-weight:700;margin-bottom:4px;}
+.oef .titel .nr{display:inline-flex;min-width:26px;height:26px;border-radius:13px;align-items:center;justify-content:center;background:var(--accent-soft);color:var(--accent-dark);font-size:13px;margin-right:8px;}
+.oef ol.deelvragen{margin:6px 0 4px;padding-left:22px;}
+.gesloten-deel{color:var(--text-dim);font-size:15px;display:flex;align-items:center;gap:10px;}
+.stappenplan{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 14px;}
+.stappenplan span{background:var(--panel-2);border:1px solid var(--line);border-radius:999px;padding:3px 12px;font-size:13px;font-weight:600;}
+table.vb{border-collapse:collapse;margin:6px 0 12px;font-size:15px;}
+table.vb td{padding:3px 12px 3px 0;vertical-align:top;}
+table.vb td:first-child{font-weight:700;color:var(--accent-dark);white-space:nowrap;}
+.leerkracht-banner{background:#7c3aed;color:#fff;text-align:center;font-size:14px;font-weight:600;padding:6px;}
+footer{max-width:900px;margin:0 auto;padding:0 24px 40px;color:var(--text-dim);font-size:12px;}
+/* ---------- afdrukken ---------- */
+.printblad{display:none;}
+@media print{
+  @page{size:A4;margin:16mm 15mm;}
+  body{background:#fff;font-size:12pt;}
+  body.print-oef > *:not(#print-oef), body.print-cornell > *:not(#print-cornell){display:none !important;}
+  body.print-oef #print-oef, body.print-cornell #print-cornell{display:block;}
+  .printblad h1{font-size:16pt;margin:0 0 2mm;}
+  .printblad .naam{display:flex;gap:10mm;font-size:11pt;margin:0 0 5mm;}
+  .printblad .oef{border:none;border-top:1px solid #999;border-radius:0;padding:3mm 0;margin:0;break-inside:avoid;}
+  .printblad table.cornell{width:100%;border-collapse:collapse;}
+  .printblad table.cornell td{border:1px solid #555;vertical-align:top;padding:2mm 3mm;font-size:11pt;}
+  .printblad table.cornell td.v{width:32%;font-weight:600;}
+  .printblad .samenv{border:1px solid #555;height:38mm;margin-top:4mm;padding:2mm 3mm;font-weight:600;}
+  /* volledige cursus afdrukken */
+  body:not(.print-oef):not(.print-cornell) #banner, body:not(.print-oef):not(.print-cornell) nav.inhoud,
+  body:not(.print-oef):not(.print-cornell) .toolknop, body:not(.print-oef):not(.print-cornell) button,
+  body:not(.print-oef):not(.print-cornell) .onder, body:not(.print-oef):not(.print-cornell) footer{display:none !important;}
+  body:not(.print-oef):not(.print-cornell) .blok{box-shadow:none;border:none;padding:0;margin:0 0 6mm;}
+  body:not(.print-oef):not(.print-cornell) figure, body:not(.print-oef):not(.print-cornell) .kader, body:not(.print-oef):not(.print-cornell) .denk, body:not(.print-oef):not(.print-cornell) .oef{break-inside:avoid;}
+  body:not(.print-oef):not(.print-cornell) .schrijflijnen{display:block;}
+}
+.schrijflijnen{display:none;}
+.schrijflijnen div{border-bottom:1px solid #999;height:9mm;}
+</style>
+</head>
+<body>
+<div id="banner"></div>
+<header class="top">
+  <div class="eyebrow">Biologie 3de jaar · Thema 3 Effectoren reageren op prikkels · Hoofdstuk 1</div>
+  <h1>De mens reageert op prikkels</h1>
+  <p class="intro">Werk dit hoofdstuk samen met de tool <a href="biologie-prikkels.html#e1">Water, prikkels en reacties</a>. Oefeningen maak je op papier.</p>
+  <p><button class="knop licht" onclick="window.print()">🖨 Druk de cursus af</button></p>
+  <nav class="inhoud" id="inhoud"></nav>
+</header>
+<main id="cursus">
+<section class="blok" id="lesdoelen">
+<h2>Lesdoelen</h2>
+<p>Na dit hoofdstuk kan je:</p><ul class="doelen"><li>voor eigen voorbeelden het schema <b>prikkel → receptor → verwerking → effector → effect</b> invullen en noteren of de reactie <b>bewust</b> of <b>onbewust</b> is;</li><li>uitleggen hoe je via <b>spieren</b> of <b>klieren</b>, bewust of onbewust, op prikkels reageert.</li></ul>
+</section>
+<section class="blok" id="voorkennis">
+<h2>Voorkennis</h2>
+<p>Dit moet je al kennen. Twijfel je? Herhaal het dan eerst.</p><ul><li>Het schema prikkel → receptor → verwerking → effector → effect (thema 1).</li><li>De vijf soorten receptoren (thema 2).</li></ul>
+</section>
+<section class="blok" id="deel1" data-vrij="deel1">
+<h2><span class="nr">1</span>Effectoren: spieren en klieren</h2>
+<div class="kader"><div class="kop">Definitie</div><p>Een <b>effector</b> voert de reactie uit. Bij de mens zijn dat <b>spieren</b> (beweging) en <b>klieren</b> (afscheiding van een stof).</p></div>
+<figure class="figuur"><svg width="640" id="svg-schema" viewBox="0 0 860 330"  fill="rgb(0, 0, 0)" stroke="none" stroke-width="1px" stroke-dasharray="none" stroke-linecap="butt" stroke-linejoin="miter" opacity="1" fill-opacity="1" stroke-opacity="1" font-size="16px" font-weight="400" font-family="Inter, sans-serif" text-anchor="start" xmlns="http://www.w3.org/2000/svg"><defs><marker id="sch-p" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10z" fill="#64748b"></path></marker></defs><rect x="20" y="70" width="150" height="150" rx="14" fill="rgb(255, 255, 255)" stroke="rgb(220, 38, 38)" stroke-width="3px" stroke-dasharray="none" stroke-linecap="butt" stroke-linejoin="miter" opacity="1" fill-opacity="1" stroke-opacity="1" font-size="16px" font-weight="400" font-family="Inter, sans-serif" text-anchor="start"></rect><rect x="20" y="70" width="150" height="38" rx="14" fill="rgb(220, 38, 38)" stroke="none" stroke-width="1px" stroke-dasharray="none" stroke-linecap="butt" stroke-linejoin="miter" opacity="1" fill-opacity="1" stroke-opacity="1" font-size="16px" font-weight="400" font-family="Inter, sans-serif" text-anchor="start"></rect><rect x="20" y="94" width="150" height="14" fill="rgb(220, 38, 38)" stroke="none" stroke-width="1px" stroke-dasharray="none" stroke-linecap="butt" stroke-linejoin="miter" opacity="1" fill-opacity="1" stroke-opacity="1" font-size="16px" font-weight="400" font-family="Inter, sans-serif" text-anchor="start"></rect><text x="95" y="96" text-anchor="middle" font-size="16px" font-weight="700" fill="rgb(255, 255, 255)" stroke="none" stroke-width="1px" stroke-dasharray="none" stroke-linecap="butt" stroke-linejoin="miter" opacity="1" fill-opacity="1" stroke-opacity="1" font-family="Inter, sans-serif">prikkel</text><g transform="translate(95,134)" fill="rgb(0, 0, 0)" stroke="none" stroke-width="1px" stroke-dasharray="none" stroke-linecap="butt" stroke-linejoin="miter" opacity="1" fill-opacity="1" stroke-opacity="1" font-size="16px" font-weight="400" font-family="Inter, sans-serif" text-anchor="start"><path d="M-14,8 L0,-14 L14,8 Z" fill="rgb(220, 38, 38)" fill-opacity="0.18" stroke="rgb(220, 38, 38)" stroke-width="2.5px" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="none" opacity="1" stroke-opacity="1" font-size="16px" font-weight="400" font-family="Inter, sans-serif" text-anchor="start"></path></g><text x="95" y="172" text-anchor="middle" font-size="14px" fill="rgb(29, 42, 54)" stroke="none" stroke-width="1px" stroke-dasharray="none" stroke-linecap="butt" stroke-linejoin="miter" opacity="1" fill-opacity="1" stroke-opacity="1" font-weight="400" font-family="Inter, sans-serif">warmte van de</text><text x="95" y="190" text-anchor="middle" font-size="14px" fill="rgb(29, 42, 54)" stroke="none" stroke-width="1px" stroke-dasharray="none" stroke-linecap="butt" stroke-linejoin="miter" opacity="1" fill-opacity="1" stroke-opacity="1" font-weight="400" font-family="Inter, sans-serif">kookplaat</text><path d="M172,145 L188,145" stroke="rgb(100, 116, 139)" stroke-width="3px" marker-end="url(#sch-p)" fill="rgb(0, 0, 0)" stroke-dasharray="none" stroke-linecap="butt" stroke-linejoin="miter" opacity="1" fill-opacity="1" stroke-opacity="1" font-size="16px" font-weight="400" font-family="Inter, sans-serif" text-anchor="start"></path><rect x="190" y="70" width="150" height="150" rx="14" fill="rgb(255, 255, 255)" stroke="rgb(124, 58, 237)" stroke-width="3px" stroke-dasharray="none" stroke-linecap="butt" stroke-linejoin="miter" opacity="1" fill-opacity="1" stroke-opacity="1" font-size="16px" font-weight="400" font-family="Inter, sans-serif" text-anchor="start"></rect><rect x="190" y="70" width="150" height="38" rx="14" fill="rgb(124, 58, 237)" stroke="none" stroke-width="1px" stroke-dasharray="none" stroke-linecap="butt" stroke-linejoin="miter" opacity="1" fill-opacity="1" stroke-opacity="1" font-size="16px" font-weight="400" font-family="Inter, sans-serif" text-anchor="start"></rect><rect x="190" y="94" width="150" height="14" fill="rgb(124, 58, 237)" stroke="none" stroke-width="1px" stroke-dasharray="none" stroke-linecap="butt" stroke-linejoin="miter" opacity="1" fill-opacity="1" stroke-opacity="1" font-size="16px" font-weight="400" font-family="Inter, sans-serif" text-anchor="start"></rect><text x="265" y="96" text-anchor="middle" font-size="16px" font-weight="700" fill="rgb(255, 255, 255)" stroke="none" stroke-width="1px" stroke-dasharray="none" stroke-linecap="butt" stroke-linejoin="miter" opacity="1" fill-opacity="1" stroke-opacity="1" font-family="Inter, sans-serif">receptor</text><g transform="translate(265,134)" fill="rgb(0, 0, 0)" stroke="none" stroke-width="1px" stroke-dasharray="none" stroke-linecap="butt" stroke-linejoin="miter" opacity="1" fill-opacity="1" stroke-opacity="1" font-size="16px" font-weight="400" font-family="Inter, sans-serif" text-anchor="start"><path d="M-12,-6 a12,12 0 1,0 24,0 a12,12 0 1,0 -24,0 M-4,-6 a4,4 0 1,0 8,0 a4,4 0 1,0 -8,0" fill="rgb(124, 58, 237)" fill-opacity="0.18" stroke="rgb(124, 58, 237)" stroke-width="2.5px" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="none" opacity="1" stroke-opacity="1" font-size="16px" font-weight="400" font-family="Inter, sans-serif" text-anchor="start"></path></g><text x="265" y="172" text-anchor="middle" font-size="14px" fill="rgb(29, 42, 54)" stroke="none" stroke-width="1px" stroke-dasharray="none" stroke-linecap="butt" stroke-linejoin="miter" opacity="1" fill-opacity="1" stroke-opacity="1" font-weight="400" font-family="Inter, sans-serif">thermo- en</text><text x="265" y="190" text-anchor="middle" font-size="14px" fill="rgb(29, 42, 54)" stroke="none" stroke-width="1px" stroke-dasharray="none" stroke-linecap="butt" stroke-linejoin="miter" opacity="1" fill-opacity="1" stroke-opacity="1" font-weight="400" font-family="Inter, sans-serif">pijnreceptoren in</text><text x="265" y="208" text-anchor="middle" font-size="14px" fill="rgb(29, 42, 54)" stroke="none" stroke-width="1px" stroke-dasharray="none" stroke-linecap="butt" stroke-linejoin="miter" opacity="1" fill-opacity="1" stroke-opacity="1" font-weight="400" font-family="Inter, sans-serif">de huid</text><path d="M342,145 L358,145" stroke="rgb(100, 116, 139)" stroke-width="3px" marker-end="url(#sch-p)" fill="rgb(0, 0, 0)" stroke-dasharray="none" stroke-linecap="butt" stroke-linejoin="miter" opacity="1" fill-opacity="1" stroke-opacity="1" font-size="16px" font-weight="400" font-family="Inter, sans-serif" text-anchor="start"></path><rect x="360" y="70" width="150" height="150" rx="14" fill="rgb(255, 255, 255)" stroke="rgb(47, 111, 176)" stroke-width="3px" stroke-dasharray="none" stroke-linecap="butt" stroke-linejoin="miter" opacity="1" fill-opacity="1" stroke-opacity="1" font-size="16px" font-weight="400" font-family="Inter, sans-serif" text-anchor="start"></rect><rect x="360" y="70" width="150" height="38" rx="14" fill="rgb(47, 111, 176)" stroke="none" stroke-width="1px" stroke-dasharray="none" stroke-linecap="butt" stroke-linejoin="miter" opacity="1" fill-opacity="1" stroke-opacity="1" font-size="16px" font-weight="400" font-family="Inter, sans-serif" text-anchor="start"></rect><rect x="360" y="94" width="150" height="14" fill="rgb(47, 111, 176)" stroke="none" stroke-width="1px" stroke-dasharray="none" stroke-linecap="butt" stroke-linejoin="miter" opacity="1" fill-opacity="1" stroke-opacity="1" font-size="16px" font-weight="400" font-family="Inter, sans-serif" text-anchor="start"></rect><text x="435" y="96" text-anchor="middle" font-size="16px" font-weight="700" fill="rgb(255, 255, 255)" stroke="none" stroke-width="1px" stroke-dasharray="none" stroke-linecap="butt" stroke-linejoin="miter" opacity="1" fill-opacity="1" stroke-opacity="1" font-family="Inter, sans-serif">verwerking</text><g transform="translate(435,134)" fill="rgb(0, 0, 0)" stroke="none" stroke-width="1px" stroke-dasharray="none" stroke-linecap="butt" stroke-linejoin="miter" opacity="1" fill-opacity="1" stroke-opacity="1" font-size="16px" font-weight="400" font-family="Inter, sans-serif" text-anchor="start"><path d="M-14,4 C-18,-14 0,-18 2,-10 C10,-18 20,-6 12,4 C14,14 -12,16 -14,4Z" fill="rgb(47, 111, 176)" fill-opacity="0.18" stroke="rgb(47, 111, 176)" stroke-width="2.5px" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="none" opacity="1" stroke-opacity="1" font-size="16px" font-weight="400" font-family="Inter, sans-serif" text-anchor="start"></path></g><text x="435" y="172" text-anchor="middle" font-size="14px" fill="rgb(29, 42, 54)" stroke="none" stroke-width="1px" stroke-dasharray="none" stroke-linecap="butt" stroke-linejoin="miter" opacity="1" fill-opacity="1" stroke-opacity="1" font-weight="400" font-family="Inter, sans-serif">ruggenmerg</text><text x="435" y="190" text-anchor="middle" font-size="14px" fill="rgb(29, 42, 54)" stroke="none" stroke-width="1px" stroke-dasharray="none" stroke-linecap="butt" stroke-linejoin="miter" opacity="1" fill-opacity="1" stroke-opacity="1" font-weight="400" font-family="Inter, sans-serif">(reflex)</text><path d="M512,145 L528,145" stroke="rgb(100, 116, 139)" stroke-width="3px" marker-end="url(#sch-p)" fill="rgb(0, 0, 0)" stroke-dasharray="none" stroke-linecap="butt" stroke-linejoin="miter" opacity="1" fill-opacity="1" stroke-opacity="1" font-size="16px" font-weight="400" font-family="Inter, sans-serif" text-anchor="start"></path><rect x="530" y="70" width="150" height="150" rx="14" fill="rgb(255, 255, 255)" stroke="rgb(5, 150, 105)" stroke-width="3px" stroke-dasharray="none" stroke-linecap="butt" stroke-linejoin="miter" opacity="1" fill-opacity="1" stroke-opacity="1" font-size="16px" font-weight="400" font-family="Inter, sans-serif" text-anchor="start"></rect><rect x="530" y="70" width="150" height="38" rx="14" fill="rgb(5, 150, 105)" stroke="none" stroke-width="1px" stroke-dasharray="none" stroke-linecap="butt" stroke-linejoin="miter" opacity="1" fill-opacity="1" stroke-opacity="1" font-size="16px" font-weight="400" font-family="Inter, sans-serif" text-anchor="start"></rect><rect x="530" y="94" width="150" height="14" fill="rgb(5, 150, 105)" stroke="none" stroke-width="1px" stroke-dasharray="none" stroke-linecap="butt" stroke-linejoin="miter" opacity="1" fill-opacity="1" stroke-opacity="1" font-size="16px" font-weight="400" font-family="Inter, sans-serif" text-anchor="start"></rect><text x="605" y="96" text-anchor="middle" font-size="16px" font-weight="700" fill="rgb(255, 255, 255)" stroke="none" stroke-width="1px" stroke-dasharray="none" stroke-linecap="butt" stroke-linejoin="miter" opacity="1" fill-opacity="1" stroke-opacity="1" font-family="Inter, sans-serif">effector</text><g transform="translate(605,134)" fill="rgb(0, 0, 0)" stroke="none" stroke-width="1px" stroke-dasharray="none" stroke-linecap="butt" stroke-linejoin="miter" opacity="1" fill-opacity="1" stroke-opacity="1" font-size="16px" font-weight="400" font-family="Inter, sans-serif" text-anchor="start"><path d="M-14,6 C-10,-12 10,-12 14,6 C8,10 -8,10 -14,6Z" fill="rgb(5, 150, 105)" fill-opacity="0.18" stroke="rgb(5, 150, 105)" stroke-width="2.5px" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="none" opacity="1" stroke-opacity="1" font-size="16px" font-weight="400" font-family="Inter, sans-serif" text-anchor="start"></path></g><text x="605" y="172" text-anchor="middle" font-size="14px" fill="rgb(29, 42, 54)" stroke="none" stroke-width="1px" stroke-dasharray="none" stroke-linecap="butt" stroke-linejoin="miter" opacity="1" fill-opacity="1" stroke-opacity="1" font-weight="400" font-family="Inter, sans-serif">spieren van de</text><text x="605" y="190" text-anchor="middle" font-size="14px" fill="rgb(29, 42, 54)" stroke="none" stroke-width="1px" stroke-dasharray="none" stroke-linecap="butt" stroke-linejoin="miter" opacity="1" fill-opacity="1" stroke-opacity="1" font-weight="400" font-family="Inter, sans-serif">arm</text><path d="M682,145 L698,145" stroke="rgb(100, 116, 139)" stroke-width="3px" marker-end="url(#sch-p)" fill="rgb(0, 0, 0)" stroke-dasharray="none" stroke-linecap="butt" stroke-linejoin="miter" opacity="1" fill-opacity="1" stroke-opacity="1" font-size="16px" font-weight="400" font-family="Inter, sans-serif" text-anchor="start"></path><rect x="700" y="70" width="150" height="150" rx="14" fill="rgb(255, 255, 255)" stroke="rgb(217, 119, 6)" stroke-width="3px" stroke-dasharray="none" stroke-linecap="butt" stroke-linejoin="miter" opacity="1" fill-opacity="1" stroke-opacity="1" font-size="16px" font-weight="400" font-family="Inter, sans-serif" text-anchor="start"></rect><rect x="700" y="70" width="150" height="38" rx="14" fill="rgb(217, 119, 6)" stroke="none" stroke-width="1px" stroke-dasharray="none" stroke-linecap="butt" stroke-linejoin="miter" opacity="1" fill-opacity="1" stroke-opacity="1" font-size="16px" font-weight="400" font-family="Inter, sans-serif" text-anchor="start"></rect><rect x="700" y="94" width="150" height="14" fill="rgb(217, 119, 6)" stroke="none" stroke-width="1px" stroke-dasharray="none" stroke-linecap="butt" stroke-linejoin="miter" opacity="1" fill-opacity="1" stroke-opacity="1" font-size="16px" font-weight="400" font-family="Inter, sans-serif" text-anchor="start"></rect><text x="775" y="96" text-anchor="middle" font-size="16px" font-weight="700" fill="rgb(255, 255, 255)" stroke="none" stroke-width="1px" stroke-dasharray="none" stroke-linecap="butt" stroke-linejoin="miter" opacity="1" fill-opacity="1" stroke-opacity="1" font-family="Inter, sans-serif">effect (reactie)</text><g transform="translate(775,134)" fill="rgb(0, 0, 0)" stroke="none" stroke-width="1px" stroke-dasharray="none" stroke-linecap="butt" stroke-linejoin="miter" opacity="1" fill-opacity="1" stroke-opacity="1" font-size="16px" font-weight="400" font-family="Inter, sans-serif" text-anchor="start"><path d="M-12,0 L-3,9 L13,-9" fill="none" fill-opacity="0.18" stroke="rgb(217, 119, 6)" stroke-width="2.5px" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="none" opacity="1" stroke-opacity="1" font-size="16px" font-weight="400" font-family="Inter, sans-serif" text-anchor="start"></path></g><text x="775" y="172" text-anchor="middle" font-size="14px" fill="rgb(29, 42, 54)" stroke="none" stroke-width="1px" stroke-dasharray="none" stroke-linecap="butt" stroke-linejoin="miter" opacity="1" fill-opacity="1" stroke-opacity="1" font-weight="400" font-family="Inter, sans-serif">je trekt je hand</text><text x="775" y="190" text-anchor="middle" font-size="14px" fill="rgb(29, 42, 54)" stroke="none" stroke-width="1px" stroke-dasharray="none" stroke-linecap="butt" stroke-linejoin="miter" opacity="1" fill-opacity="1" stroke-opacity="1" font-weight="400" font-family="Inter, sans-serif">terug</text><path d="M775,224 V280 H95 V226" fill="none" stroke="rgb(148, 163, 184)" stroke-width="2.5px" stroke-dasharray="7px, 6px" marker-end="url(#sch-p)" stroke-linecap="butt" stroke-linejoin="miter" opacity="1" fill-opacity="1" stroke-opacity="1" font-size="16px" font-weight="400" font-family="Inter, sans-serif" text-anchor="start"></path><text x="430" y="300" text-anchor="middle" font-size="14px" fill="rgb(81, 96, 110)" stroke="none" stroke-width="1px" stroke-dasharray="none" stroke-linecap="butt" stroke-linejoin="miter" opacity="1" fill-opacity="1" stroke-opacity="1" font-weight="400" font-family="Inter, sans-serif">bij een feedbacksysteem werkt het effect terug op de prikkel</text><text x="20" y="40" font-size="15px" fill="rgb(81, 96, 110)" stroke="none" stroke-width="1px" stroke-dasharray="none" stroke-linecap="butt" stroke-linejoin="miter" opacity="1" fill-opacity="1" stroke-opacity="1" font-weight="400" font-family="Inter, sans-serif" text-anchor="start">prikkel uit het <tspan font-weight="700" fill="rgb(29, 42, 54)" stroke="none" stroke-width="1px" stroke-dasharray="none" stroke-linecap="butt" stroke-linejoin="miter" opacity="1" fill-opacity="1" stroke-opacity="1" font-size="15px" font-family="Inter, sans-serif" text-anchor="start">extern milieu</tspan> · reactie: <tspan font-weight="700" fill="rgb(29, 42, 54)" stroke="none" stroke-width="1px" stroke-dasharray="none" stroke-linecap="butt" stroke-linejoin="miter" opacity="1" fill-opacity="1" stroke-opacity="1" font-size="15px" font-family="Inter, sans-serif" text-anchor="start">onbewust</tspan></text></svg><figcaption>Het schema van een reactie.</figcaption></figure>
+<table class="vb grid"><tr><td><b></b></td><td><b>Bewuste reactie</b></td><td><b>Onbewuste reactie</b></td></tr><tr><td>wat?</td><td>je denkt erover na en kiest</td><td>gebeurt vanzelf, zonder nadenken</td></tr><tr><td>voorbeeld</td><td>je hoort de bel en je pakt je boekentas</td><td>je trekt je hand terug van een hete pot (reflex), je hart slaat sneller bij schrik</td></tr></table>
+<table class="vb grid"><tr><td><b>Effector</b></td><td><b>Voorbeeld van een reactie</b></td></tr><tr><td>spieren</td><td>je trapt op de rem van je fiets; je knippert met je ogen</td></tr><tr><td>klieren</td><td>speekselklieren maken speeksel als je eten ruikt; zweetklieren maken zweet; de bijnieren maken adrenaline bij schrik</td></tr></table>
+<a class="toolknop" href="biologie-prikkels.html#e1" target="_blank" rel="noopener">▶ Vul het schema in voor verschillende situaties</a>
+<div class="denk" data-vrij="denk_1">
+  <div class="vraag"><div class="kop">Denkvraag</div><p>Iemand roept plots luid achter je op de tram. Je schrikt en je hart gaat sneller slaan. Vul het schema in. Is de reactie bewust of onbewust?</p></div>
+  <div class="onder"><div class="redenering"><ol><li><span class="stap">Prikkel en receptor</span> luid geluid → mechanoreceptoren in het oor</li><li><span class="stap">Verwerking</span> hersenen</li><li><span class="stap">Effector en effect</span> klieren (bijnieren) maken adrenaline → het hart slaat sneller</li><li><span class="stap">Bewust?</span> Nee, het gebeurt vanzelf.</li></ol><div class="besluit">Een onbewuste reactie via een klier.</div></div></div>
+</div>
+</section>
+<section class="blok" id="oefeningen" data-vrij="oefeningen">
+<h2>Oefeningen op papier</h2>
+<p>Maak deze oefeningen <b>op papier</b>. De oplossingen verschijnen hier nadat we de oefeningen in de les besproken hebben.</p>
+<p><button class="knop licht" data-print="oef">🖨 Druk de oefeningen af</button></p>
+<div class="oef" data-vrij="opl_1">
+  <div class="titel"><span class="nr">1</span>Schema invullen</div>
+  <div class="tekst">Vul het schema in en noteer of de reactie bewust of onbewust is.<ol class="deelvragen" type="a"><li>Je ruikt pannenkoeken en je mond wordt nat.</li><li>Je ziet het voetgangerslicht op groen springen en je steekt over.</li><li>Je stapt op een punaise en trekt meteen je voet op.</li><li>Het is warm in de klas en je begint te zweten.</li></ol></div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">a</span> geur → chemoreceptoren → hersenen → speekselklieren → speeksel · onbewust</li><li><span class="stap">b</span> licht → fotoreceptoren → hersenen → beenspieren → je stapt · bewust</li><li><span class="stap">c</span> beschadiging → pijnreceptoren → ruggenmerg (reflex) → beenspieren → voet omhoog · onbewust</li><li><span class="stap">d</span> warmte → thermoreceptoren → hersenen → zweetklieren → zweet · onbewust</li></ol><div class="besluit">Spieren bewegen, klieren maken een stof.</div></div>
+</div>
+<div class="oef" data-vrij="opl_2">
+  <div class="titel"><span class="nr">2</span>Spier of klier?</div>
+  <div class="tekst"><ol class="deelvragen" type="a"><li>tranen bij het snijden van ajuin</li><li>je hoofd draaien</li><li>kippenvel</li><li>maagsap na het eten</li></ol></div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">a</span> klier (traanklier)</li><li><span class="stap">b</span> spier</li><li><span class="stap">c</span> spier (haarspiertjes)</li><li><span class="stap">d</span> klier</li></ol><div class="besluit"></div></div>
+</div>
+<div class="oef" data-vrij="opl_3">
+  <div class="titel"><span class="nr">3</span>Redeneren: reflex</div>
+  <div class="tekst">Waarom is het nuttig dat je je hand van een hete kookplaat terugtrekt <b>zonder</b> erover na te denken?</div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">Sneller</span> Bij een reflex gaat de impuls via het ruggenmerg en niet eerst naar de bewuste hersenen.</li><li><span class="stap">Gevolg</span> Je reageert sneller en verbrandt je minder erg.</li></ol><div class="besluit">Een reflex beschermt je.</div></div>
+</div>
+<div class="oef" data-vrij="opl_4">
+  <div class="titel"><span class="nr">4</span>Eigen voorbeeld</div>
+  <div class="tekst">Bedenk zelf een voorbeeld van een bewuste reactie en een onbewuste reactie uit je dag. Vul telkens het volledige schema in.</div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">Bewust</span> bv. je ziet de tram aankomen → je loopt sneller: licht → fotoreceptoren → hersenen → beenspieren</li><li><span class="stap">Onbewust</span> bv. fel zonlicht → je pupil wordt kleiner: licht → fotoreceptoren → hersenen → spiertjes van de iris</li></ol><div class="besluit">Controleer: elke stap van het schema moet erin staan.</div></div>
+</div><a class="toolknop" href="biologie-prikkels.html#e1" target="_blank" rel="noopener">▶ Oefen verder in de tool</a>
+</section>
+<section class="blok" id="samenvatting" data-vrij="samenvatting">
+<h2>Samenvatting</h2>
+<div class="kader"><div class="kop">Samenvatting</div><p><b>Effectoren</b> voeren de reactie uit: <b>spieren</b> (beweging) en <b>klieren</b> (afscheiding van een stof).</p>
+<p>Schema: prikkel → receptor → verwerking → effector → effect. Een reactie is <b>bewust</b> (je kiest) of <b>onbewust</b> (vanzelf, bv. een reflex).</p></div>
+</section>
+
+</main>
+<footer>Cursus fysica — gemaakt voor klasgebruik, bij de tools op Oefentools wetenschappen.</footer>
+
+<div class="printblad" id="print-oef"></div>
+<div class="printblad" id="print-cornell"></div>
+
+<script>
+/* =====================================================================
+   VRIJGAVE — hier zet de leerkracht onderdelen open of dicht.
+   true  = zichtbaar voor de leerlingen
+   false = nog gesloten (de leerling ziet een slotje)
+   Tip: met ?leerkracht achter de link zie je als leerkracht alles,
+        bv. .../cursus-reageren.html?leerkracht
+   ===================================================================== */
+const VRIJGAVE = {
+  deel1: true,               // Effectoren: spieren en klieren
+  denk_1: false,             // redenering denkvraag 1
+  oefeningen: false,         // de oefeningen zelf (opgaven)
+  opl_1: false,              // oplossing oefening 1
+  opl_2: false,              // oplossing oefening 2
+  opl_3: false,              // oplossing oefening 3
+  opl_4: false,              // oplossing oefening 4
+  samenvatting: false,       // samenvatting
+};
+
+/* ===================================================================== */
+const LK = new URLSearchParams(location.search).has('leerkracht');
+const open = id => LK || VRIJGAVE[id] === true;
+if(LK) document.getElementById('banner').innerHTML='<div class="leerkracht-banner">Leerkrachtweergave: alles is zichtbaar, ook wat voor leerlingen nog gesloten is.</div>';
+
+// delen open of dicht
+document.querySelectorAll('section.blok[data-vrij]').forEach(el=>{
+  if(open(el.dataset.vrij)) return;
+  const kop=el.querySelector(':scope > h2');
+  [...el.children].forEach(c=>{ if(c!==kop) c.style.display='none'; });
+  const m=document.createElement('p'); m.className='gesloten-deel'; m.innerHTML='🔒 Dit deel wordt opengesteld wanneer we het in de les behandelen.';
+  el.appendChild(m);
+});
+
+// denkvragen: redenering pas tonen na vrijgave
+document.querySelectorAll('.denk').forEach(d=>{
+  const id=d.dataset.vrij, red=d.querySelector('.redenering'), onder=d.querySelector('.onder');
+  red.hidden=true;
+  if(open(id)){
+    const b=document.createElement('button'); b.textContent='Toon de redenering';
+    b.onclick=()=>{ red.hidden=!red.hidden; b.textContent=red.hidden?'Toon de redenering':'Verberg de redenering'; };
+    onder.prepend(b);
+  } else {
+    onder.innerHTML='<span class="slotje">💬 Denk eerst zelf na. We bespreken dit samen in de les; daarna verschijnt hier de redenering.</span>';
+  }
+});
+
+// oplossingen van oefeningen
+document.querySelectorAll('.oef[data-vrij]').forEach(o=>{
+  const id=o.dataset.vrij, opl=o.querySelector('.redenering'), onder=o.querySelector('.onder');
+  opl.hidden=true;
+  if(open(id)){
+    const b=document.createElement('button'); b.className='knop licht'; b.textContent='Toon de oplossing';
+    b.onclick=()=>{ opl.hidden=!opl.hidden; b.textContent=opl.hidden?'Toon de oplossing':'Verberg de oplossing'; };
+    onder.appendChild(b);
+  } else onder.innerHTML='<span class="slotje">🔒 De oplossing verschijnt nadat we de oefening besproken hebben.</span>';
+});
+
+// inhoudstafel
+const inh=document.getElementById('inhoud');
+document.querySelectorAll('section.blok').forEach(s=>{
+  const a=document.createElement('a'); a.href='#'+s.id;
+  const nr=s.querySelector('h2 .nr'); const tekst=s.querySelector('h2').textContent.replace(nr?nr.textContent:'','').trim();
+  a.innerHTML=(nr?'<span class="nr">'+nr.textContent+'</span>':'')+tekst;
+  if(s.dataset.vrij && !open(s.dataset.vrij)) a.classList.add('slot');
+  inh.appendChild(a);
+});
+
+// afdrukbare bladen
+function vulPrint(){
+  const oefs=[...document.querySelectorAll('#oefeningen .oef')].map(o=>{ const k=o.cloneNode(true); k.querySelectorAll('.redenering,.onder').forEach(x=>x.remove()); k.removeAttribute('data-vrij'); return k.outerHTML; }).join('');
+  document.getElementById('print-oef').innerHTML=`<h1>De mens reageert op prikkels · oefeningen</h1><div class="naam"><span>Naam: ______________________</span><span>Klas: ______</span><span>Datum: __________</span></div><p>Maak elke oefening in je schrift. Gebruik telkens: gegeven · gevraagd · formule · oplossing · antwoord met eenheid.</p>`+oefs;
+  const vragen=CORNELL.map(v=>`<tr><td class="v">${v[0]}</td><td style="height:${Math.round((v[1]||32)*1.35)}mm"></td></tr>`).join('');
+  document.getElementById('print-cornell').innerHTML=`<h1>De mens reageert op prikkels · Cornellblad</h1><div class="naam"><span>Naam: ______________________</span><span>Klas: ______</span></div><table class="cornell"><tr><td class="v">Vragen</td><td><b>Notities</b> (samen opgebouwd in de les)</td></tr>${vragen}</table><div class="samenv">Samenvatting in mijn eigen woorden:</div>`;
+}
+const CORNELL = [];
+function druk(soort){ vulPrint(); document.body.classList.add('print-'+soort); setTimeout(()=>{ window.print(); document.body.classList.remove('print-'+soort); },50); }
+document.querySelectorAll('[data-print]').forEach(b=>b.onclick=()=>druk(b.dataset.print));
+</script>
+</body>
+</html>
