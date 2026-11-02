@@ -99,7 +99,7 @@ function overzicht(){
   const groepen = [...new Set(KAARTEN.map(k => k.groep))];
   app.innerHTML = `<h1>Remediëring</h1>
   <p class="sub">Kies het hoofdstuk. Daarna kies je:</p>
-  <div class="keuze"><div><b>📅 Voor de toets</b><br>Je bereidt je voor, gespreid over 2 dagen.</div><div><b>🔁 Na de toets</b><br>Je had een lage score. Je leert uit je fouten en levert je werk in.</div></div>
+  <div class="keuze"><div><b>📅 Voor de toets</b><br>Je bereidt je voor, gespreid over 2 dagen, en levert je voorbereiding in.</div><div><b>🔁 Na de toets</b><br>Je had een lage score. Je leert uit je fouten en levert je werk in.</div></div>
   ${groepen.map(g => `<div class="groep" style="--c:${KLEUR(g)}"><h2>${g}</h2><div class="knoppen">${
     KAARTEN.filter(k => k.groep === g).map(k => `<a href="#${k.id}/voor">${e(k.titel)}</a>`).join('')}</div></div>`).join('')}`;
   window.scrollTo(0, 0);
@@ -133,7 +133,7 @@ function kaart(k, modus){
     ${na ? `<p>${sNaam('fouten')} <span class="wat">${STRAT.fouten[1]}</span></p>
     <p>Neem je toets. Schrijf bij elke fout over dit hoofdstuk:</p>
     <div class="zin"><b>Zinsbouwers</b>Dit is fout omdat … · Het juiste antwoord is … want …</div>`
-    : `<p>${sNaam('toets')} <span class="wat">${STRAT.toets[1]}</span></p>
+    : k.strat === 'toets' ? '' : `<p>${sNaam('toets')} <span class="wat">${STRAT.toets[1]}</span></p>
     <p>Neem een leeg blad. Schrijf bij elk doel van stap 1 op wat je erover weet, met je cursus dicht. Kijk daarna na in je cursus en vul aan in het groen.</p>
     <div class="zin"><b>Zinsbouwers</b>Ik weet nog: … · Ik was vergeten dat …</div>`}
     <div class="blok">
@@ -155,21 +155,18 @@ function kaart(k, modus){
     <div class="blok"><p>Lees de doelen van stap 1 opnieuw. Zet er nog eens <span class="schaal">✓ ~ ✗</span> naast, in het groen.</p></div>
   </section>
 
-${na ? `  <section class="stap"><h2><span class="nr">4</span>Inleveren</h2>
+  <section class="stap"><h2><span class="nr">4</span>Inleveren</h2>
+    ${na ? '' : `<p>Kijk naar je doelen van dag 2. Nog een <span class="schaal">~</span> of <span class="schaal">✗</span>? Oefen dat doel nog met de extra vragen hieronder. De dag voor de toets herhaal je nog eens kort: ${sNaam('toets')}.</p>`}
     <p>Neem duidelijke foto's van:</p>
     <ul class="check">
       <li>je doelen met <span class="schaal">✓ ~ ✗</span> van dag 1 en dag 2</li>
-      <li>je verbeterde toetsvragen</li>
+      ${na ? '<li>je verbeterde toetsvragen</li>' : k.strat === 'toets' ? '' : '<li>je blad van <i>Toets jezelf</i>, met je aanvullingen in het groen</li>'}
       <li>je opdracht van dag 1 (${STRAT[k.strat][0].toLowerCase()})</li>
       <li>je oefeningen van dag 2, met de verbetering in het groen</li>
     </ul>
-    <p>Kies in BookWidgets het hoofdstuk <b>${e(k.titel)}</b> en laad je foto's op.</p>
+    <p>Kies in BookWidgets: <b>${e(k.titel)}</b> · <b>${na ? 'na de toets' : 'voor de toets'}</b>. Laad je foto's op${na ? '' : ', ten laatste de dag voor de toets'}.</p>
     <div class="links">${bw ? `<a href="${bw}" target="_blank" rel="noopener">📤 Naar BookWidgets</a>` : `<button class="knop" disabled>📤 Link naar BookWidgets volgt</button>`}</div>
-  </section>` : `  <section class="stap"><h2><span class="nr">4</span>Klaar voor de toets?</h2>
-    <p>Kijk naar je doelen van dag 2.</p>
-    <ul><li>Overal <span class="schaal">✓</span>? Dan ben je klaar. Herhaal de dag voor de toets nog eens kort: ${sNaam('toets')}.</li>
-    <li>Nog een <span class="schaal">~</span> of <span class="schaal">✗</span>? Oefen dat doel nog met de extra vragen hieronder.</li></ul>
-  </section>`}
+  </section>
 
   <details class="extra"><summary>Extra oefenen: vragen op niveau DOK 2 en DOK 3</summary>
     <p>Dit hoef je niet in te leveren. Schrijf je antwoord eerst zelf op papier. Kijk daarna pas naar het antwoord.</p>
