@@ -88,7 +88,7 @@ h4c = idee(IDEE['h4c']) + h4c + test(9, TEST['h4c'])
 h5 = idee(IDEE['h5']) + h5 + test(10, TEST['h5'])
 
 # ---------- uitdagende oefeningen (DOK 3) ----------
-AANPAK = kader('Zo pak je een uitdaging aan', '''<p>Deze oefeningen combineren leerstof uit verschillende hoofdstukken. Vlieg er niet blind in:</p>
+AANPAK = kader('Zo pak je een uitdaging aan', '''<p>Deze oefeningen combineren leerstof uit verschillende hoofdstukken. Vlieg er niet blind in. De tips worden telkens korter: bij de laatste oefeningen kies je de aanpak zelf.</p>
 <ol><li><b>Lees</b> de opgave twee keer en maak een kleine <b>schets</b>.</li>
 <li><b>Analyseer:</b> wat weet je? Wat wordt er gevraagd? Welke leerstof heb je nodig (welk hoofdstuk)?</li>
 <li><b>Plan</b> je stappen: wat moet je eerst berekenen om daarna verder te kunnen?</li>
@@ -115,22 +115,20 @@ u1 = oef('opl_x', 0, 'Uitdaging · Een veer op planeet X', 'Een rover van 900 kg
      ('Op X', 'F<sub>v</sub> = 0,500 kg · 3,7 N/kg = 1,8 N; Δl = 1,8 N / 123 N/m = 0,015 m'),
      ('Controle', 'g is op X ongeveer 2,7 keer kleiner, dus Δl ook: 4,0 cm : 2,7 ≈ 1,5 cm. Logisch.')], 'Δl ≈ 1,5 cm')
 u2 = oef('opl_x', 0, 'Uitdaging · Te zware koffer?', 'Op de luchthaven mag een koffer maximaal 23 kg wegen. Fatima hangt haar koffer aan een bagageweger met een veer (k = 2500 N/m). De veer rekt 9,6 cm uit (g ≈ 10 N/kg). Mag de koffer mee? Zo niet, hoeveel kilogram moet eruit?'
-    + aanpak('van uitrekking naar kracht (hoofdstuk 5), van kracht naar massa (hoofdstuk 4). Let op de eenheden.'),
+    + aanpak('hoofdstuk 5 en 4. Let op de eenheden.'),
     [('Analyse', 'gevraagd: de massa. Uit Δl en k haal je F<sub>v</sub>; de koffer hangt stil, dus F<sub>v</sub> = F<sub>z</sub>.'),
      ('Veerkracht', 'Δl = 9,6 cm = 0,096 m; F<sub>v</sub> = 2500 N/m · 0,096 m = 240 N'), ('Massa', 'm = F<sub>z</sub> / g = 240 N / 10 N/kg = 24 kg'),
      ('Besluit', '24 kg is meer dan 23 kg')], 'De koffer is 1 kg te zwaar.')
 u3 = oef_fig('opl_x', 0, 'Uitdaging · Duwen op een boek', 'Een boek van 1,0 kg ligt op een tafel. Je duwt met je hand verticaal naar beneden op het boek met 5,0 N (g ≈ 10 N/kg). Teken alle krachten op het boek (schaal: 1 hokje ≙ 2,5 N). Hoe groot is de normaalkracht nu?'
-    + aanpak('welke krachten werken er op het boek, en door wie (hoofdstuk 2 en 4)? Het boek blijft liggen: wat weet je dan over F<sub>r</sub> (hoofdstuk 3)?'), sc_boekhand(False),
+    + aanpak('het boek blijft liggen.'), sc_boekhand(False),
     [('Analyse', 'op het boek werken drie krachten: F<sub>z</sub> (aarde), F<sub>hand</sub> (je hand) en F<sub>N</sub> (tafel).'),
      ('Rust', 'het boek blijft liggen → F<sub>r</sub> = 0: naar boven = naar beneden'), ('Normaalkracht', 'F<sub>N</sub> = F<sub>z</sub> + F<sub>hand</sub> = 10 N + 5,0 N = 15 N'),
      ('Tekenen', 'F<sub>z</sub>: 4 hokjes vanuit het midden naar beneden · F<sub>hand</sub>: 2 hokjes vanuit de stip bovenaan (daar raakt je hand het boek), naar beneden · F<sub>N</sub>: 6 hokjes vanuit het contactvlak naar boven')],
     'F<sub>N</sub> = 15 N: de tafel duwt harder terug omdat jij mee duwt.', sc_boekhand(True))
-u4 = oef('opl_x', 0, 'Uitdaging · Klopt de redenering?', 'Yasmine zegt: "Een astronaut in het ISS is gewichtloos. Dus werkt er geen zwaartekracht op hem." Het ISS vliegt op 400 km hoogte; daar is g ongeveer 8,7 N/kg. Beoordeel haar redenering en verbeter ze.'
-    + aanpak('zet de begrippen gewicht en zwaartekracht naast elkaar (hoofdstuk 4). Wat zegt g = 8,7 N/kg?'),
+u4 = oef('opl_x', 0, 'Uitdaging · Klopt de redenering?', 'Yasmine zegt: "Een astronaut in het ISS is gewichtloos. Dus werkt er geen zwaartekracht op hem." Het ISS vliegt op 400 km hoogte; daar is g ongeveer 8,7 N/kg. Beoordeel haar redenering en verbeter ze.',
     [('Analyse', 'Yasmine haalt gewicht en zwaartekracht door elkaar.'), ('Zwaartekracht', 'g = 8,7 N/kg is niet 0, dus er werkt wel zwaartekracht: bijna 90 % van die op aarde.'),
      ('Gewichtloos', 'hij drukt op geen steun (alles valt samen rond de aarde), dus zijn gewicht is 0.')], 'Gewichtloos betekent: geen gewicht, niet: geen zwaartekracht.')
-u5 = oef('opl_x', 0, 'Uitdaging · Een rotonde', 'Een auto rijdt aan constant 30 km/h door een rotonde. Ilias zegt: "De snelheid blijft gelijk, dus is F<sub>r</sub> = 0." Maak een schets van de rotonde met de snelheidsvector op twee plaatsen. Heeft Ilias gelijk? Waar wijst F<sub>r</sub>?'
-    + aanpak('de snelheid is een vector (hoofdstuk 3.1): kijk niet alleen naar de grootte. Wat doet een kracht loodrecht op de beweging (hoofdstuk 3.2)?'),
+u5 = oef('opl_x', 0, 'Uitdaging · Een rotonde', 'Een auto rijdt aan constant 30 km/h door een rotonde. Ilias zegt: "De snelheid blijft gelijk, dus is F<sub>r</sub> = 0." Maak een schets van de rotonde met de snelheidsvector op twee plaatsen. Heeft Ilias gelijk? Waar wijst F<sub>r</sub>?',
     [('Schets', 'twee even lange pijlen, rakend aan de cirkel, in verschillende richtingen'), ('Analyse', 'de grootte blijft gelijk, maar de richting verandert: de bewegingstoestand verandert'),
      ('Besluit', 'er is een resulterende kracht nodig, loodrecht op de beweging, naar het midden van de rotonde (de wrijving tussen banden en weg)')], 'Ilias heeft geen gelijk: F<sub>r</sub> ≠ 0 en wijst naar het midden.')
 
