@@ -206,7 +206,7 @@ footer a{color:inherit;}
       <div class="ctrl"><label for="k1l">Lengte l in het veld <span id="k1lv"></span></label><input type="range" id="k1l" min="5" max="50" step="5" value="20"></div>
       <div class="formule">F<sub>L</sub> = B · I · l · sin α</div>
       <div class="readout" id="r_k1"></div>
-      <div class="kader"><div class="kop">Richting van de lorentzkracht</div><p>Rechterhand: <b>vingers in de zin van I</b>, buig ze naar <b>B</b>: je <b>duim</b> geeft de zin van F<sub>L</sub>. F<sub>L</sub> staat altijd loodrecht op I en op B.</p></div>
+      <div class="kader"><div class="kop">Richting van de lorentzkracht</div><p>Rechterhandregel: houd duim, wijsvinger en middelvinger loodrecht op elkaar. <b>Duim</b> = zin van de stroom <b>I</b> (of van v bij een positieve lading), <b>wijsvinger</b> = zin van <b>B</b>, <b>middelvinger</b> = zin van <b>F<sub>L</sub></b>. Bij een negatieve lading is F<sub>L</sub> tegengesteld. F<sub>L</sub> staat altijd loodrecht op I en op B.</p></div>
     </div>
   </div>
 </section>
@@ -240,6 +240,7 @@ footer a{color:inherit;}
       <div class="formule">F<sub>L</sub> = q · v · B · sin α</div>
       <div class="formule">r = m · v / (q · B)</div>
       <div class="readout" id="r_k3"></div>
+      <div class="kader"><div class="kop">Rechterhandregel</div><p><b>Duim</b> = v (positieve lading), <b>wijsvinger</b> = B, <b>middelvinger</b> = F<sub>L</sub>. Voor een elektron draai je de zin van F<sub>L</sub> om.</p></div>
       <div class="note">De lorentzkracht doet als <strong>middelpuntzoekende kracht</strong>: q · v · B = m · v² / r. De snelheid verandert van richting, niet van grootte.</div>
     </div>
   </div>
@@ -756,7 +757,7 @@ function veldlijnen(polen, W, H, aantal, bin){ // polen: [{x,y,q}] q>0 = N
       ['Waarom wordt een ijzeren spijker aangetrokken door een magneet?', ['IJzer is altijd magnetisch.', 'De weissgebieden in het ijzer richten zich: magnetische influentie.', 'De spijker is elektrisch geladen.', 'Door de zwaartekracht.'], 1, 'In het veld van de magneet richten de weissgebieden zich. Het ijzer wordt zelf een magneet, met de tegengestelde pool naar de magneet.'],
       ['Wat is het verschil tussen een elektromagneet en een permanente magneet?', ['Er is geen verschil.', 'Een elektromagneet kun je aan- en uitzetten en regelen met de stroom.', 'Een elektromagneet heeft geen polen.', 'Een permanente magneet werkt alleen met stroom.'], 1, 'Het veld van een elektromagneet komt van de stroom door de spoel. Geen stroom, geen veld.'],
       ['Een kompasnaald wijst naar het noorden. Welke magnetische pool ligt daar?', ['Een magnetische noordpool.', 'Een magnetische zuidpool.', 'Geen pool.', 'Dat hangt af van de seizoenen.'], 1, 'De N-pool van de naald wordt aangetrokken door een Z-pool: bij de geografische noordpool ligt een magnetische zuidpool.']],
-    h2: [['Een stroom loopt naar rechts in een veld dat het scherm in wijst (⊗). In welke zin werkt de lorentzkracht?', ['Naar boven.', 'Naar beneden.', 'Naar rechts.', 'Het scherm uit.'], 0, 'Vingers naar rechts (I), buig ze het scherm in (B): je duim wijst naar boven.'],
+    h2: [['Een stroom loopt naar rechts in een veld dat het scherm in wijst (⊗). In welke zin werkt de lorentzkracht?', ['Naar boven.', 'Naar beneden.', 'Naar rechts.', 'Het scherm uit.'], 0, 'Duim naar rechts (I), wijsvinger het scherm in (B): je middelvinger wijst naar boven (F<sub>L</sub>).'],
       ['Twee evenwijdige draden met stroom in dezelfde zin...', ['stoten elkaar af.', 'trekken elkaar aan.', 'oefenen geen kracht uit.', 'draaien rond elkaar.'], 1, 'Stromen in dezelfde zin trekken aan, tegengestelde stromen stoten af.'],
       ['Waarom blijft de snelheid van een geladen deeltje in een magnetisch veld even groot?', ['De lorentzkracht staat altijd loodrecht op de snelheid.', 'Er werkt geen kracht.', 'De lorentzkracht is altijd nul.', 'De massa verandert.'], 0, 'Een kracht loodrecht op de snelheid verandert alleen de richting: een cirkelbaan.'],
       ['Wat doet de commutator in een gelijkstroommotor?', ['Hij versterkt het magneetveld.', 'Hij keert elke halve draai de stroomzin in de winding om.', 'Hij remt de motor af.', 'Hij zet gelijkspanning om in wisselspanning.'], 1, 'Zo blijft het krachtkoppel in dezelfde draaizin werken.']],
