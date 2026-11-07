@@ -38,8 +38,11 @@ def lesdoelen(sleutel, groepen, breed='1180px', pad='0 24px'):
     li = ''
     for kop, doelen in groepen:
         li += '<p style="margin:10px 0 2px;font-weight:700">%s</p><ul class="doelen" style="margin:0;font-size:14px;line-height:1.5">%s</ul>' % (kop, ''.join('<li>%s</li>' % d for d in doelen))
-    return ('<div style="max-width:%s;margin:14px auto 0;padding:%s"><details id="ld3" open style="border:1px solid #c9d6e3;border-radius:10px;padding:8px 14px;background:rgba(127,160,200,.08)">'
-            '<summary style="cursor:pointer;font-weight:700">Lesdoelen · Ik kan …</summary>%s'
+    return ('<div style="max-width:%s;margin:14px auto 0;padding:%s"><details id="ld3" style="border:1px solid #c9d6e3;border-radius:10px;padding:8px 14px;background:rgba(127,160,200,.08)">'
+            '<style>#ld3>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;font-weight:700}#ld3>summary::-webkit-details-marker{display:none}'
+            '#ld3 .pijl{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%%;background:#2F6FB0;color:#fff;font-size:13px;transition:transform .2s}'
+            '#ld3[open] .pijl{transform:rotate(90deg)}#ld3 .hint{font-weight:500;font-size:13px;opacity:.75}#ld3[open] .hint{display:none}</style>'
+            '<summary><span class="pijl">▶</span>Lesdoelen · Ik kan … <span class="hint">klik om te openen en af te vinken</span></summary>%s'
             '<p style="font-size:12px;opacity:.75;margin:8px 0 4px">Vink aan wat je al kan. Wat je niet kan aanvinken, oefen je nog eens.</p></details></div>\n') % (breed, pad, li)
 
 def bijvoeg(naam):
