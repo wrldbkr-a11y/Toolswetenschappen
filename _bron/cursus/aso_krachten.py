@@ -175,7 +175,8 @@ delen = [('Rekenen in de fysica', h1), ('Effect van een kracht', h2a), ('Een kra
          ('De bewegingstoestand en de snelheidsvector', h3a), ('Traagheid', h3b), ('Resulterende kracht en beweging', h3c),
          ('Zwaartekracht en zwaarteveld', h4a), ('Zwaartekracht berekenen', h4b), ('Massa, gewicht en normaalkracht', h4c), ('Veerkracht', h5)]
 blokken = [blok('lesdoelen', '', 'Lesdoelen', lesdoelen), blok('voorkennis', '', 'Voorkennis', voorkennis)]
-blokken += [blok(f'deel{i}', i, kop, inh, f'deel{i}') for i, (kop, inh) in enumerate(delen, start=1)]
+NRS = ['1', '2.1', '2.2', '3.1', '3.2', '3.2', '4.1', '4.2', '4.3–4.4', '5']  # hoofdstuknummers van het leerboek
+blokken += [blok(f'deel{i}', NRS[i - 1], kop, inh, f'deel{i}') for i, (kop, inh) in enumerate(delen, start=1)]
 blokken += [blok('oefeningen', '', 'Oefeningen op papier', oefs, 'oefeningen'), blok('samenvatting', '', 'Samenvatting', samenv, 'samenvatting')]
 alle = ''.join(blokken)
 denks = sorted(set(re.findall(r'data-vrij="(denk_\d+)"', alle)), key=lambda x: int(x.split('_')[1]))
