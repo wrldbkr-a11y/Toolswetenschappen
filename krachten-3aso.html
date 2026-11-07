@@ -255,13 +255,13 @@ footer a{color:inherit;}
 <!-- ================= VEERKRACHT ================= -->
 <section class="scene" id="ve1" data-nr="5" data-cat="ve" data-title="Een veer uitrekken">
   <div class="scene-head"><span class="num"></span><h3>Veerkracht</h3></div>
-  <p class="scene-sub">Hang een massa aan de veer. De veer rekt uit tot de <strong>veerkracht</strong> even groot is als de zwaartekracht. Wat gebeurt er als je te veel massa hangt?</p>
+  <p class="scene-sub">Hang een massa aan de veer. De veer rekt uit tot de <strong>veerkracht</strong> even groot is als de zwaartekracht. Haal daarna de massa eraf: neemt de veer haar <strong>oorspronkelijke lengte</strong> terug aan? Zo zie je of de vervorming <strong>elastisch</strong> of <strong>plastisch</strong> was. Probeer het met een kleine en met een heel grote massa.</p>
   <div class="grid">
     <div class="tek"><svg id="s_ve1" viewBox="0 0 640 470"></svg></div>
     <div class="controls">
       <div class="ctrl"><label for="ve1k">Veer</label><select id="ve1k"></select></div>
       <div class="ctrl"><label for="ve1m">Massa m <span id="ve1mv"></span></label><input type="range" id="ve1m" min="0" max="1000" step="10" value="200"></div>
-      <div class="knoppen"><button class="btn" id="ve1af">Haal de massa eraf</button><button class="btn" id="ve1nw">Nieuwe veer</button></div>
+      <div class="knoppen"><button class="btn" id="ve1af">Haal de massa eraf: komt de veer terug?</button><button class="btn" id="ve1nw">Nieuwe veer</button></div>
       <div class="formule">F<sub>v</sub> = k · Δl</div>
       <div class="omvorm"><div>F<sub>v</sub> = k · Δl</div><div>k = F<sub>v</sub> / Δl</div><div>Δl = F<sub>v</sub> / k</div></div>
       <div class="readout" id="r_ve1"></div>
@@ -659,7 +659,7 @@ const ONDER = [['Rubber op droog asfalt', 0.9, 0.7], ['Rubber op nat asfalt', 0.
 })();
 
 //////////////////// VEERKRACHT ////////////////////
-const VEREN = [['Zachte veer (k = 20 N/m)', 20, 3], ['Gewone veer (k = 50 N/m)', 50, 6], ['Stugge veer (k = 200 N/m)', 200, 9]];
+const VEREN = [['Slappe veer (k = 20 N/m)', 20, 3], ['Gewone veer (k = 50 N/m)', 50, 6], ['Stijve veer (k = 200 N/m)', 200, 9]];
 (function(){
   $('ve1k').innerHTML = VEREN.map(([n], i) => `<option value="${i}" ${i === 1 ? 'selected' : ''}>${n}</option>`).join('');
   let blijvend = 0, eraf = false;
@@ -668,7 +668,7 @@ const VEREN = [['Zachte veer (k = 20 N/m)', 20, 3], ['Gewone veer (k = 50 N/m)',
     $('ve1mv').textContent = (eraf ? 0 : +$('ve1m').value) + ' g';
     let dl = Fz / k, plast = Fz > grens;
     if (plast){ dl = grens / k + (Fz - grens) / k * 2.5; blijvend = Math.max(blijvend, (Fz - grens) / k * 2.5); }
-    if (eraf) dl = blijvend;
+    if (eraf) dl = blijvend; else if (!plast) dl += blijvend;
     const x = 260, top = 40, L0 = 120, pxm = 500; // 500 px per m
     const L = L0 + dl * pxm, onder = top + Math.min(L, 380);
     let o = `<rect x="160" y="20" width="200" height="20" fill="#94A3B8"/>`;
@@ -688,16 +688,18 @@ const VEREN = [['Zachte veer (k = 20 N/m)', 20, 3], ['Gewone veer (k = 50 N/m)',
       const sc = 18; // px per N
       o += pijl(x, onder, x, onder - Fz * sc, C.fv, sub('F', 'v'), 26, 0) + pijl(x, onder + sz * 0.4, x, onder + sz * 0.4 + Fz * sc, C.fz, sub('F', 'z'), 26, 0);
     }
+    if (blijvend > 0) o += `<path d="M${x - 26} ${top + L0} h52" stroke="#16a34a" stroke-width="2" stroke-dasharray="5 4"/>` + txt(x - 32, top + L0 + 4, 'oorspronkelijke lengte', {s: 12, c: '#16a34a', a: 'end'});
     if (dl > 0) o += `<path d="M395 ${top + L0} v${dl * pxm}" stroke="#B3362B" stroke-width="3"/>` + txt(388, top + L0 + dl * pxm / 2 + 4, 'Δl', {s: 14, w: 700, c: '#B3362B', a: 'end'});
     $('s_ve1').innerHTML = o;
     let r = `F<sub>v</sub> = F<sub>z</sub> = m · g = <b>${fmt(Fz, 2)} N</b><br>Δl = F<sub>v</sub> / k = ${fmt(Fz, 2)} / ${k} = <b>${fmt(Fz / k * 100, 1)} cm</b>`;
+    if (blijvend > 0 && !plast) r += `<br>Let op: de veer is al <b>${fmt(blijvend * 100, 1)} cm blijvend langer</b> door een vorige, te grote massa.`;
     if (plast) r = `F<sub>z</sub> = <b>${fmt(Fz, 2)} N</b><br><span class="flag">Voorbij de elasticiteitsgrens (${grens} N)!</span><br>De veer rekt veel verder uit en de wet van Hooke geldt niet meer.`;
-    if (eraf) r = blijvend > 0 ? `Massa eraf: de veer komt <span class="flag">niet terug</span>. Ze blijft ${fmt(blijvend * 100, 1)} cm langer: <b>plastische vervorming</b>.` : `Massa eraf: de veer neemt haar oorspronkelijke lengte terug aan: <span class="ok">elastische vervorming</span>.`;
+    if (eraf) r = blijvend > 0 ? `Massa eraf: de veer komt <span class="flag">niet terug</span>. Ze blijft ${fmt(blijvend * 100, 1)} cm langer: <b>plastische vervorming</b>. Je ging voorbij de elasticiteitsgrens (${grens} N). Kies <b>Nieuwe veer</b> om opnieuw te beginnen.` : `Massa eraf: de veer neemt haar oorspronkelijke lengte terug aan: <span class="ok">elastische vervorming</span>.`;
     $('r_ve1').innerHTML = r;
   }
   $('ve1m').oninput = () => { eraf = false; teken(); };
   $('ve1k').onchange = () => { blijvend = 0; eraf = false; teken(); };
-  $('ve1af').onclick = () => { eraf = true; teken(); };
+  $('ve1af').onclick = () => { eraf = true; $('ve1m').value = 0; teken(); };
   $('ve1nw').onclick = () => { blijvend = 0; eraf = false; teken(); };
   teken();
 })();
