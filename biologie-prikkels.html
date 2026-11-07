@@ -660,7 +660,7 @@ labelFig({wrap:'fig-blad',ctl:'ctl-blad',img:IMG.blad,w:900,h:897,ml:300,mr:300,
     {id:'dek', naam:'dekweefsel', kleur:'#f3e2bd', info:'Eén laag platte, doorzichtige cellen aan de boven- en onderkant, zonder bladgroenkorrels. Het <b>dekweefsel</b> beschermt het blad en laat het licht door.'},
     {id:'pal', naam:'vulweefsel (dicht)', kleur:'#6fbf5e', info:'Bovenaan: lange cellen <b>dicht tegen elkaar</b>, vol bladgroenkorrels. Hier gebeurt de meeste <b>fotosynthese</b>.'},
     {id:'spo', naam:'vulweefsel (los)', kleur:'#d9ec98', info:'Onderaan: losse, onregelmatige cellen. De ruimte tussen de cellen heet de <b>intercellulaire ruimte</b>. Daarin verspreiden CO₂, O₂ en waterdamp zich.'},
-    {id:'nerf', naam:'vaatbundel (nerf)', kleur:'#e9a23b', info:'Een <b>nerf</b> is een vaatbundel in het blad, omringd door een laag cellen. Bovenaan liggen de houtvaten, onderaan de zeefvaten.'},
+    {id:'nerf', naam:'vaatbundel (nerf)', kleur:'#e9a23b', info:'Een <b>nerf</b> is een vaatbundel in het blad, omringd door een laag cellen: de <b>bundelschede</b>. Bovenaan liggen de houtvaten, onderaan de zeefvaten.'},
     {id:'hout', naam:'houtvaten', kleur:'#2563eb', info:'<b>Houtvaten</b> zijn lange, holle buizen met verstevigde ringen. Ze brengen water en mineralen aan (bovenaan in de nerf).'},
     {id:'zeef', naam:'zeefvaten', kleur:'#dc2626', info:'<b>Zeefvaten</b> zijn rijen cellen met zeefplaten ertussen. Ze voeren de assimilaten (suikers) af (onderaan in de nerf).'},
     {id:'sluit', naam:'sluitcellen en huidmondjes', kleur:'#0d9488', info:'Onderaan in het dekweefsel: twee boonvormige <b>sluitcellen</b> rond een opening, het <b>huidmondje</b>. Langs hier komt CO₂ binnen en gaan O₂ en waterdamp naar buiten.'},
@@ -756,8 +756,9 @@ labelFig({wrap:'fig-blad',ctl:'ctl-blad',img:IMG.blad,w:900,h:897,ml:300,mr:300,
     korrels('spo',sk);
     // --- nerf: schede van cellen rond de vaatbundel (loopt in de lengte, langs z)
     const nm=mat('nerf','#e9a23b',{roughness:0.6});
-    for(let a=0;a<14;a++){ const t=a/14*Math.PI*2; const c=vervorm(new THREE.CylinderGeometry(0.21,0.21,6,16,30),0.03,6,a*3);
-      const me=zet('nerf',c,nm,6.5+Math.cos(t)*1.12,1.95+Math.sin(t)*1.0,3,[Math.PI/2,0,0]); }
+    for(let a=0;a<14;a++){ const t=a/14*Math.PI*2;
+      for(let q=0;q<7;q++){ const L=0.78+rnd(a*7+q)*0.12; const c=vervorm(rondeBalk(0.42,0.4,L,0.17),0.03,6,a*13+q*5);
+        zet('nerf',c,nm,6.5+Math.cos(t)*1.12,1.95+Math.sin(t)*1.0,0.45+q*0.86+(a%2)*0.3,[0,0,t]); } }
     // --- houtvaten: holle buizen met ringen
     const hm=mat('hout','#60a5fa',{transparent:true,opacity:0.85,roughness:0.3,side:THREE.DoubleSide,depthWrite:false});
     const hr=mat('hout','#1d4ed8',{roughness:0.45});
@@ -769,7 +770,7 @@ labelFig({wrap:'fig-blad',ctl:'ctl-blad',img:IMG.blad,w:900,h:897,ml:300,mr:300,
     const zm=mat('zeef','#f87171',{roughness:0.45});
     const zp=mat('zeef','#991b1b',{roughness:0.5});
     [[6.2,1.35,0.2],[6.7,1.3,0.18],[7.05,1.55,0.15]].forEach(([x,y,r])=>{
-      zet('zeef',vervorm(new THREE.CylinderGeometry(r,r,6,20,30),0.02,7,x*9),zm,x,y,3,[Math.PI/2,0,0]);
+      for(let q=0;q<6;q++) zet('zeef',vervorm(new THREE.CylinderGeometry(r,r,0.94,20,6),0.015,7,x*9+q),zm,x,y,0.5+q*1.0,[Math.PI/2,0,0]);
       for(let z=0.5;z<6;z+=1.0) zet('zeef',new THREE.CylinderGeometry(r*1.02,r*1.02,0.05,20),zp,x,y,z,[Math.PI/2,0,0]);
     });
     // --- sluitcellen: twee boonvormen rond het huidmondje, met bladgroenkorrels
