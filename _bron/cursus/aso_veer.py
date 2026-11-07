@@ -65,6 +65,34 @@ VOORBEELD = ('<p><b>Uitgewerkt voorbeeld.</b> Amina hangt 300 g aan haar veer (k
 <li><b>Veerkracht:</b> de massa hangt stil, dus F<sub>v</sub> = 3,0 N → <b>6 hokjes</b>, vanuit het ophangpunt naar boven.</li>
 <li><b>Uitrekking:</b> Δl = F<sub>v</sub> / k = 3,0 N / 25 N/m = 0,12 m = <b>12 cm</b>.</li></ol>''')
 
+
+def vingers(samen):
+    """veer tussen twee vingers: samendrukken (samen=True) of uitrekken; F_vinger op de veer, F_v op de vingers"""
+    w, h, y = 600, 190, 95
+    a, b = (230, 370) if samen else (170, 430)
+    n = 10; dx = (b - a - 20) / n
+    zz = f'M{a},{y} h10 ' + ' '.join(f'l{dx/2:.1f},{-12 if i % 2 == 0 else 12} l{dx/2:.1f},{12 if i % 2 == 0 else -12}' for i in range(n)) + ' h10'
+    huid, rand = '#f2c6a0', '#b7794f'
+    # vingertoppen: afgeronde vorm die naar de veer wijst
+    vl = f'<path d="M{a-2},{y} C{a-2},{y-16} {a-14},{y-20} {a-40},{y-20} L{a-160},{y-22} L{a-160},{y+22} L{a-40},{y+20} C{a-14},{y+20} {a-2},{y+16} {a-2},{y}Z" fill="{huid}" stroke="{rand}" stroke-width="1.5"/><path d="M{a-30},{y-12} C{a-22},{y-6} {a-22},{y+6} {a-30},{y+12}" fill="none" stroke="{rand}" stroke-width="1" opacity=".6"/>'
+    vr = f'<path d="M{b+2},{y} C{b+2},{y-16} {b+14},{y-20} {b+40},{y-20} L{b+160},{y-22} L{b+160},{y+22} L{b+40},{y+20} C{b+14},{y+20} {b+2},{y+16} {b+2},{y}Z" fill="{huid}" stroke="{rand}" stroke-width="1.5"/><path d="M{b+30},{y-12} C{b+22},{y-6} {b+22},{y+6} {b+30},{y+12}" fill="none" stroke="{rand}" stroke-width="1" opacity=".6"/>'
+    o = f'<rect width="{w}" height="{h}" fill="#fff"/>' + vl + vr + f'<path d="{zz}" fill="none" stroke="#475569" stroke-width="3" stroke-linejoin="round"/>'
+    if not samen:  # oogjes aan de uiteinden, om de vingertop gehaakt
+        o += f'<ellipse cx="{a-10}" cy="{y}" rx="12" ry="16" fill="none" stroke="#475569" stroke-width="3"/><ellipse cx="{b+10}" cy="{y}" rx="12" ry="16" fill="none" stroke="#475569" stroke-width="3"/>'
+    L = 55; s_ = 1 if samen else -1   # zin van de vingerkracht op de linkerkant van de veer
+    o += punt(a, y, INK, 4) + punt(b, y, INK, 4)
+    o += pijl(a, y, a + s_ * L, y, B) + label(a + s_ * L / 2 - 6, y - 22, 'F', 'vinger', B, 'middle')
+    o += pijl(b, y, b - s_ * L, y, B) + label(b - s_ * L / 2 - 6, y - 22, 'F', 'vinger', B, 'middle')
+    o += pijl(a, y, a - s_ * L, y, G) + label(a - s_ * L / 2, y + 40, 'F', 'v', G, 'middle')
+    o += pijl(b, y, b + s_ * L, y, G) + label(b + s_ * L / 2, y + 40, 'F', 'v', G, 'middle')
+    o += t(w / 2, h - 10, 'samendrukken' if samen else 'uitrekken', INK, size=14, w=700)
+    return svg(o, w, h)
+
+VINGERS = ('<p><b>Een veer tussen twee vingers.</b> Je vingers oefenen een kracht uit <b>op de veer</b> (blauw). De veer oefent de veerkracht uit <b>op je vingers</b> (groen). Beide krachten vertrekken in het contactpunt, maar wijzen in tegengestelde zin.</p>'
+    + figuur(vingers(True), 'Samendrukken: je vingers duwen de veer naar binnen. De veerkracht duwt je vingers naar buiten.')
+    + figuur(vingers(False), 'Uitrekken: je vingers zitten in de oogjes van de veer en trekken de veer naar buiten. De veerkracht trekt je vingers naar binnen.')
+    + LET + 'De veerkracht werkt altijd zo dat de veer terug naar haar <b>oorspronkelijke lengte</b> wil: samengedrukt duwt ze naar buiten, uitgerekt trekt ze naar binnen.</div>')
+
 TWEE = [(0, 0, 4, 2.5, R, 'A'), (0, 0, 10, 1.5, B, 'B')]
 
 DRAAIBOEK = edi([
@@ -74,6 +102,7 @@ DRAAIBOEK = edi([
  ('Tijdens de uitleg', '<ol>'
    + wisbord('Veer P: k = 200 N/m, veer Q: k = 25 N/m. Welke is het stijfst?', 'P')
    + wisbord('Teken ' + VF + '<sub>v</sub> op een massa aan een veer.', 'vanuit het ophangpunt, naar boven', 'vanuit het midden of naar beneden')
+   + wisbord('Je drukt een veer samen tussen twee vingers. Teken ' + VF + '<sub>v</sub>. Op wat werkt ze en in welke zin?', 'op je vingers, naar buiten', 'op de veer, of naar binnen')
    + wisbord('Dubbele massa: wat gebeurt er met Δl? En met k?', 'Δl verdubbelt, k blijft gelijk', 'k verdubbelt')
    + wisbord('150 g aan de veer van Amina (k = 25 N/m). Δl?', '1,5 N / 25 N/m = 0,060 m = 6,0 cm') + '</ol>'),
  ('Einde', '<ol>'
@@ -89,6 +118,7 @@ h5 = (DRAAIBOEK
  + KEN
  + LET + 'Werk met Δl in <b>meter</b>: 8,0 cm = 0,080 m. De veer van Amina heeft dus k = 2,0 N / 0,080 m = <b>25 N/m</b>.</div>'
  + VOORBEELD
+ + VINGERS
  + LET + 'Rek je een veer te ver uit, dan komt ze niet meer terug: <b>plastische vervorming</b>. Voorbij die <b>elasticiteitsgrens</b> geldt F<sub>v</sub> = k · Δl niet meer.</div>'
  + tool('krachten-3aso.html#ve1', 'Doe de proef zelf in de tool'))
 
