@@ -5,7 +5,7 @@ from bouw import blok, denk, oef, tool, kader, figuur, bouw
 
 # oude delen traagheid en beweging hergebruiken
 ns = {}
-exec(open('/tmp/oud_krachten.py').read().split("k_oef = f'''")[0].replace('k_cornell = d_cornell', ''), {**globals(), 'figuur': figuur, 'kader': kader, 'tool': tool, 'denk': denk}, ns)
+exec(open('/home/claude/toolswetenschappen/_bron/cursus/oud_krachten.py').read().split("k_oef = f'''")[0].replace('k_cornell = d_cornell', ''), {**globals(), 'figuur': figuur, 'kader': kader, 'tool': tool, 'denk': denk}, ns)
 k_traag = ns['k3'].replace("denk('denk_3'", "denk('denk_6'")
 k_beweg_basis = ns['k4'].replace("denk('denk_4'", "denk('denk_7'").replace("denk('denk_5'", "denk('denk_8'")
 

@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Krachten</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EEF2F5; --panel:#FFFFFF; --panel-2:#F5F8FB; --line:#D3DCE5;
+  --text:#1D2A36; --text-dim:#51606E;
+  --accent:#2F6FB0; --accent-dark:#245A91; --accent-soft:#E4EEF8;
+  --ok:#1F7A4A; --ok-bg:#E3F3E9; --warn:#9A5B00; --warn-bg:#FFF4D6;
+  --font:'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:var(--font);}
+body{-webkit-font-smoothing:antialiased;line-height:1.6;font-size:16px;}
+.top{max-width:900px;margin:0 auto;padding:36px 24px 0;}
+.top .eyebrow{font-size:13px;font-weight:700;color:var(--accent-dark);letter-spacing:.04em;text-transform:uppercase;margin-bottom:6px;}
+.top h1{font-size:2rem;font-weight:700;letter-spacing:-0.015em;margin:0 0 8px;line-height:1.2;}
+.top .intro{color:var(--text-dim);font-size:15px;margin:0;}
+.inhoud{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0 0;padding-bottom:14px;border-bottom:1px solid var(--line);}
+.inhoud a{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:500;text-decoration:none;color:var(--text-dim);background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:7px 12px;}
+.inhoud a:hover{border-color:var(--accent);color:var(--text);}
+.inhoud a .nr{min-width:22px;height:22px;border-radius:11px;display:inline-flex;align-items:center;justify-content:center;background:var(--accent-soft);color:var(--accent-dark);font-size:12px;font-weight:700;padding:0 6px;}
+.inhoud a.slot{opacity:.55;}
+main{max-width:900px;margin:0 auto;padding:22px 24px 80px;}
+section.blok{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:22px 24px;margin-bottom:22px;scroll-margin-top:16px;}
+section.blok > h2{font-size:1.45rem;margin:0 0 12px;display:flex;align-items:center;gap:10px;letter-spacing:-0.01em;}
+section.blok > h2 .nr{min-width:30px;height:30px;border-radius:15px;display:inline-flex;align-items:center;justify-content:center;background:var(--accent);color:#fff;font-size:14px;font-weight:700;padding:0 8px;}
+h3{font-size:1.1rem;margin:22px 0 8px;}
+p{margin:0 0 12px;}
+ul.doelen{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px;}
+ul.doelen li{background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:9px 12px 9px 40px;position:relative;}
+ul.doelen li::before{content:'✓';position:absolute;left:14px;top:9px;color:var(--accent);font-weight:700;}
+.figuur{margin:12px 0 16px;text-align:center;}
+.figuur svg{max-width:100%;height:auto;background:#fbfcfe;border:1px solid var(--line);border-radius:10px;}
+.figuur figcaption{font-size:13px;color:var(--text-dim);margin-top:4px;}
+.kader{border-left:4px solid var(--accent);background:var(--accent-soft);border-radius:0 10px 10px 0;padding:12px 16px;margin:14px 0;}
+.kader .kop{font-weight:700;color:var(--accent-dark);margin-bottom:4px;}
+.kader p:last-child{margin-bottom:0;}
+.formule{display:inline-block;font-size:19px;font-weight:700;background:#fff;border:1px solid var(--line);border-radius:8px;padding:6px 14px;margin:4px 0 8px;}
+.toolknop{display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-weight:600;font-size:14px;color:var(--accent-dark);background:#fff;border:1px solid var(--accent);border-radius:8px;padding:8px 14px;margin:6px 8px 10px 0;}
+.toolknop:hover{background:var(--accent-soft);}
+.denk{border:1px solid var(--line);border-radius:10px;margin:16px 0;overflow:hidden;}
+.denk .vraag{background:var(--warn-bg);padding:12px 16px;}
+.denk .vraag .kop{font-size:12px;font-weight:700;color:var(--warn);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px;}
+.denk .vraag p:last-child{margin:0;}
+.denk .onder{padding:10px 16px;background:#fff;}
+.denk button,.knop{font-family:var(--font);font-size:14px;font-weight:600;background:var(--accent);color:#fff;border:1px solid var(--accent);border-radius:8px;padding:8px 14px;cursor:pointer;}
+.denk button:hover,.knop:hover{background:var(--accent-dark);}
+.knop.licht{background:#fff;color:var(--text);border-color:var(--line);}
+.knop.licht:hover{border-color:var(--accent);background:#fff;}
+.slotje{color:var(--text-dim);font-size:14px;}
+.redenering{margin-top:10px;}
+.redenering ol{margin:0;padding-left:0;list-style:none;counter-reset:st;}
+.redenering ol li{counter-increment:st;position:relative;padding:8px 0 8px 40px;border-top:1px dashed var(--line);}
+.redenering ol li:first-child{border-top:none;}
+.redenering ol li::before{content:counter(st);position:absolute;left:4px;top:8px;width:24px;height:24px;border-radius:12px;background:var(--ok-bg);color:var(--ok);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;}
+.redenering .stap{font-weight:700;}
+.redenering .besluit{background:var(--ok-bg);border-radius:8px;padding:8px 12px;margin-top:6px;color:var(--ok);font-weight:600;}
+.oef{border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:12px 0;}
+.oef .titel{font-weight:700;margin-bottom:4px;}
+.oef .titel .nr{display:inline-flex;min-width:26px;height:26px;border-radius:13px;align-items:center;justify-content:center;background:var(--accent-soft);color:var(--accent-dark);font-size:13px;margin-right:8px;}
+.oef ol.deelvragen{margin:6px 0 4px;padding-left:22px;}
+.gesloten-deel{color:var(--text-dim);font-size:15px;display:flex;align-items:center;gap:10px;}
+.stappenplan{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 14px;}
+.stappenplan span{background:var(--panel-2);border:1px solid var(--line);border-radius:999px;padding:3px 12px;font-size:13px;font-weight:600;}
+table.vb{border-collapse:collapse;margin:6px 0 12px;font-size:15px;}
+table.vb td{padding:3px 12px 3px 0;vertical-align:top;}
+table.vb td:first-child{font-weight:700;color:var(--accent-dark);white-space:nowrap;}
+.leerkracht-banner{background:#7c3aed;color:#fff;text-align:center;font-size:14px;font-weight:600;padding:6px;}
+footer{max-width:900px;margin:0 auto;padding:0 24px 40px;color:var(--text-dim);font-size:12px;}
+/* ---------- afdrukken ---------- */
+.printblad{display:none;}
+@media print{
+  @page{size:A4;margin:16mm 15mm;}
+  body{background:#fff;font-size:12pt;}
+  body.print-oef > *:not(#print-oef), body.print-cornell > *:not(#print-cornell){display:none !important;}
+  body.print-oef #print-oef, body.print-cornell #print-cornell{display:block;}
+  .printblad h1{font-size:16pt;margin:0 0 2mm;}
+  .printblad .naam{display:flex;gap:10mm;font-size:11pt;margin:0 0 5mm;}
+  .printblad .oef{border:none;border-top:1px solid #999;border-radius:0;padding:3mm 0;margin:0;break-inside:avoid;}
+  .printblad table.cornell{width:100%;border-collapse:collapse;}
+  .printblad table.cornell td{border:1px solid #555;vertical-align:top;padding:2mm 3mm;font-size:11pt;}
+  .printblad table.cornell td.v{width:32%;font-weight:600;}
+  .printblad .samenv{border:1px solid #555;height:38mm;margin-top:4mm;padding:2mm 3mm;font-weight:600;}
+  /* volledige cursus afdrukken */
+  body:not(.print-oef):not(.print-cornell) #banner, body:not(.print-oef):not(.print-cornell) nav.inhoud,
+  body:not(.print-oef):not(.print-cornell) .toolknop, body:not(.print-oef):not(.print-cornell) button,
+  body:not(.print-oef):not(.print-cornell) .onder, body:not(.print-oef):not(.print-cornell) footer{display:none !important;}
+  body:not(.print-oef):not(.print-cornell) .blok{box-shadow:none;border:none;padding:0;margin:0 0 6mm;}
+  body:not(.print-oef):not(.print-cornell) figure, body:not(.print-oef):not(.print-cornell) .kader, body:not(.print-oef):not(.print-cornell) .denk, body:not(.print-oef):not(.print-cornell) .oef{break-inside:avoid;}
+  body:not(.print-oef):not(.print-cornell) .schrijflijnen{display:block;}
+}
+.schrijflijnen{display:none;}
+.schrijflijnen div{border-bottom:1px solid #999;height:9mm;}
+</style>
+</head>
+<body>
+<div id="banner"></div>
+<header class="top">
+  <div class="eyebrow">Fysica 3de jaar · andere richtingen · Thema 1 Krachten · Hoofdstuk 1 tot 5</div>
+  <h1>Krachten</h1>
+  <p class="intro">Werk dit thema samen met de tools <a href="rekenen-fysica-3aso.html">Rekenen in de fysica</a>, <a href="krachten-beweging-3aso.html">Traagheid, resulterende kracht en beweging</a> en <a href="krachten-3aso.html">Zwaartekracht en veerkracht</a>. Oefeningen maak je op papier.</p>
+  <p><button class="knop licht" onclick="window.print()">🖨 Druk de cursus af</button></p>
+  <nav class="inhoud" id="inhoud"></nav>
+</header>
+<main id="cursus">
+<section class="blok" id="lesdoelen">
+<h2>Lesdoelen</h2>
+<p>Na dit thema kan je:</p><ul class="doelen">
+<li>meetresultaten weergeven in de <b>SI-eenheid</b> en in een <b>afgeleide eenheid</b>;</li>
+<li>meetresultaten weergeven met het juiste aantal <b>beduidende cijfers</b>;</li>
+<li>de <b>wetenschappelijke notatie</b> gebruiken;</li>
+<li>het <b>statisch</b> en <b>dynamisch effect</b> van een kracht aantonen in concrete situaties;</li>
+<li>een kracht voorstellen als <b>vector</b> en krachten <b>tekenen op schaal</b>;</li>
+<li>aantonen hoe de <b>bewegingstoestand</b> van een voorwerp verandert;</li>
+<li>het <b>traagheidsbeginsel</b> uitleggen en de <b>snelheidsvector</b> tekenen;</li>
+<li>uitleggen dat de <b>zwaartekracht</b> werkt in het <b>zwaarteveld</b> van een hemellichaam, en het verschil tussen beide geven;</li>
+<li>de formule <b>F<sub>z</sub> = m · g</b> gebruiken en omvormen;</li>
+<li>het verschil geven tussen <b>massa</b>, <b>zwaartekracht</b>, <b>gewicht</b> en <b>normaalkracht</b>;</li>
+<li>uitleggen wat <b>veerkracht</b> is en de formule <b>F<sub>v</sub> = k · Δl</b> gebruiken en omvormen.</li></ul>
+</section>
+<section class="blok" id="voorkennis">
+<h2>Voorkennis</h2>
+<p>Dit moet je al kennen. Twijfel je? Herhaal het dan eerst.</p><ul>
+<li>Met een <b>lat</b> een lengte meten in cm en mm.</li>
+<li>Rekenen met <b>kommagetallen</b> en een <b>rekenmachine</b> gebruiken.</li>
+<li>Een formule invullen: in v = s / t vul je de getallen in plaats van de letters in.</li></ul>
+</section>
+<section class="blok" id="deel1" data-vrij="deel1">
+<h2><span class="nr">1</span>Rekenen in de fysica</h2>
+<div class="kader"><div class="kop">Ken dit · SI-eenheden</div><p>Elke <b>grootheid</b> heeft een symbool en een <b>SI-eenheid</b>:</p>
+<table style="border-collapse:collapse;margin:8px 0 12px;font-size:15px" cellpadding="5" border="1" bordercolor="#cbd5e1"><tr><th>grootheid</th><th>symbool</th><th>SI-eenheid</th></tr>
+<tr><td>lengte</td><td>l</td><td>meter (m)</td></tr><tr><td>massa</td><td>m</td><td>kilogram (kg)</td></tr>
+<tr><td>tijd</td><td>t</td><td>seconde (s)</td></tr><tr><td>kracht</td><td>F</td><td>newton (N)</td></tr></table>
+<p>Met een <b>voorvoegsel</b> maak je een <b>afgeleide eenheid</b>: k (kilo) = 1000, c (centi) = 0,01, m (milli) = 0,001.<br>
+2,5 km = 2500 m · 350 g = 0,350 kg · 45 min = 45 · 60 s = 2700 s</p></div><p>Is een getal heel groot of heel klein, dan schrijf je het in <b>wetenschappelijke notatie</b>: een getal tussen 1 en 10, maal een macht van 10.</p><div class="kader"><div class="kop">Ken dit · Wetenschappelijke notatie</div><p>a · 10<sup>n</sup> met 1 ≤ a &lt; 10.<br>
+384 000 km = 3,84 · 10<sup>5</sup> km (komma 5 plaatsen naar links → +5)<br>
+0,00052 m = 5,2 · 10<sup>−4</sup> m (komma 4 plaatsen naar rechts → −4)</p></div><p>Een meting is nooit perfect. Met de <b>beduidende cijfers</b> (BC) toon je hoe nauwkeurig je gemeten hebt.</p><div class="kader"><div class="kop">Ken dit · Beduidende cijfers</div><p>Alle cijfers tellen mee, behalve de nullen vooraan: 0,0450 heeft <b>3 BC</b> (4, 5 en de laatste 0). 12,0 heeft 3 BC.</p>
+<p>Bij <b>vermenigvuldigen en delen</b> krijgt de uitkomst evenveel BC als het gegeven met de minste BC: 2,5 m · 3,14 m = 7,85 m² → <b>7,9 m²</b> (2 BC).</p></div><div style="background:#FFF7ED;border-left:4px solid #D97706;border-radius:0 8px 8px 0;padding:8px 12px;margin:12px 0"><b style="color:#B45309">Let op.</b> Je rekenmachine weet niet hoe nauwkeurig je gemeten hebt. Neem nooit alle cijfers over: rond af op het juiste aantal BC.</div><a class="toolknop" href="rekenen-fysica-3aso.html" target="_blank" rel="noopener">▶ Oefen omzetten, notatie en beduidende cijfers in de tool</a>
+</section>
+<section class="blok" id="deel2" data-vrij="deel2">
+<h2><span class="nr">2</span>Effect van een kracht</h2>
+<p>Je ziet een kracht niet. Je ziet wel wat ze doet: haar <b>effect</b>.</p>
+<figure class="figuur"><svg viewBox="0 0 600 200" width="600" xmlns="http://www.w3.org/2000/svg"><rect width="600" height="200" fill="#fff"/><text x="150" y="22" fill="#1D2A36" font-size="14" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">statisch effect: vorm verandert</text><rect x="60" y="45" width="180" height="10" fill="#94a3b8"/><path d="M150,55 l0,10 l-14,6 l28,8 l-28,8 l28,8 l-28,8 l28,8 l-14,6 l0,10" fill="none" stroke="#475569" stroke-width="3"/><rect x="130" y="127" width="40" height="28" fill="#e7c9a9" stroke="#7c2d12" stroke-width="2"/><line x1="150" y1="141" x2="150.0" y2="179.6" stroke="#dc2626" stroke-width="4" stroke-linecap="round"/><path d="M150.0,190.0 L144.7,178.1 L155.3,178.1Z" fill="#dc2626"/><circle cx="150" cy="141" r="3.5" fill="#1D2A36"/><text x="165" y="184" fill="#dc2626" font-size="14" font-weight="700" text-anchor="start" font-family="Inter,sans-serif">F</text><text x="150" y="198" fill="#1D2A36" font-size="14" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif"></text><text x="450" y="22" fill="#1D2A36" font-size="14" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">dynamisch effect: beweging verandert</text><line x1="330" y1="150" x2="580" y2="150" stroke="#94a3b8" stroke-width="2"/><circle cx="390" cy="132" r="18" fill="#f1f5f9" stroke="#475569" stroke-width="2"/><line x1="390" y1="132" x2="449.6" y2="132.0" stroke="#dc2626" stroke-width="4" stroke-linecap="round"/><path d="M460.0,132.0 L448.1,137.3 L448.1,126.7Z" fill="#dc2626"/><text x="440" y="122" fill="#dc2626" font-size="14" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">F</text><circle cx="520" cy="132" r="18" fill="none" stroke="#94a3b8" stroke-width="2" stroke-dasharray="4 3"/><line x1="480" y1="175" x2="549.6" y2="175.0" stroke="#2563eb" stroke-width="3" stroke-linecap="round"/><path d="M560.0,175.0 L548.1,180.3 L548.1,169.7Z" fill="#2563eb"/><text x="520" y="196" fill="#2563eb" font-size="12" font-weight="600" text-anchor="middle" font-family="Inter,sans-serif">de bal begint te bewegen</text></svg><figcaption>Links: een kracht rekt een veer uit (statisch effect). Rechts: een kracht zet een bal in beweging (dynamisch effect).</figcaption></figure>
+<table class="vb"><tr><td>Statisch effect</td><td>de <b>vorm</b> van het voorwerp verandert: uitrekken, indrukken, buigen</td></tr>
+<tr><td>Dynamisch effect</td><td>de <b>bewegingstoestand</b> verandert: het voorwerp vertrekt, gaat sneller of trager, stopt of verandert van richting</td></tr></table>
+<table class="vb"><tr><td>gewicht aan een veer</td><td>statisch</td><td>de zwaartekracht op het gewicht rekt de veer uit</td></tr>
+<tr><td>spons indrukken</td><td>statisch</td><td>je hand drukt de spons in</td></tr>
+<tr><td>plank buigt door</td><td>statisch</td><td>het gewicht van een persoon buigt de plank</td></tr>
+<tr><td>bal wegtrappen</td><td>dynamisch</td><td>de bal lag stil en beweegt daarna: de snelheid wordt groter</td></tr>
+<tr><td>fietser remt</td><td>dynamisch</td><td>de remkracht maakt de fiets trager</td></tr>
+<tr><td>magneet en knikker</td><td>dynamisch</td><td>de magneet trekt een rollende stalen knikker opzij: de richting verandert</td></tr></table>
+<div class="kader"><div class="kop">Definitie</div><p>Een <b>kracht</b> is de oorzaak van een <b>vormverandering</b> (statisch effect) of van een verandering in <b>bewegingstoestand</b> (dynamisch effect) van een voorwerp.</p></div>
+<p>Soms zie je beide effecten tegelijk: een tennisbal die tegen het racket botst, wordt even platgedrukt (statisch) en vliegt terug (dynamisch).</p>
+<a class="toolknop" href="krachten-beweging-3aso.html#s0" target="_blank" rel="noopener">▶ Bekijk effecten van krachten in de tool</a>
+<div class="denk" data-vrij="denk_1">
+  <div class="vraag"><div class="kop">Denkvraag</div><p>Je duwt met al je kracht tegen de muur van de klas. De muur beweegt niet en je ziet niets veranderen. Werkt er dan wel een kracht?</p></div>
+  <div class="onder"><div class="redenering"><ol><li><span class="stap">Is er een dynamisch effect?</span> Nee: de muur verandert niet van bewegingstoestand.</li><li><span class="stap">Is er een statisch effect?</span> Ja, maar heel klein: de muur wordt een heel klein beetje ingedrukt. Je voelt het effect ook in je eigen handen, die platgedrukt worden.</li><li><span class="stap">Besluit</span> Een kracht werkt ook als je het effect niet goed ziet.</li></ol><div class="besluit">Ja, er werkt een kracht. Het effect is statisch en heel klein.</div></div></div>
+</div>
+</section>
+<section class="blok" id="deel3" data-vrij="deel3">
+<h2><span class="nr">3</span>Een kracht is een vector</h2>
+<p>Een kracht heeft niet alleen een <b>grootte</b>, maar ook een <b>richting</b> en een <b>zin</b>. Daarom stellen we een kracht voor met een pijl: een <b>vector</b>. Het symbool is <b>F</b> met een pijltje erboven; de eenheid is de <b>newton (N)</b>.</p>
+<figure class="figuur"><svg viewBox="0 0 600 150" width="600" xmlns="http://www.w3.org/2000/svg"><rect width="600" height="150" fill="#fff"/><line x1="30" y1="80" x2="580" y2="80" stroke="#94a3b8" stroke-width="1.6" stroke-dasharray="6 5"/><circle cx="90" cy="80" r="5" fill="#1D2A36"/><line x1="90" y1="80" x2="331.6" y2="80.0" stroke="#2563eb" stroke-width="5" stroke-linecap="round"/><path d="M342.0,80.0 L330.1,85.3 L330.1,74.7Z" fill="#2563eb"/><text x="90" y="108" fill="#1D2A36" font-size="14" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">aangrijpingspunt</text><text x="250" y="64" fill="#2563eb" font-size="14" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">lengte = grootte (1 cm ≙ 10 N)</text><text x="355" y="108" fill="#1D2A36" font-size="14" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">zin: naar rechts</text><text x="510" y="108" fill="#64748b" font-size="13" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">richting: horizontaal</text></svg><figcaption>De vier kenmerken van een krachtvector.</figcaption></figure>
+<div class="kader"><div class="kop">Kenmerken van een kracht</div><p><b>Aangrijpingspunt</b>: het punt waar de kracht op het voorwerp werkt. Daar begint de pijl.<br><b>Richting</b>: de rechte waarop de pijl ligt (horizontaal, verticaal, schuin onder een hoek …).<br><b>Zin</b>: naar welke kant de pijl wijst (naar links, naar boven …).<br><b>Grootte</b>: hoe groot de kracht is, in N. Op de tekening is dat de lengte van de pijl, op schaal.</p></div>
+<h3>Een kracht tekenen op schaal</h3>
+<ol><li>Kies een <b>schaal</b>, bv. 1 cm ≙ 10 N (lees: 1 cm stelt 10 N voor).</li>
+<li>Bereken de <b>lengte</b>: grootte gedeeld door de schaalwaarde. 35 N : 10 N = 3,5 → 3,5 cm.</li>
+<li>Duid het <b>aangrijpingspunt</b> aan met een stip.</li>
+<li>Teken vanuit dat punt de pijl in de juiste <b>richting</b> en <b>zin</b>, met de berekende lengte.</li>
+<li>Schrijf het symbool en de grootte bij de pijl: F = 35 N.</li></ol>
+<p>De <b>zwaartekracht</b> teken je altijd vanuit het midden (zwaartepunt) van het voorwerp, verticaal naar beneden.</p>
+<h3>De grootte aflezen</h3>
+<p>Omgekeerd kan je uit een tekening de grootte bepalen: <b>meet de lengte</b> van de pijl en <b>vermenigvuldig</b> met de schaal. Een pijl van 4,2 cm met de schaal 1 cm ≙ 20 N stelt 4,2 · 20 N = 84 N voor.</p>
+<a class="toolknop" href="krachten-beweging-3aso.html#s0b" target="_blank" rel="noopener">▶ Oefen: een kracht tekenen op schaal</a>
+<div class="denk" data-vrij="denk_2">
+  <div class="vraag"><div class="kop">Denkvraag</div><p>Je tekent een kracht van 35 N met de schaal 1 cm ≙ 10 N. Je buur kiest 1 cm ≙ 5 N. Wie tekent de langste pijl? Hoe lang zijn beide pijlen?</p></div>
+  <div class="onder"><div class="redenering"><ol><li><span class="stap">Schaal 1 cm ≙ 10 N</span> 35 N : 10 N = 3,5 → 3,5 cm</li><li><span class="stap">Schaal 1 cm ≙ 5 N</span> 35 N : 5 N = 7 → 7,0 cm</li><li><span class="stap">Vergelijk</span> Met een kleinere schaalwaarde wordt de pijl langer. De kracht zelf blijft even groot.</li></ol><div class="besluit">De buur tekent een pijl van 7,0 cm, jij een pijl van 3,5 cm. Het is dezelfde kracht.</div></div></div>
+</div>
+</section>
+<section class="blok" id="deel4" data-vrij="deel4">
+<h2><span class="nr">4</span>De bewegingstoestand en de snelheidsvector</h2>
+<p>De <b>bewegingstoestand</b> van een voorwerp is hoe snel het gaat en in welke richting. Die verandert als het voorwerp <b>vertrekt</b>, <b>sneller</b> of <b>trager</b> gaat, <b>stopt</b> of <b>van richting verandert</b>. Daarvoor is altijd een kracht nodig.</p><div class="kader"><div class="kop">Ken dit · De snelheidsvector</div><p>De snelheid is ook een <b>vector</b>: een pijl vanaf het voorwerp, in de zin van de beweging.</p>
+<p>Hoe <b>sneller</b>, hoe <b>langer</b> de pijl. Staat het voorwerp stil, dan is v = 0: <b>geen pijl</b>.</p></div><figure class="figuur"><svg viewBox="0 0 600 170" width="600" xmlns="http://www.w3.org/2000/svg"><rect width="600" height="170" fill="#fff"/><line x1="20" y1="130" x2="580" y2="130" stroke="#94a3b8" stroke-width="2"/><rect x="56" y="104" width="48" height="20" rx="6" fill="#cbd5e1" stroke="#475569"/><circle cx="67" cy="126" r="6" fill="#334155"/><circle cx="93" cy="126" r="6" fill="#334155"/><rect x="276" y="104" width="48" height="20" rx="6" fill="#cbd5e1" stroke="#475569"/><circle cx="287" cy="126" r="6" fill="#334155"/><circle cx="313" cy="126" r="6" fill="#334155"/><rect x="476" y="104" width="48" height="20" rx="6" fill="#cbd5e1" stroke="#475569"/><circle cx="487" cy="126" r="6" fill="#334155"/><circle cx="513" cy="126" r="6" fill="#334155"/><line x1="80" y1="96" x2="119.6" y2="96.0" stroke="#d97706" stroke-width="4" stroke-linecap="round"/><path d="M130.0,96.0 L118.1,101.3 L118.1,90.7Z" fill="#d97706"/><text x="105" y="84" fill="#d97706" font-size="14" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">v<tspan baseline-shift="sub" font-size="10">1</tspan></text><path d="M96,69 H106 M103,66 L106,69 L103,72" stroke="#d97706" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/><line x1="300" y1="96" x2="379.6" y2="96.0" stroke="#d97706" stroke-width="4" stroke-linecap="round"/><path d="M390.0,96.0 L378.1,101.3 L378.1,90.7Z" fill="#d97706"/><text x="345" y="84" fill="#d97706" font-size="14" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">v<tspan baseline-shift="sub" font-size="10">2</tspan></text><path d="M336,69 H346 M343,66 L346,69 L343,72" stroke="#d97706" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/><line x1="500" y1="96" x2="549.6" y2="96.0" stroke="#d97706" stroke-width="4" stroke-linecap="round"/><path d="M560.0,96.0 L548.1,101.3 L548.1,90.7Z" fill="#d97706"/><text x="530" y="84" fill="#d97706" font-size="14" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">v<tspan baseline-shift="sub" font-size="10">3</tspan></text><path d="M521,69 H531 M528,66 L531,69 L528,72" stroke="#d97706" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/><text x="80" y="158" fill="#1D2A36" font-size="13" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">t₁</text><text x="300" y="158" fill="#1D2A36" font-size="13" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">t₂: sneller</text><text x="500" y="158" fill="#1D2A36" font-size="13" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">t₃: trager</text></svg><figcaption>Dezelfde auto op drie tijdstippen. Op t₂ rijdt hij sneller (langere pijl), op t₃ trager (kortere pijl).</figcaption></figure><a class="toolknop" href="krachten-beweging-3aso.html#sv" target="_blank" rel="noopener">▶ Teken zelf de snelheidsvector in de tool</a>
+</section>
+<section class="blok" id="deel5" data-vrij="deel5">
+<h2><span class="nr">5</span>Traagheid</h2>
+<p>Sta je in een bus of tram van de MIVB die plots vertrekt, dan val je naar achter. Remt de tram, dan val je naar voor. Niemand duwt je: je lichaam wil gewoon blijven doen wat het deed. Dat noemen we <b>traagheid</b>.</p>
+<div class="kader"><div class="kop">Traagheid</div><p>Elk voorwerp verzet zich tegen een verandering van zijn snelheid: het wil blijven <b>stilstaan</b>, of <b>even snel rechtdoor</b> blijven bewegen. Traagheid is <b>geen kracht</b>.</p><p>Hoe <b>groter de massa</b>, hoe <b>groter de traagheid</b>: een zwaar voorwerp is moeilijk in beweging te brengen en moeilijk te stoppen.</p></div>
+<a class="toolknop" href="krachten-beweging-3aso.html#s1" target="_blank" rel="noopener">▶ Bekijk de bus in de tool</a> <a class="toolknop" href="krachten-beweging-3aso.html#s2" target="_blank" rel="noopener">▶ Vergelijk een lege en een volle kar</a>
+<div class="denk" data-vrij="denk_3">
+  <div class="vraag"><div class="kop">Denkvraag</div><p>Waarom moet een volgeladen vrachtwagen veel vroeger beginnen remmen dan een lege vrachtwagen die even snel rijdt?</p></div>
+  <div class="onder"><div class="redenering"><ol><li><span class="stap">Wat is verschillend?</span> De volgeladen vrachtwagen heeft een veel grotere massa.</li><li><span class="stap">Wat betekent dat?</span> Grotere massa → grotere traagheid: hij verzet zich meer tegen een verandering van snelheid.</li><li><span class="stap">Met dezelfde remkracht</span> neemt zijn snelheid trager af. Hij heeft meer tijd en een langere afstand nodig om te stoppen.</li></ol><div class="besluit">De volle vrachtwagen heeft een langere remweg, door zijn grotere traagheid.</div></div></div>
+</div>
+</section>
+<section class="blok" id="deel6" data-vrij="deel6">
+<h2><span class="nr">6</span>Resulterende kracht en beweging</h2>
+<p>De <b>resulterende kracht F<sub>r</sub></b> is de ene kracht die hetzelfde effect heeft als alle krachten samen. Trekken twee kinderen met even grote krachten in tegengestelde zin aan een slee, dan is F<sub>r</sub> = 0.</p><div class="kader"><div class="kop">Traagheidswet (eerste wet van Newton)</div><p>Is de resulterende kracht op een voorwerp <b>nul</b>, dan blijft het voorwerp in <b>rust</b>, of beweegt het <b>eenparig rechtlijnig</b>: even snel en rechtdoor.</p></div>
+<p>Is de resulterende kracht <b>niet nul</b>, dan verandert de snelheid. Vergelijk F<sub>r</sub> met de beweging:</p>
+<table class="vb">
+<tr><td>F<sub>r</sub> = 0</td><td>de snelheid blijft gelijk (rust of ERB)</td></tr>
+<tr><td>F<sub>r</sub> mee met v</td><td>de snelheid neemt toe</td></tr>
+<tr><td>F<sub>r</sub> tegen v in</td><td>de snelheid neemt af</td></tr>
+<tr><td>F<sub>r</sub> loodrecht op v</td><td>de richting van de snelheid verandert (bocht)</td></tr></table>
+<p>Let op: om <b>te blijven bewegen</b> heb je <b>geen</b> kracht nodig. Je hebt een kracht nodig om de snelheid te <b>veranderen</b>.</p>
+<a class="toolknop" href="krachten-beweging-3aso.html#s3" target="_blank" rel="noopener">▶ Probeer het met de slee in de tool</a> <a class="toolknop" href="krachten-beweging-3aso.html#s3b" target="_blank" rel="noopener">▶ Een bal die je hand verlaat</a>
+<div class="denk" data-vrij="denk_4">
+  <div class="vraag"><div class="kop">Denkvraag</div><p>Je rolt een bal weg over het gras. Na een tijdje stopt hij. Sofia zegt: "De bal rolt eerst nog verder omdat de kracht van je hand nog in de bal zit." Klopt dat?</p></div>
+  <div class="onder"><div class="redenering"><ol><li><span class="stap">Wanneer werkt de kracht van je hand?</span> Alleen zolang je hand de bal raakt. Daarna bestaat die kracht niet meer.</li><li><span class="stap">Waarom rolt de bal verder?</span> Door zijn traagheid: hij wil even snel blijven bewegen.</li><li><span class="stap">Welke kracht werkt er dan nog (horizontaal)?</span> Alleen de wrijving, tegen de beweging in. F<sub>r</sub> wijst dus naar achter.</li><li><span class="stap">Gevolg</span> De snelheid neemt af tot de bal stilligt.</li></ol><div class="besluit">Sofia heeft geen gelijk. De bal krijgt geen kracht mee: hij rolt door zijn traagheid en stopt door de wrijving.</div></div></div>
+</div>
+<div class="denk" data-vrij="denk_5">
+  <div class="vraag"><div class="kop">Denkvraag</div><p>Een fietser rijdt met constante snelheid rechtdoor. Hij trapt dus. Is de resulterende kracht op de fietser dan groter dan nul?</p></div>
+  <div class="onder"><div class="redenering"><ol><li><span class="stap">Wat weet je over de beweging?</span> Constante snelheid, rechtdoor: een ERB.</li><li><span class="stap">Traagheidswet</span> Bij een ERB is F<sub>r</sub> = 0.</li><li><span class="stap">Welke krachten?</span> De trapkracht naar voor is even groot als de wrijving (lucht en weg) naar achter.</li></ol><div class="besluit">F<sub>r</sub> = 0: de trapkracht en de wrijving heffen elkaar op.</div></div></div>
+</div><div class="kader"><div class="kop">Traagheid en resulterende kracht in het dagelijks leven</div><p><b>Gordel en hoofdsteun.</b> Remt de auto plots, dan wil je lichaam even snel verder: de gordel houdt je tegen. Wordt de auto van achter aangereden, dan schiet de auto vooruit en blijft je hoofd achter: daarvoor dient de hoofdsteun.</p><p><b>Ketchup uit de fles.</b> Je beweegt de fles snel naar beneden en stopt plots. De fles stopt, maar de ketchup wil verder bewegen en schiet eruit.</p><p><b>Fietsen aan constante snelheid.</b> De trapkracht is even groot als de wrijving: F<sub>r</sub> = 0, de snelheid blijft gelijk.</p><p><b>Een ruimtesonde.</b> Met de motor uit vliegt ze jaren lang even snel rechtdoor: geen kracht nodig om te blijven bewegen.</p><p><b>Een auto in een bocht.</b> De wrijving tussen banden en weg wijst naar de binnenkant van de bocht (F<sub>r</sub> loodrecht op v). Op ijs is die te klein: de auto gaat rechtdoor.</p></div><a class="toolknop" href="krachten-beweging-3aso.html#s6" target="_blank" rel="noopener">▶ Bekijk de voorbeelden met tekening in de tool</a><div style="background:#FFF7ED;border-left:4px solid #D97706;border-radius:0 8px 8px 0;padding:8px 12px;margin:12px 0"><b style="color:#B45309">Let op.</b> <b>Wrijving</b> werkt de beweging tegen. Toch heb je ze nodig: zonder wrijving glij je uit, en schuift een fiets in een bocht rechtdoor.</div>
+</section>
+<section class="blok" id="deel7" data-vrij="deel7">
+<h2><span class="nr">7</span>Zwaartekracht en zwaarteveld</h2>
+<p>Laat je een appel los, dan valt hij naar beneden. De aarde trekt aan de appel: dat is de <b>zwaartekracht</b>. Ook de maan en andere hemellichamen trekken aan voorwerpen in hun buurt.</p><div class="kader"><div class="kop">Ken dit · Definities</div><p><b>Zwaartekracht F<sub>z</sub>:</b> de aantrekkingskracht die een hemellichaam uitoefent op alle voorwerpen in zijn omgeving.</p>
+<p><b>Zwaarteveld:</b> het gebied rond een hemellichaam waar de zwaartekracht werkt.</p>
+<p><b>Kenmerken van F<sub>z</sub>:</b> aangrijpingspunt in het zwaartepunt (het midden) · richting verticaal · zin naar het middelpunt van de aarde · grootte F<sub>z</sub> = m · g.</p></div><figure class="figuur"><svg viewBox="0 0 600 260" width="600" xmlns="http://www.w3.org/2000/svg"><rect width="600" height="260" fill="#fff"/><circle cx="300" cy="135" r="120" fill="none" stroke="#94a3b8" stroke-dasharray="5 5"/><circle cx="300" cy="135" r="62" fill="#4f86c6"/><path d="M268 112 C280 98 300 104 296 122 C290 138 270 134 268 112Z" fill="#6aa84f"/><path d="M312 150 C326 142 342 150 334 166 C326 178 312 170 312 150Z" fill="#6aa84f"/><circle cx="300" cy="64" r="5" fill="#7c3aed"/><line x1="300" y1="64" x2="300.0" y2="81.6" stroke="#7c3aed" stroke-width="4" stroke-linecap="round"/><path d="M300.0,92.0 L294.7,80.1 L305.3,80.1Z" fill="#7c3aed"/><text x="326" y="64" fill="#1D2A36" font-size="12" font-weight="500" text-anchor="start" font-family="Inter,sans-serif">Brussel</text><circle cx="236" cy="168" r="5" fill="#7c3aed"/><line x1="236" y1="168" x2="250.7" y2="160.7" stroke="#7c3aed" stroke-width="4" stroke-linecap="round"/><path d="M260.0,156.0 L251.8,166.0 L247.0,156.6Z" fill="#7c3aed"/><circle cx="390" cy="60" r="5" fill="#7c3aed"/><line x1="390" y1="60" x2="385.4" y2="64.6" stroke="#7c3aed" stroke-width="3" stroke-linecap="round"/><path d="M378.0,72.0 L382.6,59.9 L390.1,67.4Z" fill="#7c3aed"/><text x="300" y="252" fill="#64748b" font-size="13" font-weight="600" text-anchor="middle" font-family="Inter,sans-serif">zwaarteveld van de aarde</text></svg><figcaption>Overal wijst de zwaartekracht naar het middelpunt van de aarde. Verder weg is ze kleiner.</figcaption></figure><div style="background:#FFF7ED;border-left:4px solid #D97706;border-radius:0 8px 8px 0;padding:8px 12px;margin:12px 0"><b style="color:#B45309">Let op.</b> Zwaarteveld ≠ zwaartekracht. Het zwaarteveld is het <i>gebied</i>. De zwaartekracht is de <i>kracht</i> op een voorwerp in dat gebied.</div><a class="toolknop" href="krachten-3aso.html#zw1" target="_blank" rel="noopener">▶ Sleep de bal rond de aarde in de tool</a>
+</section>
+<section class="blok" id="deel8" data-vrij="deel8">
+<h2><span class="nr">8</span>Zwaartekracht berekenen</h2>
+<div class="kader"><div class="kop">Ken dit · Zwaartekracht berekenen</div><p class="formule">F<sub>z</sub> = m · g</p>
+<p>F<sub>z</sub> = zwaartekracht (N) · m = massa (kg) · g = <b>zwaarteveldsterkte</b> (N/kg). Op aarde is g = 9,81 N/kg, op de maan 1,62 N/kg.</p>
+<p>Omvormen: <b>m = F<sub>z</sub> / g</b> en <b>g = F<sub>z</sub> / m</b>.</p>
+<p>In woorden: hoe groter de massa, hoe groter de zwaartekracht (recht evenredig). Hoe sterker het zwaarteveld (grotere g), hoe groter de zwaartekracht.</p></div><p><b>Voorbeeld.</b> Een leerling heeft een massa van 55 kg. F<sub>z</sub> = m · g = 55 kg · 9,81 N/kg = <b>540 N</b>. Op de maan: 55 kg · 1,62 N/kg = 89 N.</p><a class="toolknop" href="krachten-3aso.html#zw2" target="_blank" rel="noopener">▶ Vergelijk de zwaartekracht op andere hemellichamen</a>
+</section>
+<section class="blok" id="deel9" data-vrij="deel9">
+<h2><span class="nr">9</span>Massa, gewicht en normaalkracht</h2>
+<div class="kader"><div class="kop">Ken dit · Massa en gewicht</div><p><b>Massa m</b> (kg): hoeveel stof een voorwerp bevat. Ze is overal even groot, ook op de maan.</p>
+<p><b>Gewicht F<sub>G</sub></b> (N): de kracht waarmee een voorwerp op zijn steun drukt of aan zijn ophangpunt trekt. Een voorwerp zonder steun (een duiker in de lucht, een astronaut in het ISS) is <b>gewichtloos</b>.</p></div><p>Een <b>normaalkracht F<sub>N</sub></b> is de kracht die een steun loodrecht uitoefent op een voorwerp. Een boek op een tafel: de tafel duwt het boek omhoog.</p><figure class="figuur"><svg viewBox="0 0 600 230" width="600" xmlns="http://www.w3.org/2000/svg"><rect width="600" height="230" fill="#fff"/><rect x="170" y="120" width="260" height="14" fill="#b08968"/><rect x="186" y="134" width="12" height="90" fill="#9c7656"/><rect x="402" y="134" width="12" height="90" fill="#9c7656"/><rect x="240" y="88" width="120" height="32" rx="3" fill="#60a5fa" stroke="#1e3a8a"/><circle cx="300" cy="104" r="4" fill="#7c3aed"/><line x1="300" y1="104" x2="300.0" y2="157.6" stroke="#7c3aed" stroke-width="4" stroke-linecap="round"/><path d="M300.0,168.0 L294.7,156.1 L305.3,156.1Z" fill="#7c3aed"/><text x="282" y="160" fill="#7c3aed" font-size="14" font-weight="700" text-anchor="end" font-family="Inter,sans-serif">F<tspan baseline-shift="sub" font-size="10">z</tspan></text><path d="M267,145 H277 M274,142 L277,145 L274,148" stroke="#7c3aed" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="288" cy="120" r="4" fill="#059669"/><line x1="288" y1="120" x2="288.0" y2="66.4" stroke="#059669" stroke-width="4" stroke-linecap="round"/><path d="M288.0,56.0 L293.3,67.9 L282.7,67.9Z" fill="#059669"/><text x="272" y="64" fill="#059669" font-size="14" font-weight="700" text-anchor="end" font-family="Inter,sans-serif">F<tspan baseline-shift="sub" font-size="10">N</tspan></text><path d="M256,49 H266 M263,46 L266,49 L263,52" stroke="#059669" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="312" cy="122" r="4" fill="#d97706"/><line x1="312" y1="122" x2="312.0" y2="175.6" stroke="#d97706" stroke-width="4" stroke-linecap="round"/><path d="M312.0,186.0 L306.7,174.1 L317.3,174.1Z" fill="#d97706"/><text x="326" y="184" fill="#d97706" font-size="14" font-weight="700" text-anchor="start" font-family="Inter,sans-serif">F<tspan baseline-shift="sub" font-size="10">G</tspan></text><path d="M326,169 H336 M333,166 L336,169 L333,172" stroke="#d97706" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><figcaption>Een boek op een tafel: drie even grote, maar verschillende krachten.</figcaption></figure><table style="border-collapse:collapse;margin:8px 0 12px;font-size:15px" cellpadding="5" border="1" bordercolor="#cbd5e1"><tr><th>kracht</th><th>uitgeoefend door</th><th>werkt op</th><th>aangrijpingspunt</th></tr>
+<tr><td>F<sub>z</sub></td><td>de aarde</td><td>het boek</td><td>zwaartepunt van het boek</td></tr>
+<tr><td>F<sub>N</sub></td><td>de tafel</td><td>het boek</td><td>contactvlak, op het boek</td></tr>
+<tr><td>F<sub>G</sub></td><td>het boek</td><td>de tafel</td><td>contactvlak, op de tafel</td></tr></table><div style="background:#FFF7ED;border-left:4px solid #D97706;border-radius:0 8px 8px 0;padding:8px 12px;margin:12px 0"><b style="color:#B45309">Let op.</b> Op een weegschaal lees je je massa in kg af, maar de weegschaal meet eigenlijk je gewicht: hoe hard je erop drukt.</div><a class="toolknop" href="krachten-3aso.html#zw4" target="_blank" rel="noopener">▶ Bekijk de drie krachten in drie situaties</a>
+</section>
+<section class="blok" id="deel10" data-vrij="deel10">
+<h2><span class="nr">10</span>Veerkracht</h2>
+<p>Hang je een massa aan een veer, dan rekt de veer uit. De veer trekt terug: dat is de <b>veerkracht</b>.</p><div class="kader"><div class="kop">Ken dit · Veerkracht</div><p><b>Veerkracht F<sub>v</sub>:</b> de kracht die een vervormd elastisch voorwerp uitoefent om zijn oorspronkelijke vorm terug aan te nemen.</p>
+<p class="formule">F<sub>v</sub> = k · Δl</p>
+<p>F<sub>v</sub> = veerkracht (N) · k = <b>veerconstante</b> (N/m) · Δl = lengteverandering (m). Omvormen: <b>k = F<sub>v</sub> / Δl</b> en <b>Δl = F<sub>v</sub> / k</b>.</p>
+<p><b>Wat betekent k?</b> Bij k = 50 N/m heb je 50 N nodig om de veer 1 m uit te rekken. Een grote k: een <b>stijve</b> veer. Een kleine k: een <b>slappe</b> veer.</p>
+<p>In woorden: hoe groter de lengteverandering, hoe groter de veerkracht (recht evenredig).</p></div><div style="background:#FFF7ED;border-left:4px solid #D97706;border-radius:0 8px 8px 0;padding:8px 12px;margin:12px 0"><b style="color:#B45309">Let op.</b> Werk met Δl in <b>meter</b>: 15 cm = 0,15 m. Rek je de veer te ver uit, dan komt ze niet meer terug (plastische vervorming) en geldt de formule niet meer.</div><div class="denk" data-vrij="denk_9">
+  <div class="vraag"><div class="kop">Denkvraag</div><p>Veer A heeft k = 20 N/m, veer B heeft k = 200 N/m. Je hangt aan beide dezelfde massa. Welke veer rekt het verst uit?</p></div>
+  <div class="onder"><div class="redenering"><ol><li><span class="stap">Wat is gelijk?</span> Dezelfde massa, dus dezelfde F<sub>v</sub>.</li><li><span class="stap">Formule</span> Δl = F<sub>v</sub> / k: hoe kleiner k, hoe groter Δl.</li></ol><div class="besluit">Veer A, de slappe veer, rekt 10 keer verder uit dan veer B.</div></div></div>
+</div><a class="toolknop" href="krachten-3aso.html#ve1" target="_blank" rel="noopener">▶ Hang massa aan een veer in de tool</a>
+</section>
+<section class="blok" id="oefeningen" data-vrij="oefeningen">
+<h2>Oefeningen op papier</h2>
+<div class="stappenplan"><span>1 · gegeven</span><span>2 · gevraagd</span><span>3 · formule</span><span>4 · oplossing</span><span>5 · antwoord met eenheid</span></div><div class="oef" data-vrij="opl_1">
+  <div class="titel"><span class="nr">1</span>Eenheden omzetten</div>
+  <div class="tekst">Zet om naar de SI-eenheid.<ol class="deelvragen" type="a"><li>3,2 km</li><li>750 g</li><li>2 min 30 s</li><li>45 cm</li></ol></div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">a</span> 3,2 · 1000 m = 3200 m</li><li><span class="stap">b</span> 750 : 1000 kg = 0,750 kg</li><li><span class="stap">c</span> 2 · 60 s + 30 s = 150 s</li><li><span class="stap">d</span> 45 · 0,01 m = 0,45 m</li></ol><div class="besluit">SI-eenheden: m, kg, s.</div></div>
+</div><div class="oef" data-vrij="opl_2">
+  <div class="titel"><span class="nr">2</span>Wetenschappelijke notatie</div>
+  <div class="tekst">Schrijf in wetenschappelijke notatie.<ol class="deelvragen" type="a"><li>150 000 000 km (afstand aarde–zon)</li><li>0,0035 m</li><li>7 800 000 inwoners</li></ol></div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">a</span> 1,5 · 10<sup>8</sup> km</li><li><span class="stap">b</span> 3,5 · 10<sup>−3</sup> m</li><li><span class="stap">c</span> 7,8 · 10<sup>6</sup></li></ol><div class="besluit">Eén cijfer (niet 0) voor de komma.</div></div>
+</div><div class="oef" data-vrij="opl_3">
+  <div class="titel"><span class="nr">3</span>Beduidende cijfers</div>
+  <div class="tekst">Hoeveel BC hebben 0,0072 en 3,50? Bereken daarna de oppervlakte van een blad van 21,0 cm op 29,7 cm met het juiste aantal BC.</div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">BC</span> 0,0072: 2 BC · 3,50: 3 BC</li><li><span class="stap">Berekening</span> 21,0 cm · 29,7 cm = 623,7 cm²</li><li><span class="stap">Afronden</span> beide 3 BC → 624 cm²</li></ol><div class="besluit">A = 624 cm²</div></div>
+</div><div class="oef" data-vrij="opl_4">
+  <div class="titel"><span class="nr">4</span>Statisch of dynamisch?</div>
+  <div class="tekst">Statisch of dynamisch effect?<ol class="deelvragen" type="a"><li>Je kneedt deeg.</li><li>Een keeper houdt de bal tegen.</li><li>Een fietser draait de hoek om.</li><li>Een plank buigt door onder een persoon.</li></ol></div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">a</span> statisch: de vorm verandert</li><li><span class="stap">b</span> dynamisch: de bal stopt</li><li><span class="stap">c</span> dynamisch: de richting verandert</li><li><span class="stap">d</span> statisch</li></ol><div class="besluit">Vorm → statisch, beweging → dynamisch.</div></div>
+</div><div class="oef" data-vrij="opl_5">
+  <div class="titel"><span class="nr">5</span>Kracht op schaal</div>
+  <div class="tekst">a) Teken een kracht van 60 N horizontaal naar rechts met de schaal 1 cm ≙ 20 N. b) Een pijl is 3,5 cm lang bij de schaal 1 cm ≙ 50 N. Hoe groot is de kracht?</div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">a</span> 60 N : 20 N = 3 → een pijl van 3,0 cm naar rechts</li><li><span class="stap">b</span> 3,5 · 50 N = 175 N</li></ol><div class="besluit">a) 3,0 cm · b) 175 N</div></div>
+</div><div class="oef" data-vrij="opl_6">
+  <div class="titel"><span class="nr">6</span>Traagheid uitleggen</div>
+  <div class="tekst">Leg uit met het woord traagheid.<ol class="deelvragen" type="a"><li>Waarom draag je een gordel?</li><li>Waarom is een volle winkelkar moeilijker te stoppen dan een lege?</li></ol></div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">a</span> Remt de auto, dan wil je lichaam even snel verder. De gordel houdt je tegen.</li><li><span class="stap">b</span> Grotere massa → grotere traagheid.</li></ol><div class="besluit">Traagheid: een voorwerp wil blijven doen wat het deed.</div></div>
+</div><div class="oef" data-vrij="opl_7">
+  <div class="titel"><span class="nr">7</span>Snelheidsvector</div>
+  <div class="tekst">Een fietser rijdt naar rechts en remt voor een rood licht. Teken de snelheidsvector op drie tijdstippen: net voor het remmen, tijdens het remmen en als hij stilstaat.</div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">Voor het remmen</span> een lange pijl naar rechts</li><li><span class="stap">Tijdens het remmen</span> een kortere pijl naar rechts</li><li><span class="stap">Stilstand</span> v = 0: geen pijl</li></ol><div class="besluit">De zin blijft dezelfde, de pijl wordt korter tot hij verdwijnt.</div></div>
+</div><div class="oef" data-vrij="opl_8">
+  <div class="titel"><span class="nr">8</span>Zwaartekracht berekenen</div>
+  <div class="tekst">Een rugzak heeft een massa van 6,5 kg. Bereken de zwaartekracht op aarde en op de maan.</div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">Gegeven</span> m = 6,5 kg · g<sub>aarde</sub> = 9,81 N/kg · g<sub>maan</sub> = 1,62 N/kg</li><li><span class="stap">Formule</span> F<sub>z</sub> = m · g</li><li><span class="stap">Aarde</span> 6,5 · 9,81 = 64 N</li><li><span class="stap">Maan</span> 6,5 · 1,62 = 11 N</li></ol><div class="besluit">F<sub>z</sub> = 64 N op aarde en 11 N op de maan.</div></div>
+</div><div class="oef" data-vrij="opl_9">
+  <div class="titel"><span class="nr">9</span>Omvormen</div>
+  <div class="tekst">a) Op aarde werkt een zwaartekracht van 196 N op een kind. Bereken zijn massa. b) Op Mars werkt op een massa van 10 kg een zwaartekracht van 37 N. Bereken g op Mars.</div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">a</span> m = F<sub>z</sub> / g = 196 N / 9,81 N/kg = 20 kg</li><li><span class="stap">b</span> g = F<sub>z</sub> / m = 37 N / 10 kg = 3,7 N/kg</li></ol><div class="besluit">a) 20 kg · b) 3,7 N/kg</div></div>
+</div><div class="oef" data-vrij="opl_10">
+  <div class="titel"><span class="nr">10</span>Massa, zwaartekracht of gewicht?</div>
+  <div class="tekst">Juist of fout? Verbeter de foute uitspraken.<ol class="deelvragen" type="a"><li>Op de maan is je massa kleiner.</li><li>Een astronaut in het ISS is gewichtloos.</li><li>Gewicht meet je in kg.</li><li>Het gewicht van een boek werkt op de tafel.</li></ol></div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">a</span> Fout: je massa blijft gelijk, de zwaartekracht is kleiner.</li><li><span class="stap">b</span> Juist: hij drukt op geen steun.</li><li><span class="stap">c</span> Fout: gewicht is een kracht, in N.</li><li><span class="stap">d</span> Juist.</li></ol><div class="besluit">b en d zijn juist.</div></div>
+</div><div class="oef" data-vrij="opl_11">
+  <div class="titel"><span class="nr">11</span>Drie krachten</div>
+  <div class="tekst">Een fles water (1,5 kg) staat op een tafel. Geef voor F<sub>z</sub>, F<sub>N</sub> en F<sub>G</sub>: door wie, op wat, en de grootte.</div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">F<sub>z</sub></span> door de aarde, op de fles: 1,5 · 9,81 = 15 N</li><li><span class="stap">F<sub>N</sub></span> door de tafel, op de fles: 15 N omhoog</li><li><span class="stap">F<sub>G</sub></span> door de fles, op de tafel: 15 N omlaag</li></ol><div class="besluit">Alle drie 15 N, maar drie verschillende krachten.</div></div>
+</div><div class="oef" data-vrij="opl_12">
+  <div class="titel"><span class="nr">12</span>Veerkracht</div>
+  <div class="tekst">a) Een veer met k = 40 N/m wordt 15 cm uitgerekt. Bereken de veerkracht. b) Een kracht van 3,0 N rekt een veer 6,0 cm uit. Bereken k. c) Welke veer is stijver: die van a of die van b?</div>
+  <div class="onder" style="margin-top:8px"></div>
+  <div class="redenering"><ol><li><span class="stap">a</span> F<sub>v</sub> = k · Δl = 40 N/m · 0,15 m = 6,0 N</li><li><span class="stap">b</span> k = F<sub>v</sub> / Δl = 3,0 N / 0,060 m = 50 N/m</li><li><span class="stap">c</span> de veer van b: grotere k</li></ol><div class="besluit">a) 6,0 N · b) 50 N/m · c) de veer van b</div></div>
+</div><a class="toolknop" href="krachten-3aso.html#oef" target="_blank" rel="noopener">▶ Extra oefenen in de tool</a>
+</section>
+<section class="blok" id="samenvatting" data-vrij="samenvatting">
+<h2>Samenvatting</h2>
+<div class="kader"><div class="kop">Samenvatting</div><p><b>SI-eenheden</b>: m, kg, s, N. Wetenschappelijke notatie: a · 10<sup>n</sup> met 1 ≤ a &lt; 10. Rond af op het juiste aantal <b>beduidende cijfers</b>.</p>
+<p>Een <b>kracht</b> veroorzaakt een vormverandering (<b>statisch</b>) of een verandering van beweging (<b>dynamisch</b>). Een kracht is een <b>vector</b>: aangrijpingspunt, richting, zin, grootte. Teken op schaal.</p>
+<p><b>Traagheid</b>: een voorwerp wil zijn snelheid behouden. F<sub>r</sub> = 0 → rust of ERB. F<sub>r</sub> mee met v → sneller, tegen v → trager, loodrecht → bocht. De <b>snelheidsvector</b>: langere pijl = sneller.</p>
+<p><b>Zwaartekracht</b> F<sub>z</sub> = m · g werkt in het <b>zwaarteveld</b>. <b>Massa</b> (kg) is overal gelijk. <b>Gewicht</b> F<sub>G</sub> werkt op de steun. <b>Normaalkracht</b> F<sub>N</sub> werkt op het voorwerp.</p>
+<p><b>Veerkracht</b> F<sub>v</sub> = k · Δl. Grote k: stijve veer, kleine k: slappe veer.</p></div>
+</section>
+
+</main>
+<footer>Cursus fysica — gemaakt voor klasgebruik, bij de tools op Oefentools wetenschappen.<br>Gemaakt door de vakgroep wetenschappen · Maria Assumpta Lyceum · ontwikkeld met hulp van AI · <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.nl">CC BY-NC-SA 4.0</a></footer>
+
+<div class="printblad" id="print-oef"></div>
+<div class="printblad" id="print-cornell"></div>
+
+<script>
+/* =====================================================================
+   VRIJGAVE — hier zet de leerkracht onderdelen open of dicht.
+   true  = zichtbaar voor de leerlingen
+   false = nog gesloten (de leerling ziet een slotje)
+   Tip: met ?leerkracht achter de link zie je als leerkracht alles,
+        bv. .../cursus-krachten-3aso.html?leerkracht
+   ===================================================================== */
+const VRIJGAVE = {
+  deel1: true,               // Rekenen in de fysica
+  deel2: false,              // Effect van een kracht
+  deel3: false,              // Een kracht is een vector
+  deel4: false,              // De bewegingstoestand en de snelheidsvector
+  deel5: false,              // Traagheid
+  deel6: false,              // Resulterende kracht en beweging
+  deel7: false,              // Zwaartekracht en zwaarteveld
+  deel8: false,              // Zwaartekracht berekenen
+  deel9: false,              // Massa, gewicht en normaalkracht
+  deel10: false,             // Veerkracht
+  denk_1: false,             // redenering denkvraag 1
+  denk_2: false,             // redenering denkvraag 2
+  denk_3: false,             // redenering denkvraag 3
+  denk_4: false,             // redenering denkvraag 4
+  denk_5: false,             // redenering denkvraag 5
+  denk_9: false,             // redenering denkvraag 9
+  oefeningen: false,         // de oefeningen zelf (opgaven)
+  opl_1: false,              // oplossing oefening 1
+  opl_2: false,              // oplossing oefening 2
+  opl_3: false,              // oplossing oefening 3
+  opl_4: false,              // oplossing oefening 4
+  opl_5: false,              // oplossing oefening 5
+  opl_6: false,              // oplossing oefening 6
+  opl_7: false,              // oplossing oefening 7
+  opl_8: false,              // oplossing oefening 8
+  opl_9: false,              // oplossing oefening 9
+  opl_10: false,             // oplossing oefening 10
+  opl_11: false,             // oplossing oefening 11
+  opl_12: false,             // oplossing oefening 12
+  samenvatting: false,       // samenvatting
+};
+
+/* ===================================================================== */
+const LK = new URLSearchParams(location.search).has('leerkracht');
+const open = id => LK || VRIJGAVE[id] === true;
+if(LK) document.getElementById('banner').innerHTML='<div class="leerkracht-banner">Leerkrachtweergave: alles is zichtbaar, ook wat voor leerlingen nog gesloten is.</div>';
+
+// delen open of dicht
+document.querySelectorAll('section.blok[data-vrij]').forEach(el=>{
+  if(open(el.dataset.vrij)) return;
+  const kop=el.querySelector(':scope > h2');
+  [...el.children].forEach(c=>{ if(c!==kop) c.style.display='none'; });
+  const m=document.createElement('p'); m.className='gesloten-deel'; m.innerHTML='🔒 Dit deel wordt opengesteld wanneer we het in de les behandelen.';
+  el.appendChild(m);
+});
+
+// denkvragen: redenering pas tonen na vrijgave
+document.querySelectorAll('.denk').forEach(d=>{
+  const id=d.dataset.vrij, red=d.querySelector('.redenering'), onder=d.querySelector('.onder');
+  red.hidden=true;
+  if(open(id)){
+    const b=document.createElement('button'); b.textContent='Toon de redenering';
+    b.onclick=()=>{ red.hidden=!red.hidden; b.textContent=red.hidden?'Toon de redenering':'Verberg de redenering'; };
+    onder.prepend(b);
+  } else {
+    onder.innerHTML='<span class="slotje">💬 Denk eerst zelf na. We bespreken dit samen in de les; daarna verschijnt hier de redenering.</span>';
+  }
+});
+
+// oplossingen van oefeningen
+document.querySelectorAll('.oef[data-vrij]').forEach(o=>{
+  const id=o.dataset.vrij, opl=o.querySelector('.redenering'), onder=o.querySelector('.onder');
+  opl.hidden=true;
+  if(open(id)){
+    const b=document.createElement('button'); b.className='knop licht'; b.textContent='Toon de oplossing';
+    b.onclick=()=>{ opl.hidden=!opl.hidden; b.textContent=opl.hidden?'Toon de oplossing':'Verberg de oplossing'; };
+    onder.appendChild(b);
+  } else onder.innerHTML='<span class="slotje">🔒 De oplossing verschijnt nadat we de oefening besproken hebben.</span>';
+});
+
+// inhoudstafel
+const inh=document.getElementById('inhoud');
+document.querySelectorAll('section.blok').forEach(s=>{
+  const a=document.createElement('a'); a.href='#'+s.id;
+  const nr=s.querySelector('h2 .nr'); const tekst=s.querySelector('h2').textContent.replace(nr?nr.textContent:'','').trim();
+  a.innerHTML=(nr?'<span class="nr">'+nr.textContent+'</span>':'')+tekst;
+  if(s.dataset.vrij && !open(s.dataset.vrij)) a.classList.add('slot');
+  inh.appendChild(a);
+});
+
+// afdrukbare bladen
+function vulPrint(){
+  const oefs=[...document.querySelectorAll('#oefeningen .oef')].map(o=>{ const k=o.cloneNode(true); k.querySelectorAll('.redenering,.onder').forEach(x=>x.remove()); k.removeAttribute('data-vrij'); return k.outerHTML; }).join('');
+  document.getElementById('print-oef').innerHTML=`<h1>Krachten · oefeningen</h1><div class="naam"><span>Naam: ______________________</span><span>Klas: ______</span><span>Datum: __________</span></div><p>Maak elke oefening in je schrift. Gebruik telkens: gegeven · gevraagd · formule · oplossing · antwoord met eenheid.</p>`+oefs;
+  const vragen=CORNELL.map(v=>`<tr><td class="v">${v[0]}</td><td style="height:${Math.round((v[1]||32)*1.35)}mm"></td></tr>`).join('');
+  document.getElementById('print-cornell').innerHTML=`<h1>Krachten · Cornellblad</h1><div class="naam"><span>Naam: ______________________</span><span>Klas: ______</span></div><table class="cornell"><tr><td class="v">Vragen</td><td><b>Notities</b> (samen opgebouwd in de les)</td></tr>${vragen}</table><div class="samenv">Samenvatting in mijn eigen woorden:</div>`;
+}
+const CORNELL = [];
+function druk(soort){ vulPrint(); document.body.classList.add('print-'+soort); setTimeout(()=>{ window.print(); document.body.classList.remove('print-'+soort); },50); }
+document.querySelectorAll('[data-print]').forEach(b=>b.onclick=()=>druk(b.dataset.print));
+</script>
+<!--vinkjes-->
+<style>
+.doel ul:has(.vk-li),ul.doelen:has(.vk-li){list-style:none;padding-left:0}
+.vk-li{display:flex;gap:10px;align-items:flex-start;cursor:pointer;margin:4px 0;list-style:none}
+.vk{flex:none;width:22px;height:22px;margin-top:1px;border:2px solid #64748b;border-radius:5px;background:#fff;display:inline-grid;place-items:center;cursor:pointer;padding:0}
+.vk:focus-visible{outline:3px solid #60a5fa;outline-offset:2px}
+.vk.aan{background:#16a34a;border-color:#16a34a}
+.vk.aan::after{content:"";width:6px;height:11px;border:solid #fff;border-width:0 3px 3px 0;transform:translateY(-1px) rotate(45deg)}
+.vk-li.aan .vk-t{color:#15803d}
+@media print{.vk{background:#fff!important;border-color:#000!important}.vk.aan::after{border-color:#000}}
+</style>
+<script>
+(function(){
+  var K='vinkjes:'+location.pathname.split('/').pop();
+  var st={}; try{st=JSON.parse(localStorage.getItem(K)||'{}')}catch(e){}
+  function bewaar(){try{localStorage.setItem(K,JSON.stringify(st))}catch(e){}}
+  var lis=document.querySelectorAll('.doel ul > li, ul.doelen > li');
+  [].forEach.call(lis,function(li,i){
+    if(li.querySelector('.vk')) return;
+    var b=document.createElement('button'); b.type='button'; b.className='vk'; b.setAttribute('role','checkbox');
+    b.setAttribute('aria-label','Ik kan dit');
+    var t=document.createElement('span'); t.className='vk-t';
+    while(li.firstChild) t.appendChild(li.firstChild);
+    li.appendChild(b); li.appendChild(t); li.classList.add('vk-li');
+    function zet(a){ st[i]=a; b.classList.toggle('aan',a); li.classList.toggle('aan',a); b.setAttribute('aria-checked',a?'true':'false'); }
+    zet(!!st[i]);
+    li.addEventListener('click',function(e){ if(e.target.closest('a')) return; zet(!st[i]); bewaar(); });
+  });
+})();
+</script>
+<!--/vinkjes-->
+</body>
+</html>

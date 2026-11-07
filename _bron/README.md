@@ -41,3 +41,7 @@ Een nieuwe sessie met Claude kan dit opnieuw opzetten: vraag om de repo te klone
 
 ## Afvinkbare lesdoelen (`_bron/vinkjes.py`)
 Elke lijst `.doel ul > li` (lessites) of `ul.doelen > li` (cursussen, 3ASO-fysica) krijgt een vierkantje met een klikbaar vinkje. De vinkjes worden per pagina in de browser bewaard. De bouwscripts (`chemie3/bouw.py`, `cursus/bouw.py`, `aso/bouw_3aso.py`) voegen dit zelf toe. Pagina's die je met de hand aanpast: draai `python3 _bron/vinkjes.py`.
+
+## Cursus Krachten 3ASO (`_bron/cursus/aso_krachten.py`)
+Bouwen: `cd /home/claude/cursus && python3 /home/claude/toolswetenschappen/_bron/cursus/aso_krachten.py` → `cursus-krachten-3aso.html`.
+Hergebruikt effect, vector, traagheid en beweging uit `derde_krachten.py` (3NW; die leest `oud_krachten.py`). Links wijzen naar de 3ASO-tools.
