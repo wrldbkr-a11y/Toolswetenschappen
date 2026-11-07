@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Krachten: zwaartekracht, wrijving, veerkracht en krachtmoment</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EEF2F5; --panel:#FFFFFF; --panel-2:#F5F8FB; --line:#D3DCE5;
+  --text:#1D2A36; --text-dim:#51606E;
+  --accent:#2F6FB0; --accent-dark:#245A91; --accent-soft:#E4EEF8;
+  --ok-text:#1F7A4A; --ok-bg:#E3F3E9; --flag-text:#B3362B; --flag-bg:#FBE6E3;
+  --fz:#7c3aed; --fn:#059669; --g:#d97706; --f:#2563eb; --fw:#dc2626; --fv:#0891b2;
+  --font:'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:var(--font);}
+body{-webkit-font-smoothing:antialiased;line-height:1.55;}
+.top{max-width:1180px;margin:0 auto;padding:36px 24px 0;}
+.top .eyebrow{font-size:13px;font-weight:700;color:var(--accent-dark);letter-spacing:.04em;text-transform:uppercase;margin-bottom:6px;}
+.top h1{font-size:2rem;font-weight:700;letter-spacing:-0.015em;margin:0 0 8px;}
+.top .intro{color:var(--text-dim);max-width:72ch;font-size:15px;line-height:1.6;margin:0;}
+.top .intro strong{color:var(--text);}
+nav{display:flex;flex-wrap:wrap;gap:8px;}
+.catnav{gap:4px;margin:22px 0 14px;border-bottom:1px solid var(--line);}
+.catnav button{font-family:var(--font);font-weight:500;font-size:15px;background:none;border:none;border-bottom:2px solid transparent;margin-bottom:-1px;color:var(--text-dim);padding:9px 14px;cursor:pointer;}
+.catnav button:hover{color:var(--text);}
+.catnav button.active{color:var(--text);font-weight:600;border-bottom-color:var(--accent);}
+#nav button{display:flex;align-items:center;gap:9px;font-family:var(--font);font-size:14px;font-weight:500;background:var(--panel);border:1px solid var(--line);color:var(--text-dim);padding:9px 14px 9px 10px;border-radius:10px;cursor:pointer;text-align:left;}
+#nav button .nr{flex:none;min-width:24px;height:24px;border-radius:12px;padding:0 6px;display:inline-flex;align-items:center;justify-content:center;background:var(--accent-soft);color:var(--accent-dark);font-size:12px;font-weight:700;}
+#nav button:hover{border-color:var(--accent);color:var(--text);}
+#nav button.active{background:var(--accent-soft);border-color:var(--accent);color:var(--text);font-weight:600;}
+#nav button.active .nr{background:var(--accent);color:#fff;}
+main{max-width:1180px;margin:0 auto;padding:26px 24px 70px;}
+.scene{display:none;}
+.scene.active{display:block;animation:fade .25s ease;}
+@keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+.scene-head{display:flex;align-items:center;gap:10px;margin-bottom:4px;flex-wrap:wrap;}
+.scene-head .num{min-width:28px;height:28px;border-radius:14px;padding:0 7px;display:inline-flex;align-items:center;justify-content:center;background:var(--accent);color:#fff;font-size:13px;font-weight:700;}
+.scene-head h3{font-size:1.5rem;letter-spacing:-0.01em;margin:0;font-weight:700;}
+.scene-sub{color:var(--text-dim);font-size:15px;margin:4px 0 18px;max-width:78ch;line-height:1.55;}
+.scene-sub strong{color:var(--text);}
+.grid{display:grid;grid-template-columns:1fr 330px;gap:18px;align-items:start;}
+@media(max-width:880px){.grid{grid-template-columns:1fr;}}
+.tek{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;}
+.tek svg{display:block;width:100%;height:auto;touch-action:none;}
+.controls{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 16px 18px;display:flex;flex-direction:column;gap:14px;}
+.ctrl label{display:flex;justify-content:space-between;font-size:13px;font-weight:600;margin-bottom:6px;}
+.ctrl label span{font-weight:700;color:var(--accent-dark);font-variant-numeric:tabular-nums;}
+.ctrl input[type=range]{width:100%;accent-color:var(--accent);}
+select{font-family:var(--font);font-size:15px;padding:7px 9px;border:1px solid var(--line);border-radius:8px;background:#fff;width:100%;}
+.knoppen{display:flex;flex-wrap:wrap;gap:6px;}
+.btn{background:#fff;border:1px solid var(--line);color:var(--text);border-radius:8px;padding:8px 12px;font-family:var(--font);font-weight:600;font-size:14px;cursor:pointer;}
+.btn:hover{border-color:var(--accent);}
+.btn.on{background:var(--accent-soft);border-color:var(--accent);}
+.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent);}
+.readout{background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:14.5px;line-height:1.75;font-variant-numeric:tabular-nums;}
+.readout b{color:var(--text);}
+.readout .ok{color:var(--ok-text);font-weight:700;}
+.readout .flag{color:var(--flag-text);font-weight:700;}
+.kader{border-left:4px solid var(--ok-text);background:var(--ok-bg);border-radius:0 10px 10px 0;padding:10px 14px;font-size:14.5px;}
+.kader .kop{font-weight:700;color:var(--ok-text);margin-bottom:2px;}
+.kader p{margin:0 0 4px;}.kader p:last-child{margin:0;}
+.note{background:var(--panel-2);border-left:4px solid var(--accent);border-radius:0 8px 8px 0;padding:10px 12px;font-size:14px;color:var(--text-dim);line-height:1.6;}
+.note strong{color:var(--text);}
+.formule{font-size:18px;font-weight:700;text-align:center;background:#fff;border:1px solid var(--line);border-radius:8px;padding:8px;}
+.omvorm{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;font-size:14px;text-align:center;}
+.omvorm div{background:#fff;border:1px solid var(--line);border-radius:8px;padding:6px 4px;font-weight:600;}
+.legend{display:flex;flex-direction:column;gap:5px;font-size:13px;color:var(--text-dim);}
+.legend .row{display:flex;align-items:center;gap:8px;}
+.legend .sw{width:18px;height:4px;border-radius:2px;flex:none;}
+label.chk{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:500;}
+table.t{border-collapse:collapse;width:100%;font-size:14px;margin-top:14px;background:#fff;border:1px solid var(--line);border-radius:8px;overflow:hidden;}
+table.t th,table.t td{border-bottom:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top;}
+table.t th{background:var(--panel-2);font-size:12.5px;color:var(--text-dim);}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px;}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden;}
+.card svg{display:block;width:100%;height:auto;background:#fbfcfe;border-bottom:1px solid #E6ECF2;}
+.card .txt{padding:12px 16px 14px;}
+.card h4{margin:0 0 4px;font-size:1rem;}
+.card p{margin:0;font-size:14px;color:var(--text-dim);line-height:1.55;}
+.card p b{color:var(--text);}
+.tag{display:inline-block;font-size:12px;font-weight:700;padding:2px 8px;border-radius:999px;margin-bottom:6px;background:var(--accent-soft);color:var(--accent-dark);}
+.tag.dyn{background:var(--flag-bg);color:var(--flag-text);}
+.tag.stat{background:var(--ok-bg);color:var(--ok-text);}
+.mini{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px;}
+@media(max-width:700px){.mini{grid-template-columns:1fr;}}
+.mini .tek{padding:4px;}
+.mini h5{margin:6px 8px 0;font-size:13px;}
+/* oefenen */
+.oef{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px;}
+.oef-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px;}
+.score{font-size:14px;font-weight:600;color:var(--ok-text);background:var(--ok-bg);padding:3px 10px;border-radius:999px;}
+.soort{display:flex;flex-wrap:wrap;gap:6px;}
+.soort .btn{font-weight:500;padding:6px 11px;}
+.vraag{font-weight:600;font-size:16px;margin:14px 0 10px;}
+.keuzes{display:flex;flex-direction:column;gap:8px;}
+.keuzes .btn{font-weight:500;text-align:left;}
+.keuzes .btn.goed{background:var(--ok-bg);border-color:var(--ok-text);color:var(--ok-text);font-weight:700;}
+.keuzes .btn.fout{background:var(--flag-bg);border-color:var(--flag-text);color:var(--flag-text);}
+.antw{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+.antw input{font-family:var(--font);font-size:16px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;width:9em;}
+.feedback{margin-top:12px;font-size:15px;line-height:1.6;}
+.feedback.goed{color:var(--ok-text);}
+.feedback.fout{color:var(--flag-text);}
+.feedback .uitleg{color:var(--text);display:block;margin-top:4px;}
+footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-dim);font-size:12px;}
+footer a{color:inherit;}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="eyebrow">Fysica 3de jaar · Thema 2 · Krachten · hoofdstuk 4 tot 7</div>
+  <h1>Krachten</h1>
+  <p class="intro"><strong>Zwaartekracht, normaalkracht, gewicht, wrijving, veerkracht en krachtmoment.</strong> Verander de waarden en kijk wat er met de krachten gebeurt. Een krachtpijl start altijd in het <strong>aangrijpingspunt</strong>.</p>
+  <nav id="catnav" class="catnav"></nav>
+  <nav id="nav"></nav>
+</header>
+<main>
+
+<!-- ================= ZWAARTEKRACHT ================= -->
+<section class="scene" id="zw1" data-nr="4.1" data-cat="zw" data-title="Zwaartekracht is overal">
+  <div class="scene-head"><span class="num"></span><h3>Zwaartekracht is overal</h3></div>
+  <p class="scene-sub">Sleep de <strong>bal</strong> rond de aarde. Waar je hem ook zet: de zwaartekracht wijst naar het <strong>middelpunt</strong> van de aarde. Hoe verder weg, hoe kleiner de zwaartekracht.</p>
+  <div class="grid">
+    <div class="tek"><svg id="s_zw1" viewBox="0 0 640 460"></svg></div>
+    <div class="controls">
+      <div class="kader"><div class="kop">Definities</div>
+        <p><b>Zwaartekracht:</b> de aantrekkingskracht die een hemellichaam uitoefent op alle lichamen in zijn omgeving.</p>
+        <p><b>Zwaarteveld:</b> het gebied rond een hemellichaam waar de zwaartekracht werkzaam is.</p>
+        <p><b>Zwaartepunt:</b> het aangrijpingspunt voor de zwaartekracht.</p></div>
+      <div class="readout" id="r_zw1"></div>
+      <div class="note"><strong>Zwaarteveld ≠ zwaartekracht.</strong> Het zwaarteveld is het <em>gebied</em>. De zwaartekracht is de <em>kracht</em> op een voorwerp dat zich in dat gebied bevindt.</div>
+    </div>
+  </div>
+</section>
+
+<section class="scene" id="zw2" data-nr="4.2" data-cat="zw" data-title="F = m · g">
+  <div class="scene-head"><span class="num"></span><h3>Zwaartekracht, massa en zwaarteveldsterkte</h3></div>
+  <p class="scene-sub">Kies een hemellichaam en een massa. De zwaartekracht hangt af van de <strong>massa</strong> van het voorwerp en van de <strong>zwaarteveldsterkte</strong> op die plaats.</p>
+  <div class="grid">
+    <div>
+      <div class="tek"><svg id="s_zw2" viewBox="0 0 640 330"></svg></div>
+      <div class="mini">
+        <div class="tek"><h5>F<sub>z</sub> en m (g blijft gelijk)</h5><svg id="g_fm" viewBox="0 0 220 160"></svg></div>
+        <div class="tek"><h5>F<sub>z</sub> en g (m blijft gelijk)</h5><svg id="g_fg" viewBox="0 0 220 160"></svg></div>
+        <div class="tek"><h5>m en g</h5><svg id="g_mg" viewBox="0 0 220 160"></svg></div>
+      </div>
+    </div>
+    <div class="controls">
+      <div class="ctrl"><label for="zw2h">Hemellichaam</label><select id="zw2h"></select></div>
+      <div class="ctrl"><label for="zw2m">Massa m <span id="zw2mv"></span></label><input type="range" id="zw2m" min="1" max="120" value="60"></div>
+      <div class="formule">F<sub>z</sub> = m · g</div>
+      <div class="omvorm"><div>F<sub>z</sub> = m · g</div><div>m = F<sub>z</sub> / g</div><div>g = F<sub>z</sub> / m</div></div>
+      <div class="readout" id="r_zw2"></div>
+      <div class="kader"><div class="kop">Zwaarteveldsterkte g</div><p>Een maat voor de sterkte van het zwaarteveld. Het is ook de constante verhouding tussen de zwaartekracht op een lichaam en de massa van dat lichaam. Op aarde: <b>g = 9,81 N/kg</b>.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="scene" id="zw3" data-nr="4.3" data-cat="zw" data-title="Massa en gewicht">
+  <div class="scene-head"><span class="num"></span><h3>Massa en gewicht</h3></div>
+  <p class="scene-sub">Dezelfde astronaut van 80 kg op verschillende plaatsen. Zijn <strong>massa</strong> blijft altijd gelijk. Zijn <strong>gewicht</strong> verandert, en kan zelfs nul worden.</p>
+  <div class="grid">
+    <div class="tek"><svg id="s_zw3" viewBox="0 0 640 380"></svg></div>
+    <div class="controls">
+      <div class="knoppen" id="zw3k"></div>
+      <div class="readout" id="r_zw3"></div>
+      <div class="kader"><div class="kop">Definities</div>
+        <p><b>Massa:</b> een maat voor de hoeveelheid materie waaruit een lichaam bestaat (in kg).</p>
+        <p><b>Gewicht:</b> de kracht die een lichaam uitoefent op zijn steunpunt of ophangpunt (in N).</p>
+        <p><b>Gewichtloos:</b> een lichaam dat geen gewicht heeft omdat het niet ondersteund wordt of geen ophangpunt heeft.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="scene" id="zw4" data-nr="4.4" data-cat="zw" data-title="Normaalkracht, zwaartekracht en gewicht">
+  <div class="scene-head"><span class="num"></span><h3>Normaalkracht, zwaartekracht en gewicht</h3></div>
+  <p class="scene-sub">Drie krachten die vaak even groot zijn, maar <strong>niet</strong> dezelfde kracht zijn. Kijk naar het <strong>aangrijpingspunt</strong>: op welk voorwerp werkt de kracht?</p>
+  <div class="grid">
+    <div>
+      <div class="tek"><svg id="s_zw4" viewBox="0 0 640 380"></svg></div>
+      <table class="t" id="t_zw4"></table>
+    </div>
+    <div class="controls">
+      <div class="knoppen" id="zw4k"></div>
+      <label class="chk"><input type="checkbox" id="zw4z" checked> <span style="color:var(--fz);font-weight:700">F<sub>z</sub></span> zwaartekracht</label>
+      <label class="chk"><input type="checkbox" id="zw4n" checked> <span style="color:var(--fn);font-weight:700">F<sub>N</sub></span> normaalkracht</label>
+      <label class="chk"><input type="checkbox" id="zw4g" checked> <span style="color:var(--g);font-weight:700">G</span> gewicht</label>
+      <div class="kader"><div class="kop">Normaalkracht</div><p>De loodrechte kracht die een steun uitoefent op een lichaam.</p></div>
+      <div class="note" id="n_zw4"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= WRIJVING ================= -->
+<section class="scene" id="wr1" data-nr="5.1" data-cat="wr" data-title="Statisch en dynamisch">
+  <div class="scene-head"><span class="num"></span><h3>Statische en dynamische wrijvingskracht</h3></div>
+  <p class="scene-sub">Trek steeds harder aan de kist. Eerst blijft ze staan: de <strong>statische wrijvingskracht</strong> wordt even groot als je trekkracht. Boven de <strong>maximale statische wrijvingskracht</strong> schuift de kist, en dan werkt de <strong>dynamische wrijvingskracht</strong>.</p>
+  <div class="grid">
+    <div>
+      <div class="tek"><svg id="s_wr1" viewBox="0 0 640 260"></svg></div>
+      <div class="tek" style="margin-top:12px"><svg id="g_wr1" viewBox="0 0 640 230"></svg></div>
+    </div>
+    <div class="controls">
+      <div class="ctrl"><label for="wr1o">Ondergrond</label><select id="wr1o"></select></div>
+      <div class="ctrl"><label for="wr1m">Massa kist <span id="wr1mv"></span></label><input type="range" id="wr1m" min="5" max="60" value="20"></div>
+      <div class="ctrl"><label for="wr1f">Trekkracht F <span id="wr1fv"></span></label><input type="range" id="wr1f" min="0" max="300" value="40"></div>
+      <div class="readout" id="r_wr1"></div>
+      <div class="kader"><div class="kop">Definities</div>
+        <p><b>Wrijvingskracht:</b> de kracht die de beweging van een lichaam tegenwerkt.</p>
+        <p><b>Statische wrijvingskracht:</b> de kracht die ervoor zorgt dat een lichaam dat in rust is ten opzichte van de ondergrond, niet in beweging komt.</p>
+        <p><b>Maximale statische wrijvingskracht:</b> de kracht die op het lichaam inwerkt vlak voor het vanuit rust in beweging komt.</p>
+        <p><b>Dynamische wrijvingskracht:</b> de wrijvingskracht tussen het lichaam dat beweegt en de ondergrond.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="scene" id="wr3" data-nr="5.1" data-cat="wr" data-title="ABS, aquaplaning en voorbeelden">
+  <div class="scene-head"><span class="num"></span><h3>Wrijving in het dagelijks leven</h3></div>
+  <p class="scene-sub">Beweegt het contactoppervlak <strong>niet</strong> ten opzichte van de ondergrond? Dan werkt de <strong>statische</strong> wrijvingskracht. Schuift het oppervlak over de ondergrond? Dan werkt de <strong>dynamische</strong>.</p>
+  <div class="cards" id="c_wr3"></div>
+</section>
+
+<section class="scene" id="wr2" data-nr="5.2" data-cat="wr" data-title="F = μ · F_N">
+  <div class="scene-head"><span class="num"></span><h3>Maximale statische wrijvingskracht en normaalkracht</h3></div>
+  <p class="scene-sub">Hoe groter de <strong>normaalkracht</strong>, hoe groter de maximale statische wrijvingskracht. Hoe sterk dat verband is, hangt af van de twee oppervlakken: de <strong>statische wrijvingscoëfficiënt μ<sub>s</sub></strong>.</p>
+  <div class="grid">
+    <div class="tek"><svg id="g_wr2" viewBox="0 0 640 400"></svg></div>
+    <div class="controls">
+      <div class="ctrl"><label for="wr2o">Oppervlakken</label><select id="wr2o"></select></div>
+      <div class="ctrl"><label for="wr2n">Normaalkracht F<sub>N</sub> <span id="wr2nv"></span></label><input type="range" id="wr2n" min="0" max="1000" step="10" value="500"></div>
+      <div class="formule">F<sub>w,s,max</sub> = μ<sub>s</sub> · F<sub>N</sub></div>
+      <div class="omvorm"><div>F<sub>w,s,max</sub> = μ<sub>s</sub> · F<sub>N</sub></div><div>μ<sub>s</sub> = F<sub>w,s,max</sub> / F<sub>N</sub></div><div>F<sub>N</sub> = F<sub>w,s,max</sub> / μ<sub>s</sub></div></div>
+      <div class="readout" id="r_wr2"></div>
+      <div class="kader"><div class="kop">Statische wrijvingscoëfficiënt μ<sub>s</sub></div><p>De constante verhouding tussen de maximale statische wrijvingskracht en de normaalkracht. μ<sub>s</sub> heeft <b>geen eenheid</b>.</p></div>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- ================= VEERKRACHT ================= -->
+<section class="scene" id="ve1" data-nr="6" data-cat="ve" data-title="Een veer uitrekken">
+  <div class="scene-head"><span class="num"></span><h3>Veerkracht</h3></div>
+  <p class="scene-sub">Hang een massa aan de veer. De veer rekt uit tot de <strong>veerkracht</strong> even groot is als de zwaartekracht. Wat gebeurt er als je te veel massa hangt?</p>
+  <div class="grid">
+    <div class="tek"><svg id="s_ve1" viewBox="0 0 640 470"></svg></div>
+    <div class="controls">
+      <div class="ctrl"><label for="ve1k">Veer</label><select id="ve1k"></select></div>
+      <div class="ctrl"><label for="ve1m">Massa m <span id="ve1mv"></span></label><input type="range" id="ve1m" min="0" max="1000" step="10" value="200"></div>
+      <div class="knoppen"><button class="btn" id="ve1af">Haal de massa eraf</button><button class="btn" id="ve1nw">Nieuwe veer</button></div>
+      <div class="formule">F<sub>v</sub> = k · Δl</div>
+      <div class="omvorm"><div>F<sub>v</sub> = k · Δl</div><div>k = F<sub>v</sub> / Δl</div><div>Δl = F<sub>v</sub> / k</div></div>
+      <div class="readout" id="r_ve1"></div>
+      <div class="kader"><div class="kop">Veerkracht</div><p>De kracht die een vervormd elastisch voorwerp uitoefent om terug zijn oorspronkelijke vorm aan te nemen. Ze werkt <b>tegen de vervorming in</b>.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="scene" id="ve2" data-nr="6" data-cat="ve" data-title="Wet van Hooke en grafieken">
+  <div class="scene-head"><span class="num"></span><h3>De wet van Hooke</h3></div>
+  <p class="scene-sub">Zolang de vervorming <strong>elastisch</strong> is, is de veerkracht recht evenredig met de uitrekking: een rechte door de oorsprong. Hoe steiler de rechte, hoe groter de <strong>veerconstante k</strong>.</p>
+  <div class="grid">
+    <div class="tek"><svg id="g_ve2" viewBox="0 0 640 420"></svg></div>
+    <div class="controls">
+      <div class="ctrl"><label for="ve2l">Uitrekking Δl <span id="ve2lv"></span></label><input type="range" id="ve2l" min="0" max="40" value="10"></div>
+      <div class="readout" id="r_ve2"></div>
+      <div class="kader"><div class="kop">Wet van Hooke</div><p>F<sub>v</sub> = k · Δl. Ze geldt alleen zolang de vervorming <b>elastisch</b> is: na het wegnemen van de kracht neemt het voorwerp zijn oorspronkelijke vorm terug aan.</p><p>Voorbij de <b>elasticiteitsgrens</b> wordt de vervorming <b>plastisch</b>: het voorwerp blijft vervormd.</p></div>
+      <div class="note"><strong>Wat betekent k = 50 N/m?</strong> Om de veer 1 m uit te rekken heb je 50 N nodig, dus 0,5 N per cm.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= KRACHTMOMENT ================= -->
+<section class="scene" id="km1" data-nr="7.1" data-cat="km" data-title="Moment van een kracht">
+  <div class="scene-head"><span class="num"></span><h3>Moment van een kracht</h3></div>
+  <p class="scene-sub">Je draait een bout los met een sleutel. Verander de plaats en de richting van je kracht. Het <strong>krachtmoment</strong> bepaalt hoe sterk de kracht doet draaien.</p>
+  <div class="grid">
+    <div class="tek"><svg id="s_km1" viewBox="0 0 640 400"></svg></div>
+    <div class="controls">
+      <div class="ctrl"><label for="km1f">Kracht F <span id="km1fv"></span></label><input type="range" id="km1f" min="10" max="200" step="5" value="100"></div>
+      <div class="ctrl"><label for="km1r">Afstand r tot het draaipunt <span id="km1rv"></span></label><input type="range" id="km1r" min="5" max="30" value="25"></div>
+      <div class="ctrl"><label for="km1a">Hoek α tussen sleutel en kracht <span id="km1av"></span></label><input type="range" id="km1a" min="0" max="180" step="5" value="90"></div>
+      <div class="formule">M = F · r · sin α</div>
+      <div class="readout" id="r_km1"></div>
+      <div class="kader"><div class="kop">Definities</div><p><b>Krachtarm:</b> de loodrechte afstand van het draaipunt tot de werklijn van de kracht.</p><p><b>Krachtmoment:</b> het product van de kracht en de krachtarm. Het bepaalt het draaieffect van de kracht (eenheid N·m).</p><p>Staat F loodrecht op de sleutel (α = 90°), dan is de krachtarm r en geldt <b>M = F · r</b>.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="scene" id="km2" data-nr="7.1" data-cat="km" data-title="Hefbomen">
+  <div class="scene-head"><span class="num"></span><h3>Hefbomen in het dagelijks leven</h3></div>
+  <p class="scene-sub">Een <strong>hefboom</strong> is een staaf die kan draaien rond een <strong>draaipunt</strong>. Met een lange krachtarm heb je een kleinere kracht nodig voor hetzelfde moment.</p>
+  <div class="cards" id="c_km2"></div>
+</section>
+
+<section class="scene" id="km3" data-nr="7.1" data-cat="km" data-title="Momentenbalans">
+  <div class="scene-head"><span class="num"></span><h3>De momentenbalans: de wip</h3></div>
+  <p class="scene-sub">Twee kinderen op een wip. Het linkse kind doet de wip <strong>tegen de wijzerzin</strong> draaien, het rechtse <strong>in de wijzerzin</strong>. De wip is in evenwicht als beide momenten even groot zijn.</p>
+  <div class="grid">
+    <div class="tek"><svg id="s_km3" viewBox="0 0 640 340"></svg></div>
+    <div class="controls">
+      <div class="ctrl"><label for="km3m1">Massa links m₁ <span id="km3m1v"></span></label><input type="range" id="km3m1" min="10" max="60" value="40"></div>
+      <div class="ctrl"><label for="km3r1">Afstand links r₁ <span id="km3r1v"></span></label><input type="range" id="km3r1" min="0.2" max="2" step="0.1" value="1.5"></div>
+      <div class="ctrl"><label for="km3m2">Massa rechts m₂ <span id="km3m2v"></span></label><input type="range" id="km3m2" min="10" max="60" value="30"></div>
+      <div class="ctrl"><label for="km3r2">Afstand rechts r₂ <span id="km3r2v"></span></label><input type="range" id="km3r2" min="0.2" max="2" step="0.1" value="1.5"></div>
+      <div class="readout" id="r_km3"></div>
+      <div class="kader"><div class="kop">Momentenbalans</div><p>Een lichaam draait niet als de som van de momenten in de wijzerzin gelijk is aan de som van de momenten tegen de wijzerzin:</p><p style="text-align:center"><b>M<sub>tegen wijzerzin</sub> = M<sub>wijzerzin</sub></b></p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= EVENWICHT ================= -->
+<section class="scene" id="ev1" data-nr="7.2" data-cat="km" data-title="Kantelen of omvallen?">
+  <div class="scene-head"><span class="num"></span><h3>Stabiel of labiel?</h3></div>
+  <p class="scene-sub">Kantel de kast. Volg de verticale lijn door het <strong>zwaartepunt Z</strong>. Valt die lijn binnen het <strong>steunvlak</strong>, dan valt de kast terug. Valt ze erbuiten, dan valt de kast om.</p>
+  <div class="grid">
+    <div class="tek"><svg id="s_ev1" viewBox="0 0 640 420"></svg></div>
+    <div class="controls">
+      <div class="ctrl"><label for="ev1a">Kantelhoek <span id="ev1av"></span></label><input type="range" id="ev1a" min="0" max="60" value="10"></div>
+      <div class="ctrl"><label for="ev1b">Breedte van het steunvlak <span id="ev1bv"></span></label><input type="range" id="ev1b" min="40" max="160" value="100"></div>
+      <div class="ctrl"><label for="ev1h">Hoogte van het zwaartepunt <span id="ev1hv"></span></label><input type="range" id="ev1h" min="30" max="160" value="90"></div>
+      <div class="readout" id="r_ev1"></div>
+      <div class="kader"><div class="kop">Stabiliteit vergroten</div><p>Een lichaam staat stabieler als het <b>zwaartepunt lager</b> ligt en het <b>steunvlak groter</b> is.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="scene" id="ev2" data-nr="7.2" data-cat="km" data-title="Soorten evenwicht">
+  <div class="scene-head"><span class="num"></span><h3>Stabiel en labiel evenwicht</h3></div>
+  <p class="scene-sub">Duw het lichaam een beetje uit evenwicht. Keert het terug? Dan is het evenwicht <strong>stabiel</strong>. Valt het verder weg? Dan is het evenwicht <strong>labiel</strong>.</p>
+  <div class="cards" id="c_ev2"></div>
+  <div class="kader" style="margin-top:16px"><div class="kop">Uitbreiding: volledige voorwaarde voor evenwicht</div>
+    <p>Een lichaam is pas helemaal in evenwicht als het <b>niet verschuift</b> (geen translatie) én <b>niet draait</b> (geen rotatie).</p>
+    <p>Dus: de <b>vectoriële som van de krachten</b> is nul, én de <b>algebraïsche som van de momenten</b> is nul.</p></div>
+</section>
+
+<!-- ================= OEFENEN ================= -->
+<section class="scene" id="oef" data-nr="" data-cat="oef" data-title="Oefenen">
+  <div class="scene-head"><span class="num"></span><h3>Oefenen</h3></div>
+  <p class="scene-sub">Kies een onderwerp of oefen alles door elkaar. Gebruik g = 9,81 N/kg en een komma voor decimalen.</p>
+  <div class="oef">
+    <div class="oef-head"><div class="soort" id="soort"></div><span class="score" id="score">0 / 0</span></div>
+    <div class="vraag" id="vraag"></div>
+    <div id="invoer"></div>
+    <div class="feedback" id="fb"></div>
+    <div style="margin-top:12px"><button class="btn primary" id="volgende">Nieuwe vraag</button></div>
+  </div>
+</section>
+</main>
+<footer>Gemaakt door de vakgroep wetenschappen · Maria Assumpta Lyceum · ontwikkeld met hulp van AI · <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.nl">CC BY-NC-SA 4.0</a></footer>
+
+<script>
+//////////////////// NAVIGATIE ////////////////////
+const scenes = [...document.querySelectorAll('.scene')];
+const nav = document.getElementById('nav'), catNav = document.getElementById('catnav');
+const categories = [{id:'zw',label:'4 Zwaartekracht'},{id:'wr',label:'5 Wrijvingskracht'},{id:'ve',label:'6 Veerkracht'},{id:'km',label:'7 Krachtmoment en evenwicht'},{id:'oef',label:'Oefenen'}];
+let current = 0, activeCat = 'zw';
+function renderNav(){
+  catNav.innerHTML = ''; nav.innerHTML = '';
+  categories.forEach(c => { const b = document.createElement('button'); b.textContent = c.label; b.classList.toggle('active', c.id === activeCat); b.onclick = () => activate(scenes.findIndex(s => s.dataset.cat === c.id)); catNav.appendChild(b); });
+  scenes.forEach((s, i) => { if (s.dataset.cat !== activeCat || activeCat === 'oef') return; const b = document.createElement('button'); b.innerHTML = `<span class="nr">${s.dataset.nr}</span>${s.dataset.title}`; b.classList.toggle('active', i === current); b.onclick = () => activate(i); nav.appendChild(b); });
+}
+function activate(i){
+  current = i; activeCat = scenes[i].dataset.cat;
+  scenes.forEach((s, j) => s.classList.toggle('active', j === i));
+  renderNav();
+  if (location.hash !== '#' + scenes[i].id) history.replaceState(null, '', '#' + scenes[i].id);
+}
+scenes.forEach(s => { const n = s.querySelector('.num'); if (n){ if (s.dataset.nr) n.textContent = s.dataset.nr; else n.remove(); } });
+activate(Math.max(0, scenes.findIndex(s => '#' + s.id === location.hash)));
+window.addEventListener('hashchange', () => { const i = scenes.findIndex(s => '#' + s.id === location.hash); if (i >= 0 && i !== current) activate(i); });
+
+//////////////////// HULPFUNCTIES ////////////////////
+const $ = id => document.getElementById(id);
+const fmt = (v, d = 1) => (Math.abs(v) < 0.5 * Math.pow(10, -d) ? 0 : v).toFixed(d).replace('.', ',');
+const C = {fz:'#7c3aed', fn:'#059669', g:'#d97706', f:'#2563eb', fw:'#dc2626', fv:'#0891b2', lijn:'#94A3B8', tekst:'#1D2A36', dim:'#51606E'};
+function pijl(x1, y1, x2, y2, kleur, label, lx = 0, ly = 0, dik = 4){
+  const len = Math.hypot(x2 - x1, y2 - y1); if (len < 2) return `<circle cx="${x1}" cy="${y1}" r="4" fill="${kleur}"/>`;
+  const a = Math.atan2(y2 - y1, x2 - x1), hs = Math.min(15, len * 0.45);
+  const bx = x2 - Math.cos(a) * hs * 0.85, by = y2 - Math.sin(a) * hs * 0.85;
+  const p1 = [x2 - hs * Math.cos(a - 0.42), y2 - hs * Math.sin(a - 0.42)], p2 = [x2 - hs * Math.cos(a + 0.42), y2 - hs * Math.sin(a + 0.42)];
+  return `<g><line x1="${x1}" y1="${y1}" x2="${bx}" y2="${by}" stroke="${kleur}" stroke-width="${dik}" stroke-linecap="round"/><polygon points="${x2},${y2} ${p1} ${p2}" fill="${kleur}"/><circle cx="${x1}" cy="${y1}" r="4.5" fill="${kleur}"/>${label ? `<text x="${(x1 + x2) / 2 + lx}" y="${(y1 + y2) / 2 + ly}" fill="${kleur}" font-size="17" font-weight="700" text-anchor="middle">${label}</text>` : ''}</g>`;
+}
+const sub = (a, b) => `${a}<tspan font-size="70%" dy="4">${b}</tspan><tspan dy="-4"></tspan>`;
+const txt = (x, y, t, o = {}) => `<text x="${x}" y="${y}" font-size="${o.s || 14}" font-weight="${o.w || 500}" fill="${o.c || C.tekst}" text-anchor="${o.a || 'start'}">${t}</text>`;
+function grafiek(svg, {w, h, x0 = 40, y0, xmax, ymax, xlab, ylab, xt = [], yt = []}){
+  const X = v => x0 + v / xmax * (w - x0 - 16), Y = v => y0 - v / ymax * (y0 - 14);
+  let s = `<line x1="${x0}" y1="${y0}" x2="${w - 8}" y2="${y0}" stroke="${C.dim}"/><line x1="${x0}" y1="${y0}" x2="${x0}" y2="8" stroke="${C.dim}"/>`;
+  xt.forEach(v => s += `<line x1="${X(v)}" y1="${y0}" x2="${X(v)}" y2="${y0 + 4}" stroke="${C.dim}"/>${txt(X(v), y0 + 16, fmt(v, v % 1 ? 1 : 0), {s: 11, c: C.dim, a: 'middle'})}`);
+  yt.forEach(v => s += `<line x1="${x0 - 4}" y1="${Y(v)}" x2="${x0}" y2="${Y(v)}" stroke="${C.dim}"/><line x1="${x0}" y1="${Y(v)}" x2="${w - 8}" y2="${Y(v)}" stroke="#EEF2F5"/>${txt(x0 - 6, Y(v) + 4, fmt(v, v % 1 ? 1 : 0), {s: 11, c: C.dim, a: 'end'})}`);
+  s += txt(w - 8, y0 - 6, xlab, {s: 12, w: 700, c: C.dim, a: 'end'}) + txt(x0 + 6, 18, ylab, {s: 12, w: 700, c: C.dim});
+  return {s, X, Y};
+}
+function svgPunt(svg, e){ const p = svg.createSVGPoint(); p.x = e.clientX; p.y = e.clientY; return p.matrixTransform(svg.getScreenCTM().inverse()); }
+
+//////////////////// ZW1: zwaarteveld ////////////////////
+(function(){
+  const svg = $('s_zw1'), cx = 320, cy = 240, R = 80;
+  let bal = {x: 470, y: 120}, sleep = false;
+  const vast = [[-90, 'Brussel'], [150, 'Australië'], [20, 'Zuid-Amerika']];
+  function teken(){
+    const dx = bal.x - cx, dy = bal.y - cy, d = Math.max(R + 8, Math.hypot(dx, dy)), r = d / R;
+    let s = `<defs><radialGradient id="veld"><stop offset="35%" stop-color="#DDE7F3"/><stop offset="100%" stop-color="#DDE7F3" stop-opacity="0"/></radialGradient></defs>`;
+    s += `<circle cx="${cx}" cy="${cy}" r="215" fill="url(#veld)"/><circle cx="${cx}" cy="${cy}" r="215" fill="none" stroke="#A9BCD4" stroke-dasharray="6 6"/>` + txt(cx, cy - 222, 'zwaarteveld van de aarde', {s: 13, c: '#5B7493', a: 'middle', w: 600});
+    s += `<circle cx="${cx}" cy="${cy}" r="${R}" fill="#4F86C6"/><path d="M${cx - 50} ${cy - 30} q20 -25 45 -10 q15 25 -10 35 q-30 5 -35 -25z M${cx + 15} ${cy + 20} q25 -10 35 15 q-15 30 -40 10z" fill="#6BAA5E"/><circle cx="${cx}" cy="${cy}" r="3" fill="#fff"/>`;
+    vast.forEach(([hoek, naam]) => { const a = hoek * Math.PI / 180, px = cx + (R + 9) * Math.cos(a), py = cy + (R + 9) * Math.sin(a);
+      s += `<circle cx="${px}" cy="${py}" r="7" fill="#F2B880" stroke="#9A5B00"/>` + pijl(px, py, px - 34 * Math.cos(a), py - 34 * Math.sin(a), C.fz, '') + txt(px + 26 * Math.cos(a), py + 26 * Math.sin(a) + 4, naam, {s: 12, a: 'middle', c: C.dim, w: 600}); });
+    const ux = dx / Math.hypot(dx, dy), uy = dy / Math.hypot(dx, dy), L = 48 / (r * r) * 1.5 + 4;
+    s += `<line x1="${bal.x}" y1="${bal.y}" x2="${cx}" y2="${cy}" stroke="${C.lijn}" stroke-dasharray="4 5"/>`;
+    s += `<circle cx="${bal.x}" cy="${bal.y}" r="13" fill="#E9EEF5" stroke="${C.tekst}" stroke-width="1.5" style="cursor:grab"/>` + pijl(bal.x, bal.y, bal.x - ux * L, bal.y - uy * L, C.fz, sub('F', 'z'), 22 * uy, -22 * ux + 5);
+    s += txt(16, 444, 'Sleep de bal.', {s: 13, c: C.dim});
+    svg.innerHTML = s;
+    const g = 9.81 / (r * r);
+    $('r_zw1').innerHTML = `Afstand tot het middelpunt: <b>${fmt(r, 1)} × de straal</b> van de aarde<br>Zwaarteveldsterkte daar: <b>${fmt(g, 2)} N/kg</b><br>Zwaartekracht op 1 kg: <b>${fmt(g, 2)} N</b><br><br><b>Kenmerken van F<sub>z</sub></b><br>aangrijpingspunt: het zwaartepunt<br>richting: de lijn naar het middelpunt van de aarde (verticaal)<br>zin: naar het middelpunt toe<br>grootte: F<sub>z</sub> = m · g`;
+  }
+  svg.addEventListener('pointerdown', e => { sleep = true; svg.setPointerCapture(e.pointerId); beweeg(e); });
+  svg.addEventListener('pointermove', e => sleep && beweeg(e));
+  svg.addEventListener('pointerup', () => sleep = false);
+  function beweeg(e){ const p = svgPunt(svg, e); let dx = p.x - cx, dy = p.y - cy, d = Math.hypot(dx, dy) || 1;
+    const dd = Math.min(210, Math.max(R + 14, d)); bal = {x: cx + dx / d * dd, y: cy + dy / d * dd}; teken(); }
+  teken();
+})();
+
+//////////////////// ZW2: F = m g ////////////////////
+const HEMEL = [['Aarde', 9.81], ['Maan', 1.62], ['Mars', 3.71], ['Venus', 8.87], ['Jupiter', 24.8], ['Zon', 274]];
+(function(){
+  $('zw2h').innerHTML = HEMEL.map(([n, g], i) => `<option value="${i}">${n} (g = ${fmt(g, g < 100 ? 2 : 0)} N/kg)</option>`).join('');
+  function teken(){
+    const [naam, g] = HEMEL[+$('zw2h').value], m = +$('zw2m').value, F = m * g;
+    $('zw2mv').textContent = m + ' kg';
+    const kleur = {Aarde:'#4F86C6', Maan:'#B9BEC6', Mars:'#C8643B', Venus:'#E2C27A', Jupiter:'#D9A66B', Zon:'#F5B700'}[naam];
+    const L = Math.min(240, 20 + F / 1200 * 220) ;
+    let s = `<rect x="0" y="250" width="640" height="80" fill="${kleur}" opacity=".55"/>` + txt(20, 290, naam, {s: 18, w: 700, c: '#fff'});
+    const sx = 250, sy = 250, sz = 26 + m * 0.5;
+    s += `<rect x="${sx - sz / 2}" y="${sy - sz}" width="${sz}" height="${sz}" rx="4" fill="#E9EEF5" stroke="${C.tekst}" stroke-width="1.5"/>` + txt(sx, sy - sz / 2 + 5, m + ' kg', {s: 13, w: 700, a: 'middle'});
+    const zx = sx, zy = sy - sz / 2;
+    s += `<circle cx="${zx}" cy="${zy}" r="3" fill="${C.fz}"/>` + pijl(zx, zy, zx, zy + Math.min(L, 200), C.fz, sub('F', 'z'), 26, 0);
+    s += txt(400, 70, `F<tspan font-size="70%" dy="4">z</tspan><tspan dy="-4"> = m · g</tspan>`, {s: 20, w: 700}) + txt(400, 100, `= ${m} kg · ${fmt(g, 2)} N/kg`, {s: 17, c: C.dim}) + txt(400, 130, `= ${fmt(F, F < 100 ? 1 : 0)} N`, {s: 22, w: 700, c: C.fz});
+    s += txt(400, 170, `Op 1 kg werkt hier ${fmt(g, 2)} N.`, {s: 14, c: C.dim});
+    $('s_zw2').innerHTML = s;
+    $('r_zw2').innerHTML = `Zelfde massa op aarde: <b>${fmt(m * 9.81, 0)} N</b><br>Op ${naam.toLowerCase()} is de zwaartekracht <b>${fmt(g / 9.81, 2)} keer</b> zo groot als op aarde.<br>De <b>massa</b> blijft overal <b>${m} kg</b>.`;
+    // mini-grafieken
+    let a = grafiek(null, {w: 220, h: 160, y0: 136, xmax: 120, ymax: 3000, xlab: 'm (kg)', ylab: 'Fz (N)', xt: [0, 60, 120], yt: [1000, 2000, 3000]});
+    $('g_fm').innerHTML = a.s + `<line x1="${a.X(0)}" y1="${a.Y(0)}" x2="${a.X(120)}" y2="${a.Y(120 * g > 3000 ? 3000 : 120 * g)}" stroke="${C.fz}" stroke-width="2.5"/>` + (F <= 3000 ? `<circle cx="${a.X(m)}" cy="${a.Y(F)}" r="5" fill="${C.fz}"/>` : '');
+    if (120 * g > 3000) $('g_fm').innerHTML = a.s + `<line x1="${a.X(0)}" y1="${a.Y(0)}" x2="${a.X(3000 / g)}" y2="${a.Y(3000)}" stroke="${C.fz}" stroke-width="2.5"/>` + (F <= 3000 ? `<circle cx="${a.X(m)}" cy="${a.Y(F)}" r="5" fill="${C.fz}"/>` : '');
+    let b = grafiek(null, {w: 220, h: 160, y0: 136, xmax: 30, ymax: 3600, xlab: 'g (N/kg)', ylab: 'Fz (N)', xt: [0, 10, 20, 30], yt: [1200, 2400, 3600]});
+    $('g_fg').innerHTML = b.s + `<line x1="${b.X(0)}" y1="${b.Y(0)}" x2="${b.X(30)}" y2="${b.Y(30 * m)}" stroke="${C.fz}" stroke-width="2.5"/>` + (g <= 30 ? `<circle cx="${b.X(g)}" cy="${b.Y(F)}" r="5" fill="${C.fz}"/>` : '');
+    let c = grafiek(null, {w: 220, h: 160, y0: 136, xmax: 30, ymax: 120, xlab: 'g (N/kg)', ylab: 'm (kg)', xt: [0, 10, 20, 30], yt: [40, 80, 120]});
+    $('g_mg').innerHTML = c.s + `<line x1="${c.X(0)}" y1="${c.Y(m)}" x2="${c.X(30)}" y2="${c.Y(m)}" stroke="${C.tekst}" stroke-width="2.5"/>` + (g <= 30 ? `<circle cx="${c.X(g)}" cy="${c.Y(m)}" r="5" fill="${C.tekst}"/>` : '') + txt(110, 60, 'massa verandert niet', {s: 11, c: C.dim, a: 'middle'});
+  }
+  $('zw2h').onchange = $('zw2m').oninput = teken; teken();
+})();
+
+//////////////////// ZW3: massa en gewicht ////////////////////
+(function(){
+  const m = 80;
+  const SIT = [
+    {n:'Op aarde', g:9.81, G:true, uitleg:'Hij staat op de weegschaal. Het gewicht is even groot als de zwaartekracht.'},
+    {n:'Op de maan', g:1.62, G:true, uitleg:'Op de maan is de zwaarteveldsterkte kleiner. Zwaartekracht en gewicht zijn kleiner, de massa blijft 80 kg.'},
+    {n:'Duikplank', g:9.81, G:false, uitleg:'Tijdens de sprong wordt hij niet ondersteund: hij is gewichtloos. De zwaartekracht werkt wel, daarom valt hij.'},
+    {n:'In het ISS', g:8.7, G:false, uitleg:'Op 400 km hoogte is g nog 8,7 N/kg. Het ISS en de astronaut vallen samen rond de aarde: hij drukt niet op een steun en is gewichtloos.'},
+    {n:'Ver in de ruimte', g:0, G:false, uitleg:'Ver van elk hemellichaam is er (bijna) geen zwaarteveld. Geen zwaartekracht en geen gewicht, maar nog steeds 80 kg massa.'}
+  ];
+  let k = 0;
+  $('zw3k').innerHTML = SIT.map((s, i) => `<button class="btn" data-i="${i}">${s.n}</button>`).join('');
+  $('zw3k').onclick = e => { const b = e.target.closest('button'); if (b){ k = +b.dataset.i; teken(); } };
+  function persoon(x, y, kantel = 0){ return `<g transform="rotate(${kantel} ${x} ${y - 60})"><circle cx="${x}" cy="${y - 112}" r="15" fill="#F2B880" stroke="#9A5B00"/><rect x="${x - 17}" y="${y - 96}" width="34" height="52" rx="10" fill="#E9EEF5" stroke="${C.tekst}" stroke-width="1.5"/><rect x="${x - 15}" y="${y - 46}" width="12" height="46" rx="5" fill="#C7D2FE"/><rect x="${x + 3}" y="${y - 46}" width="12" height="46" rx="5" fill="#C7D2FE"/></g>`; }
+  function teken(){
+    const s = SIT[k], Fz = m * s.g, G = s.G ? Fz : 0;
+    $('zw3k').querySelectorAll('button').forEach((b, i) => b.classList.toggle('on', i === k));
+    let o = '';
+    const sch = 52; // pixels per 500 N
+    if (k === 0 || k === 1){
+      o += `<rect x="0" y="300" width="640" height="80" fill="${k === 0 ? '#8BBF7A' : '#C9CDD3'}"/>`;
+      o += `<rect x="250" y="288" width="100" height="14" rx="3" fill="#475569"/><rect x="278" y="291" width="44" height="8" fill="#A7F3D0"/>` + txt(300, 299, fmt(G / 9.81, 0) + ' kg', {s: 8, w: 700, a: 'middle'});
+      o += persoon(300, 288);
+      o += pijl(300, 205, 300, 205 + Fz / 500 * sch, C.fz, sub('F', 'z'), -24, 0) + pijl(300, 302, 300, 302 + G / 500 * sch, C.g, 'G', 20, 4);
+      o += txt(370, 300, 'weegschaal toont ' + fmt(G / 9.81, 0) + ' kg', {s: 13, c: C.dim});
+    } else if (k === 2){
+      o += `<rect x="0" y="330" width="640" height="50" fill="#7DC4E4"/><rect x="40" y="150" width="160" height="12" fill="#94A3B8"/>`;
+      o += persoon(320, 250, 15) + pijl(320, 165, 320, 165 + Fz / 500 * sch, C.fz, sub('F', 'z'), -26, 0) + txt(420, 200, 'geen steunpunt: G = 0 N', {s: 14, w: 600, c: C.g});
+    } else {
+      o += `<rect x="0" y="0" width="640" height="380" fill="#0F172A"/>` + [[40,40],[600,70],[120,320],[520,300],[300,30],[580,200]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="1.5" fill="#fff"/>`).join('');
+      if (k === 3) o += `<rect x="150" y="110" width="340" height="190" rx="20" fill="#334155" stroke="#94A3B8"/>`;
+      o += persoon(320, 280, k === 3 ? 25 : -20);
+      if (Fz > 0) o += pijl(320, 210, 320, 210 + Fz / 500 * sch, C.fz, sub('F', 'z'), -26, 0);
+      o += txt(470, 90, 'G = 0 N', {s: 15, w: 700, c: C.g, a: 'middle'});
+    }
+    $('s_zw3').innerHTML = o;
+    $('r_zw3').innerHTML = `massa m = <b>80 kg</b><br>zwaartekracht F<sub>z</sub> = <b>${fmt(Fz, 0)} N</b><br>gewicht G = <b>${fmt(G, 0)} N</b>${G === 0 ? ' → <span class="ok">gewichtloos</span>' : ''}<br><br>${s.uitleg}`;
+  }
+  teken();
+})();
+
+//////////////////// ZW4: FN, Fz, G ////////////////////
+(function(){
+  const SIT = [
+    {n:'Boek op tafel', m:1.5},
+    {n:'Lamp aan het plafond', m:2},
+    {n:'Leerling op een stoel', m:55}
+  ];
+  let k = 0;
+  $('zw4k').innerHTML = SIT.map((s, i) => `<button class="btn" data-i="${i}">${s.n}</button>`).join('');
+  $('zw4k').onclick = e => { const b = e.target.closest('button'); if (b){ k = +b.dataset.i; teken(); } };
+  ['zw4z', 'zw4n', 'zw4g'].forEach(id => $(id).onchange = teken);
+  function teken(){
+    const s = SIT[k], F = s.m * 9.81, L = k === 2 ? 110 : 90;
+    $('zw4k').querySelectorAll('button').forEach((b, i) => b.classList.toggle('on', i === k));
+    const tz = $('zw4z').checked, tn = $('zw4n').checked, tg = $('zw4g').checked;
+    let o = '', rijen;
+    if (k === 0){
+      o += `<rect x="150" y="210" width="340" height="18" fill="#B08968"/><rect x="170" y="228" width="14" height="140" fill="#9C7656"/><rect x="456" y="228" width="14" height="140" fill="#9C7656"/>`;
+      o += `<rect x="250" y="170" width="140" height="40" rx="3" fill="#60A5FA" stroke="#1E3A8A"/>` + txt(375, 195, 'boek', {s: 12, w: 700, a: 'end', c: '#fff'});
+      if (tz) o += pijl(320, 190, 320, 190 + L, C.fz, sub('F', 'z'), -24, 20);
+      if (tn) o += pijl(280, 210, 280, 210 - L, C.fn, sub('F', 'N'), -26, 0);
+      if (tg) o += pijl(360, 212, 360, 212 + L, C.g, 'G', 22, 20);
+      rijen = [['F<sub>z</sub>', 'de aarde', 'het boek', 'zwaartepunt van het boek'], ['F<sub>N</sub>', 'de tafel', 'het boek', 'contactvlak, op het boek'], ['G', 'het boek', 'de tafel', 'contactvlak, op de tafel (steunpunt)']];
+    } else if (k === 1){
+      o += `<rect x="0" y="0" width="640" height="40" fill="#CBD5E1"/><line x1="320" y1="40" x2="320" y2="180" stroke="${C.tekst}" stroke-width="2"/>`;
+      o += `<path d="M285 220 L355 220 L340 180 L300 180 Z" fill="#FCD34D" stroke="#92400E"/><circle cx="320" cy="226" r="8" fill="#FEF3C7"/>`;
+      if (tz) o += pijl(320, 205, 320, 205 + L, C.fz, sub('F', 'z'), 26, 6);
+      if (tg) o += pijl(332, 40, 332, 40 + L, C.g, 'G', 18, 0);
+      if (tn) o += txt(470, 150, 'Hier is er geen normaalkracht:', {s: 13, c: C.dim, a: 'middle'}) + txt(470, 168, 'de lamp ligt niet op een steun.', {s: 13, c: C.dim, a: 'middle'});
+      rijen = [['F<sub>z</sub>', 'de aarde', 'de lamp', 'zwaartepunt van de lamp'], ['G', 'de lamp', 'het plafond (via het snoer)', 'ophangpunt aan het plafond']];
+    } else {
+      o += `<rect x="0" y="350" width="640" height="30" fill="#CBD5E1"/><rect x="250" y="250" width="140" height="14" fill="#64748B"/><rect x="258" y="264" width="10" height="86" fill="#64748B"/><rect x="372" y="264" width="10" height="86" fill="#64748B"/><rect x="372" y="150" width="10" height="100" fill="#64748B"/>`;
+      o += `<circle cx="330" cy="110" r="16" fill="#F2B880" stroke="#9A5B00"/><rect x="312" y="128" width="40" height="80" rx="12" fill="#E9EEF5" stroke="${C.tekst}" stroke-width="1.5"/><rect x="270" y="210" width="80" height="40" rx="10" fill="#C7D2FE"/><rect x="262" y="250" width="16" height="0"/>`;
+      if (tz) o += pijl(318, 200, 318, 200 + L, C.fz, sub('F', 'z'), -22, 30);
+      if (tn) o += pijl(280, 250, 280, 250 - L, C.fn, sub('F', 'N'), -26, 0);
+      if (tg) o += pijl(355, 252, 355, 252 + L, C.g, 'G', 22, 30);
+      rijen = [['F<sub>z</sub>', 'de aarde', 'de leerling', 'zwaartepunt van de leerling'], ['F<sub>N</sub>', 'de stoel', 'de leerling', 'contactvlak, op de leerling'], ['G', 'de leerling', 'de stoel', 'contactvlak, op de stoel (steunpunt)']];
+    }
+    o += txt(16, 30 + (k === 1 ? 30 : 0), `m = ${fmt(s.m, s.m % 1 ? 1 : 0)} kg → F = ${fmt(F, 1)} N`, {s: 14, w: 600, c: C.dim});
+    $('s_zw4').innerHTML = o;
+    $('t_zw4').innerHTML = `<tr><th>kracht</th><th>uitgeoefend door</th><th>werkt op</th><th>aangrijpingspunt</th></tr>` + rijen.map(r => `<tr><td><b>${r[0]}</b></td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td></tr>`).join('');
+    $('n_zw4').innerHTML = k === 1 ? '<strong>Zwaartekracht en gewicht</strong> zijn hier even groot, maar ze werken op een ander voorwerp: F<sub>z</sub> op de lamp, G op het plafond.' : '<strong>Alle drie even groot</strong> (' + fmt(F, 1) + ' N), maar het zijn drie verschillende krachten. F<sub>z</sub> en F<sub>N</sub> werken op hetzelfde voorwerp en heffen elkaar op. G werkt op de steun.';
+  }
+  teken();
+})();
+
+//////////////////// WRIJVING ////////////////////
+const ONDER = [['Rubber op droog asfalt', 0.9, 0.7], ['Rubber op nat asfalt', 0.6, 0.4], ['Schoen op tegels', 0.6, 0.4], ['Hout op hout', 0.5, 0.3], ['Metaal op ijs', 0.1, 0.05]];
+(function(){
+  $('wr1o').innerHTML = ONDER.map(([n, s, d], i) => `<option value="${i}" ${i === 3 ? 'selected' : ''}>${n} (μs ≈ ${fmt(s, s < 0.1 ? 2 : 1)})</option>`).join('');
+  let x = 0, vorige = null, anim = null;
+  function staat(){
+    const [n, ms, md] = ONDER[+$('wr1o').value], m = +$('wr1m').value, F = +$('wr1f').value, FN = m * 9.81, max = ms * FN, dyn = md * FN;
+    return {n, ms, md, m, F, FN, max, dyn, beweegt: F > max};
+  }
+  function teken(){
+    const s = staat(); $('wr1mv').textContent = s.m + ' kg'; $('wr1fv').textContent = s.F + ' N';
+    const Fw = s.beweegt ? s.dyn : s.F;
+    const sch = 0.55, bx = 140 + (x % 260), by = 180, bw = 90, bh = 70;
+    let o = `<rect x="0" y="${by}" width="640" height="80" fill="#D6D3D1"/>` + `<line x1="0" y1="${by}" x2="640" y2="${by}" stroke="#78716C" stroke-width="2"/>`;
+    o += `<rect x="${bx}" y="${by - bh}" width="${bw}" height="${bh}" rx="3" fill="#E7C9A0" stroke="#7C5A3A" stroke-width="1.5"/>` + txt(bx + bw / 2, by - bh / 2 + 5, s.m + ' kg', {s: 13, w: 700, a: 'middle'});
+    o += pijl(bx + bw, by - 35, bx + bw + s.F * sch, by - 35, C.f, 'F', 0, -12);
+    o += pijl(bx + bw / 2, by, bx + bw / 2 - Fw * sch, by, C.fw, s.beweegt ? sub('F', 'w,d') : sub('F', 'w,s'), 0, 22);
+    o += txt(20, 34, s.beweegt ? 'De kist schuift: dynamische wrijvingskracht' : 'De kist staat stil: statische wrijvingskracht', {s: 16, w: 700, c: s.beweegt ? C.fw : '#1F7A4A'});
+    $('s_wr1').innerHTML = o;
+    $('r_wr1').innerHTML = `F<sub>N</sub> = m · g = <b>${fmt(s.FN, 0)} N</b><br>F<sub>w,s,max</sub> = ${fmt(s.ms, 2)} · ${fmt(s.FN, 0)} = <b>${fmt(s.max, 0)} N</b><br>` +
+      (s.beweegt ? `F > F<sub>w,s,max</sub> → <span class="flag">de kist schuift</span><br>F<sub>w,d</sub> ≈ <b>${fmt(s.dyn, 0)} N</b>` : `F ≤ F<sub>w,s,max</sub> → <span class="ok">de kist blijft staan</span><br>F<sub>w,s</sub> = F = <b>${s.F} N</b>`);
+    // grafiek
+    const gw = grafiek(null, {w: 640, h: 230, x0: 50, y0: 200, xmax: 300, ymax: 450, xlab: 'trekkracht F (N)', ylab: 'wrijvingskracht (N)', xt: [0, 50, 100, 150, 200, 250, 300], yt: [100, 200, 300, 400]});
+    const mx = Math.min(s.max, 300);
+    let gs = gw.s + `<polyline points="${gw.X(0)},${gw.Y(0)} ${gw.X(mx)},${gw.Y(mx)}" fill="none" stroke="#1F7A4A" stroke-width="3"/>`;
+    if (s.max < 300) gs += `<line x1="${gw.X(s.max)}" y1="${gw.Y(s.max)}" x2="${gw.X(s.max)}" y2="${gw.Y(s.dyn)}" stroke="${C.lijn}" stroke-dasharray="4 4"/><line x1="${gw.X(s.max)}" y1="${gw.Y(s.dyn)}" x2="${gw.X(300)}" y2="${gw.Y(s.dyn)}" stroke="${C.fw}" stroke-width="3"/>` + txt(gw.X(s.max) + 6, gw.Y(s.max) - 6, 'max', {s: 12, w: 700, c: '#1F7A4A'});
+    gs += `<circle cx="${gw.X(s.F)}" cy="${gw.Y(s.beweegt ? s.dyn : s.F)}" r="6" fill="${s.beweegt ? C.fw : '#1F7A4A'}"/>`;
+    gs += txt(gw.X(40), gw.Y(380), '— statisch', {s: 12, w: 700, c: '#1F7A4A'}) + txt(gw.X(130), gw.Y(380), '— dynamisch', {s: 12, w: 700, c: C.fw});
+    $('g_wr1').innerHTML = gs;
+    if (s.beweegt && !anim) anim = requestAnimationFrame(stap);
+  }
+  function stap(){ anim = null; if (!staat().beweegt || !$('wr1').classList.contains('active')){ return; } x += 2; teken(); }
+  ['wr1o', 'wr1m', 'wr1f'].forEach(id => $(id).oninput = teken);
+  new MutationObserver(teken).observe($('wr1'), {attributes: true, attributeFilter: ['class']});
+  teken();
+})();
+(function(){
+  $('wr2o').innerHTML = ONDER.map(([n, s], i) => `<option value="${i}">${n} (μs ≈ ${fmt(s, s < 0.1 ? 2 : 1)})</option>`).join('');
+  const kl = ['#2563eb', '#0891b2', '#7c3aed', '#d97706', '#64748B'];
+  function teken(){
+    const i = +$('wr2o').value, FN = +$('wr2n').value, ms = ONDER[i][1], F = ms * FN;
+    $('wr2nv').textContent = FN + ' N';
+    const g = grafiek(null, {w: 640, h: 400, x0: 56, y0: 370, xmax: 1000, ymax: 900, xlab: 'normaalkracht FN (N)', ylab: 'Fw,s,max (N)', xt: [0, 200, 400, 600, 800, 1000], yt: [150, 300, 450, 600, 750, 900]});
+    let o = g.s;
+    ONDER.forEach(([n, s], j) => { const xe = Math.min(1000, 900 / s); o += `<line x1="${g.X(0)}" y1="${g.Y(0)}" x2="${g.X(xe)}" y2="${g.Y(s * xe)}" stroke="${kl[j]}" stroke-width="${j === i ? 4 : 1.5}" opacity="${j === i ? 1 : .45}"/>` + txt(g.X(xe) - 4, g.Y(s * xe) - 6, 'μs = ' + fmt(s, s < 0.1 ? 2 : 1), {s: 11, w: 700, c: kl[j], a: 'end'}); });
+    o += `<line x1="${g.X(FN)}" y1="${g.Y(0)}" x2="${g.X(FN)}" y2="${g.Y(F)}" stroke="${C.lijn}" stroke-dasharray="4 4"/><line x1="${g.X(0)}" y1="${g.Y(F)}" x2="${g.X(FN)}" y2="${g.Y(F)}" stroke="${C.lijn}" stroke-dasharray="4 4"/><circle cx="${g.X(FN)}" cy="${g.Y(F)}" r="6" fill="${kl[i]}"/>`;
+    $('g_wr2').innerHTML = o;
+    $('r_wr2').innerHTML = `F<sub>w,s,max</sub> = ${fmt(ms, 2)} · ${FN} N = <b>${fmt(F, 0)} N</b><br>Dubbele normaalkracht → dubbele F<sub>w,s,max</sub>.<br>Grotere μ<sub>s</sub> → steilere rechte → meer grip.`;
+  }
+  $('wr2o').onchange = $('wr2n').oninput = teken; teken();
+})();
+(function(){
+  const band = (blok, nat) => `<svg viewBox="0 0 300 150"><rect x="0" y="110" width="300" height="40" fill="#57534E"/>${nat ? '<rect x="0" y="102" width="300" height="9" fill="#60A5FA" opacity=".8"/>' : ''}<circle cx="150" cy="${nat ? 58 : 64}" r="46" fill="#1F2937"/><circle cx="150" cy="${nat ? 58 : 64}" r="20" fill="#9CA3AF"/>${blok ? '<line x1="150" y1="64" x2="150" y2="22" stroke="#F87171" stroke-width="5"/>' : '<path d="M150 64 m-30 -10 a32 32 0 0 1 50 -14" stroke="#9CA3AF" stroke-width="3" fill="none"/>'}${blok ? '<path d="M110 112 h-50" stroke="#F59E0B" stroke-width="3" stroke-dasharray="6 5"/>' : ''}</svg>`;
+  const kaarten = [
+    {t:'Een rollend wiel', tag:'stat', s:band(false), p:'Het stukje band dat de weg raakt, staat even <b>stil</b> ten opzichte van de weg. Er werkt dus <b>statische</b> wrijving, ook al rijdt de auto.'},
+    {t:'Een geblokkeerd wiel', tag:'dyn', s:band(true), p:'Remt de bestuurder te hard, dan blokkeert het wiel en <b>glijdt</b> de band over de weg: <b>dynamische</b> wrijving. Die is kleiner, dus de remweg wordt langer en je kunt niet sturen.'},
+    {t:'ABS', tag:'stat', s:band(false), p:'ABS laat de remmen heel snel los en weer aan, zodat de wielen <b>blijven rollen</b>. Zo blijft de grotere <b>statische</b> wrijving werken: kortere remweg en je kunt nog sturen.'},
+    {t:'Aquaplaning', tag:'dyn', s:band(false, true), p:'Bij veel water rijdt de band op een <b>waterlaag</b>. De band raakt de weg niet meer: de wrijvingscoëfficiënt wordt heel klein. Remmen en sturen lukt bijna niet.'},
+    {t:'Wandelen', tag:'stat', s:'<svg viewBox="0 0 300 150"><rect x="0" y="120" width="300" height="30" fill="#D6D3D1"/><path d="M120 120 l30 -60 l30 60" stroke="#334155" stroke-width="10" fill="none" stroke-linecap="round"/><circle cx="150" cy="40" r="16" fill="#F2B880"/></svg>', p:'Je voet die op de grond staat, schuift niet weg. De <b>statische</b> wrijving duwt je vooruit.'},
+    {t:'Schaatsen', tag:'dyn', s:'<svg viewBox="0 0 300 150"><rect x="0" y="120" width="300" height="30" fill="#BAE6FD"/><path d="M100 118 h80" stroke="#64748B" stroke-width="4"/><path d="M110 112 h60 l6 -40 h-50z" fill="#1E293B"/><path d="M60 128 h50" stroke="#F59E0B" stroke-width="3" stroke-dasharray="6 5"/></svg>', p:'Het mes glijdt over het ijs: <b>dynamische</b> wrijving, en die is heel klein.'}
+  ];
+  $('c_wr3').innerHTML = kaarten.map(k => `<div class="card">${k.s}<div class="txt"><span class="tag ${k.tag}">${k.tag === 'stat' ? 'statisch' : 'dynamisch'}</span><h4>${k.t}</h4><p>${k.p}</p></div></div>`).join('');
+})();
+
+//////////////////// VEERKRACHT ////////////////////
+const VEREN = [['Zachte veer (k = 20 N/m)', 20, 3], ['Gewone veer (k = 50 N/m)', 50, 6], ['Stugge veer (k = 200 N/m)', 200, 9]];
+(function(){
+  $('ve1k').innerHTML = VEREN.map(([n], i) => `<option value="${i}" ${i === 1 ? 'selected' : ''}>${n}</option>`).join('');
+  let blijvend = 0, eraf = false;
+  function teken(){
+    const [n, k, grens] = VEREN[+$('ve1k').value], m = eraf ? 0 : +$('ve1m').value / 1000, Fz = m * 9.81;
+    $('ve1mv').textContent = (eraf ? 0 : +$('ve1m').value) + ' g';
+    let dl = Fz / k, plast = Fz > grens;
+    if (plast){ dl = grens / k + (Fz - grens) / k * 2.5; blijvend = Math.max(blijvend, (Fz - grens) / k * 2.5); }
+    if (eraf) dl = blijvend;
+    const x = 260, top = 40, L0 = 120, pxm = 500; // 500 px per m
+    const L = L0 + dl * pxm, onder = top + Math.min(L, 380);
+    let o = `<rect x="160" y="20" width="200" height="20" fill="#94A3B8"/>`;
+    // liniaal
+    o += `<rect x="420" y="${top}" width="46" height="410" fill="#FEF9C3" stroke="#CA8A04"/>`;
+    for (let c = 0; c <= 80; c += 2){ const y = top + L0 + c / 100 * pxm; if (y > 448) break; o += `<line x1="420" y1="${y}" x2="${420 + (c % 10 ? 8 : 16)}" y2="${y}" stroke="#854D0E"/>` + (c % 10 ? '' : txt(452, y + 4, c + '', {s: 11, c: '#854D0E', a: 'middle'})); }
+    o += txt(443, top + L0 - 8, 'cm', {s: 11, c: '#854D0E', a: 'middle'}) + `<line x1="${x + 30}" y1="${top + L0}" x2="420" y2="${top + L0}" stroke="#CA8A04" stroke-dasharray="3 4"/>`;
+    // veer
+    const wind = 14, dy = (onder - top - 20) / wind; let p = `M${x} ${top} v10`;
+    for (let i = 0; i < wind; i++) p += ` l${i % 2 ? -36 : 18} ${dy / 2} l${i % 2 ? 18 : -36} ${0}`.replace(/l(-?\d+) ([\d.]+) l(-?\d+) 0/, (q, a, b, c) => `l${i % 2 ? -18 : 18} ${dy / 2} l${i % 2 ? 18 : -18} ${dy / 2}`);
+    p += ' v10';
+    o += `<path d="${p}" fill="none" stroke="${plast || (eraf && blijvend) ? '#B3362B' : '#334155'}" stroke-width="2.5"/>`;
+    o += `<line x1="${x + 30}" y1="${onder}" x2="420" y2="${onder}" stroke="#CA8A04" stroke-dasharray="3 4"/>`;
+    if (m > 0){
+      const sz = 46 + m * 40;
+      o += `<rect x="${x - sz / 2}" y="${onder}" width="${sz}" height="${sz * 0.8}" rx="4" fill="#CBD5E1" stroke="#334155"/>` + txt(x - sz / 2 - 8, onder + sz * 0.4 + 5, Math.round(m * 1000) + ' g', {s: 13, w: 700, a: 'end'});
+      const sc = 18; // px per N
+      o += pijl(x, onder, x, onder - Fz * sc, C.fv, sub('F', 'v'), 26, 0) + pijl(x, onder + sz * 0.4, x, onder + sz * 0.4 + Fz * sc, C.fz, sub('F', 'z'), 26, 0);
+    }
+    if (dl > 0) o += `<path d="M395 ${top + L0} v${dl * pxm}" stroke="#B3362B" stroke-width="3"/>` + txt(388, top + L0 + dl * pxm / 2 + 4, 'Δl', {s: 14, w: 700, c: '#B3362B', a: 'end'});
+    $('s_ve1').innerHTML = o;
+    let r = `F<sub>v</sub> = F<sub>z</sub> = m · g = <b>${fmt(Fz, 2)} N</b><br>Δl = F<sub>v</sub> / k = ${fmt(Fz, 2)} / ${k} = <b>${fmt(Fz / k * 100, 1)} cm</b>`;
+    if (plast) r = `F<sub>z</sub> = <b>${fmt(Fz, 2)} N</b><br><span class="flag">Voorbij de elasticiteitsgrens (${grens} N)!</span><br>De veer rekt veel verder uit en de wet van Hooke geldt niet meer.`;
+    if (eraf) r = blijvend > 0 ? `Massa eraf: de veer komt <span class="flag">niet terug</span>. Ze blijft ${fmt(blijvend * 100, 1)} cm langer: <b>plastische vervorming</b>.` : `Massa eraf: de veer neemt haar oorspronkelijke lengte terug aan: <span class="ok">elastische vervorming</span>.`;
+    $('r_ve1').innerHTML = r;
+  }
+  $('ve1m').oninput = () => { eraf = false; teken(); };
+  $('ve1k').onchange = () => { blijvend = 0; eraf = false; teken(); };
+  $('ve1af').onclick = () => { eraf = true; teken(); };
+  $('ve1nw').onclick = () => { blijvend = 0; eraf = false; teken(); };
+  teken();
+})();
+(function(){
+  const kl = ['#d97706', '#0891b2', '#7c3aed'];
+  function F(k, grens, dl){ const dg = grens / k; return dl <= dg ? k * dl : grens + (dl - dg) * k * 0.25; }
+  function teken(){
+    const dlc = +$('ve2l').value, dl = dlc / 100; $('ve2lv').textContent = dlc + ' cm';
+    const g = grafiek(null, {w: 640, h: 420, x0: 50, y0: 390, xmax: 40, ymax: 12, xlab: 'uitrekking Δl (cm)', ylab: 'veerkracht Fv (N)', xt: [0, 10, 20, 30, 40], yt: [2, 4, 6, 8, 10, 12]});
+    let o = g.s, r = '';
+    VEREN.forEach(([n, k, grens], i) => {
+      let pts = []; for (let c = 0; c <= 40; c += 0.5){ const f = F(k, grens, c / 100); if (f > 12) break; pts.push(`${g.X(c)},${g.Y(f)}`); }
+      o += `<polyline points="${pts.join(' ')}" fill="none" stroke="${kl[i]}" stroke-width="3"/>`;
+      const cg = grens / k * 100; if (cg <= 40) o += `<circle cx="${g.X(cg)}" cy="${g.Y(grens)}" r="5" fill="#fff" stroke="${kl[i]}" stroke-width="2"/>`;
+      const f = F(k, grens, dl); if (f <= 12) o += `<circle cx="${g.X(dlc)}" cy="${g.Y(f)}" r="6" fill="${kl[i]}"/>`;
+      o += txt(g.X(Math.min(36, 11 / k * 100 * 0.6 + 2)), g.Y(Math.min(11, k * (11 / k * 0.6 + 0.02))) - 8, 'k = ' + k + ' N/m', {s: 12, w: 700, c: kl[i]});
+      const hooke = dl <= grens / k;
+      r += `<span style="color:${kl[i]};font-weight:700">k = ${k} N/m</span>: F<sub>v</sub> = ${hooke ? `${k} · ${fmt(dl, 2)} = <b>${fmt(k * dl, 1)} N</b>` : '<span class="flag">plastisch</span>'}<br>`;
+    });
+    o += `<line x1="${g.X(dlc)}" y1="${g.Y(0)}" x2="${g.X(dlc)}" y2="${g.Y(12)}" stroke="${C.lijn}" stroke-dasharray="4 4"/>` + txt(g.X(30), g.Y(1), '○ = elasticiteitsgrens', {s: 12, c: C.dim});
+    $('g_ve2').innerHTML = o;
+    $('r_ve2').innerHTML = r + '<br>Rechte door de oorsprong: F<sub>v</sub> en Δl zijn <b>recht evenredig</b>. De helling is k.';
+  }
+  $('ve2l').oninput = teken; teken();
+})();
+
+//////////////////// KRACHTMOMENT ////////////////////
+(function(){
+  function teken(){
+    const F = +$('km1f').value, rc = +$('km1r').value, a = +$('km1a').value, r = rc / 100, arm = r * Math.sin(a * Math.PI / 180), M = F * arm;
+    $('km1fv').textContent = F + ' N'; $('km1rv').textContent = rc + ' cm'; $('km1av').textContent = a + '°';
+    const ox = 140, oy = 230, px = 14, ax = ox + rc * px, ay = oy;
+    let o = `<polygon points="${ox},${oy - 26} ${ox + 22},${oy - 13} ${ox + 22},${oy + 13} ${ox},${oy + 26} ${ox - 22},${oy + 13} ${ox - 22},${oy - 13}" fill="#94A3B8" stroke="#334155"/>`;
+    o += `<rect x="${ox}" y="${oy - 10}" width="${32 * px}" height="20" rx="10" fill="#CBD5E1" stroke="#475569"/><circle cx="${ox}" cy="${oy}" r="5" fill="#1D2A36"/>` + txt(ox, oy + 48, 'draaipunt', {s: 12, w: 600, c: C.dim, a: 'middle'});
+    const rad = a * Math.PI / 180, fx = Math.cos(rad), fy = -Math.sin(rad), L = 30 + F * 0.8;
+    // werklijn
+    o += `<line x1="${ax - fx * 400}" y1="${ay - fy * 400}" x2="${ax + fx * 400}" y2="${ay + fy * 400}" stroke="${C.lijn}" stroke-dasharray="6 6"/>`;
+    // loodlijn vanuit draaipunt
+    const t = (ox - ax) * fx + (oy - ay) * fy, vx = ax + fx * t, vy = ay + fy * t;
+    if (Math.abs(arm) > 0.001) o += `<line x1="${ox}" y1="${oy}" x2="${vx}" y2="${vy}" stroke="#B3362B" stroke-width="3"/>` + txt((ox + vx) / 2 - 10, (oy + vy) / 2 - 8, 'krachtarm', {s: 13, w: 700, c: '#B3362B', a: 'end'});
+    o += `<path d="M${ox} ${oy + 64} h${rc * px}" stroke="${C.dim}" marker-end="url(#)" /><line x1="${ox}" y1="${oy + 58}" x2="${ox}" y2="${oy + 70}" stroke="${C.dim}"/><line x1="${ax}" y1="${oy + 58}" x2="${ax}" y2="${oy + 70}" stroke="${C.dim}"/>` + txt((ox + ax) / 2, oy + 84, 'r = ' + rc + ' cm', {s: 13, c: C.dim, a: 'middle'});
+    o += pijl(ax, ay, ax + fx * L, ay + fy * L, C.f, 'F', -16 * fy, 16 * fx - 4);
+    if (a > 0 && a < 180){ const ar = 34; o += `<path d="M${ax + ar} ${ay} A${ar} ${ar} 0 0 0 ${ax + ar * fx} ${ay + ar * fy}" fill="none" stroke="${C.f}" stroke-width="1.5"/>` + txt(ax + 44 * Math.cos(rad / 2), ay - 44 * Math.sin(rad / 2) + 4, 'α', {s: 13, w: 700, c: C.f, a: 'middle'}); }
+    if (M > 0.05){ o += `<path d="M${ox + 40} ${oy - 22} A46 46 0 0 0 ${ox - 40} ${oy - 22}" fill="none" stroke="#1F7A4A" stroke-width="2.5"/><polygon points="${ox - 46},${oy - 10} ${ox - 48},${oy - 28} ${ox - 32},${oy - 22}" fill="#1F7A4A"/>` + txt(ox, oy - 78, 'draait tegen de wijzerzin', {s: 12, w: 700, c: '#1F7A4A', a: 'middle'}); }
+    $('s_km1').innerHTML = o;
+    $('r_km1').innerHTML = `krachtarm = r · sin α = ${fmt(r, 2)} m · sin ${a}° = <b>${fmt(arm, 3)} m</b><br>M = F · r · sin α = <b>${fmt(M, 1)} N·m</b><br>` + (a === 90 ? '<span class="ok">F staat loodrecht op de sleutel: grootste moment.</span>' : a === 0 || a === 180 ? '<span class="flag">De werklijn gaat door het draaipunt: geen moment, de sleutel draait niet.</span>' : 'Duw loodrecht op de sleutel voor een groter moment.');
+  }
+  ['km1f', 'km1r', 'km1a'].forEach(id => $(id).oninput = teken); teken();
+})();
+(function(){
+  const d = (inhoud) => `<svg viewBox="0 0 300 160">${inhoud}</svg>`;
+  const dp = (x, y) => `<circle cx="${x}" cy="${y}" r="6" fill="#1D2A36"/><text x="${x}" y="${y + 22}" font-size="11" text-anchor="middle" fill="#51606E" font-weight="600">draaipunt</text>`;
+  const kaarten = [
+    {t:'Een deur', s:d(`<rect x="40" y="20" width="10" height="120" fill="#64748B"/><rect x="50" y="20" width="200" height="120" fill="#E7C9A0" stroke="#7C5A3A"/>${dp(50, 80)}<circle cx="230" cy="80" r="6" fill="#475569"/>${pijl(230, 80, 230, 30, C.f, '', 0, 0, 3)}<line x1="50" y1="146" x2="230" y2="146" stroke="#B3362B" stroke-width="3"/><text x="140" y="158" font-size="11" text-anchor="middle" fill="#B3362B" font-weight="700">krachtarm</text>`), p:'De klink zit ver van de scharnieren: een <b>lange krachtarm</b>. Duw je dicht bij de scharnieren, dan heb je veel meer kracht nodig.'},
+    {t:'Een moersleutel', s:d(`<rect x="60" y="72" width="200" height="16" rx="8" fill="#CBD5E1" stroke="#475569"/>${dp(60, 80)}${pijl(240, 80, 240, 25, C.f, '', 0, 0, 3)}<line x1="60" y1="118" x2="240" y2="118" stroke="#B3362B" stroke-width="3"/><text x="150" y="134" font-size="11" text-anchor="middle" fill="#B3362B" font-weight="700">krachtarm</text>`), p:'Een <b>langere sleutel</b> geeft een langere krachtarm. Daarmee draai je een vaste bout gemakkelijker los.'},
+    {t:'Een wip', s:d(`<polygon points="150,120 135,145 165,145" fill="#64748B"/><rect x="30" y="112" width="240" height="8" fill="#B08968"/>${dp(150, 116)}${pijl(60, 112, 60, 62, C.fz, '', 0, 0, 3)}${pijl(240, 112, 240, 72, C.fz, '', 0, 0, 3)}`.replace(/draaipunt<\/text>/, 'draaipunt</text>').replace('y="138"', 'y="158"')), p:'Het draaipunt zit in het midden. Een zwaarder kind gaat <b>dichter bij het draaipunt</b> zitten om in evenwicht te zijn.'},
+    {t:'Een kruiwagen', s:d(`<circle cx="60" cy="125" r="20" fill="#1F2937"/>${dp(60, 125)}<path d="M60 110 L250 70" stroke="#7C5A3A" stroke-width="7"/><path d="M80 105 L170 86 L160 60 L90 70 Z" fill="#A3A3A3"/><circle cx="125" cy="80" r="4" fill="${C.fz}"/>${pijl(125, 80, 125, 125, C.fz, '', 0, 0, 3)}${pijl(245, 71, 245, 25, C.f, '', 0, 0, 3)}`), p:'Het wiel is het draaipunt. Je handen zitten <b>verder</b> van het wiel dan de lading. Daardoor til je de lading met een <b>kleinere kracht</b>.'},
+    {t:'Een flesopener', s:d(`<rect x="60" y="80" width="190" height="14" rx="7" fill="#CBD5E1" stroke="#475569"/><rect x="40" y="95" width="40" height="55" fill="#4D7C0F"/>${dp(78, 82)}${pijl(240, 87, 240, 35, C.f, '', 0, 0, 3)}`), p:'De opener steunt op de dop: dat is het draaipunt. Een kleine kracht aan het lange uiteinde geeft een groot moment op de dop.'},
+    {t:'Een fietspedaal', s:d(`<circle cx="150" cy="80" r="40" fill="none" stroke="#94A3B8" stroke-width="3"/>${dp(150, 80)}<line x1="150" y1="80" x2="210" y2="80" stroke="#475569" stroke-width="8"/>${pijl(210, 80, 210, 140, C.f, '', 0, 0, 3)}`), p:'Je duwt het hardst als de trapper <b>horizontaal</b> staat: dan staat je kracht loodrecht op de trapas en is de krachtarm het grootst.'}
+  ];
+  $('c_km2').innerHTML = kaarten.map(k => `<div class="card">${k.s}<div class="txt"><h4>${k.t}</h4><p>${k.p}</p></div></div>`).join('');
+})();
+(function(){
+  function teken(){
+    const m1 = +$('km3m1').value, r1 = +$('km3r1').value, m2 = +$('km3m2').value, r2 = +$('km3r2').value;
+    $('km3m1v').textContent = m1 + ' kg'; $('km3r1v').textContent = fmt(r1, 1) + ' m'; $('km3m2v').textContent = m2 + ' kg'; $('km3r2v').textContent = fmt(r2, 1) + ' m';
+    const M1 = m1 * 9.81 * r1, M2 = m2 * 9.81 * r2, diff = M1 - M2, hoek = Math.abs(diff) < 0.5 ? 0 : (diff > 0 ? -9 : 9);
+    const cx = 320, cy = 230, px = 130;
+    let o = `<polygon points="${cx},${cy} ${cx - 26},${cy + 70} ${cx + 26},${cy + 70}" fill="#64748B"/><rect x="0" y="${cy + 70}" width="640" height="40" fill="#A3E635" opacity=".5"/>`;
+    o += `<g transform="rotate(${hoek} ${cx} ${cy})"><rect x="${cx - 2.2 * px}" y="${cy - 8}" width="${4.4 * px}" height="10" rx="3" fill="#B08968" stroke="#7C5A3A"/>`;
+    for (let i = -2; i <= 2; i++) o += `<line x1="${cx + i * px}" y1="${cy + 2}" x2="${cx + i * px}" y2="${cy + 8}" stroke="#7C5A3A"/>`;
+    const kind = (x, m, kl) => { const s = 0.6 + m / 80; return `<circle cx="${x}" cy="${cy - 52 * s}" r="${11 * s}" fill="#F2B880" stroke="#9A5B00"/><rect x="${x - 13 * s}" y="${cy - 40 * s}" width="${26 * s}" height="${32 * s}" rx="${7 * s}" fill="${kl}"/>` + txt(x, cy - 66 * s - 4, m + ' kg', {s: 12, w: 700, a: 'middle'}); };
+    o += kind(cx - r1 * px, m1, '#93C5FD') + kind(cx + r2 * px, m2, '#FCA5A5');
+    o += `</g><circle cx="${cx}" cy="${cy - 3}" r="5" fill="#1D2A36"/>`;
+    const h = hoek * Math.PI / 180, P = d => [cx + d * px * Math.cos(h), cy - 8 + d * px * Math.sin(h)];
+    const [ax1, ay1] = P(-r1), [ax2, ay2] = P(r2);
+    o += pijl(ax1, ay1, ax1, ay1 + m1 * 1.6, C.fz, sub('F', 'z1'), -26, 0, 3) + pijl(ax2, ay2, ax2, ay2 + m2 * 1.6, C.fz, sub('F', 'z2'), 28, 0, 3);
+    o += txt(cx - r1 * px / 2, 40, 'r₁ = ' + fmt(r1, 1) + ' m', {s: 13, c: C.dim, a: 'middle'}) + txt(cx + r2 * px / 2, 40, 'r₂ = ' + fmt(r2, 1) + ' m', {s: 13, c: C.dim, a: 'middle'});
+    $('s_km3').innerHTML = o;
+    const nodig = m1 * r1 / m2;
+    $('r_km3').innerHTML = `M tegen wijzerzin = m₁ · g · r₁ = <b>${fmt(M1, 0)} N·m</b><br>M wijzerzin = m₂ · g · r₂ = <b>${fmt(M2, 0)} N·m</b><br>` +
+      (Math.abs(diff) < 0.5 ? '<span class="ok">Evenwicht: de wip draait niet.</span>' : diff > 0 ? '<span class="flag">Resulterend moment tegen de wijzerzin: links gaat naar beneden.</span>' : '<span class="flag">Resulterend moment in de wijzerzin: rechts gaat naar beneden.</span>') +
+      `<br><br>Voor evenwicht moet het rechtse kind op <b>${nodig <= 2.2 ? fmt(nodig, 2) + ' m' : 'meer dan 2,2 m (kan niet)'}</b> zitten.`;
+  }
+  ['km3m1', 'km3r1', 'km3m2', 'km3r2'].forEach(id => $(id).oninput = teken); teken();
+})();
+
+//////////////////// EVENWICHT ////////////////////
+(function(){
+  function teken(){
+    const a = +$('ev1a').value, b = +$('ev1b').value, h = +$('ev1h').value;
+    $('ev1av').textContent = a + '°'; $('ev1bv').textContent = b + ' cm'; $('ev1hv').textContent = h + ' cm';
+    const H = Math.max(h * 2, 100), sc = 1.4, gx = 230, gy = 360, rad = a * Math.PI / 180;
+    const crit = Math.atan((b / 2) / h) * 180 / Math.PI;
+    // kantelt rond de rechteronderhoek
+    const px = gx + b * sc / 2, py = gy;
+    const rot = (x, y) => { const dx = x - px, dy = y - py; return [px + dx * Math.cos(rad) - dy * Math.sin(rad), py + dx * Math.sin(rad) + dy * Math.cos(rad)]; };
+    const hoeken = [[gx - b * sc / 2, gy], [gx + b * sc / 2, gy], [gx + b * sc / 2, gy - H * sc], [gx - b * sc / 2, gy - H * sc]].map(([x, y]) => rot(x, y));
+    const Z = rot(gx, gy - h * sc);
+    let o = `<rect x="0" y="${gy}" width="640" height="60" fill="#D6D3D1"/>`;
+    o += `<polygon points="${hoeken.map(p => p.join(',')).join(' ')}" fill="#E7C9A0" stroke="#7C5A3A" stroke-width="2"/>`;
+    // steunvlak
+    if (a === 0) o += `<line x1="${gx - b * sc / 2}" y1="${gy + 3}" x2="${gx + b * sc / 2}" y2="${gy + 3}" stroke="#1F7A4A" stroke-width="6"/>` + txt(gx, gy + 24, 'steunvlak', {s: 13, w: 700, c: '#1F7A4A', a: 'middle'});
+    else o += `<circle cx="${px}" cy="${py}" r="7" fill="#1F7A4A"/>` + txt(px + 12, py + 24, 'steunpunt', {s: 13, w: 700, c: '#1F7A4A'});
+    o += `<line x1="${Z[0]}" y1="${Z[1]}" x2="${Z[0]}" y2="${gy + 40}" stroke="${C.fz}" stroke-dasharray="6 5" stroke-width="1.5"/>`;
+    o += `<circle cx="${Z[0]}" cy="${Z[1]}" r="6" fill="${C.fz}"/>` + txt(Z[0] - 12, Z[1] - 10, 'Z', {s: 16, w: 700, c: C.fz, a: 'end'}) + pijl(Z[0], Z[1], Z[0], Z[1] + 60, C.fz, sub('F', 'z'), 20, 6, 3);
+    const valt = a > crit, rand = Math.abs(a - crit) < 0.6;
+    o += txt(620, 40, rand ? 'Op het kantelpunt: labiel' : valt ? 'De kast valt om' : a === 0 ? 'De kast staat stabiel' : 'De kast valt terug', {s: 18, w: 700, c: valt ? '#B3362B' : '#1F7A4A', a: 'end'});
+    $('s_ev1').innerHTML = o;
+    $('r_ev1').innerHTML = `De kast valt om vanaf <b>${fmt(crit, 0)}°</b>.<br>` + (valt ? 'De lijn door Z valt <span class="flag">buiten</span> het steunpunt: het moment van F<sub>z</sub> doet de kast verder kantelen.' : 'De lijn door Z valt <span class="ok">binnen</span> het steunvlak: het moment van F<sub>z</sub> draait de kast terug.') + '<br><br>Lager zwaartepunt of breder steunvlak → grotere hoek nodig → <b>stabieler</b>.';
+  }
+  ['ev1a', 'ev1b', 'ev1h'].forEach(id => $(id).oninput = teken); teken();
+})();
+(function(){
+  const d = i => `<svg viewBox="0 0 300 160">${i}</svg>`;
+  const Z = (x, y) => `<circle cx="${x}" cy="${y}" r="5" fill="${C.fz}"/><text x="${x + 9}" y="${y + 5}" font-size="13" font-weight="700" fill="${C.fz}">Z</text>`;
+  const S = (x, y) => `<circle cx="${x}" cy="${y}" r="5" fill="#1F7A4A"/><text x="${x + 9}" y="${y + 5}" font-size="12" font-weight="700" fill="#1F7A4A">S</text>`;
+  const kaarten = [
+    {t:'Bal in een kom', tag:'stat', s:d(`<path d="M40 50 Q150 190 260 50" fill="none" stroke="#475569" stroke-width="4"/><circle cx="150" cy="104" r="16" fill="#60A5FA"/>${Z(150, 104)}`), p:'Duw je de bal opzij, dan rolt hij terug naar het laagste punt. <b>Stabiel</b> evenwicht.'},
+    {t:'Bal op een heuvel', tag:'dyn', s:d(`<path d="M40 140 Q150 10 260 140" fill="none" stroke="#475569" stroke-width="4"/><circle cx="150" cy="60" r="16" fill="#60A5FA"/>${Z(150, 60)}`), p:'De kleinste duw doet de bal wegrollen. <b>Labiel</b> evenwicht.'},
+    {t:'Hangende lamp', tag:'stat', s:d(`<rect x="0" y="0" width="300" height="12" fill="#CBD5E1"/>${S(150, 12)}<line x1="150" y1="12" x2="150" y2="90" stroke="#1D2A36" stroke-width="2"/><path d="M120 120 L180 120 L168 90 L132 90Z" fill="#FCD34D" stroke="#92400E"/>${Z(150, 108)}`), p:'Het ophangpunt S ligt <b>boven</b> het zwaartepunt Z. Duw je de lamp opzij, dan zwaait ze terug. <b>Stabiel</b>.'},
+    {t:'Bord op een vinger', tag:'dyn', s:d(`<rect x="140" y="110" width="20" height="50" rx="8" fill="#F2B880"/><rect x="100" y="104" width="100" height="6" fill="#94A3B8"/>${S(150, 110)}<rect x="146" y="20" width="8" height="84" fill="#B08968"/><circle cx="150" cy="20" r="18" fill="#E2E8F0" stroke="#64748B"/>${Z(150, 28)}`), p:'Het steunpunt S ligt <b>onder</b> het zwaartepunt Z. Een kleine beweging en het valt. <b>Labiel</b>.'}
+  ];
+  $('c_ev2').innerHTML = kaarten.map(k => `<div class="card">${k.s}<div class="txt"><span class="tag ${k.tag}">${k.tag === 'stat' ? 'stabiel' : 'labiel'}</span><h4>${k.t}</h4><p>${k.p}</p></div></div>`).join('');
+})();
+
+//////////////////// OEFENEN ////////////////////
+(function(){
+  const rnd = (a, b) => a + Math.floor(Math.random() * (b - a + 1)), kies = a => a[rnd(0, a.length - 1)];
+  const lees = s => parseFloat(String(s).trim().replace(/\s/g, '').replace(',', '.'));
+  const dicht = (a, b, tol = 0.02) => isFinite(a) && Math.abs(a - b) <= Math.max(tol * Math.abs(b), 0.011);
+  const MC = {
+    zw: [
+      ['Een astronaut gaat van de aarde naar de maan. Wat verandert er?', ['Zijn massa en zijn gewicht.', 'Alleen zijn massa.', 'Alleen zijn zwaartekracht en gewicht.', 'Niets.'], 2, 'Massa is de hoeveelheid materie: die blijft gelijk. De zwaarteveldsterkte op de maan is kleiner, dus zwaartekracht en gewicht worden kleiner.'],
+      ['Waar ligt het aangrijpingspunt van het gewicht van een boek op een tafel?', ['In het zwaartepunt van het boek.', 'Op het contactvlak, op de tafel.', 'In het middelpunt van de aarde.', 'Op het contactvlak, op het boek.'], 1, 'Gewicht is de kracht die het boek uitoefent op zijn steunpunt: het werkt op de tafel.'],
+      ['Welke grafiek toont het verband tussen F<sub>z</sub> en m bij gelijke g?', ['Een horizontale rechte.', 'Een rechte door de oorsprong.', 'Een dalende rechte.', 'Een kromme die steeds vlakker wordt.'], 1, 'F<sub>z</sub> = m · g: bij gelijke g zijn F<sub>z</sub> en m recht evenredig. Dat geeft een rechte door de oorsprong.'],
+      ['Een astronaut zweeft in het ISS. Welke uitspraak is juist?', ['Er werkt geen zwaartekracht op hem.', 'Hij is gewichtloos, maar er werkt wel een zwaartekracht.', 'Zijn massa is nul.', 'Zijn gewicht is groter dan op aarde.'], 1, 'Op 400 km hoogte is g nog ongeveer 8,7 N/kg. Hij valt samen met het ISS rond de aarde en drukt op geen steun: gewichtloos.'],
+      ['Een boek ligt stil op een tafel. Welke twee krachten werken op het boek?', ['Zwaartekracht en gewicht.', 'Zwaartekracht en normaalkracht.', 'Gewicht en normaalkracht.', 'Alleen de zwaartekracht.'], 1, 'Op het boek werken F<sub>z</sub> (door de aarde) en F<sub>N</sub> (door de tafel). Het gewicht werkt op de tafel, niet op het boek.']
+    ],
+    wr: [
+      ['Een auto rijdt zonder te slippen. Welke wrijvingskracht werkt tussen band en weg?', ['Statische wrijvingskracht.', 'Dynamische wrijvingskracht.', 'Geen wrijvingskracht.', 'Veerkracht.'], 0, 'Het stuk band dat de weg raakt, staat even stil ten opzichte van de weg: statische wrijving.'],
+      ['Waarom remt een auto met ABS beter?', ['ABS maakt de banden ruwer.', 'De wielen blijven rollen, zodat de grotere statische wrijving blijft werken.', 'ABS vergroot de normaalkracht.', 'ABS laat de wielen blokkeren.'], 1, 'Blokkeert een wiel, dan glijdt het: kleinere dynamische wrijving. ABS houdt de wielen rollend.'],
+      ['Je verdubbelt de normaalkracht op een kist. Wat gebeurt er met F<sub>w,s,max</sub>?', ['Ze blijft gelijk.', 'Ze halveert.', 'Ze verdubbelt.', 'Ze wordt vier keer zo groot.'], 2, 'F<sub>w,s,max</sub> = μ<sub>s</sub> · F<sub>N</sub>: recht evenredig.'],
+      ['Wat gebeurt er bij aquaplaning?', ['De band raakt de weg niet meer door een waterlaag; de wrijving wordt heel klein.', 'De normaalkracht wordt groter.', 'De statische wrijving wordt groter.', 'De band warmt op.'], 0, 'De band rijdt op een waterlaag: bijna geen wrijving, dus bijna niet remmen of sturen.']
+    ],
+    ve: [
+      ['Veer A heeft k = 20 N/m, veer B k = 200 N/m. Je hangt er dezelfde massa aan. Welke veer rekt het meest uit?', ['Veer A.', 'Veer B.', 'Allebei evenveel.', 'Dat kan je niet weten.'], 0, 'Δl = F / k: hoe kleiner k, hoe groter de uitrekking. Veer A is zachter.'],
+      ['Je haalt de massa van een veer en ze blijft langer dan voordien. Hoe heet dat?', ['Elastische vervorming.', 'Plastische vervorming.', 'Statisch evenwicht.', 'Gewichtloosheid.'], 1, 'Het voorwerp neemt zijn oorspronkelijke vorm niet terug aan: plastische vervorming. De wet van Hooke geldt niet meer.'],
+      ['Hoe ziet de grafiek F<sub>v</sub>(Δl) eruit zolang de wet van Hooke geldt?', ['Een rechte door de oorsprong.', 'Een horizontale rechte.', 'Een dalende rechte.', 'Een parabool.'], 0, 'F<sub>v</sub> = k · Δl: recht evenredig. De helling is k.']
+    ],
+    km: [
+      ['Je duwt tegen een deur, vlak bij de scharnieren. Waarom gaat dat moeilijk?', ['De kracht is te klein.', 'De krachtarm is klein, dus het moment is klein.', 'De deur is te zwaar.', 'De wrijving is groot.'], 1, 'M = F · r: met een kleine krachtarm heb je een grote kracht nodig voor hetzelfde moment.'],
+      ['Wanneer is het moment van een kracht nul?', ['Als de werklijn door het draaipunt gaat.', 'Als de kracht loodrecht staat.', 'Als de kracht groot is.', 'Als de krachtarm lang is.'], 0, 'Gaat de werklijn door het draaipunt, dan is de krachtarm 0 m en dus M = 0 N·m.'],
+      ['Een kast valt om als de verticale lijn door het zwaartepunt...', ['binnen het steunvlak valt.', 'buiten het steunvlak valt.', 'door het steunpunt gaat.', 'horizontaal ligt.'], 1, 'Valt de lijn door Z buiten het steunvlak, dan doet het moment van F<sub>z</sub> de kast verder kantelen.'],
+      ['Hoe maak je een vrachtwagen stabieler?', ['Zware lading bovenaan leggen.', 'Het zwaartepunt hoger leggen.', 'Zware lading onderaan leggen en de wielen verder uit elkaar zetten.', 'De wielen dichter bij elkaar zetten.'], 2, 'Een lager zwaartepunt en een groter steunvlak maken een lichaam stabieler.']
+    ]
+  };
+  const REK = {
+    zw: [
+      () => { const m = rnd(30, 90); return {q: `Een leerling heeft een massa van ${m} kg. Bereken de zwaartekracht op aarde.`, a: m * 9.81, u: 'N', u2: `F<sub>z</sub> = m · g = ${m} · 9,81 = ${fmt(m * 9.81, 1)} N`}; },
+      () => { const F = rnd(20, 200) * 5; return {q: `Op een kist werkt een zwaartekracht van ${F} N (op aarde). Bereken de massa.`, a: F / 9.81, u: 'kg', u2: `m = F<sub>z</sub> / g = ${F} / 9,81 = ${fmt(F / 9.81, 1)} kg`}; },
+      () => { const [n, g] = kies(HEMEL.slice(1, 5)), m = rnd(5, 20) * 5, F = m * g; return {q: `Op ${n.toLowerCase()} werkt op een robot van ${m} kg een zwaartekracht van ${fmt(F, 1)} N. Bereken de zwaarteveldsterkte daar.`, a: g, u: 'N/kg', u2: `g = F<sub>z</sub> / m = ${fmt(F, 1)} / ${m} = ${fmt(g, 2)} N/kg`}; }
+    ],
+    wr: [
+      () => { const [n, ms] = kies(ONDER.slice(0, 4)), FN = rnd(10, 80) * 10; return {q: `Een kist duwt met een normaalkracht van ${FN} N op de ondergrond. μ<sub>s</sub> = ${fmt(ms, 1)}. Bereken de maximale statische wrijvingskracht.`, a: ms * FN, u: 'N', u2: `F<sub>w,s,max</sub> = μ<sub>s</sub> · F<sub>N</sub> = ${fmt(ms, 1)} · ${FN} = ${fmt(ms * FN, 0)} N`}; },
+      () => { const FN = rnd(20, 60) * 10, ms = kies([0.3, 0.4, 0.5, 0.6]), F = ms * FN; return {q: `Je moet ${fmt(F, 0)} N trekken voor een kast begint te schuiven. De normaalkracht is ${FN} N. Bereken μ<sub>s</sub>.`, a: ms, u: '', u2: `μ<sub>s</sub> = F<sub>w,s,max</sub> / F<sub>N</sub> = ${fmt(F, 0)} / ${FN} = ${fmt(ms, 2)} (geen eenheid)`}; }
+    ],
+    ve: [
+      () => { const k = kies([20, 40, 50, 100, 200]), dl = rnd(2, 15); return {q: `Een veer met k = ${k} N/m wordt ${dl} cm uitgerekt. Bereken de veerkracht.`, a: k * dl / 100, u: 'N', u2: `Δl = ${dl} cm = ${fmt(dl / 100, 2)} m → F<sub>v</sub> = k · Δl = ${k} · ${fmt(dl / 100, 2)} = ${fmt(k * dl / 100, 2)} N`}; },
+      () => { const k = kies([20, 25, 50, 80]), F = rnd(1, 8); return {q: `Je hangt een voorwerp aan een veer met k = ${k} N/m. De veerkracht is ${F} N. Bereken de uitrekking in cm.`, a: F / k * 100, u: 'cm', u2: `Δl = F<sub>v</sub> / k = ${F} / ${k} = ${fmt(F / k, 3)} m = ${fmt(F / k * 100, 1)} cm`}; },
+      () => { const F = rnd(2, 10), dl = kies([4, 5, 8, 10, 20]); return {q: `Een kracht van ${F} N rekt een veer ${dl} cm uit. Bereken de veerconstante.`, a: F / (dl / 100), u: 'N/m', u2: `k = F<sub>v</sub> / Δl = ${F} / ${fmt(dl / 100, 2)} = ${fmt(F / (dl / 100), 0)} N/m`}; }
+    ],
+    km: [
+      () => { const F = rnd(4, 30) * 5, r = rnd(10, 40); return {q: `Je duwt met ${F} N loodrecht op een sleutel, op ${r} cm van de bout. Bereken het krachtmoment.`, a: F * r / 100, u: 'N·m', u2: `M = F · r = ${F} · ${fmt(r / 100, 2)} = ${fmt(F * r / 100, 1)} N·m`}; },
+      () => { const m1 = rnd(25, 50), r1 = kies([1, 1.2, 1.5, 1.8]), m2 = rnd(25, 50); const r2 = m1 * r1 / m2; if (r2 > 2.2) return null; return {q: `Op een wip zit een kind van ${m1} kg op ${fmt(r1, 1)} m van het draaipunt. Op welke afstand moet een kind van ${m2} kg zitten voor evenwicht?`, a: r2, u: 'm', u2: `m₁ · g · r₁ = m₂ · g · r₂ → r₂ = m₁ · r₁ / m₂ = ${m1} · ${fmt(r1, 1)} / ${m2} = ${fmt(r2, 2)} m`}; }
+    ]
+  };
+  const SO = [['alles', 'Door elkaar'], ['zw', '4 Zwaartekracht'], ['wr', '5 Wrijving'], ['ve', '6 Veerkracht'], ['km', '7 Krachtmoment en evenwicht']];
+  let soort = 'alles', v = null, goed = 0, tot = 0, klaar = false;
+  $('soort').innerHTML = SO.map(([k, n]) => `<button class="btn ${k === soort ? 'on' : ''}" data-k="${k}">${n}</button>`).join('');
+  $('soort').onclick = e => { const b = e.target.closest('button'); if (!b) return; soort = b.dataset.k; $('soort').querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b)); nieuw(); };
+  function tel(ok){ if (!klaar){ tot++; if (ok) goed++; klaar = true; } $('score').textContent = `${goed} / ${tot}`; }
+  function nieuw(){
+    klaar = false; $('fb').innerHTML = ''; $('fb').className = 'feedback';
+    const t = soort === 'alles' ? kies(['zw', 'wr', 've', 'km']) : soort;
+    if (Math.random() < 0.5){
+      const [q, opts, j, u] = kies(MC[t]); v = {mc: true, j, u};
+      $('vraag').innerHTML = q;
+      $('invoer').innerHTML = `<div class="keuzes">${opts.map((o, i) => `<button class="btn" data-i="${i}">${'ABCD'[i]}. ${o}</button>`).join('')}</div>`;
+      $('invoer').querySelector('.keuzes').onclick = e => { const b = e.target.closest('button'); if (!b) return; const ok = +b.dataset.i === j;
+        $('invoer').querySelectorAll('.keuzes .btn').forEach((x, i) => { x.classList.toggle('goed', i === j); if (x === b && !ok) x.classList.add('fout'); });
+        tel(ok); $('fb').className = 'feedback ' + (ok ? 'goed' : 'fout'); $('fb').innerHTML = (ok ? '✓ Juist!' : '✗ Niet juist.') + `<span class="uitleg">${u}</span>`; };
+    } else {
+      let r = null; while (!r) r = kies(REK[t])(); v = r;
+      $('vraag').innerHTML = r.q;
+      $('invoer').innerHTML = `<div class="antw"><input type="text" id="oa" inputmode="decimal" autocomplete="off"> <b>${r.u}</b> <button class="btn primary" id="oc">Controleer</button></div>`;
+      const go = () => { const w = lees($('oa').value); if (!isFinite(w)){ $('fb').className = 'feedback fout'; $('fb').innerHTML = 'Vul een getal in.'; return; }
+        const ok = dicht(w, r.a); tel(ok); $('fb').className = 'feedback ' + (ok ? 'goed' : 'fout'); $('fb').innerHTML = (ok ? '✓ Juist!' : '✗ Nog niet juist.') + `<span class="uitleg">${r.u2}</span>`; };
+      $('oc').onclick = go; $('oa').onkeydown = e => { if (e.key === 'Enter') go(); };
+    }
+  }
+  $('volgende').onclick = nieuw; nieuw();
+})();
+</script>
+</body>
+</html>
