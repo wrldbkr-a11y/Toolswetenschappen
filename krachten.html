@@ -629,8 +629,23 @@ const ONDER = [['Rubber op droog asfalt', 0.9, 0.7], ['Rubber op nat asfalt', 0.
     {t:'Een geblokkeerd wiel', tag:'dyn', s:band(true), p:'Remt de bestuurder te hard, dan blokkeert het wiel en <b>glijdt</b> de band over de weg: <b>dynamische</b> wrijving. Die is kleiner, dus de remweg wordt langer en je kunt niet sturen.'},
     {t:'ABS', tag:'stat', s:band(false), p:'ABS laat de remmen heel snel los en weer aan, zodat de wielen <b>blijven rollen</b>. Zo blijft de grotere <b>statische</b> wrijving werken: kortere remweg en je kunt nog sturen.'},
     {t:'Aquaplaning', tag:'dyn', s:band(false, true), p:'Bij veel water rijdt de band op een <b>waterlaag</b>. De band raakt de weg niet meer: de wrijvingscoëfficiënt wordt heel klein. Remmen en sturen lukt bijna niet.'},
-    {t:'Wandelen', tag:'stat', s:'<svg viewBox="0 0 300 150"><rect x="0" y="120" width="300" height="30" fill="#D6D3D1"/><path d="M120 120 l30 -60 l30 60" stroke="#334155" stroke-width="10" fill="none" stroke-linecap="round"/><circle cx="150" cy="40" r="16" fill="#F2B880"/></svg>', p:'Je voet die op de grond staat, schuift niet weg. De <b>statische</b> wrijving duwt je vooruit.'},
-    {t:'Schaatsen', tag:'dyn', s:'<svg viewBox="0 0 300 150"><rect x="0" y="120" width="300" height="30" fill="#BAE6FD"/><path d="M100 118 h80" stroke="#64748B" stroke-width="4"/><path d="M110 112 h60 l6 -40 h-50z" fill="#1E293B"/><path d="M60 128 h50" stroke="#F59E0B" stroke-width="3" stroke-dasharray="6 5"/></svg>', p:'Het mes glijdt over het ijs: <b>dynamische</b> wrijving, en die is heel klein.'}
+    {t:'Wandelen', tag:'stat', s:`<svg viewBox="0 0 300 150"><rect x="0" y="120" width="300" height="30" fill="#D6D3D1"/>` +
+      lijf([[[[148, 70], [144, 95], [130, 112]], 11, '#3F4A63'], [[[131, 114], [123, 117]], 8, '#1F2937'], [[[150, 40], [143, 55], [137, 64]], 7, '#0F8F80'], [[[137, 65], [136, 66]], 7, '#8D5524']]) +
+      `<path d="M150 18 C140 16 136 24 138 34" stroke="#24160D" stroke-width="9" fill="none" stroke-linecap="round"/>` +
+      lijf([[[[150, 70], [162, 94], [170, 113]], 12, '#4B5876'], [[[168, 116], [180, 117]], 8, '#1F2937'],
+        [[[150, 68], [151, 40]], 22, '#14B8A6'], [[[152, 33], [153, 29]], 7, '#8D5524'], [[[155, 20], [155, 19]], 22, '#8D5524'],
+        [[[152, 41], [161, 55], [168, 63]], 7, '#14B8A6'], [[[168, 64], [169, 65]], 7, '#8D5524']]) +
+      `<path d="M147 12 C152 7 162 9 164 17" stroke="#24160D" stroke-width="6" fill="none" stroke-linecap="round"/>` +
+      `<line x1="126" y1="121" x2="150" y2="121" stroke="#F59E0B" stroke-width="4" stroke-linecap="round"/><polygon points="160,121 148,115 148,127" fill="#F59E0B"/></svg>`,
+     p:'Je voet die op de grond staat, schuift niet weg. Je duwt met je voet naar achter tegen de grond, en de <b>statische</b> wrijving (oranje) duwt je vooruit.'},
+    {t:'Schaatsen', tag:'dyn', s:`<svg viewBox="0 0 300 150"><rect x="0" y="120" width="300" height="30" fill="#BAE6FD"/><path d="M40 125 H136" stroke="#F59E0B" stroke-width="3" stroke-dasharray="6 5"/>` +
+      lijf([[[[150, 66], [128, 74], [104, 80]], 11, '#1F2937'], [[[104, 80], [96, 82]], 9, '#111827'], [[[168, 44], [152, 54], [138, 60]], 7, '#DC2626'], [[[137, 60], [136, 61]], 7, HUID]]) +
+      `<path d="M90 86 H104" stroke="#94A3B8" stroke-width="3" stroke-linecap="round"/>` +
+      lijf([[[[150, 66], [162, 90], [153, 108]], 12, '#374151'], [[[152, 110], [165, 112]], 10, '#111827'],
+        [[[150, 64], [170, 42]], 22, '#DC2626'], [[[175, 36], [178, 33]], 7, HUID], [[[183, 26], [184, 25]], 21, HUID],
+        [[[170, 46], [158, 58], [146, 66]], 7, '#DC2626'], [[[145, 66], [144, 67]], 7, HUID]]) +
+      `<path d="M174 22 C176 12 190 12 193 22 Z" fill="#2563EB"/><path d="M138 118 H176" stroke="#94A3B8" stroke-width="3" stroke-linecap="round"/><path d="M146 117 V114 M168 117 V114" stroke="#94A3B8" stroke-width="2"/></svg>`,
+     p:'Het ijzer van de schaats glijdt over het ijs: <b>dynamische</b> wrijving, en die is heel klein. Daarom glijd je zo ver door.'}
   ];
   $('c_wr3').innerHTML = kaarten.map(k => `<div class="card">${k.s}<div class="txt"><span class="tag ${k.tag}">${k.tag === 'stat' ? 'statisch' : 'dynamisch'}</span><h4>${k.t}</h4><p>${k.p}</p></div></div>`).join('');
 })();
