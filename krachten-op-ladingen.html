@@ -523,6 +523,12 @@ function neutralCircle(cx, cy, label, r, questionMark){
 function labelHalo(x,y,text,color,size,weight){
   return `<text x="${x}" y="${y}" text-anchor="middle" font-size="${size}" font-weight="${weight}" fill="${color}" paint-order="stroke" stroke="#ffffff" stroke-width="4" stroke-linejoin="round">${text}</text>`;
 }
+function vecTeken(X, Y, label, kleur, fs, anker){ // vectorpijltje boven de eerste letter van een vectornaam (F, v, B), niet bij een grootte ("= ...")
+  const p = String(label || '').replace(/<[^>]+>/g, ''); if (!/^[FvB]/.test(p) || p.includes('=')) return '';
+  const bw = fs * 0.62, w = bw + (p.length - 1) * fs * 0.43, x0 = anker === 'middle' ? X - w / 2 : anker === 'end' ? X - w : X;
+  const ax = x0 + bw * 0.52, ay = Y - fs * 0.88, aw = bw * 1.0, ah = fs * 0.14;
+  return `<path d="M${ax - aw / 2},${ay} L${ax + aw / 2},${ay} M${ax + aw / 2 - ah * 1.7},${ay - ah} L${ax + aw / 2},${ay} L${ax + aw / 2 - ah * 1.7},${ay + ah}" stroke="${kleur}" stroke-width="${Math.max(1.3, fs * 0.085)}" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`;
+}
 function arrow(x1,y1,x2,y2, color, label, labelAbove){
   const id = 'ah'+Math.round(Math.random()*1e6);
   const angle = Math.atan2(y2-y1, x2-x1);
@@ -537,7 +543,7 @@ function arrow(x1,y1,x2,y2, color, label, labelAbove){
       </marker>
     </defs>
     <line x1="${x1}" y1="${y1}" x2="${x2-dx*8}" y2="${y2-dy*8}" stroke="${color}" stroke-width="3" marker-end="url(#${id})"/>
-    ${label!==undefined ? labelHalo(lx, ly, label, color, 15, 800) : ''}
+    ${label!==undefined ? labelHalo(lx, ly, label, color, 15, 800) + vecTeken(lx, ly, label, color, 15, 'middle') : ''}
   `;
 }
 function tickLine(x, y, cm, showLabel){

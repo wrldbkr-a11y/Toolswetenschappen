@@ -45,7 +45,9 @@
     g.appendChild(el('line',{x1:x,y1:y,x2:x+dx-ux*h*0.8,y2:y+dy-uy*h*0.8,stroke:kleur,'stroke-width':dik,'stroke-linecap':'round'}));
     const bx=x+dx-ux*h, by=y+dy-uy*h;
     g.appendChild(el('polygon',{points:`${x+dx},${y+dy} ${bx-uy*h*0.55},${by+ux*h*0.55} ${bx+uy*h*0.55},${by-ux*h*0.55}`,fill:kleur}));
-    if(label){ const t=el('text',{x:x+dx+ (uy===0? (ux>0?10:-10):12), y:y+dy+(uy===0?-8:(uy>0?16:-4)), 'font-size':17,'font-weight':700,fill:kleur,'text-anchor':uy===0&&ux<0?'end':'start'}); t.innerHTML=label; g.appendChild(t);}
+    if(label){ const t=el('text',{x:x+dx+ (uy===0? (ux>0?10:-10):12), y:y+dy+(uy===0?-8:(uy>0?16:-4)), 'font-size':17,'font-weight':700,fill:kleur,'text-anchor':uy===0&&ux<0?'end':'start'}); t.innerHTML=label; g.appendChild(t);
+      const tx=+t.getAttribute('x'), ty=+t.getAttribute('y'), bw=17*0.6, w=bw+12*0.62, x0=t.getAttribute('text-anchor')==='end'?tx-w:tx, ax=x0+bw*0.5, ay=ty-15, aw=bw, ah=2.4;
+      g.appendChild(el('path',{d:`M${ax-aw/2},${ay} L${ax+aw/2},${ay} M${ax+aw/2-4},${ay-ah} L${ax+aw/2},${ay} L${ax+aw/2-4},${ay+ah}`,stroke:kleur,'stroke-width':1.6,fill:'none','stroke-linecap':'round','stroke-linejoin':'round'}));}
   }
   function voorwerp(g,o,x,y,lab){
     const K='#475569';
