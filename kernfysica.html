@@ -256,15 +256,8 @@ footer a{color:inherit;}
 
 <section class="scene" id="r1" data-nr="3.1" data-cat="h3" data-title="Radioactiviteit rondom ons">
   <div class="scene-head"><span class="num"></span><h3>Natuurlijke en kunstmatige radioactiviteit</h3></div>
-  <p class="scene-sub">Je wordt elke dag blootgesteld aan een beetje ioniserende straling. Het grootste deel is <strong>natuurlijk</strong>. Ken ook het verschil tussen <strong>bestraling</strong> en <strong>besmetting</strong>.</p>
-  <div class="grid">
-    <div class="tek"><svg id="s_r1" viewBox="0 0 640 300"></svg></div>
-    <div class="controls">
-      <div class="knoppen" id="r1k"><button class="btn on" data-v="bs">Bestraling</button><button class="btn" data-v="bm">Besmetting</button></div>
-      <div class="readout" id="r_r1"></div>
-    </div>
-  </div>
-  <div class="cards" id="c_r1" style="margin-top:16px"></div>
+  <p class="scene-sub">Je wordt elke dag blootgesteld aan een beetje ioniserende straling. Het grootste deel is <strong>natuurlijk</strong> (spontane radioactiviteit). Een kleiner deel is <strong>kunstmatig</strong>: door de mens gemaakt.</p>
+  <div class="cards" id="c_r1"></div>
 </section>
 
 <section class="scene" id="r2" data-nr="3.2" data-cat="h3" data-title="Dosis en bescherming">
@@ -283,20 +276,6 @@ footer a{color:inherit;}
   <div class="cards" id="c_r2" style="margin-top:16px"></div>
 </section>
 
-<section class="scene" id="r3" data-nr="3.3" data-cat="h3" data-title="Dateringstechnieken">
-  <div class="scene-head"><span class="num"></span><h3>Dateren met radioactief verval</h3></div>
-  <p class="scene-sub">Een levend organisme neemt voortdurend koolstof op, met een vaste fractie <strong>C-14</strong>. Na de dood stopt dat, en vervalt de C-14 met een halveringstijd van <strong>5730 jaar</strong>. Uit wat overblijft, bereken je de ouderdom.</p>
-  <div class="grid">
-    <div class="tek"><svg id="g_r3" viewBox="0 0 640 300"></svg></div>
-    <div class="controls">
-      <div class="ctrl"><label for="r3d">Methode</label><select id="r3d"><option value="c">C-14 (biologisch materiaal) · T½ = 5730 jaar</option><option value="k">K-40 → Ar-40 (gesteente) · T½ = 1,25 · 10⁹ jaar</option><option value="u">U-238 → Pb-206 (gesteente) · T½ = 4,47 · 10⁹ jaar</option></select></div>
-      <div class="ctrl"><label for="r3p">Overgebleven fractie <span id="r3pv"></span></label><input type="range" id="r3p" min="1" max="100" value="25"></div>
-      <div class="formule">t = T½ · log₂(N₀ / N)</div>
-      <div class="readout" id="r_r3"></div>
-      <div class="note">Je gebruikt hier de formule uit de fysica in de <strong>biologie</strong>, de <strong>archeologie</strong> en de <strong>geologie</strong>. C-14 is bruikbaar tot ongeveer 50 000 jaar.</div>
-    </div>
-  </div>
-</section>
 
 <section class="scene" id="r4" data-nr="3.4" data-cat="h3" data-title="Kernfusie en kernfissie">
   <div class="scene-head"><span class="num"></span><h3>Energie uit atoomkernen</h3></div>
@@ -608,19 +587,6 @@ const KERN = [['H-2', 1, 1, 2.014102], ['He-4', 2, 2, 4.002602], ['Li-6', 3, 3, 
 
 //////////////////// 3.1 ////////////////////
 (function(){
-  let k = 'bs';
-  $('r1k').onclick = e => { const b = e.target.closest('button'); if (!b) return; k = b.dataset.v; $('r1k').querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b)); teken(); };
-  const persoon = x => `<circle cx="${x}" cy="90" r="22" fill="#F2B880" stroke="#9A5B00"/><rect x="${x - 26}" y="116" width="52" height="90" rx="14" fill="#E9EEF5" stroke="#1D2A36"/><rect x="${x - 22}" y="206" width="18" height="60" rx="6" fill="#C7D2FE"/><rect x="${x + 4}" y="206" width="18" height="60" rx="6" fill="#C7D2FE"/>`;
-  function teken(){
-    let o = persoon(420);
-    if (k === 'bs'){ o += `<rect x="60" y="130" width="60" height="50" rx="6" fill="#475569"/>` + txt(90, 200, 'bron', {s: 12, a: 'middle', c: C.dim}); for (let i = 0; i < 4; i++) o += `<path d="M130 ${140 + i * 10} q50 ${-20 + i * 12} 260 ${-10 + i * 14}" stroke="#7c3aed" stroke-width="2" fill="none" stroke-dasharray="6 5"/>`;
-      o += txt(420, 290, 'de straling komt van buiten', {s: 13, w: 700, a: 'middle'}); }
-    else { [[400, 140], [440, 170], [410, 230], [432, 100], [395, 190]].forEach(([x, y]) => o += `<circle cx="${x}" cy="${y}" r="5" fill="#F59E0B"/>`); for (let i = 0; i < 6; i++){ const a = i * 1.05; o += `<path d="M${420 + 70 * Math.cos(a)} ${160 + 70 * Math.sin(a)} l${20 * Math.cos(a)} ${20 * Math.sin(a)}" stroke="#7c3aed" stroke-width="2"/>`; }
-      o += txt(420, 290, 'radioactieve stof óp of ín het lichaam', {s: 13, w: 700, a: 'middle'}); }
-    $('s_r1').innerHTML = o;
-    $('r_r1').innerHTML = k === 'bs' ? '<b>Bestraling</b> (uitwendige blootstelling): de straling komt van een bron buiten je lichaam. Ga je weg of verdwijnt de bron, dan stopt de blootstelling. Je wordt <b>zelf niet radioactief</b>.' : '<b>Besmetting</b>: radioactieve stoffen komen op je huid of in je lichaam (inademen, inslikken, wonde). Ze blijven stralen tot ze vervallen of verwijderd zijn. Daarom is besmetting met α-stralers zo gevaarlijk.';
-  }
-  teken();
   const K = [['Natuurlijk: radon', 'Een radioactief edelgas uit de bodem. Het kan zich ophopen in kelders en slecht verluchte huizen. Het grootste deel van onze natuurlijke dosis.'], ['Natuurlijk: kosmische straling', 'Deeltjes uit de ruimte. Hoe hoger je bent (bergen, vliegtuig), hoe meer je ervan krijgt.'], ['Natuurlijk: in je lichaam en voeding', 'Kalium-40 en koolstof-14 zitten in je voeding en in je lichaam. Ook gesteenten en bouwmaterialen bevatten radioactieve stoffen.'], ['Kunstmatig: medisch', 'Röntgenfoto\'s, CT-scans, nucleaire geneeskunde en radiotherapie.'], ['Kunstmatig: kernenergie en ongevallen', 'Kerncentrales lozen heel weinig. Bij ongevallen zoals Tsjernobyl (1986) en Fukushima (2011) kwamen radioactieve stoffen in het milieu.'], ['Kunstmatig: in toestellen', 'Sommige rookmelders bevatten een kleine hoeveelheid americium-241.']];
   $('c_r1').innerHTML = K.map(([t, p]) => `<div class="card"><div class="txt"><h4>${t}</h4><p>${p}</p></div></div>`).join('');
 })();
@@ -639,19 +605,6 @@ const KERN = [['H-2', 1, 1, 2.014102], ['He-4', 2, 2, 4.002602], ['Li-6', 3, 3, 
   $('c_r2').innerHTML = K.map(([t, p]) => `<div class="card"><div class="txt"><h4>${t}</h4><p>${p}</p></div></div>`).join('');
 })();
 
-//////////////////// 3.3 datering ////////////////////
-(function(){
-  const M = {c: [5730, 'jaar', 'C-14'], k: [1.25e9, 'jaar', 'K-40'], u: [4.47e9, 'jaar', 'U-238']};
-  function teken(){
-    const [T, eh, n] = M[$('r3d').value], p = +$('r3p').value / 100, n12 = Math.log2(1 / p), t = T * n12;
-    $('r3pv').textContent = Math.round(p * 100) + ' %';
-    const g = grafiek(null, {w: 640, h: 300, x0: 56, y0: 270, xmax: 7, ymax: 100, xlab: 't (in T½)', ylab: 'over (%)', xt: [0, 1, 2, 3, 4, 5, 6, 7], yt: [25, 50, 75, 100]});
-    let pts = []; for (let x = 0; x <= 7; x += 0.05) pts.push(g.X(x) + ',' + g.Y(100 * Math.pow(0.5, x)));
-    $('g_r3').innerHTML = g.s + `<polyline points="${pts.join(' ')}" fill="none" stroke="${BLAUW}" stroke-width="3"/>` + (n12 <= 7 ? `<line x1="${g.X(0)}" y1="${g.Y(p * 100)}" x2="${g.X(n12)}" y2="${g.Y(p * 100)}" stroke="${RODE}" stroke-dasharray="4 4"/><line x1="${g.X(n12)}" y1="${g.Y(p * 100)}" x2="${g.X(n12)}" y2="${g.Y(0)}" stroke="${RODE}" stroke-dasharray="4 4"/><circle cx="${g.X(n12)}" cy="${g.Y(p * 100)}" r="6" fill="${RODE}"/>` : '');
-    $('r_r3').innerHTML = `Nog ${Math.round(p * 100)} % ${n} over.<br>Aantal halveringstijden: log₂(1 / ${fmt(p, 2)}) = <b>${fmt(n12, 2)}</b><br>ouderdom t = ${fmt(n12, 2)} · ${T >= 1e6 ? wet(T) : T} jaar = <b>${t >= 1e6 ? wet(t) : fmt(t, 0)} jaar</b>`;
-  }
-  $('r3d').onchange = $('r3p').oninput = teken; teken();
-})();
 
 //////////////////// 3.4 fusie en fissie ////////////////////
 (function(){
@@ -680,7 +633,7 @@ const KERN = [['H-2', 1, 1, 2.014102], ['He-4', 2, 2, 4.002602], ['Li-6', 3, 3, 
     ['Medische beeldvorming', 'Bij een <b>PET-scan</b> of <b>scintigrafie</b> krijgt de patiënt een tracer (bv. fluor-18 of technetium-99m) die zich ophoopt in bepaalde weefsels. Een camera vangt de γ-straling op.'],
     ['Radiotherapie', 'Gerichte ioniserende straling vernietigt kankercellen. Men bestraalt uit verschillende richtingen, zodat de tumor een hoge dosis krijgt en het gezonde weefsel errond zo weinig mogelijk.'],
     ['X-stralentomografie (CT)', 'Een röntgenbuis draait rond de patiënt en maakt honderden opnames. Een computer berekent er doorsneden van het lichaam uit. X-stralen zijn ioniserend, maar komen niet uit radioactieve stoffen.'],
-    ['Doorstraling', 'Medisch materiaal en sommige voedingsmiddelen worden met γ-straling gesteriliseerd: bacteriën sterven af. Het product zelf wordt niet radioactief (bestraling, geen besmetting).'],
+    ['Doorstraling', 'Medisch materiaal en sommige voedingsmiddelen worden met γ-straling gesteriliseerd: bacteriën sterven af. Het product zelf wordt niet radioactief.'],
     ['Kwaliteitsmetingen in de industrie', 'Een β-bron aan de ene kant van een vel papier of metaal, een detector aan de andere kant: hoeveel straling doorkomt, verraadt de dikte. Ook lasnaden worden met γ-straling gecontroleerd.'],
     ['Neutronenactiveringsanalyse', 'Een staal wordt bestraald met neutronen. De kernen worden tijdelijk radioactief en zenden γ-straling uit die typisch is voor elk element. Zo vindt men sporen van stoffen in kunstwerken, bodems of bij forensisch onderzoek.'],
     ['Kernenergie en oorlog', 'In 1945 vernietigden twee atoombommen de Japanse steden Hiroshima en Nagasaki. Tijdens de Koude Oorlog bouwden landen duizenden kernwapens. Het non-proliferatieverdrag (1968) moet de verspreiding ervan beperken.']];
@@ -695,7 +648,7 @@ const KERN = [['H-2', 1, 1, 2.014102], ['He-4', 2, 2, 4.002602], ['Li-6', 3, 3, 
   const MC = {
     h1: [['Hoeveel quarks zitten er in een proton?', ['1', '2', '3', '4'], 2, 'Een proton bestaat uit twee up-quarks en één down-quark: uud.'], ['Welke wisselwerking houdt de quarks samen in een proton?', ['De elektromagnetische.', 'De sterke.', 'De zwakke.', 'De gravitatie.'], 1, 'De sterke wisselwerking, gedragen door gluonen.'], ['Waarvoor kreeg François Englert de Nobelprijs?', ['De oerknal.', 'Het mechanisme dat elementaire deeltjes massa geeft.', 'De ontdekking van het neutron.', 'De ontdekking van neutrino\'s uit de kosmos.'], 1, 'Het Brout-Englert-Higgsmechanisme. De oerknal is Lemaître, de kosmische neutrino\'s zijn Halzen (2026).']],
     h2: [['Een kern heeft te veel neutronen. Welk verval verwacht je?', ['α', 'β⁻', 'β⁺', 'γ'], 1, 'Bij β⁻ wordt een neutron een proton: de kern komt dichter bij de stabiliteitsvallei.'], ['Welke straling heeft het grootste doordringend vermogen?', ['α', 'β', 'γ', 'Ze zijn gelijk.'], 2, 'γ-straling is weinig ioniserend en dringt daardoor zeer diep door.'], ['Wat verandert er bij γ-straling aan de kern?', ['Z daalt met 2.', 'A daalt met 4.', 'Niets aan Z en A; de kern verliest energie.', 'Z stijgt met 1.'], 2, 'De kern gaat van een aangeslagen toestand naar een lagere energietoestand.'], ['Waarom komt er energie vrij bij fissie van uranium?', ['De kern wordt zwaarder.', 'De brokstukken hebben een grotere bindingsenergie per nucleon: er gaat massa verloren.', 'Er ontstaan nieuwe protonen.', 'Door de wrijving.'], 1, 'Middelzware kernen (rond Fe-56) zijn het sterkst gebonden. Het massaverlies wordt energie: E = m · c².']],
-    h3: [['Wat is het verschil tussen bestraling en besmetting?', ['Er is geen verschil.', 'Bij bestraling komt de straling van buiten; bij besmetting zit de radioactieve stof op of in je lichaam.', 'Bij besmetting word je nooit radioactief.', 'Bestraling gebeurt alleen in ziekenhuizen.'], 1, 'Na bestraling ben je zelf niet radioactief. Bij besmetting blijft de stof stralen.'], ['Welke dosis houdt rekening met de gevoeligheid van het orgaan?', ['Geabsorbeerde dosis.', 'Equivalente dosis.', 'Effectieve dosis.', 'Activiteit.'], 2, 'Effectieve dosis = w<sub>T</sub> · equivalente dosis.'], ['Waarom is fusie op aarde zo moeilijk?', ['Er is te weinig waterstof.', 'Het plasma moet meer dan 100 miljoen °C heet zijn en ingesloten blijven.', 'Fusie levert geen energie.', 'Het is verboden.'], 1, 'Alleen bij extreem hoge temperatuur overwinnen de kernen hun elektrische afstoting.']]
+    h3: [['Welke dosis houdt rekening met de gevoeligheid van het orgaan?', ['Geabsorbeerde dosis.', 'Equivalente dosis.', 'Effectieve dosis.', 'Activiteit.'], 2, 'Effectieve dosis = w<sub>T</sub> · equivalente dosis.'], ['Waarom is fusie op aarde zo moeilijk?', ['Er is te weinig waterstof.', 'Het plasma moet meer dan 100 miljoen °C heet zijn en ingesloten blijven.', 'Fusie levert geen energie.', 'Het is verboden.'], 1, 'Alleen bij extreem hoge temperatuur overwinnen de kernen hun elektrische afstoting.']]
   };
   const REK = {
     h1: [() => { const m = kies([1, 2, 4, 12]); return {q: `Zet ${m} u om naar kg.`, a: m * 1.66e-27, u: 'kg', u2: `${m} · 1,66 · 10⁻²⁷ = ${wet(m * 1.66e-27)} kg`}; }, () => { const e = kies([1, 5, 200]); return {q: `Zet ${e} MeV om naar J.`, a: e * 1.6e-13, u: 'J', u2: `${e} · 10⁶ · 1,6 · 10⁻¹⁹ = ${wet(e * 1.6e-13)} J`}; }],
@@ -704,8 +657,7 @@ const KERN = [['H-2', 1, 1, 2.014102], ['He-4', 2, 2, 4.002602], ['Li-6', 3, 3, 
       () => { const n = rnd(1, 5), N0 = kies([800, 1600, 3200]); return {q: `Een staal bevat ${N0} instabiele kernen. Hoeveel zijn er na ${n} halveringstijden nog over?`, a: N0 / Math.pow(2, n), u: 'kernen', u2: `N = ${N0} · (½)^${n} = ${N0 / Math.pow(2, n)}`}; },
       () => { const T = kies([8, 30, 6]), t = T * rnd(1, 4), A0 = kies([1000, 4000, 8000]); return {q: `Een bron heeft een activiteit van ${A0} Bq en een halveringstijd van ${T} dagen. Bereken de activiteit na ${t} dagen.`, a: A0 * Math.pow(0.5, t / T), u: 'Bq', u2: `A = ${A0} · (½)^(${t}/${T}) = ${fmt(A0 * Math.pow(0.5, t / T), 0)} Bq`}; },
       () => { const [Z, A, X] = kies([[88, 226, 'Ra'], [84, 210, 'Po'], [92, 238, 'U'], [90, 230, 'Th']]); return {q: `${X}-${A} (Z = ${Z}) ondergaat α-verval. Wat is het massagetal van de nieuwe kern?`, a: A - 4, u: '', u2: `α: A − 4 = ${A - 4}, Z − 2 = ${Z - 2}`}; }],
-    h3: [() => { const p = kies([50, 25, 12.5]); const n = Math.log2(100 / p); return {q: `In een stuk hout zit nog ${fmt(p, 1)} % van de oorspronkelijke C-14 (T½ = 5730 jaar). Hoe oud is het?`, a: 5730 * n, u: 'jaar', u2: `${fmt(n, 0)} halveringstijden: t = ${fmt(n, 0)} · 5730 = ${fmt(5730 * n, 0)} jaar`}; },
-      () => { const E = kies([2, 5, 10]), m = kies([0.5, 1, 2]); return {q: `Een orgaan van ${fmt(m, 1)} kg absorbeert ${E} mJ γ-straling. Bereken de geabsorbeerde dosis in mGy.`, a: E / m, u: 'mGy', u2: `D = E / m = ${E} mJ / ${fmt(m, 1)} kg = ${fmt(E / m, 1)} mGy`}; },
+    h3: [() => { const E = kies([2, 5, 10]), m = kies([0.5, 1, 2]); return {q: `Een orgaan van ${fmt(m, 1)} kg absorbeert ${E} mJ γ-straling. Bereken de geabsorbeerde dosis in mGy.`, a: E / m, u: 'mGy', u2: `D = E / m = ${E} mJ / ${fmt(m, 1)} kg = ${fmt(E / m, 1)} mGy`}; },
       () => { const D = kies([0.5, 1, 2]); return {q: `Een weefsel krijgt een geabsorbeerde dosis van ${fmt(D, 1)} mGy α-straling (w<sub>R</sub> = 20). Bereken de equivalente dosis in mSv.`, a: D * 20, u: 'mSv', u2: `H = w<sub>R</sub> · D = 20 · ${fmt(D, 1)} = ${fmt(D * 20, 0)} mSv`}; }]
   };
   const SO = [['alles', 'Door elkaar'], ['h1', '1 Het atoommodel'], ['h2', '2 Verval van kernen'], ['h3', '3 Radioactiviteit in de maatschappij']];
