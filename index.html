@@ -65,6 +65,16 @@ section h2 + h3.jaar{margin-top:0}
 .acties a:hover{filter:brightness(1.08)}
 .acties a:focus-visible{outline:3px solid var(--ink); outline-offset:2px}
 
+/* Tabs per soort richting */
+.richtingen{display:flex; gap:.5rem; flex-wrap:wrap; margin-top:1.75rem; border-bottom:2px solid var(--line)}
+.richtingen button{
+  font:inherit; font-weight:700; color:var(--muted); background:none; border:0;
+  padding:.65rem 1rem; min-height:44px; cursor:pointer; border-bottom:4px solid transparent; margin-bottom:-2px;
+}
+.richtingen button[aria-selected="true"]{color:var(--ink); border-bottom-color:var(--ink)}
+.richtingen button:focus-visible{outline:3px solid var(--ink); outline-offset:2px}
+.richting-uitleg{margin:.75rem 0 0; color:var(--muted); font-size:.95rem; max-width:40rem}
+
 footer{margin-top:3rem; color:var(--muted); font-size:.9rem; max-width:40rem}
 </style>
 </head>
@@ -74,6 +84,8 @@ footer{margin-top:3rem; color:var(--muted); font-size:.9rem; max-width:40rem}
     <h1>Oefentools wetenschappen</h1>
     <p>Klik op <strong>Openen</strong> om een tool te gebruiken. Klik op <strong>Downloaden</strong> om de tool op je computer te bewaren. Dan werkt hij ook zonder internet.</p>
   </header>
+  <div class="richtingen" role="tablist" aria-label="Soort richting" id="richtingen"></div>
+  <p class="richting-uitleg" id="richting-uitleg"></p>
   <div id="lijst"></div>
   <footer>
     Een gedownloade tool bewaart je gegevens apart van de online versie. Kies dus één versie en blijf die gebruiken.
@@ -87,8 +99,17 @@ footer{margin-top:3rem; color:var(--muted); font-size:.9rem; max-width:40rem}
    - open:  de link om de tool te openen
    - bestand: naam van het gedownloade bestand
    - jaren: bv. [3] of [3,4,5]; leeg [] = alle jaren
+   - richting: "wet" of "andere" (zie RICHTINGEN); weglaten = in alle tabs
    Bestanden in dezelfde map als deze index.html: gewoon de bestandsnaam.
    ============================================================ */
+/* Tabs bovenaan. Nieuwe soort richting? Voeg hier een regel toe en geef de tools die id. */
+const RICHTINGEN = [
+  { id:"wet",    naam:"Wetenschappelijke richtingen",
+    uitleg:"Natuurwetenschappen in de 2de graad (3NW, 4NW) en wetenschappen in de 3de graad (5Wet). Leerplannen II-NatS-d en III-NatS-d." },
+  { id:"andere", naam:"Andere richtingen",
+    uitleg:"Natuurwetenschappen in de richtingen zonder wetenschappelijk profiel." }
+];
+
 const VAKKEN = [
   { naam: "Algemeen", kleur: "--algemeen", perJaar: false },  /* geen jaarkopjes, alles naast elkaar */
   { naam: "Biologie", kleur: "--biologie" },
@@ -107,92 +128,92 @@ const TOOLS = [
     tekst:"Plan je taken en je studiemomenten.",
     open:"studieplanner.html", bestand:"studieplanner.html" },
 
-  { vak:"Fysica", icoon:"optica", jaren:[3], hfd:"Thema 1 · Hfd 1–4", titel:"Licht aan een scheidings\u00ADoppervlak",
+  { vak:"Fysica", richting:"wet", icoon:"optica", jaren:[3], hfd:"Thema 1 · Hfd 1–4", titel:"Licht aan een scheidings\u00ADoppervlak",
     tekst:"Terugkaatsing en breking van licht tussen twee middenstoffen.",
     open:"optica.html", bestand:"optica.html" },
-  { vak:"Fysica", icoon:"rekenen", jaren:[3], hfd:"Thema 2 · Hfd 1", titel:"Rekenen in de fysica",
+  { vak:"Fysica", richting:"wet", icoon:"rekenen", jaren:[3], hfd:"Thema 2 · Hfd 1", titel:"Rekenen in de fysica",
     tekst:"Eenheden omzetten, wetenschappelijke notatie en beduidende cijfers.",
     open:"rekenen-fysica.html", bestand:"rekenen-fysica.html" },
-  { vak:"Fysica", icoon:"krachten", jaren:[3], hfd:"Thema 2 · Hfd 2", titel:"Krachten samenstellen en ontbinden",
+  { vak:"Fysica", richting:"wet", icoon:"krachten", jaren:[3], hfd:"Thema 2 · Hfd 2", titel:"Krachten samenstellen en ontbinden",
     tekst:"Stap voor stap twee krachten samenstellen of een kracht ontbinden.",
     open:"krachten-construeren.html", bestand:"krachten-construeren.html" },
-  { vak:"Fysica", icoon:"beweging", jaren:[3], hfd:"Thema 2 · Hfd 2–3", titel:"Traagheid, resulterende kracht en beweging",
+  { vak:"Fysica", richting:"wet", icoon:"beweging", jaren:[3], hfd:"Thema 2 · Hfd 2–3", titel:"Traagheid, resulterende kracht en beweging",
     tekst:"Wat is traagheid? Hoe bepaalt de resulterende kracht of iets sneller, trager of even snel beweegt?",
     open:"krachten-beweging.html", bestand:"krachten-beweging.html" },
-  { vak:"Fysica", icoon:"krachten", jaren:[3], hfd:"Thema 2 · Hfd 4–7", titel:"Krachten",
+  { vak:"Fysica", richting:"wet", icoon:"krachten", jaren:[3], hfd:"Thema 2 · Hfd 4–7", titel:"Krachten",
     tekst:"Zwaartekracht, massa en gewicht, normaalkracht, wrijving, veerkracht, krachtmoment en evenwicht.",
     open:"krachten.html", bestand:"krachten.html" },
-  { vak:"Fysica", icoon:"grafiek", jaren:[3], hfd:"Thema 4 · Hfd 1–2", titel:"Snelheid",
+  { vak:"Fysica", richting:"wet", icoon:"grafiek", jaren:[3], hfd:"Thema 4 · Hfd 1–2", titel:"Snelheid",
     tekst:"Basisbegrippen, gemiddelde en ogenblikkelijke snelheid, de ERB, x(t)- en v(t)-grafieken.",
     open:"snelheid-afgelegde-weg.html", bestand:"snelheid-afgelegde-weg.html" },
-  { vak:"Fysica", icoon:"druk", jaren:[4], hfd:"Thema 1 · Hfd 1–4", titel:"Druk",
+  { vak:"Fysica", richting:"wet", icoon:"druk", jaren:[4], hfd:"Thema 1 · Hfd 1–4", titel:"Druk",
     tekst:"Druk bij vaste stoffen, gassen en vloeistoffen, het beginsel van Pascal en de archimedeskracht.",
     open:"druk.html", bestand:"druk.html" },
-  { vak:"Fysica", icoon:"energie", jaren:[4], hfd:"Thema 2 · Hfd 1–3", titel:"Energie, vermogen en rendement",
+  { vak:"Fysica", richting:"wet", icoon:"energie", jaren:[4], hfd:"Thema 2 · Hfd 1–3", titel:"Energie, vermogen en rendement",
     tekst:"Open, gesloten en geïsoleerde systemen, vormen en formules van energie, arbeid, vermogen en rendement.",
     open:"energie-vermogen.html", bestand:"energie-vermogen.html" },
-  { vak:"Fysica", icoon:"schakeling", jaren:[4], hfd:"Thema 3 · Hfd 1–4", titel:"Elektriciteit",
+  { vak:"Fysica", richting:"wet", icoon:"schakeling", jaren:[4], hfd:"Thema 3 · Hfd 1–4", titel:"Elektriciteit",
     tekst:"Lading, geleiders en isolatoren, spanning en stroom, de wet van Ohm, veiligheid en schakelingen.",
     open:"elektriciteit.html", bestand:"elektriciteit.html" },
-  { vak:"Fysica", icoon:"energie", jaren:[4], hfd:"Thema 5 · Hfd 1–3", titel:"Warmte en gassen",
+  { vak:"Fysica", richting:"wet", icoon:"energie", jaren:[4], hfd:"Thema 5 · Hfd 1–3", titel:"Warmte en gassen",
     tekst:"Temperatuur en warmte, energietransport, warmtecapaciteit, warmtebalans, faseovergangen en de gaswetten.",
     open:"warmte-gassen.html", bestand:"warmte-gassen.html" },
-  { vak:"Fysica", icoon:"atoomlading", jaren:[5], hfd:"Thema 1 · Hfd 1", titel:"Ladingen en elektrostatica",
+  { vak:"Fysica", richting:"wet", icoon:"atoomlading", jaren:[5], hfd:"Thema 1 · Hfd 1", titel:"Ladingen en elektrostatica",
     tekst:"Elementaire lading, geleiders en isolatoren, aarding, wrijving, influentie, bliksem, kopieerapparaat en swiffer.",
     open:"ladingen.html", bestand:"ladingen.html" },
-  { vak:"Fysica", icoon:"elektroscoop", jaren:[5], hfd:"Thema 1 · Hfd 1", titel:"Elektrostatische inductie",
+  { vak:"Fysica", richting:"wet", icoon:"elektroscoop", jaren:[5], hfd:"Thema 1 · Hfd 1", titel:"Elektrostatische inductie",
     tekst:"De elektroscoop en hoe lading zich verdeelt over bollen.",
     open:"elektrostatica.html", bestand:"elektrostatica.html" },
-  { vak:"Fysica", icoon:"ladingen", jaren:[5], hfd:"Thema 1 · Hfd 2", titel:"Krachten op ladingen",
+  { vak:"Fysica", richting:"wet", icoon:"ladingen", jaren:[5], hfd:"Thema 1 · Hfd 2", titel:"Krachten op ladingen",
     tekst:"Oefenen met de elektrische kracht tussen ladingen.",
     open:"krachten-op-ladingen.html", bestand:"krachten-op-ladingen.html" },
-  { vak:"Fysica", icoon:"veld", jaren:[5], hfd:"Thema 1 · Hfd 3", titel:"Elektrisch veld",
+  { vak:"Fysica", richting:"wet", icoon:"veld", jaren:[5], hfd:"Thema 1 · Hfd 3", titel:"Elektrisch veld",
     tekst:"Veldlijnen (ook in 3D), meerdere ladingen, kooi van Faraday, potentiaal en energie in een homogeen veld.",
     open:"elektrisch-veld.html", bestand:"elektrisch-veld.html" },
-  { vak:"Fysica", icoon:"schakeling", jaren:[5], hfd:"Thema 2 · Hfd 3", titel:"Gemengde schakelingen",
+  { vak:"Fysica", richting:"wet", icoon:"schakeling", jaren:[5], hfd:"Thema 2 · Hfd 3", titel:"Gemengde schakelingen",
     tekst:"Wet van Ohm, serie en parallel, en gemengde schakelingen stap voor stap oplossen.",
     open:"schakelingen.html", bestand:"schakelingen.html" },
-  { vak:"Fysica", icoon:"magneet", jaren:[5], hfd:"Thema 3 · Hfd 1–3", titel:"Elektromagnetisme",
+  { vak:"Fysica", richting:"wet", icoon:"magneet", jaren:[5], hfd:"Thema 3 · Hfd 1–3", titel:"Elektromagnetisme",
     tekst:"Magneten en weissgebieden, veld rond stroom, lorentzkracht, motor, inductie, transformator en generator.",
     open:"elektromagnetisme.html", bestand:"elektromagnetisme.html" },
-  { vak:"Fysica", icoon:"kern", jaren:[5], hfd:"Thema 4 · Hfd 1–3", titel:"Kernfysica",
+  { vak:"Fysica", richting:"wet", icoon:"kern", jaren:[5], hfd:"Thema 4 · Hfd 1–3", titel:"Kernfysica",
     tekst:"Atoombouw en standaardmodel, nuclidenkaart, massadefect, verval, halveringstijd, dosis, fusie en fissie.",
     open:"kernfysica.html", bestand:"kernfysica.html" },
   { vak:"Algemeen", icoon:"formule", jaren:[3,4,5], titel:"Formules omvormen",
     tekst:"Redeneren met formules en ze omvormen. Ook voorvoegsels en eenheden.",
     open:"formuleredeneertool.html", bestand:"formuleredeneertool.html" },
 
-  { vak:"Biologie", icoon:"blad", jaren:[3], titel:"Water, prikkels en reacties",
+  { vak:"Biologie", richting:"andere", icoon:"blad", jaren:[3], titel:"Water, prikkels en reacties",
     tekst:"Waterhuishouding van planten, homeostase en feedback, receptoren en het oog, spieren als effectoren.",
     open:"biologie-prikkels.html", bestand:"biologie-prikkels.html" },
-  { vak:"Chemie", icoon:"woorden", jaren:[3], titel:"Nieuwe woorden leren",
+  { vak:"Chemie", richting:"andere", icoon:"woorden", jaren:[3], titel:"Nieuwe woorden leren",
     tekst:"Leertips voor de chemiewoorden: lange woorden knippen, patronen en zinnen om mee te beginnen.",
     open:"chemie-woorden-leren.html", bestand:"chemie-woorden-leren.html" },
-  { vak:"Chemie", icoon:"ruit", jaren:[3], hfd:"Thema 1 · Hfd 1", titel:"Stoffen onder de loep",
+  { vak:"Chemie", richting:"andere", icoon:"ruit", jaren:[3], hfd:"Thema 1 · Hfd 1", titel:"Stoffen onder de loep",
     tekst:"Wat bestudeert de chemie? Fysica of chemie, gevarensymbolen en H- en P-zinnen.",
     open:"chemie-stoffen.html", bestand:"chemie-stoffen.html" },
-  { vak:"Chemie", icoon:"mengsel", jaren:[3], hfd:"Thema 1 · Hfd 2", titel:"Mengsels en stof\u00ADeigenschappen",
+  { vak:"Chemie", richting:"andere", icoon:"mengsel", jaren:[3], hfd:"Thema 1 · Hfd 2", titel:"Mengsels en stof\u00ADeigenschappen",
     tekst:"Zuivere stof of mengsel, homogeen of heterogeen, soorten mengsels en stofeigenschappen.",
     open:"chemie-mengsels.html", bestand:"chemie-mengsels.html" },
-  { vak:"Chemie", icoon:"trechter", jaren:[3], hfd:"Thema 1 · Hfd 3", titel:"Scheidings\u00ADtechnieken",
+  { vak:"Chemie", richting:"andere", icoon:"trechter", jaren:[3], hfd:"Thema 1 · Hfd 3", titel:"Scheidings\u00ADtechnieken",
     tekst:"Acht scheidingstechnieken met bewegende tekeningen, onderdelen en voorbeelden.",
     open:"chemie-scheidingstechnieken.html", bestand:"chemie-scheidingstechnieken.html" },
-  { vak:"Chemie", icoon:"slot", jaren:[3], hfd:"Thema 1", titel:"Scheidingsmissie",
+  { vak:"Chemie", richting:"andere", icoon:"slot", jaren:[3], hfd:"Thema 1", titel:"Scheidingsmissie",
     tekst:"Een teamopdracht over mengsels, stofeigenschappen en scheidingstechnieken. Je hebt het wachtwoord van je leerkracht nodig.",
     open:"chemie-missie-drinkwater.html", bestand:"chemie-missie-drinkwater.html" },
-  { vak:"Chemie", icoon:"modellen", jaren:[3], hfd:"Thema 2 · Hfd 1", titel:"Atomen en elementen",
+  { vak:"Chemie", richting:"andere", icoon:"modellen", jaren:[3], hfd:"Thema 2 · Hfd 1", titel:"Atomen en elementen",
     tekst:"De atoommodellen door de tijd en de symbolen van de elementen.",
     open:"chemie-atoommodellen.html", bestand:"chemie-atoommodellen.html" },
-  { vak:"Chemie", icoon:"kern", jaren:[3], hfd:"Thema 2 · Hfd 2", titel:"Bouw van het atoom",
+  { vak:"Chemie", richting:"andere", icoon:"kern", jaren:[3], hfd:"Thema 2 · Hfd 2", titel:"Bouw van het atoom",
     tekst:"Bouw zelf atomen: protonen, neutronen, elektronen, atoomnummer, massagetal en atoommassa.",
     open:"chemie-atoombouw.html", bestand:"chemie-atoombouw.html" },
-  { vak:"Chemie", icoon:"pse", jaren:[3], hfd:"Thema 2 · Hfd 3", titel:"Periodiek systeem",
+  { vak:"Chemie", richting:"andere", icoon:"pse", jaren:[3], hfd:"Thema 2 · Hfd 3", titel:"Periodiek systeem",
     tekst:"Een interactief PSE: categorie\u00EBn, groep en periode, elektronegativiteit en edelgasconfiguratie.",
     open:"chemie-pse.html", bestand:"chemie-pse.html" },
-  { vak:"Chemie", icoon:"zigzag", jaren:[5], titel:"Organische stofklassen",
+  { vak:"Chemie", richting:"andere", icoon:"zigzag", jaren:[5], titel:"Organische stofklassen",
     tekst:"Formules lezen, stofklassen herkennen, namen geven en formules bouwen. Eerst per stofklasse, daarna door elkaar.",
     open:"chemie-organische-stofklassen.html", bestand:"chemie-organische-stofklassen.html" },
-  { vak:"Chemie", icoon:"atoom", jaren:[3], titel:"Elektronen\u00ADconfiguratie",
+  { vak:"Chemie", richting:"andere", icoon:"atoom", jaren:[3], titel:"Elektronen\u00ADconfiguratie",
     tekst:"Elektronenconfiguratie, ionvorming en ionbinding van de eerste 18 elementen.",
     open:"elektronenconfiguratie.html", bestand:"elektronenconfiguratie.html" }
 ];
@@ -378,8 +399,18 @@ const tegel = t => `
         </div>
       </article>`;
 
-document.getElementById("lijst").innerHTML = VAKKEN.map(v => {
-  const items = TOOLS.filter(t => t.vak === v.naam);
+function toon(rid){
+  const r = RICHTINGEN.find(x => x.id === rid) || RICHTINGEN[0];
+  document.querySelectorAll("#richtingen button").forEach(b => b.setAttribute("aria-selected", b.dataset.id === r.id));
+  document.getElementById("richting-uitleg").textContent = r.uitleg;
+  document.getElementById("lijst").innerHTML = lijstHTML(r.id);
+}
+document.getElementById("richtingen").innerHTML = RICHTINGEN.map(r =>
+  `<button role="tab" data-id="${r.id}">${esc(r.naam)}</button>`).join("");
+document.querySelectorAll("#richtingen button").forEach(b => b.onclick = () => { history.replaceState(null, "", "#" + b.dataset.id); toon(b.dataset.id); });
+
+function lijstHTML(rid){ return VAKKEN.map(v => {
+  const items = TOOLS.filter(t => t.vak === v.naam && (!t.richting || t.richting === rid));
   if (!items.length) return "";
   const groepen = new Map();
   items.slice().sort((a, b) => jaarSleutel(a.jaren) - jaarSleutel(b.jaren))
@@ -398,7 +429,8 @@ document.getElementById("lijst").innerHTML = VAKKEN.map(v => {
     <h3 class="jaar">${label}</h3>
     <div class="grid">${lijst.map(tegel).join("")}</div>`).join("")}
   </section>`;
-}).join("");
+}).join(""); }
+toon(location.hash.slice(1));
 </script>
 </body>
 </html>
