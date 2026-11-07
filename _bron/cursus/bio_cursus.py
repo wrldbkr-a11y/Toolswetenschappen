@@ -79,7 +79,7 @@ def fig_wortel(m): return aanwijs(wortel_in, 800, 800, P_WORTEL, m, 230, 280, 26
 def stoma_klein(inner, titel):
     inner = inner.replace('>epidermiscellen<', '>cellen van het dekweefsel<')
     return f'<g>{inner}<text x="410" y="548" text-anchor="middle" font-size="34" font-weight="700" fill="#1D2A36">{titel}</text></g>'
-fig_stoma = (f'<svg viewBox="0 0 1680 570" width="640" xmlns="http://www.w3.org/2000/svg" {FONT}><style>text{{font-size:30px;font-weight:700}}</style>'
+fig_stoma = (f'<svg class="stomafig" viewBox="0 0 1680 570" width="640" xmlns="http://www.w3.org/2000/svg" {FONT}><style>.stomafig text{{font-size:30px;font-weight:700}}</style>'
              + stoma_klein(lees('stoma_open.svgi'), 'open: veel turgor')
              + '<g transform="translate(860,0)">' + stoma_klein(lees('stoma_dicht.svgi'), 'gesloten: weinig turgor') + '</g></svg>')
 

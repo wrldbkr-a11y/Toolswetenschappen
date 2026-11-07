@@ -51,3 +51,8 @@ Leerlingen krijgen een ingevulde naslag; wisbordvragen per deel (`aso_wisbord.py
 - `_bron/lesdoelen/overzicht.py` leest de leerstofoverzichten (.docx) naar `nw_overzichten.json`.
 - `_bron/lesdoelen/nw_lesdoelen.py` zet per tool een dicht paneel (`<!--ldnw-->…<!--/ldnw-->`) met de lesdoelen; de koppeling tool → paragrafen staat in `KAART`.
 - `aso/bouw_3aso.py` haalt dit blok weg, zodat de 3ASO-versies alleen hun eigen lesdoelen tonen. Volgorde: eerst `nw_lesdoelen.py`, dan `bouw_3aso.py`.
+
+## Cursus biologie 3de jaar (thema 1–3) in het nieuwe formaat
+- `cd /home/claude/cursus && python3 /home/claude/toolswetenschappen/_bron/cursus/bio3_nieuw.py`
+- Bestaande inhoud en figuren uit `bio_cursus.py` en `bio2_cursus.py`; nieuwe inhoud (idee, uitgewerkt voorbeeld, Let op, Test jezelf, wisbordvragen, uitdagingen, begrippen) in `bio3_inhoud.py`.
+- Word: `Cursus_Biologie_3.docx` (leerling, zonder bijlage) en `Cursus_Biologie_3_leerkracht.docx` (EDI=1), zie `_bron/word/bouw_word.sh`.
