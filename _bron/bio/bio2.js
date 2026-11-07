@@ -250,42 +250,70 @@ labelFig({wrap:'fig-oog',ctl:'ctl-oog',img:IMG.oog,w:900,h:791,ml:400,mr:260,fs:
 
 //////////////////// NETVLIES ////////////////////
 const NETVLIES=(function(){
-  // getekend: licht komt van boven. Lagen: zenuwvezels, ganglioncellen, bipolaire cellen, staafjes/kegeltjes, pigmentcellen, vaatvlies
-  const W=900,H=640; let s=`<defs>
-    <linearGradient id="nv-st" x1="0" x2="1"><stop offset="0" stop-color="#7b8fc9"/><stop offset=".5" stop-color="#b8c6ef"/><stop offset="1" stop-color="#7b8fc9"/></linearGradient>
-    <linearGradient id="nv-ke" x1="0" x2="1"><stop offset="0" stop-color="#c98a2e"/><stop offset=".5" stop-color="#f6cf7d"/><stop offset="1" stop-color="#c98a2e"/></linearGradient>
-    <radialGradient id="nv-gc"><stop offset="0" stop-color="#e6d3f5"/><stop offset="1" stop-color="#a98bc9"/></radialGradient>
-    <radialGradient id="nv-bc"><stop offset="0" stop-color="#d7f0e0"/><stop offset="1" stop-color="#7fbf96"/></radialGradient>
-    <linearGradient id="nv-pig" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6b4a2f"/><stop offset="1" stop-color="#3c2616"/></linearGradient></defs>`;
-  s+=`<rect width="${W}" height="${H}" fill="#fdf6f0"/>`;
-  // banden
-  s+=`<rect y="0" width="${W}" height="70" fill="#f6efe9"/><rect y="560" width="${W}" height="80" fill="#8c2f39"/>`;
-  for(let i=0;i<14;i++) s+=`<ellipse cx="${40+i*64}" cy="${600+(i%2)*14}" rx="22" ry="9" fill="#b9474f" stroke="#6e1f28" stroke-width="2"/>`;
-  // pigmentcellen
-  for(let i=0;i<15;i++){ const x=i*62; s+=`<path d="M${x+2},560 L${x+2},505 Q${x+31},490 ${x+60},505 L${x+60},560Z" fill="url(#nv-pig)" stroke="#2a190c" stroke-width="2"/><ellipse cx="${x+31}" cy="${540}" rx="9" ry="7" fill="#8a6a4a"/>`;
-    for(let k=0;k<5;k++) s+=`<path d="M${x+8+k*11},505 q2,-14 0,-26" stroke="#3c2616" stroke-width="3" fill="none" stroke-linecap="round"/>`; }
+  // licht komt van boven. Lagen: zenuwvezels, ganglioncellen, bipolaire cellen, staafjes en kegeltjes, pigmentcellen, vaatvlies.
+  // Alle cellen zijn vloeiende vormen; uitlopers eindigen precies op de cel waar ze op aansluiten.
+  const W=900,H=640;
+  const rng=seed=>{let s=seed>>>0||1;return()=>{s^=s<<13;s^=s>>>17;s^=s<<5;return((s>>>0)%100000)/100000;};};
+  const glad=(p,dicht=true)=>{const n=p.length,P=i=>dicht?p[(i+n)%n]:p[Math.max(0,Math.min(n-1,i))];let d=`M${p[0][0].toFixed(1)} ${p[0][1].toFixed(1)}`;const m=dicht?n:n-1;
+    for(let i=0;i<m;i++){const a=P(i-1),b=P(i),c=P(i+1),e=P(i+2);d+=`C${(b[0]+(c[0]-a[0])/6).toFixed(1)} ${(b[1]+(c[1]-a[1])/6).toFixed(1)} ${(c[0]-(e[0]-b[0])/6).toFixed(1)} ${(c[1]-(e[1]-b[1])/6).toFixed(1)} ${c[0].toFixed(1)} ${c[1].toFixed(1)}`;}return d+(dicht?'Z':'');};
+  const blob=(cx,cy,rx,ry,R,n=10,j=.12,rot=0)=>{const p=[];for(let i=0;i<n;i++){const a=rot+i/n*Math.PI*2,f=1+(R()-.5)*2*j;p.push([cx+Math.cos(a)*rx*f,cy+Math.sin(a)*ry*f]);}return glad(p);};
+  const lijn=(pts,n=24)=>{const r=[];for(let k=0;k<pts.length-1;k++){for(let i=0;i<n;i++){const t=i/n;r.push([pts[k][0]+(pts[k+1][0]-pts[k][0])*t,pts[k][1]+(pts[k+1][1]-pts[k][1])*t]);}}r.push(pts[pts.length-1]);return r;};
+  const zacht=(pts)=>{ // Catmull-Rom bemonsterd
+    const r=[];const n=pts.length;const P=i=>pts[Math.max(0,Math.min(n-1,i))];
+    for(let i=0;i<n-1;i++){const a=P(i-1),b=P(i),c=P(i+1),e=P(i+2);for(let k=0;k<12;k++){const t=k/12,t2=t*t,t3=t2*t;
+      r.push([0,1].map(q=>.5*((2*b[q])+(-a[q]+c[q])*t+(2*a[q]-5*b[q]+4*c[q]-e[q])*t2+(-a[q]+3*b[q]-3*c[q]+e[q])*t3)));}}r.push(pts[n-1]);return r;};
+  const buis=(pts,w0,w1,rond=true)=>{const P=pts.length>8?pts:zacht(pts);const n=P.length,L=[],Rr=[];
+    for(let i=0;i<n;i++){const a=P[Math.max(0,i-1)],b=P[Math.min(n-1,i+1)];const g=Math.atan2(b[1]-a[1],b[0]-a[0]);const w=(w0+(w1-w0)*i/(n-1))/2;L.push([P[i][0]-Math.sin(g)*w,P[i][1]+Math.cos(g)*w]);Rr.push([P[i][0]+Math.sin(g)*w,P[i][1]-Math.cos(g)*w]);}
+    const e=P[n-1],pe=P[n-2],ea=Math.atan2(e[1]-pe[1],e[0]-pe[0]),k=[];if(rond)for(let q=1;q<6;q++){const a=ea-Math.PI/2+q/6*Math.PI;k.push([e[0]+Math.cos(a)*w1/2,e[1]+Math.sin(a)*w1/2]);}
+    return'M'+[...L,...k.reverse(),...Rr.reverse()].map(p=>p[0].toFixed(1)+' '+p[1].toFixed(1)).join(' L')+'Z';};
+  const R=rng(7);
+  let s=`<defs>
+    <filter id="nv-3d" x="-5%" y="-5%" width="110%" height="110%" color-interpolation-filters="sRGB">
+      <feMorphology in="SourceAlpha" operator="dilate" radius="1.2" result="dik"/><feFlood flood-color="#2a1d2c" flood-opacity=".7"/><feComposite in2="dik" operator="in" result="rand"/>
+      <feGaussianBlur in="SourceAlpha" stdDeviation="2.4" result="bl"/>
+      <feSpecularLighting in="bl" surfaceScale="5" specularConstant=".7" specularExponent="16" lighting-color="#fff" result="spec"><fePointLight x="-400" y="-600" z="500"/></feSpecularLighting>
+      <feComposite in="spec" in2="SourceAlpha" operator="in" result="glans"/>
+      <feDiffuseLighting in="bl" surfaceScale="4" diffuseConstant="1" lighting-color="#fff" result="dif"><feDistantLight azimuth="235" elevation="55"/></feDiffuseLighting>
+      <feComposite in="SourceGraphic" in2="dif" operator="arithmetic" k1="1" result="sch"/><feComposite in="sch" in2="SourceGraphic" operator="arithmetic" k2=".55" k3=".55" result="mix"/>
+      <feComposite in="glans" in2="mix" operator="arithmetic" k2=".5" k3="1" result="licht"/><feComposite in="licht" in2="SourceAlpha" operator="in" result="vorm"/>
+      <feMerge><feMergeNode in="rand"/><feMergeNode in="vorm"/></feMerge></filter>
+    <radialGradient id="nv-kern" cx="38%" cy="35%" r="70%"><stop offset="0" stop-color="#9b78c2"/><stop offset=".6" stop-color="#6a4596"/><stop offset="1" stop-color="#4b2b73"/></radialGradient>
+    <linearGradient id="nv-pig" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6b4a2f"/><stop offset="1" stop-color="#3c2616"/></linearGradient>
+    <radialGradient id="nv-rbc" cx="50%" cy="50%" r="55%"><stop offset="0" stop-color="#e46a6a"/><stop offset=".5" stop-color="#cf3b3b"/><stop offset="1" stop-color="#8f1d1d"/></radialGradient></defs>`;
+  s+=`<rect width="${W}" height="${H}" fill="#fdf6f0"/><rect y="0" width="${W}" height="72" fill="#f4ece6"/>`;
+  // vaatvlies met bloedvaten
+  s+=`<path d="M0 566 C200 556 400 572 600 562 S800 556 900 566 V640 H0Z" fill="#9b3a43"/>`;
+  [[0,596,900,600],[0,620,900,616]].forEach(([x0,y0,x1,y1],i)=>{const pts=zacht([[x0,y0],[220,y0+(i?6:-8)],[460,y0+(i?-6:8)],[700,y0+(i?6:-6)],[x1,y1]]);s+=`<path d="${buis(pts,22,22,false)}" fill="${i?'#5a3f8f':'#c9434d'}" opacity=".9"/>`;
+    for(let k=0;k<12;k++){const p=pts[Math.floor((k+.5)/12*(pts.length-1))];s+=`<g transform="translate(${p[0].toFixed(0)} ${p[1].toFixed(0)}) rotate(${(R()*60-30).toFixed(0)})"><ellipse rx="7" ry="5" fill="url(#nv-rbc)"/><ellipse rx="3" ry="2" fill="#e98181" opacity=".7"/></g>`;}});
+  // pigmentcellen: vloeiende cellen met uitlopers tussen de buitensegmenten
+  let pig='';for(let i=0;i<15;i++){const x=i*62+31;pig+=`<path d="${glad([[x-31,564],[x-31,520],[x-20,504],[x,500],[x+20,504],[x+31,520],[x+31,564]])}"/>`;
+    for(let k=0;k<5;k++){const px=x-22+k*11;pig+=`<path d="${buis([[px,508],[px+1,496],[px,480]],5,2.5)}"/>`;}}
+  s+=`<g filter="url(#nv-3d)" fill="#6b4a2f">${pig}</g>`;
+  for(let i=0;i<15;i++){const x=i*62+31;s+=`<path d="${blob(x,538,9,7,R,8,.1)}" fill="#a3825e"/>`;for(let k=0;k<14;k++)s+=`<circle cx="${(x-26+R()*52).toFixed(1)}" cy="${(512+R()*46).toFixed(1)}" r="1.4" fill="#2a190c" opacity=".7"/>`;}
   // fotoreceptoren
-  const recs=[]; for(let i=0;i<34;i++){ const x=14+i*26.4; recs.push({x,k:(i%4===2)}); }
-  recs.forEach(r=>{ const x=r.x;
-    if(!r.k){ // staafje
-      s+=`<rect x="${x-5}" y="398" width="10" height="100" rx="5" fill="url(#nv-st)" stroke="#45589a" stroke-width="1.5"/>`;
-      for(let y=404;y<494;y+=7) s+=`<line x1="${x-4}" x2="${x+4}" y1="${y}" y2="${y}" stroke="#5a6fb0" stroke-width="1"/>`;
-      s+=`<rect x="${x-3.5}" y="352" width="7" height="48" rx="3" fill="#cdd6f2" stroke="#45589a" stroke-width="1.2"/><ellipse cx="${x}" cy="${336}" rx="6" ry="9" fill="#5a6fb0"/><path d="M${x},327 V300" stroke="#45589a" stroke-width="2"/>`;
-    } else { // kegeltje
-      s+=`<path d="M${x-11},430 L${x+11},430 L${x+2},490 L${x-2},490Z" fill="url(#nv-ke)" stroke="#8a5a1a" stroke-width="1.5"/>`;
-      for(let y=436;y<486;y+=7){ const w=11-(y-430)/60*9; s+=`<line x1="${x-w+1}" x2="${x+w-1}" y1="${y}" y2="${y}" stroke="#b07a2a" stroke-width="1"/>`; }
-      s+=`<path d="M${x-11},430 Q${x-14},380 ${x-8},360 L${x+8},360 Q${x+14},380 ${x+11},430Z" fill="#fbe2b0" stroke="#8a5a1a" stroke-width="1.5"/><ellipse cx="${x}" cy="${342}" rx="8" ry="11" fill="#b07a2a"/><path d="M${x},331 V300" stroke="#8a5a1a" stroke-width="2.4"/>`;
-    } });
-  // bipolaire cellen
-  const bip=[]; for(let i=0;i<12;i++){ const x=40+i*74; bip.push(x);
-    s+=`<path d="M${x},300 L${x},262" stroke="#4f8f65" stroke-width="3"/><path d="M${x},300 L${x-26},300 M${x},300 L${x+26},300" stroke="#4f8f65" stroke-width="2"/><ellipse cx="${x}" cy="248" rx="13" ry="17" fill="url(#nv-bc)" stroke="#3d7a52" stroke-width="2"/><path d="M${x},231 L${x},196" stroke="#4f8f65" stroke-width="3"/>`; }
-  // ganglioncellen
-  for(let i=0;i<7;i++){ const x=70+i*128;
-    s+=`<path d="M${x-50},190 Q${x-25},175 ${x-8},160 M${x+50},190 Q${x+25},175 ${x+8},160 M${x},190 L${x},162" stroke="#8a6bb3" stroke-width="3" fill="none"/>`;
-    s+=`<circle cx="${x}" cy="140" r="26" fill="url(#nv-gc)" stroke="#6d4f99" stroke-width="2.5"/><circle cx="${x+3}" cy="138" r="9" fill="#6d4f99"/>`;
-    s+=`<path d="M${x},114 Q${x+10},80 ${x+60},62 L${W+10},${40+i*3}" stroke="#8a6bb3" stroke-width="3" fill="none"/>`; }
+  const recs=[];for(let i=0;i<34;i++){const x=14+i*26.4;recs.push({x,k:(i%4===2),t:[x,302]});}
+  let staaf='',kegel='',schijf='';
+  recs.forEach(r=>{const x=r.x;
+    if(!r.k){ staaf+=`<path d="${buis([[x,298],[x,312],[x+1,326]],5,3.2,false)}"/><path d="${blob(x,302,5.5,5,R,8,.1)}"/><path d="${blob(x,336,6.5,10,R,9,.08)}"/>`+
+        `<path d="${buis([[x+1,344],[x,372],[x,398]],5,9,false)}"/><path d="${buis([[x,396],[x,450],[x,496]],10,10)}"/>`;
+      for(let y=404;y<492;y+=6)schijf+=`<path d="M${x-4} ${y} H${x+4}" stroke="#4a5fa8" stroke-width="1" opacity=".55"/>`; }
+    else { kegel+=`<path d="${buis([[x,298],[x,312],[x+1,326]],6,3.6,false)}"/><path d="${blob(x,302,6.5,5.5,R,8,.1)}"/><path d="${blob(x,340,8,11,R,9,.08)}"/>`+
+        `<path d="${buis([[x,350],[x,392],[x,432]],7,19,false)}"/><path d="${buis([[x,430],[x,462],[x,490]],19,4)}"/>`;
+      for(let y=438;y<486;y+=6){const w=9-(y-430)/60*7.5;schijf+=`<path d="M${(x-w).toFixed(1)} ${y} H${(x+w).toFixed(1)}" stroke="#9a6418" stroke-width="1" opacity=".5"/>`;} } });
+  s+=`<g filter="url(#nv-3d)" fill="#93a6e6">${staaf}</g><g filter="url(#nv-3d)" fill="#f2b955">${kegel}</g>${schijf}`;
+  recs.forEach(r=>{s+=`<path d="${blob(r.x,r.k?340:336,r.k?4.2:3.4,r.k?5.6:5,R,8,.08)}" fill="url(#nv-kern)"/>`;});
+  // bipolaire cellen: dendrieten eindigen op de eindknopjes van de fotoreceptoren, axon omhoog
+  const bip=[];let bv='';for(let j=0;j<12;j++){const xb=40+j*74;bip.push(xb);
+    recs.filter(r=>Math.abs(r.x-xb)<38).forEach(r=>{bv+=`<path d="${buis([[xb,262],[xb+(r.x-xb)*.4,276],[r.x,288],[r.x,296]],6,2.6)}"/>`;});
+    bv+=`<path d="${blob(xb,248,12,17,R,10,.08)}"/><path d="${buis([[xb,236],[xb+1,214],[xb,198]],6,3.4)}"/><path d="${blob(xb,196,6,5.5,R,8,.1)}"/>`;}
+  s+=`<g filter="url(#nv-3d)" fill="#62c27f">${bv}</g>`;bip.forEach(xb=>s+=`<path d="${blob(xb,248,5.5,7,R,8,.08)}" fill="url(#nv-kern)"/>`);
+  // ganglioncellen: dendrieten eindigen op de axonuiteinden van de bipolaire cellen, axon naar de oogzenuw
+  let gv='';const gang=[];for(let k=0;k<7;k++){const xg=70+k*128;gang.push(xg);
+    bip.filter(xb=>Math.abs(xb-xg)<=64).forEach(xb=>{gv+=`<path d="${buis([[xg,160],[xg+(xb-xg)*.5,176],[xb,188],[xb,193]],7,3)}"/>`;});
+    gv+=`<path d="${blob(xg,140,24,22,R,11,.1)}"/><path d="${buis([[xg,118],[xg+8,90],[xg+50,66],[xg+120,52],[W+20,38+k*4]],6.5,5,false)}"/>`;}
+  s+=`<g filter="url(#nv-3d)" fill="#b48ddb">${gv}</g>`;gang.forEach(xg=>s+=`<path d="${blob(xg+2,138,9,8,R,9,.08)}" fill="url(#nv-kern)"/><circle cx="${xg+4}" cy="136" r="2.4" fill="#2a1240"/>`);
   // lichtpijlen
-  for(let i=0;i<5;i++){ const x=120+i*170; s+=`<path d="M${x},-30 L${x},20" stroke="#f59e0b" stroke-width="5"/><path d="M${x-10},12 l10,16 l10,-16z" fill="#f59e0b"/>`; }
+  for(let i=0;i<5;i++){const x=120+i*170;s+=`<path d="M${x},-30 L${x},20" stroke="#f59e0b" stroke-width="5"/><path d="M${x-10},12 l10,16 l10,-16z" fill="#f59e0b"/>`;}
   s+=`<text x="${W-10}" y="22" text-anchor="end" font-size="18" font-weight="700" fill="#b45309">licht ↓</text>`;
   return {svg:s,W,H,recs};
 })();
