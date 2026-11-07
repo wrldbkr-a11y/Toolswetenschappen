@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kernfysica</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EEF2F5; --panel:#FFFFFF; --panel-2:#F5F8FB; --line:#D3DCE5;
+  --text:#1D2A36; --text-dim:#51606E;
+  --accent:#2F6FB0; --accent-dark:#245A91; --accent-soft:#E4EEF8;
+  --ok-text:#1F7A4A; --ok-bg:#E3F3E9; --flag-text:#B3362B; --flag-bg:#FBE6E3;
+  --fz:#7c3aed; --fn:#059669; --g:#d97706; --f:#2563eb; --fw:#dc2626; --fv:#0891b2;
+  --font:'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:var(--font);}
+body{-webkit-font-smoothing:antialiased;line-height:1.55;}
+.top{max-width:1180px;margin:0 auto;padding:36px 24px 0;}
+.top .eyebrow{font-size:13px;font-weight:700;color:var(--accent-dark);letter-spacing:.04em;text-transform:uppercase;margin-bottom:6px;}
+.top h1{font-size:2rem;font-weight:700;letter-spacing:-0.015em;margin:0 0 8px;}
+.top .intro{color:var(--text-dim);max-width:72ch;font-size:15px;line-height:1.6;margin:0;}
+.top .intro strong{color:var(--text);}
+nav{display:flex;flex-wrap:wrap;gap:8px;}
+.catnav{gap:4px;margin:22px 0 14px;border-bottom:1px solid var(--line);}
+.catnav button{font-family:var(--font);font-weight:500;font-size:15px;background:none;border:none;border-bottom:2px solid transparent;margin-bottom:-1px;color:var(--text-dim);padding:9px 14px;cursor:pointer;}
+.catnav button:hover{color:var(--text);}
+.catnav button.active{color:var(--text);font-weight:600;border-bottom-color:var(--accent);}
+#nav button{display:flex;align-items:center;gap:9px;font-family:var(--font);font-size:14px;font-weight:500;background:var(--panel);border:1px solid var(--line);color:var(--text-dim);padding:9px 14px 9px 10px;border-radius:10px;cursor:pointer;text-align:left;}
+#nav button .nr{flex:none;min-width:24px;height:24px;border-radius:12px;padding:0 6px;display:inline-flex;align-items:center;justify-content:center;background:var(--accent-soft);color:var(--accent-dark);font-size:12px;font-weight:700;}
+#nav button:hover{border-color:var(--accent);color:var(--text);}
+#nav button.active{background:var(--accent-soft);border-color:var(--accent);color:var(--text);font-weight:600;}
+#nav button.active .nr{background:var(--accent);color:#fff;}
+main{max-width:1180px;margin:0 auto;padding:26px 24px 70px;}
+.scene{display:none;}
+.scene.active{display:block;animation:fade .25s ease;}
+@keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+.scene-head{display:flex;align-items:center;gap:10px;margin-bottom:4px;flex-wrap:wrap;}
+.scene-head .num{min-width:28px;height:28px;border-radius:14px;padding:0 7px;display:inline-flex;align-items:center;justify-content:center;background:var(--accent);color:#fff;font-size:13px;font-weight:700;}
+.scene-head h3{font-size:1.5rem;letter-spacing:-0.01em;margin:0;font-weight:700;}
+.scene-sub{color:var(--text-dim);font-size:15px;margin:4px 0 18px;max-width:78ch;line-height:1.55;}
+.scene-sub strong{color:var(--text);}
+.grid{display:grid;grid-template-columns:1fr 330px;gap:18px;align-items:start;}
+@media(max-width:880px){.grid{grid-template-columns:1fr;}}
+.tek{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;}
+.tek svg{display:block;width:100%;height:auto;touch-action:none;}
+.controls{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 16px 18px;display:flex;flex-direction:column;gap:14px;}
+.ctrl label{display:flex;justify-content:space-between;font-size:13px;font-weight:600;margin-bottom:6px;}
+.ctrl label span{font-weight:700;color:var(--accent-dark);font-variant-numeric:tabular-nums;}
+.ctrl input[type=range]{width:100%;accent-color:var(--accent);}
+select{font-family:var(--font);font-size:15px;padding:7px 9px;border:1px solid var(--line);border-radius:8px;background:#fff;width:100%;}
+.knoppen{display:flex;flex-wrap:wrap;gap:6px;}
+.btn{background:#fff;border:1px solid var(--line);color:var(--text);border-radius:8px;padding:8px 12px;font-family:var(--font);font-weight:600;font-size:14px;cursor:pointer;}
+.btn:hover{border-color:var(--accent);}
+.btn.on{background:var(--accent-soft);border-color:var(--accent);}
+.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent);}
+.readout{background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:14.5px;line-height:1.75;font-variant-numeric:tabular-nums;}
+.readout b{color:var(--text);}
+.readout .ok{color:var(--ok-text);font-weight:700;}
+.readout .flag{color:var(--flag-text);font-weight:700;}
+.kader{border-left:4px solid var(--ok-text);background:var(--ok-bg);border-radius:0 10px 10px 0;padding:10px 14px;font-size:14.5px;}
+.kader .kop{font-weight:700;color:var(--ok-text);margin-bottom:2px;}
+.kader p{margin:0 0 4px;}.kader p:last-child{margin:0;}
+.note{background:var(--panel-2);border-left:4px solid var(--accent);border-radius:0 8px 8px 0;padding:10px 12px;font-size:14px;color:var(--text-dim);line-height:1.6;}
+.note strong{color:var(--text);}
+.formule{font-size:18px;font-weight:700;text-align:center;background:#fff;border:1px solid var(--line);border-radius:8px;padding:8px;}
+.omvorm{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;font-size:14px;text-align:center;}
+.omvorm div{background:#fff;border:1px solid var(--line);border-radius:8px;padding:6px 4px;font-weight:600;}
+.legend{display:flex;flex-direction:column;gap:5px;font-size:13px;color:var(--text-dim);}
+.legend .row{display:flex;align-items:center;gap:8px;}
+.legend .sw{width:18px;height:4px;border-radius:2px;flex:none;}
+label.chk{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:500;}
+table.t{border-collapse:collapse;width:100%;font-size:14px;margin-top:14px;background:#fff;border:1px solid var(--line);border-radius:8px;overflow:hidden;}
+table.t th,table.t td{border-bottom:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top;}
+table.t th{background:var(--panel-2);font-size:12.5px;color:var(--text-dim);}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px;}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden;}
+.card svg{display:block;width:100%;height:auto;background:#fbfcfe;border-bottom:1px solid #E6ECF2;}
+.card .txt{padding:12px 16px 14px;}
+.card h4{margin:0 0 4px;font-size:1rem;}
+.card p{margin:0;font-size:14px;color:var(--text-dim);line-height:1.55;}
+.card p b{color:var(--text);}
+.tag{display:inline-block;font-size:12px;font-weight:700;padding:2px 8px;border-radius:999px;margin-bottom:6px;background:var(--accent-soft);color:var(--accent-dark);}
+.tag.dyn{background:var(--flag-bg);color:var(--flag-text);}
+.tag.stat{background:var(--ok-bg);color:var(--ok-text);}
+.mini{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px;}
+@media(max-width:700px){.mini{grid-template-columns:1fr;}}
+.mini .tek{padding:4px;}
+.mini h5{margin:6px 8px 0;font-size:13px;}
+/* oefenen */
+.oef{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px;}
+.oef-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px;}
+.score{font-size:14px;font-weight:600;color:var(--ok-text);background:var(--ok-bg);padding:3px 10px;border-radius:999px;}
+.soort{display:flex;flex-wrap:wrap;gap:6px;}
+.soort .btn{font-weight:500;padding:6px 11px;}
+.vraag{font-weight:600;font-size:16px;margin:14px 0 10px;}
+.keuzes{display:flex;flex-direction:column;gap:8px;}
+.keuzes .btn{font-weight:500;text-align:left;}
+.keuzes .btn.goed{background:var(--ok-bg);border-color:var(--ok-text);color:var(--ok-text);font-weight:700;}
+.keuzes .btn.fout{background:var(--flag-bg);border-color:var(--flag-text);color:var(--flag-text);}
+.antw{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+.antw input{font-family:var(--font);font-size:16px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;width:9em;}
+.feedback{margin-top:12px;font-size:15px;line-height:1.6;}
+.feedback.goed{color:var(--ok-text);}
+.feedback.fout{color:var(--flag-text);}
+.feedback .uitleg{color:var(--text);display:block;margin-top:4px;}
+footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-dim);font-size:12px;}
+footer a{color:inherit;}
+.nuc{display:inline-flex;flex-direction:column;font-size:.62em;line-height:1.05;text-align:right;vertical-align:-0.35em;margin-right:1px;font-weight:600}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="eyebrow">Fysica 5de jaar · Thema 4 · Kernfysica · hoofdstuk 1 tot 3</div>
+  <h1>Kernfysica</h1>
+  <p class="intro"><strong>Wat zit er in een atoomkern, waarom vallen sommige kernen uit elkaar, en hoe gebruiken we dat?</strong> Van het standaardmodel tot kerncentrales en medische beeldvorming.</p>
+  <nav id="catnav" class="catnav"></nav>
+  <nav id="nav"></nav>
+</header>
+<main>
+
+<section class="scene" id="a1" data-nr="1.1" data-cat="h1" data-title="Bouw van het atoom">
+  <div class="scene-head"><span class="num"></span><h3>Bouw van het atoom en de kern</h3></div>
+  <p class="scene-sub">Kies een element en een massagetal. De kern bestaat uit <strong>protonen</strong> en <strong>neutronen</strong>: samen heten ze <strong>nucleonen</strong>.</p>
+  <div class="grid">
+    <div class="tek"><svg id="s_a1" viewBox="0 0 640 360"></svg></div>
+    <div class="controls">
+      <div class="ctrl"><label for="a1e">Element</label><select id="a1e"></select></div>
+      <div class="ctrl"><label for="a1a">Massagetal A <span id="a1av"></span></label><input type="range" id="a1a" min="1" max="10" value="4"></div>
+      <div class="readout" id="r_a1"></div>
+      <div class="kader"><div class="kop">Atomaire eenheden</div><p><b>1 u</b> = 1,66 · 10⁻²⁷ kg (atomaire massa-eenheid: 1/12 van de massa van een C-12-atoom)</p><p><b>1 eV</b> = 1,6 · 10⁻¹⁹ J (de energie die een elektron krijgt bij een spanning van 1 V)</p></div>
+      <div class="ctrl"><label for="a1u">Omzetten</label><div class="antw"><input type="text" id="a1u" value="1" style="width:6em"><select id="a1s" style="width:auto"><option value="u">u → kg</option><option value="kg">kg → u</option><option value="ev">eV → J</option><option value="j">J → eV</option><option value="mev">MeV → J</option></select></div></div>
+      <div class="readout" id="r_a1u"></div>
+    </div>
+  </div>
+</section>
+
+<section class="scene" id="a2" data-nr="1.2" data-cat="h1" data-title="Het standaardmodel">
+  <div class="scene-head"><span class="num"></span><h3>Het standaardmodel</h3></div>
+  <p class="scene-sub">Alle materie bestaat uit een handvol <strong>elementaire deeltjes</strong>: quarks en leptonen. Krachten worden overgebracht door <strong>ijkbosonen</strong>. Klik op een deeltje.</p>
+  <div class="grid">
+    <div class="tek"><svg id="s_a2" viewBox="0 0 640 420"></svg></div>
+    <div class="controls">
+      <div class="readout" id="r_a2">Klik op een deeltje.</div>
+      <div class="kader"><div class="kop">Proton en neutron</div><p><b>Proton</b> = u + u + d → lading +⅔ +⅔ −⅓ = <b>+1</b></p><p><b>Neutron</b> = u + d + d → lading +⅔ −⅓ −⅓ = <b>0</b></p></div>
+      <table class="t"><tr><th>wisselwerking</th><th>drager</th><th>werkt op</th></tr>
+        <tr><td>sterke</td><td>gluon</td><td>quarks (houdt de kern samen)</td></tr>
+        <tr><td>elektromagnetische</td><td>foton</td><td>geladen deeltjes</td></tr>
+        <tr><td>zwakke</td><td>W- en Z-boson</td><td>quarks en leptonen (bètaverval)</td></tr>
+        <tr><td>gravitatie</td><td>(graviton?) niet in het standaardmodel</td><td>alles met massa</td></tr></table>
+    </div>
+  </div>
+  <div class="cards" id="c_a2" style="margin-top:16px"></div>
+</section>
+
+<section class="scene" id="v1" data-nr="2.1" data-cat="h2" data-title="(In)stabiliteit en nuclidenkaart">
+  <div class="scene-head"><span class="num"></span><h3>Stabiele en instabiele kernen: de nuclidenkaart</h3></div>
+  <p class="scene-sub">Klik op een kern op de (vereenvoudigde) nuclidenkaart. Ligt hij buiten de <strong>stabiliteitsvallei</strong>, dan vervalt hij stap voor stap tot hij stabiel is. Wanneer een kern vervalt, is toeval: radioactief verval is een <strong>stochastisch proces</strong>.</p>
+  <div class="grid">
+    <div class="tek"><svg id="s_v1" viewBox="0 0 640 460"></svg></div>
+    <div class="controls">
+      <div class="knoppen"><button class="btn primary" id="v1go">Laat vervallen</button><button class="btn" id="v1re">↺ Opnieuw</button></div>
+      <div class="readout" id="r_v1">Klik op een vakje.</div>
+      <div class="kader"><div class="kop">Waarom is een kern (in)stabiel?</div><p>De protonen stoten elkaar af (elektrische kracht). De <b>(residuele) sterke kernkracht</b> tussen alle nucleonen houdt de kern samen, maar werkt alleen over heel korte afstand. Neutronen helpen mee zonder af te stoten.</p><p>Te veel neutronen → <b>β⁻</b>. Te veel protonen → <b>β⁺</b> of <b>elektronenvangst</b>. Te zware kern → <b>α</b>.</p></div>
+    </div>
+  </div>
+  <div class="cards" id="c_v1" style="margin-top:16px"></div>
+</section>
+
+<section class="scene" id="v2" data-nr="2.2" data-cat="h2" data-title="Massadefect en bindingsenergie">
+  <div class="scene-head"><span class="num"></span><h3>Equivalentie tussen massa en energie</h3></div>
+  <p class="scene-sub">Een kern weegt <strong>minder</strong> dan de som van zijn losse nucleonen: het <strong>massadefect</strong>. Die massa is omgezet in <strong>bindingsenergie</strong> volgens E = m · c².</p>
+  <div class="grid">
+    <div class="tek"><svg id="g_v2" viewBox="0 0 640 400"></svg></div>
+    <div class="controls">
+      <div class="ctrl"><label for="v2k">Kern</label><select id="v2k"></select></div>
+      <div class="knoppen" id="v2g"><button class="btn on" data-v="b">Bindingsenergie per nucleon</button><button class="btn" data-v="r">Rustenergie per nucleon</button></div>
+      <div class="formule">E = m · c²</div>
+      <div class="readout" id="r_v2"></div>
+      <div class="note">m<sub>p</sub> = 1,007276 u · m<sub>n</sub> = 1,008665 u · m<sub>e</sub> = 0,000549 u · 1 u · c² = 931,5 MeV · c = 3,00 · 10⁸ m/s</div>
+    </div>
+  </div>
+</section>
+
+<section class="scene" id="v3" data-nr="2.3" data-cat="h2" data-title="Soorten straling">
+  <div class="scene-head"><span class="num"></span><h3>Soorten straling</h3></div>
+  <p class="scene-sub">Klik op een soort verval en zie wat er in de kern gebeurt.</p>
+  <div class="grid">
+    <div class="tek"><svg id="s_v3" viewBox="0 0 640 300"></svg></div>
+    <div class="controls">
+      <div class="knoppen" id="v3k"></div>
+      <div class="readout" id="r_v3"></div>
+    </div>
+  </div>
+  <table class="t" id="t_v3"></table>
+</section>
+
+<section class="scene" id="v4" data-nr="2.4" data-cat="h2" data-title="Vervalreeksen">
+  <div class="scene-head"><span class="num"></span><h3>Een vervalreeks opstellen: van U-238 tot Pb-206</h3></div>
+  <p class="scene-sub">Uranium-238 vervalt in 14 stappen tot het stabiele lood-206. Kies telkens het juiste verval: kijk naar de isotopentabel hieronder.</p>
+  <div class="grid">
+    <div class="tek"><svg id="s_v4" viewBox="0 0 640 400"></svg></div>
+    <div class="controls">
+      <div class="readout" id="r_v4"></div>
+      <div class="knoppen"><button class="btn" id="v4a">α-verval</button><button class="btn" id="v4b">β⁻-verval</button><button class="btn" id="v4re">↺ Opnieuw</button></div>
+      <div class="note">α: Z − 2, A − 4 &nbsp;·&nbsp; β⁻: Z + 1, A blijft gelijk.</div>
+      <div class="readout" id="r_v4b" style="font-size:13px"></div>
+    </div>
+  </div>
+</section>
+
+<section class="scene" id="v5" data-nr="2.5" data-cat="h2" data-title="Halveringstijd">
+  <div class="scene-head"><span class="num"></span><h3>Halveringstijd</h3></div>
+  <p class="scene-sub">Je start met 400 instabiele kernen. Na elke <strong>halveringstijd</strong> is ongeveer de helft vervallen. Welke kern vervalt, is toeval.</p>
+  <div class="grid">
+    <div><div class="tek"><svg id="s_v5" viewBox="0 0 640 220"></svg></div><div class="tek" style="margin-top:12px"><svg id="g_v5" viewBox="0 0 640 260"></svg></div></div>
+    <div class="controls">
+      <div class="knoppen"><button class="btn primary" id="v5go">▶ Start / pauze</button><button class="btn" id="v5re">↺ Opnieuw</button></div>
+      <div class="formule">N = N₀ · (½)<sup>t / T½</sup></div>
+      <div class="readout" id="r_v5"></div>
+      <div class="kader"><div class="kop">Halveringstijd T½</div><p>De tijd waarin de helft van de instabiele kernen vervalt. Na 1 T½ blijft ½ over, na 2 T½ ¼, na 3 T½ ⅛, …</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="scene" id="v6" data-nr="2.6" data-cat="h2" data-title="Ioniserend en doordringend vermogen">
+  <div class="scene-head"><span class="num"></span><h3>Ioniserend en doordringend vermogen</h3></div>
+  <p class="scene-sub">Kies een stralingssoort en een afscherming. <strong>Ioniseren</strong> = elektronen uit atomen slaan. Hoe sterker een straling ioniseert, hoe sneller ze haar energie kwijt is en hoe <strong>minder diep</strong> ze doordringt.</p>
+  <div class="grid">
+    <div class="tek"><svg id="s_v6" viewBox="0 0 640 300"></svg></div>
+    <div class="controls">
+      <div class="knoppen" id="v6s"><button class="btn on" data-v="a">α</button><button class="btn" data-v="b">β</button><button class="btn" data-v="g">γ</button></div>
+      <div class="readout" id="r_v6"></div>
+      <div class="kader"><div class="kop">Gevaren</div><p>Ioniserende straling kan moleculen in je cellen beschadigen, ook het <b>DNA</b>. Dat kan leiden tot celdood of tot kanker. α-straling is buiten het lichaam weinig gevaarlijk (de huid houdt ze tegen), maar heel gevaarlijk als je de bron inademt of inslikt.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="scene" id="v7" data-nr="2.7–2.8" data-cat="h2" data-title="Activiteit en waarnemen">
+  <div class="scene-head"><span class="num"></span><h3>Activiteit en het waarnemen van straling</h3></div>
+  <p class="scene-sub">De <strong>activiteit A</strong> is het aantal kernen dat per seconde vervalt. Eenheid: <strong>becquerel (Bq)</strong>, 1 Bq = 1 verval per seconde. Hoe meer instabiele kernen, hoe groter de activiteit. Ook de activiteit halveert na elke halveringstijd.</p>
+  <div class="grid">
+    <div class="tek"><svg id="g_v7" viewBox="0 0 640 280"></svg></div>
+    <div class="controls">
+      <div class="ctrl"><label for="v7a">Beginactiviteit A₀ <span id="v7av"></span></label><input type="range" id="v7a" min="100" max="2000" step="100" value="800"></div>
+      <div class="ctrl"><label for="v7t">Tijd t (in halveringstijden) <span id="v7tv"></span></label><input type="range" id="v7t" min="0" max="5" step="0.1" value="1"></div>
+      <div class="formule">A = A₀ · (½)<sup>t / T½</sup></div>
+      <div class="readout" id="r_v7"></div>
+      <div class="note">Ter vergelijking: een banaan heeft een activiteit van ongeveer 15 Bq (kalium-40), je eigen lichaam enkele duizenden Bq.</div>
+    </div>
+  </div>
+  <div class="cards" id="c_v7" style="margin-top:16px"></div>
+</section>
+
+<section class="scene" id="r1" data-nr="3.1" data-cat="h3" data-title="Radioactiviteit rondom ons">
+  <div class="scene-head"><span class="num"></span><h3>Natuurlijke en kunstmatige radioactiviteit</h3></div>
+  <p class="scene-sub">Je wordt elke dag blootgesteld aan een beetje ioniserende straling. Het grootste deel is <strong>natuurlijk</strong>. Ken ook het verschil tussen <strong>bestraling</strong> en <strong>besmetting</strong>.</p>
+  <div class="grid">
+    <div class="tek"><svg id="s_r1" viewBox="0 0 640 300"></svg></div>
+    <div class="controls">
+      <div class="knoppen" id="r1k"><button class="btn on" data-v="bs">Bestraling</button><button class="btn" data-v="bm">Besmetting</button></div>
+      <div class="readout" id="r_r1"></div>
+    </div>
+  </div>
+  <div class="cards" id="c_r1" style="margin-top:16px"></div>
+</section>
+
+<section class="scene" id="r2" data-nr="3.2" data-cat="h3" data-title="Dosis en bescherming">
+  <div class="scene-head"><span class="num"></span><h3>Geabsorbeerde, equivalente en effectieve dosis</h3></div>
+  <p class="scene-sub">Niet elke straling en niet elk orgaan is even gevoelig. Daarom reken je in drie stappen.</p>
+  <div class="grid">
+    <div class="tek"><svg id="s_r2" viewBox="0 0 640 300"></svg></div>
+    <div class="controls">
+      <div class="ctrl"><label for="r2s">Straling</label><select id="r2s"><option value="1">γ of X (w<sub>R</sub> = 1)</option><option value="1b">β (w<sub>R</sub> = 1)</option><option value="20">α (w<sub>R</sub> = 20)</option><option value="10">neutronen (w<sub>R</sub> ≈ 10)</option></select></div>
+      <div class="ctrl"><label for="r2o">Orgaan</label><select id="r2o"><option value="0.12">longen (w<sub>T</sub> = 0,12)</option><option value="0.12b">maag (w<sub>T</sub> = 0,12)</option><option value="0.04">schildklier (w<sub>T</sub> = 0,04)</option><option value="0.01">huid (w<sub>T</sub> = 0,01)</option><option value="1">hele lichaam (w<sub>T</sub> = 1)</option></select></div>
+      <div class="ctrl"><label for="r2e">Geabsorbeerde energie <span id="r2ev"></span></label><input type="range" id="r2e" min="1" max="100" value="10"></div>
+      <div class="ctrl"><label for="r2m">Massa van het orgaan <span id="r2mv"></span></label><input type="range" id="r2m" min="0.02" max="70" step="0.01" value="1"></div>
+      <div class="readout" id="r_r2"></div>
+    </div>
+  </div>
+  <div class="cards" id="c_r2" style="margin-top:16px"></div>
+</section>
+
+<section class="scene" id="r3" data-nr="3.3" data-cat="h3" data-title="Dateringstechnieken">
+  <div class="scene-head"><span class="num"></span><h3>Dateren met radioactief verval</h3></div>
+  <p class="scene-sub">Een levend organisme neemt voortdurend koolstof op, met een vaste fractie <strong>C-14</strong>. Na de dood stopt dat, en vervalt de C-14 met een halveringstijd van <strong>5730 jaar</strong>. Uit wat overblijft, bereken je de ouderdom.</p>
+  <div class="grid">
+    <div class="tek"><svg id="g_r3" viewBox="0 0 640 300"></svg></div>
+    <div class="controls">
+      <div class="ctrl"><label for="r3d">Methode</label><select id="r3d"><option value="c">C-14 (biologisch materiaal) · T½ = 5730 jaar</option><option value="k">K-40 → Ar-40 (gesteente) · T½ = 1,25 · 10⁹ jaar</option><option value="u">U-238 → Pb-206 (gesteente) · T½ = 4,47 · 10⁹ jaar</option></select></div>
+      <div class="ctrl"><label for="r3p">Overgebleven fractie <span id="r3pv"></span></label><input type="range" id="r3p" min="1" max="100" value="25"></div>
+      <div class="formule">t = T½ · log₂(N₀ / N)</div>
+      <div class="readout" id="r_r3"></div>
+      <div class="note">Je gebruikt hier de formule uit de fysica in de <strong>biologie</strong>, de <strong>archeologie</strong> en de <strong>geologie</strong>. C-14 is bruikbaar tot ongeveer 50 000 jaar.</div>
+    </div>
+  </div>
+</section>
+
+<section class="scene" id="r4" data-nr="3.4" data-cat="h3" data-title="Kernfusie en kernfissie">
+  <div class="scene-head"><span class="num"></span><h3>Energie uit atoomkernen</h3></div>
+  <p class="scene-sub">Bij <strong>kernfissie</strong> splitst een zware kern in twee middelzware kernen. Bij <strong>kernfusie</strong> smelten twee lichte kernen samen. In beide gevallen daalt de totale rustenergie: dat verschil komt vrij.</p>
+  <div class="grid">
+    <div class="tek"><svg id="s_r4" viewBox="0 0 640 320"></svg></div>
+    <div class="controls">
+      <div class="knoppen" id="r4k"><button class="btn on" data-v="fis">Kernfissie (U-235)</button><button class="btn" data-v="fus">Kernfusie (D + T)</button></div>
+      <div class="readout" id="r_r4"></div>
+    </div>
+  </div>
+  <div class="cards" id="c_r4" style="margin-top:16px"></div>
+</section>
+
+<section class="scene" id="r5" data-nr="3.5" data-cat="h3" data-title="Toepassingen">
+  <div class="scene-head"><span class="num"></span><h3>Toepassingen van radioactieve materialen</h3></div>
+  <p class="scene-sub">Kernfysica raakt veel andere STEM-domeinen: geneeskunde, industrie, landbouw, archeologie, en jammer genoeg ook oorlog.</p>
+  <div class="cards" id="c_r5"></div>
+</section>
+
+<section class="scene" id="oef" data-nr="" data-cat="oef" data-title="Oefenen">
+  <div class="scene-head"><span class="num"></span><h3>Oefenen</h3></div>
+  <p class="scene-sub">Kies een hoofdstuk of oefen alles door elkaar. Gebruik een komma voor decimalen; heel kleine getallen mag je schrijven als 1,5e-12.</p>
+  <div class="oef">
+    <div class="oef-head"><div class="soort" id="soort"></div><span class="score" id="score">0 / 0</span></div>
+    <div class="vraag" id="vraag"></div>
+    <div id="invoer"></div>
+    <div class="feedback" id="fb"></div>
+    <div style="margin-top:12px"><button class="btn primary" id="volgende">Nieuwe vraag</button></div>
+  </div>
+</section>
+</main>
+<footer>Gemaakt door de vakgroep wetenschappen · Maria Assumpta Lyceum · ontwikkeld met hulp van AI · <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.nl">CC BY-NC-SA 4.0</a></footer>
+
+<script>
+//////////////////// NAVIGATIE ////////////////////
+const scenes = [...document.querySelectorAll('.scene')];
+const nav = document.getElementById('nav'), catNav = document.getElementById('catnav');
+const categories = [{id:'h1',label:'1 Het atoommodel'},{id:'h2',label:'2 Verval van kernen'},{id:'h3',label:'3 Radioactiviteit in de maatschappij'},{id:'oef',label:'Oefenen'}];
+let current = 0, activeCat = 'h1';
+function renderNav(){
+  catNav.innerHTML = ''; nav.innerHTML = '';
+  categories.forEach(c => { const b = document.createElement('button'); b.textContent = c.label; b.classList.toggle('active', c.id === activeCat); b.onclick = () => activate(scenes.findIndex(s => s.dataset.cat === c.id)); catNav.appendChild(b); });
+  scenes.forEach((s, i) => { if (s.dataset.cat !== activeCat || activeCat === 'oef') return; const b = document.createElement('button'); b.innerHTML = `<span class="nr">${s.dataset.nr}</span>${s.dataset.title}`; b.classList.toggle('active', i === current); b.onclick = () => activate(i); nav.appendChild(b); });
+}
+function activate(i){
+  current = i; activeCat = scenes[i].dataset.cat;
+  scenes.forEach((s, j) => s.classList.toggle('active', j === i));
+  renderNav();
+  if (location.hash !== '#' + scenes[i].id) history.replaceState(null, '', '#' + scenes[i].id);
+}
+scenes.forEach(s => { const n = s.querySelector('.num'); if (n){ if (s.dataset.nr) n.textContent = s.dataset.nr; else n.remove(); } });
+activate(Math.max(0, scenes.findIndex(s => '#' + s.id === location.hash)));
+window.addEventListener('hashchange', () => { const i = scenes.findIndex(s => '#' + s.id === location.hash); if (i >= 0 && i !== current) activate(i); });
+
+
+//////////////////// HULPFUNCTIES ////////////////////
+const $ = id => document.getElementById(id);
+const fmt = (v, d = 1) => (Math.abs(v) < 0.5 * Math.pow(10, -d) ? 0 : v).toFixed(d).replace('.', ',');
+const C = {fz:'#7c3aed', fn:'#059669', g:'#d97706', f:'#2563eb', fw:'#dc2626', fv:'#0891b2', lijn:'#94A3B8', tekst:'#1D2A36', dim:'#51606E'};
+function pijl(x1, y1, x2, y2, kleur, label, lx = 0, ly = 0, dik = 4){
+  const len = Math.hypot(x2 - x1, y2 - y1); if (len < 2) return `<circle cx="${x1}" cy="${y1}" r="4" fill="${kleur}"/>`;
+  const a = Math.atan2(y2 - y1, x2 - x1), hs = Math.min(15, len * 0.45);
+  const bx = x2 - Math.cos(a) * hs * 0.85, by = y2 - Math.sin(a) * hs * 0.85;
+  const p1 = [x2 - hs * Math.cos(a - 0.42), y2 - hs * Math.sin(a - 0.42)], p2 = [x2 - hs * Math.cos(a + 0.42), y2 - hs * Math.sin(a + 0.42)];
+  return `<g><line x1="${x1}" y1="${y1}" x2="${bx}" y2="${by}" stroke="${kleur}" stroke-width="${dik}" stroke-linecap="round"/><polygon points="${x2},${y2} ${p1} ${p2}" fill="${kleur}"/><circle cx="${x1}" cy="${y1}" r="4.5" fill="${kleur}"/>${label ? `<text x="${(x1 + x2) / 2 + lx}" y="${(y1 + y2) / 2 + ly}" fill="${kleur}" font-size="17" font-weight="700" text-anchor="middle">${label}</text>` : ''}</g>`;
+}
+const sub = (a, b) => `${a}<tspan font-size="70%" dy="4">${b}</tspan><tspan dy="-4"></tspan>`;
+const txt = (x, y, t, o = {}) => `<text x="${x}" y="${y}" font-size="${o.s || 14}" font-weight="${o.w || 500}" fill="${o.c || C.tekst}" text-anchor="${o.a || 'start'}">${t}</text>`;
+function grafiek(svg, {w, h, x0 = 40, y0, xmax, ymax, xlab, ylab, xt = [], yt = []}){
+  const X = v => x0 + v / xmax * (w - x0 - 16), Y = v => y0 - v / ymax * (y0 - 14);
+  let s = `<line x1="${x0}" y1="${y0}" x2="${w - 8}" y2="${y0}" stroke="${C.dim}"/><line x1="${x0}" y1="${y0}" x2="${x0}" y2="8" stroke="${C.dim}"/>`;
+  xt.forEach(v => s += `<line x1="${X(v)}" y1="${y0}" x2="${X(v)}" y2="${y0 + 4}" stroke="${C.dim}"/>${txt(X(v), y0 + 16, fmt(v, v % 1 ? 1 : 0), {s: 11, c: C.dim, a: 'middle'})}`);
+  yt.forEach(v => s += `<line x1="${x0 - 4}" y1="${Y(v)}" x2="${x0}" y2="${Y(v)}" stroke="${C.dim}"/><line x1="${x0}" y1="${Y(v)}" x2="${w - 8}" y2="${Y(v)}" stroke="#EEF2F5"/>${txt(x0 - 6, Y(v) + 4, fmt(v, v % 1 ? 1 : 0), {s: 11, c: C.dim, a: 'end'})}`);
+  s += txt(w - 8, y0 - 6, xlab, {s: 12, w: 700, c: C.dim, a: 'end'}) + txt(x0 + 6, 18, ylab, {s: 12, w: 700, c: C.dim});
+  return {s, X, Y};
+}
+function svgPunt(svg, e){ const p = svg.createSVGPoint(); p.x = e.clientX; p.y = e.clientY; return p.matrixTransform(svg.getScreenCTM().inverse()); }
+
+
+
+const isOn = id => $(id).classList.contains('active');
+const RODE = '#dc2626', BLAUW = '#2563eb', GRIJS = '#94A3B8';
+function wet(x, d = 2){ if (x === 0) return '0'; const n = Math.floor(Math.log10(Math.abs(x)) + 1e-12), a = x / Math.pow(10, n); const sup = String(n).replace(/-/g, '⁻').replace(/\d/g, c => '⁰¹²³⁴⁵⁶⁷⁸⁹'[c]); return fmt(a, d) + ' · 10' + sup; }
+const nuc = (A, Z, X) => `<span class="nuc"><span>${A}</span><span>${Z}</span></span>${X}`;
+const SYM = {0: 'n', 1: 'H', 2: 'He', 3: 'Li', 4: 'Be', 5: 'B', 6: 'C', 7: 'N', 8: 'O', 9: 'F', 10: 'Ne', 11: 'Na', 12: 'Mg', 13: 'Al', 14: 'Si', 15: 'P', 16: 'S', 17: 'Cl', 18: 'Ar', 19: 'K', 20: 'Ca', 26: 'Fe', 28: 'Ni', 36: 'Kr', 50: 'Sn', 56: 'Ba', 81: 'Tl', 82: 'Pb', 83: 'Bi', 84: 'Po', 85: 'At', 86: 'Rn', 87: 'Fr', 88: 'Ra', 89: 'Ac', 90: 'Th', 91: 'Pa', 92: 'U'};
+const NAAM = {1: 'waterstof', 2: 'helium', 3: 'lithium', 6: 'koolstof', 7: 'stikstof', 8: 'zuurstof', 26: 'ijzer', 92: 'uranium'};
+
+//////////////////// 1.1 atoom ////////////////////
+(function(){
+  const EL = [[1, 1, 3], [2, 3, 4], [3, 6, 7], [6, 12, 14], [7, 14, 15], [8, 16, 18], [26, 54, 58], [92, 234, 238]];
+  $('a1e').innerHTML = EL.map(([z], i) => `<option value="${i}" ${z === 6 ? 'selected' : ''}>${NAAM[z]} (${SYM[z]}, Z = ${z})</option>`).join('');
+  function grens(){ const [z, lo, hi] = EL[+$('a1e').value]; $('a1a').min = lo; $('a1a').max = hi; if (+$('a1a').value < lo || +$('a1a').value > hi) $('a1a').value = lo; }
+  function teken(){
+    const [Z] = EL[+$('a1e').value], A = +$('a1a').value, N = A - Z; $('a1av').textContent = A;
+    let o = '';
+    const tot = Math.min(A, 60), R = 10 + Math.sqrt(tot) * 9;
+    const pts = []; for (let i = 0; i < tot; i++){ const r = Math.sqrt(i / tot) * (R - 9), a = i * 2.399; pts.push([200 + r * Math.cos(a), 180 + r * Math.sin(a)]); }
+        pts.forEach(([x, y], i) => o += `<circle cx="${x}" cy="${y}" r="9" fill="${Math.floor((i + 1) * Z / A) > Math.floor(i * Z / A) ? RODE : GRIJS}" stroke="#fff"/>`);
+    o += `<circle cx="200" cy="180" r="${R + 60}" fill="none" stroke="#CBD5E1" stroke-dasharray="4 4"/>`;
+    for (let i = 0; i < Math.min(Z, 12); i++){ const a = i / Math.min(Z, 12) * 6.283; o += `<circle cx="${200 + (R + 60) * Math.cos(a)}" cy="${180 + (R + 60) * Math.sin(a)}" r="5" fill="${BLAUW}"/>`; }
+    if (A > 60) o += txt(200, 180 + R + 90, '(niet alle nucleonen getekend)', {s: 11, c: C.dim, a: 'middle'});
+    o += `<foreignObject x="400" y="110" width="220" height="120"><div xmlns="http://www.w3.org/1999/xhtml" style="font:700 54px Inter,sans-serif;color:#1D2A36">${nuc(A, Z, SYM[Z])}</div></foreignObject>`;
+    o += txt(410, 260, '● proton  ● neutron  ● elektron', {s: 12, c: C.dim});
+    $('s_a1').innerHTML = o;
+    $('r_a1').innerHTML = `atoomnummer Z = <b>${Z}</b> protonen<br>neutronental N = A − Z = <b>${N}</b><br>massagetal (nucleonental) A = <b>${A}</b><br>${Z} elektronen in het neutrale atoom<br><br>Isotopen: zelfde Z, ander N.`;
+  }
+  function omzet(){ const v = parseFloat($('a1u').value.replace(',', '.').replace(/·10\^?/, 'e')), s = $('a1s').value; if (!isFinite(v)){ $('r_a1u').innerHTML = 'Typ een getal.'; return; }
+    const r = {u: [v * 1.66e-27, 'kg'], kg: [v / 1.66e-27, 'u'], ev: [v * 1.6e-19, 'J'], j: [v / 1.6e-19, 'eV'], mev: [v * 1.6e-13, 'J']}[s];
+    $('r_a1u').innerHTML = `= <b>${wet(r[0])} ${r[1]}</b>`; }
+  $('a1e').onchange = () => { grens(); teken(); }; $('a1a').oninput = teken; $('a1u').oninput = $('a1s').onchange = omzet;
+  grens(); teken(); omzet();
+})();
+
+//////////////////// 1.2 standaardmodel ////////////////////
+(function(){
+  const D = [
+    ['u', 'up', '+⅔', 'quark', 1, 0, 'Lichtste quark. Zit in protonen (2×) en neutronen (1×).'], ['c', 'charm', '+⅔', 'quark', 2, 0, 'Zwaarder broertje van de up-quark, 2de generatie.'], ['t', 'top', '+⅔', 'quark', 3, 0, 'Zwaarste elementaire deeltje: ongeveer zo zwaar als een goudatoom.'],
+    ['d', 'down', '−⅓', 'quark', 1, 1, 'Zit in protonen (1×) en neutronen (2×).'], ['s', 'strange', '−⅓', 'quark', 2, 1, '2de generatie.'], ['b', 'bottom', '−⅓', 'quark', 3, 1, '3de generatie.'],
+    ['e', 'elektron', '−1', 'lepton', 1, 2, 'Draait rond de kern. Ontstaat bij β⁻-verval.'], ['μ', 'muon', '−1', 'lepton', 2, 2, 'Zwaarder dan het elektron, ontstaat in de atmosfeer door kosmische straling.'], ['τ', 'tau', '−1', 'lepton', 3, 2, 'Nog zwaarder, 3de generatie.'],
+    ['νₑ', 'elektronneutrino', '0', 'lepton', 1, 3, 'Bijna massaloos en zonder lading: het gaat door de hele aarde. Ontstaat bij bètaverval en in de zon.'], ['ν_μ', 'muonneutrino', '0', 'lepton', 2, 3, '2de generatie.'], ['ν_τ', 'tauneutrino', '0', 'lepton', 3, 3, '3de generatie.'],
+    ['g', 'gluon', '0', 'boson', 4, 0, 'Draagt de sterke wisselwerking: houdt de quarks samen in protonen en neutronen.'], ['γ', 'foton', '0', 'boson', 4, 1, 'Draagt de elektromagnetische wisselwerking. Licht en γ-straling bestaan uit fotonen.'], ['Z', 'Z-boson', '0', 'boson', 4, 2, 'Draagt (met W) de zwakke wisselwerking.'], ['W', 'W-boson', '±1', 'boson', 4, 3, 'Draagt de zwakke wisselwerking: zorgt voor bètaverval.'],
+    ['H', 'higgsboson', '0', 'higgs', 5, 1, 'Hoort bij het higgsveld, dat elementaire deeltjes hun massa geeft (Brout-Englert-Higgsmechanisme). Ontdekt bij CERN in 2012.']
+  ];
+  const kl = {quark: '#F9A8D4', lepton: '#86EFAC', boson: '#FDE68A', higgs: '#C4B5FD'};
+  let k = -1;
+  function teken(){
+    let o = txt(80, 24, 'I', {s: 13, w: 700, a: 'middle', c: C.dim}) + txt(180, 24, 'II', {s: 13, w: 700, a: 'middle', c: C.dim}) + txt(280, 24, 'III', {s: 13, w: 700, a: 'middle', c: C.dim}) + txt(180, 410, 'generaties materiedeeltjes', {s: 12, a: 'middle', c: C.dim});
+    D.forEach(([s, n, q, soort, kol, rij], i) => { const x = kol === 5 ? 520 : 30 + (kol - 1) * 100 + (kol === 4 ? 30 : 0), y = kol === 5 ? 120 + rij * 0 : 40 + rij * 90;
+      o += `<g data-i="${i}" style="cursor:pointer"><rect x="${x}" y="${y}" width="90" height="80" rx="8" fill="${kl[soort]}" stroke="${i === k ? '#1D2A36' : '#fff'}" stroke-width="${i === k ? 3 : 1}"/>${txt(x + 45, y + 44, s.replace('_', ''), {s: 26, w: 700, a: 'middle'})}${txt(x + 45, y + 66, n, {s: 11, a: 'middle'})}${txt(x + 84, y + 16, q, {s: 11, w: 700, a: 'end'})}</g>`; });
+    o += txt(80 + 40, 400 - 12, '', {}) + txt(30, 400, 'quarks', {s: 12, w: 700, c: '#BE185D'}) + txt(120, 400, '', {}) + txt(390, 30, 'ijkbosonen', {s: 13, w: 700, c: '#B45309', a: 'middle'}) + txt(565, 110, 'higgsboson', {s: 13, w: 700, c: '#6D28D9', a: 'middle'});
+    o += txt(30, 400, 'roze: quarks · groen: leptonen', {s: 12, w: 600, c: C.dim});
+    $('s_a2').innerHTML = o;
+    $('s_a2').querySelectorAll('g[data-i]').forEach(g => g.onclick = () => { k = +g.dataset.i; teken(); const d = D[k]; $('r_a2').innerHTML = `<b>${d[1]}</b> (${d[0].replace('_', '')}) · ${d[3] === 'higgs' ? 'higgsboson' : d[3]}<br>lading: <b>${d[2]}</b>` + (d[3] === 'boson' || d[3] === 'higgs' ? '' : ` · generatie ${d[4]}`) + `<br>${d[6]}`; });
+  }
+  teken();
+  const B = [['Georges Lemaître (Leuven)', 'Priester en fysicus. Stelde in 1927 voor dat het heelal uitdijt, en later dat het ontstaan is uit een "oeratoom": de basis van de <b>oerknaltheorie</b>.'],
+    ['Robert Brout en François Englert (ULB)', 'Beschreven in 1964 hoe elementaire deeltjes hun <b>massa</b> krijgen via een veld (het Brout-Englert-Higgsmechanisme). Na de ontdekking van het higgsboson kreeg Englert in 2013 de Nobelprijs fysica, samen met Peter Higgs.'],
+    ['Francis Halzen (Tienen)', 'Kreeg in 2026 de Nobelprijs fysica voor zijn beslissende bijdrage aan de <b>IceCube</b>-neutrinodetector in het ijs van de Zuidpool, en de ontdekking van hoogenergetische <b>neutrino\'s uit de kosmos</b>. Neutrino\'s komen bijna ongehinderd van verre bronnen en tonen zo delen van het heelal die we anders niet kunnen zien.'],
+    ['Een theorie in opbouw', 'Van Daltons ondeelbare atomen, via Thomson (elektron), Rutherford (kern) en Bohr (schillen) naar de quantummechanica en het standaardmodel: elke nieuwe meting dwong de fysici hun model aan te passen.']];
+  $('c_a2').innerHTML = B.map(([t, p]) => `<div class="card"><div class="txt"><h4>${t}</h4><p>${p}</p></div></div>`).join('');
+})();
+
+//////////////////// 2.1 nuclidenkaart ////////////////////
+const STABIEL = {1: [0, 1], 2: [1, 2], 3: [3, 4], 4: [5], 5: [5, 6], 6: [6, 7], 7: [7, 8], 8: [8, 9, 10], 9: [10], 10: [10, 11, 12], 11: [12], 12: [12, 13, 14], 13: [14], 14: [14, 15, 16], 15: [16], 16: [16, 17, 18, 20], 17: [18, 20], 18: [18, 20, 22], 19: [20, 22], 20: [20, 22, 23, 24, 26, 28]};
+(function(){
+  const x0 = 50, y0 = 430, c = 19; let sel = null, pad = [], anim = null;
+  const X = n => x0 + n * c, Y = z => y0 - z * c;
+  function soort(z, n){ const st = STABIEL[z]; if (!st) return null; if (st.includes(n)) return 'stabiel'; if (z === 4 && n === 4) return 'twee α'; return n > Math.max(...st) ? 'β⁻' : 'β⁺'; }
+  function teken(){
+    let o = '';
+    for (let z = 1; z <= 20; z++) for (let n = Math.max(0, z - 2); n <= z + 7 && n <= 30; n++){ const s = soort(z, n); o += `<rect data-z="${z}" data-n="${n}" x="${X(n)}" y="${Y(z) - c}" width="${c - 1}" height="${c - 1}" fill="${s === 'stabiel' ? '#1D2A36' : s === 'β⁻' ? '#93C5FD' : s === 'β⁺' ? '#FCA5A5' : '#FDE68A'}" style="cursor:pointer"/>`; }
+    for (let z = 2; z <= 20; z += 2) o += txt(x0 - 6, Y(z) - 5, z, {s: 10, c: C.dim, a: 'end'});
+    for (let n = 0; n <= 30; n += 5) o += txt(X(n) + 9, y0 + 14, n, {s: 10, c: C.dim, a: 'middle'});
+    o += txt(x0 - 6, 20, 'Z', {s: 13, w: 700, a: 'end'}) + txt(X(30) + 10, y0 + 14, 'N', {s: 13, w: 700});
+    o += `<line x1="${X(0)}" y1="${Y(0)}" x2="${X(22)}" y2="${Y(22)}" stroke="${C.dim}" stroke-dasharray="4 4"/>` + txt(X(21), Y(21) - 26, 'N = Z', {s: 11, c: C.dim});
+    o += `<rect x="440" y="330" width="14" height="14" fill="#1D2A36"/>` + txt(460, 342, 'stabiel', {s: 12}) + `<rect x="440" y="352" width="14" height="14" fill="#93C5FD"/>` + txt(460, 364, 'te veel neutronen: β⁻', {s: 12}) + `<rect x="440" y="374" width="14" height="14" fill="#FCA5A5"/>` + txt(460, 386, 'te veel protonen: β⁺ / EV', {s: 12});
+    if (pad.length){ pad.forEach((p, i) => { if (i){ const q = pad[i - 1]; o += pijl(X(q[1]) + 9, Y(q[0]) - 10, X(p[1]) + 9, Y(p[0]) - 10, '#F59E0B', '', 0, 0, 3); } }); const [z, n] = pad[pad.length - 1]; o += `<rect x="${X(n) - 2}" y="${Y(z) - c - 2}" width="${c + 3}" height="${c + 3}" fill="none" stroke="#F59E0B" stroke-width="3"/>`; }
+    $('s_v1').innerHTML = o;
+    $('s_v1').querySelectorAll('rect[data-z]').forEach(r => r.onclick = () => { sel = [+r.dataset.z, +r.dataset.n]; pad = [sel]; info(); teken(); });
+  }
+  function info(){ if (!pad.length) return; const [z, n] = pad[pad.length - 1], s = soort(z, n), A = z + n;
+    $('r_v1').innerHTML = `<span style="font-size:20px">${nuc(A, z, SYM[z])}</span> · Z = ${z}, N = ${n}<br>` + (s === 'stabiel' ? '<span class="ok">Stabiel</span>: in de stabiliteitsvallei.' : s === 'twee α' ? 'Be-8 valt meteen uiteen in <b>twee α-deeltjes</b>.' : s === 'β⁻' ? 'Te veel neutronen: <b>β⁻-verval</b>. Een neutron wordt een proton: Z + 1, N − 1.' : 'Te veel protonen: <b>β⁺-verval of elektronenvangst</b>. Een proton wordt een neutron: Z − 1, N + 1.'); }
+  $('v1go').onclick = () => { if (!pad.length) return; clearInterval(anim); anim = setInterval(() => { const [z, n] = pad[pad.length - 1], s = soort(z, n);
+      if (s === 'β⁻') pad.push([z + 1, n - 1]); else if (s === 'β⁺') pad.push([z - 1, n + 1]); else { clearInterval(anim); }
+      info(); teken(); }, 600); };
+  $('v1re').onclick = () => { clearInterval(anim); pad = []; $('r_v1').innerHTML = 'Klik op een vakje.'; teken(); };
+  teken();
+  const K = [['β⁻-verval', 'In de kern verandert een <b>neutron in een proton</b>. Er komen een elektron en een antineutrino vrij: n → p + e⁻ + ν̄.'], ['β⁺-verval', 'Een <b>proton verandert in een neutron</b>. Er komen een positron en een neutrino vrij: p → n + e⁺ + ν.'], ['Elektronenvangst (EV)', 'De kern vangt een elektron uit de binnenste schil: p + e⁻ → n + ν. Hetzelfde effect als β⁺.'], ['α-verval', 'Zware kernen (Z &gt; 83) zenden een <b>heliumkern</b> uit: 2 protonen en 2 neutronen. Z − 2, A − 4.'], ['γ-straling', 'Na een verval zit de kern vaak in een aangeslagen toestand. Hij geeft de extra energie af als een <b>foton</b>. Z en A veranderen niet.']];
+  $('c_v1').innerHTML = K.map(([t, p]) => `<div class="card"><div class="txt"><h4>${t}</h4><p>${p}</p></div></div>`).join('');
+})();
+
+//////////////////// 2.2 massadefect ////////////////////
+const KERN = [['H-2', 1, 1, 2.014102], ['He-4', 2, 2, 4.002602], ['Li-6', 3, 3, 6.015123], ['C-12', 6, 6, 12.000000], ['O-16', 8, 8, 15.994915], ['Ne-20', 10, 10, 19.992440], ['Si-28', 14, 14, 27.976927], ['Fe-56', 26, 30, 55.934937], ['Kr-84', 36, 48, 83.911498], ['Sn-120', 50, 70, 119.902202], ['Ba-138', 56, 82, 137.905247], ['Pb-208', 82, 126, 207.976652], ['U-235', 92, 143, 235.043930], ['U-238', 92, 146, 238.050788]];
+(function(){
+  $('v2k').innerHTML = KERN.map(([n], i) => `<option value="${i}" ${n === 'Fe-56' ? 'selected' : ''}>${n}</option>`).join('');
+  let g = 'b';
+  $('v2g').onclick = e => { const b = e.target.closest('button'); if (!b) return; g = b.dataset.v; $('v2g').querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b)); teken(); };
+  const Eb = ([n, Z, N, M]) => (Z * 1.007825 + N * 1.008665 - M) * 931.5;
+  function teken(){
+    const k = KERN[+$('v2k').value], [n, Z, N, M] = k, A = Z + N, dm = Z * 1.007825 + N * 1.008665 - M, E = dm * 931.5;
+    const gr = g === 'b' ? grafiek(null, {w: 640, h: 400, x0: 56, y0: 360, xmax: 250, ymax: 10, xlab: 'massagetal A', ylab: 'bindingsenergie per nucleon (MeV)', xt: [0, 50, 100, 150, 200, 250], yt: [2, 4, 6, 8, 10]}) : null;
+    let o;
+    if (g === 'b'){ o = gr.s + `<polyline points="${KERN.map(kk => gr.X(kk[1] + kk[2]) + ',' + gr.Y(Eb(kk) / (kk[1] + kk[2]))).join(' ')}" fill="none" stroke="${BLAUW}" stroke-width="2.5"/>`;
+      KERN.forEach(kk => { const a = kk[1] + kk[2]; o += `<circle cx="${gr.X(a)}" cy="${gr.Y(Eb(kk) / a)}" r="${kk === k ? 7 : 4}" fill="${kk === k ? RODE : BLAUW}"/>` + txt(gr.X(a) + 6, gr.Y(Eb(kk) / a) + 16, kk[0], {s: 10, c: C.dim}); });
+      o += txt(gr.X(20), gr.Y(1.3), '← fusie levert energie', {s: 12, w: 700, c: '#1F7A4A'}) + txt(gr.X(245), gr.Y(1.3), 'fissie levert energie →', {s: 12, w: 700, c: '#1F7A4A', a: 'end'}) + txt(gr.X(56), gr.Y(9.4), 'maximum bij Fe-56', {s: 12, w: 700, c: RODE, a: 'middle'}); }
+    else { const R = kk => kk[3] * 931.5 / (kk[1] + kk[2]); const h = grafiek(null, {w: 640, h: 400, x0: 60, y0: 360, xmax: 250, ymax: 10, xlab: 'massagetal A', ylab: 'rustenergie per nucleon (MeV)', xt: [0, 50, 100, 150, 200, 250], yt: []});
+      const Yr = v => 360 - (v - 930) / 9 * 340; o = h.s; [930, 932, 934, 936, 938].forEach(v => o += txt(54, Yr(v) + 4, v, {s: 11, c: C.dim, a: 'end'}) + `<line x1="60" y1="${Yr(v)}" x2="632" y2="${Yr(v)}" stroke="#EEF2F5"/>`);
+      const all = [['H-1', 1, 0, 1.007825]].concat(KERN);
+      o += `<polyline points="${all.map(kk => h.X(kk[1] + kk[2]) + ',' + Yr(R(kk))).join(' ')}" fill="none" stroke="${BLAUW}" stroke-width="2.5"/>`;
+      all.forEach(kk => o += `<circle cx="${h.X(kk[1] + kk[2])}" cy="${Yr(R(kk))}" r="${kk === k ? 7 : 4}" fill="${kk === k ? RODE : BLAUW}"/>` + txt(h.X(kk[1] + kk[2]) + 6, Yr(R(kk)) - 8, kk[0], {s: 10, c: C.dim}));
+      o += txt(h.X(56), Yr(930.2) + 20, 'minimum bij Fe-56', {s: 12, w: 700, c: RODE, a: 'middle'}); }
+    $('g_v2').innerHTML = o;
+    $('r_v2').innerHTML = `${n}: Z = ${Z}, N = ${N}<br>massa losse deeltjes: ${Z} · 1,007825 + ${N} · 1,008665 = ${fmt(Z * 1.007825 + N * 1.008665, 6)} u<br>massa atoom: ${fmt(M, 6)} u<br>massadefect Δm = <b>${fmt(dm, 6)} u</b> = ${wet(dm * 1.66e-27)} kg<br>bindingsenergie E = Δm · c² = <b>${fmt(E, 1)} MeV</b><br>per nucleon: <b>${fmt(E / A, 2)} MeV</b><br><br>Hoe groter de bindingsenergie per nucleon, hoe stabieler de kern. Kernen evolueren spontaan naar Fe-56: lichte kernen door <b>fusie</b>, zware door <b>fissie</b> of verval.`;
+  }
+  $('v2k').onchange = teken; teken();
+})();
+
+//////////////////// 2.3 soorten straling ////////////////////
+(function(){
+  const S = [
+    {k: 'α', n: 'alfaverval', d: 'heliumkern (2 p + 2 n)', q: '+2', m: '4 u', s: nuc(4, 2, 'He'), r: nuc(226, 88, 'Ra') + ' → ' + nuc(222, 86, 'Rn') + ' + ' + nuc(4, 2, 'He'), u: 'Z − 2, A − 4'},
+    {k: 'β⁻', n: 'bèta-minverval', d: 'elektron uit de kern', q: '−1', m: '≈ 0', s: nuc(0, -1, 'e'), r: nuc(14, 6, 'C') + ' → ' + nuc(14, 7, 'N') + ' + ' + nuc(0, -1, 'e') + ' + ν̄', u: 'Z + 1, A gelijk'},
+    {k: 'β⁺', n: 'bèta-plusverval', d: 'positron (anti-elektron)', q: '+1', m: '≈ 0', s: nuc(0, 1, 'e'), r: nuc(18, 9, 'F') + ' → ' + nuc(18, 8, 'O') + ' + ' + nuc(0, 1, 'e') + ' + ν', u: 'Z − 1, A gelijk'},
+    {k: 'EV', n: 'elektronenvangst', d: 'kern vangt een binnenste elektron', q: '—', m: '—', s: '—', r: nuc(40, 19, 'K') + ' + ' + nuc(0, -1, 'e') + ' → ' + nuc(40, 18, 'Ar') + ' + ν', u: 'Z − 1, A gelijk'},
+    {k: 'γ', n: 'gammastraling', d: 'foton (elektromagnetische straling)', q: '0', m: '0', s: 'γ', r: nuc(60, 28, 'Ni') + '* → ' + nuc(60, 28, 'Ni') + ' + γ', u: 'Z en A gelijk'}];
+  let k = 0;
+  $('v3k').innerHTML = S.map((s, i) => `<button class="btn ${i === 0 ? 'on' : ''}" data-i="${i}">${s.k}</button>`).join('');
+  $('v3k').onclick = e => { const b = e.target.closest('button'); if (!b) return; k = +b.dataset.i; $('v3k').querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b)); teken(); };
+  const kern = (cx, cy, p, n, r = 7) => { let o = '', tot = p + n; for (let i = 0; i < tot; i++){ const rr = Math.sqrt(i / tot) * (Math.sqrt(tot) * 6), a = i * 2.399; o += `<circle cx="${cx + rr * Math.cos(a)}" cy="${cy + rr * Math.sin(a)}" r="${r}" fill="${i % 2 ? RODE : GRIJS}" stroke="#fff"/>`; } return o; };
+  function teken(){
+    const s = S[k];
+    let o = kern(150, 150, 12, 14) + pijl(250, 150, 360, 150, '#1D2A36', '', 0, 0, 3) + kern(470, 150, s.k === 'α' ? 10 : s.k === 'β⁻' ? 13 : s.k === 'γ' ? 12 : 11, s.k === 'α' ? 12 : s.k === 'β⁻' ? 13 : s.k === 'γ' ? 14 : 15);
+    if (s.k === 'α') o += kern(590, 60, 2, 2, 8) + txt(590, 100, 'α', {s: 16, w: 700, a: 'middle'});
+    if (s.k === 'β⁻') o += `<circle cx="590" cy="60" r="8" fill="${BLAUW}"/>` + txt(590, 90, 'e⁻', {s: 16, w: 700, a: 'middle'});
+    if (s.k === 'β⁺') o += `<circle cx="590" cy="60" r="8" fill="#F59E0B"/>` + txt(590, 90, 'e⁺', {s: 16, w: 700, a: 'middle'});
+    if (s.k === 'EV') o += `<circle cx="70" cy="60" r="8" fill="${BLAUW}"/>` + pijl(80, 70, 120, 110, BLAUW, '', 0, 0, 2) + txt(70, 40, 'e⁻ gevangen', {s: 12, w: 700, a: 'middle'});
+    if (s.k === 'γ') o += `<path d="M540 120 q10 -15 20 0 t20 0 t20 0" stroke="#7c3aed" stroke-width="3" fill="none"/>` + txt(600, 100, 'γ', {s: 18, w: 700, a: 'middle', c: '#7c3aed'});
+    o += txt(320, 270, s.u, {s: 15, w: 700, a: 'middle'});
+    $('s_v3').innerHTML = o;
+    $('r_v3').innerHTML = `<b>${s.n}</b><br>wat: ${s.d}<br>voorbeeld: <span style="font-size:17px">${s.r}</span>`;
+  }
+  $('t_v3').innerHTML = '<tr><th>soort</th><th>wat wordt uitgezonden</th><th>lading</th><th>massa</th><th>symbool</th><th>effect op de kern</th></tr>' + S.map(s => `<tr><td><b>${s.k}</b></td><td>${s.d}</td><td>${s.q}</td><td>${s.m}</td><td style="font-size:17px">${s.s}</td><td>${s.u}</td></tr>`).join('');
+  teken();
+})();
+
+//////////////////// 2.4 vervalreeks ////////////////////
+(function(){
+  const STAP = ['a', 'b', 'b', 'a', 'a', 'a', 'a', 'a', 'b', 'b', 'a', 'b', 'b', 'a'];
+  const reeks = [[92, 238]]; STAP.forEach(t => { const [z, a] = reeks[reeks.length - 1]; reeks.push(t === 'a' ? [z - 2, a - 4] : [z + 1, a]); });
+  let i = 0, fout = '';
+  const tabel = reeks.slice(0, -1).map(([z, a], j) => [z, a, STAP[j]]).sort((p, q) => q[0] - p[0] || q[1] - p[1]);
+  $('r_v4b').innerHTML = '<b>Isotopentabel (uittreksel)</b><br>' + tabel.map(([z, a, t]) => `${SYM[z]}-${a}: ${t === 'a' ? 'α' : 'β⁻'}`).join(' · ') + ' · Pb-206: stabiel';
+  function teken(){
+    const X = n => 60 + (n - 122) * 22, Y = z => 360 - (z - 81) * 26;
+    let o = '';
+    for (let z = 81; z <= 93; z++) o += txt(52, Y(z) + 4, SYM[z] || '', {s: 11, c: C.dim, a: 'end'}) + `<line x1="60" y1="${Y(z)}" x2="620" y2="${Y(z)}" stroke="#EEF2F5"/>`;
+    for (let n = 124; n <= 146; n += 2) o += txt(X(n), 380, n, {s: 10, c: C.dim, a: 'middle'});
+    o += txt(620, 395, 'N', {s: 12, w: 700, a: 'end'}) + txt(40, 14, 'Z', {s: 12, w: 700});
+    for (let j = 1; j <= i; j++){ const [z1, a1] = reeks[j - 1], [z2, a2] = reeks[j]; o += pijl(X(a1 - z1), Y(z1), X(a2 - z2), Y(z2), STAP[j - 1] === 'a' ? RODE : BLAUW, '', 0, 0, 2.5); }
+    reeks.slice(0, i + 1).forEach(([z, a], j) => o += `<circle cx="${X(a - z)}" cy="${Y(z)}" r="${j === i ? 8 : 5}" fill="${j === i ? '#F59E0B' : '#1D2A36'}"/>` + (j === i || j === 0 ? txt(X(a - z) + 10, Y(z) - 8, SYM[z] + '-' + a, {s: 12, w: 700}) : ''));
+    o += txt(380, 40, '— α', {s: 12, w: 700, c: RODE}) + txt(430, 40, '— β⁻', {s: 12, w: 700, c: BLAUW});
+    $('s_v4').innerHTML = o;
+    const [z, a] = reeks[i];
+    $('r_v4').innerHTML = (fout ? `<span class="flag">${fout}</span><br>` : '') + `Nu: <span style="font-size:18px">${nuc(a, z, SYM[z])}</span> (stap ${i} van 14)` + (i === 14 ? '<br><span class="ok">Stabiel lood-206 bereikt!</span> 8 α-vervallen en 6 β⁻-vervallen.' : '<br>Welk verval volgt?');
+  }
+  function kies(t){ if (i >= 14) return; if (STAP[i] === t){ i++; fout = ''; } else { const [z, a] = reeks[i]; fout = `Kijk in de tabel: ${SYM[z]}-${a} vervalt via ${STAP[i] === 'a' ? 'α' : 'β⁻'}.`; } teken(); }
+  $('v4a').onclick = () => kies('a'); $('v4b').onclick = () => kies('b'); $('v4re').onclick = () => { i = 0; fout = ''; teken(); };
+  teken();
+})();
+
+//////////////////// 2.5 halveringstijd ////////////////////
+(function(){
+  let kern = [], t = 0, hist = [], loopt = false;
+  const p = 1 - Math.pow(0.5, 1 / 20);
+  function reset(){ kern = Array(400).fill(1); t = 0; hist = [[0, 400]]; loopt = false; }
+  function stap(){ if (t >= 100) { loopt = false; return; } kern = kern.map(k => k && Math.random() < p ? 0 : k); t++; hist.push([t, kern.reduce((a, b) => a + b, 0)]); }
+  function teken(){
+    let o = ''; kern.forEach((k, i) => o += `<circle cx="${22 + (i % 40) * 15.2}" cy="${20 + Math.floor(i / 40) * 19}" r="6" fill="${k ? '#F59E0B' : '#CBD5E1'}"/>`);
+    $('s_v5').innerHTML = o;
+    const g = grafiek(null, {w: 640, h: 260, x0: 50, y0: 230, xmax: 5, ymax: 400, xlab: 't (in T½)', ylab: 'N', xt: [0, 1, 2, 3, 4, 5], yt: [100, 200, 300, 400]});
+    let pts = []; for (let x = 0; x <= 5; x += 0.05) pts.push(g.X(x) + ',' + g.Y(400 * Math.pow(0.5, x)));
+    $('g_v5').innerHTML = g.s + `<polyline points="${pts.join(' ')}" fill="none" stroke="${C.dim}" stroke-dasharray="5 4" stroke-width="2"/>` + `<polyline points="${hist.map(([tt, n]) => g.X(tt / 20) + ',' + g.Y(n)).join(' ')}" fill="none" stroke="#F59E0B" stroke-width="3"/>` + [1, 2, 3].map(k => `<circle cx="${g.X(k)}" cy="${g.Y(400 / Math.pow(2, k))}" r="4" fill="${C.dim}"/>`).join('');
+    const N = hist[hist.length - 1][1];
+    $('r_v5').innerHTML = `t = <b>${fmt(t / 20, 2)} T½</b><br>nog <b>${N}</b> van de 400 kernen over<br>verwacht: 400 · (½)<sup>${fmt(t / 20, 2)}</sup> = ${fmt(400 * Math.pow(0.5, t / 20), 0)}<br><br>De oranje lijn wijkt een beetje af van de stippellijn: verval is toeval. Met veel kernen klopt de wet heel goed.`;
+  }
+  $('v5go').onclick = () => { loopt = !loopt; }; $('v5re').onclick = () => { reset(); teken(); };
+  reset(); let tel = 0;
+  function lus(){ if (isOn('v5')){ if (loopt && ++tel % 4 === 0) stap(); teken(); } requestAnimationFrame(lus); } lus();
+})();
+
+//////////////////// 2.6 doordringend ////////////////////
+(function(){
+  let s = 'a', f = 0;
+  $('v6s').onclick = e => { const b = e.target.closest('button'); if (!b) return; s = b.dataset.v; $('v6s').querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b)); };
+  function teken(){
+    f += 1;
+    const stop = {a: 210, b: 340, g: 640}[s], kl = {a: RODE, b: BLAUW, g: '#7c3aed'}[s];
+    let o = `<rect x="20" y="110" width="40" height="80" rx="6" fill="#475569"/>` + txt(40, 210, 'bron', {s: 12, a: 'middle', c: C.dim});
+    o += `<rect x="200" y="40" width="8" height="220" fill="#FEF3C7" stroke="#D97706"/>` + txt(204, 280, 'papier', {s: 12, a: 'middle', w: 700});
+    o += `<rect x="330" y="40" width="14" height="220" fill="#CBD5E1" stroke="#64748B"/>` + txt(337, 280, 'aluminium (enkele mm)', {s: 12, a: 'middle', w: 700});
+    o += `<rect x="460" y="40" width="44" height="220" fill="#64748B"/>` + txt(482, 280, 'lood (enkele cm)', {s: 12, a: 'middle', w: 700});
+    for (let k = 0; k < 6; k++){ const y = 70 + k * 32, x = 60 + ((f * 4 + k * 70) % 560);
+      if (x < stop) o += s === 'g' ? `<path d="M${x - 20} ${y} q5 -8 10 0 t10 0" stroke="${kl}" stroke-width="2.5" fill="none" opacity="${x > 504 ? 0.35 : 1}"/>` : `<circle cx="${x}" cy="${y}" r="${s === 'a' ? 7 : 4}" fill="${kl}"/>`; }
+    const ion = {a: 3, b: 2, g: 1}[s];
+    for (let k = 0; k < ion * 6; k++){ const x = 70 + Math.random() * (Math.min(stop, 600) - 70), y = 60 + Math.random() * 180; o += txt(x, y, '+', {s: 10, c: '#B45309', w: 700}); }
+    $('s_v6').innerHTML = o;
+    $('r_v6').innerHTML = {a: '<b>α-straling</b><br>ioniserend vermogen: <b>zeer groot</b><br>doordringend vermogen: <b>zeer klein</b>. Een blad papier, je huid of enkele cm lucht houden ze tegen.',
+      b: '<b>β-straling</b><br>ioniserend vermogen: <b>middelmatig</b><br>doordringend vermogen: <b>middelmatig</b>. Enkele mm aluminium houden ze tegen.',
+      g: '<b>γ-straling</b><br>ioniserend vermogen: <b>klein</b><br>doordringend vermogen: <b>zeer groot</b>. Lood of beton verzwakt ze, maar houdt ze nooit helemaal tegen.'}[s];
+  }
+  let tl = 0; function lus(){ if (isOn('v6') && ++tl % 2 === 0) teken(); requestAnimationFrame(lus); } lus();
+})();
+
+//////////////////// 2.7 activiteit ////////////////////
+(function(){
+  function teken(){
+    const A0 = +$('v7a').value, t = +$('v7t').value, A = A0 * Math.pow(0.5, t);
+    $('v7av').textContent = A0 + ' Bq'; $('v7tv').textContent = fmt(t, 1) + ' T½';
+    const g = grafiek(null, {w: 640, h: 280, x0: 56, y0: 250, xmax: 5, ymax: 2000, xlab: 't (in T½)', ylab: 'A (Bq)', xt: [0, 1, 2, 3, 4, 5], yt: [500, 1000, 1500, 2000]});
+    let pts = []; for (let x = 0; x <= 5; x += 0.05) pts.push(g.X(x) + ',' + g.Y(A0 * Math.pow(0.5, x)));
+    $('g_v7').innerHTML = g.s + `<polyline points="${pts.join(' ')}" fill="none" stroke="${RODE}" stroke-width="3"/><circle cx="${g.X(t)}" cy="${g.Y(A)}" r="6" fill="${RODE}"/>`;
+    $('r_v7').innerHTML = `A = ${A0} · (½)<sup>${fmt(t, 1)}</sup> = <b>${fmt(A, 0)} Bq</b><br>Er vervallen nu ${fmt(A, 0)} kernen per seconde.`;
+  }
+  $('v7a').oninput = $('v7t').oninput = teken; teken();
+  const K = [['Geiger-Müllerteller', 'Een buis met gas en een hoge spanning. Straling ioniseert het gas: er ontstaat een korte stroompuls. Elke puls is een "tik".'], ['Dosimeter', 'Een badge die medisch personeel en werknemers in een kerncentrale dragen. Hij meet de dosis die de drager heeft opgelopen.'], ['Nevelvat (wolkenkamer)', 'In oververzadigde alcoholdamp vormen zich druppeltjes rond de ionen langs het spoor van het deeltje. Zo zie je de banen: dikke korte sporen van α, dunne lange van β.'], ['Scintillatieteller', 'Sommige kristallen geven een lichtflitsje als straling ze raakt. Een fotomultiplicator telt de flitsen. Gebruikt in medische scanners.']];
+  $('c_v7').innerHTML = K.map(([t, p]) => `<div class="card"><div class="txt"><h4>${t}</h4><p>${p}</p></div></div>`).join('');
+})();
+
+//////////////////// 3.1 ////////////////////
+(function(){
+  let k = 'bs';
+  $('r1k').onclick = e => { const b = e.target.closest('button'); if (!b) return; k = b.dataset.v; $('r1k').querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b)); teken(); };
+  const persoon = x => `<circle cx="${x}" cy="90" r="22" fill="#F2B880" stroke="#9A5B00"/><rect x="${x - 26}" y="116" width="52" height="90" rx="14" fill="#E9EEF5" stroke="#1D2A36"/><rect x="${x - 22}" y="206" width="18" height="60" rx="6" fill="#C7D2FE"/><rect x="${x + 4}" y="206" width="18" height="60" rx="6" fill="#C7D2FE"/>`;
+  function teken(){
+    let o = persoon(420);
+    if (k === 'bs'){ o += `<rect x="60" y="130" width="60" height="50" rx="6" fill="#475569"/>` + txt(90, 200, 'bron', {s: 12, a: 'middle', c: C.dim}); for (let i = 0; i < 4; i++) o += `<path d="M130 ${140 + i * 10} q50 ${-20 + i * 12} 260 ${-10 + i * 14}" stroke="#7c3aed" stroke-width="2" fill="none" stroke-dasharray="6 5"/>`;
+      o += txt(420, 290, 'de straling komt van buiten', {s: 13, w: 700, a: 'middle'}); }
+    else { [[400, 140], [440, 170], [410, 230], [432, 100], [395, 190]].forEach(([x, y]) => o += `<circle cx="${x}" cy="${y}" r="5" fill="#F59E0B"/>`); for (let i = 0; i < 6; i++){ const a = i * 1.05; o += `<path d="M${420 + 70 * Math.cos(a)} ${160 + 70 * Math.sin(a)} l${20 * Math.cos(a)} ${20 * Math.sin(a)}" stroke="#7c3aed" stroke-width="2"/>`; }
+      o += txt(420, 290, 'radioactieve stof óp of ín het lichaam', {s: 13, w: 700, a: 'middle'}); }
+    $('s_r1').innerHTML = o;
+    $('r_r1').innerHTML = k === 'bs' ? '<b>Bestraling</b> (uitwendige blootstelling): de straling komt van een bron buiten je lichaam. Ga je weg of verdwijnt de bron, dan stopt de blootstelling. Je wordt <b>zelf niet radioactief</b>.' : '<b>Besmetting</b>: radioactieve stoffen komen op je huid of in je lichaam (inademen, inslikken, wonde). Ze blijven stralen tot ze vervallen of verwijderd zijn. Daarom is besmetting met α-stralers zo gevaarlijk.';
+  }
+  teken();
+  const K = [['Natuurlijk: radon', 'Een radioactief edelgas uit de bodem. Het kan zich ophopen in kelders en slecht verluchte huizen. Het grootste deel van onze natuurlijke dosis.'], ['Natuurlijk: kosmische straling', 'Deeltjes uit de ruimte. Hoe hoger je bent (bergen, vliegtuig), hoe meer je ervan krijgt.'], ['Natuurlijk: in je lichaam en voeding', 'Kalium-40 en koolstof-14 zitten in je voeding en in je lichaam. Ook gesteenten en bouwmaterialen bevatten radioactieve stoffen.'], ['Kunstmatig: medisch', 'Röntgenfoto\'s, CT-scans, nucleaire geneeskunde en radiotherapie.'], ['Kunstmatig: kernenergie en ongevallen', 'Kerncentrales lozen heel weinig. Bij ongevallen zoals Tsjernobyl (1986) en Fukushima (2011) kwamen radioactieve stoffen in het milieu.'], ['Kunstmatig: in toestellen', 'Sommige rookmelders bevatten een kleine hoeveelheid americium-241.']];
+  $('c_r1').innerHTML = K.map(([t, p]) => `<div class="card"><div class="txt"><h4>${t}</h4><p>${p}</p></div></div>`).join('');
+})();
+
+//////////////////// 3.2 dosis ////////////////////
+(function(){
+  function teken(){
+    const wR = parseFloat($('r2s').value), wT = parseFloat($('r2o').value), E = +$('r2e').value / 1000, m = +$('r2m').value, D = E / m, H = wR * D, Ee = wT * H;
+    $('r2ev').textContent = $('r2e').value + ' mJ'; $('r2mv').textContent = fmt(m, 2) + ' kg';
+    const bar = (x, v, kl, l, eh) => { const h = Math.min(200, 20 + Math.log10(1 + v * 1e4) * 40); return `<rect x="${x}" y="${250 - h}" width="110" height="${h}" fill="${kl}" rx="4"/>` + txt(x + 55, 270, l, {s: 13, w: 700, a: 'middle'}) + txt(x + 55, 240 - h, fmt(v * 1000, 2) + ' ' + eh, {s: 13, w: 700, a: 'middle'}); };
+    $('s_r2').innerHTML = bar(60, D, '#93C5FD', 'geabsorbeerd', 'mGy') + pijl(180, 150, 230, 150, C.dim, '× wR', 0, -10, 2) + bar(250, H, '#C4B5FD', 'equivalent', 'mSv') + pijl(370, 150, 420, 150, C.dim, '× wT', 0, -10, 2) + bar(440, Ee, '#FCA5A5', 'effectief', 'mSv');
+    $('r_r2').innerHTML = `<b>Geabsorbeerde dosis</b> D = E / m = ${fmt(E * 1000, 0)} mJ / ${fmt(m, 2)} kg = <b>${fmt(D * 1000, 2)} mGy</b> (gray: J/kg)<br><b>Equivalente dosis</b> H = w<sub>R</sub> · D = <b>${fmt(H * 1000, 2)} mSv</b> (houdt rekening met de soort straling)<br><b>Effectieve dosis</b> E = w<sub>T</sub> · H = <b>${fmt(Ee * 1000, 2)} mSv</b> (houdt rekening met de gevoeligheid van het orgaan)`;
+  }
+  ['r2s', 'r2o', 'r2e', 'r2m'].forEach(id => $(id).oninput = teken); teken();
+  const K = [['Tijd', 'Hoe korter je in de buurt van een bron blijft, hoe kleiner je dosis.'], ['Afstand', 'Hoe verder van de bron, hoe kleiner de dosis. Bij dubbele afstand ontvang je ongeveer vier keer minder.'], ['Afscherming', 'Zet materiaal tussen jou en de bron: lood of beton voor γ-straling, aluminium of plexiglas voor β.'], ['Besmetting vermijden', 'Handschoenen en beschermende kledij, niet eten of drinken bij radioactieve stoffen, goed verluchten tegen radon.'], ['Limiet', 'Voor de bevolking geldt een limiet van 1 mSv per jaar bovenop de natuurlijke achtergrond en medische toepassingen.']];
+  $('c_r2').innerHTML = K.map(([t, p]) => `<div class="card"><div class="txt"><h4>${t}</h4><p>${p}</p></div></div>`).join('');
+})();
+
+//////////////////// 3.3 datering ////////////////////
+(function(){
+  const M = {c: [5730, 'jaar', 'C-14'], k: [1.25e9, 'jaar', 'K-40'], u: [4.47e9, 'jaar', 'U-238']};
+  function teken(){
+    const [T, eh, n] = M[$('r3d').value], p = +$('r3p').value / 100, n12 = Math.log2(1 / p), t = T * n12;
+    $('r3pv').textContent = Math.round(p * 100) + ' %';
+    const g = grafiek(null, {w: 640, h: 300, x0: 56, y0: 270, xmax: 7, ymax: 100, xlab: 't (in T½)', ylab: 'over (%)', xt: [0, 1, 2, 3, 4, 5, 6, 7], yt: [25, 50, 75, 100]});
+    let pts = []; for (let x = 0; x <= 7; x += 0.05) pts.push(g.X(x) + ',' + g.Y(100 * Math.pow(0.5, x)));
+    $('g_r3').innerHTML = g.s + `<polyline points="${pts.join(' ')}" fill="none" stroke="${BLAUW}" stroke-width="3"/>` + (n12 <= 7 ? `<line x1="${g.X(0)}" y1="${g.Y(p * 100)}" x2="${g.X(n12)}" y2="${g.Y(p * 100)}" stroke="${RODE}" stroke-dasharray="4 4"/><line x1="${g.X(n12)}" y1="${g.Y(p * 100)}" x2="${g.X(n12)}" y2="${g.Y(0)}" stroke="${RODE}" stroke-dasharray="4 4"/><circle cx="${g.X(n12)}" cy="${g.Y(p * 100)}" r="6" fill="${RODE}"/>` : '');
+    $('r_r3').innerHTML = `Nog ${Math.round(p * 100)} % ${n} over.<br>Aantal halveringstijden: log₂(1 / ${fmt(p, 2)}) = <b>${fmt(n12, 2)}</b><br>ouderdom t = ${fmt(n12, 2)} · ${T >= 1e6 ? wet(T) : T} jaar = <b>${t >= 1e6 ? wet(t) : fmt(t, 0)} jaar</b>`;
+  }
+  $('r3d').onchange = $('r3p').oninput = teken; teken();
+})();
+
+//////////////////// 3.4 fusie en fissie ////////////////////
+(function(){
+  let k = 'fis';
+  $('r4k').onclick = e => { const b = e.target.closest('button'); if (!b) return; k = b.dataset.v; $('r4k').querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b)); teken(); };
+  const bol = (x, y, r, kl, l) => `<circle cx="${x}" cy="${y}" r="${r}" fill="${kl}"/>` + txt(x, y + 5, l, {s: 13, w: 700, a: 'middle', c: '#fff'});
+  function teken(){
+    let o, r;
+    if (k === 'fis'){ const voor = 235.043930 + 1.008665, na = 140.914411 + 91.926156 + 3 * 1.008665, dm = voor - na;
+      o = bol(40, 160, 10, GRIJS, 'n') + pijl(55, 160, 110, 160, C.dim, '', 0, 0, 2) + bol(170, 160, 48, '#B45309', 'U-235') + pijl(230, 160, 300, 160, '#1D2A36', '', 0, 0, 3) + bol(380, 90, 38, '#2563eb', 'Ba-141') + bol(380, 235, 32, '#0891b2', 'Kr-92') + bol(500, 120, 10, GRIJS, 'n') + bol(530, 165, 10, GRIJS, 'n') + bol(500, 210, 10, GRIJS, 'n') + txt(590, 165, '+ energie', {s: 14, w: 700, c: RODE, a: 'end'});
+      r = `<span style="font-size:16px">${nuc(235, 92, 'U')} + ${nuc(1, 0, 'n')} → ${nuc(141, 56, 'Ba')} + ${nuc(92, 36, 'Kr')} + 3 ${nuc(1, 0, 'n')}</span><br>massa vóór: ${fmt(voor, 6)} u<br>massa na: ${fmt(na, 6)} u<br>massaverlies: <b>${fmt(dm, 6)} u</b><br>vrijgekomen energie: Δm · c² = <b>${fmt(dm * 931.5, 0)} MeV</b> per splitsing<br><br>De vrije neutronen kunnen nieuwe kernen splitsen: een <b>kettingreactie</b>.`; }
+    else { const voor = 2.014102 + 3.016049, na = 4.002602 + 1.008665, dm = voor - na;
+      o = bol(120, 110, 22, '#F59E0B', 'D') + bol(120, 210, 26, '#F97316', 'T') + pijl(170, 160, 260, 160, '#1D2A36', '', 0, 0, 3) + bol(360, 160, 32, '#DC2626', 'He-4') + bol(470, 160, 10, GRIJS, 'n') + txt(590, 165, '+ energie', {s: 14, w: 700, c: RODE, a: 'end'});
+      r = `<span style="font-size:16px">${nuc(2, 1, 'H')} + ${nuc(3, 1, 'H')} → ${nuc(4, 2, 'He')} + ${nuc(1, 0, 'n')}</span><br>massa vóór: ${fmt(voor, 6)} u<br>massa na: ${fmt(na, 6)} u<br>massaverlies: <b>${fmt(dm, 6)} u</b><br>vrijgekomen energie: <b>${fmt(dm * 931.5, 1)} MeV</b><br><br>Per kg brandstof levert fusie nog meer energie dan fissie.`; }
+    $('s_r4').innerHTML = o; $('r_r4').innerHTML = r;
+  }
+  teken();
+  const K = [['De zon: onze fusiereactor', 'In de kern van de zon (ongeveer 15 miljoen °C) fuseren waterstofkernen tot helium. Elke seconde zet de zon zo miljoenen ton massa om in energie. Zonder die fusie geen leven op aarde.'],
+    ['Kernfusie op aarde', 'In een <b>tokamak</b> wordt een plasma van waterstofisotopen verhit tot meer dan 100 miljoen °C en met sterke magneetvelden ingesloten. ITER in Frankrijk is het grootste project.'],
+    ['Technische beperkingen van fusie', 'Zo\'n heet plasma stabiel houden is extreem moeilijk. De wanden krijgen veel neutronen te verwerken. Een fusiereactor die meer energie levert dan hij verbruikt en zo elektriciteit maakt, bestaat nog niet.'],
+    ['Kernfissie in een kerncentrale', 'Uraniumkernen splitsen in een gecontroleerde kettingreactie. Een <b>moderator</b> (water) remt de neutronen af, <b>regelstaven</b> vangen neutronen op en regelen het vermogen. De warmte maakt stoom die een turbine en generator aandrijft. Nadeel: langlevend radioactief afval.']];
+  $('c_r4').innerHTML = K.map(([t, p]) => `<div class="card"><div class="txt"><h4>${t}</h4><p>${p}</p></div></div>`).join('');
+})();
+(function(){
+  const K = [['Radioactieve tracers', 'Een kleine hoeveelheid radioactieve stof volgt een weg die je wilt bestuderen: een lek in een leiding, de opname van meststoffen door een plant, of de werking van een orgaan.'],
+    ['Medische beeldvorming', 'Bij een <b>PET-scan</b> of <b>scintigrafie</b> krijgt de patiënt een tracer (bv. fluor-18 of technetium-99m) die zich ophoopt in bepaalde weefsels. Een camera vangt de γ-straling op.'],
+    ['Radiotherapie', 'Gerichte ioniserende straling vernietigt kankercellen. Men bestraalt uit verschillende richtingen, zodat de tumor een hoge dosis krijgt en het gezonde weefsel errond zo weinig mogelijk.'],
+    ['X-stralentomografie (CT)', 'Een röntgenbuis draait rond de patiënt en maakt honderden opnames. Een computer berekent er doorsneden van het lichaam uit. X-stralen zijn ioniserend, maar komen niet uit radioactieve stoffen.'],
+    ['Doorstraling', 'Medisch materiaal en sommige voedingsmiddelen worden met γ-straling gesteriliseerd: bacteriën sterven af. Het product zelf wordt niet radioactief (bestraling, geen besmetting).'],
+    ['Kwaliteitsmetingen in de industrie', 'Een β-bron aan de ene kant van een vel papier of metaal, een detector aan de andere kant: hoeveel straling doorkomt, verraadt de dikte. Ook lasnaden worden met γ-straling gecontroleerd.'],
+    ['Neutronenactiveringsanalyse', 'Een staal wordt bestraald met neutronen. De kernen worden tijdelijk radioactief en zenden γ-straling uit die typisch is voor elk element. Zo vindt men sporen van stoffen in kunstwerken, bodems of bij forensisch onderzoek.'],
+    ['Kernenergie en oorlog', 'In 1945 vernietigden twee atoombommen de Japanse steden Hiroshima en Nagasaki. Tijdens de Koude Oorlog bouwden landen duizenden kernwapens. Het non-proliferatieverdrag (1968) moet de verspreiding ervan beperken.']];
+  $('c_r5').innerHTML = K.map(([t, p]) => `<div class="card"><div class="txt"><h4>${t}</h4><p>${p}</p></div></div>`).join('');
+})();
+
+//////////////////// OEFENEN ////////////////////
+(function(){
+  const rnd = (a, b) => a + Math.floor(Math.random() * (b - a + 1)), kies = a => a[rnd(0, a.length - 1)];
+  const lees = s => parseFloat(String(s).trim().replace(/\s/g, '').replace(',', '.').replace('−', '-').replace(/·10\^?/, 'e').replace(/x10\^?/i, 'e'));
+  const dicht = (a, b) => isFinite(a) && Math.abs(a - b) <= Math.max(0.02 * Math.abs(b), 1e-12);
+  const MC = {
+    h1: [['Hoeveel quarks zitten er in een proton?', ['1', '2', '3', '4'], 2, 'Een proton bestaat uit twee up-quarks en één down-quark: uud.'], ['Welke wisselwerking houdt de quarks samen in een proton?', ['De elektromagnetische.', 'De sterke.', 'De zwakke.', 'De gravitatie.'], 1, 'De sterke wisselwerking, gedragen door gluonen.'], ['Waarvoor kreeg François Englert de Nobelprijs?', ['De oerknal.', 'Het mechanisme dat elementaire deeltjes massa geeft.', 'De ontdekking van het neutron.', 'De ontdekking van neutrino\'s uit de kosmos.'], 1, 'Het Brout-Englert-Higgsmechanisme. De oerknal is Lemaître, de kosmische neutrino\'s zijn Halzen (2026).']],
+    h2: [['Een kern heeft te veel neutronen. Welk verval verwacht je?', ['α', 'β⁻', 'β⁺', 'γ'], 1, 'Bij β⁻ wordt een neutron een proton: de kern komt dichter bij de stabiliteitsvallei.'], ['Welke straling heeft het grootste doordringend vermogen?', ['α', 'β', 'γ', 'Ze zijn gelijk.'], 2, 'γ-straling is weinig ioniserend en dringt daardoor zeer diep door.'], ['Wat verandert er bij γ-straling aan de kern?', ['Z daalt met 2.', 'A daalt met 4.', 'Niets aan Z en A; de kern verliest energie.', 'Z stijgt met 1.'], 2, 'De kern gaat van een aangeslagen toestand naar een lagere energietoestand.'], ['Waarom komt er energie vrij bij fissie van uranium?', ['De kern wordt zwaarder.', 'De brokstukken hebben een grotere bindingsenergie per nucleon: er gaat massa verloren.', 'Er ontstaan nieuwe protonen.', 'Door de wrijving.'], 1, 'Middelzware kernen (rond Fe-56) zijn het sterkst gebonden. Het massaverlies wordt energie: E = m · c².']],
+    h3: [['Wat is het verschil tussen bestraling en besmetting?', ['Er is geen verschil.', 'Bij bestraling komt de straling van buiten; bij besmetting zit de radioactieve stof op of in je lichaam.', 'Bij besmetting word je nooit radioactief.', 'Bestraling gebeurt alleen in ziekenhuizen.'], 1, 'Na bestraling ben je zelf niet radioactief. Bij besmetting blijft de stof stralen.'], ['Welke dosis houdt rekening met de gevoeligheid van het orgaan?', ['Geabsorbeerde dosis.', 'Equivalente dosis.', 'Effectieve dosis.', 'Activiteit.'], 2, 'Effectieve dosis = w<sub>T</sub> · equivalente dosis.'], ['Waarom is fusie op aarde zo moeilijk?', ['Er is te weinig waterstof.', 'Het plasma moet meer dan 100 miljoen °C heet zijn en ingesloten blijven.', 'Fusie levert geen energie.', 'Het is verboden.'], 1, 'Alleen bij extreem hoge temperatuur overwinnen de kernen hun elektrische afstoting.']]
+  };
+  const REK = {
+    h1: [() => { const m = kies([1, 2, 4, 12]); return {q: `Zet ${m} u om naar kg.`, a: m * 1.66e-27, u: 'kg', u2: `${m} · 1,66 · 10⁻²⁷ = ${wet(m * 1.66e-27)} kg`}; }, () => { const e = kies([1, 5, 200]); return {q: `Zet ${e} MeV om naar J.`, a: e * 1.6e-13, u: 'J', u2: `${e} · 10⁶ · 1,6 · 10⁻¹⁹ = ${wet(e * 1.6e-13)} J`}; }],
+    h2: [() => { const k = kies(KERN.slice(1, 8)), [n, Z, N, M] = k, dm = Z * 1.007825 + N * 1.008665 - M; return {q: `Bereken het massadefect van ${n} in u. (m(¹H) = 1,007825 u, m<sub>n</sub> = 1,008665 u, m(atoom) = ${M} u)`, a: dm, u: 'u', u2: `Δm = ${Z} · 1,007825 + ${N} · 1,008665 − ${M} = ${fmt(dm, 6)} u`}; },
+      () => { const dm = kies([0.0304, 0.0989, 0.1371, 0.5285]); return {q: `Een kern heeft een massadefect van ${fmt(dm, 4)} u. Bereken de bindingsenergie in MeV. (1 u · c² = 931,5 MeV)`, a: dm * 931.5, u: 'MeV', u2: `E = ${fmt(dm, 4)} · 931,5 = ${fmt(dm * 931.5, 1)} MeV`}; },
+      () => { const n = rnd(1, 5), N0 = kies([800, 1600, 3200]); return {q: `Een staal bevat ${N0} instabiele kernen. Hoeveel zijn er na ${n} halveringstijden nog over?`, a: N0 / Math.pow(2, n), u: 'kernen', u2: `N = ${N0} · (½)^${n} = ${N0 / Math.pow(2, n)}`}; },
+      () => { const T = kies([8, 30, 6]), t = T * rnd(1, 4), A0 = kies([1000, 4000, 8000]); return {q: `Een bron heeft een activiteit van ${A0} Bq en een halveringstijd van ${T} dagen. Bereken de activiteit na ${t} dagen.`, a: A0 * Math.pow(0.5, t / T), u: 'Bq', u2: `A = ${A0} · (½)^(${t}/${T}) = ${fmt(A0 * Math.pow(0.5, t / T), 0)} Bq`}; },
+      () => { const [Z, A, X] = kies([[88, 226, 'Ra'], [84, 210, 'Po'], [92, 238, 'U'], [90, 230, 'Th']]); return {q: `${X}-${A} (Z = ${Z}) ondergaat α-verval. Wat is het massagetal van de nieuwe kern?`, a: A - 4, u: '', u2: `α: A − 4 = ${A - 4}, Z − 2 = ${Z - 2}`}; }],
+    h3: [() => { const p = kies([50, 25, 12.5]); const n = Math.log2(100 / p); return {q: `In een stuk hout zit nog ${fmt(p, 1)} % van de oorspronkelijke C-14 (T½ = 5730 jaar). Hoe oud is het?`, a: 5730 * n, u: 'jaar', u2: `${fmt(n, 0)} halveringstijden: t = ${fmt(n, 0)} · 5730 = ${fmt(5730 * n, 0)} jaar`}; },
+      () => { const E = kies([2, 5, 10]), m = kies([0.5, 1, 2]); return {q: `Een orgaan van ${fmt(m, 1)} kg absorbeert ${E} mJ γ-straling. Bereken de geabsorbeerde dosis in mGy.`, a: E / m, u: 'mGy', u2: `D = E / m = ${E} mJ / ${fmt(m, 1)} kg = ${fmt(E / m, 1)} mGy`}; },
+      () => { const D = kies([0.5, 1, 2]); return {q: `Een weefsel krijgt een geabsorbeerde dosis van ${fmt(D, 1)} mGy α-straling (w<sub>R</sub> = 20). Bereken de equivalente dosis in mSv.`, a: D * 20, u: 'mSv', u2: `H = w<sub>R</sub> · D = 20 · ${fmt(D, 1)} = ${fmt(D * 20, 0)} mSv`}; }]
+  };
+  const SO = [['alles', 'Door elkaar'], ['h1', '1 Het atoommodel'], ['h2', '2 Verval van kernen'], ['h3', '3 Radioactiviteit in de maatschappij']];
+  let soort = 'alles', goed = 0, tot = 0, klaar = false;
+  $('soort').innerHTML = SO.map(([k, n]) => `<button class="btn ${k === soort ? 'on' : ''}" data-k="${k}">${n}</button>`).join('');
+  $('soort').onclick = e => { const b = e.target.closest('button'); if (!b) return; soort = b.dataset.k; $('soort').querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b)); nieuw(); };
+  function tel(ok){ if (!klaar){ tot++; if (ok) goed++; klaar = true; } $('score').textContent = `${goed} / ${tot}`; }
+  function nieuw(){
+    klaar = false; $('fb').innerHTML = ''; $('fb').className = 'feedback';
+    const t = soort === 'alles' ? kies(['h1', 'h2', 'h3']) : soort;
+    if (Math.random() < 0.45){
+      const [q, opts, j, u] = kies(MC[t]); $('vraag').innerHTML = q;
+      $('invoer').innerHTML = `<div class="keuzes">${opts.map((o, i) => `<button class="btn" data-i="${i}">${'ABCD'[i]}. ${o}</button>`).join('')}</div>`;
+      $('invoer').querySelector('.keuzes').onclick = e => { const b = e.target.closest('button'); if (!b) return; const ok = +b.dataset.i === j;
+        $('invoer').querySelectorAll('.keuzes .btn').forEach((x, i) => { x.classList.toggle('goed', i === j); if (x === b && !ok) x.classList.add('fout'); });
+        tel(ok); $('fb').className = 'feedback ' + (ok ? 'goed' : 'fout'); $('fb').innerHTML = (ok ? '✓ Juist!' : '✗ Niet juist.') + `<span class="uitleg">${u}</span>`; };
+    } else {
+      const r = kies(REK[t])(); $('vraag').innerHTML = r.q;
+      $('invoer').innerHTML = `<div class="antw"><input type="text" id="oa" autocomplete="off"> <b>${r.u}</b> <button class="btn primary" id="oc">Controleer</button></div>`;
+      const go = () => { const w = lees($('oa').value); if (!isFinite(w)){ $('fb').className = 'feedback fout'; $('fb').innerHTML = 'Vul een getal in, bv. 1,66e-27.'; return; }
+        const ok = dicht(w, r.a); tel(ok); $('fb').className = 'feedback ' + (ok ? 'goed' : 'fout'); $('fb').innerHTML = (ok ? '✓ Juist!' : '✗ Nog niet juist.') + `<span class="uitleg">${r.u2}</span>`; };
+      $('oc').onclick = go; $('oa').onkeydown = e => { if (e.key === 'Enter') go(); };
+    }
+  }
+  $('volgende').onclick = nieuw; nieuw();
+})();
+
+</script>
+</body>
+</html>
