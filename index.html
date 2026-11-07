@@ -109,6 +109,9 @@ const TOOLS = [
   { vak:"Fysica", icoon:"optica", jaren:[3], titel:"Licht aan een scheidings\u00ADoppervlak",
     tekst:"Terugkaatsing en breking van licht tussen twee middenstoffen.",
     open:"optica.html", bestand:"optica.html" },
+  { vak:"Fysica", icoon:"rekenen", jaren:[3], titel:"Rekenen in de fysica",
+    tekst:"Eenheden omzetten, wetenschappelijke notatie en beduidende cijfers.",
+    open:"rekenen-fysica.html", bestand:"rekenen-fysica.html" },
   { vak:"Fysica", icoon:"grafiek", jaren:[3], titel:"Snelheid en afgelegde weg",
     tekst:"Snelheid uit een x(t)-grafiek, afgelegde weg uit een v(t)-grafiek.",
     open:"snelheid-afgelegde-weg.html", bestand:"snelheid-afgelegde-weg.html" },
@@ -184,6 +187,7 @@ const DEFS = `<defs><marker id="PIJL" viewBox="0 0 10 10" refX="8.5" refY="5" ma
 const T = 'fill="currentColor" stroke="none"';           /* gevulde vorm */
 const Z = (o) => `fill="currentColor" stroke="none" opacity="${o}"`; /* zachte tint */
 const ICONEN = {
+  rekenen: `<path d="M6 34 H42" stroke-width="1"/><text x="24" y="27" text-anchor="middle" font-size="13" font-weight="700">×10³</text><text x="24" y="44" text-anchor="middle" font-size="9">km → m</text>`,
   /* blad met nerven en een oog-achtige druppel */
   blad: `<path d="M8 40 C8 18 24 6 42 6 C42 26 30 40 8 40Z" ${Z(.15)}/><path d="M8 40 C8 18 24 6 42 6 C42 26 30 40 8 40Z"/>
     <path d="M8 40 L36 12 M17 31 L17 22 M24 24 L24 15 M17 31 L26 31 M24 24 L33 24" stroke-width="1.3"/>`,

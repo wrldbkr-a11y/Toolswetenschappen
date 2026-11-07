@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rekenen in de fysica</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EEF2F5; --panel:#FFFFFF; --panel-2:#F5F8FB; --line:#D3DCE5;
+  --text:#1D2A36; --text-dim:#51606E;
+  --accent:#2F6FB0; --accent-dark:#245A91; --accent-soft:#E4EEF8;
+  --ok-text:#1F7A4A; --ok-bg:#E3F3E9; --flag-text:#B3362B; --flag-bg:#FBE6E3;
+  --bc:#2563eb; --geen:#9AA6B2; --warn:#9A5B00; --warn-bg:#FFF4D6;
+  --font:'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:var(--font);}
+body{-webkit-font-smoothing:antialiased;line-height:1.55;}
+.top{max-width:1100px;margin:0 auto;padding:36px 24px 0;}
+.top h1{font-size:2rem;font-weight:700;letter-spacing:-0.015em;margin:0 0 8px;}
+.top .intro{color:var(--text-dim);max-width:70ch;font-size:15px;line-height:1.6;margin:0;}
+.top .intro strong{color:var(--text);}
+.catnav{display:flex;flex-wrap:wrap;gap:4px;margin:22px 0 0;border-bottom:1px solid var(--line);}
+.catnav button{font-family:var(--font);font-weight:500;font-size:15px;background:none;border:none;border-bottom:2px solid transparent;margin-bottom:-1px;color:var(--text-dim);padding:9px 14px;cursor:pointer;display:flex;align-items:center;gap:8px;}
+.catnav button .nr{min-width:22px;height:22px;border-radius:11px;display:inline-flex;align-items:center;justify-content:center;background:var(--accent-soft);color:var(--accent-dark);font-size:12px;font-weight:700;}
+.catnav button:hover{color:var(--text);}
+.catnav button.active{color:var(--text);font-weight:600;border-bottom-color:var(--accent);}
+.catnav button.active .nr{background:var(--accent);color:#fff;}
+main{max-width:1100px;margin:0 auto;padding:24px 24px 70px;}
+.scene{display:none;}
+.scene.active{display:block;animation:fade .25s ease;}
+@keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+h2{font-size:1.5rem;letter-spacing:-0.01em;margin:0 0 4px;}
+.sub{color:var(--text-dim);font-size:15px;margin:0 0 18px;max-width:75ch;}
+.sub strong{color:var(--text);}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start;}
+@media(max-width:860px){.grid{grid-template-columns:1fr;}}
+.paneel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px;}
+.paneel h3{margin:0 0 10px;font-size:1.1rem;}
+.note{background:var(--panel-2);border-left:4px solid var(--accent);border-radius:0 8px 8px 0;padding:10px 12px;font-size:14.5px;color:var(--text-dim);line-height:1.6;margin:12px 0 0;}
+.note strong{color:var(--text);}
+.kader{border-left:4px solid var(--ok-text);background:var(--ok-bg);border-radius:0 10px 10px 0;padding:12px 16px;margin:0 0 16px;}
+.kader .kop{font-weight:700;color:var(--ok-text);margin-bottom:4px;}
+.kader p{margin:0 0 6px;}.kader p:last-child{margin:0;}
+table.t{border-collapse:collapse;width:100%;font-size:14.5px;}
+table.t th,table.t td{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left;}
+table.t th{background:var(--panel-2);font-size:13px;color:var(--text-dim);}
+table.t td.c{text-align:center;font-weight:700;color:var(--accent-dark);}
+.rij{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0;}
+label.k{font-size:13px;font-weight:600;display:block;margin-bottom:4px;}
+input[type=text],select{font-family:var(--font);font-size:16px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--text);}
+input[type=text]{width:9.5em;}
+input.kort{width:4.5em;}
+input:focus,select:focus{outline:2px solid var(--accent);outline-offset:1px;}
+.btn{background:#fff;border:1px solid var(--line);color:var(--text);border-radius:8px;padding:9px 14px;font-family:var(--font);font-weight:600;font-size:14px;cursor:pointer;}
+.btn:hover{border-color:var(--accent);}
+.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent);}
+.btn.primary:hover{background:var(--accent-dark);}
+.uit{background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:12px 14px;font-size:15px;line-height:1.7;margin-top:10px;font-variant-numeric:tabular-nums;}
+.uit b{color:var(--text);}
+.groot{font-size:1.35rem;font-weight:700;color:var(--accent-dark);}
+/* ladder */
+.ladder{display:flex;gap:4px;margin:12px 0 4px;flex-wrap:wrap;}
+.trede{flex:1 1 0;min-width:42px;text-align:center;padding:8px 2px;border:1px solid var(--line);border-radius:8px;background:#fff;font-weight:700;font-size:14px;position:relative;}
+.trede small{display:block;font-weight:500;font-size:11px;color:var(--text-dim);}
+.trede.van{background:var(--accent-soft);border-color:var(--accent);}
+.trede.naar{background:var(--ok-bg);border-color:var(--ok-text);}
+.trede.tus{background:#FFF9E8;}
+.trede.si{box-shadow:inset 0 -3px 0 var(--warn);}
+/* beduidende cijfers */
+.cijfers{font-size:2rem;font-weight:700;letter-spacing:.04em;margin:10px 0 4px;font-variant-numeric:tabular-nums;}
+.cijfers .j{color:var(--bc);border-bottom:3px solid var(--bc);}
+.cijfers .n{color:var(--geen);}
+.cijfers .s{color:var(--text-dim);font-weight:500;}
+.legend{font-size:13px;color:var(--text-dim);display:flex;gap:16px;flex-wrap:wrap;}
+.legend span b{color:var(--bc);}
+ol.regels{margin:0;padding-left:20px;}
+ol.regels li{margin-bottom:6px;}
+.vb{font-variant-numeric:tabular-nums;font-weight:700;}
+/* oefenen */
+.oef-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px;}
+.score{font-size:14px;font-weight:600;color:var(--ok-text);background:var(--ok-bg);padding:3px 10px;border-radius:999px;}
+.soort{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 14px;}
+.soort .btn{font-weight:500;padding:7px 12px;}
+.soort .btn.on{background:var(--accent-soft);border-color:var(--accent);font-weight:600;}
+.vraag{font-size:16.5px;font-weight:600;margin:6px 0 10px;}
+.feedback{margin-top:12px;font-size:15px;line-height:1.6;}
+.feedback.goed{color:var(--ok-text);}
+.feedback.fout{color:var(--flag-text);}
+.feedback .uitleg{color:var(--text);display:block;margin-top:4px;font-weight:400;}
+.tip{font-size:13px;color:var(--text-dim);margin-top:6px;}
+footer{max-width:1100px;margin:0 auto;padding:10px 24px 40px;color:var(--text-dim);font-size:12px;}
+footer a{color:inherit;}
+</style>
+</head>
+<body>
+<header class="top">
+  <h1>Rekenen in de fysica</h1>
+  <p class="intro"><strong>Een meetresultaat is een getal mét een eenheid.</strong> Hier leer je eenheden omzetten, grote en kleine getallen noteren in de wetenschappelijke notatie, en een resultaat geven met het juiste aantal beduidende cijfers.</p>
+  <nav class="catnav" id="nav"></nav>
+</header>
+<main>
+
+<!-- 1 EENHEDEN -->
+<section class="scene" id="eenheden">
+  <h2>Eenheden omzetten</h2>
+  <p class="sub">Elke grootheid heeft een <strong>SI-eenheid</strong>. Met een <strong>voorvoegsel</strong> maak je er een afgeleide eenheid van, bv. <b>km</b> of <b>mg</b>.</p>
+  <div class="grid">
+    <div class="paneel">
+      <div class="kader"><div class="kop">Onthoud</div>
+        <p>De SI-eenheid van lengte is de <b>meter (m)</b>, van massa de <b>kilogram (kg)</b>, van tijd de <b>seconde (s)</b>.</p>
+        <p>Let op: bij massa is de SI-eenheid <b>kg</b>, niet g.</p></div>
+      <h3>Voorvoegsels</h3>
+      <table class="t">
+        <tr><th>voorvoegsel</th><th>symbool</th><th>betekenis</th><th>voorbeeld</th></tr>
+        <tr><td>giga</td><td class="c">G</td><td>× 10⁹ = 1 000 000 000</td><td>GB</td></tr>
+        <tr><td>mega</td><td class="c">M</td><td>× 10⁶ = 1 000 000</td><td>MW</td></tr>
+        <tr><td>kilo</td><td class="c">k</td><td>× 10³ = 1000</td><td>km, kg</td></tr>
+        <tr><td>hecto</td><td class="c">h</td><td>× 10² = 100</td><td>hm</td></tr>
+        <tr><td>deca</td><td class="c">da</td><td>× 10</td><td>dam</td></tr>
+        <tr><td>deci</td><td class="c">d</td><td>× 10⁻¹ = 0,1</td><td>dm</td></tr>
+        <tr><td>centi</td><td class="c">c</td><td>× 10⁻² = 0,01</td><td>cm</td></tr>
+        <tr><td>milli</td><td class="c">m</td><td>× 10⁻³ = 0,001</td><td>mm, mg, ms</td></tr>
+        <tr><td>micro</td><td class="c">µ</td><td>× 10⁻⁶</td><td>µm</td></tr>
+        <tr><td>nano</td><td class="c">n</td><td>× 10⁻⁹</td><td>nm</td></tr>
+      </table>
+    </div>
+    <div class="paneel">
+      <h3>De omzetladder</h3>
+      <div class="rij">
+        <div><label class="k" for="lg">Grootheid</label><select id="lg"><option value="lengte">lengte</option><option value="massa">massa</option><option value="tijd">tijd</option></select></div>
+        <div><label class="k" for="lw">Waarde</label><input type="text" id="lw" value="2,5" inputmode="decimal"></div>
+        <div><label class="k" for="lv">van</label><select id="lv"></select></div>
+        <div><label class="k" for="ln">naar</label><select id="ln"></select></div>
+      </div>
+      <div class="ladder" id="ladder"></div>
+      <div class="tip">Oranje streep = SI-eenheid. Naar rechts = kleinere eenheid = groter getal.</div>
+      <div class="uit" id="luit"></div>
+    </div>
+  </div>
+</section>
+
+<!-- 2 WETENSCHAPPELIJKE NOTATIE -->
+<section class="scene" id="notatie">
+  <h2>Wetenschappelijke notatie</h2>
+  <p class="sub">Heel grote en heel kleine getallen schrijf je korter met een <strong>macht van 10</strong>.</p>
+  <div class="grid">
+    <div class="paneel">
+      <div class="kader"><div class="kop">Onthoud</div>
+        <p>Een getal in wetenschappelijke notatie is <b>a × 10<sup>n</sup></b>, met <b>1 ≤ a &lt; 10</b>.</p>
+        <p>Komma naar <b>links</b> schuiven → exponent wordt <b>positief</b> (groot getal).</p>
+        <p>Komma naar <b>rechts</b> schuiven → exponent wordt <b>negatief</b> (klein getal).</p></div>
+      <h3>Voorbeelden</h3>
+      <table class="t">
+        <tr><th>meetresultaat</th><th>wetenschappelijke notatie</th></tr>
+        <tr><td>afstand aarde–zon: 150 000 000 km</td><td class="vb">1,5 × 10⁸ km</td></tr>
+        <tr><td>afstand Brussel–Parijs: 264 000 m</td><td class="vb">2,64 × 10⁵ m</td></tr>
+        <tr><td>dikte van een haar: 0,000 08 m</td><td class="vb">8 × 10⁻⁵ m</td></tr>
+        <tr><td>reactietijd bij gamen: 0,25 s</td><td class="vb">2,5 × 10⁻¹ s</td></tr>
+      </table>
+    </div>
+    <div class="paneel">
+      <h3>Probeer zelf</h3>
+      <label class="k" for="wn">Typ een getal</label>
+      <div class="rij"><input type="text" id="wn" value="0,00052" inputmode="decimal"></div>
+      <div class="uit" id="wuit"></div>
+    </div>
+  </div>
+</section>
+
+<!-- 3 BEDUIDENDE CIJFERS -->
+<section class="scene" id="bc">
+  <h2>Beduidende cijfers</h2>
+  <p class="sub">Het aantal <strong>beduidende cijfers</strong> (BC) toont hoe nauwkeurig je gemeten hebt. 2,5 m en 2,50 m zijn dus <strong>niet</strong> hetzelfde meetresultaat.</p>
+  <div class="grid">
+    <div class="paneel">
+      <div class="kader"><div class="kop">Regels: welke cijfers tellen mee?</div>
+        <ol class="regels">
+          <li>Alle cijfers die geen 0 zijn, tellen mee. <span class="vb">4,52</span> → 3 BC</li>
+          <li>Nullen <b>tussen</b> andere cijfers tellen mee. <span class="vb">3,05</span> → 3 BC</li>
+          <li>Nullen <b>vooraan</b> tellen niet mee. <span class="vb">0,0052</span> → 2 BC</li>
+          <li>Nullen <b>achteraan</b> tellen mee. <span class="vb">2,50</span> → 3 BC</li>
+          <li>In de wetenschappelijke notatie tel je alleen de cijfers vóór × 10. <span class="vb">3,20 × 10³</span> → 3 BC</li>
+        </ol></div>
+      <h3>Typ een meetresultaat</h3>
+      <div class="rij"><input type="text" id="bcin" value="0,0250" inputmode="decimal"></div>
+      <div class="cijfers" id="bccijfers"></div>
+      <div class="legend"><span><b>blauw</b> = beduidend</span><span>grijs = telt niet mee</span></div>
+      <div class="uit" id="bcuit"></div>
+    </div>
+    <div class="paneel">
+      <div class="kader"><div class="kop">Rekenen met meetresultaten</div>
+        <p>Bij <b>vermenigvuldigen en delen</b> krijgt het resultaat evenveel BC als het gegeven met het <b>kleinste</b> aantal BC.</p></div>
+      <h3>Voorbeeld: hoe snel rijdt de tram?</h3>
+      <div class="rij">
+        <div><label class="k" for="ra">afstand (m)</label><input type="text" id="ra" value="2500" inputmode="decimal"></div>
+        <div><label class="k" for="rb">tijd (s)</label><input type="text" id="rb" value="360" inputmode="decimal"></div>
+      </div>
+      <div class="uit" id="ruit"></div>
+      <p class="note"><strong>Je rekenmachine weet niet hoe nauwkeurig je gemeten hebt.</strong> Neem dus nooit alle cijfers over: rond af op het juiste aantal BC.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 4 OEFENEN -->
+<section class="scene" id="oefenen">
+  <h2>Oefenen</h2>
+  <p class="sub">Kies een soort oefening of oefen alles door elkaar. Gebruik een komma voor decimalen.</p>
+  <div class="paneel">
+    <div class="oef-head"><div class="soort" id="soort"></div><span class="score" id="score">0 / 0</span></div>
+    <div class="vraag" id="vraag"></div>
+    <div id="invoer"></div>
+    <div class="rij"><button class="btn primary" id="check">Controleer</button><button class="btn" id="volgende">Nieuwe vraag</button></div>
+    <div class="feedback" id="fb"></div>
+  </div>
+</section>
+</main>
+<footer>Gemaakt door de vakgroep wetenschappen · Maria Assumpta Lyceum · ontwikkeld met hulp van AI · <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.nl">CC BY-NC-SA 4.0</a></footer>
+
+<script>
+/* ---------- navigatie ---------- */
+const SCENES = [['eenheden','Eenheden'],['notatie','Wetenschappelijke notatie'],['bc','Beduidende cijfers'],['oefenen','Oefenen']];
+const nav = document.getElementById('nav');
+SCENES.forEach(([id, naam], i) => {
+  const b = document.createElement('button');
+  b.innerHTML = `<span class="nr">${i + 1}</span>${naam}`;
+  b.onclick = () => toon(id);
+  b.dataset.id = id;
+  nav.appendChild(b);
+});
+function toon(id){
+  document.querySelectorAll('.scene').forEach(s => s.classList.toggle('active', s.id === id));
+  nav.querySelectorAll('button').forEach(b => b.classList.toggle('active', b.dataset.id === id));
+  if (location.hash !== '#' + id) history.replaceState(null, '', '#' + id);
+}
+toon(SCENES.some(s => '#' + s[0] === location.hash) ? location.hash.slice(1) : 'eenheden');
+
+/* ---------- getallen ---------- */
+const SUP = {'-':'⁻','0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹'};
+const sup = n => String(n).split('').map(c => SUP[c] || c).join('');
+const UNSUP = Object.fromEntries(Object.entries(SUP).map(([a, b]) => [b, a]));
+function groepeer(s){ // duizendtallen met een smalle spatie
+  let [g, d] = s.split(',');
+  const neg = g.startsWith('-'); if (neg) g = g.slice(1);
+  if (g.length > 4) g = g.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+  return (neg ? '-' : '') + g + (d !== undefined ? ',' + d : '');
+}
+function schoon(x){ return parseFloat(x.toPrecision(12)); }
+function decimaal(x){ // gewoon decimaal getal zonder e-notatie
+  x = schoon(x);
+  let s = Math.abs(x) < 1e-6 && x !== 0 ? x.toFixed(12).replace(/0+$/, '') : String(x);
+  if (/e/.test(s)) s = x.toFixed(Math.max(0, -Math.floor(Math.log10(Math.abs(x))) + 6)).replace(/\.?0+$/, '');
+  return groepeer(s.replace('.', ','));
+}
+function wet(x, bc){ // a × 10^n
+  if (x === 0) return '0';
+  let n = Math.floor(Math.log10(Math.abs(x)) + 1e-12);
+  let a = x / Math.pow(10, n);
+  let as = bc ? a.toPrecision(bc) : String(schoon(a));
+  if (Math.abs(parseFloat(as)) >= 10){ n++; a = x / Math.pow(10, n); as = bc ? a.toPrecision(bc) : String(schoon(a)); }
+  return as.replace('.', ',') + ' × 10' + sup(n);
+}
+function toon_getal(x){ const a = Math.abs(x); return (a !== 0 && (a < 1e-4 || a >= 1e9)) ? wet(x) : decimaal(x); }
+function lees(s){ // leest 2,5 · 2.5 · 2,5 × 10^3 · 2,5x10³ · 2,5e3
+  if (s == null) return NaN;
+  s = String(s).trim().replace(/\s| /g, '');
+  s = s.replace(/[⁻⁰¹²³⁴⁵⁶⁷⁸⁹]+/g, m => '^' + m.split('').map(c => UNSUP[c]).join(''));
+  s = s.replace(/,/g, '.').replace(/[×xX·*]/g, '*');
+  let m = s.match(/^([+-]?\d*\.?\d+)\*10\^?\(?([+-]?\d+)\)?$/);
+  if (m) return parseFloat(m[1]) * Math.pow(10, parseInt(m[2]));
+  if (/^[+-]?\d*\.?\d+(e[+-]?\d+)?$/i.test(s)) return parseFloat(s);
+  return NaN;
+}
+const gelijk = (a, b) => isFinite(a) && isFinite(b) && Math.abs(a - b) <= 1e-9 * Math.max(Math.abs(a), Math.abs(b), 1e-300);
+
+/* beduidende cijfers van een geschreven getal */
+function bcAnalyse(str){
+  let s = String(str).trim().replace(/\s| /g, '');
+  let mant = s.split(/[×xX·*]/)[0].replace(/^[+-]/, '');
+  if (/e/i.test(mant)) mant = mant.split(/e/i)[0];
+  if (!/^\d*[.,]?\d+$/.test(mant) && !/^\d+[.,]?$/.test(mant)) return null;
+  const tekens = mant.split('');
+  let gestart = false, n = 0;
+  const delen = tekens.map(c => {
+    if (c === ',' || c === '.') return {c: ',', t: 's'};
+    if (!gestart && c === '0') return {c, t: 'n'};
+    gestart = true; n++; return {c, t: 'j'};
+  });
+  const rest = s.slice(s.indexOf(mant) + mant.length);
+  return {delen, n, rest};
+}
+function afgerond(x, bc){ // string met precies bc beduidende cijfers
+  const a = Math.abs(x);
+  if (a !== 0 && (a < 1e-3 || a >= Math.pow(10, bc))) return wet(x, bc);
+  return groepeer(x.toPrecision(bc).replace('.', ','));
+}
+
+/* ---------- 1 omzetladder ---------- */
+const LADDERS = {
+  lengte: {si: 'm', eenheden: [['km',3],['hm',2],['dam',1],['m',0],['dm',-1],['cm',-2],['mm',-3]]},
+  massa:  {si: 'kg', eenheden: [['kg',3],['hg',2],['dag',1],['g',0],['dg',-1],['cg',-2],['mg',-3]]},
+  tijd:   {si: 's', eenheden: [['h',3600],['min',60],['s',1],['ms',0.001]], tijd: true}
+};
+const lg = document.getElementById('lg'), lv = document.getElementById('lv'), ln = document.getElementById('ln'), lw = document.getElementById('lw');
+function vulLadder(){
+  const L = LADDERS[lg.value];
+  lv.innerHTML = ln.innerHTML = L.eenheden.map(([u]) => `<option>${u}</option>`).join('');
+  lv.value = L.eenheden[0][0]; ln.value = L.si;
+  if (lg.value === 'massa'){ lv.value = 'g'; ln.value = 'kg'; }
+  if (lg.value === 'tijd'){ lv.value = 'min'; ln.value = 's'; }
+  ladder();
+}
+function factor(L, u){ const e = L.eenheden.find(x => x[0] === u)[1]; return L.tijd ? e : Math.pow(10, e); }
+function ladder(){
+  const L = LADDERS[lg.value];
+  const iv = L.eenheden.findIndex(x => x[0] === lv.value), in_ = L.eenheden.findIndex(x => x[0] === ln.value);
+  document.getElementById('ladder').innerHTML = L.eenheden.map(([u, e], i) => {
+    const lo = Math.min(iv, in_), hi = Math.max(iv, in_);
+    const cls = i === iv ? 'van' : i === in_ ? 'naar' : (i > lo && i < hi ? 'tus' : '');
+    const stap = L.tijd ? (i < L.eenheden.length - 1 ? ['× 60','× 60','× 1000'][i] : '') : '';
+    return `<div class="trede ${cls} ${u === L.si ? 'si' : ''}">${u}${L.tijd && stap ? `<small>${stap} →</small>` : ''}</div>`;
+  }).join('');
+  const x = lees(lw.value), out = document.getElementById('luit');
+  if (!isFinite(x)){ out.innerHTML = 'Typ een getal, bv. <b>2,5</b>.'; return; }
+  const r = x * factor(L, lv.value) / factor(L, ln.value);
+  let uitleg;
+  if (iv === in_) uitleg = 'Zelfde eenheid: er verandert niets.';
+  else if (L.tijd){
+    const f = factor(L, lv.value) / factor(L, ln.value);
+    uitleg = in_ > iv ? `Naar een kleinere eenheid: <b>vermenigvuldigen met ${decimaal(f)}</b>.` : `Naar een grotere eenheid: <b>delen door ${decimaal(1 / f)}</b>.`;
+  } else {
+    const st = Math.abs(in_ - iv);
+    uitleg = in_ > iv ? `${st} trede${st > 1 ? 's' : ''} naar rechts: komma <b>${st} plaats${st > 1 ? 'en' : ''} naar rechts</b> (× 10${st > 1 ? sup(st) : ''}).`
+                      : `${st} trede${st > 1 ? 's' : ''} naar links: komma <b>${st} plaats${st > 1 ? 'en' : ''} naar links</b> (× 10${sup(-st)}).`;
+  }
+  out.innerHTML = `${uitleg}<br><span class="groot">${decimaal(x)} ${lv.value} = ${toon_getal(r)} ${ln.value}</span>${Math.abs(r) >= 1e5 || (Math.abs(r) < 1e-2 && r !== 0) ? `<br>In wetenschappelijke notatie: <b>${wet(r)} ${ln.value}</b>` : ''}`;
+}
+lg.onchange = vulLadder; [lv, ln].forEach(e => e.onchange = ladder); lw.oninput = ladder;
+vulLadder();
+
+/* ---------- 2 wetenschappelijke notatie ---------- */
+const wn = document.getElementById('wn');
+function wetUitleg(){
+  const out = document.getElementById('wuit'), x = lees(wn.value);
+  if (!isFinite(x) || x === 0){ out.innerHTML = 'Typ een getal verschillend van 0, bv. <b>0,00052</b> of <b>150000000</b>.'; return; }
+  const n = Math.floor(Math.log10(Math.abs(schoon(x))) + 1e-12);
+  const richting = n > 0 ? `<b>${n} plaats${n > 1 ? 'en' : ''} naar links</b> → exponent <b>+${n}</b>` : n < 0 ? `<b>${-n} plaats${n < -1 ? 'en' : ''} naar rechts</b> → exponent <b>${n}</b>` : 'niet → exponent <b>0</b>';
+  out.innerHTML = `Schuif de komma tot er één cijfer (geen 0) vóór de komma staat.<br>Komma ${richting}.<br><span class="groot">${decimaal(x)} = ${wet(x)}</span>`;
+}
+wn.oninput = wetUitleg; wetUitleg();
+
+/* ---------- 3 beduidende cijfers ---------- */
+const bcin = document.getElementById('bcin');
+function bcToon(){
+  const r = bcAnalyse(bcin.value), c = document.getElementById('bccijfers'), out = document.getElementById('bcuit');
+  if (!r || r.n === 0){ c.innerHTML = ''; out.innerHTML = 'Typ een meetresultaat, bv. <b>0,0250</b> of <b>3,20 × 10³</b>.'; return; }
+  c.innerHTML = r.delen.map(d => `<span class="${d.t}">${d.c}</span>`).join('') + (r.rest ? `<span class="s">${r.rest.replace(/[xX*·]/, ' × ')}</span>` : '');
+  const voor = r.delen.findIndex(d => d.t === 'j') > 0 && r.delen.some(d => d.t === 'n');
+  const zonderKomma = !r.delen.some(d => d.t === 's') && /0$/.test(r.delen.map(d => d.c).join('')) && !r.rest;
+  out.innerHTML = `<span class="groot">${r.n} beduidende cijfer${r.n > 1 ? 's' : ''}</span>` +
+    (voor ? '<br>De nullen vooraan tellen niet mee: ze tonen alleen waar de komma staat.' : '') +
+    (zonderKomma ? '<br>De nullen achteraan tellen mee. Bedoel je dat ze niet gemeten zijn? Gebruik dan de wetenschappelijke notatie.' : '');
+}
+bcin.oninput = bcToon; bcToon();
+
+const ra = document.getElementById('ra'), rb = document.getElementById('rb');
+function rekenVb(){
+  const out = document.getElementById('ruit'), A = bcAnalyse(ra.value), B = bcAnalyse(rb.value), a = lees(ra.value), b = lees(rb.value);
+  if (!A || !B || !isFinite(a) || !isFinite(b) || b === 0){ out.innerHTML = 'Vul twee meetresultaten in.'; return; }
+  const v = a / b, n = Math.min(A.n, B.n);
+  out.innerHTML = `v = afstand / tijd = ${decimaal(a)} m / ${decimaal(b)} s<br>Rekenmachine: ${String(schoon(v)).replace('.', ',')} m/s<br>` +
+    `afstand: <b>${A.n} BC</b> · tijd: <b>${B.n} BC</b> → resultaat met <b>${n} BC</b><br><span class="groot">v = ${afgerond(v, n)} m/s</span>`;
+}
+ra.oninput = rb.oninput = rekenVb; rekenVb();
+
+/* ---------- 4 oefenen ---------- */
+const rnd = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+const kies = arr => arr[rnd(0, arr.length - 1)];
+const SOORTEN = [['alles','Door elkaar'],['omzet','Eenheden omzetten'],['wet','Naar wetenschappelijke notatie'],['terug','Van wetenschappelijke notatie'],['tel','BC tellen'],['reken','Rekenen met BC']];
+let soort = 'alles', vraag = null, goed = 0, totaal = 0, beantwoord = false;
+const soortEl = document.getElementById('soort');
+soortEl.innerHTML = SOORTEN.map(([k, n]) => `<button class="btn ${k === soort ? 'on' : ''}" data-k="${k}">${n}</button>`).join('');
+soortEl.onclick = e => { const b = e.target.closest('button'); if (!b) return; soort = b.dataset.k; soortEl.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b)); nieuw(); };
+
+const CONTEXT = [
+  ['Een tram van de MIVB is', 32, 'm', 'lengte'], ['Een A4-blad is', 29.7, 'cm', 'lengte'], ['Een mier is', 4, 'mm', 'lengte'],
+  ['Je wandelt elke dag', 2.4, 'km', 'lengte'], ['Een haar is', 0.08, 'mm', 'lengte'], ['Een voetbalveld is', 105, 'm', 'lengte'],
+  ['Een smartphone weegt', 180, 'g', 'massa'], ['Een tablet bevat', 500, 'mg', 'massa'], ['Een schooltas weegt', 6.5, 'kg', 'massa'],
+  ['Een appel weegt', 150, 'g', 'massa'], ['Een rit met de metro duurt', 12, 'min', 'tijd'], ['Een reactietijd bij gamen is', 250, 'ms', 'tijd'],
+  ['Een schooldag duurt', 7, 'h', 'tijd'], ['Een lesuur duurt', 50, 'min', 'tijd']
+];
+const DOELEN = {lengte: ['m','m','cm','mm','km'], massa: ['kg','kg','g','mg'], tijd: ['s','s','min','ms']};
+const GROOT = [['De afstand aarde–maan is', 384000000, 'm'], ['Brussel heeft ongeveer', 1200000, 'inwoners'], ['Licht legt per seconde', 300000000, 'm af'],
+  ['De afstand Brussel–Parijs is', 264000, 'm'], ['Een harde schijf bevat', 2000000000000, 'byte']];
+const KLEIN = [['Een rode bloedcel is', 0.000007, 'm breed'], ['Een haar is', 0.00008, 'm dik'], ['Een bacterie is', 0.000002, 'm lang'],
+  ['Een blad papier is', 0.0001, 'm dik'], ['Een stofdeeltje weegt', 0.00000005, 'kg']];
+const TEL = ['4,52','3,05','0,0052','2,50','1200','0,300','7,0','40,08','0,004010','105','3,20 × 10³','6,0 × 10⁻⁴','9,81','0,1','100,0'];
+const REKEN = [
+  () => { const d = kies(['2,5','2,50','3,0','1,8']), t = kies(['6','6,0','6,00','4,5','12']); return {t: `De tram rijdt ${d} km in ${t} min. Bereken de gemiddelde snelheid in km/min.`, a: d, b: t, op: '/', u: 'km/min'}; },
+  () => { const l = kies(['4,2','4,25','3,0','12']), b = kies(['3,5','3,50','2','2,0']); return {t: `Een klaslokaal is ${l} m lang en ${b} m breed. Bereken de oppervlakte.`, a: l, b: b, op: '*', u: 'm²'}; },
+  () => { const m = kies(['250','250,0','12,5','0,84']), v = kies(['25','25,0','3,2','100']); return {t: `Een blokje heeft een massa van ${m} g en een volume van ${v} cm³. Bereken massa gedeeld door volume.`, a: m, b: v, op: '/', u: 'g/cm³'}; },
+  () => { const f = kies(['9,81','9,8','10']), m = kies(['55','55,0','2,4','0,350']); return {t: `Bereken ${m} × ${f}. (massa in kg × zwaarteveldsterkte in N/kg)`, a: m, b: f, op: '*', u: 'N'}; }
+];
+
+const vraagEl = document.getElementById('vraag'), invoer = document.getElementById('invoer'), fb = document.getElementById('fb');
+function veld(id, kort, ph){ return `<input type="text" id="${id}" class="${kort ? 'kort' : ''}" inputmode="decimal" placeholder="${ph || ''}" autocomplete="off">`; }
+function nieuw(){
+  beantwoord = false; fb.className = 'feedback'; fb.innerHTML = '';
+  const s = soort === 'alles' ? kies(['omzet','omzet','wet','terug','tel','reken']) : soort;
+  if (s === 'omzet'){
+    const [t, v, u, g] = kies(CONTEXT);
+    const L = LADDERS[g]; let doel = kies(DOELEN[g].filter(x => x !== u)); if (!doel) doel = L.si;
+    const r = v * factor(L, u) / factor(L, doel);
+    vraag = {s, r, doel, uitleg: `${decimaal(v)} ${u} = <b>${toon_getal(r)} ${doel}</b>` + (doel === L.si ? ` (${L.si} is de SI-eenheid).` : '.')};
+    vraagEl.innerHTML = `${t} ${decimaal(v)} ${u}. Zet om naar <b>${doel}</b>.`;
+    invoer.innerHTML = `<div class="rij">${veld('a', false, 'antwoord')} <b>${doel}</b></div><div class="tip">Een heel groot of klein getal mag je ook schrijven als bv. 2,5 × 10^-3.</div>`;
+  } else if (s === 'wet'){
+    const [t, v, u] = kies(Math.random() < .5 ? GROOT : KLEIN);
+    vraag = {s, r: v, uitleg: `${decimaal(v)} = <b>${wet(v)}</b>`};
+    vraagEl.innerHTML = `${t} ${decimaal(v)} ${u}. Schrijf het getal in de wetenschappelijke notatie.`;
+    invoer.innerHTML = `<div class="rij">${veld('a', true)} <b>× 10</b><sup>${veld('n', true, 'n')}</sup> ${u}</div>`;
+  } else if (s === 'terug'){
+    const a = kies([1.5, 2.4, 3.6, 4.8, 5.2, 6.75, 7.1, 8.05, 9.3]), n = kies([-5, -4, -3, -2, 3, 4, 5, 6]);
+    const v = schoon(a * Math.pow(10, n));
+    vraag = {s, r: v, uitleg: `Komma ${Math.abs(n)} plaatsen naar ${n > 0 ? 'rechts' : 'links'}: <b>${decimaal(v)}</b>`};
+    vraagEl.innerHTML = `Schrijf als gewoon decimaal getal: <b>${wet(a * Math.pow(10, n))}</b>`;
+    invoer.innerHTML = `<div class="rij">${veld('a', false, 'antwoord')}</div>`;
+  } else if (s === 'tel'){
+    const g = kies(TEL), r = bcAnalyse(g);
+    vraag = {s, r: r.n, uitleg: `<span class="cijfers" style="font-size:1.4rem">${r.delen.map(d => `<span class="${d.t}">${d.c}</span>`).join('')}${r.rest ? `<span class="s">${r.rest}</span>` : ''}</span> → <b>${r.n} BC</b>`};
+    vraagEl.innerHTML = `Hoeveel beduidende cijfers heeft het meetresultaat <b>${g} m</b>?`;
+    invoer.innerHTML = `<div class="rij">${veld('a', true)} BC</div>`;
+  } else {
+    const q = kies(REKEN)(), A = bcAnalyse(q.a), B = bcAnalyse(q.b), a = lees(q.a), b = lees(q.b);
+    const raw = q.op === '/' ? a / b : a * b, n = Math.min(A.n, B.n);
+    vraag = {s, r: raw, n, uitleg: `Rekenmachine: ${String(schoon(raw)).replace('.', ',')}. Gegevens: ${q.a} (${A.n} BC) en ${q.b} (${B.n} BC) → <b>${n} BC</b>: <b>${afgerond(raw, n)} ${q.u}</b>`};
+    vraagEl.innerHTML = q.t + ' Geef het resultaat met het juiste aantal beduidende cijfers.';
+    invoer.innerHTML = `<div class="rij">${veld('a', false, 'antwoord')} <b>${q.u}</b></div>`;
+  }
+  const eerste = invoer.querySelector('input'); if (eerste) eerste.focus();
+  invoer.querySelectorAll('input').forEach(i => i.onkeydown = e => { if (e.key === 'Enter') controleer(); });
+}
+function controleer(){
+  if (!vraag) return;
+  const a = document.getElementById('a'), n = document.getElementById('n');
+  if (!a.value.trim()){ fb.className = 'feedback fout'; fb.innerHTML = 'Vul eerst een antwoord in.'; return; }
+  let ok = false, extra = '';
+  if (vraag.s === 'wet'){
+    const m = lees(a.value), e = parseInt((n.value || '').replace('−', '-'));
+    const waarde = m * Math.pow(10, e);
+    if (gelijk(waarde, vraag.r) && Math.abs(m) >= 1 && Math.abs(m) < 10) ok = true;
+    else if (gelijk(waarde, vraag.r)) extra = 'De waarde klopt, maar het getal vóór × 10 moet tussen 1 en 10 liggen.';
+    else if (isFinite(m) && isFinite(e) && gelijk(m * Math.pow(10, -e), vraag.r)) extra = 'Kijk naar het teken van de exponent: groot getal → positief, klein getal → negatief.';
+  } else if (vraag.s === 'tel'){
+    ok = parseInt(a.value) === vraag.r;
+  } else if (vraag.s === 'reken'){
+    const w = lees(a.value), A = bcAnalyse(a.value);
+    const juist = lees(afgerond(vraag.r, vraag.n).replace(/ /g, ''));
+    if (gelijk(w, juist) && A && A.n === vraag.n) ok = true;
+    else if (A && gelijk(w, lees(afgerond(vraag.r, A.n).replace(/ /g, '')))) extra = `Goed gerekend en juist afgerond, maar met ${A.n} BC. Het resultaat moet ${vraag.n} BC hebben.`;
+  } else {
+    ok = gelijk(lees(a.value), vraag.r);
+    if (!ok && vraag.s === 'omzet'){ const w = lees(a.value); if (isFinite(w) && w !== 0){ const q = Math.log10(Math.abs(w / vraag.r)); if (Math.abs(q - Math.round(q)) < 1e-9) extra = 'De cijfers kloppen, maar de komma staat niet op de juiste plaats. Gebruik de omzetladder.'; } }
+  }
+  if (!beantwoord){ totaal++; if (ok) goed++; beantwoord = true; }
+  document.getElementById('score').textContent = `${goed} / ${totaal}`;
+  fb.className = 'feedback ' + (ok ? 'goed' : 'fout');
+  fb.innerHTML = (ok ? '✓ Juist!' : '✗ Nog niet juist.') + (extra ? `<span class="uitleg">${extra}</span>` : '') + `<span class="uitleg">${vraag.uitleg}</span>`;
+}
+document.getElementById('check').onclick = controleer;
+document.getElementById('volgende').onclick = nieuw;
+nieuw();
+</script>
+</body>
+</html>
