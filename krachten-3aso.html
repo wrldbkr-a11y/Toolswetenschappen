@@ -57,14 +57,19 @@ select{font-family:var(--font);font-size:15px;padding:7px 9px;border:1px solid v
 .btn:hover{border-color:var(--accent);}
 .btn.on{background:var(--accent-soft);border-color:var(--accent);}
 .btn.primary{background:var(--accent);color:#fff;border-color:var(--accent);}
-.readout{background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:14.5px;line-height:1.75;font-variant-numeric:tabular-nums;}
+.readout{background:var(--panel-2);border:1px solid transparent;border-radius:8px;padding:10px 12px;font-size:14.5px;line-height:1.75;font-variant-numeric:tabular-nums;}
 .readout b{color:var(--text);}
 .readout .ok{color:var(--ok-text);font-weight:700;}
 .readout .flag{color:var(--flag-text);font-weight:700;}
 .kader{border-left:4px solid var(--ok-text);background:var(--ok-bg);border-radius:0 10px 10px 0;padding:10px 14px;font-size:14.5px;}
 .kader .kop{font-weight:700;color:var(--ok-text);margin-bottom:2px;}
+.kader .kop::before{content:"Ken dit · ";font-size:11.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;}
 .kader p{margin:0 0 4px;}.kader p:last-child{margin:0;}
-.note{background:var(--panel-2);border-left:4px solid var(--accent);border-radius:0 8px 8px 0;padding:10px 12px;font-size:14px;color:var(--text-dim);line-height:1.6;}
+.note{background:#FFF7ED;border-left:4px solid #D97706;border-radius:0 8px 8px 0;padding:10px 12px;font-size:14px;color:var(--text);line-height:1.6;}
+.note::before{content:"Let op";display:block;font-size:11.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#B45309;margin-bottom:2px;}
+.note:empty{display:none;}
+details.extra{background:var(--panel-2);border:1px dashed var(--line);border-radius:8px;padding:8px 12px;font-size:14px;color:var(--text-dim);}
+details.extra summary{cursor:pointer;font-weight:700;color:var(--text-dim);}
 .note strong{color:var(--text);}
 .formule{font-size:18px;font-weight:700;text-align:center;background:#fff;border:1px solid var(--line);border-radius:8px;padding:8px;}
 .omvorm{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;font-size:14px;text-align:center;}
@@ -129,12 +134,13 @@ footer a{color:inherit;}
   <div class="grid">
     <div class="tek"><svg id="s_zw1" viewBox="0 0 640 460"></svg></div>
     <div class="controls">
+      <div class="readout" id="r_zw1"></div>
       <div class="kader"><div class="kop">Definities</div>
         <p><b>Zwaartekracht:</b> de aantrekkingskracht die een hemellichaam uitoefent op alle lichamen in zijn omgeving.</p>
         <p><b>Zwaarteveld:</b> het gebied rond een hemellichaam waar de zwaartekracht werkzaam is.</p>
         <p><b>Zwaartepunt:</b> het aangrijpingspunt voor de zwaartekracht.</p>
-        </div>
-      <div class="readout" id="r_zw1"></div>
+        
+        <p><b>Kenmerken van F<sub>z</sub>:</b> aangrijpingspunt in het zwaartepunt · richting verticaal · zin naar het middelpunt van de aarde · grootte F<sub>z</sub> = m · g.</p></div>
       <div class="note"><strong>Zwaarteveld ≠ zwaartekracht.</strong> Het zwaarteveld is het <em>gebied</em>. De zwaartekracht is de <em>kracht</em> op een voorwerp dat zich in dat gebied bevindt.</div>
     </div>
   </div>
@@ -225,7 +231,7 @@ footer a{color:inherit;}
   <div class="scene-head"><span class="num"></span><h3>Wrijving in het dagelijks leven</h3></div>
   <p class="scene-sub">Beweegt het contactoppervlak <strong>niet</strong> ten opzichte van de ondergrond? Dan werkt de <strong>statische</strong> wrijvingskracht. Schuift het oppervlak over de ondergrond? Dan werkt de <strong>dynamische</strong>.</p>
   <div class="cards" id="c_wr3"></div>
-  <div class="note" style="margin-top:14px"><strong>Wrijving is nodig om te bewegen.</strong> Als je stapt, duwt je voet naar achter tegen de grond. Door de statische wrijvingskracht duwt de grond je dan naar voor. Zonder wrijving (bv. op glad ijs) <strong>glij je uit</strong>: je voet schiet weg en je komt niet vooruit. Ook in een <strong>bocht</strong> is wrijving nodig: de wrijving tussen banden en weg duwt de auto of fiets naar het midden van de bocht. Is de weg glad (ijzel, nat blad, aquaplaning), dan is die kracht te klein en <strong>schuift</strong> het voertuig rechtdoor uit de bocht.</div>
+  <div class="note" style="margin-top:14px"><strong>Wrijving is nodig om te bewegen.</strong> Je voet duwt naar achter tegen de grond, de statische wrijving duwt jou naar voor. Zonder wrijving (ijs) glij je uit. In een bocht duwt de wrijving de auto naar het midden; op een gladde weg schuift hij rechtdoor.</div>
 </section>
 
 <section class="scene-weg" hidden id="wr2" data-nr="5.2" data-cat="wr" data-title="F = μ · F_N">
@@ -272,8 +278,8 @@ footer a{color:inherit;}
     <div class="controls">
       <div class="ctrl"><label for="ve2l">Uitrekking Δl <span id="ve2lv"></span></label><input type="range" id="ve2l" min="0" max="40" value="10"></div>
       <div class="readout" id="r_ve2"></div>
-      <div class="kader"><div class="kop">Wet van Hooke</div><p>F<sub>v</sub> = k · Δl. Ze geldt alleen zolang de vervorming <b>elastisch</b> is: na het wegnemen van de kracht neemt het voorwerp zijn oorspronkelijke vorm terug aan.</p><p>Voorbij de <b>elasticiteitsgrens</b> wordt de vervorming <b>plastisch</b>: het voorwerp blijft vervormd.</p></div>
-      <div class="note"><strong>Wat betekent k = 50 N/m?</strong> Om de veer 1 m uit te rekken heb je 50 N nodig, dus 0,5 N per cm.</div>
+      <div class="kader"><div class="kop">Wet van Hooke</div><p>F<sub>v</sub> = k · Δl. Ze geldt alleen zolang de vervorming <b>elastisch</b> is: na het wegnemen van de kracht neemt het voorwerp zijn oorspronkelijke vorm terug aan.</p><p>Voorbij de <b>elasticiteitsgrens</b> wordt de vervorming <b>plastisch</b>: het voorwerp blijft vervormd.</p><p><b>k = 50 N/m</b> betekent: 50 N rekt de veer 1 m uit, dus 0,5 N per cm.</p></div>
+
     </div>
   </div>
 </section>
@@ -433,7 +439,7 @@ function svgPunt(svg, e){ const p = svg.createSVGPoint(); p.x = e.clientX; p.y =
     s += txt(16, 444, 'Sleep de bal.', {s: 13, c: C.dim});
     svg.innerHTML = s;
     const g = 9.81 / (r * r);
-    $('r_zw1').innerHTML = `Afstand tot het middelpunt: <b>${fmt(r, 1)} × de straal</b> van de aarde<br>Zwaarteveldsterkte daar: <b>${fmt(g, 2)} N/kg</b><br>Zwaartekracht op 1 kg: <b>${fmt(g, 2)} N</b><br><br><b>Kenmerken van F<sub>z</sub></b><br>aangrijpingspunt: het zwaartepunt<br>richting: de lijn naar het middelpunt van de aarde (verticaal)<br>zin: naar het middelpunt toe<br>grootte: F<sub>z</sub> = m · g`;
+    $('r_zw1').innerHTML = `Afstand tot het middelpunt: <b>${fmt(r, 1)} × de straal</b> van de aarde<br>Zwaarteveldsterkte daar: <b>${fmt(g, 2)} N/kg</b><br>Zwaartekracht op 1 kg: <b>${fmt(g, 2)} N</b>`;
   }
   svg.addEventListener('pointerdown', e => { sleep = true; svg.setPointerCapture(e.pointerId); beweeg(e); });
   svg.addEventListener('pointermove', e => sleep && beweeg(e));
