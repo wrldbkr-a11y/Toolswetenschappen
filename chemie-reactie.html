@@ -148,6 +148,23 @@ td b{font-family:var(--f-display)}
 .item .zin svg{width:320px;max-width:100%;height:auto;display:block;margin-top:4px}
 
 </style>
+<!--vakken--><style>
+[data-vak]{position:relative}
+[data-vak="ken"]{background:#E8F5EC!important;border:0!important;border-left:4px solid #1F7A4A!important;border-radius:0 10px 10px 0!important}
+[data-vak="letop"]{background:#FFF7ED!important;border:0!important;border-left:4px solid #D97706!important;border-radius:0 10px 10px 0!important;color:inherit}
+[data-vak="vb"]{background:transparent!important;border:1.5px dashed #94A3B8!important;border-radius:10px!important}
+[data-vak="vk"]{background:#EEF4FB!important;border:0!important;border-left:4px solid #64748B!important;border-radius:0 10px 10px 0!important}
+[data-vak]:not(.kader)::before,.kader[data-vak] .kop::before{display:block;font-size:11.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;margin-bottom:2px}
+.kader[data-vak] .kop::before{display:inline}
+[data-vak="ken"]:not(.kader)::before{content:"Ken dit";color:#1F7A4A}
+.kader[data-vak="ken"] .kop::before{content:"Ken dit · ";color:#1F7A4A}
+[data-vak="letop"]:not(.kader)::before{content:"Let op";color:#B45309}
+[data-vak][data-label="nee"]::before{content:none!important}
+[data-vak="vb"]:not(.kader)::before{content:"Voorbeeld";color:#64748B}
+[data-vak="vk"]::before{content:none!important}
+.lpd{font-size:12px!important;opacity:.7}
+.lpd::before{content:"Leerplandoel (voor de leerkracht): ";font-weight:700}
+</style><!--/vakken-->
 </head>
 <body>
 <div class="wrap">
@@ -158,7 +175,7 @@ td b{font-family:var(--f-display)}
     <p>Bij een chemische reactie ontstaan nieuwe stoffen. Massa en atomen blijven behouden, en er wordt energie uitgewisseld.</p>
     <p class="lpd">LPD 4C: De leerlingen balanceren gegeven eenvoudige anorganische chemische reacties door gebruik te maken van de wet van behoud van massa. LPD 5C: De leerlingen interpreteren bij een chemische reactie de energie-uitwisseling met de omgeving.</p>
   </header>
-  <div class="tip"><b>Voorkennis: dit moet je al kennen</b><ul style="margin:4px 0 0;padding-left:20px"><li>Het verschil tussen een <b>chemisch</b> en een <b>fysisch</b> verschijnsel.</li><li>Formules lezen: <b>index</b> en <b>coëfficiënt</b> (thema 3).</li></ul></div>
+  <div class="tip" data-vak="vk" data-auto><b>Voorkennis: dit moet je al kennen</b><ul style="margin:4px 0 0;padding-left:20px"><li>Het verschil tussen een <b>chemisch</b> en een <b>fysisch</b> verschijnsel.</li><li>Formules lezen: <b>index</b> en <b>coëfficiënt</b> (thema 3).</li></ul></div>
   <div class="doel"><span class="eyebrow">Lesdoelen thema 4 · p. 136–157</span><ul><li>Ik hanteer de begrippen reactievergelijking, aflopende reactie, reagentia en reactieproducten.</li><li>Ik geef de wet van behoud van massa (Lavoisier) weer en hanteer ze correct.</li><li>Ik geef de wet van behoud van atomen weer en hanteer ze correct.</li><li>Ik kan een reactievergelijking uitbalanceren.</li><li>Ik interpreteer het onderscheid tussen exo-energetische en endo-energetische reacties vanuit gegeven energie-uitwisselingen.</li><li>Ik leid uit een energiediagram af of de reactie endo- of exo-energetisch is.</li></ul></div>
   <nav class="lesnav" role="tablist" aria-label="Onderdelen"><button class="lestab" role="tab" aria-controls="lesA" aria-selected="true"><span class="nr">1.1</span><span class="t"><b>Reactievergelijking en massa</b><small>wet van Lavoisier</small></span></button><button class="lestab" role="tab" aria-controls="lesB" aria-selected="false"><span class="nr">1.2</span><span class="t"><b>Behoud van atomen</b><small>uitbalanceren</small></span></button><button class="lestab" role="tab" aria-controls="lesC" aria-selected="false"><span class="nr">2</span><span class="t"><b>Energie</b><small>exo en endo</small></span></button><button class="lestab" role="tab" aria-controls="lesD" aria-selected="false"><span class="nr">✎</span><span class="t"><b>Oefenen</b><small>alle lesdoelen</small></span></button></nav>
 
@@ -181,20 +198,20 @@ td b{font-family:var(--f-display)}
     </section>
     <section class="blok">
       <div class="blok-kop"><span class="letter">1.1</span><h2>Wet van behoud van massa</h2></div>
-      <div class="def"><span class="eyebrow">Wet van Lavoisier</span><p>Bij een chemische reactie is de <b>totale massa van de reagentia</b> gelijk aan de <b>totale massa van de reactieproducten</b>.</p></div>
+      <div class="def" data-vak="ken" data-label="nee" data-auto><span class="eyebrow">Wet van Lavoisier</span><p>Bij een chemische reactie is de <b>totale massa van de reagentia</b> gelijk aan de <b>totale massa van de reactieproducten</b>.</p></div>
       <p>Proef: azijn en bakpoeder reageren. Er ontstaat een gas (koolstofdioxide). Kies of de fles open of dicht is.</p>
       <div class="knoppen"><button class="knop" type="button" id="la-dicht" aria-pressed="true">fles met ballon (dicht)</button><button class="knop" type="button" id="la-open" aria-pressed="false">open fles</button><button class="knop hoofd" type="button" id="la-start">▶ Laat reageren</button></div>
       <div class="fig"><svg id="la-svg" viewBox="0 0 520 280"></svg></div>
       <p id="la-zin"></p>
-      <div class="tip"><b>Rekenen met de wet</b><p>56 g ijzer reageert volledig met 32 g zwavel tot ijzersulfide. Dan ontstaat 56 g + 32 g = <b>88 g</b> ijzersulfide.</p></div>
+      <div class="tip" data-vak="vb" data-auto><b>Rekenen met de wet</b><p>56 g ijzer reageert volledig met 32 g zwavel tot ijzersulfide. Dan ontstaat 56 g + 32 g = <b>88 g</b> ijzersulfide.</p></div>
     </section>
   </main>
 
   <main class="les" id="lesB" role="tabpanel" hidden>
     <section class="blok">
       <div class="blok-kop"><span class="letter">1.2</span><h2>Wet van behoud van atomen</h2></div>
-      <div class="def"><span class="eyebrow">Wet van behoud van atomen</span><p>Bij een chemische reactie gaan er <b>geen atomen verloren</b> en komen er <b>geen atomen bij</b>. De atomen worden alleen <b>anders gegroepeerd</b>. Links en rechts van de pijl staan evenveel atomen van elke soort.</p></div>
-      <div class="tip"><b>Uitbalanceren in 3 stappen</b><ol style="margin:4px 0 0;padding-left:22px"><li>Tel de atomen van elke soort links en rechts van de pijl.</li><li>Is het niet gelijk? Zet een <b>coëfficiënt</b> vóór een formule.</li><li>Tel opnieuw tot alles gelijk is.</li></ol><p><b>Verander nooit een index.</b> Dan maak je een andere stof: H<sub>2</sub>O is water, H<sub>2</sub>O<sub>2</sub> is waterstofperoxide.</p></div>
+      <div class="def" data-vak="ken" data-label="nee" data-auto><span class="eyebrow">Wet van behoud van atomen</span><p>Bij een chemische reactie gaan er <b>geen atomen verloren</b> en komen er <b>geen atomen bij</b>. De atomen worden alleen <b>anders gegroepeerd</b>. Links en rechts van de pijl staan evenveel atomen van elke soort.</p></div>
+      <div class="tip" data-vak="ken" data-auto><b>Uitbalanceren in 3 stappen</b><ol style="margin:4px 0 0;padding-left:22px"><li>Tel de atomen van elke soort links en rechts van de pijl.</li><li>Is het niet gelijk? Zet een <b>coëfficiënt</b> vóór een formule.</li><li>Tel opnieuw tot alles gelijk is.</li></ol><p><b>Verander nooit een index.</b> Dan maak je een andere stof: H<sub>2</sub>O is water, H<sub>2</sub>O<sub>2</sub> is waterstofperoxide.</p></div>
     </section>
     <section class="blok">
       <div class="blok-kop"><span class="letter">1.2</span><h2>Balanceer de reactie</h2></div>
@@ -211,8 +228,8 @@ td b{font-family:var(--f-display)}
       <div class="blok-kop"><span class="letter">2</span><h2>Energie bij chemische reacties</h2></div>
       <p>Bij elke chemische reactie wordt er energie uitgewisseld met de <b>omgeving</b>: warmte, licht of elektrische energie.</p>
       <div class="duo">
-        <div class="def"><span class="eyebrow">2.1 · Endo-energetisch</span><p>De reactie <b>neemt energie op</b> uit de omgeving. De omgeving koelt af, of je moet energie blijven toevoegen.</p></div>
-        <div class="def"><span class="eyebrow">2.2 · Exo-energetisch</span><p>De reactie <b>geeft energie af</b> aan de omgeving. De omgeving warmt op, of er komt licht of stroom vrij.</p></div>
+        <div class="def" data-vak="ken" data-label="nee" data-auto><span class="eyebrow">2.1 · Endo-energetisch</span><p>De reactie <b>neemt energie op</b> uit de omgeving. De omgeving koelt af, of je moet energie blijven toevoegen.</p></div>
+        <div class="def" data-vak="ken" data-label="nee" data-auto><span class="eyebrow">2.2 · Exo-energetisch</span><p>De reactie <b>geeft energie af</b> aan de omgeving. De omgeving warmt op, of er komt licht of stroom vrij.</p></div>
       </div>
     </section>
     <section class="blok">
@@ -220,7 +237,7 @@ td b{font-family:var(--f-display)}
       <p>Kies een reactie. Het energiediagram vergelijkt de energie van de reagentia met de energie van de reactieproducten.</p>
       <div class="knoppen" id="ed-kies"></div>
       <div class="duo"><div class="fig"><svg id="ed-svg" viewBox="0 0 420 300"></svg></div><div class="kaart" id="ed-uitleg"></div></div>
-      <div class="tip"><b>Zo lees je het diagram</b><p>Liggen de <b>reactieproducten lager</b> dan de reagentia? Dan is er energie <b>afgegeven</b>: <b>exo-energetisch</b>. Liggen ze <b>hoger</b>? Dan is er energie <b>opgenomen</b>: <b>endo-energetisch</b>.</p></div>
+      <div class="tip" data-vak="ken" data-auto><b>Zo lees je het diagram</b><p>Liggen de <b>reactieproducten lager</b> dan de reagentia? Dan is er energie <b>afgegeven</b>: <b>exo-energetisch</b>. Liggen ze <b>hoger</b>? Dan is er energie <b>opgenomen</b>: <b>endo-energetisch</b>.</p></div>
     </section>
   </main>
 

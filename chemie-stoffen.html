@@ -212,6 +212,23 @@ button{font:inherit;color:inherit;cursor:pointer}
 @media (prefers-reduced-motion: reduce){ *{transition:none!important;animation:none!important} }
 </style>
 
+<!--vakken--><style>
+[data-vak]{position:relative}
+[data-vak="ken"]{background:#E8F5EC!important;border:0!important;border-left:4px solid #1F7A4A!important;border-radius:0 10px 10px 0!important}
+[data-vak="letop"]{background:#FFF7ED!important;border:0!important;border-left:4px solid #D97706!important;border-radius:0 10px 10px 0!important;color:inherit}
+[data-vak="vb"]{background:transparent!important;border:1.5px dashed #94A3B8!important;border-radius:10px!important}
+[data-vak="vk"]{background:#EEF4FB!important;border:0!important;border-left:4px solid #64748B!important;border-radius:0 10px 10px 0!important}
+[data-vak]:not(.kader)::before,.kader[data-vak] .kop::before{display:block;font-size:11.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;margin-bottom:2px}
+.kader[data-vak] .kop::before{display:inline}
+[data-vak="ken"]:not(.kader)::before{content:"Ken dit";color:#1F7A4A}
+.kader[data-vak="ken"] .kop::before{content:"Ken dit · ";color:#1F7A4A}
+[data-vak="letop"]:not(.kader)::before{content:"Let op";color:#B45309}
+[data-vak][data-label="nee"]::before{content:none!important}
+[data-vak="vb"]:not(.kader)::before{content:"Voorbeeld";color:#64748B}
+[data-vak="vk"]::before{content:none!important}
+.lpd{font-size:12px!important;opacity:.7}
+.lpd::before{content:"Leerplandoel (voor de leerkracht): ";font-weight:700}
+</style><!--/vakken-->
 </head>
 <body>
 <div class="wrap">
@@ -221,7 +238,7 @@ button{font:inherit;color:inherit;cursor:pointer}
     <h1>Stoffen onder de loep</h1>
     <p>Wat onderzoekt een chemicus? En hoe werk je veilig met stoffen? Kies een lesdoel. Bekijk de filmpjes en maak de oefeningen.</p>
   </header>
-  <div class="tip" id="voorkennis" style="margin:0 0 16px"><b>Voorkennis: dit moet je al kennen</b><ul style="margin:4px 0 0;padding-left:20px"><li>Stoffen komen voor in drie <b>aggregatietoestanden</b>: vast, vloeibaar en gas.</li><li>Het <b>deeltjesmodel</b>: alle stoffen bestaan uit heel kleine deeltjes.</li><li><b>Labomateriaal</b>: bekerglas, erlenmeyer, maatcilinder, trechter. In het labo draag je een veiligheidsbril en een labojas.</li></ul></div>
+  <div class="tip" id="voorkennis" style="margin:0 0 16px" data-vak="vk" data-auto><b>Voorkennis: dit moet je al kennen</b><ul style="margin:4px 0 0;padding-left:20px"><li>Stoffen komen voor in drie <b>aggregatietoestanden</b>: vast, vloeibaar en gas.</li><li>Het <b>deeltjesmodel</b>: alle stoffen bestaan uit heel kleine deeltjes.</li><li><b>Labomateriaal</b>: bekerglas, erlenmeyer, maatcilinder, trechter. In het labo draag je een veiligheidsbril en een labojas.</li></ul></div>
 
 
   <nav class="lesnav" role="tablist" aria-label="Lesdoelen">

@@ -29,7 +29,7 @@ def bouw(bron, doel, fn):
     s = (ROOT / bron).read_text(encoding='utf-8')
     s = fn(s)
     s = s.replace('<!DOCTYPE html>\n', '<!DOCTYPE html>\n' + NOOT.format(bron=bron), 1)
-    (ROOT / doel).write_text(voeg_toe(s), encoding='utf-8')
+    (ROOT / doel).write_text(voeg_toe(s, doel), encoding='utf-8')
     print('gemaakt:', doel)
 
 

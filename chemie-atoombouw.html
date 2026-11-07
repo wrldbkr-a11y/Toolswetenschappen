@@ -166,6 +166,23 @@ td b{font-family:var(--f-display)}
 .zatabel table{min-width:520px}
 
 </style>
+<!--vakken--><style>
+[data-vak]{position:relative}
+[data-vak="ken"]{background:#E8F5EC!important;border:0!important;border-left:4px solid #1F7A4A!important;border-radius:0 10px 10px 0!important}
+[data-vak="letop"]{background:#FFF7ED!important;border:0!important;border-left:4px solid #D97706!important;border-radius:0 10px 10px 0!important;color:inherit}
+[data-vak="vb"]{background:transparent!important;border:1.5px dashed #94A3B8!important;border-radius:10px!important}
+[data-vak="vk"]{background:#EEF4FB!important;border:0!important;border-left:4px solid #64748B!important;border-radius:0 10px 10px 0!important}
+[data-vak]:not(.kader)::before,.kader[data-vak] .kop::before{display:block;font-size:11.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;margin-bottom:2px}
+.kader[data-vak] .kop::before{display:inline}
+[data-vak="ken"]:not(.kader)::before{content:"Ken dit";color:#1F7A4A}
+.kader[data-vak="ken"] .kop::before{content:"Ken dit · ";color:#1F7A4A}
+[data-vak="letop"]:not(.kader)::before{content:"Let op";color:#B45309}
+[data-vak][data-label="nee"]::before{content:none!important}
+[data-vak="vb"]:not(.kader)::before{content:"Voorbeeld";color:#64748B}
+[data-vak="vk"]::before{content:none!important}
+.lpd{font-size:12px!important;opacity:.7}
+.lpd::before{content:"Leerplandoel (voor de leerkracht): ";font-weight:700}
+</style><!--/vakken-->
 </head>
 <body>
 <div class="wrap">
@@ -176,7 +193,7 @@ td b{font-family:var(--f-display)}
     <p>Waaruit bestaat een atoom? Hoeveel protonen, neutronen en elektronen heeft het? Bouw zelf atomen en ontdek het.</p>
     <p class="lpd">LPD 8C: De leerlingen beschrijven het PSE als een rangschikking van elementen volgens toenemend atoomnummer voor elementen uit de a-groepen en de edelgassen.</p>
   </header>
-  <div class="tip" id="voorkennis" style="margin:0 0 16px"><b>Voorkennis: dit moet je al kennen</b><ul style="margin:4px 0 0;padding-left:20px"><li>De <b>atoommodellen</b>, vooral het model van <b>Bohr</b>: een kern met elektronen in schillen (hoofdstuk 1).</li><li>De <b>symbolen</b> van de elementen (hoofdstuk 1).</li><li><b>Ladingen</b>: positief en negatief trekken elkaar aan.</li></ul></div>
+  <div class="tip" id="voorkennis" style="margin:0 0 16px" data-vak="vk" data-auto><b>Voorkennis: dit moet je al kennen</b><ul style="margin:4px 0 0;padding-left:20px"><li>De <b>atoommodellen</b>, vooral het model van <b>Bohr</b>: een kern met elektronen in schillen (hoofdstuk 1).</li><li>De <b>symbolen</b> van de elementen (hoofdstuk 1).</li><li><b>Ladingen</b>: positief en negatief trekken elkaar aan.</li></ul></div>
 
   <nav class="lesnav" role="tablist" aria-label="Lesdoelen">
     <button class="lestab" role="tab" aria-controls="les21" aria-selected="true"><span class="nr">2.1</span><span class="t"><b>Bouwstenen van het atoom</b><small>p. 57</small></span></button>
@@ -196,7 +213,7 @@ td b{font-family:var(--f-display)}
         <div class="kaart"><h3>De kern</h3><p>In het midden van het atoom. Hier zitten de <b>protonen</b> en de <b>neutronen</b>. Bijna alle massa van het atoom zit in de kern.</p></div>
         <div class="kaart"><h3>De elektronenmantel</h3><p>De ruimte rond de kern. Hier bewegen de <b>elektronen</b>, op schillen.</p></div>
       </div>
-      <div class="def"><span class="eyebrow">Onthoud</span><p>De <b>elementaire deeltjes</b> zijn de bouwstenen van een atoom: het <b>proton</b>, het <b>neutron</b> en het <b>elektron</b>.</p></div>
+      <div class="def" data-vak="ken" data-label="nee" data-auto><span class="eyebrow">Onthoud</span><p>De <b>elementaire deeltjes</b> zijn de bouwstenen van een atoom: het <b>proton</b>, het <b>neutron</b> en het <b>elektron</b>.</p></div>
       <div class="tabelwrap"><table class="deeltjes">
         <thead><tr><th>Deeltje</th><th>Symbool</th><th>Lading</th><th>Massa</th><th>Waar?</th></tr></thead>
         <tbody>
@@ -213,10 +230,10 @@ td b{font-family:var(--f-display)}
     <section class="blok">
       <div class="blok-kop"><span class="letter">C</span><h2>Schillen en valentie-elektronen</h2></div>
       <div class="duo">
-        <div class="def"><span class="eyebrow">Onthoud</span><p>De schillen zijn <b>energieniveaus</b>. De K-schil ligt het dichtst bij de kern en heeft de laagste energie. Elektronen vullen eerst de schil met de laagste energie.</p></div>
-        <div class="def"><span class="eyebrow">Definitie</span><p><b>Valentie-elektronen</b> zijn de elektronen op de <b>buitenste schil</b> van een atoom.</p></div>
+        <div class="def" data-vak="ken" data-label="nee" data-auto><span class="eyebrow">Onthoud</span><p>De schillen zijn <b>energieniveaus</b>. De K-schil ligt het dichtst bij de kern en heeft de laagste energie. Elektronen vullen eerst de schil met de laagste energie.</p></div>
+        <div class="def" data-vak="ken" data-label="nee" data-auto><span class="eyebrow">Definitie</span><p><b>Valentie-elektronen</b> zijn de elektronen op de <b>buitenste schil</b> van een atoom.</p></div>
       </div>
-      <div class="tip"><b>Zo vul je de schillen (eerste 18 elementen)</b><p>K-schil: maximaal 2 elektronen. L-schil: maximaal 8. M-schil: maximaal 8. Pas als een schil vol is, ga je naar de volgende. Je noteert bv. natrium als <b>2/8/1</b>. In de atoombouwer zijn de valentie-elektronen geel.</p></div>
+      <div class="tip" data-vak="ken" data-auto><b>Zo vul je de schillen (eerste 18 elementen)</b><p>K-schil: maximaal 2 elektronen. L-schil: maximaal 8. M-schil: maximaal 8. Pas als een schil vol is, ga je naar de volgende. Je noteert bv. natrium als <b>2/8/1</b>. In de atoombouwer zijn de valentie-elektronen geel.</p></div>
       <a class="linkkaart" href="https://wrldbkr-a11y.github.io/Toolswetenschappen/elektronenconfiguratie.html" target="_blank" rel="noopener"><span><b>Elektronenconfiguraties tekenen en noteren</b><br>Oefen dit met de tool Elektronenconfiguratie. Daar oefen je ook ionvorming en ionbinding.</span><span class="pijl">→</span></a>
     </section>
     <section class="blok">
@@ -238,11 +255,11 @@ td b{font-family:var(--f-display)}
     <section class="blok">
       <div class="blok-kop"><span class="letter">A</span><h2>Atoomnummer Z en massagetal A</h2></div>
       <div class="duo">
-        <div class="def"><span class="eyebrow">Atoomnummer Z</span><p>Z = het aantal <b>protonen</b>.<br>Bij een neutraal atoom is dat ook het aantal <b>elektronen</b>.</p></div>
-        <div class="def"><span class="eyebrow">Massagetal A</span><p>A = het aantal <b>protonen + neutronen</b>.<br>Dus: aantal neutronen = <b>A − Z</b>.</p></div>
+        <div class="def" data-vak="ken" data-label="nee" data-auto><span class="eyebrow">Atoomnummer Z</span><p>Z = het aantal <b>protonen</b>.<br>Bij een neutraal atoom is dat ook het aantal <b>elektronen</b>.</p></div>
+        <div class="def" data-vak="ken" data-label="nee" data-auto><span class="eyebrow">Massagetal A</span><p>A = het aantal <b>protonen + neutronen</b>.<br>Dus: aantal neutronen = <b>A − Z</b>.</p></div>
       </div>
       <div class="groot-notatie" id="voorbeeld-notatie"></div>
-      <div class="tip"><b>Let op: protonen en neutronen zijn niet altijd even veel</b>
+      <div class="tip" data-vak="letop" data-label="nee" data-auto><b>Let op: protonen en neutronen zijn niet altijd even veel</b>
         <p>Bij de lichtste atomen is het aantal neutronen gelijk aan of net iets groter dan het aantal protonen. Hoe zwaarder het atoom, hoe meer neutronen er zijn in vergelijking met de protonen. Zirkonium (Z = 40) heeft al 10 neutronen meer dan protonen. Reken daarom altijd: <b>neutronen = A − Z</b>.</p></div>
       <div class="tabelwrap"><table id="np-tabel"></table></div>
     </section>
@@ -261,7 +278,7 @@ td b{font-family:var(--f-display)}
         <div class="kaart"><span class="eyebrow">absolute atoommassa</span><h3>De echte massa in kg</h3><p>Een atoom is heel licht. Een zuurstofatoom weegt 0,000 000 000 000 000 000 000 000 026 6 kg = <b>2,66 · 10<sup>−26</sup> kg</b>. Met zulke getallen rekenen is lastig.</p></div>
         <div class="kaart"><span class="eyebrow">relatieve atoommassa A<sub>r</sub></span><h3>Vergelijken met u</h3><p>Daarom vergelijken we met de <b>atomaire massa-eenheid u</b> = 1,66 · 10<sup>−27</sup> kg (1/12 van de massa van een koolstof-12-atoom).</p></div>
       </div>
-      <div class="def"><span class="eyebrow">Verband</span><p>A<sub>r</sub> = absolute atoommassa ÷ u<br>A<sub>r</sub> zegt hoeveel keer zwaarder een atoom is dan u. A<sub>r</sub> heeft <b>geen eenheid</b>. A<sub>r</sub> is ongeveer gelijk aan het massagetal A.</p></div>
+      <div class="def" data-vak="ken" data-label="nee" data-auto><span class="eyebrow">Verband</span><p>A<sub>r</sub> = absolute atoommassa ÷ u<br>A<sub>r</sub> zegt hoeveel keer zwaarder een atoom is dan u. A<sub>r</sub> heeft <b>geen eenheid</b>. A<sub>r</sub> is ongeveer gelijk aan het massagetal A.</p></div>
       <div class="tabelwrap"><table id="massatabel"></table></div>
       <div class="oefening" id="oef-massa"></div>
     </section>

@@ -174,6 +174,23 @@ td b{font-family:var(--f-display)}
 .latijn td:first-child{font-family:var(--f-display);font-weight:800;font-size:1.15rem}
 
 </style>
+<!--vakken--><style>
+[data-vak]{position:relative}
+[data-vak="ken"]{background:#E8F5EC!important;border:0!important;border-left:4px solid #1F7A4A!important;border-radius:0 10px 10px 0!important}
+[data-vak="letop"]{background:#FFF7ED!important;border:0!important;border-left:4px solid #D97706!important;border-radius:0 10px 10px 0!important;color:inherit}
+[data-vak="vb"]{background:transparent!important;border:1.5px dashed #94A3B8!important;border-radius:10px!important}
+[data-vak="vk"]{background:#EEF4FB!important;border:0!important;border-left:4px solid #64748B!important;border-radius:0 10px 10px 0!important}
+[data-vak]:not(.kader)::before,.kader[data-vak] .kop::before{display:block;font-size:11.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;margin-bottom:2px}
+.kader[data-vak] .kop::before{display:inline}
+[data-vak="ken"]:not(.kader)::before{content:"Ken dit";color:#1F7A4A}
+.kader[data-vak="ken"] .kop::before{content:"Ken dit · ";color:#1F7A4A}
+[data-vak="letop"]:not(.kader)::before{content:"Let op";color:#B45309}
+[data-vak][data-label="nee"]::before{content:none!important}
+[data-vak="vb"]:not(.kader)::before{content:"Voorbeeld";color:#64748B}
+[data-vak="vk"]::before{content:none!important}
+.lpd{font-size:12px!important;opacity:.7}
+.lpd::before{content:"Leerplandoel (voor de leerkracht): ";font-weight:700}
+</style><!--/vakken-->
 </head>
 <body>
 <div class="wrap">
@@ -184,7 +201,7 @@ td b{font-family:var(--f-display)}
     <p>Hoe stellen wetenschappers zich een atoom voor? En hoe schrijf je de naam van een element kort met een symbool?</p>
     <p class="lpd">LPD 6C: De leerlingen gebruiken een atoommodel om de structuur van atomen en ionen te beschrijven.</p>
   </header>
-  <div class="tip" id="voorkennis" style="margin:0 0 16px"><b>Voorkennis: dit moet je al kennen</b><ul style="margin:4px 0 0;padding-left:20px"><li>Het <b>deeltjesmodel</b>: alle stoffen bestaan uit heel kleine deeltjes.</li><li><b>Zuivere stof</b> en <b>mengsel</b> (thema 1).</li><li>Een <b>model</b> is een vereenvoudigde voorstelling van de werkelijkheid.</li></ul></div>
+  <div class="tip" id="voorkennis" style="margin:0 0 16px" data-vak="vk" data-auto><b>Voorkennis: dit moet je al kennen</b><ul style="margin:4px 0 0;padding-left:20px"><li>Het <b>deeltjesmodel</b>: alle stoffen bestaan uit heel kleine deeltjes.</li><li><b>Zuivere stof</b> en <b>mengsel</b> (thema 1).</li><li>Een <b>model</b> is een vereenvoudigde voorstelling van de werkelijkheid.</li></ul></div>
 
   <nav class="lesnav" role="tablist" aria-label="Lesdoelen">
     <button class="lestab" role="tab" aria-controls="les11" aria-selected="true"><span class="nr">1.1</span><span class="t"><b>Atoommodel als dynamisch gegeven</b><small>p. 51</small></span></button>
@@ -198,8 +215,8 @@ td b{font-family:var(--f-display)}
     <section class="blok">
       <div class="blok-kop"><span class="letter">A</span><h2>Wat is een atoommodel?</h2></div>
       <p>Een atoom is zo klein dat niemand het echt kan zien. Daarom maken wetenschappers een <b>model</b>: een vereenvoudigde voorstelling van hoe een atoom eruitziet.</p>
-      <div class="def"><span class="eyebrow">Onthoud</span><p>Het atoommodel is <b>dynamisch</b>: het verandert telkens als nieuwe experimenten nieuwe dingen tonen. Een oud model wordt dan aangepast of vervangen.</p></div>
-      <div class="tip"><b>Let op</b><p>"Dynamisch" betekent hier niet dat atomen bewegen. Het betekent dat het <b>model</b> verandert in de loop van de tijd.</p></div>
+      <div class="def" data-vak="ken" data-label="nee" data-auto><span class="eyebrow">Onthoud</span><p>Het atoommodel is <b>dynamisch</b>: het verandert telkens als nieuwe experimenten nieuwe dingen tonen. Een oud model wordt dan aangepast of vervangen.</p></div>
+      <div class="tip" data-vak="letop" data-label="nee" data-auto><b>Let op</b><p>"Dynamisch" betekent hier niet dat atomen bewegen. Het betekent dat het <b>model</b> verandert in de loop van de tijd.</p></div>
     </section>
     <section class="blok">
       <div class="blok-kop"><span class="letter">B</span><h2>De atoommodellen door de tijd</h2></div>

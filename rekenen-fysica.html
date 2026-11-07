@@ -95,6 +95,23 @@ ol.regels li{margin-bottom:6px;}
 footer{max-width:1100px;margin:0 auto;padding:10px 24px 40px;color:var(--text-dim);font-size:12px;}
 footer a{color:inherit;}
 </style>
+<!--vakken--><style>
+[data-vak]{position:relative}
+[data-vak="ken"]{background:#E8F5EC!important;border:0!important;border-left:4px solid #1F7A4A!important;border-radius:0 10px 10px 0!important}
+[data-vak="letop"]{background:#FFF7ED!important;border:0!important;border-left:4px solid #D97706!important;border-radius:0 10px 10px 0!important;color:inherit}
+[data-vak="vb"]{background:transparent!important;border:1.5px dashed #94A3B8!important;border-radius:10px!important}
+[data-vak="vk"]{background:#EEF4FB!important;border:0!important;border-left:4px solid #64748B!important;border-radius:0 10px 10px 0!important}
+[data-vak]:not(.kader)::before,.kader[data-vak] .kop::before{display:block;font-size:11.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;margin-bottom:2px}
+.kader[data-vak] .kop::before{display:inline}
+[data-vak="ken"]:not(.kader)::before{content:"Ken dit";color:#1F7A4A}
+.kader[data-vak="ken"] .kop::before{content:"Ken dit · ";color:#1F7A4A}
+[data-vak="letop"]:not(.kader)::before{content:"Let op";color:#B45309}
+[data-vak][data-label="nee"]::before{content:none!important}
+[data-vak="vb"]:not(.kader)::before{content:"Voorbeeld";color:#64748B}
+[data-vak="vk"]::before{content:none!important}
+.lpd{font-size:12px!important;opacity:.7}
+.lpd::before{content:"Leerplandoel (voor de leerkracht): ";font-weight:700}
+</style><!--/vakken-->
 </head>
 <body>
 <header class="top">
@@ -111,7 +128,7 @@ footer a{color:inherit;}
   <p class="sub">Elke grootheid heeft een <strong>SI-eenheid</strong>. Met een <strong>voorvoegsel</strong> maak je er een afgeleide eenheid van, bv. <b>km</b> of <b>mg</b>.</p>
   <div class="grid">
     <div class="paneel">
-      <div class="kader"><div class="kop">Onthoud</div>
+      <div class="kader" data-vak="ken" data-auto><div class="kop">Onthoud</div>
         <p>De SI-eenheid van lengte is de <b>meter (m)</b>, van massa de <b>kilogram (kg)</b>, van tijd de <b>seconde (s)</b>.</p>
         <p>Let op: bij massa is de SI-eenheid <b>kg</b>, niet g.</p></div>
       <h3>Voorvoegsels</h3>
@@ -138,7 +155,7 @@ footer a{color:inherit;}
         <div><label class="k" for="ln">naar</label><select id="ln"></select></div>
       </div>
       <div class="ladder" id="ladder"></div>
-      <div class="tip">Oranje streep = SI-eenheid. Naar rechts = kleinere eenheid = groter getal.</div>
+      <div class="tip" data-vak="ken" data-auto>Oranje streep = SI-eenheid. Naar rechts = kleinere eenheid = groter getal.</div>
       <div class="uit" id="luit"></div>
     </div>
   </div>
@@ -150,7 +167,7 @@ footer a{color:inherit;}
   <p class="sub">Heel grote en heel kleine getallen schrijf je korter met een <strong>macht van 10</strong>.</p>
   <div class="grid">
     <div class="paneel">
-      <div class="kader"><div class="kop">Onthoud</div>
+      <div class="kader" data-vak="ken" data-auto><div class="kop">Onthoud</div>
         <p>Een getal in wetenschappelijke notatie is <b>a × 10<sup>n</sup></b>, met <b>1 ≤ a &lt; 10</b>.</p>
         <p>Komma naar <b>links</b> schuiven → exponent wordt <b>positief</b> (groot getal).</p>
         <p>Komma naar <b>rechts</b> schuiven → exponent wordt <b>negatief</b> (klein getal).</p></div>
@@ -178,7 +195,7 @@ footer a{color:inherit;}
   <p class="sub">Het aantal <strong>beduidende cijfers</strong> (BC) toont hoe nauwkeurig je gemeten hebt. 2,5 m en 2,50 m zijn dus <strong>niet</strong> hetzelfde meetresultaat.</p>
   <div class="grid">
     <div class="paneel">
-      <div class="kader"><div class="kop">Regels: welke cijfers tellen mee?</div>
+      <div class="kader" data-vak="ken" data-auto><div class="kop">Regels: welke cijfers tellen mee?</div>
         <ol class="regels">
           <li>Alle cijfers die geen 0 zijn, tellen mee. <span class="vb">4,52</span> → 3 BC</li>
           <li>Nullen <b>tussen</b> andere cijfers tellen mee. <span class="vb">3,05</span> → 3 BC</li>
@@ -193,7 +210,7 @@ footer a{color:inherit;}
       <div class="uit" id="bcuit"></div>
     </div>
     <div class="paneel">
-      <div class="kader"><div class="kop">Rekenen met meetresultaten</div>
+      <div class="kader" data-vak="ken" data-auto><div class="kop">Rekenen met meetresultaten</div>
         <p>Bij <b>vermenigvuldigen en delen</b> krijgt het resultaat evenveel BC als het gegeven met het <b>kleinste</b> aantal BC.</p></div>
       <h3>Voorbeeld: hoe snel rijdt de tram?</h3>
       <div class="rij">
@@ -201,7 +218,7 @@ footer a{color:inherit;}
         <div><label class="k" for="rb">tijd (s)</label><input type="text" id="rb" value="360" inputmode="decimal"></div>
       </div>
       <div class="uit" id="ruit"></div>
-      <p class="note"><strong>Je rekenmachine weet niet hoe nauwkeurig je gemeten hebt.</strong> Neem dus nooit alle cijfers over: rond af op het juiste aantal BC.</p>
+      <p class="note" data-vak="letop" data-auto><strong>Je rekenmachine weet niet hoe nauwkeurig je gemeten hebt.</strong> Neem dus nooit alle cijfers over: rond af op het juiste aantal BC.</p>
     </div>
   </div>
 </section>
@@ -417,7 +434,7 @@ function nieuw(){
     const r = v * factor(L, u) / factor(L, doel);
     vraag = {s, r, doel, uitleg: `${decimaal(v)} ${u} = <b>${toon_getal(r)} ${doel}</b>` + (doel === L.si ? ` (${L.si} is de SI-eenheid).` : '.')};
     vraagEl.innerHTML = `${t} ${decimaal(v)} ${u}. Zet om naar <b>${doel}</b>.`;
-    invoer.innerHTML = `<div class="rij">${veld('a', false, 'antwoord')} <b>${doel}</b></div><div class="tip">Een heel groot of klein getal mag je ook schrijven als bv. 2,5 × 10^-3.</div>`;
+    invoer.innerHTML = `<div class="rij">${veld('a', false, 'antwoord')} <b>${doel}</b></div><div class="tip" data-vak="ken" data-auto>Een heel groot of klein getal mag je ook schrijven als bv. 2,5 × 10^-3.</div>`;
   } else if (s === 'wet'){
     const [t, v, u] = kies(Math.random() < .5 ? GROOT : KLEIN);
     vraag = {s, r: v, uitleg: `${decimaal(v)} = <b>${wet(v)}</b>`};

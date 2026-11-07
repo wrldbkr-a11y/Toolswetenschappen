@@ -150,6 +150,23 @@ td b{font-family:var(--f-display)}
 select.knop{padding:6px 10px}
 
 </style>
+<!--vakken--><style>
+[data-vak]{position:relative}
+[data-vak="ken"]{background:#E8F5EC!important;border:0!important;border-left:4px solid #1F7A4A!important;border-radius:0 10px 10px 0!important}
+[data-vak="letop"]{background:#FFF7ED!important;border:0!important;border-left:4px solid #D97706!important;border-radius:0 10px 10px 0!important;color:inherit}
+[data-vak="vb"]{background:transparent!important;border:1.5px dashed #94A3B8!important;border-radius:10px!important}
+[data-vak="vk"]{background:#EEF4FB!important;border:0!important;border-left:4px solid #64748B!important;border-radius:0 10px 10px 0!important}
+[data-vak]:not(.kader)::before,.kader[data-vak] .kop::before{display:block;font-size:11.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;margin-bottom:2px}
+.kader[data-vak] .kop::before{display:inline}
+[data-vak="ken"]:not(.kader)::before{content:"Ken dit";color:#1F7A4A}
+.kader[data-vak="ken"] .kop::before{content:"Ken dit · ";color:#1F7A4A}
+[data-vak="letop"]:not(.kader)::before{content:"Let op";color:#B45309}
+[data-vak][data-label="nee"]::before{content:none!important}
+[data-vak="vb"]:not(.kader)::before{content:"Voorbeeld";color:#64748B}
+[data-vak="vk"]::before{content:none!important}
+.lpd{font-size:12px!important;opacity:.7}
+.lpd::before{content:"Leerplandoel (voor de leerkracht): ";font-weight:700}
+</style><!--/vakken-->
 </head>
 <body>
 <div class="wrap">
@@ -160,7 +177,7 @@ select.knop{padding:6px 10px}
     <p>Uit welke atomen bestaat een stof? Hoe lees je een formule? En hoe houden atomen elkaar vast?</p>
     <p class="lpd">LPD 3C: De leerlingen interpreteren de symbolische schrijfwijze van enkelvoudige en samengestelde stoffen. LPD 10C: De leerlingen stellen de ionbinding, de atoombinding en de metaalbinding op als streven van atomen naar de edelgasconfiguratie.</p>
   </header>
-  <div class="tip"><b>Voorkennis: dit moet je al kennen</b><ul style="margin:4px 0 0;padding-left:20px"><li>Een <b>zuivere stof</b> bestaat uit één soort deeltjes.</li><li>Metalen en niet-metalen in het PSE, en de <b>valentie-elektronen</b>.</li><li>De <b>edelgasconfiguratie</b> en <b>ionvorming</b> (thema 2).</li></ul></div>
+  <div class="tip" data-vak="vk" data-auto><b>Voorkennis: dit moet je al kennen</b><ul style="margin:4px 0 0;padding-left:20px"><li>Een <b>zuivere stof</b> bestaat uit één soort deeltjes.</li><li>Metalen en niet-metalen in het PSE, en de <b>valentie-elektronen</b>.</li><li>De <b>edelgasconfiguratie</b> en <b>ionvorming</b> (thema 2).</li></ul></div>
   <div class="doel"><span class="eyebrow">Lesdoelen thema 3 · p. 88–132</span><ul><li>Ik gebruik het deeltjesmodel om het verschil tussen een enkelvoudige en een samengestelde stof te verklaren.</li><li>Ik leg het verschil uit tussen een analyse en synthese.</li><li>Ik beschrijf de betekenis van een index en ik interpreteer chemische formules.</li><li>Ik leg het verschil uit tussen een index en een coëfficiënt.</li><li>Ik gebruik de symbolische schrijfwijze of naamgeving van stoffen om de stoffen te classificeren als enkelvoudige of samengestelde stof.</li><li>Ik leg uit hoe een ionbinding, een atoombinding en een metaalbinding tot stand komt.</li><li>Ik gebruik het PSE om samengestelde stoffen als ionverbindingen of covalente verbindingen te classificeren.</li></ul></div>
   <nav class="lesnav" role="tablist" aria-label="Onderdelen"><button class="lestab" role="tab" aria-controls="lesA" aria-selected="true"><span class="nr">1.1</span><span class="t"><b>Enkelvoudig of samengesteld</b><small>analyse en synthese</small></span></button><button class="lestab" role="tab" aria-controls="lesB" aria-selected="false"><span class="nr">1.2</span><span class="t"><b>Formules lezen</b><small>index en coëfficiënt</small></span></button><button class="lestab" role="tab" aria-controls="lesC" aria-selected="false"><span class="nr">2</span><span class="t"><b>Chemische bindingen</b><small>ion, atoom, metaal</small></span></button><button class="lestab" role="tab" aria-controls="lesD" aria-selected="false"><span class="nr">✎</span><span class="t"><b>Oefenen</b><small>alle lesdoelen</small></span></button></nav>
 
@@ -169,8 +186,8 @@ select.knop{padding:6px 10px}
       <div class="blok-kop"><span class="letter">A</span><h2>Enkelvoudige en samengestelde stoffen</h2></div>
       <p>Een zuivere stof bestaat uit één soort deeltjes. Kijk naar de <b>atomen</b> in één deeltje.</p>
       <div class="duo">
-        <div class="def"><span class="eyebrow">Definitie</span><p>Een <b>enkelvoudige stof</b> bestaat uit deeltjes met <b>één soort atomen</b>.</p></div>
-        <div class="def"><span class="eyebrow">Definitie</span><p>Een <b>samengestelde stof</b> bestaat uit deeltjes met <b>twee of meer soorten atomen</b>.</p></div>
+        <div class="def" data-vak="ken" data-label="nee" data-auto><span class="eyebrow">Definitie</span><p>Een <b>enkelvoudige stof</b> bestaat uit deeltjes met <b>één soort atomen</b>.</p></div>
+        <div class="def" data-vak="ken" data-label="nee" data-auto><span class="eyebrow">Definitie</span><p>Een <b>samengestelde stof</b> bestaat uit deeltjes met <b>twee of meer soorten atomen</b>.</p></div>
       </div>
       <p>Kies een stof en bekijk het deeltjesmodel.</p>
       <div class="knoppen" id="dm-knoppen"></div>
@@ -180,13 +197,13 @@ select.knop{padding:6px 10px}
     <section class="blok">
       <div class="blok-kop"><span class="letter">A</span><h2>Analyse en synthese</h2></div>
       <div class="duo">
-        <div class="def"><span class="eyebrow">Definitie</span><p>Bij een <b>analyse</b> ontleed je een samengestelde stof in eenvoudigere stoffen.</p></div>
-        <div class="def"><span class="eyebrow">Definitie</span><p>Bij een <b>synthese</b> maak je een samengestelde stof uit eenvoudigere stoffen.</p></div>
+        <div class="def" data-vak="ken" data-label="nee" data-auto><span class="eyebrow">Definitie</span><p>Bij een <b>analyse</b> ontleed je een samengestelde stof in eenvoudigere stoffen.</p></div>
+        <div class="def" data-vak="ken" data-label="nee" data-auto><span class="eyebrow">Definitie</span><p>Bij een <b>synthese</b> maak je een samengestelde stof uit eenvoudigere stoffen.</p></div>
       </div>
       <div class="knoppen"><button class="knop" type="button" id="as-a" aria-pressed="true">analyse: elektrolyse van water</button><button class="knop" type="button" id="as-s" aria-pressed="false">synthese van water</button></div>
       <div class="fig"><svg id="as-svg" viewBox="0 0 640 230"></svg></div>
       <p id="as-zin"></p>
-      <div class="tip"><b>Nog een analyse</b><p>Verwarm je suiker sterk, dan ontleedt het in <b>koolstof</b> (zwart) en <b>water</b> (damp). Dat is een <b>thermolyse</b>: een analyse door warmte. Suiker is dus een samengestelde stof.</p></div>
+      <div class="tip" data-vak="vb" data-auto><b>Nog een analyse</b><p>Verwarm je suiker sterk, dan ontleedt het in <b>koolstof</b> (zwart) en <b>water</b> (damp). Dat is een <b>thermolyse</b>: een analyse door warmte. Suiker is dus een samengestelde stof.</p></div>
     </section>
   </main>
 
@@ -213,7 +230,7 @@ select.knop{padding:6px 10px}
       <div class="knoppen" id="fl-knoppen"></div>
       <div class="knoppen"><span>coëfficiënt:</span><button class="knop" type="button" id="fl-min">−</button><b id="fl-c" style="font-family:var(--f-display);font-size:1.4rem;min-width:1.5em;text-align:center">1</b><button class="knop" type="button" id="fl-plus">+</button></div>
       <div class="duo"><div class="fig" id="fl-fig"></div><div class="kaart" id="fl-uitleg"></div></div>
-      <div class="tip"><b>Enkelvoudig of samengesteld? Kijk naar de formule.</b><p>Staat er <b>één symbool</b> in de formule (O<sub>2</sub>, Fe, He), dan is het een <b>enkelvoudige stof</b>. Staan er <b>twee of meer verschillende symbolen</b> (H<sub>2</sub>O, NaCl), dan is het een <b>samengestelde stof</b>. Ook de naam helpt: zuurstof<b>gas</b>, stikstof<b>gas</b> en een metaal zijn enkelvoudig. Natrium<b>chloride</b> en koolstof<b>dioxide</b> zijn samengesteld.</p></div>
+      <div class="tip" data-vak="ken" data-auto><b>Enkelvoudig of samengesteld? Kijk naar de formule.</b><p>Staat er <b>één symbool</b> in de formule (O<sub>2</sub>, Fe, He), dan is het een <b>enkelvoudige stof</b>. Staan er <b>twee of meer verschillende symbolen</b> (H<sub>2</sub>O, NaCl), dan is het een <b>samengestelde stof</b>. Ook de naam helpt: zuurstof<b>gas</b>, stikstof<b>gas</b> en een metaal zijn enkelvoudig. Natrium<b>chloride</b> en koolstof<b>dioxide</b> zijn samengesteld.</p></div>
     </section>
   </main>
 
@@ -231,19 +248,19 @@ select.knop{padding:6px 10px}
       <div class="knoppen" id="ion-stap"><button class="knop" type="button" data-s="1" aria-pressed="true">1 · de atomen</button><button class="knop" type="button" data-s="2" aria-pressed="false">2 · een elektron gaat over</button><button class="knop" type="button" data-s="3" aria-pressed="false">3 · ionen trekken elkaar aan</button></div>
       <div class="fig" id="ion-fig"></div>
       <p id="ion-zin"></p>
-      <div class="def"><span class="eyebrow">Ionbinding</span><p>Een metaal geeft elektronen af en wordt een <b>positief ion</b>. Een niet-metaal neemt die elektronen op en wordt een <b>negatief ion</b>. De tegengestelde ladingen <b>trekken elkaar aan</b>. De stof is een <b>ionverbinding</b>.</p></div>
+      <div class="def" data-vak="ken" data-label="nee" data-auto><span class="eyebrow">Ionbinding</span><p>Een metaal geeft elektronen af en wordt een <b>positief ion</b>. Een niet-metaal neemt die elektronen op en wordt een <b>negatief ion</b>. De tegengestelde ladingen <b>trekken elkaar aan</b>. De stof is een <b>ionverbinding</b>.</p></div>
     </section>
     <section class="blok">
       <div class="blok-kop"><span class="letter">C</span><h2>Atoombinding</h2></div>
       <div class="knoppen" id="ab-knoppen"><button class="knop" type="button" data-m="H2" aria-pressed="true">waterstofgas H<sub>2</sub></button><button class="knop" type="button" data-m="Cl2" aria-pressed="false">chloorgas Cl<sub>2</sub></button><button class="knop" type="button" data-m="HCl" aria-pressed="false">waterstofchloride HCl</button></div>
       <div class="fig"><svg id="ab-svg" viewBox="0 0 520 240"></svg></div>
       <p id="ab-zin"></p>
-      <div class="def"><span class="eyebrow">Atoombinding</span><p>Twee niet-metalen <b>delen</b> elektronen. Elk atoom geeft één elektron in een <b>gemeenschappelijk elektronenpaar</b>. Dat paar telt voor beide atomen mee. Zo krijgen ze allebei een volle buitenste schil. De stof is een <b>covalente verbinding</b> (of een enkelvoudige stof, zoals H<sub>2</sub>).</p></div>
+      <div class="def" data-vak="ken" data-label="nee" data-auto><span class="eyebrow">Atoombinding</span><p>Twee niet-metalen <b>delen</b> elektronen. Elk atoom geeft één elektron in een <b>gemeenschappelijk elektronenpaar</b>. Dat paar telt voor beide atomen mee. Zo krijgen ze allebei een volle buitenste schil. De stof is een <b>covalente verbinding</b> (of een enkelvoudige stof, zoals H<sub>2</sub>).</p></div>
     </section>
     <section class="blok">
       <div class="blok-kop"><span class="letter">C</span><h2>Metaalbinding</h2></div>
       <div class="fig"><svg id="mb-svg" viewBox="0 0 520 220"></svg></div>
-      <div class="def"><span class="eyebrow">Metaalbinding</span><p>Metaalatomen geven hun valentie-elektronen af. Er ontstaan <b>positieve metaalionen</b> in een <b>zee van vrije elektronen</b>. De negatieve elektronenzee houdt de positieve ionen samen. Omdat de elektronen vrij kunnen bewegen, <b>geleiden metalen elektrische stroom</b>.</p></div>
+      <div class="def" data-vak="ken" data-label="nee" data-auto><span class="eyebrow">Metaalbinding</span><p>Metaalatomen geven hun valentie-elektronen af. Er ontstaan <b>positieve metaalionen</b> in een <b>zee van vrije elektronen</b>. De negatieve elektronenzee houdt de positieve ionen samen. Omdat de elektronen vrij kunnen bewegen, <b>geleiden metalen elektrische stroom</b>.</p></div>
     </section>
     <section class="blok">
       <div class="blok-kop"><span class="letter">C</span><h2>Welke binding? Gebruik het PSE</h2></div>

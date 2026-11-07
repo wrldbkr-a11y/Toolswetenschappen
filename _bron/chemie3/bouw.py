@@ -45,5 +45,5 @@ tabs();
 </html>
 '''
     import sys; sys.path.insert(0, str(REPO / '_bron')); from vinkjes import voeg_toe
-    (REPO / bestand).write_text(voeg_toe(html), encoding='utf-8')
+    (REPO / bestand).write_text(voeg_toe(html, bestand), encoding='utf-8')
     print('gemaakt:', bestand)

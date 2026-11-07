@@ -8,7 +8,8 @@ De vinkjes worden per pagina in de browser bewaard (localStorage). Afgedrukt bli
 
 De bouwscripts roepen voeg_toe() zelf aan, dus na het bouwen hoef je dit niet apart te draaien.
 """
-import pathlib, re
+import pathlib, re, sys
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 BEGIN, EINDE = '<!--vinkjes-->', '<!--/vinkjes-->'
 
@@ -47,7 +48,16 @@ BLOK = BEGIN + r'''
 def heeft_doelen(s):
     return 'class="doel"' in s or 'class="doelen"' in s
 
-def voeg_toe(s):
+# tools met de vaste soorten vakken (Ken dit / Let op / Voorbeeld), zie vakken.py
+VAKKEN = {'rekenen-fysica', 'krachten-beweging', 'krachten', 'snelheid-afgelegde-weg', 'rekenen-fysica-3aso', 'krachten-beweging-3aso',
+          'krachten-3aso', 'snelheid-3aso', 'chemie-stoffen', 'chemie-mengsels', 'chemie-scheidingstechnieken', 'chemie-atoommodellen',
+          'chemie-atoombouw', 'chemie-pse', 'chemie-ionvorming', 'chemie-samenstelling', 'chemie-reactie', 'biologie-prikkels',
+          'biologie-klieren', 'biologie-zenuwstelsel'}
+
+def voeg_toe(s, naam=''):
+    if pathlib.Path(naam).stem in VAKKEN:
+        from vakken import toepassen
+        s = toepassen(s)
     s = re.sub(re.escape(BEGIN) + r'.*?' + re.escape(EINDE) + r'\n?', '', s, flags=re.S)
     if not heeft_doelen(s):
         return s
@@ -57,7 +67,7 @@ def voeg_toe(s):
 if __name__ == '__main__':
     n = 0
     for f in sorted(ROOT.glob('*.html')):
-        s = f.read_text(encoding='utf-8'); t = voeg_toe(s)
+        s = f.read_text(encoding='utf-8'); t = voeg_toe(s, f.name)
         if t != s:
             f.write_text(t, encoding='utf-8'); n += 1
     print('vinkjes in', n, 'bestanden')

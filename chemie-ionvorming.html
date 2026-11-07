@@ -149,6 +149,23 @@ td b{font-family:var(--f-display)}
 @media (max-width:620px){.ib{grid-template-columns:1fr}.ib .pijl span{transform:rotate(90deg)}}
 
 </style>
+<!--vakken--><style>
+[data-vak]{position:relative}
+[data-vak="ken"]{background:#E8F5EC!important;border:0!important;border-left:4px solid #1F7A4A!important;border-radius:0 10px 10px 0!important}
+[data-vak="letop"]{background:#FFF7ED!important;border:0!important;border-left:4px solid #D97706!important;border-radius:0 10px 10px 0!important;color:inherit}
+[data-vak="vb"]{background:transparent!important;border:1.5px dashed #94A3B8!important;border-radius:10px!important}
+[data-vak="vk"]{background:#EEF4FB!important;border:0!important;border-left:4px solid #64748B!important;border-radius:0 10px 10px 0!important}
+[data-vak]:not(.kader)::before,.kader[data-vak] .kop::before{display:block;font-size:11.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;margin-bottom:2px}
+.kader[data-vak] .kop::before{display:inline}
+[data-vak="ken"]:not(.kader)::before{content:"Ken dit";color:#1F7A4A}
+.kader[data-vak="ken"] .kop::before{content:"Ken dit · ";color:#1F7A4A}
+[data-vak="letop"]:not(.kader)::before{content:"Let op";color:#B45309}
+[data-vak][data-label="nee"]::before{content:none!important}
+[data-vak="vb"]:not(.kader)::before{content:"Voorbeeld";color:#64748B}
+[data-vak="vk"]::before{content:none!important}
+.lpd{font-size:12px!important;opacity:.7}
+.lpd::before{content:"Leerplandoel (voor de leerkracht): ";font-weight:700}
+</style><!--/vakken-->
 </head>
 <body>
 <div class="wrap">
@@ -159,7 +176,7 @@ td b{font-family:var(--f-display)}
     <p>Atomen kunnen elektronen afgeven of opnemen. Dan worden ze geladen deeltjes: ionen.</p>
     <p class="lpd">LPD 6C: De leerlingen gebruiken een atoommodel om de structuur van atomen en ionen te beschrijven.</p>
   </header>
-  <div class="tip"><b>Voorkennis: dit moet je al kennen</b><ul style="margin:4px 0 0;padding-left:20px"><li>De bouw van een atoom: protonen, neutronen en elektronen.</li><li>Het schillenmodel en de <b>valentie-elektronen</b>.</li><li>De <b>edelgasconfiguratie</b>: een volle buitenste schil (hoofdstuk 3).</li></ul></div>
+  <div class="tip" data-vak="vk" data-auto><b>Voorkennis: dit moet je al kennen</b><ul style="margin:4px 0 0;padding-left:20px"><li>De bouw van een atoom: protonen, neutronen en elektronen.</li><li>Het schillenmodel en de <b>valentie-elektronen</b>.</li><li>De <b>edelgasconfiguratie</b>: een volle buitenste schil (hoofdstuk 3).</li></ul></div>
   <div class="doel"><span class="eyebrow">Lesdoelen hoofdstuk 4 · p. 77</span><ul><li>Ik leg uit wanneer een ion gevormd wordt.</li><li>Ik benoem een ion en geef de notatie weer.</li></ul></div>
   <nav class="lesnav" role="tablist" aria-label="Onderdelen"><button class="lestab" role="tab" aria-controls="lesA" aria-selected="true"><span class="nr">A</span><span class="t"><b>Wanneer een ion?</b><small>ionbouwer</small></span></button><button class="lestab" role="tab" aria-controls="lesB" aria-selected="false"><span class="nr">B</span><span class="t"><b>Naam en notatie</b></span></button><button class="lestab" role="tab" aria-controls="lesC" aria-selected="false"><span class="nr">C</span><span class="t"><b>Oefenen</b><small>alle lesdoelen</small></span></button></nav>
 
@@ -171,8 +188,8 @@ td b{font-family:var(--f-display)}
         <div class="kaart"><h3>Metaal: geeft elektronen af</h3><p>Een metaal staat links in het PSE. Het heeft maar <b>1, 2 of 3 valentie-elektronen</b>. Die geeft het af. Dan is de schil eronder de buitenste schil, en die is vol.</p><p>Er zijn nu <b>minder elektronen dan protonen</b>: het deeltje is <b>positief</b>.</p></div>
         <div class="kaart"><h3>Niet-metaal: neemt elektronen op</h3><p>Een niet-metaal staat rechts in het PSE. Het heeft <b>6 of 7 valentie-elektronen</b>. Het neemt er 2 of 1 bij. Dan is de buitenste schil vol met 8 elektronen.</p><p>Er zijn nu <b>meer elektronen dan protonen</b>: het deeltje is <b>negatief</b>.</p></div>
       </div>
-      <div class="def"><span class="eyebrow">Definitie</span><p>Een <b>ion</b> is een geladen deeltje. Het ontstaat als een atoom één of meer elektronen <b>afgeeft</b> of <b>opneemt</b>.</p></div>
-      <div class="tip"><b>Let op</b><p>Het aantal <b>protonen</b> verandert nooit. Alleen het aantal elektronen verandert. De lading van het ion = aantal protonen − aantal elektronen.</p></div>
+      <div class="def" data-vak="ken" data-label="nee" data-auto><span class="eyebrow">Definitie</span><p>Een <b>ion</b> is een geladen deeltje. Het ontstaat als een atoom één of meer elektronen <b>afgeeft</b> of <b>opneemt</b>.</p></div>
+      <div class="tip" data-vak="letop" data-label="nee" data-auto><b>Let op</b><p>Het aantal <b>protonen</b> verandert nooit. Alleen het aantal elektronen verandert. De lading van het ion = aantal protonen − aantal elektronen.</p></div>
     </section>
     <section class="blok">
       <div class="blok-kop"><span class="letter">A</span><h2>Ionbouwer</h2></div>
@@ -180,7 +197,7 @@ td b{font-family:var(--f-display)}
       <div class="knoppen" id="ib-knoppen"></div>
       <div class="fig"><div class="ib" id="ib"></div></div>
       <div class="tabelwrap"><table><thead><tr><th></th><th>atoom</th><th>ion</th></tr></thead><tbody id="ib-tabel"></tbody></table></div>
-      <div class="tip" id="ib-zin"></div>
+      <div class="tip" id="ib-zin" data-vak="ken" data-auto></div>
     </section>
   </main>
 
@@ -201,7 +218,7 @@ td b{font-family:var(--f-display)}
         <div class="kaart"><h3>Negatief ion</h3><p>verkorte naam + <b>-ide</b> + <b>-ion</b></p><p>Cl<sup>−</sup> = chlor<b>ide-ion</b><br>O<sup>2−</sup> = ox<b>ide-ion</b></p></div>
       </div>
       <div class="tabelwrap"><table><thead><tr><th>groep</th><th>valentie-elektronen</th><th>wat gebeurt er?</th><th>lading</th><th>voorbeelden</th></tr></thead><tbody id="groeptabel"></tbody></table></div>
-      <div class="tip"><b>Tip: kijk naar de groep</b><p>Uit het groepsnummer in het PSE haal je de lading. Groep Ia geeft 1+, IIa geeft 2+, IIIa geeft 3+. Groep VIa geeft 2−, VIIa geeft 1−. Edelgassen (VIIIa) vormen geen ionen: hun buitenste schil is al vol.</p></div>
+      <div class="tip" data-vak="ken" data-auto><b>Tip: kijk naar de groep</b><p>Uit het groepsnummer in het PSE haal je de lading. Groep Ia geeft 1+, IIa geeft 2+, IIIa geeft 3+. Groep VIa geeft 2−, VIIa geeft 1−. Edelgassen (VIIIa) vormen geen ionen: hun buitenste schil is al vol.</p></div>
     </section>
   </main>
 

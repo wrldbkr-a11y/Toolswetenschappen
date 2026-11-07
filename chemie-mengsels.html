@@ -183,6 +183,23 @@ tr.groep td{background:var(--surface-2);font-weight:700}
 @media (prefers-reduced-motion: reduce){ *{transition:none!important;animation:none!important} }
 </style>
 
+<!--vakken--><style>
+[data-vak]{position:relative}
+[data-vak="ken"]{background:#E8F5EC!important;border:0!important;border-left:4px solid #1F7A4A!important;border-radius:0 10px 10px 0!important}
+[data-vak="letop"]{background:#FFF7ED!important;border:0!important;border-left:4px solid #D97706!important;border-radius:0 10px 10px 0!important;color:inherit}
+[data-vak="vb"]{background:transparent!important;border:1.5px dashed #94A3B8!important;border-radius:10px!important}
+[data-vak="vk"]{background:#EEF4FB!important;border:0!important;border-left:4px solid #64748B!important;border-radius:0 10px 10px 0!important}
+[data-vak]:not(.kader)::before,.kader[data-vak] .kop::before{display:block;font-size:11.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;margin-bottom:2px}
+.kader[data-vak] .kop::before{display:inline}
+[data-vak="ken"]:not(.kader)::before{content:"Ken dit";color:#1F7A4A}
+.kader[data-vak="ken"] .kop::before{content:"Ken dit · ";color:#1F7A4A}
+[data-vak="letop"]:not(.kader)::before{content:"Let op";color:#B45309}
+[data-vak][data-label="nee"]::before{content:none!important}
+[data-vak="vb"]:not(.kader)::before{content:"Voorbeeld";color:#64748B}
+[data-vak="vk"]::before{content:none!important}
+.lpd{font-size:12px!important;opacity:.7}
+.lpd::before{content:"Leerplandoel (voor de leerkracht): ";font-weight:700}
+</style><!--/vakken-->
 </head>
 <body>
 <div class="wrap">
@@ -192,7 +209,7 @@ tr.groep td{background:var(--surface-2);font-weight:700}
     <h1>Mengsels en stofeigenschappen</h1>
     <p>Is iets een zuivere stof of een mengsel? Welk soort mengsel? En welke eigenschappen horen bij een stof? Kies een lesdoel en werk de stappen af.</p>
   </header>
-  <div class="tip" id="voorkennis" style="margin:0 0 16px"><b>Voorkennis: dit moet je al kennen</b><ul style="margin:4px 0 0;padding-left:20px"><li>De drie <b>aggregatietoestanden</b> en de overgangen: smelten, stollen, verdampen, condenseren.</li><li>Het <b>deeltjesmodel</b>: alle stoffen bestaan uit heel kleine deeltjes.</li><li><b>Oplossen</b>: suiker of zout verdwijnt in water, maar is er nog.</li><li>Chemie bestudeert <b>stoffen</b> (hoofdstuk 1).</li></ul></div>
+  <div class="tip" id="voorkennis" style="margin:0 0 16px" data-vak="vk" data-auto><b>Voorkennis: dit moet je al kennen</b><ul style="margin:4px 0 0;padding-left:20px"><li>De drie <b>aggregatietoestanden</b> en de overgangen: smelten, stollen, verdampen, condenseren.</li><li>Het <b>deeltjesmodel</b>: alle stoffen bestaan uit heel kleine deeltjes.</li><li><b>Oplossen</b>: suiker of zout verdwijnt in water, maar is er nog.</li><li>Chemie bestudeert <b>stoffen</b> (hoofdstuk 1).</li></ul></div>
 
 
   <nav class="lesnav" role="tablist" aria-label="Lesdoelen">
@@ -214,7 +231,7 @@ tr.groep td{background:var(--surface-2);font-weight:700}
         <div class="begrip"><span class="eyebrow">Begrip 2</span><h3>Mengsel</h3><div id="b-mengsel"></div><p>Bestaat uit <b>twee of meer soorten deeltjes</b>: twee of meer zuivere stoffen samen.</p><p class="vb">Voorbeelden: kraantjeswater, lucht, zeewater, melk.</p></div>
         <div class="begrip"><span class="eyebrow">Begrip 3</span><h3>Bestanddeel</h3><div id="b-bestanddeel"></div><p>Een <b>zuivere stof die in een mengsel zit</b>.</p><p class="vb">Zoutwater heeft twee bestanddelen: water en zout.</p></div>
       </div>
-      <div class="tip"><b>Let op</b><p>Een deeltje kan uit verschillende atomen bestaan. Als alle deeltjes toch <b>gelijk</b> zijn, is het nog altijd een zuivere stof. Water (H₂O) is een zuivere stof.</p></div>
+      <div class="tip" data-vak="letop" data-label="nee" data-auto><b>Let op</b><p>Een deeltje kan uit verschillende atomen bestaan. Als alle deeltjes toch <b>gelijk</b> zijn, is het nog altijd een zuivere stof. Water (H₂O) is een zuivere stof.</p></div>
       <div class="oefening" id="oef-deeltjes"></div>
       <div class="oefening" id="oef-zuiver"></div>
     </section>
@@ -278,7 +295,7 @@ tr.groep td{background:var(--surface-2);font-weight:700}
           <tr><td><b>Oplossing</b></td><td>vaste stof, vloeistof of gas opgelost in een vloeistof</td><td>suikerwater, zoutwater, frisdrank in een gesloten fles</td></tr>
           <tr><td><b>Legering</b></td><td>metalen gemengd in vaste toestand</td><td>brons, messing, staal</td></tr>
         </tbody></table></div>
-      <div class="tip"><b>In Brussel</b><p><b>Manneken Pis</b> is een beeldje uit <b>brons</b>: een legering van koper en tin. De bollen van het <b>Atomium</b> zijn sinds de renovatie (2004–2006) bekleed met <b>roestvrij staal</b>: een legering van vooral ijzer, met onder meer chroom en nikkel. Allebei homogene mengsels: je ziet de metalen niet apart.</p></div>
+      <div class="tip" data-vak="vb" data-auto><b>In Brussel</b><p><b>Manneken Pis</b> is een beeldje uit <b>brons</b>: een legering van koper en tin. De bollen van het <b>Atomium</b> zijn sinds de renovatie (2004–2006) bekleed met <b>roestvrij staal</b>: een legering van vooral ijzer, met onder meer chroom en nikkel. Allebei homogene mengsels: je ziet de metalen niet apart.</p></div>
       <div class="oefening" id="oef-soort"></div>
     </section>
     <section class="ikkan" id="ikkan22"></section>
@@ -309,8 +326,8 @@ tr.groep td{background:var(--surface-2);font-weight:700}
           <div class="eig-kol"><h3>Voorwerpseigenschappen</h3><p class="noot">veranderen met grootte en vorm</p><dl id="dl-voorwerp"></dl></div>
         </div>
       </div>
-      <div class="tip"><b>Kijk goed</b><p>Een blok aluminium en een blok koper met hetzelfde volume hebben een andere massa. De massadichtheid is een stofeigenschap: zo kan je aluminium en koper uit elkaar houden.</p></div>
-      <div class="tip"><b>In Brussel: het Atomium</b><p>Het Atomium stelt een <b>ijzerkristal</b> voor, 165 miljard keer vergroot. Bij de bouw voor Expo 58 waren de bollen bekleed met <b>aluminium</b>. Bij de renovatie (2004–2006) koos men <b>roestvrij staal</b>, omdat dat beter bestand is tegen <b>corrosie</b> (roest en aantasting door het weer). Hoe goed een materiaal bestand is tegen corrosie, is een <b>stofeigenschap</b>: het hangt af van het materiaal, niet van de grootte of de vorm van de bol.</p></div>
+      <div class="tip" data-vak="ken" data-auto><b>Kijk goed</b><p>Een blok aluminium en een blok koper met hetzelfde volume hebben een andere massa. De massadichtheid is een stofeigenschap: zo kan je aluminium en koper uit elkaar houden.</p></div>
+      <div class="tip" data-vak="vb" data-auto><b>In Brussel: het Atomium</b><p>Het Atomium stelt een <b>ijzerkristal</b> voor, 165 miljard keer vergroot. Bij de bouw voor Expo 58 waren de bollen bekleed met <b>aluminium</b>. Bij de renovatie (2004–2006) koos men <b>roestvrij staal</b>, omdat dat beter bestand is tegen <b>corrosie</b> (roest en aantasting door het weer). Hoe goed een materiaal bestand is tegen corrosie, is een <b>stofeigenschap</b>: het hangt af van het materiaal, niet van de grootte of de vorm van de bol.</p></div>
     </section>
 
     <section class="blok">

@@ -192,6 +192,23 @@ tr.groep td{background:var(--surface-2);font-weight:700}
 @media (prefers-reduced-motion: reduce){ *{transition:none!important;animation:none!important} }
 </style>
 
+<!--vakken--><style>
+[data-vak]{position:relative}
+[data-vak="ken"]{background:#E8F5EC!important;border:0!important;border-left:4px solid #1F7A4A!important;border-radius:0 10px 10px 0!important}
+[data-vak="letop"]{background:#FFF7ED!important;border:0!important;border-left:4px solid #D97706!important;border-radius:0 10px 10px 0!important;color:inherit}
+[data-vak="vb"]{background:transparent!important;border:1.5px dashed #94A3B8!important;border-radius:10px!important}
+[data-vak="vk"]{background:#EEF4FB!important;border:0!important;border-left:4px solid #64748B!important;border-radius:0 10px 10px 0!important}
+[data-vak]:not(.kader)::before,.kader[data-vak] .kop::before{display:block;font-size:11.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;margin-bottom:2px}
+.kader[data-vak] .kop::before{display:inline}
+[data-vak="ken"]:not(.kader)::before{content:"Ken dit";color:#1F7A4A}
+.kader[data-vak="ken"] .kop::before{content:"Ken dit · ";color:#1F7A4A}
+[data-vak="letop"]:not(.kader)::before{content:"Let op";color:#B45309}
+[data-vak][data-label="nee"]::before{content:none!important}
+[data-vak="vb"]:not(.kader)::before{content:"Voorbeeld";color:#64748B}
+[data-vak="vk"]::before{content:none!important}
+.lpd{font-size:12px!important;opacity:.7}
+.lpd::before{content:"Leerplandoel (voor de leerkracht): ";font-weight:700}
+</style><!--/vakken-->
 </head>
 <body>
 <div class="wrap">
@@ -201,7 +218,7 @@ tr.groep td{background:var(--surface-2);font-weight:700}
     <h1>Scheidingstechnieken</h1>
     <p>Hoe haal je de bestanddelen van een mengsel weer uit elkaar? Bekijk hoe elke techniek werkt, leer de onderdelen van de opstelling en oefen met voorbeelden uit het dagelijks leven.</p>
   </header>
-  <div class="tip" id="voorkennis" style="margin:0 0 16px"><b>Voorkennis: dit moet je al kennen</b><ul style="margin:4px 0 0;padding-left:20px"><li><b>Zuivere stof</b>, <b>mengsel</b> en <b>bestanddeel</b> (hoofdstuk 2).</li><li><b>Homogene</b> en <b>heterogene</b> mengsels en hun soorten: oplossing, suspensie, emulsie, schuim, rook, nevel … (hoofdstuk 2).</li><li><b>Stofeigenschappen</b>: kookpunt, oplosbaarheid, massadichtheid, deeltjesgrootte, magnetisch (hoofdstuk 2).</li><li>Water kookt bij 100 °C.</li></ul></div>
+  <div class="tip" id="voorkennis" style="margin:0 0 16px" data-vak="vk" data-auto><b>Voorkennis: dit moet je al kennen</b><ul style="margin:4px 0 0;padding-left:20px"><li><b>Zuivere stof</b>, <b>mengsel</b> en <b>bestanddeel</b> (hoofdstuk 2).</li><li><b>Homogene</b> en <b>heterogene</b> mengsels en hun soorten: oplossing, suspensie, emulsie, schuim, rook, nevel … (hoofdstuk 2).</li><li><b>Stofeigenschappen</b>: kookpunt, oplosbaarheid, massadichtheid, deeltjesgrootte, magnetisch (hoofdstuk 2).</li><li>Water kookt bij 100 °C.</li></ul></div>
 
 
   <nav class="lesnav" role="tablist" aria-label="Lesdoelen">
@@ -237,7 +254,7 @@ tr.groep td{background:var(--surface-2);font-weight:700}
     <section class="blok">
       <div class="blok-kop"><span class="letter">B</span><h2>De definitie</h2></div>
       <div class="puzzel" id="puzzel"></div>
-      <div class="tip"><b>Twee groepen</b><p>Een <b>heterogeen</b> mengsel scheid je met zeven, decanteren, filtreren of centrifugeren (3.2). Een <b>homogeen</b> mengsel scheid je met uitdampen, destilleren, extraheren of adsorberen (3.3).</p></div>
+      <div class="tip" data-vak="ken" data-auto><b>Twee groepen</b><p>Een <b>heterogeen</b> mengsel scheid je met zeven, decanteren, filtreren of centrifugeren (3.2). Een <b>homogeen</b> mengsel scheid je met uitdampen, destilleren, extraheren of adsorberen (3.3).</p></div>
     </section>
     <section class="ikkan" id="ikkan31"></section>
   </main>
@@ -272,11 +289,11 @@ tr.groep td{background:var(--surface-2);font-weight:700}
     <section class="blok">
       <div class="blok-kop"><span class="letter">B</span><h2>Scheiden in Brussel en thuis</h2></div>
       <p>Scheidingstechnieken zie je niet alleen in het labo. Ook in Brussel en bij jou thuis worden elke dag mengsels gescheiden.</p>
-      <div class="tip"><b>Waterzuiveringsstation Brussel-Noord (Haren)</b><p>Het grootste zuiveringsstation van België zuivert het afvalwater van het grootste deel van Brussel. Eerst houden <b>roosters</b> grof afval tegen, zoals takken en plastic. Daarna zakt het <b>zand</b> naar de bodem en wordt het <b>vet</b> dat bovenaan drijft, afgeschept. Bacteriën breken daarna de opgeloste vuilstoffen af. Het slib dat ontstaat, laat men opnieuw <b>bezinken</b>. Het gezuiverde water gaat naar de Zenne.</p>
+      <div class="tip" data-vak="vb" data-auto><b>Waterzuiveringsstation Brussel-Noord (Haren)</b><p>Het grootste zuiveringsstation van België zuivert het afvalwater van het grootste deel van Brussel. Eerst houden <b>roosters</b> grof afval tegen, zoals takken en plastic. Daarna zakt het <b>zand</b> naar de bodem en wordt het <b>vet</b> dat bovenaan drijft, afgeschept. Bacteriën breken daarna de opgeloste vuilstoffen af. Het slib dat ontstaat, laat men opnieuw <b>bezinken</b>. Het gezuiverde water gaat naar de Zenne.</p>
       <details><summary>Denk na: welke scheidingstechnieken herken je? Op welke stofeigenschap zijn ze gebaseerd?</summary><p>Roosters: <b>zeven</b> (deeltjesgrootte). Zand laten bezinken en vet afscheppen: zoals bij <b>decanteren</b> (massadichtheid). Het slib laten bezinken: opnieuw <b>decanteren</b>. Het werk van de bacteriën is geen scheidingstechniek: daar ontstaan nieuwe stoffen.</p></details></div>
-      <div class="tip"><b>Kraantjeswater van Vivaqua</b><p>Een deel van het Brusselse kraantjeswater komt uit de <b>Maas</b>. In de fabriek van Tailfer maakt Vivaqua er drinkwater van. Een van de stappen is een filter met <b>actieve kool</b>: resten van vervuiling en pesticiden blijven daaraan hangen.</p>
+      <div class="tip" data-vak="vb" data-auto><b>Kraantjeswater van Vivaqua</b><p>Een deel van het Brusselse kraantjeswater komt uit de <b>Maas</b>. In de fabriek van Tailfer maakt Vivaqua er drinkwater van. Een van de stappen is een filter met <b>actieve kool</b>: resten van vervuiling en pesticiden blijven daaraan hangen.</p>
       <details><summary>Denk na: welke techniek is dit? Waarom is gewoon filtreren niet genoeg?</summary><p>Dit is <b>adsorberen</b>. Pesticiden en andere resten zijn <b>opgelost</b> in het water: het is een homogeen mengsel. De deeltjes zijn te klein om tegen te houden met filtreerpapier. Ze blijven wel aan het oppervlak van de actieve kool hangen.</p></details></div>
-      <div class="tip"><b>Muntthee zetten</b><p>Je giet <b>heet water</b> over verse muntblaadjes of een theezakje. Na een paar minuten is het water groen-geel, en het ruikt en smaakt naar munt. Daarna haal je de blaadjes of het zakje uit de thee.</p>
+      <div class="tip" data-vak="vb" data-auto><b>Muntthee zetten</b><p>Je giet <b>heet water</b> over verse muntblaadjes of een theezakje. Na een paar minuten is het water groen-geel, en het ruikt en smaakt naar munt. Daarna haal je de blaadjes of het zakje uit de thee.</p>
       <details><summary>Denk na: welke twee scheidingstechnieken herken je?</summary><p>Geur-, smaak- en kleurstoffen lossen op in heet water: <b>extraheren</b> (oplosbaarheid). Het theezakje houdt de blaadjes tegen: <b>filtreren</b> (deeltjesgrootte).</p></details></div>
     </section>
     <section class="blok">

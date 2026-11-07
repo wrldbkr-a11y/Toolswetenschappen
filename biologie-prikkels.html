@@ -160,6 +160,23 @@ td.ok-cel{background:var(--ok-bg);} td.fout-cel{background:var(--flag-bg);}
 .bron{font-size:12px;color:var(--text-dim);margin-top:30px;line-height:1.6;}
 
 </style>
+<!--vakken--><style>
+[data-vak]{position:relative}
+[data-vak="ken"]{background:#E8F5EC!important;border:0!important;border-left:4px solid #1F7A4A!important;border-radius:0 10px 10px 0!important}
+[data-vak="letop"]{background:#FFF7ED!important;border:0!important;border-left:4px solid #D97706!important;border-radius:0 10px 10px 0!important;color:inherit}
+[data-vak="vb"]{background:transparent!important;border:1.5px dashed #94A3B8!important;border-radius:10px!important}
+[data-vak="vk"]{background:#EEF4FB!important;border:0!important;border-left:4px solid #64748B!important;border-radius:0 10px 10px 0!important}
+[data-vak]:not(.kader)::before,.kader[data-vak] .kop::before{display:block;font-size:11.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;margin-bottom:2px}
+.kader[data-vak] .kop::before{display:inline}
+[data-vak="ken"]:not(.kader)::before{content:"Ken dit";color:#1F7A4A}
+.kader[data-vak="ken"] .kop::before{content:"Ken dit · ";color:#1F7A4A}
+[data-vak="letop"]:not(.kader)::before{content:"Let op";color:#B45309}
+[data-vak][data-label="nee"]::before{content:none!important}
+[data-vak="vb"]:not(.kader)::before{content:"Voorbeeld";color:#64748B}
+[data-vak="vk"]::before{content:none!important}
+.lpd{font-size:12px!important;opacity:.7}
+.lpd::before{content:"Leerplandoel (voor de leerkracht): ";font-weight:700}
+</style><!--/vakken-->
 </head>
 <body>
 
@@ -202,7 +219,7 @@ td.ok-cel{background:var(--ok-bg);} td.fout-cel{background:var(--flag-bg);}
         <div class="ctrl-group"><label>Licht</label><div class="ctrl-row"><button class="btn on" data-licht="1">☀ licht</button><button class="btn" data-licht="0">☾ donker</button></div></div>
         <div class="ctrl-group"><label>Water in de bodem</label><div class="ctrl-row"><button class="btn on" data-water="1">genoeg water</button><button class="btn" data-water="0">watertekort</button></div></div>
         <div class="readout" id="stoma-read"></div>
-        <div class="note"><strong>Turgor</strong> is de druk van de vacuole tegen de celwand. Neemt een sluitcel water op, dan zwelt de vacuole, stijgt de turgor en buigen de sluitcellen open: het huidmondje <strong>opent</strong>. Verliest ze water, dan daalt de turgor en <strong>sluit</strong> het huidmondje.</div>
+        <div class="note" data-vak="ken" data-auto><strong>Turgor</strong> is de druk van de vacuole tegen de celwand. Neemt een sluitcel water op, dan zwelt de vacuole, stijgt de turgor en buigen de sluitcellen open: het huidmondje <strong>opent</strong>. Verliest ze water, dan daalt de turgor en <strong>sluit</strong> het huidmondje.</div>
       </div>
     </div>
   </section>
@@ -295,7 +312,7 @@ td.ok-cel{background:var(--ok-bg);} td.fout-cel{background:var(--flag-bg);}
         <div class="ctrl-group" id="dr-sterkte-g"><label id="dr-sterkte-l">Sterkte van de prikkel</label><input type="range" id="dr-sterkte" min="0" max="100" value="35"></div>
         <div class="ctrl-row"><button class="btn primary" id="dr-start">▶ Geef de prikkel</button></div>
         <div class="readout" id="dr-read"></div>
-        <div class="note"><strong>Prikkelfilter:</strong> je hersenen laten niet alle impulsen door tot je bewustzijn. Onbelangrijke prikkels (het tikken van een klok, je kleren op je huid) worden weggefilterd, zodat je je kan concentreren op wat belangrijk is.</div>
+        <div class="note" data-vak="ken" data-auto><strong>Prikkelfilter:</strong> je hersenen laten niet alle impulsen door tot je bewustzijn. Onbelangrijke prikkels (het tikken van een klok, je kleren op je huid) worden weggefilterd, zodat je je kan concentreren op wat belangrijk is.</div>
       </div>
     </div>
   </section>

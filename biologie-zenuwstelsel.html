@@ -151,6 +151,23 @@ td b{font-family:var(--f-display)}
 #br-svg .lab[aria-pressed="true"] text{fill:#fff}
 
 </style>
+<!--vakken--><style>
+[data-vak]{position:relative}
+[data-vak="ken"]{background:#E8F5EC!important;border:0!important;border-left:4px solid #1F7A4A!important;border-radius:0 10px 10px 0!important}
+[data-vak="letop"]{background:#FFF7ED!important;border:0!important;border-left:4px solid #D97706!important;border-radius:0 10px 10px 0!important;color:inherit}
+[data-vak="vb"]{background:transparent!important;border:1.5px dashed #94A3B8!important;border-radius:10px!important}
+[data-vak="vk"]{background:#EEF4FB!important;border:0!important;border-left:4px solid #64748B!important;border-radius:0 10px 10px 0!important}
+[data-vak]:not(.kader)::before,.kader[data-vak] .kop::before{display:block;font-size:11.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;margin-bottom:2px}
+.kader[data-vak] .kop::before{display:inline}
+[data-vak="ken"]:not(.kader)::before{content:"Ken dit";color:#1F7A4A}
+.kader[data-vak="ken"] .kop::before{content:"Ken dit · ";color:#1F7A4A}
+[data-vak="letop"]:not(.kader)::before{content:"Let op";color:#B45309}
+[data-vak][data-label="nee"]::before{content:none!important}
+[data-vak="vb"]:not(.kader)::before{content:"Voorbeeld";color:#64748B}
+[data-vak="vk"]::before{content:none!important}
+.lpd{font-size:12px!important;opacity:.7}
+.lpd::before{content:"Leerplandoel (voor de leerkracht): ";font-weight:700}
+</style><!--/vakken-->
 </head>
 <body>
 <div class="wrap">
@@ -161,7 +178,7 @@ td b{font-family:var(--f-display)}
     <p>Je zenuwstelsel en je hormoonstelsel zorgen ervoor dat je lichaam op het juiste moment juist reageert.</p>
     <p class="lpd">LPD 4B: De leerlingen lichten de overdracht van informatie via impulsgeleiding en impulsoverdracht in zenuwen toe. LPD 7B: De leerlingen leggen aan de hand van een voorbeeld uit hoe de coördinerende rol van het endocriene stelsel bij een reactie op een prikkel bijdraagt tot het functioneren van een dierlijk organisme.</p>
   </header>
-  <div class="tip"><b>Voorkennis: dit moet je al kennen</b><ul style="margin:4px 0 0;padding-left:20px"><li>Prikkel, zintuig (receptor), effector en reactie (thema 3).</li><li>Endocriene klieren en hormonen (thema 3, hoofdstuk 3).</li></ul></div>
+  <div class="tip" data-vak="vk" data-auto><b>Voorkennis: dit moet je al kennen</b><ul style="margin:4px 0 0;padding-left:20px"><li>Prikkel, zintuig (receptor), effector en reactie (thema 3).</li><li>Endocriene klieren en hormonen (thema 3, hoofdstuk 3).</li></ul></div>
   <div class="doel"><span class="eyebrow">Lesdoelen thema 4 · p. 107–145</span><ul><li>Ik leg uit hoe prikkels en reacties gecoördineerd worden door het zenuwstelsel en het hormoonstelsel.</li><li>Ik leg uit wat het verschil is tussen het centrale en het perifere zenuwstelsel.</li><li>Ik leg uit hoe de hersenen en het ruggenmerg beschermd worden.</li><li>Ik benoem en herken de grote delen van de hersenen.</li><li>Ik herken en benoem de delen van het neuron.</li><li>Ik benoem en herken de soorten neuronen.</li><li>Ik leg uit hoe de elektrische impulsgeleiding binnen neuronen verloopt.</li><li>Ik leg uit hoe de chemische impulsoverdracht tussen neuronen verloopt.</li><li>Ik leg uit wat het verschil is tussen het animale en het autonome zenuwstelsel.</li><li>Ik leg uit hoe de informatieoverdracht bij reflexen verloopt via het ruggenmerg of de hersenstam.</li><li>Ik leg uit hoe de informatieoverdracht bij bewuste bewegingen verloopt via de hersenen.</li><li>Ik leg uit wat het verschil is tussen de informatieoverdracht via het zenuw- of het hormoonstelsel.</li><li>Ik leg uit hoe de alvleesklier voor homeostase van de bloedsuikerspiegel zorgt.</li><li>Ik benoem de drie vormen van diabetes.</li></ul></div>
   <nav class="lesnav" role="tablist" aria-label="Onderdelen"><button class="lestab" role="tab" aria-controls="lesA" aria-selected="true"><span class="nr">1–2</span><span class="t"><b>Bouw van het zenuwstelsel</b><small>CZS, PZS, hersenen</small></span></button><button class="lestab" role="tab" aria-controls="lesB" aria-selected="false"><span class="nr">3</span><span class="t"><b>Impulsen doorgeven</b><small>neuron en synaps</small></span></button><button class="lestab" role="tab" aria-controls="lesC" aria-selected="false"><span class="nr">4</span><span class="t"><b>Reflexen en bewegingen</b><small>animaal, autonoom</small></span></button><button class="lestab" role="tab" aria-controls="lesD" aria-selected="false"><span class="nr">5</span><span class="t"><b>Hormoonstelsel</b><small>bloedsuikerspiegel</small></span></button><button class="lestab" role="tab" aria-controls="lesE" aria-selected="false"><span class="nr">✎</span><span class="t"><b>Oefenen</b><small>alle lesdoelen</small></span></button></nav>
 
@@ -184,9 +201,9 @@ td b{font-family:var(--f-display)}
           <path d="M120 520 L20 600" stroke="#1d2a36" stroke-width="3"/><rect x="4" y="600" width="180" height="60" rx="12" fill="#fff" opacity=".92"/><text x="94" y="644" text-anchor="middle">zenuwen</text>
           <path d="M235 900 L130 960" stroke="#1d2a36" stroke-width="3"/><rect x="20" y="960" width="180" height="60" rx="12" fill="#fff" opacity=".92"/><text x="110" y="1004" text-anchor="middle">zenuwen</text></g></svg></div>
         <div>
-          <div class="def"><span class="eyebrow">Centraal zenuwstelsel (CZS)</span><p>De <b>hersenen</b> en het <b>ruggenmerg</b> (geel). Hier wordt informatie verwerkt en worden bevelen gegeven.</p></div>
-          <div class="def"><span class="eyebrow">Perifeer zenuwstelsel (PZS)</span><p>Alle <b>zenuwen</b> (blauw) die het CZS verbinden met de zintuigen, de spieren en de klieren.</p></div>
-          <div class="tip"><b>Zo is het CZS beschermd</b><ul style="margin:4px 0 0;padding-left:20px"><li>De <b>schedel</b> rond de hersenen.</li><li>De <b>wervelkolom</b> rond het ruggenmerg.</li><li>De <b>hersenvliezen</b>: drie vliezen rond hersenen en ruggenmerg.</li><li>Het <b>hersenvocht</b> tussen de vliezen vangt schokken op.</li></ul></div>
+          <div class="def" data-vak="ken" data-label="nee" data-auto><span class="eyebrow">Centraal zenuwstelsel (CZS)</span><p>De <b>hersenen</b> en het <b>ruggenmerg</b> (geel). Hier wordt informatie verwerkt en worden bevelen gegeven.</p></div>
+          <div class="def" data-vak="ken" data-label="nee" data-auto><span class="eyebrow">Perifeer zenuwstelsel (PZS)</span><p>Alle <b>zenuwen</b> (blauw) die het CZS verbinden met de zintuigen, de spieren en de klieren.</p></div>
+          <div class="tip" data-vak="ken" data-auto><b>Zo is het CZS beschermd</b><ul style="margin:4px 0 0;padding-left:20px"><li>De <b>schedel</b> rond de hersenen.</li><li>De <b>wervelkolom</b> rond het ruggenmerg.</li><li>De <b>hersenvliezen</b>: drie vliezen rond hersenen en ruggenmerg.</li><li>Het <b>hersenvocht</b> tussen de vliezen vangt schokken op.</li></ul></div>
         </div>
       </div>
     </section>
@@ -228,7 +245,7 @@ td b{font-family:var(--f-display)}
     </section>
     <section class="blok">
       <div class="blok-kop"><span class="letter">3.2</span><h2>Impulsgeleiding binnen een neuron</h2></div>
-      <div class="def"><span class="eyebrow">Elektrische impulsgeleiding</span><p>Een prikkel maakt een kleine <b>elektrische impuls</b>. Die loopt als een golf over het membraan van het neuron: van de dendrieten via het cellichaam en het axon naar de eindknopjes. Bij een axon met myelineschede <b>springt</b> de impuls van opening tot opening. Zo gaat het veel sneller, tot ongeveer 100 m/s.</p></div>
+      <div class="def" data-vak="ken" data-label="nee" data-auto><span class="eyebrow">Elektrische impulsgeleiding</span><p>Een prikkel maakt een kleine <b>elektrische impuls</b>. Die loopt als een golf over het membraan van het neuron: van de dendrieten via het cellichaam en het axon naar de eindknopjes. Bij een axon met myelineschede <b>springt</b> de impuls van opening tot opening. Zo gaat het veel sneller, tot ongeveer 100 m/s.</p></div>
     </section>
     <section class="blok">
       <div class="blok-kop"><span class="letter">3.3</span><h2>Impulsoverdracht tussen neuronen: de synaps</h2></div>
@@ -249,8 +266,8 @@ td b{font-family:var(--f-display)}
     <section class="blok">
       <div class="blok-kop"><span class="letter">4.1</span><h2>Animaal en autonoom zenuwstelsel</h2></div>
       <div class="duo">
-        <div class="def"><span class="eyebrow">Animaal zenuwstelsel</span><p>Regelt de dingen die je <b>bewust</b> waarneemt en doet, met de <b>skeletspieren</b>. Je kan het met je <b>wil</b> sturen. Voorbeeld: je pakt je gsm.</p></div>
-        <div class="def"><span class="eyebrow">Autonoom zenuwstelsel</span><p>Regelt de organen <b>vanzelf</b>, zonder dat je erover nadenkt: hartslag, ademhaling, vertering, zweten. Je kan het <b>niet</b> met je wil sturen.</p></div>
+        <div class="def" data-vak="ken" data-label="nee" data-auto><span class="eyebrow">Animaal zenuwstelsel</span><p>Regelt de dingen die je <b>bewust</b> waarneemt en doet, met de <b>skeletspieren</b>. Je kan het met je <b>wil</b> sturen. Voorbeeld: je pakt je gsm.</p></div>
+        <div class="def" data-vak="ken" data-label="nee" data-auto><span class="eyebrow">Autonoom zenuwstelsel</span><p>Regelt de organen <b>vanzelf</b>, zonder dat je erover nadenkt: hartslag, ademhaling, vertering, zweten. Je kan het <b>niet</b> met je wil sturen.</p></div>
       </div>
     </section>
     <section class="blok">
@@ -262,8 +279,8 @@ td b{font-family:var(--f-display)}
         <div class="kaart" id="rf-info"></div>
       </div>
       <div class="duo">
-        <div class="def"><span class="eyebrow">Reflex</span><p>Een <b>snelle, automatische</b> reactie. Je denkt er niet over na. De impuls gaat via het <b>ruggenmerg</b> of de <b>hersenstam</b>, niet via de grote hersenen. Dat bespaart tijd en beschermt je.</p></div>
-        <div class="def"><span class="eyebrow">Bewuste beweging</span><p>Je <b>beslist</b> zelf. De impuls gaat via het ruggenmerg naar de <b>grote hersenen</b>. Daar wordt de informatie verwerkt en vertrekt het bevel naar de spieren. Dat duurt langer.</p></div>
+        <div class="def" data-vak="ken" data-label="nee" data-auto><span class="eyebrow">Reflex</span><p>Een <b>snelle, automatische</b> reactie. Je denkt er niet over na. De impuls gaat via het <b>ruggenmerg</b> of de <b>hersenstam</b>, niet via de grote hersenen. Dat bespaart tijd en beschermt je.</p></div>
+        <div class="def" data-vak="ken" data-label="nee" data-auto><span class="eyebrow">Bewuste beweging</span><p>Je <b>beslist</b> zelf. De impuls gaat via het ruggenmerg naar de <b>grote hersenen</b>. Daar wordt de informatie verwerkt en vertrekt het bevel naar de spieren. Dat duurt langer.</p></div>
       </div>
     </section>
   </main>
@@ -277,7 +294,7 @@ td b{font-family:var(--f-display)}
         <tr><td><b>snelheid</b></td><td>zeer snel (milliseconden)</td><td>trager (seconden tot uren)</td></tr>
         <tr><td><b>duur van het effect</b></td><td>kort</td><td>lang</td></tr>
         <tr><td><b>bereik</b></td><td>een bepaalde spier of klier</td><td>alle cellen met de juiste receptor (doelorganen)</td></tr></tbody></table></div>
-      <div class="tip"><b>Voorbeeld: schrik</b><p>Je schrikt van een harde knal. Je zenuwstelsel laat je meteen opspringen. Tegelijk stuurt het een impuls naar de <b>bijnieren</b>. Die geven <b>adrenaline</b> af aan het bloed: je hart blijft nog een tijd sneller kloppen.</p></div>
+      <div class="tip" data-vak="vb" data-auto><b>Voorbeeld: schrik</b><p>Je schrikt van een harde knal. Je zenuwstelsel laat je meteen opspringen. Tegelijk stuurt het een impuls naar de <b>bijnieren</b>. Die geven <b>adrenaline</b> af aan het bloed: je hart blijft nog een tijd sneller kloppen.</p></div>
     </section>
     <section class="blok">
       <div class="blok-kop"><span class="letter">5.3</span><h2>Homeostase van de bloedsuikerspiegel</h2></div>

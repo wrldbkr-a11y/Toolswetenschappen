@@ -191,6 +191,23 @@ button.cel:hover{outline:2px solid var(--accent)}
 .en-lbl{display:flex;justify-content:space-between;font-size:.85rem;color:var(--muted)}
 
 </style>
+<!--vakken--><style>
+[data-vak]{position:relative}
+[data-vak="ken"]{background:#E8F5EC!important;border:0!important;border-left:4px solid #1F7A4A!important;border-radius:0 10px 10px 0!important}
+[data-vak="letop"]{background:#FFF7ED!important;border:0!important;border-left:4px solid #D97706!important;border-radius:0 10px 10px 0!important;color:inherit}
+[data-vak="vb"]{background:transparent!important;border:1.5px dashed #94A3B8!important;border-radius:10px!important}
+[data-vak="vk"]{background:#EEF4FB!important;border:0!important;border-left:4px solid #64748B!important;border-radius:0 10px 10px 0!important}
+[data-vak]:not(.kader)::before,.kader[data-vak] .kop::before{display:block;font-size:11.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;margin-bottom:2px}
+.kader[data-vak] .kop::before{display:inline}
+[data-vak="ken"]:not(.kader)::before{content:"Ken dit";color:#1F7A4A}
+.kader[data-vak="ken"] .kop::before{content:"Ken dit · ";color:#1F7A4A}
+[data-vak="letop"]:not(.kader)::before{content:"Let op";color:#B45309}
+[data-vak][data-label="nee"]::before{content:none!important}
+[data-vak="vb"]:not(.kader)::before{content:"Voorbeeld";color:#64748B}
+[data-vak="vk"]::before{content:none!important}
+.lpd{font-size:12px!important;opacity:.7}
+.lpd::before{content:"Leerplandoel (voor de leerkracht): ";font-weight:700}
+</style><!--/vakken-->
 </head>
 <body>
 <div class="wrap">
@@ -201,7 +218,7 @@ button.cel:hover{outline:2px solid var(--accent)}
     <p>In het periodiek systeem van de elementen (PSE) staan alle elementen in volgorde van atoomnummer. Waar een element staat, vertelt veel over zijn atoom.</p>
     <p class="lpd">LPD 9C: De leerlingen gebruiken het PSE om eigenschappen van atomen af te leiden.</p>
   </header>
-  <div class="tip" id="voorkennis" style="margin:0 0 16px"><b>Voorkennis: dit moet je al kennen</b><ul style="margin:4px 0 0;padding-left:20px"><li>De bouw van een atoom: <b>protonen</b>, <b>neutronen</b> en <b>elektronen</b> (hoofdstuk 2).</li><li><b>Atoomnummer Z</b> en <b>massagetal A</b> (hoofdstuk 2).</li><li>De <b>elektronenconfiguratie</b> van de eerste 18 elementen en de <b>valentie-elektronen</b> (hoofdstuk 2).</li></ul></div>
+  <div class="tip" id="voorkennis" style="margin:0 0 16px" data-vak="vk" data-auto><b>Voorkennis: dit moet je al kennen</b><ul style="margin:4px 0 0;padding-left:20px"><li>De bouw van een atoom: <b>protonen</b>, <b>neutronen</b> en <b>elektronen</b> (hoofdstuk 2).</li><li><b>Atoomnummer Z</b> en <b>massagetal A</b> (hoofdstuk 2).</li><li>De <b>elektronenconfiguratie</b> van de eerste 18 elementen en de <b>valentie-elektronen</b> (hoofdstuk 2).</li></ul></div>
 
   <div class="doel"><span class="eyebrow">Lesdoelen hoofdstuk 3 · p. 70–76</span><ul>
     <li>Ik kan noteren dat de elementen in eenzelfde groep dezelfde chemische eigenschappen hebben en dus op eenzelfde manier reageren.</li>
@@ -249,7 +266,7 @@ button.cel:hover{outline:2px solid var(--accent)}
         <text x="246" y="169" font-size="15"><tspan font-weight="700">naam</tspan></text>
         <text x="246" y="209" font-size="15"><tspan font-weight="700">massagetal A</tspan> → protonen + neutronen</text>
       </svg></div>
-      <div class="tip"><b>Ook de plaats vertelt iets</b><p>De <b>kolom</b> (groep) geeft het aantal valentie-elektronen. De <b>rij</b> (periode) geeft het aantal schillen. Links of rechts van de trap zegt of het een metaal of een niet-metaal is. Op jouw PSE kunnen de getallen op een andere plaats in het vakje staan. Zoek ze dan op dezelfde manier.</p></div>
+      <div class="tip" data-vak="ken" data-auto><b>Ook de plaats vertelt iets</b><p>De <b>kolom</b> (groep) geeft het aantal valentie-elektronen. De <b>rij</b> (periode) geeft het aantal schillen. Links of rechts van de trap zegt of het een metaal of een niet-metaal is. Op jouw PSE kunnen de getallen op een andere plaats in het vakje staan. Zoek ze dan op dezelfde manier.</p></div>
       <p>Klik op een element in het PSE. Je ziet alles wat je over dat element uit het PSE kan halen.</p>
       <div class="pse-plek"></div>
     </section>
@@ -271,8 +288,8 @@ button.cel:hover{outline:2px solid var(--accent)}
     <section class="blok">
       <div class="blok-kop"><span class="letter">C</span><h2>Groep en periode</h2></div>
       <div class="duo">
-        <div class="def"><span class="eyebrow">Groep = kolom</span><p>Groepsnummer (a-groepen) = aantal <b>valentie-elektronen</b>.<br>Bv. groep IIIa → 3 valentie-elektronen.</p></div>
-        <div class="def"><span class="eyebrow">Periode = rij</span><p>Periodenummer = aantal <b>schillen</b>.<br>Bv. periode 3 → 3 schillen (K, L, M).</p></div>
+        <div class="def" data-vak="ken" data-label="nee" data-auto><span class="eyebrow">Groep = kolom</span><p>Groepsnummer (a-groepen) = aantal <b>valentie-elektronen</b>.<br>Bv. groep IIIa → 3 valentie-elektronen.</p></div>
+        <div class="def" data-vak="ken" data-label="nee" data-auto><span class="eyebrow">Periode = rij</span><p>Periodenummer = aantal <b>schillen</b>.<br>Bv. periode 3 → 3 schillen (K, L, M).</p></div>
       </div>
       <p>Klik op een element in het PSE. De rij en de kolom lichten op, en je ziet de opbouw van het atoom.</p>
       <div class="pse-plek"></div>
@@ -283,7 +300,7 @@ button.cel:hover{outline:2px solid var(--accent)}
     </section>
     <section class="blok">
       <div class="blok-kop"><span class="letter">C2</span><h2>Eén groep, één manier van reageren</h2></div>
-      <div class="def"><span class="eyebrow">Onthoud</span><p>Elementen in <b>dezelfde groep</b> hebben evenveel valentie-elektronen. Daarom hebben ze <b>dezelfde chemische eigenschappen</b>: ze reageren op dezelfde manier.</p></div>
+      <div class="def" data-vak="ken" data-label="nee" data-auto><span class="eyebrow">Onthoud</span><p>Elementen in <b>dezelfde groep</b> hebben evenveel valentie-elektronen. Daarom hebben ze <b>dezelfde chemische eigenschappen</b>: ze reageren op dezelfde manier.</p></div>
       <div class="proef" id="proef">
         <svg viewBox="0 0 420 200" role="img" aria-label="Lithium, natrium en kalium in water">
         </svg>
@@ -304,7 +321,7 @@ button.cel:hover{outline:2px solid var(--accent)}
   <main class="les" id="lesC" role="tabpanel" hidden>
     <section class="blok">
       <div class="blok-kop"><span class="letter">D</span><h2>Elektronegativiteit</h2></div>
-      <div class="def"><span class="eyebrow">Definitie</span><p>De <b>elektronegativiteit (EN)</b> is een maat voor hoe sterk een atoom elektronen naar zich toe trekt.</p></div>
+      <div class="def" data-vak="ken" data-label="nee" data-auto><span class="eyebrow">Definitie</span><p>De <b>elektronegativiteit (EN)</b> is een maat voor hoe sterk een atoom elektronen naar zich toe trekt.</p></div>
       <div class="duo">
         <div class="kaart"><h3>Hoge EN</h3><p>Het atoom trekt elektronen <b>sterk</b> aan. Het neemt gemakkelijk elektronen op. Dat zijn de niet-metalen, rechtsboven. Fluor heeft de hoogste waarde: <b>4,0</b>.</p></div>
         <div class="kaart"><h3>Lage EN</h3><p>Het atoom trekt elektronen <b>zwak</b> aan. Het geeft gemakkelijk elektronen af. Dat zijn de metalen, linksonder. Cesium en francium: <b>0,7</b>.</p></div>
@@ -315,7 +332,7 @@ button.cel:hover{outline:2px solid var(--accent)}
     </section>
     <section class="blok">
       <div class="blok-kop"><span class="letter">D2</span><h2>Edelgasconfiguratie</h2></div>
-      <div class="def"><span class="eyebrow">Definitie</span><p>Een atoom heeft een <b>edelgasconfiguratie</b> als de buitenste schil vol is: <b>8 elektronen</b>, of <b>2</b> als er alleen een K-schil is (zoals bij helium).</p></div>
+      <div class="def" data-vak="ken" data-label="nee" data-auto><span class="eyebrow">Definitie</span><p>Een atoom heeft een <b>edelgasconfiguratie</b> als de buitenste schil vol is: <b>8 elektronen</b>, of <b>2</b> als er alleen een K-schil is (zoals bij helium).</p></div>
       <div class="edel" id="edel"></div>
       <p>Edelgassen hebben al een edelgasconfiguratie. Daarom zijn ze heel <b>stabiel</b> en reageren ze (bijna) niet. Andere atomen proberen ook een edelgasconfiguratie te krijgen. Dat doen ze door elektronen af te geven of op te nemen: zo ontstaan ionen.</p>
       <a class="linkkaart" href="https://wrldbkr-a11y.github.io/Toolswetenschappen/elektronenconfiguratie.html" target="_blank" rel="noopener"><span><b>Ionvorming en ionbinding oefenen</b><br>In de tool Elektronenconfiguratie zie je hoe atomen een edelgasconfiguratie bereiken.</span><span class="pijl">→</span></a>

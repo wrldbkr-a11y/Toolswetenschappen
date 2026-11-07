@@ -143,6 +143,23 @@ canvas{display:block;width:100%;height:auto;}
 
 footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-dim);font-size:12px;}
 </style>
+<!--vakken--><style>
+[data-vak]{position:relative}
+[data-vak="ken"]{background:#E8F5EC!important;border:0!important;border-left:4px solid #1F7A4A!important;border-radius:0 10px 10px 0!important}
+[data-vak="letop"]{background:#FFF7ED!important;border:0!important;border-left:4px solid #D97706!important;border-radius:0 10px 10px 0!important;color:inherit}
+[data-vak="vb"]{background:transparent!important;border:1.5px dashed #94A3B8!important;border-radius:10px!important}
+[data-vak="vk"]{background:#EEF4FB!important;border:0!important;border-left:4px solid #64748B!important;border-radius:0 10px 10px 0!important}
+[data-vak]:not(.kader)::before,.kader[data-vak] .kop::before{display:block;font-size:11.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;margin-bottom:2px}
+.kader[data-vak] .kop::before{display:inline}
+[data-vak="ken"]:not(.kader)::before{content:"Ken dit";color:#1F7A4A}
+.kader[data-vak="ken"] .kop::before{content:"Ken dit · ";color:#1F7A4A}
+[data-vak="letop"]:not(.kader)::before{content:"Let op";color:#B45309}
+[data-vak][data-label="nee"]::before{content:none!important}
+[data-vak="vb"]:not(.kader)::before{content:"Voorbeeld";color:#64748B}
+[data-vak="vk"]::before{content:none!important}
+.lpd{font-size:12px!important;opacity:.7}
+.lpd::before{content:"Leerplandoel (voor de leerkracht): ";font-weight:700}
+</style><!--/vakken-->
 </head>
 <body>
 
@@ -168,7 +185,7 @@ footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-di
         <div class="ctrl-group"><label>Welk effect heeft de kracht?</label>
           <div class="ctrl-row"><button class="btn" data-eff="statisch">statisch</button><button class="btn" data-eff="dynamisch">dynamisch</button></div></div>
         <div class="readout" id="s0-read"></div>
-        <div class="note"><strong>Statisch effect:</strong> de vorm verandert (uitrekken, indrukken, buigen).<br><strong>Dynamisch effect:</strong> de beweging verandert: sneller, trager, of van richting.</div>
+        <div class="note" data-vak="ken" data-auto><strong>Statisch effect:</strong> de vorm verandert (uitrekken, indrukken, buigen).<br><strong>Dynamisch effect:</strong> de beweging verandert: sneller, trager, of van richting.</div>
       </div>
     </div>
   </section>
@@ -191,7 +208,7 @@ footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-di
           <div class="ctrl-row"><button class="btn" id="s0b-nieuw">↻ Nieuwe kracht</button></div>
         </div>
         <div class="readout" id="s0b-read"></div>
-        <div class="note"><strong>Lengte van de pijl</strong> = F ÷ schaal.<br><strong>Grootte van de kracht</strong> = lengte × schaal.<br>Bv. schaal 1 cm ≙ 50 N en een pijl van 4 cm: F = 4 · 50 N = 200 N.</div>
+        <div class="note" data-vak="ken" data-auto><strong>Lengte van de pijl</strong> = F ÷ schaal.<br><strong>Grootte van de kracht</strong> = lengte × schaal.<br>Bv. schaal 1 cm ≙ 50 N en een pijl van 4 cm: F = 4 · 50 N = 200 N.</div>
       </div>
     </div>
   </section>
@@ -209,7 +226,7 @@ footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-di
         </div>
         <div class="ctrl-row"><button class="btn" id="s1-reset">↻ Opnieuw</button></div>
         <div class="readout" id="s1-read"></div>
-        <div class="note"><strong>Onthoud:</strong> traagheid is geen kracht. Niemand duwt de passagier naar achter of naar voor. Zijn lichaam doet gewoon verder wat het deed, terwijl de bus van snelheid verandert.</div>
+        <div class="note" data-vak="letop" data-auto><strong>Onthoud:</strong> traagheid is geen kracht. Niemand duwt de passagier naar achter of naar voor. Zijn lichaam doet gewoon verder wat het deed, terwijl de bus van snelheid verandert.</div>
       </div>
     </div>
   </section>
@@ -226,7 +243,7 @@ footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-di
         </div>
         <div class="ctrl-row"><button class="btn" id="s2-reset">↻ Opnieuw</button></div>
         <div class="readout" id="s2-read"></div>
-        <div class="note"><strong>Hoe groter de massa, hoe groter de traagheid.</strong> Een voorwerp met veel massa is moeilijk in beweging te brengen, en ook moeilijk te stoppen.</div>
+        <div class="note" data-vak="ken" data-auto><strong>Hoe groter de massa, hoe groter de traagheid.</strong> Een voorwerp met veel massa is moeilijk in beweging te brengen, en ook moeilijk te stoppen.</div>
       </div>
     </div>
   </section>
@@ -275,8 +292,8 @@ footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-di
           <button class="btn" id="s3b-reset">↻ Opnieuw</button>
         </div>
         <div class="readout" id="s3b-read"></div>
-        <div class="note"><strong>Wrijvingskracht</strong> werkt de beweging <strong>tegen</strong>. Op gras is er veel wrijving, op ijs bijna geen. Toch heb je wrijving <strong>nodig</strong>: zonder wrijving glij je uit, en schuift een fiets in een bocht rechtdoor.</div>
-        <div class="note"><strong>Let op!</strong> De bal krijgt <strong>geen kracht mee</strong> van je hand. Een kracht bestaat alleen zolang je hand de bal raakt. De bal rolt verder door zijn <strong>traagheid</strong>, en stopt door de <strong>wrijving</strong>.</div>
+        <div class="note" data-vak="ken" data-auto><strong>Wrijvingskracht</strong> werkt de beweging <strong>tegen</strong>. Op gras is er veel wrijving, op ijs bijna geen. Toch heb je wrijving <strong>nodig</strong>: zonder wrijving glij je uit, en schuift een fiets in een bocht rechtdoor.</div>
+        <div class="note" data-vak="letop" data-label="nee" data-auto><strong>Let op!</strong> De bal krijgt <strong>geen kracht mee</strong> van je hand. Een kracht bestaat alleen zolang je hand de bal raakt. De bal rolt verder door zijn <strong>traagheid</strong>, en stopt door de <strong>wrijving</strong>.</div>
         <div class="legend">
           <div class="row"><span class="sw" style="background:var(--f1)"></span><span>F<sub>hand</sub>: kracht van je hand</span></div>
           <div class="row"><span class="sw" style="background:var(--f2)"></span><span>F<sub>wrijving</sub></span></div>
