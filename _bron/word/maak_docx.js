@@ -79,7 +79,7 @@ function blokken(items, ctx) {
       case 'denk': {
         const nr = ++ctx.denk; ctx.bijlage.push({ soort: 'denk', nr, it });
         out.push(doos([new Paragraph({ spacing: { after: 60 }, children: [new TextRun({ text: `DENKVRAAG ${nr}`, bold: true, font: SANS, color: '9A5B00', size: 18 })] }),
-          par(it.vraag), new Paragraph({ children: [new TextRun({ text: 'Denk eerst zelf na. De redenering staat in de bijlage achteraan.', italics: true, font: SERIF, size: 19, color: DIM })] })],
+          par(it.vraag), new Paragraph({ children: [new TextRun({ text: (META.geenBijlage ? 'Denk eerst zelf na. De redenering staat online in de cursus.' : 'Denk eerst zelf na. De redenering staat in de bijlage achteraan.'), italics: true, font: SERIF, size: 19, color: DIM })] })],
           { fill: 'FFF4D6', rand: '9A5B00', alle: 'F2D9A0' })); out.push(ruimte()); break; }
       case 'oef': {
         ctx.bijlage.push({ soort: 'oef', it });
@@ -121,7 +121,8 @@ D.forEach((H, hi) => {
   bijlagen.push({ h, kop: kopVan(H, h), titel: H.titel, items: ctx.bijlage, opl: H.opl || [] });
 });
 
-// bijlage
+// bijlage (niet bij META.geenBijlage: dan staan redeneringen en oplossingen alleen online)
+if (!META.geenBijlage) {
 kids.push(new Paragraph({ heading: HeadingLevel.HEADING_1, pageBreakBefore: true, children: [new TextRun('Bijlage · Redeneringen en oplossingen')] }));
 kids.push(par([{ t: 'Kijk pas hier nadat je zelf hebt nagedacht en de oefening hebt gemaakt.', i: true }]));
 bijlagen.forEach(B => {
@@ -137,6 +138,7 @@ bijlagen.forEach(B => {
     if (x.it.besluit && x.it.besluit.length) kids.push(new Paragraph({ spacing: { after: 80 }, indent: { left: 280 }, children: [new TextRun({ text: '→ ', bold: true, font: SERIF, color: '1F7A4A' }), ...runs(x.it.besluit, { bold: true, color: '1F7A4A' })] }));
   });
 });
+}
 
 const nummer = (ref, fmt, text) => ({ reference: ref, levels: [{ level: 0, format: fmt, text, alignment: AlignmentType.LEFT, style: { paragraph: { indent: { left: 500, hanging: 320 } }, run: fmt === LevelFormat.BULLET ? { font: 'Segoe UI Symbol' } : {} } }] });
 const doc = new Document({
