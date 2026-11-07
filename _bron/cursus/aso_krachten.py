@@ -123,18 +123,7 @@ LET + 'Op een weegschaal lees je je massa in kg af, maar de weegschaal meet eige
 tool('krachten-3aso.html#zw4', 'Bekijk de drie krachten in drie situaties')
 
 # ---------- hoofdstuk 5: veerkracht ----------
-h5 = '''<p>Hang je een massa aan een veer, dan rekt de veer uit. De veer trekt terug: dat is de <b>veerkracht</b>.</p>''' + \
-kader('Ken dit · Veerkracht', '''<p><b>Veerkracht F<sub>v</sub>:</b> de kracht die een vervormd elastisch voorwerp uitoefent om zijn oorspronkelijke vorm terug aan te nemen.</p>
-<p class="formule">F<sub>v</sub> = k · Δl</p>
-<p>F<sub>v</sub> = veerkracht (N) · k = <b>veerconstante</b> (N/m) · Δl = lengteverandering (m). Omvormen: <b>k = F<sub>v</sub> / Δl</b> en <b>Δl = F<sub>v</sub> / k</b>.</p>
-<p><b>Wat betekent k?</b> Bij k = 50 N/m heb je 50 N nodig om de veer 1 m uit te rekken. Een grote k: een <b>stijve</b> veer. Een kleine k: een <b>slappe</b> veer.</p>
-<p>In woorden: hoe groter de lengteverandering, hoe groter de veerkracht (recht evenredig).</p>''') + \
-LET + 'Werk met Δl in <b>meter</b>: 15 cm = 0,15 m. Rek je de veer te ver uit, dan komt ze niet meer terug (plastische vervorming) en geldt de formule niet meer.</div>' + \
-denk('denk_9', 'Veer A heeft k = 20 N/m, veer B heeft k = 200 N/m. Je hangt aan beide dezelfde massa. Welke veer rekt het verst uit?', [
-    ('Wat is gelijk?', 'Dezelfde massa, dus dezelfde F<sub>v</sub>.'), ('Formule', 'Δl = F<sub>v</sub> / k: hoe kleiner k, hoe groter Δl.')],
-    'Veer A, de slappe veer, rekt 10 keer verder uit dan veer B.') + \
-tool('krachten-3aso.html#ve1', 'Hang massa aan een veer in de tool')
-
+# hoofdstuk 5: zie aso_veer.py (wordt hieronder uitgevoerd, na de tekenhulpjes)
 
 # ---------- tekenoefeningen (op ruitjes: werk met hokjes, niet met cm) ----------
 HK = 20  # px per hokje
@@ -198,6 +187,8 @@ def sc_bal(opl):
     if opl:
         o += pijl(140, 219, 140, 219 - 5 * HK, ORANJE) + label(148, 150, 'v', '1', ORANJE) + pijl(300, 129, 300, 129 - 2 * HK, ORANJE) + label(308, 104, 'v', '2', ORANJE) + t(490, 44, 'v₃ = 0', ORANJE, 'start', 13)
     return svg(o, w, h)
+
+exec(open('/home/claude/toolswetenschappen/_bron/cursus/aso_veer.py', encoding='utf-8').read())
 
 # ---------- oefeningen ----------
 oefs = STAP_ = ''
@@ -273,6 +264,7 @@ alle = ''.join(blokken)
 denks = sorted(set(re.findall(r'data-vrij="(denk_\d+)"', alle)), key=lambda x: int(x.split('_')[1]))
 vrij = [(f'deel{i}', i == 1, kop) for i, (kop, _) in enumerate(delen, start=1)]
 vrij += [(d, False, 'redenering ' + d.replace('_', 'vraag ')) for d in denks]
+vrij += [(x, False, 'oplossing oefening ' + x.replace('opl_v', '5.')) for x in sorted(set(re.findall(r'data-vrij="(opl_v\d+)"', alle)))]
 vrij += [('oefeningen', False, 'de oefeningen zelf (opgaven)')] + [(f'opl_{i}', False, f'oplossing oefening {i}') for i in range(1, N_OEF + 1)] + [('samenvatting', False, 'samenvatting')]
 bouw('cursus-krachten-3aso.html', "Fysica 3de jaar · andere richtingen · Thema 1 Krachten · Hoofdstuk 1 tot 5", 'Krachten',
      'Werk dit thema samen met de tools <a href="rekenen-fysica-3aso.html">Rekenen in de fysica</a>, <a href="krachten-beweging-3aso.html">Traagheid, resulterende kracht en beweging</a> en <a href="krachten-3aso.html">Zwaartekracht en veerkracht</a>. Oefeningen maak je op papier.',
