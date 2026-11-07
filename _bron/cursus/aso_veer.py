@@ -11,12 +11,12 @@ EDI_CSS = ('<style>.edi{display:none;border:2px solid #7c3aed;border-radius:12px
 VF = '<span style="position:relative;display:inline-block">F<span style="position:absolute;left:.05em;top:-.62em;font-size:.75em">→</span></span>'
 
 def wisbord(vraag, antwoord, fout=''):
-    f = f' <span class="fout">Typische fout: {fout}</span>' if fout else ''
-    return f'<li><span class="wb">{vraag}</span><br><span class="antw">→ {antwoord}</span>{f}</li>'
+    f = f' <span class="fout">(fout: {fout})</span>' if fout else ''
+    return f'<li><span class="wb">{vraag}</span> <span class="antw">→ {antwoord}</span>{f}</li>'
 
 def edi(fasen):
     """fasen: lijst van (titel, html). Geeft een blok dat leerlingen niet zien."""
-    return '<div class="edi"><div class="kop">EDI-draaiboek voor de leerkracht (leerlingen zien dit niet)</div>' + ''.join(f'<h4>{t_}</h4>{h}' for t_, h in fasen) + '</div>'
+    return '<div class="edi"><div class="kop">Wisbordvragen (alleen voor de leerkracht)</div>' + ''.join(f'<h4>{t_}</h4>{h}' for t_, h in fasen) + '</div>'
 
 GX, GY = 60, 260   # oorsprong van de grafiek
 
@@ -68,24 +68,17 @@ VOORBEELD = ('<p><b>Uitgewerkt voorbeeld.</b> Amina hangt 300 g aan haar veer (k
 TWEE = [(0, 0, 4, 2.5, R, 'A'), (0, 0, 10, 1.5, B, 'B')]
 
 DRAAIBOEK = edi([
- ('1 · Voorkennis activeren (wisbordjes)', '<ol>'
-   + wisbord('Een massa van 200 g hangt aan een touw. Hoe groot is F<sub>z</sub>? (g ≈ 10 N/kg)', '2,0 N', '2000 N: gram niet omgezet naar kg')
-   + wisbord('Schrijf 8,0 cm in meter.', '0,080 m', '0,8 m')
-   + wisbord('Teken ' + VF + '<sub>z</sub> op een massa die aan een touw hangt.', 'pijl vanuit het midden, verticaal naar beneden', 'pijl vanuit het touw of naar het touw') + '</ol>'),
- ('2 · Lesdoel', '<p>"Ik leg uit wat veerkracht is. Ik reken met F<sub>v</sub> = k · Δl en ik teken ' + VF + '<sub>v</sub>."</p>'),
- ('3 · Instructie: ik doe', '<p>Toon een echte veer met massa\'s, of de tool (knop onderaan). Laat de tabel van Amina zien en vraag: <i>"Wat gebeurt er met Δl als de massa verdubbelt?"</i> Wijs op de laatste rij: F<sub>v</sub> / Δl is altijd 0,25 N/cm → dat vaste getal is <b>k</b>. Zet om: 0,25 N/cm = 25 N/m.</p>'
-   '<p>Denk het uitgewerkte voorbeeld (300 g) hardop voor: eerst F<sub>z</sub>, dan "hangt stil → F<sub>v</sub> = F<sub>z</sub>", dan de pijlen (waar begint elke pijl?), dan Δl in meter.</p>'),
- ('4 · Begrip controleren (wisbordjes)', '<ol>'
-   + wisbord('Veer P heeft k = 200 N/m, veer Q heeft k = 25 N/m. Welke veer is het stijfst?', 'P', 'Q, omdat 25 "minder vervormt"')
-   + wisbord('Teken ' + VF + '<sub>v</sub> op een massa aan een veer. Waar begint de pijl, welke zin?', 'in het ophangpunt van de veer aan de massa, naar boven', 'vanuit het midden, of naar beneden')
-   + wisbord('Je hangt dubbel zoveel massa aan dezelfde veer. Wat gebeurt er met Δl? En met k?', 'Δl verdubbelt, k blijft gelijk', 'k verdubbelt')
-   + wisbord('Wat betekent k = 3,2 N/m? A) 3,2 N voor 1 m uitrekking B) 3,2 m uitrekking per newton C) de veer is 3,2 m lang', 'A', 'B: verband omgedraaid') + '</ol>'),
- ('5 · Begeleide inoefening: wij doen', '<ol><li>Samen: 150 g aan de veer van Amina. Teken ' + VF + '<sub>z</sub> en ' + VF + '<sub>v</sub> (1 hokje ≙ 0,5 N) op het bord. <span class="antw">→ 1,5 N, 3 hokjes elk; Δl = 1,5 N / 25 N/m = 0,060 m = 6,0 cm</span></li>'
-   '<li>Eerst alleen op het wisbordje, dan samen: een kracht van 4,0 N rekt een veer 10 cm uit. Bereken k. Stijver of slapper dan de veer van Amina? <span class="antw">→ 40 N/m, stijver</span></li></ol>'),
- ('6 · Zelfstandige inoefening: jij doet', '<p>Oefeningen op papier (in het schrift): <b>Veerkracht</b>, <b>Een veertje in een balpen</b>, <b>Twee veren vergelijken</b> en <b>Veerkracht tekenen</b>. Wie klaar is: de tool, deel Oefenen.</p>'),
- ('7 · Afsluiting (wisbordjes)', '<ol>'
-   + wisbord('F<sub>v</sub> = 6,0 N en Δl = 0,20 m. Bereken k.', '30 N/m')
-   + wisbord('Je haalt een zware massa van een veer, maar de veer blijft langer. Waarom?', 'voorbij de elasticiteitsgrens: plastische vervorming, de formule geldt niet meer') + '</ol>'),
+ ('Start', '<ol>'
+   + wisbord('200 g hangt aan een touw. F<sub>z</sub>? (g ≈ 10 N/kg)', '2,0 N', '2000 N')
+   + wisbord('8,0 cm in meter?', '0,080 m', '0,8 m') + '</ol>'),
+ ('Tijdens de uitleg', '<ol>'
+   + wisbord('Veer P: k = 200 N/m, veer Q: k = 25 N/m. Welke is het stijfst?', 'P')
+   + wisbord('Teken ' + VF + '<sub>v</sub> op een massa aan een veer.', 'vanuit het ophangpunt, naar boven', 'vanuit het midden of naar beneden')
+   + wisbord('Dubbele massa: wat gebeurt er met Δl? En met k?', 'Δl verdubbelt, k blijft gelijk', 'k verdubbelt')
+   + wisbord('150 g aan de veer van Amina (k = 25 N/m). Δl?', '1,5 N / 25 N/m = 0,060 m = 6,0 cm') + '</ol>'),
+ ('Einde', '<ol>'
+   + wisbord('F<sub>v</sub> = 6,0 N en Δl = 0,20 m. k?', '30 N/m')
+   + wisbord('De veer blijft langer na een zware massa. Waarom?', 'voorbij de elasticiteitsgrens (plastisch)') + '</ol>'),
 ])
 
 h5 = (EDI_CSS + DRAAIBOEK
