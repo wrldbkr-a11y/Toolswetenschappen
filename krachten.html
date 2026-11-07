@@ -188,7 +188,7 @@ footer a{color:inherit;}
       <div class="knoppen" id="zw4k"></div>
       <label class="chk"><input type="checkbox" id="zw4z" checked> <span style="color:var(--fz);font-weight:700">F<sub>z</sub></span> zwaartekracht</label>
       <label class="chk"><input type="checkbox" id="zw4n" checked> <span style="color:var(--fn);font-weight:700">F<sub>N</sub></span> normaalkracht</label>
-      <label class="chk"><input type="checkbox" id="zw4g" checked> <span style="color:var(--g);font-weight:700">G</span> gewicht</label>
+      <label class="chk"><input type="checkbox" id="zw4g" checked> <span style="color:var(--g);font-weight:700">F<sub>G</sub></span> gewicht</label>
       <div class="kader"><div class="kop">Normaalkracht</div><p>De loodrechte kracht die een steun uitoefent op een lichaam.</p></div>
       <div class="note" id="n_zw4"></div>
     </div>
@@ -478,20 +478,20 @@ const HEMEL = [['Aarde', 9.81], ['Maan', 1.62], ['Mars', 3.71], ['Venus', 8.87],
       o += `<rect x="0" y="300" width="640" height="80" fill="${k === 0 ? '#8BBF7A' : '#C9CDD3'}"/>`;
       o += `<rect x="250" y="288" width="100" height="14" rx="3" fill="#475569"/><rect x="278" y="291" width="44" height="8" fill="#A7F3D0"/>` + txt(300, 299, fmt(G / 9.81, 0) + ' kg', {s: 8, w: 700, a: 'middle'});
       o += persoon(300, 288);
-      o += pijl(300, 205, 300, 205 + Fz / 500 * sch, C.fz, sub('F', 'z'), -24, 0) + pijl(300, 302, 300, 302 + G / 500 * sch, C.g, 'G', 20, 4);
+      o += pijl(300, 205, 300, 205 + Fz / 500 * sch, C.fz, sub('F', 'z'), -24, 0) + pijl(300, 302, 300, 302 + G / 500 * sch, C.g, sub('F', 'G'), 20, 4);
       o += txt(370, 300, 'weegschaal toont ' + fmt(G / 9.81, 0) + ' kg', {s: 13, c: C.dim});
     } else if (k === 2){
       o += `<rect x="0" y="330" width="640" height="50" fill="#7DC4E4"/><rect x="40" y="150" width="160" height="12" fill="#94A3B8"/>`;
-      o += persoon(320, 250, 15) + pijl(320, 165, 320, 165 + Fz / 500 * sch, C.fz, sub('F', 'z'), -26, 0) + txt(420, 200, 'geen steunpunt: G = 0 N', {s: 14, w: 600, c: C.g});
+      o += persoon(320, 250, 15) + pijl(320, 165, 320, 165 + Fz / 500 * sch, C.fz, sub('F', 'z'), -26, 0) + txt(420, 200, `geen steunpunt: F<tspan font-size="70%" dy="4">G</tspan><tspan dy="-4"> = 0 N</tspan>`, {s: 14, w: 600, c: C.g});
     } else {
       o += `<rect x="0" y="0" width="640" height="380" fill="#0F172A"/>` + [[40,40],[600,70],[120,320],[520,300],[300,30],[580,200]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="1.5" fill="#fff"/>`).join('');
       if (k === 3) o += `<rect x="150" y="110" width="340" height="190" rx="20" fill="#334155" stroke="#94A3B8"/>`;
       o += persoon(320, 280, k === 3 ? 25 : -20);
       if (Fz > 0) o += pijl(320, 210, 320, 210 + Fz / 500 * sch, C.fz, sub('F', 'z'), -26, 0);
-      o += txt(470, 90, 'G = 0 N', {s: 15, w: 700, c: C.g, a: 'middle'});
+      o += txt(470, 90, `F<tspan font-size="70%" dy="4">G</tspan><tspan dy="-4"> = 0 N</tspan>`, {s: 15, w: 700, c: C.g, a: 'middle'});
     }
     $('s_zw3').innerHTML = o;
-    $('r_zw3').innerHTML = `massa m = <b>80 kg</b><br>zwaartekracht F<sub>z</sub> = <b>${fmt(Fz, 0)} N</b><br>gewicht G = <b>${fmt(G, 0)} N</b>${G === 0 ? ' → <span class="ok">gewichtloos</span>' : ''}<br><br>${s.uitleg}`;
+    $('r_zw3').innerHTML = `massa m = <b>80 kg</b><br>zwaartekracht F<sub>z</sub> = <b>${fmt(Fz, 0)} N</b><br>gewicht F<sub>G</sub> = <b>${fmt(G, 0)} N</b>${G === 0 ? ' → <span class="ok">gewichtloos</span>' : ''}<br><br>${s.uitleg}`;
   }
   teken();
 })();
@@ -517,27 +517,27 @@ const HEMEL = [['Aarde', 9.81], ['Maan', 1.62], ['Mars', 3.71], ['Venus', 8.87],
       o += `<rect x="250" y="170" width="140" height="40" rx="3" fill="#60A5FA" stroke="#1E3A8A"/>` + txt(375, 195, 'boek', {s: 12, w: 700, a: 'end', c: '#fff'});
       if (tz) o += pijl(320, 190, 320, 190 + L, C.fz, sub('F', 'z'), -24, 20);
       if (tn) o += pijl(280, 210, 280, 210 - L, C.fn, sub('F', 'N'), -26, 0);
-      if (tg) o += pijl(360, 212, 360, 212 + L, C.g, 'G', 22, 20);
-      rijen = [['F<sub>z</sub>', 'de aarde', 'het boek', 'zwaartepunt van het boek'], ['F<sub>N</sub>', 'de tafel', 'het boek', 'contactvlak, op het boek'], ['G', 'het boek', 'de tafel', 'contactvlak, op de tafel (steunpunt)']];
+      if (tg) o += pijl(360, 212, 360, 212 + L, C.g, sub('F', 'G'), 22, 20);
+      rijen = [['F<sub>z</sub>', 'de aarde', 'het boek', 'zwaartepunt van het boek'], ['F<sub>N</sub>', 'de tafel', 'het boek', 'contactvlak, op het boek'], ['F<sub>G</sub>', 'het boek', 'de tafel', 'contactvlak, op de tafel (steunpunt)']];
     } else if (k === 1){
       o += `<rect x="0" y="0" width="640" height="40" fill="#CBD5E1"/><line x1="320" y1="40" x2="320" y2="180" stroke="${C.tekst}" stroke-width="2"/>`;
       o += `<path d="M285 220 L355 220 L340 180 L300 180 Z" fill="#FCD34D" stroke="#92400E"/><circle cx="320" cy="226" r="8" fill="#FEF3C7"/>`;
       if (tz) o += pijl(320, 205, 320, 205 + L, C.fz, sub('F', 'z'), 26, 6);
-      if (tg) o += pijl(332, 40, 332, 40 + L, C.g, 'G', 18, 0);
+      if (tg) o += pijl(332, 40, 332, 40 + L, C.g, sub('F', 'G'), 18, 0);
       if (tn) o += txt(470, 150, 'Hier is er geen normaalkracht:', {s: 13, c: C.dim, a: 'middle'}) + txt(470, 168, 'de lamp ligt niet op een steun.', {s: 13, c: C.dim, a: 'middle'});
-      rijen = [['F<sub>z</sub>', 'de aarde', 'de lamp', 'zwaartepunt van de lamp'], ['G', 'de lamp', 'het plafond (via het snoer)', 'ophangpunt aan het plafond']];
+      rijen = [['F<sub>z</sub>', 'de aarde', 'de lamp', 'zwaartepunt van de lamp'], ['F<sub>G</sub>', 'de lamp', 'het plafond (via het snoer)', 'ophangpunt aan het plafond']];
     } else {
       o += `<rect x="0" y="350" width="640" height="30" fill="#CBD5E1"/><rect x="250" y="250" width="140" height="14" fill="#64748B"/><rect x="258" y="264" width="10" height="86" fill="#64748B"/><rect x="372" y="264" width="10" height="86" fill="#64748B"/><rect x="372" y="150" width="10" height="100" fill="#64748B"/>`;
       o += `<circle cx="330" cy="110" r="16" fill="#F2B880" stroke="#9A5B00"/><rect x="312" y="128" width="40" height="80" rx="12" fill="#E9EEF5" stroke="${C.tekst}" stroke-width="1.5"/><rect x="270" y="210" width="80" height="40" rx="10" fill="#C7D2FE"/><rect x="262" y="250" width="16" height="0"/>`;
       if (tz) o += pijl(318, 200, 318, 200 + L, C.fz, sub('F', 'z'), -22, 30);
       if (tn) o += pijl(280, 250, 280, 250 - L, C.fn, sub('F', 'N'), -26, 0);
-      if (tg) o += pijl(355, 252, 355, 252 + L, C.g, 'G', 22, 30);
-      rijen = [['F<sub>z</sub>', 'de aarde', 'de leerling', 'zwaartepunt van de leerling'], ['F<sub>N</sub>', 'de stoel', 'de leerling', 'contactvlak, op de leerling'], ['G', 'de leerling', 'de stoel', 'contactvlak, op de stoel (steunpunt)']];
+      if (tg) o += pijl(355, 252, 355, 252 + L, C.g, sub('F', 'G'), 22, 30);
+      rijen = [['F<sub>z</sub>', 'de aarde', 'de leerling', 'zwaartepunt van de leerling'], ['F<sub>N</sub>', 'de stoel', 'de leerling', 'contactvlak, op de leerling'], ['F<sub>G</sub>', 'de leerling', 'de stoel', 'contactvlak, op de stoel (steunpunt)']];
     }
     o += txt(16, 30 + (k === 1 ? 30 : 0), `m = ${fmt(s.m, s.m % 1 ? 1 : 0)} kg → F = ${fmt(F, 1)} N`, {s: 14, w: 600, c: C.dim});
     $('s_zw4').innerHTML = o;
     $('t_zw4').innerHTML = `<tr><th>kracht</th><th>uitgeoefend door</th><th>werkt op</th><th>aangrijpingspunt</th></tr>` + rijen.map(r => `<tr><td><b>${r[0]}</b></td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td></tr>`).join('');
-    $('n_zw4').innerHTML = k === 1 ? '<strong>Zwaartekracht en gewicht</strong> zijn hier even groot, maar ze werken op een ander voorwerp: F<sub>z</sub> op de lamp, G op het plafond.' : '<strong>Alle drie even groot</strong> (' + fmt(F, 1) + ' N), maar het zijn drie verschillende krachten. F<sub>z</sub> en F<sub>N</sub> werken op hetzelfde voorwerp en heffen elkaar op. G werkt op de steun.';
+    $('n_zw4').innerHTML = k === 1 ? '<strong>Zwaartekracht en gewicht</strong> zijn hier even groot, maar ze werken op een ander voorwerp: F<sub>z</sub> op de lamp, F<sub>G</sub> op het plafond.' : '<strong>Alle drie even groot</strong> (' + fmt(F, 1) + ' N), maar het zijn drie verschillende krachten. F<sub>z</sub> en F<sub>N</sub> werken op hetzelfde voorwerp en heffen elkaar op. F<sub>G</sub> werkt op de steun.';
   }
   teken();
 })();
