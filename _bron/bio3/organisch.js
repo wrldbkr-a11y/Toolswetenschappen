@@ -70,3 +70,70 @@ function cel(cx, cy, rx, ry, R, opts={}){
 /* rode bloedcel: schijf met lichter midden */
 const rbc = (x, y, r, a=0) => `<g transform="translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${(a*57.3).toFixed(0)})"><ellipse rx="${r}" ry="${(r*.72).toFixed(1)}" fill="url(#o-rbc)"/><ellipse rx="${(r*.42).toFixed(1)}" ry="${(r*.28).toFixed(1)}" fill="#e98181" opacity=".7"/></g>`;
 const zichtbaar = el => el && el.offsetParent !== null;
+
+/* ===== Organische neuronen: één vloeiende vorm met 3D-belichting ===== */
+(function(){
+  const d = document.createElement('div');
+  d.innerHTML = `<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+    <filter id="o-neuron" x="-5%" y="-5%" width="110%" height="110%" color-interpolation-filters="sRGB">
+      <feMorphology in="SourceAlpha" operator="dilate" radius="1.3" result="dik"/>
+      <feFlood flood-color="#2a1d2c" flood-opacity=".75"/><feComposite in2="dik" operator="in" result="rand"/>
+      <feGaussianBlur in="SourceAlpha" stdDeviation="2.6" result="bl"/>
+      <feSpecularLighting in="bl" surfaceScale="5" specularConstant=".75" specularExponent="16" lighting-color="#ffffff" result="spec"><fePointLight x="-400" y="-600" z="500"/></feSpecularLighting>
+      <feComposite in="spec" in2="SourceAlpha" operator="in" result="glans"/>
+      <feDiffuseLighting in="bl" surfaceScale="4" diffuseConstant="1" lighting-color="#ffffff" result="dif"><feDistantLight azimuth="235" elevation="55"/></feDiffuseLighting>
+      <feComposite in="SourceGraphic" in2="dif" operator="arithmetic" k1="1" k2="0" k3="0" k4="0" result="schaduw"/>
+      <feComposite in="schaduw" in2="SourceGraphic" operator="arithmetic" k1="0" k2=".55" k3=".55" k4="0" result="mix"/>
+      <feComposite in="glans" in2="mix" operator="arithmetic" k1="0" k2=".55" k3="1" k4="0" result="licht"/>
+      <feComposite in="licht" in2="SourceAlpha" operator="in" result="vorm"/>
+      <feMerge><feMergeNode in="rand"/><feMergeNode in="vorm"/></feMerge>
+    </filter></defs></svg>`;
+  document.body.prepend(d.firstChild);
+})();
+/* taps toelopende buis rond een middellijn (gevulde vorm, geen lijn) */
+function buisVorm(pts, w0, w1, rond=true, begin=false){
+  const P = pts.length > 12 ? pts : bemonster(glad(pts,false), 24);
+  const n = P.length, L = [], Rr = [];
+  for (let i = 0; i < n; i++){ const a = P[Math.max(0,i-1)], b = P[Math.min(n-1,i+1)]; const ang = Math.atan2(b[1]-a[1], b[0]-a[0]); const w = (w0 + (w1-w0)*i/(n-1))/2;
+    L.push([P[i][0] - Math.sin(ang)*w, P[i][1] + Math.cos(ang)*w]); Rr.push([P[i][0] + Math.sin(ang)*w, P[i][1] - Math.cos(ang)*w]); }
+  const e = P[n-1], pe = P[n-2], ea = Math.atan2(e[1]-pe[1], e[0]-pe[0]), we = w1/2; const kap = [];
+  if (rond) for (let k = 1; k < 6; k++){ const a = ea - Math.PI/2 + k/6*Math.PI; kap.push([e[0] + Math.cos(a)*we, e[1] + Math.sin(a)*we]); }
+  const s0 = P[0], s1 = P[1], sa = Math.atan2(s1[1]-s0[1], s1[0]-s0[0]), ws = w0/2, kap0 = [];
+  if (begin) for (let k = 1; k < 6; k++){ const a = sa + Math.PI/2 + k/6*Math.PI; kap0.push([s0[0] + Math.cos(a)*ws, s0[1] + Math.sin(a)*ws]); }
+  const pts2 = [...L, ...kap.reverse(), ...Rr.reverse(), ...kap0];
+  return 'M' + pts2.map(p => p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join(' L') + 'Z';
+}
+/* vertakte dendriet als gevulde, taps toelopende vormen */
+function dendrietVorm(x, y, a, len, w, diep, Q, uit=[]){
+  const pts = [[x,y]]; let px = x, py = y, pa = a;
+  for (let i = 0; i < 4; i++){ pa += (Q()-.5)*.38; px += Math.cos(pa)*len/4; py += Math.sin(pa)*len/4; pts.push([px,py]); }
+  const P = bemonster(glad(pts,false), 22); let o = `<path d="${buisVorm(P, w, Math.max(1.4, w*.38))}"/>`;
+  if (diep > 0){ const m = P[12]; o += dendrietVorm(m[0], m[1], pa - .55 - Q()*.2, len*.55, w*.55, diep-1, Q, uit); o += dendrietVorm(P[21][0], P[21][1], pa + .45 + Q()*.2, len*.5, w*.5, diep-1, Q, uit); }
+  else uit.push(P[P.length-1]);
+  return o;
+}
+/* compleet neuron.
+   o = {x, y, r, kleur, myelKleur, seed, dendrieten:[[hoek, lengte, breedte, diepte]], axon:[punten], myeline:n, eind:[hoeken], steel:[x,y] (sensorisch: cellichaam op een steeltje boven punt)} */
+function neuronOrg(o){
+  const Q = rng(o.seed || 1); let vorm = '', myel = '';
+  const sx = o.x, sy = o.y, r = o.r;
+  // cellichaam: onregelmatige vorm die naar de dendrieten uitloopt
+  (o.dendrieten || []).forEach(([a, len, w, d]) => { const bx = sx + Math.cos(a)*r*.55, by = sy + Math.sin(a)*r*.55; vorm += dendrietVorm(bx, by, a, len, w, d, Q); });
+  vorm += `<path d="${blob(sx, sy, r, r*.88, Q, 12, .12)}"/>`;
+  let axonP = [];
+  if (o.axon){
+    axonP = bemonster(glad(o.axon,false), 160);
+    // axonheuvel: kegel van het cellichaam naar het axon (niet bij een sensorisch neuron)
+    if (o.steel) vorm += `<path d="${buisVorm(axonP, o.aw || 6, (o.aw || 6)*.85)}"/>`;
+    else { vorm += `<path d="${buisVorm(axonP.slice(0, 14), r*.9, o.aw || 6, false)}"/>`; vorm += `<path d="${buisVorm(axonP.slice(8), o.aw || 6, (o.aw || 6)*.85)}"/>`; }
+    const e = axonP[axonP.length-1], pe = axonP[axonP.length-8], ea = Math.atan2(e[1]-pe[1], e[0]-pe[0]);
+    (o.eind || [-.55, 0, .55]).forEach(da => { const a = ea + da; const pts = [e, [e[0]+Math.cos(ea+da*.5)*10, e[1]+Math.sin(ea+da*.5)*10], [e[0]+Math.cos(a)*22, e[1]+Math.sin(a)*22]];
+      vorm += `<path d="${buisVorm(bemonster(glad(pts,false),12), (o.aw||6)*.7, 3)}"/><path d="${blob(e[0]+Math.cos(a)*27, e[1]+Math.sin(a)*27, 7.5, 6.5, Q, 9, .1, a)}"/>`; });
+    if (o.myeline){ const n = o.myeline, N = axonP.length; for (let i = 0; i < n; i++){ const a0 = Math.floor(N*(.1 + .82*(i+.08)/n)), a1 = Math.floor(N*(.1 + .82*(i+.92)/n)); myel += `<path d="${buisVorm(axonP.slice(a0, a1), (o.aw||6)*2.5, (o.aw||6)*2.5, true, true)}"/>`; } }
+  }
+  (o.extra || []).forEach(([x, y, a, len, w, d]) => vorm += dendrietVorm(x, y, a, len, w, d, Q));
+  if (o.steel){ const [tx, ty] = o.steel; vorm += `<path d="${buisVorm(bemonster(glad([[tx,ty],[tx-2,(ty+sy)/2],[sx,sy+r*.6]],false),14), 5, 7, false)}"/>`; }
+  const kern = `<path d="${blob(sx - r*.05, sy - r*.05, r*.38, r*.33, Q, 9, .08)}" fill="url(#o-kern)"/><circle cx="${(sx+r*.05).toFixed(1)}" cy="${(sy-r*.1).toFixed(1)}" r="${(r*.1).toFixed(1)}" fill="#2a1240"/>`;
+  const svg = `<g filter="url(#o-neuron)" fill="${o.kleur}">${vorm}</g>` + (myel ? `<g filter="url(#o-neuron)" fill="${o.myelKleur || '#f4c2b6'}">${myel}</g>` : '') + kern;
+  return {svg, axon: axonP};
+}

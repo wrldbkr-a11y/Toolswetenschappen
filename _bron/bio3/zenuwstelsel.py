@@ -72,7 +72,7 @@ body = r'''
     </section>
     <section class="blok">
       <div class="blok-kop"><span class="letter">3.3</span><h2>Impulsoverdracht tussen neuronen: de synaps</h2></div>
-      <p>Neuronen raken elkaar niet. Tussen een eindknopje en de volgende cel zit een smalle spleet: de <b>synapsspleet</b>. Een elektrische impuls kan daar niet over. Het doorgeven gaat <b>chemisch</b>.</p>
+      <p>Neuronen raken elkaar niet. Tussen een eindknopje en de volgende cel zit een smalle spleet: de <b>synaptische spleet</b>. Een elektrische impuls kan daar niet over. Het doorgeven gaat <b>chemisch</b>.</p>
       <div class="fig"><svg id="ov-svg" viewBox="0 0 1000 400" role="img" aria-label="twee neuronen die een impuls doorgeven, met inzoomen op de synaps"></svg></div>
       <div class="knoppen"><button type="button" class="knop hoofd" id="ov-start">▶ Stuur een impuls van neuron 1 naar neuron 2</button><button type="button" class="knop" id="ov-zoom" aria-pressed="false">🔍 Zoom in op de synaps</button></div>
       <p id="ov-zin">Neuron 1 geeft een impuls door aan neuron 2. Druk op de knop.</p>
@@ -275,7 +275,7 @@ let neuronPad = [];
   for (let i = 0; i < 14; i++){ dt += `<path d="${blob(-300 + R()*260, -70 + R()*140, 14, 5, R, 7, .2, R()*3)}" fill="#e6c2e2" opacity=".7"/>`; }
   const dlab = (x, y, tx, ty, t, a='middle') => `<path d="M${x} ${y} L${tx} ${ty}" stroke="#334155" stroke-width="1.2"/><text x="${tx + (a==='start'?4:a==='end'?-4:0)}" y="${ty + (a==='middle' ? (ty>y?14:-5) : 4)}" text-anchor="${a}" font-size="13" font-weight="700" fill="#1d2a36" paint-order="stroke" stroke="#fbf9f6" stroke-width="3">${t}</text>`;
   dt += `<text x="-200" y="-140" text-anchor="middle" font-size="15" font-weight="800" fill="${AD}">eindknopje van neuron 1</text><text x="180" y="-140" text-anchor="middle" font-size="15" font-weight="800" fill="${BD}">dendriet van neuron 2</text>`;
-  dt += dlab(0, 110, 0, 150, 'synapsspleet') + dlab(6, -75, 80, -100, 'receptor', 'start') + dlab(-200, 30, -280, 140, 'blaasje met neurotransmitter');
+  dt += dlab(0, 110, 0, 150, 'synaptische spleet') + dlab(6, -75, 80, -100, 'receptor', 'start') + dlab(-200, 30, -280, 140, 'blaasje met neurotransmitter');
   S.innerHTML = s + `<g id="ov-over">${ov}</g><g id="ov-dyn-o"></g><g id="ov-detail" transform="translate(${SX} ${SY}) scale(0.1)" opacity="0">${dt}<g id="ov-dyn-d"></g></g>`;
 
   // animatie
@@ -284,8 +284,8 @@ let neuronPad = [];
   const zet = () => { const w = 1000 * Math.pow(86/1000, z), h = w*.4, cx = 500 + (SX-500)*z, cy = 200 + (SY-200)*z; S.setAttribute('viewBox', `${(cx-w/2).toFixed(2)} ${(cy-h/2).toFixed(2)} ${w.toFixed(2)} ${h.toFixed(2)}`);
     $('#ov-over').setAttribute('opacity', Math.max(0, 1 - z*1.4).toFixed(2)); $('#ov-detail').setAttribute('opacity', Math.max(0, (z-.45)/.55).toFixed(2)); };
   const ZIN = {a:'<b>Elektrisch.</b> Een elektrische impuls loopt over het axon van neuron 1, van het cellichaam naar het eindknopje.',
-    c1:'<b>Chemisch.</b> In het eindknopje gaan blaasjes naar het membraan. Ze laten <b>neurotransmitter</b> vrij in de synapsspleet.',
-    c2:'<b>Chemisch.</b> De neurotransmitter beweegt door de synapsspleet en bindt op de <b>receptoren</b> van neuron 2.',
+    c1:'<b>Chemisch.</b> In het eindknopje gaan blaasjes naar het membraan. Ze laten <b>neurotransmitter</b> vrij in de synaptische spleet.',
+    c2:'<b>Chemisch.</b> De neurotransmitter beweegt door de synaptische spleet en bindt op de <b>receptoren</b> van neuron 2.',
     c3:'Daardoor ontstaat in neuron 2 een <b>nieuwe elektrische impuls</b>.', b:'<b>Elektrisch.</b> De impuls loopt verder door neuron 2.'};
   let fase = '';
   const zeg = f => { if (f !== fase){ fase = f; $('#ov-zin').innerHTML = ZIN[f]; } };
@@ -326,9 +326,9 @@ let neuronPad = [];
   st += `<path d="${pre}" fill="url(#s-pre)" stroke="#9a6a8f" stroke-width="3"/>`;
   for (let i = 0; i < 20; i++){ const x = 170 + R()*300, y = 20 + R()*190; st += `<path d="${blob(x,y,10,4,R,7,.15,R()*3)}" fill="#e7cfe0" opacity=".7"/>`; }
   const lab = (x, y, tx, ty, t, a='start') => `<path d="M${x} ${y} L${tx} ${ty-5}" stroke="#1d2a36" stroke-width="1.4"/><circle cx="${x}" cy="${y}" r="2.6" fill="#1d2a36"/><text x="${tx + (a==='start'?4:-4)}" y="${ty}" text-anchor="${a}" font-size="15" font-weight="700" paint-order="stroke" stroke="#f7f3ee" stroke-width="4">${t}</text>`;
-  const labels = lab(170, 150, 40, 120, 'eindknopje', 'start') + lab(172, 249, 20, 300, 'synapsspleet', 'start') + lab(450, 252, 560, 290, 'receptor', 'start') + lab(560, 330, 470, 360, 'volgend neuron', 'end');
+  const labels = lab(170, 150, 40, 120, 'eindknopje', 'start') + lab(172, 249, 20, 300, 'synaptische spleet', 'start') + lab(450, 252, 560, 290, 'receptor', 'start') + lab(560, 330, 470, 360, 'volgend neuron', 'end');
   S.innerHTML = st + '<g id="syn-dyn"></g>' + labels;
-  const STAP = [['1 · impuls komt aan','Een <b>elektrische impuls</b> komt aan in het eindknopje.'],['2 · blaasjes gaan open','De <b>blaasjes</b> smelten samen met het membraan. Ze laten <b>neurotransmitter</b> vrij in de synapsspleet.'],['3 · binden op receptoren','De neurotransmitter beweegt door de spleet en bindt op de <b>receptoren</b> van het volgende neuron.'],['4 · nieuwe impuls','Daardoor ontstaat in het volgende neuron een <b>nieuwe elektrische impuls</b>. Zo gaat de boodschap verder.']];
+  const STAP = [['1 · impuls komt aan','Een <b>elektrische impuls</b> komt aan in het eindknopje.'],['2 · blaasjes gaan open','De <b>blaasjes</b> smelten samen met het membraan. Ze laten <b>neurotransmitter</b> vrij in de synaptische spleet.'],['3 · binden op receptoren','De neurotransmitter beweegt door de spleet en bindt op de <b>receptoren</b> van het volgende neuron.'],['4 · nieuwe impuls','Daardoor ontstaat in het volgende neuron een <b>nieuwe elektrische impuls</b>. Zo gaat de boodschap verder.']];
   $('#syn-stap').innerHTML = STAP.map((x,i) => `<button type="button" class="knop" data-i="${i}">${x[0]}</button>`).join('') + '<button type="button" class="knop hoofd" id="syn-alles">▶ Speel alles</button>';
   let auto = false; const kies = i => { stap = i; t = 0; $$('#syn-stap .knop[data-i]').forEach(b => b.setAttribute('aria-pressed', +b.dataset.i===i)); $('#syn-zin').innerHTML = STAP[i][1]; };
   $$('#syn-stap .knop[data-i]').forEach(b => b.onclick = () => { auto = false; kies(+b.dataset.i); }); $('#syn-alles').onclick = () => { auto = true; kies(0); };
@@ -389,39 +389,20 @@ const bschActief = w => { const b = $('#bsch-boven'), o = $('#bsch-onder'); if (
 /* ---------- 3.1 drie soorten neuronen ---------- */
 (function(){
   const S = $('#tn-svg');
-  const RD = '#c7372f', RL = '#ef8a7f', GD = '#15803d', GL = '#86d29d', BD = '#1d5fb8', BL = '#7fb2ee';
-  let s = `<defs>${[['r','#ffd2cc',RD],['g','#c9f0d4',GD],['b','#cfe2fb',BD]].map(([id,l,d])=>`<radialGradient id="tn-soma-${id}" cx="40%" cy="35%" r="70%"><stop offset="0" stop-color="#fff"/><stop offset=".3" stop-color="${l}"/><stop offset="1" stop-color="${d}"/></radialGradient>`).join('')}
-    ${[['r',RD],['b',BD]].map(([id,k])=>`<marker id="tn-p${id}" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L10 5 L0 10Z" fill="${k}"/></marker>`).join('')}</defs><rect width="1000" height="430" rx="16" fill="#fbf9f6"/>`;
-  const myel = (pts, n, dk, lc) => { const P = bemonster(glad(pts,false), 160); let o = `<path d="${glad(P,false)}" fill="none" stroke="${dk}" stroke-width="4" stroke-linecap="round"/>`;
-    for (let i = 0; i < n; i++){ const a = Math.floor((i+.12)/n*160), b = Math.floor((i+.88)/n*160); const d = glad(P.slice(a,b),false), m = P[Math.floor((a+b)/2)];
-      o += `<path d="${d}" fill="none" stroke="${dk}" stroke-width="17" stroke-linecap="round"/><path d="${d}" fill="none" stroke="${lc}" stroke-width="11" stroke-linecap="round"/><ellipse cx="${m[0].toFixed(1)}" cy="${m[1].toFixed(1)}" rx="4" ry="2.4" fill="#fff" opacity=".85"/>`; } return o; };
-  const dendr = (x, y, a, len, w, d, k, Q) => { let o=''; const pts = [[x,y]]; let px=x, py=y, pa=a; for (let i=0;i<3;i++){ pa += (Q()-.5)*.4; px += Math.cos(pa)*len/3; py += Math.sin(pa)*len/3; pts.push([px,py]); }
-    o += `<path d="${glad(pts,false)}" fill="none" stroke="${k}" stroke-width="${w}" stroke-linecap="round"/>`; if (d>0){ o += dendr(pts[2][0],pts[2][1],pa-.6,len*.55,w*.65,d-1,k,Q) + dendr(pts[3][0],pts[3][1],pa+.55,len*.5,w*.65,d-1,k,Q); } return o; };
-  const soma = (x, y, r, id, k, Q) => `<path d="${blob(x, y, r, r*.9, Q, 10, .1)}" fill="url(#tn-soma-${id})" stroke="${k}" stroke-width="2.5"/><circle cx="${x}" cy="${y}" r="${r*.38}" fill="${k}"/>`;
-  const knop = (x, y, a, k, l) => `<path d="M${x} ${y} l${(Math.cos(a)*14).toFixed(1)} ${(Math.sin(a)*14).toFixed(1)}" stroke="${k}" stroke-width="3" stroke-linecap="round"/><circle cx="${(x+Math.cos(a)*18).toFixed(1)}" cy="${(y+Math.sin(a)*18).toFixed(1)}" r="5.5" fill="${l}" stroke="${k}" stroke-width="1.5"/>`;
-  const Q1 = rng(31), Q2 = rng(32), Q3 = rng(33);
-  // sensorisch neuron (bovenaan, impuls van links naar rechts)
-  s += dendr(96,120,Math.PI-.5,52,4.5,1,RD,Q1) + dendr(96,120,Math.PI,56,4.5,1,RD,Q1) + dendr(96,120,Math.PI+.5,52,4.5,1,RD,Q1);
-  s += myel([[96,120],[300,120]], 4, RD, RL) + myel([[300,120],[540,122]], 4, RD, RL);
-  s += `<path d="M300 120 V84" stroke="${RD}" stroke-width="5"/>` + soma(300, 68, 20, 'r', RD, Q1);
-  [-.6,0,.6].forEach(d => s += knop(540, 122, d, RD, RL));
-  // schakelneuron
-  s += dendr(640,170,Math.PI+.2,58,5,1,GD,Q2) + dendr(640,170,-2.3,50,5,1,GD,Q2) + dendr(640,170,-1.3,48,4.5,1,GD,Q2) + dendr(640,170,-.4,52,4.5,1,GD,Q2) + dendr(640,170,.5,40,4,1,GD,Q2);
-  s += `<path d="${glad([[650,190],[676,236],[700,276],[716,296]],false)}" fill="none" stroke="${GD}" stroke-width="5" stroke-linecap="round"/>` + soma(640, 170, 26, 'g', GD, Q2);
-  [-.3,.5].forEach(d => s += knop(716, 296, 1.1 + d, GD, GL));
-  // motorisch neuron (onderaan, impuls van rechts naar links)
-  s += dendr(780,344,-1.6,52,5,1,BD,Q3) + dendr(780,344,-.6,54,5,1,BD,Q3) + dendr(780,344,.3,50,4.5,1,BD,Q3) + dendr(780,344,1.2,40,4.5,1,BD,Q3) + dendr(780,344,-2.4,46,4.5,1,BD,Q3);
-  s += myel([[756,352],[600,362],[400,364],[180,362]], 7, BD, BL) + soma(780, 344, 28, 'b', BD, Q3);
-  [Math.PI-.6, Math.PI, Math.PI+.6].forEach(a => s += knop(180, 362, a, BD, BL));
-  // pijlen voor de richting van de impuls
-  s += `<path d="M150 170 C220 196 300 196 360 176" stroke="${RD}" stroke-width="3" fill="none" marker-end="url(#tn-pr)"/><path d="M620 410 C540 418 460 418 380 408" stroke="${BD}" stroke-width="3" fill="none" marker-end="url(#tn-pb)"/>`;
-  // labels
+  const RD = '#c7372f', GD = '#15803d', BD = '#1d5fb8';
+  let s = `<defs>${[['r',RD],['b',BD]].map(([id,k])=>`<marker id="tn-p${id}" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L10 5 L0 10Z" fill="${k}"/></marker>`).join('')}</defs><rect width="1000" height="430" rx="16" fill="#fbf9f6"/>`;
+  const sens = neuronOrg({x:300, y:62, r:19, kleur:'#e9837a', seed:31, steel:[300,122], axon:[[92,122],[200,118],[300,122],[420,120],[530,124]], aw:5.5, myeline:6, eind:[-.6,0,.6],
+    extra:[[94,122,Math.PI-.45,50,6,1],[94,122,Math.PI,56,6,1],[94,122,Math.PI+.45,50,6,1]]});
+  const sch = neuronOrg({x:640, y:172, r:26, kleur:'#6cc78a', seed:32, dendrieten:[[Math.PI+.15,62,11,1],[-2.3,54,10,1],[-1.35,50,9,1],[-.45,54,9,1],[.55,42,8,1]], axon:[[652,194],[676,236],[698,272],[712,292]], aw:5, eind:[-.4,.4]});
+  const mot = neuronOrg({x:784, y:344, r:30, kleur:'#6fa6e8', seed:33, dendrieten:[[-1.6,56,12,1],[-.65,58,12,1],[.3,52,11,1],[1.2,42,10,1],[-2.4,48,10,1]], axon:[[756,354],[620,362],[420,366],[184,364]], aw:6.5, myeline:7, eind:[-.6,0,.6]});
+  s += mot.svg + sch.svg + sens.svg;
+  s += `<path d="M150 178 C220 200 300 200 360 182" stroke="${RD}" stroke-width="3" fill="none" marker-end="url(#tn-pr)"/><path d="M620 414 C540 422 460 422 380 412" stroke="${BD}" stroke-width="3" fill="none" marker-end="url(#tn-pb)"/>`;
   const lab = (x, y, tx, ty, t, kl='#1d2a36', fs=15, a='middle') => `<path d="M${x} ${y} L${tx} ${ty}" stroke="#334155" stroke-width="1.3"/><circle cx="${x}" cy="${y}" r="2.6" fill="#334155"/><text x="${tx + (a==='start'?5:a==='end'?-5:0)}" y="${ty + (a==='middle' ? (ty>y?15:-6) : 5)}" text-anchor="${a}" font-size="${fs}" font-weight="700" fill="${kl}" paint-order="stroke" stroke="#fbf9f6" stroke-width="4">${t}</text>`;
-  s += `<text x="40" y="44" font-size="19" font-weight="800" fill="${RD}">sensorisch neuron</text><text x="860" y="96" font-size="19" font-weight="800" fill="${GD}" text-anchor="middle">schakelneuron</text><text x="40" y="306" font-size="19" font-weight="800" fill="${BD}">motorisch neuron</text>`;
-  s += lab(52, 140, 60, 210, 'dendrieten') + lab(310, 62, 390, 40, 'cellichaam', '#1d2a36', 15, 'start') + lab(450, 121, 450, 180, 'axon');
-  s += lab(600, 150, 560, 230, 'dendrieten') + lab(650, 176, 800, 140, 'cellichaam', '#1d2a36', 15, 'start') + lab(690, 260, 600, 290, 'axon', '#1d2a36', 15, 'end');
-  s += lab(830, 330, 900, 280, 'dendrieten', '#1d2a36', 15, 'start') + lab(790, 350, 880, 400, 'cellichaam', '#1d2a36', 15, 'start') + lab(480, 364, 480, 300, 'axon') + lab(150, 362, 120, 410, 'eindknopjes');
-  s += `<text x="255" y="214" font-size="13" fill="${RD}" font-weight="700">impuls</text><text x="500" y="402" font-size="13" fill="${BD}" font-weight="700" text-anchor="middle">impuls</text>`;
+  s += `<text x="40" y="40" font-size="19" font-weight="800" fill="${RD}">sensorisch neuron</text><text x="860" y="96" font-size="19" font-weight="800" fill="${GD}" text-anchor="middle">schakelneuron</text><text x="40" y="306" font-size="19" font-weight="800" fill="${BD}">motorisch neuron</text>`;
+  s += lab(50, 140, 60, 210, 'dendrieten') + lab(312, 58, 390, 40, 'cellichaam', '#1d2a36', 15, 'start') + lab(450, 121, 450, 182, 'axon');
+  s += lab(596, 150, 560, 236, 'dendrieten') + lab(652, 176, 800, 140, 'cellichaam', '#1d2a36', 15, 'start') + lab(690, 260, 600, 292, 'axon', '#1d2a36', 15, 'end');
+  s += lab(836, 326, 900, 276, 'dendrieten', '#1d2a36', 15, 'start') + lab(794, 352, 880, 404, 'cellichaam', '#1d2a36', 15, 'start') + lab(480, 366, 480, 300, 'axon') + lab(152, 364, 120, 412, 'eindknopjes');
+  s += `<text x="255" y="216" font-size="13" fill="${RD}" font-weight="700">impuls</text><text x="500" y="404" font-size="13" fill="${BD}" font-weight="700" text-anchor="middle">impuls</text>`;
   S.innerHTML = s;
 })();
 
@@ -563,8 +544,8 @@ sorteer($('#oef-neu'), {id:'neu', titel:'Oefening 4 · Het neuron', items:[
   {tekst:'Welk neuron brengt een impuls naar een spier?', opties:[{k:'a',label:'een motorisch neuron'},{k:'b',label:'een sensorisch neuron'},{k:'c',label:'een schakelneuron'}], antwoord:'a'},
   {tekst:'Waar ligt een schakelneuron?', opties:[{k:'a',label:'in het CZS'},{k:'b',label:'in een zintuig'},{k:'c',label:'in een spier'}], antwoord:'a'}]});
 sorteer($('#oef-imp'), {id:'imp', titel:'Oefening 5 · Elektrisch of chemisch?', opties:[{k:'e',label:'elektrisch'},{k:'c',label:'chemisch'}], items:[
-  {tekst:'De impuls loopt over het axon.', antwoord:'e'},{tekst:'Neurotransmitter gaat door de synapsspleet.', antwoord:'c'},{tekst:'De impuls springt van opening tot opening in de myelineschede.', antwoord:'e'},{tekst:'Neurotransmitter bindt op een receptor.', antwoord:'c'},
-  {tekst:'Waarom kan een elektrische impuls niet over de synapsspleet?', opties:[{k:'e',label:'de neuronen raken elkaar niet'},{k:'c',label:'de spleet is vol bloed'}], antwoord:'e', uitleg:'Daarom gebeurt het doorgeven chemisch, met neurotransmitter.'}]});
+  {tekst:'De impuls loopt over het axon.', antwoord:'e'},{tekst:'Neurotransmitter gaat door de synaptische spleet.', antwoord:'c'},{tekst:'De impuls springt van opening tot opening in de myelineschede.', antwoord:'e'},{tekst:'Neurotransmitter bindt op een receptor.', antwoord:'c'},
+  {tekst:'Waarom kan een elektrische impuls niet over de synaptische spleet?', opties:[{k:'e',label:'de neuronen raken elkaar niet'},{k:'c',label:'de spleet is vol bloed'}], antwoord:'e', uitleg:'Daarom gebeurt het doorgeven chemisch, met neurotransmitter.'}]});
 sorteer($('#oef-aa'), {id:'aa', titel:'Oefening 6 · Animaal of autonoom?', opties:[{k:'an',label:'animaal'},{k:'au',label:'autonoom'}], items:[
   {tekst:'Je hart klopt sneller als je loopt.', antwoord:'au'},{tekst:'Je schrijft een bericht op je gsm.', antwoord:'an'},{tekst:'Je maag verteert je eten.', antwoord:'au'},{tekst:'Je schopt tegen een bal.', antwoord:'an'},{tekst:'Je begint te zweten in de zon.', antwoord:'au'}]});
 sorteer($('#oef-rf'), {id:'rf', titel:'Oefening 7 · Reflex of bewuste beweging?', items:[
