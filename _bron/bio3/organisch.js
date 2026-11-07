@@ -131,6 +131,7 @@ function neuronOrg(o){
       vorm += `<path d="${buisVorm(bemonster(glad(pts,false),12), (o.aw||6)*.7, 3)}"/><path d="${blob(e[0]+Math.cos(a)*27, e[1]+Math.sin(a)*27, 7.5, 6.5, Q, 9, .1, a)}"/>`; });
     if (o.myeline){ const n = o.myeline, N = axonP.length; for (let i = 0; i < n; i++){ const a0 = Math.floor(N*(.1 + .82*(i+.08)/n)), a1 = Math.floor(N*(.1 + .82*(i+.92)/n)); myel += `<path d="${buisVorm(axonP.slice(a0, a1), (o.aw||6)*2.5, (o.aw||6)*2.5, true, true)}"/>`; } }
   }
+  (o.vrij || []).forEach(([pts, w0, w1]) => vorm += `<path d="${buisVorm(bemonster(glad(pts,false),30), w0, w1)}"/>`);
   (o.extra || []).forEach(([x, y, a, len, w, d]) => vorm += dendrietVorm(x, y, a, len, w, d, Q));
   if (o.steel){ const [tx, ty] = o.steel; vorm += `<path d="${buisVorm(bemonster(glad([[tx,ty],[tx-2,(ty+sy)/2],[sx,sy+r*.6]],false),14), 5, 7, false)}"/>`; }
   const kern = `<path d="${blob(sx - r*.05, sy - r*.05, r*.38, r*.33, Q, 9, .08)}" fill="url(#o-kern)"/><circle cx="${(sx+r*.05).toFixed(1)}" cy="${(sy-r*.1).toFixed(1)}" r="${(r*.1).toFixed(1)}" fill="#2a1240"/>`;
