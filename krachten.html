@@ -276,7 +276,7 @@ footer a{color:inherit;}
     <div class="controls">
       <div class="ctrl"><label for="ve2l">Uitrekking Δl <span id="ve2lv"></span></label><input type="range" id="ve2l" min="0" max="40" value="10"></div>
       <div class="readout" id="r_ve2"></div>
-      <div class="kader"><div class="kop">Wet van Hooke</div><p>F<sub>v</sub> = k · Δl. Ze geldt alleen zolang de vervorming <b>elastisch</b> is: na het wegnemen van de kracht neemt het voorwerp zijn oorspronkelijke vorm terug aan.</p><p>Voorbij de <b>elasticiteitsgrens</b> wordt de vervorming <b>plastisch</b>: het voorwerp blijft vervormd.</p><p><b>k = 50 N/m</b> betekent: 50 N rekt de veer 1 m uit, dus 0,5 N per cm.</p></div>
+      <div class="kader"><div class="kop">Wet van Hooke</div><p>F<sub>v</sub> = k · Δl. Ze geldt alleen zolang de vervorming <b>elastisch</b> is: na het wegnemen van de kracht neemt het voorwerp zijn oorspronkelijke vorm terug aan.</p><p>Voorbij de <b>elasticiteitsgrens</b> wordt de vervorming <b>plastisch</b>: het voorwerp blijft vervormd.</p><p><b>Wat betekent k?</b> Bij k = 50 N/m heb je een kracht van <b>50 N</b> nodig om de veer <b>1 m</b> uit te rekken (dus 0,5 N per cm).</p></div>
 
     </div>
   </div>
@@ -842,6 +842,7 @@ const VEREN = [['Zachte veer (k = 20 N/m)', 20, 3], ['Gewone veer (k = 50 N/m)',
       ['Wat gebeurt er bij aquaplaning?', ['De band raakt de weg niet meer door een waterlaag; de wrijving wordt heel klein.', 'De normaalkracht wordt groter.', 'De statische wrijving wordt groter.', 'De band warmt op.'], 0, 'De band rijdt op een waterlaag: bijna geen wrijving, dus bijna niet remmen of sturen.']
     ],
     ve: [
+      ['Een veer heeft een veerconstante k = 3,2 N/m. Wat betekent dat?', ['Je hebt 3,2 N nodig om de veer 1 m uit te rekken.', 'De veer rekt 3,2 m uit als je er 1 N aan hangt.', 'De veer is 3,2 m lang.', 'De veer weegt 3,2 N.'], 0, 'k = F<sub>v</sub> / Δl: het aantal newton per meter uitrekking. Bij k = 3,2 N/m heb je 3,2 N nodig voor 1 m uitrekking.'],
       ['Veer A heeft k = 20 N/m, veer B k = 200 N/m. Je hangt er dezelfde massa aan. Welke veer rekt het meest uit?', ['Veer A.', 'Veer B.', 'Allebei evenveel.', 'Dat kan je niet weten.'], 0, 'Δl = F / k: hoe kleiner k, hoe groter de uitrekking. Veer A is zachter.'],
       ['Je haalt de massa van een veer en ze blijft langer dan voordien. Hoe heet dat?', ['Elastische vervorming.', 'Plastische vervorming.', 'Statisch evenwicht.', 'Gewichtloosheid.'], 1, 'Het voorwerp neemt zijn oorspronkelijke vorm niet terug aan: plastische vervorming. De wet van Hooke geldt niet meer.'],
       ['Hoe ziet de grafiek F<sub>v</sub>(Δl) eruit zolang de wet van Hooke geldt?', ['Een rechte door de oorsprong.', 'Een horizontale rechte.', 'Een dalende rechte.', 'Een parabool.'], 0, 'F<sub>v</sub> = k · Δl: recht evenredig. De helling is k.']
