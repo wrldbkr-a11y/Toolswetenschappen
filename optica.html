@@ -33,6 +33,7 @@ html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:
 body{-webkit-font-smoothing:antialiased;line-height:1.55;}
 
 .top{max-width:1180px;margin:0 auto;padding:36px 24px 0;}
+.top .eyebrow{font-size:13px;font-weight:700;color:var(--accent-dark);letter-spacing:.04em;text-transform:uppercase;margin-bottom:6px;}
 .top h1{font-size:2rem;font-weight:700;letter-spacing:-0.015em;margin:0 0 8px;}
 .top .intro{color:var(--text-dim);max-width:70ch;font-size:15px;line-height:1.6;margin:0;}
 .top .intro strong{color:var(--text);}
@@ -138,6 +139,7 @@ footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-di
 <body>
 
 <header class="top">
+  <div class="eyebrow">Fysica 3de jaar · Thema 1 · Optische fenomenen · hoofdstuk 1 tot 4</div>
   <h1>Optica</h1>
   <p class="intro"><strong>Wat gebeurt er precies op de grens tussen twee middenstoffen?</strong> Elke sectie toont een bewegende lichtstraal die het scheidingsoppervlak nadert, zodat je exact kan volgen wat er gebeurt op het moment van inval. Versleep de hoek van inval waar mogelijk en bekijk live hoe de hoek van weerkaatsing of breking mee verandert.</p>
   <nav id="catnav" class="catnav"></nav>
@@ -147,15 +149,15 @@ footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-di
 <main>
 
 
-  <section class="scene" id="z1" data-title="Lichtbronnen en donkere lichamen" data-cat="zien">
-    <div class="scene-head"><span class="num">1</span><h3>Lichtbronnen en donkere lichamen</h3></div>
+  <section class="scene" id="z1" data-nr="1.1" data-title="Lichtbronnen en donkere lichamen" data-cat="zien">
+    <div class="scene-head"><span class="num">1.1</span><h3>Lichtbronnen en donkere lichamen</h3></div>
     <p class="scene-sub">Een <strong>lichtbron</strong> zendt zelf licht uit. Een <strong>donker lichaam</strong> zendt zelf geen licht uit: je ziet het alleen als er licht op valt dat het weerkaatst. Klik bij elk voorwerp op het juiste antwoord.</p>
     <div class="sort-lijst" id="z1-lijst"></div>
     <div class="note" style="margin-top:14px;max-width:760px"><strong>Let op:</strong> de maan en een spiegel lijken te schijnen, maar zenden zelf geen licht uit. Ze weerkaatsen het licht van de zon of van een lamp: het zijn <strong>donkere lichamen</strong>.</div>
   </section>
 
-  <section class="scene" id="z2" data-title="Voortplanting en lichtbundels" data-cat="zien">
-    <div class="scene-head"><span class="num">2</span><h3>Voortplanting van licht en soorten lichtbundels</h3></div>
+  <section class="scene" id="z2" data-nr="1.2" data-title="Voortplanting en lichtbundels" data-cat="zien">
+    <div class="scene-head"><span class="num">1.2</span><h3>Voortplanting van licht en soorten lichtbundels</h3></div>
     <p class="scene-sub">Een stof waar licht door kan, heet een <strong>optische middenstof</strong>, bv. lucht, water, glas en plexiglas. Licht kan zich ook voortplanten in het luchtledige. In een middenstof die overal gelijk is, plant licht zich <strong>rechtlijnig</strong> voort. De stralengang is <strong>omkeerbaar</strong>: licht kan dezelfde weg ook in de andere zin afleggen.</p>
     <div class="grid">
       <div class="canvas-wrap"><canvas id="cz2" width="800" height="400"></canvas></div>
@@ -181,8 +183,8 @@ footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-di
     </div>
   </section>
 
-  <section class="scene" id="z3" data-title="Schaduwvorming" data-cat="zien">
-    <div class="scene-head"><span class="num">3</span><h3>Schaduw: kernschaduw en bijschaduw</h3></div>
+  <section class="scene" id="z3" data-nr="1.3" data-title="Schaduwvorming" data-cat="zien">
+    <div class="scene-head"><span class="num">1.3</span><h3>Schaduw: kernschaduw en bijschaduw</h3></div>
     <p class="scene-sub">Schaduw is een gevolg van de <strong>rechtlijnige voortplanting</strong> van licht: achter een donker lichaam komt geen licht. Met één kleine lichtbron krijg je alleen een <strong>kernschaduw</strong>. Met twee lichtbronnen (of een grote lichtbron) krijg je ook een <strong>bijschaduw</strong>: daar komt licht van maar één lichtbron.</p>
     <div class="grid">
       <div class="canvas-wrap"><canvas id="cz3" width="800" height="430"></canvas></div>
@@ -202,8 +204,8 @@ footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-di
     </div>
   </section>
 
-  <section class="scene" id="z4" data-title="Zons- en maansverduistering" data-cat="zien">
-    <div class="scene-head"><span class="num">4</span><h3>Zonsverduistering en maansverduistering</h3></div>
+  <section class="scene" id="z4" data-nr="1.3" data-title="Zons- en maansverduistering" data-cat="zien">
+    <div class="scene-head"><span class="num">1.3</span><h3>Zonsverduistering en maansverduistering</h3></div>
     <p class="scene-sub">De maan draait rond de aarde. Staat de <strong>maan tussen de zon en de aarde</strong>, dan valt de schaduw van de maan op de aarde: een <strong>zonsverduistering</strong>. Staat de <strong>aarde tussen de zon en de maan</strong>, dan komt de maan in de schaduw van de aarde: een <strong>maansverduistering</strong>. De tekening is niet op schaal.</p>
     <div class="grid">
       <div class="canvas-wrap"><canvas id="cz4" width="800" height="420"></canvas><div id="z4-3d" style="display:none;width:100%;aspect-ratio:800/420;border-radius:12px;overflow:hidden;cursor:grab"></div></div>
@@ -220,8 +222,8 @@ footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-di
     </div>
   </section>
 
-  <section class="scene" id="w0" data-title="Lichamen zien" data-cat="weerkaatsing">
-    <div class="scene-head"><span class="num">5</span><h3>Hoe zie je een voorwerp?</h3></div>
+  <section class="scene" id="w0" data-nr="2.1" data-title="Lichamen zien" data-cat="weerkaatsing">
+    <div class="scene-head"><span class="num">2.1</span><h3>Hoe zie je een voorwerp?</h3></div>
     <p class="scene-sub">Je ziet iets als er licht van dat voorwerp <strong>in je oog</strong> komt. Een <strong>lichtbron</strong> zie je omdat haar licht rechtstreeks in je oog valt. Een <strong>donker lichaam</strong> zie je omdat het licht van een lichtbron erop valt en het een deel van dat licht naar je oog <strong>weerkaatst</strong>. De rest wordt <strong>geabsorbeerd</strong> (opgeslorpt).</p>
     <div class="grid">
       <div class="canvas-wrap"><canvas id="cw0" width="800" height="400"></canvas></div>
@@ -240,8 +242,8 @@ footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-di
     </div>
   </section>
 
-  <section class="scene" id="s1" data-title="Weerkaatsing — vlakke spiegel" data-cat="weerkaatsing">
-    <div class="scene-head"><span class="num">1</span><h3>Weerkaatsing op een vlakke spiegel</h3></div>
+  <section class="scene" id="s1" data-nr="2.2" data-title="Weerkaatsing — vlakke spiegel" data-cat="weerkaatsing">
+    <div class="scene-head"><span class="num">2.2</span><h3>Weerkaatsing op een vlakke spiegel</h3></div>
     <p class="scene-sub">Wet van weerkaatsing: de hoek van inval (i) is altijd gelijk aan de hoek van weerkaatsing (w), beide gemeten t.o.v. de normaal.</p>
     <div class="grid">
       <div class="canvas-wrap"><canvas id="c1" width="800" height="480"></canvas></div>
@@ -262,8 +264,8 @@ footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-di
     </div>
   </section>
 
-  <section class="scene" id="s9" data-title="Vlak van inval — 3D" data-cat="weerkaatsing">
-    <div class="scene-head"><span class="num">2</span><h3>Het vlak van inval — interactief in 3D</h3></div>
+  <section class="scene" id="s9" data-nr="2.2" data-title="Vlak van inval — 3D" data-cat="weerkaatsing">
+    <div class="scene-head"><span class="num">2.2</span><h3>Het vlak van inval — interactief in 3D</h3></div>
     <p class="scene-sub">De invallende lichtstraal, het invalspunt en de weerkaatste lichtstraal liggen altijd in <strong>één plat vlak</strong>: het vlak van inval (in het groen-blauw hieronder). Draai de weergave 360° rond — vanuit elke hoek blijft dit een plat vlak dat de normaal, de invallende straal én de weerkaatste straal bevat.</p>
     <div class="grid">
       <div class="canvas-wrap"><div id="c9" style="width:100%;height:480px;"></div></div>
@@ -288,8 +290,8 @@ footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-di
     </div>
   </section>
 
-  <section class="scene" id="s2" data-title="Weerkaatsing — vlak oppervlak" data-cat="weerkaatsing">
-    <div class="scene-head"><span class="num">3</span><h3>Regelmatige weerkaatsing op een vlak oppervlak</h3></div>
+  <section class="scene" id="s2" data-nr="2.3" data-title="Weerkaatsing — vlak oppervlak" data-cat="weerkaatsing">
+    <div class="scene-head"><span class="num">2.3</span><h3>Regelmatige weerkaatsing op een vlak oppervlak</h3></div>
     <p class="scene-sub">Ook een gewoon glad oppervlak weerkaatst licht <strong>regelmatig</strong> (ook wel: spiegelend): evenwijdige invallende stralen blijven na weerkaatsing evenwijdig aan elkaar, elk volgens i = w t.o.v. dezelfde normaal.</p>
     <div class="grid">
       <div class="canvas-wrap"><canvas id="c2" width="800" height="480"></canvas></div>
@@ -305,8 +307,8 @@ footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-di
     </div>
   </section>
 
-  <section class="scene" id="s3" data-title="Weerkaatsing — onregelmatig oppervlak" data-cat="weerkaatsing">
-    <div class="scene-head"><span class="num">4</span><h3>Diffuse weerkaatsing op een onregelmatig oppervlak</h3></div>
+  <section class="scene" id="s3" data-nr="2.3" data-title="Weerkaatsing — onregelmatig oppervlak" data-cat="weerkaatsing">
+    <div class="scene-head"><span class="num">2.3</span><h3>Diffuse weerkaatsing op een onregelmatig oppervlak</h3></div>
     <p class="scene-sub">Op microscopische schaal is een ruw oppervlak een verzameling kleine, willekeurig georiënteerde vlakjes. In élk punt geldt nog steeds i = w t.o.v. de lokale normaal — maar omdat die lokale normalen alle kanten op wijzen, verstrooien de weerkaatste stralen in alle richtingen. Dit heet <strong>diffuse (onregelmatige) weerkaatsing</strong>.</p>
     <div class="grid">
       <div class="canvas-wrap"><canvas id="c3" width="800" height="480"></canvas></div>
@@ -322,8 +324,8 @@ footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-di
     </div>
   </section>
 
-  <section class="scene" id="s12" data-title="Beeldvorming — platte spiegel (potlood)" data-cat="weerkaatsing">
-    <div class="scene-head"><span class="num">5</span><h3>Beeldvorming bij een platte spiegel: het potlood</h3></div>
+  <section class="scene" id="s12" data-nr="2.4" data-title="Beeldvorming — platte spiegel (potlood)" data-cat="weerkaatsing">
+    <div class="scene-head"><span class="num">2.4</span><h3>Beeldvorming bij een platte spiegel: het potlood</h3></div>
     <p class="scene-sub">Vanuit de top en het eind van het potlood vertrekken telkens 2 lichtstralen naar de spiegel. De verlengden van de weerkaatste stralen (stippellijn, achter de spiegel) snijden elkaar precies in de top en het eind van het beeld. Klik stap voor stap verder om de opbouw te volgen.</p>
     <div class="grid">
       <div class="canvas-wrap"><canvas id="c12" width="800" height="480"></canvas></div>
@@ -352,8 +354,8 @@ footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-di
     </div>
   </section>
 
-  <section class="scene" id="s13" data-title="Gezichtsveld — platte spiegel" data-cat="weerkaatsing">
-    <div class="scene-head"><span class="num">6</span><h3>Constructie van het gezichtsveld vanuit één oogpunt</h3></div>
+  <section class="scene" id="s13" data-nr="2.5" data-title="Gezichtsveld — platte spiegel" data-cat="weerkaatsing">
+    <div class="scene-head"><span class="num">2.5</span><h3>Constructie van het gezichtsveld vanuit één oogpunt</h3></div>
     <p class="scene-sub">Spiegel het oogpunt O tot O' achter de spiegel. De rechten van O' door de twee uiteinden van de spiegel, verlengd in de kamer, begrenzen het gebied dat het oog via de spiegel kan zien: het <strong>gezichtsveld</strong>. De échte weerkaatste stralen komen vanuit diezelfde uiteinden, maar lopen naar het oog zelf.</p>
     <div class="grid">
       <div class="canvas-wrap"><canvas id="c13" width="800" height="480"></canvas></div>
@@ -382,8 +384,8 @@ footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-di
     </div>
   </section>
 
-  <section class="scene" id="s4" data-title="Breking — dicht naar ijl" data-cat="breking">
-    <div class="scene-head"><span class="num">7</span><h3>Breking van een dichte naar een ijle middenstof</h3></div>
+  <section class="scene" id="s4" data-nr="3" data-title="Breking — dicht naar ijl" data-cat="breking">
+    <div class="scene-head"><span class="num">3</span><h3>Breking van een dichte naar een ijle middenstof</h3></div>
     <p class="scene-sub">Van een optisch dichtere naar een optisch ijlere stof (bv. van glas naar lucht) buigt de lichtstraal weg van de normaal: de brekingshoek is groter dan de invalshoek.</p>
     <div class="grid">
       <div class="canvas-wrap"><canvas id="c4" width="800" height="480"></canvas></div>
@@ -407,8 +409,8 @@ footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-di
     </div>
   </section>
 
-  <section class="scene" id="s5" data-title="Breking — ijl naar dicht" data-cat="breking">
-    <div class="scene-head"><span class="num">8</span><h3>Breking van een ijle naar een dichte middenstof</h3></div>
+  <section class="scene" id="s5" data-nr="3" data-title="Breking — ijl naar dicht" data-cat="breking">
+    <div class="scene-head"><span class="num">3</span><h3>Breking van een ijle naar een dichte middenstof</h3></div>
     <p class="scene-sub">Van een optisch ijlere naar een optisch dichtere stof (bv. van lucht naar water) buigt de lichtstraal naar de normaal toe: de brekingshoek is kleiner dan de invalshoek. Dit werkt voor élke invalshoek van 0° tot 90°.</p>
     <div class="grid">
       <div class="canvas-wrap"><canvas id="c5" width="800" height="480"></canvas></div>
@@ -432,8 +434,8 @@ footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-di
     </div>
   </section>
 
-  <section class="scene" id="s11" data-title="Schijnbare verhoging — voorwerp in water" data-cat="breking">
-    <div class="scene-head"><span class="num">9</span><h3>Schijnbare verhoging van een voorwerp in water</h3></div>
+  <section class="scene" id="s11" data-nr="3" data-title="Schijnbare verhoging — voorwerp in water" data-cat="breking">
+    <div class="scene-head"><span class="num">3</span><h3>Schijnbare verhoging van een voorwerp in water</h3></div>
     <p class="scene-sub">Twee lichtstralen vertrekken uit hetzelfde punt V van het voorwerp, breken aan het wateroppervlak (weg van de normaal, water is dichter dan lucht) en waaieren daardoor uit. Het oog vangt beide stralen op en verlengt ze in gedachten rechtdoor terug — die verlengden snijden elkaar in een punt V' dat <strong>hoger</strong> ligt dan het echte punt V. Klik stap voor stap verder om de tekening op te bouwen.</p>
     <div class="grid">
       <div class="canvas-wrap"><canvas id="c11" width="800" height="480"></canvas></div>
@@ -461,8 +463,8 @@ footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-di
     </div>
   </section>
 
-  <section class="scene" id="s6" data-title="Totale weerkaatsing" data-cat="toepassingen">
-    <div class="scene-head"><span class="num">10</span><h3>Totale (interne) weerkaatsing — van dicht naar ijl</h3></div>
+  <section class="scene" id="s6" data-nr="3" data-title="Totale weerkaatsing" data-cat="breking">
+    <div class="scene-head"><span class="num">3</span><h3>Totale (interne) weerkaatsing — van dicht naar ijl</h3></div>
     <p class="scene-sub">Ga bij een overgang van een dichte naar een ijle middenstof met de hoek van inval steeds verder omhoog. Zolang er nog breking is, buigt de gebroken straal <strong>weg van de normaal</strong> (θr > θi). Vanaf de <em>grenshoek</em> θc verdwijnt de gebroken straal volledig (ze scheert nog net over het grensvlak, θr = 90°) en treedt er <strong>totale weerkaatsing</strong> op — precies in het invalspunt, op het grensvlak zelf.</p>
     <div class="grid">
       <div class="canvas-wrap"><canvas id="c6" width="800" height="480"></canvas></div>
@@ -486,8 +488,8 @@ footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-di
     </div>
   </section>
 
-  <section class="scene" id="s7" data-title="Toepassing — glasvezel" data-cat="toepassingen">
-    <div class="scene-head"><span class="num">11</span><h3>Toepassing: totale weerkaatsing in een glasvezel</h3></div>
+  <section class="scene" id="s7" data-nr="3" data-title="Toepassing — glasvezel" data-cat="breking">
+    <div class="scene-head"><span class="num">3</span><h3>Toepassing: totale weerkaatsing in een glasvezel</h3></div>
     <p class="scene-sub">In een glasvezel is de kern optisch dichter dan de mantel eromheen. Zolang licht de kern-mantelgrens raakt onder een hoek groter dan de grenshoek, treedt telkens opnieuw totale weerkaatsing op — het licht "kaatst" zo over grote afstanden door de vezel, praktisch zonder verlies.</p>
     <div class="grid">
       <div class="canvas-wrap"><canvas id="c7" width="800" height="480"></canvas></div>
@@ -505,8 +507,8 @@ footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-di
     </div>
   </section>
 
-  <section class="scene" id="s8" data-title="Luchtspiegeling boven een weg" data-cat="toepassingen">
-    <div class="scene-head"><span class="num">12</span><h3>Luchtspiegeling boven een warme weg</h3></div>
+  <section class="scene" id="s8" data-nr="3" data-title="Luchtspiegeling boven een weg" data-cat="breking">
+    <div class="scene-head"><span class="num">3</span><h3>Luchtspiegeling boven een warme weg</h3></div>
     <p class="scene-sub">Vlak boven een hete weg is de lucht warm en dus <strong>optisch ijl</strong> (lage brekingsindex). Daarboven is de lucht koeler en <strong>optisch dichter</strong> (hogere brekingsindex). Licht van de lucht (bv. van de blauwe hemel) doorloopt daardoor geen scherp grensvlak, maar een reeks van steeds dunnere luchtlaagjes: bij elke laag gaat het van dichter naar ijler, dus buigt de straal telkens een klein beetje <strong>weg van de (verticale) normaal</strong> — net als bij gewone breking dicht→ijl. Naarmate de straal verder daalt, wordt de hoek t.o.v. die normaal steeds groter, tot ze in de buurt van het wegdek de grenshoek nadert: daar gebeurt in feite hetzelfde als bij totale weerkaatsing — de straal buigt zo ver weg van de normaal dat ze niet verder kan dalen, en krult terug omhoog, zonder het wegdek ooit echt te raken.</p>
     <div class="grid">
       <div class="canvas-wrap"><canvas id="c8" width="800" height="480"></canvas></div>
@@ -529,8 +531,8 @@ footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-di
   </section>
 
 
-  <section class="scene" id="s14" data-title="Regenboog — in één druppel" data-cat="toepassingen">
-    <div class="scene-head"><span class="num">13</span><h3>De regenboog: wat gebeurt er in één regendruppel?</h3></div>
+  <section class="scene" id="s14" data-nr="3" data-title="Regenboog — in één druppel" data-cat="breking">
+    <div class="scene-head"><span class="num">3</span><h3>De regenboog: wat gebeurt er in één regendruppel?</h3></div>
     <p class="scene-sub">Zonlicht dat in een regendruppel valt, doet drie dingen: ① het <strong>breekt</strong> bij het binnengaan (lucht → water, naar de normaal toe) en wordt daarbij in kleuren gesplitst, ② het wordt aan de achterkant van de druppel <strong>weerkaatst</strong>, ③ het <strong>breekt</strong> opnieuw bij het buitengaan (water → lucht, weg van de normaal). Door de weerkaatsing keert het licht terug naar de kant van de zon: daarom zie je een regenboog alleen met de <strong>zon in je rug</strong>.</p>
     <div class="grid">
       <div class="canvas-wrap"><canvas id="c14" width="800" height="480"></canvas></div>
@@ -550,8 +552,8 @@ footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-di
     </div>
   </section>
 
-  <section class="scene" id="s15" data-title="Regenboog — ieder zijn eigen" data-cat="toepassingen">
-    <div class="scene-head"><span class="num">14</span><h3>Iedereen ziet zijn eigen regenboog</h3></div>
+  <section class="scene" id="s15" data-nr="3" data-title="Regenboog — ieder zijn eigen" data-cat="breking">
+    <div class="scene-head"><span class="num">3</span><h3>Iedereen ziet zijn eigen regenboog</h3></div>
     <p class="scene-sub">Denk een lijn van de zon, door je hoofd, naar de <strong>schaduw van je hoofd</strong>. Druppels die <strong>42°</strong> boven die lijn hangen, sturen <strong>rood</strong> licht naar jouw oog; druppels op <strong>40°</strong> sturen <strong>violet</strong>. Je buur staat op een andere plaats, dus zijn lijn ligt anders: hij krijgt licht van <strong>andere druppels</strong> en ziet zijn <strong>eigen regenboog</strong>. Wandel je verder, dan wandelt de regenboog mee.</p>
     <div class="grid">
       <div class="canvas-wrap"><canvas id="c15" width="800" height="480"></canvas></div>
@@ -581,8 +583,8 @@ footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-di
   </section>
 
 
-  <section class="scene" id="s10" data-title="Beeldvorming — bolle lens" data-cat="lenzen">
-    <div class="scene-head"><span class="num">15</span><h3>Beeldvorming bij een bolle lens</h3></div>
+  <section class="scene" id="s10" data-nr="4.1–4.2" data-title="Beeldvorming — bolle lens" data-cat="lenzen">
+    <div class="scene-head"><span class="num">4.1–4.2</span><h3>Beeldvorming bij een bolle lens</h3></div>
     <p class="scene-sub">Een bolle (convergerende) lens heeft twee brandpunten, F1 en F2, symmetrisch t.o.v. het optisch middelpunt O op de hoofdas. Verschuif het voorwerp en bekijk hoe het beeld verandert: reëel of virtueel, rechtop of omgekeerd, vergroot of verkleind.</p>
     <div class="grid">
       <div class="canvas-wrap"><canvas id="c10" width="800" height="480"></canvas></div>
@@ -611,8 +613,8 @@ footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-di
   </section>
 
 
-  <section class="scene" id="s16" data-title="Vergrotingsfactor" data-cat="lenzen">
-    <div class="scene-head"><span class="num">16</span><h3>De vergrotingsfactor van een bolle lens</h3></div>
+  <section class="scene" id="s16" data-nr="4.3" data-title="Vergrotingsfactor" data-cat="lenzen">
+    <div class="scene-head"><span class="num">4.3</span><h3>De vergrotingsfactor van een bolle lens</h3></div>
     <p class="scene-sub">De straal door het optisch middelpunt O gaat rechtdoor. Zo ontstaan twee <strong>gelijkvormige driehoeken</strong>: één met het voorwerp en één met het beeld. Daarom is de verhouding beeldgrootte/voorwerpsgrootte gelijk aan de verhouding beeldafstand/voorwerpsafstand. Dat getal is de <strong>vergrotingsfactor N</strong>.</p>
     <div class="grid">
       <div class="canvas-wrap"><canvas id="c16" width="800" height="440"></canvas></div>
@@ -646,11 +648,10 @@ const scenes = [...document.querySelectorAll('.scene')];
 const nav = document.getElementById('nav');
 const catNav = document.getElementById('catnav');
 const categories = [
-  {id:'zien', label:'Zien door licht'},
-  {id:'weerkaatsing', label:'Weerkaatsing'},
-  {id:'breking', label:'Breking'},
-  {id:'toepassingen', label:'Toepassingen'},
-  {id:'lenzen', label:'Lenzen'},
+  {id:'zien', label:'1 Zien door licht'},
+  {id:'weerkaatsing', label:'2 Zien door weerkaatsing'},
+  {id:'breking', label:'3 Lichtbreking'},
+  {id:'lenzen', label:'4 Lenzen'},
 ];
 let currentIndex = 0;
 let activeCat = scenes[0].dataset.cat;
@@ -676,7 +677,7 @@ function renderSectionNav(){
   scenes.forEach((sc,i)=>{
     if(sc.dataset.cat!==activeCat) return;
     const b = document.createElement('button');
-    b.innerHTML = '<span class="nr">'+(i+1)+'</span>'+sc.dataset.title;
+    b.innerHTML = '<span class="nr">'+(sc.dataset.nr||i+1)+'</span>'+sc.dataset.title;
     b.classList.toggle('active', i===currentIndex);
     b.addEventListener('click',()=>activate(i));
     nav.appendChild(b);
@@ -2891,7 +2892,7 @@ function zOog(ctx,x,y,dir=-1){ ctx.save(); ctx.translate(x,y); ctx.scale(dir,1);
 })();
 
 // secties doorlopend nummeren (in de volgorde van de pagina)
-document.querySelectorAll('.scene').forEach((sc,i)=>{ const n=sc.querySelector('.scene-head .num'); if(n) n.textContent=i+1; });
+document.querySelectorAll('.scene').forEach((sc,i)=>{ const n=sc.querySelector('.scene-head .num'); if(n) n.textContent=sc.dataset.nr||i+1; });
 </script>
 </body>
 </html>
