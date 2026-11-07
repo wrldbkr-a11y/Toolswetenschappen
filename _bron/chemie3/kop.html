@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>*,*::before,*::after{box-sizing:border-box}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Periodiek systeem</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+:root{
+  --bg:#f3f7f6; --surface:#ffffff; --surface-2:#e9f1ef; --ink:#13201d; --muted:#53635e; --line:#d3dfdb;
+  --accent:#0b6b66; --accent-ink:#ffffff; --accent-soft:#d8eeeb;
+  --good:#1d7a3b; --good-soft:#dcf2e2; --bad:#b3261e; --bad-soft:#fbe3e1;
+  --proton:#d9443a; --neutron:#8d989c; --elektron:#2f6fb0; --valentie:#e8a400;
+  --c-metaal:#c9dcef; --c-nietmetaal:#cdebd3; --c-halfmetaal:#f3e1b0; --c-edelgas:#e3d4f2; --c-bgroep:#e4e8ea;
+  --c-alkali:#f4b6a8; --c-aardalkali:#f6d6a1; --c-halogeen:#b9e3c4;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, Consolas, monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0e1614; --surface:#16211e; --surface-2:#1c2a26; --ink:#e4eeeb; --muted:#9aaca6; --line:#2b3c37;
+  --accent:#5cc7bd; --accent-ink:#06211e; --accent-soft:#183a35;
+  --good:#6fd38f; --good-soft:#163524; --bad:#ff8a80; --bad-soft:#3d1a18;
+  --proton:#ef5b50; --neutron:#9aa6aa; --elektron:#5b9be0; --valentie:#ffc533;
+  --c-metaal:#24384d; --c-nietmetaal:#1f3d29; --c-halfmetaal:#4a3d18; --c-edelgas:#3a2b4d; --c-bgroep:#26302e;
+  --c-alkali:#5a2a22; --c-aardalkali:#57401b; --c-halogeen:#1e4a2c;
+  color-scheme:dark; } }
+:root[data-theme="dark"]{
+  --bg:#0e1614; --surface:#16211e; --surface-2:#1c2a26; --ink:#e4eeeb; --muted:#9aaca6; --line:#2b3c37;
+  --accent:#5cc7bd; --accent-ink:#06211e; --accent-soft:#183a35;
+  --good:#6fd38f; --good-soft:#163524; --bad:#ff8a80; --bad-soft:#3d1a18;
+  --proton:#ef5b50; --neutron:#9aa6aa; --elektron:#5b9be0; --valentie:#ffc533;
+  --c-metaal:#24384d; --c-nietmetaal:#1f3d29; --c-halfmetaal:#4a3d18; --c-edelgas:#3a2b4d; --c-bgroep:#26302e;
+  --c-alkali:#5a2a22; --c-aardalkali:#57401b; --c-halogeen:#1e4a2c;
+  color-scheme:dark; }
+
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.55}
+.wrap{max-width:1000px;margin:0 auto;padding-inline:18px;padding-block:28px 64px;display:flex;flex-direction:column;gap:28px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.15}
+h1{font-size:clamp(2rem,6vw,3.2rem);font-weight:800;letter-spacing:-.02em}
+h2{font-size:1.6rem;font-weight:800}
+h3{font-size:1.2rem;font-weight:600}
+p{margin:0;max-width:65ch}
+a{color:var(--accent)}
+.eyebrow{font-family:var(--f-mono);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:6px}
+.hero{display:flex;flex-direction:column;gap:10px}
+.hero p{color:var(--muted)}
+.lpd{font-size:.92rem;color:var(--muted)}
+
+.lesnav{display:grid;grid-template-columns:repeat(var(--tabs,2),1fr);gap:10px;position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:8px}
+.lestab{text-align:left;background:var(--surface);border:2px solid var(--line);border-radius:14px;padding:10px 12px;display:flex;gap:10px;align-items:flex-start;min-width:0}
+.lestab .nr{font-family:var(--f-mono);font-weight:700;font-size:1.15rem;color:var(--accent)}
+.lestab .t{display:flex;flex-direction:column;gap:2px;min-width:0}
+.lestab b{font-family:var(--f-display);font-size:1rem;line-height:1.2}
+.lestab small{color:var(--muted);font-size:.8rem}
+.lestab[aria-selected="true"]{border-color:var(--accent);background:var(--accent-soft)}
+@media (max-width:760px){ .lesnav{grid-template-columns:1fr 1fr;position:static} }
+
+.les{display:flex;flex-direction:column;gap:36px}
+.doel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px;display:flex;flex-direction:column;gap:6px}
+.doel .eyebrow{color:var(--accent)}
+.doel ul{margin:0;padding-left:20px;font-weight:700;font-size:1.05rem}
+.blok{display:flex;flex-direction:column;gap:16px}
+.blok-kop{display:flex;gap:12px;align-items:baseline}
+.blok-kop .letter{font-family:var(--f-mono);font-weight:700;color:var(--accent-ink);background:var(--accent);border-radius:8px;padding:2px 9px;font-size:.95rem}
+.tip{background:var(--accent-soft);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:6px}
+.tip b{font-family:var(--f-display);font-size:1.08rem}
+.def{background:var(--surface);border:2px solid var(--accent);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:4px}
+.def .eyebrow{color:var(--accent)}
+.def p{font-size:1.12rem}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media (max-width:700px){.duo,.trio{grid-template-columns:1fr}}
+.kaart{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.kaart h3{font-size:1.2rem}
+.knop{background:var(--surface);border:2px solid var(--line);border-radius:10px;padding:7px 14px;font-weight:700}
+.knop:hover{border-color:var(--accent)}
+.knop.hoofd{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.knop[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent)}
+.knop:disabled{opacity:.45;cursor:default}
+.knoppen{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.fb{min-height:1.4em}
+.fb b{font-family:var(--f-display)}
+.ok-t{color:var(--good)} .nok-t{color:var(--bad)}
+
+.oefening{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.oef-kop{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;align-items:center}
+.score{font-family:var(--f-mono);font-weight:700;font-variant-numeric:tabular-nums;background:var(--surface-2);border-radius:8px;padding:4px 10px}
+.items{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.item{border:1px solid var(--line);border-left:6px solid var(--line);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:8px}
+.item .zin{font-weight:700}
+.item .opties{display:flex;flex-wrap:wrap;gap:6px}
+.item .opties button{background:var(--surface-2);border:2px solid var(--line);border-radius:10px;padding:5px 11px;font-weight:700}
+.item .opties button:hover:not(:disabled){border-color:var(--accent)}
+.item .opties button:disabled{cursor:default}
+.item .opties button.gekozen{border-color:var(--ink)}
+.item.juist{border-left-color:var(--good);background:var(--good-soft)}
+.item.fout{border-left-color:var(--bad);background:var(--bad-soft)}
+.item .uitleg{font-size:.95rem}
+.item .uitleg b{font-family:var(--f-display)}
+.item.juist .uitleg b{color:var(--good)}
+.item.fout .uitleg b{color:var(--bad)}
+.item .invul{display:flex;flex-wrap:wrap;gap:8px}
+.item .invul input{border:2px solid var(--line);border-radius:8px;padding:5px 10px;background:var(--surface);width:12em;max-width:100%}
+.opnieuw{align-self:flex-start}
+
+.tabelwrap{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:14px}
+table{border-collapse:collapse;width:100%;font-size:.95rem}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--f-mono);font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+td b{font-family:var(--f-display)}
+
+.notatie{display:inline-flex;align-items:center;gap:2px;font-family:var(--f-display);font-weight:800;vertical-align:middle}
+.notatie .ge{display:inline-flex;flex-direction:column;align-items:flex-end;font-size:.6em;line-height:1.05;font-family:var(--f-mono);font-weight:700}
+.notatie .sy{font-size:1.15em}
+
+.linkkaart{display:flex;gap:14px;align-items:center;background:var(--surface);border:2px dashed var(--accent);border-radius:14px;padding:14px 16px;text-decoration:none;color:var(--ink)}
+.linkkaart:hover{background:var(--accent-soft)}
+.linkkaart b{font-family:var(--f-display);font-size:1.1rem}
+.linkkaart .pijl{font-size:1.6rem;color:var(--accent);margin-left:auto}
+
+.ikkan{background:var(--surface);border:2px solid var(--accent);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.ikkan ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.ikkan li{display:flex;gap:10px;align-items:baseline}
+.ikkan .st{font-family:var(--f-mono);font-weight:700;font-variant-numeric:tabular-nums;min-width:5.5em;color:var(--muted)}
+.ikkan .st.ok{color:var(--good)}
+@media (prefers-reduced-motion: reduce){ *{transition:none!important;animation:none!important} }
+
+

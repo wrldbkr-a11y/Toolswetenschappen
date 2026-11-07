@@ -1,0 +1,536 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>*,*::before,*::after{box-sizing:border-box}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>De chemische reactie</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+:root{
+  --bg:#f3f7f6; --surface:#ffffff; --surface-2:#e9f1ef; --ink:#13201d; --muted:#53635e; --line:#d3dfdb;
+  --accent:#0b6b66; --accent-ink:#ffffff; --accent-soft:#d8eeeb;
+  --good:#1d7a3b; --good-soft:#dcf2e2; --bad:#b3261e; --bad-soft:#fbe3e1;
+  --proton:#d9443a; --neutron:#8d989c; --elektron:#2f6fb0; --valentie:#e8a400;
+  --c-metaal:#c9dcef; --c-nietmetaal:#cdebd3; --c-halfmetaal:#f3e1b0; --c-edelgas:#e3d4f2; --c-bgroep:#e4e8ea;
+  --c-alkali:#f4b6a8; --c-aardalkali:#f6d6a1; --c-halogeen:#b9e3c4;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, Consolas, monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0e1614; --surface:#16211e; --surface-2:#1c2a26; --ink:#e4eeeb; --muted:#9aaca6; --line:#2b3c37;
+  --accent:#5cc7bd; --accent-ink:#06211e; --accent-soft:#183a35;
+  --good:#6fd38f; --good-soft:#163524; --bad:#ff8a80; --bad-soft:#3d1a18;
+  --proton:#ef5b50; --neutron:#9aa6aa; --elektron:#5b9be0; --valentie:#ffc533;
+  --c-metaal:#24384d; --c-nietmetaal:#1f3d29; --c-halfmetaal:#4a3d18; --c-edelgas:#3a2b4d; --c-bgroep:#26302e;
+  --c-alkali:#5a2a22; --c-aardalkali:#57401b; --c-halogeen:#1e4a2c;
+  color-scheme:dark; } }
+:root[data-theme="dark"]{
+  --bg:#0e1614; --surface:#16211e; --surface-2:#1c2a26; --ink:#e4eeeb; --muted:#9aaca6; --line:#2b3c37;
+  --accent:#5cc7bd; --accent-ink:#06211e; --accent-soft:#183a35;
+  --good:#6fd38f; --good-soft:#163524; --bad:#ff8a80; --bad-soft:#3d1a18;
+  --proton:#ef5b50; --neutron:#9aa6aa; --elektron:#5b9be0; --valentie:#ffc533;
+  --c-metaal:#24384d; --c-nietmetaal:#1f3d29; --c-halfmetaal:#4a3d18; --c-edelgas:#3a2b4d; --c-bgroep:#26302e;
+  --c-alkali:#5a2a22; --c-aardalkali:#57401b; --c-halogeen:#1e4a2c;
+  color-scheme:dark; }
+
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.55}
+.wrap{max-width:1000px;margin:0 auto;padding-inline:18px;padding-block:28px 64px;display:flex;flex-direction:column;gap:28px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.15}
+h1{font-size:clamp(2rem,6vw,3.2rem);font-weight:800;letter-spacing:-.02em}
+h2{font-size:1.6rem;font-weight:800}
+h3{font-size:1.2rem;font-weight:600}
+p{margin:0;max-width:65ch}
+a{color:var(--accent)}
+.eyebrow{font-family:var(--f-mono);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:6px}
+.hero{display:flex;flex-direction:column;gap:10px}
+.hero p{color:var(--muted)}
+.lpd{font-size:.92rem;color:var(--muted)}
+
+.lesnav{display:grid;grid-template-columns:repeat(var(--tabs,2),1fr);gap:10px;position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:8px}
+.lestab{text-align:left;background:var(--surface);border:2px solid var(--line);border-radius:14px;padding:10px 12px;display:flex;gap:10px;align-items:flex-start;min-width:0}
+.lestab .nr{font-family:var(--f-mono);font-weight:700;font-size:1.15rem;color:var(--accent)}
+.lestab .t{display:flex;flex-direction:column;gap:2px;min-width:0}
+.lestab b{font-family:var(--f-display);font-size:1rem;line-height:1.2}
+.lestab small{color:var(--muted);font-size:.8rem}
+.lestab[aria-selected="true"]{border-color:var(--accent);background:var(--accent-soft)}
+@media (max-width:760px){ .lesnav{grid-template-columns:1fr 1fr;position:static} }
+
+.les{display:flex;flex-direction:column;gap:36px}
+.doel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px;display:flex;flex-direction:column;gap:6px}
+.doel .eyebrow{color:var(--accent)}
+.doel ul{margin:0;padding-left:20px;font-weight:700;font-size:1.05rem}
+.blok{display:flex;flex-direction:column;gap:16px}
+.blok-kop{display:flex;gap:12px;align-items:baseline}
+.blok-kop .letter{font-family:var(--f-mono);font-weight:700;color:var(--accent-ink);background:var(--accent);border-radius:8px;padding:2px 9px;font-size:.95rem}
+.tip{background:var(--accent-soft);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:6px}
+.tip b{font-family:var(--f-display);font-size:1.08rem}
+.def{background:var(--surface);border:2px solid var(--accent);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:4px}
+.def .eyebrow{color:var(--accent)}
+.def p{font-size:1.12rem}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media (max-width:700px){.duo,.trio{grid-template-columns:1fr}}
+.kaart{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.kaart h3{font-size:1.2rem}
+.knop{background:var(--surface);border:2px solid var(--line);border-radius:10px;padding:7px 14px;font-weight:700}
+.knop:hover{border-color:var(--accent)}
+.knop.hoofd{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.knop[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent)}
+.knop:disabled{opacity:.45;cursor:default}
+.knoppen{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.fb{min-height:1.4em}
+.fb b{font-family:var(--f-display)}
+.ok-t{color:var(--good)} .nok-t{color:var(--bad)}
+
+.oefening{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.oef-kop{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;align-items:center}
+.score{font-family:var(--f-mono);font-weight:700;font-variant-numeric:tabular-nums;background:var(--surface-2);border-radius:8px;padding:4px 10px}
+.items{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.item{border:1px solid var(--line);border-left:6px solid var(--line);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:8px}
+.item .zin{font-weight:700}
+.item .opties{display:flex;flex-wrap:wrap;gap:6px}
+.item .opties button{background:var(--surface-2);border:2px solid var(--line);border-radius:10px;padding:5px 11px;font-weight:700}
+.item .opties button:hover:not(:disabled){border-color:var(--accent)}
+.item .opties button:disabled{cursor:default}
+.item .opties button.gekozen{border-color:var(--ink)}
+.item.juist{border-left-color:var(--good);background:var(--good-soft)}
+.item.fout{border-left-color:var(--bad);background:var(--bad-soft)}
+.item .uitleg{font-size:.95rem}
+.item .uitleg b{font-family:var(--f-display)}
+.item.juist .uitleg b{color:var(--good)}
+.item.fout .uitleg b{color:var(--bad)}
+.item .invul{display:flex;flex-wrap:wrap;gap:8px}
+.item .invul input{border:2px solid var(--line);border-radius:8px;padding:5px 10px;background:var(--surface);width:12em;max-width:100%}
+.opnieuw{align-self:flex-start}
+
+.tabelwrap{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:14px}
+table{border-collapse:collapse;width:100%;font-size:.95rem}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--f-mono);font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+td b{font-family:var(--f-display)}
+
+.notatie{display:inline-flex;align-items:center;gap:2px;font-family:var(--f-display);font-weight:800;vertical-align:middle}
+.notatie .ge{display:inline-flex;flex-direction:column;align-items:flex-end;font-size:.6em;line-height:1.05;font-family:var(--f-mono);font-weight:700}
+.notatie .sy{font-size:1.15em}
+
+.linkkaart{display:flex;gap:14px;align-items:center;background:var(--surface);border:2px dashed var(--accent);border-radius:14px;padding:14px 16px;text-decoration:none;color:var(--ink)}
+.linkkaart:hover{background:var(--accent-soft)}
+.linkkaart b{font-family:var(--f-display);font-size:1.1rem}
+.linkkaart .pijl{font-size:1.6rem;color:var(--accent);margin-left:auto}
+
+.ikkan{background:var(--surface);border:2px solid var(--accent);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.ikkan ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.ikkan li{display:flex;gap:10px;align-items:baseline}
+.ikkan .st{font-family:var(--f-mono);font-weight:700;font-variant-numeric:tabular-nums;min-width:5.5em;color:var(--muted)}
+.ikkan .st.ok{color:var(--good)}
+@media (prefers-reduced-motion: reduce){ *{transition:none!important;animation:none!important} }
+
+
+
+.lesnav{--tabs:4}
+.credit{font-size:.85rem;color:var(--muted)}
+.fig{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px}
+.fig svg{width:100%;height:auto;display:block;margin:0 auto}
+.fig text{font-family:var(--f-body);fill:var(--ink)}
+
+.bal{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:center;font-family:var(--f-display);font-weight:800;font-size:1.6rem}
+.bal .st{display:inline-flex;align-items:center;gap:4px;background:var(--surface-2);border-radius:12px;padding:4px 6px}
+.bal .st button{width:34px;height:34px;border-radius:8px;border:2px solid var(--line);background:var(--surface);font-weight:800;font-size:1.1rem}
+.bal .st .c{min-width:1.1em;text-align:center;color:var(--accent)}
+.bal .op{color:var(--muted)}
+.item .zin svg{width:320px;max-width:100%;height:auto;display:block;margin-top:4px}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a href="index.html#andere" style="align-self:flex-start;font-weight:700;color:var(--accent);text-decoration:none">← Alle tools</a>
+  <header class="hero">
+    <span class="eyebrow">Chemie · 3de jaar · thema 4 · hoofdstuk 1 en 2</span>
+    <h1>De chemische reactie</h1>
+    <p>Bij een chemische reactie ontstaan nieuwe stoffen. Massa en atomen blijven behouden, en er wordt energie uitgewisseld.</p>
+    <p class="lpd">LPD 4C: De leerlingen balanceren gegeven eenvoudige anorganische chemische reacties door gebruik te maken van de wet van behoud van massa. LPD 5C: De leerlingen interpreteren bij een chemische reactie de energie-uitwisseling met de omgeving.</p>
+  </header>
+  <div class="tip"><b>Voorkennis: dit moet je al kennen</b><ul style="margin:4px 0 0;padding-left:20px"><li>Het verschil tussen een <b>chemisch</b> en een <b>fysisch</b> verschijnsel.</li><li>Formules lezen: <b>index</b> en <b>coëfficiënt</b> (thema 3).</li></ul></div>
+  <div class="doel"><span class="eyebrow">Lesdoelen thema 4 · p. 136–157</span><ul><li>Ik hanteer de begrippen reactievergelijking, aflopende reactie, reagentia en reactieproducten.</li><li>Ik geef de wet van behoud van massa (Lavoisier) weer en hanteer ze correct.</li><li>Ik geef de wet van behoud van atomen weer en hanteer ze correct.</li><li>Ik kan een reactievergelijking uitbalanceren.</li><li>Ik interpreteer het onderscheid tussen exo-energetische en endo-energetische reacties vanuit gegeven energie-uitwisselingen.</li><li>Ik leid uit een energiediagram af of de reactie endo- of exo-energetisch is.</li></ul></div>
+  <nav class="lesnav" role="tablist" aria-label="Onderdelen"><button class="lestab" role="tab" aria-controls="lesA" aria-selected="true"><span class="nr">1.1</span><span class="t"><b>Reactievergelijking en massa</b><small>wet van Lavoisier</small></span></button><button class="lestab" role="tab" aria-controls="lesB" aria-selected="false"><span class="nr">1.2</span><span class="t"><b>Behoud van atomen</b><small>uitbalanceren</small></span></button><button class="lestab" role="tab" aria-controls="lesC" aria-selected="false"><span class="nr">2</span><span class="t"><b>Energie</b><small>exo en endo</small></span></button><button class="lestab" role="tab" aria-controls="lesD" aria-selected="false"><span class="nr">✎</span><span class="t"><b>Oefenen</b><small>alle lesdoelen</small></span></button></nav>
+
+  <main class="les" id="lesA" role="tabpanel">
+    <section class="blok">
+      <div class="blok-kop"><span class="letter">1.1</span><h2>De reactievergelijking</h2></div>
+      <p>Bij een <b>chemische reactie</b> verdwijnen stoffen en ontstaan er <b>nieuwe stoffen</b>. Je schrijft dat met een <b>reactievergelijking</b>.</p>
+      <div class="fig"><svg viewBox="0 0 600 190" role="img" aria-label="reactievergelijking van de vorming van water">
+        <g style="font-family:var(--f-display)" font-weight="800" font-size="44">
+          <text x="40" y="95">2 H<tspan font-size="26" dy="10">2</tspan><tspan dy="-10"> + O</tspan><tspan font-size="26" dy="10">2</tspan></text>
+          <text x="300" y="95" fill="var(--accent)">→</text>
+          <text x="380" y="95">2 H<tspan font-size="26" dy="10">2</tspan><tspan dy="-10">O</tspan></text></g>
+        <path d="M40 120 H260" stroke="var(--ink)" stroke-width="2"/><text x="150" y="146" text-anchor="middle" font-size="17" font-weight="700">reagentia</text><text x="150" y="168" text-anchor="middle" font-size="14">de stoffen die reageren</text>
+        <path d="M380 120 H540" stroke="var(--ink)" stroke-width="2"/><text x="460" y="146" text-anchor="middle" font-size="17" font-weight="700">reactieproducten</text><text x="460" y="168" text-anchor="middle" font-size="14">de stoffen die ontstaan</text>
+        <text x="318" y="40" text-anchor="middle" font-size="14" fill="var(--accent)" font-weight="700">reactiepijl</text></svg></div>
+      <div class="duo">
+        <div class="kaart"><h3>Reagentia en reactieproducten</h3><p>Links van de pijl staan de <b>reagentia</b> (beginstoffen). Rechts van de pijl staan de <b>reactieproducten</b> (eindstoffen). Lees de pijl als ‘reageert tot’.</p></div>
+        <div class="kaart"><h3>Aflopende reactie</h3><p>Een <b>aflopende reactie</b> verloopt in één richting, tot minstens één reagens volledig op is. Je schrijft één pijl: →.</p></div>
+      </div>
+    </section>
+    <section class="blok">
+      <div class="blok-kop"><span class="letter">1.1</span><h2>Wet van behoud van massa</h2></div>
+      <div class="def"><span class="eyebrow">Wet van Lavoisier</span><p>Bij een chemische reactie is de <b>totale massa van de reagentia</b> gelijk aan de <b>totale massa van de reactieproducten</b>.</p></div>
+      <p>Proef: azijn en bakpoeder reageren. Er ontstaat een gas (koolstofdioxide). Kies of de fles open of dicht is.</p>
+      <div class="knoppen"><button class="knop" type="button" id="la-dicht" aria-pressed="true">fles met ballon (dicht)</button><button class="knop" type="button" id="la-open" aria-pressed="false">open fles</button><button class="knop hoofd" type="button" id="la-start">▶ Laat reageren</button></div>
+      <div class="fig"><svg id="la-svg" viewBox="0 0 520 280"></svg></div>
+      <p id="la-zin"></p>
+      <div class="tip"><b>Rekenen met de wet</b><p>56 g ijzer reageert volledig met 32 g zwavel tot ijzersulfide. Dan ontstaat 56 g + 32 g = <b>88 g</b> ijzersulfide.</p></div>
+    </section>
+  </main>
+
+  <main class="les" id="lesB" role="tabpanel" hidden>
+    <section class="blok">
+      <div class="blok-kop"><span class="letter">1.2</span><h2>Wet van behoud van atomen</h2></div>
+      <div class="def"><span class="eyebrow">Wet van behoud van atomen</span><p>Bij een chemische reactie gaan er <b>geen atomen verloren</b> en komen er <b>geen atomen bij</b>. De atomen worden alleen <b>anders gegroepeerd</b>. Links en rechts van de pijl staan evenveel atomen van elke soort.</p></div>
+      <div class="tip"><b>Uitbalanceren in 3 stappen</b><ol style="margin:4px 0 0;padding-left:22px"><li>Tel de atomen van elke soort links en rechts van de pijl.</li><li>Is het niet gelijk? Zet een <b>coëfficiënt</b> vóór een formule.</li><li>Tel opnieuw tot alles gelijk is.</li></ol><p><b>Verander nooit een index.</b> Dan maak je een andere stof: H<sub>2</sub>O is water, H<sub>2</sub>O<sub>2</sub> is waterstofperoxide.</p></div>
+    </section>
+    <section class="blok">
+      <div class="blok-kop"><span class="letter">1.2</span><h2>Balanceer de reactie</h2></div>
+      <div class="knoppen" id="bal-kies"></div>
+      <div class="fig"><div class="bal" id="bal"></div></div>
+      <div id="bal-fig" class="fig"></div>
+      <div class="tabelwrap"><table><thead><tr><th>atoom</th><th>links</th><th>rechts</th><th></th></tr></thead><tbody id="bal-tabel"></tbody></table></div>
+      <p class="fb" id="bal-zin"></p>
+    </section>
+  </main>
+
+  <main class="les" id="lesC" role="tabpanel" hidden>
+    <section class="blok">
+      <div class="blok-kop"><span class="letter">2</span><h2>Energie bij chemische reacties</h2></div>
+      <p>Bij elke chemische reactie wordt er energie uitgewisseld met de <b>omgeving</b>: warmte, licht of elektrische energie.</p>
+      <div class="duo">
+        <div class="def"><span class="eyebrow">2.1 · Endo-energetisch</span><p>De reactie <b>neemt energie op</b> uit de omgeving. De omgeving koelt af, of je moet energie blijven toevoegen.</p></div>
+        <div class="def"><span class="eyebrow">2.2 · Exo-energetisch</span><p>De reactie <b>geeft energie af</b> aan de omgeving. De omgeving warmt op, of er komt licht of stroom vrij.</p></div>
+      </div>
+    </section>
+    <section class="blok">
+      <div class="blok-kop"><span class="letter">2</span><h2>Het energiediagram</h2></div>
+      <p>Kies een reactie. Het energiediagram vergelijkt de energie van de reagentia met de energie van de reactieproducten.</p>
+      <div class="knoppen" id="ed-kies"></div>
+      <div class="duo"><div class="fig"><svg id="ed-svg" viewBox="0 0 420 300"></svg></div><div class="kaart" id="ed-uitleg"></div></div>
+      <div class="tip"><b>Zo lees je het diagram</b><p>Liggen de <b>reactieproducten lager</b> dan de reagentia? Dan is er energie <b>afgegeven</b>: <b>exo-energetisch</b>. Liggen ze <b>hoger</b>? Dan is er energie <b>opgenomen</b>: <b>endo-energetisch</b>.</p></div>
+    </section>
+  </main>
+
+  <main class="les" id="lesD" role="tabpanel" hidden>
+    <section class="blok">
+      <div class="oefening" id="oef-beg"></div>
+      <div class="oefening" id="oef-massa"></div>
+      <div class="oefening" id="oef-atoom"></div>
+      <div class="oefening" id="oef-bal"></div>
+      <div class="oefening" id="oef-ee"></div>
+      <div class="oefening" id="oef-ed"></div>
+    </section>
+    <section class="ikkan" id="ikkan"></section>
+  </main>
+
+  <p class="credit">Gemaakt door de vakgroep wetenschappen · Maria Assumpta Lyceum · ontwikkeld met hulp van AI · <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.nl">CC BY-NC-SA 4.0</a></p>
+</div>
+<script>
+(function(){
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+const shuffle = a => { a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; };
+const norm = s => String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/\s+/g,' ').trim();
+const komma = (x,d=1) => x.toFixed(d).replace('.',',');
+const scores = {};
+let ikkanFn = () => {};
+const updateIkKan = () => ikkanFn();
+
+/* tabbladen + #anker */
+function tabs(){
+  const toon = id => {
+    $$('.lestab').forEach(t => t.setAttribute('aria-selected', t.getAttribute('aria-controls')===id?'true':'false'));
+    $$('main.les').forEach(m => m.hidden = m.id!==id);
+    document.dispatchEvent(new CustomEvent('tab', {detail:id}));
+  };
+  $$('.lestab').forEach(t => t.addEventListener('click', () => toon(t.getAttribute('aria-controls'))));
+  const h = location.hash.slice(1);
+  if (h && document.getElementById(h) && document.getElementById(h).matches('main.les')) toon(h);
+}
+
+/* sorteeroefening: opties per oefening of per item, antwoord mag een lijst zijn */
+function sorteer(el, cfg){
+  function render(){
+    const items = cfg.vast ? cfg.items : shuffle(cfg.items);
+    el.innerHTML = `<div class="oef-kop"><h3>${cfg.titel}</h3><span class="score" data-score>0 / ${items.length}</span></div>
+      ${cfg.opdracht?`<p>${cfg.opdracht}</p>`:''}<ul class="items"></ul><button class="knop opnieuw" type="button">↺ Opnieuw</button>`;
+    const ul = el.querySelector('.items'); let juist=0, klaar=0;
+    scores[cfg.id] = {juist:0,totaal:items.length,klaar:false};
+    items.forEach(it => {
+      const opties = it.opties || cfg.opties;
+      const goed = [].concat(it.antwoord);
+      const li = document.createElement('li'); li.className='item';
+      li.innerHTML = `<span class="zin">${it.tekst}</span><div class="opties">${(it.opties?shuffle(opties):opties).map(o=>`<button type="button" data-k="${o.k}">${o.label}</button>`).join('')}</div><div class="uitleg" hidden></div>`;
+      li.querySelectorAll('.opties button').forEach(b => b.addEventListener('click', () => {
+        const ok = goed.includes(b.dataset.k);
+        li.classList.add(ok?'juist':'fout'); b.classList.add('gekozen');
+        li.querySelectorAll('.opties button').forEach(x => x.disabled=true);
+        const lbl = goed.map(k => opties.find(o=>o.k===k).label).join(' of ');
+        const u = li.querySelector('.uitleg'); u.hidden=false;
+        u.innerHTML = (ok?'<b>Juist!</b> ':`<b>Niet juist.</b> Het is: ${lbl}. `) + (it.uitleg||'');
+        klaar++; if(ok) juist++;
+        el.querySelector('[data-score]').textContent = `${juist} / ${items.length}`;
+        scores[cfg.id] = {juist,totaal:items.length,klaar:klaar===items.length}; updateIkKan();
+      }));
+      ul.appendChild(li);
+    });
+    el.querySelector('.opnieuw').addEventListener('click', () => { render(); updateIkKan(); });
+  }
+  render();
+}
+
+/* invuloefening: leerling typt het antwoord */
+function invul(el, cfg){
+  function render(){
+    const pool = typeof cfg.items==='function' ? cfg.items() : cfg.items;
+    const items = cfg.vast ? pool : shuffle(pool);
+    el.innerHTML = `<div class="oef-kop"><h3>${cfg.titel}</h3><span class="score" data-score>0 / ${items.length}</span></div>
+      ${cfg.opdracht?`<p>${cfg.opdracht}</p>`:''}<ul class="items"></ul><button class="knop opnieuw" type="button">↺ ${cfg.opnieuwTekst||'Opnieuw'}</button>`;
+    const ul = el.querySelector('.items'); let juist=0, klaar=0;
+    scores[cfg.id] = {juist:0,totaal:items.length,klaar:false};
+    items.forEach((it,i) => {
+      const li = document.createElement('li'); li.className='item';
+      li.innerHTML = `<span class="zin">${it.tekst}</span><form class="invul"><input type="text" autocomplete="off" aria-label="antwoord ${i+1}" id="${cfg.id}-in-${i}"><button class="knop" type="submit">Controleer</button></form><div class="uitleg" hidden></div>`;
+      li.querySelector('form').addEventListener('submit', e => {
+        e.preventDefault();
+        const inp = li.querySelector('input'); const v = inp.value.trim(); if(!v) return;
+        const res = (it.check || cfg.check || standaardCheck)(v, it);
+        const u = li.querySelector('.uitleg'); u.hidden=false;
+        if (res.bijna){ u.innerHTML = `<b>Bijna.</b> ${res.bijna}`; return; }
+        li.classList.add(res.ok?'juist':'fout'); inp.disabled = true; li.querySelector('button').disabled = true;
+        u.innerHTML = (res.ok?'<b>Juist!</b> ':`<b>Niet juist.</b> Het is: ${it.toon||it.antwoord[0]}. `) + (it.uitleg||'');
+        klaar++; if(res.ok) juist++;
+        el.querySelector('[data-score]').textContent = `${juist} / ${items.length}`;
+        scores[cfg.id] = {juist,totaal:items.length,klaar:klaar===items.length}; updateIkKan();
+      });
+      ul.appendChild(li);
+    });
+    el.querySelector('.opnieuw').addEventListener('click', () => { render(); updateIkKan(); });
+  }
+  render();
+  return {render};
+}
+function standaardCheck(v, it){ return {ok: it.antwoord.some(a => norm(a)===norm(v))}; }
+function symboolCheck(v, it){
+  const s = it.antwoord[0];
+  if (v===s) return {ok:true};
+  if (v.toLowerCase()===s.toLowerCase()) return {bijna:`Let op de hoofdletters: een symbool begint met een hoofdletter, de tweede letter is klein.`};
+  return {ok:false};
+}
+
+/* "ik kan"-regel */
+function regel(label, s){
+  if(!s) return `<li><span class="st">nog niet</span><span>${label}</span></li>`;
+  const ok = s.klaar && s.juist/s.totaal>=.8;
+  const st = s.klaar ? `${s.juist}/${s.totaal}` : (s.juist?`${s.juist}/${s.totaal} …`:'nog niet');
+  return `<li><span class="st ${ok?'ok':''}">${ok?'✓ ':''}${st}</span><span>${label}</span></li>`;
+}
+
+/* notatie met massagetal en atoomnummer */
+const notatie = (sym, A, Z, lading='') => `<span class="notatie"><span class="ge"><span>${A}</span><span>${Z}</span></span><span class="sy">${sym}</span>${lading?`<sup style="font-size:.6em">${lading}</sup>`:''}</span>`;
+
+/* verdeling elektronen over schillen (eenvoudig: 2, 8, 8, 2) */
+function schillen(e){ const max=[2,8,8,2]; const r=[]; let rest=e; for(const m of max){ if(rest<=0) break; const n=Math.min(m,rest); r.push(n); rest-=n; } return r; }
+
+/* schillenmodel tekenen */
+function bohrSvg(p, n, e, opt={}){
+  const sch = opt.schillen || schillen(e); const R = sch.length>4 ? [0,36,58,80,102,124] : [0,46,72,98,122]; const cx=140, cy=140; const er = sch.length>4 || Math.max(...sch,0)>8 ? 4.5 : 6;
+  let s = `<svg viewBox="0 0 280 280" role="img" aria-label="schillenmodel">`;
+  for (let i=1;i<=Math.max(sch.length, opt.minSchillen||0);i++) s += `<circle cx="${cx}" cy="${cy}" r="${R[i]}" fill="none" stroke="var(--line)" stroke-width="2"/>`;
+  // kern
+  const tot = p+n; const kr = tot ? Math.min(sch.length>4?26:30, 10+Math.sqrt(tot)*3.6) : 8;
+  s += `<circle cx="${cx}" cy="${cy}" r="${kr}" fill="var(--surface)" stroke="var(--ink)" stroke-width="1.5"/>`;
+  const deeltjes = []; for(let i=0;i<p;i++) deeltjes.push('p'); for(let i=0;i<n;i++) deeltjes.push('n');
+  // mengen
+  const gemengd = []; let ip=0, inn=0; while(ip<p||inn<n){ if(ip<p){gemengd.push('p');ip++;} if(inn<n){gemengd.push('n');inn++;} }
+  gemengd.forEach((d,i) => { const a=i*2.39996, r=Math.sqrt(i+0.5)*(kr-5)/Math.sqrt(Math.max(tot,1)); const x=cx+r*Math.cos(a), y=cy+r*Math.sin(a);
+    s += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${tot>60?2.4:tot>24?3.2:4}" fill="${d==='p'?'var(--proton)':'var(--neutron)'}" stroke="var(--ink)" stroke-width=".5"/>`; });
+  sch.forEach((cnt,i) => { const laatste = i===sch.length-1;
+    for(let k=0;k<cnt;k++){ const a = -Math.PI/2 + k*2*Math.PI/cnt + i*0.3; const x=cx+R[i+1]*Math.cos(a), y=cy+R[i+1]*Math.sin(a);
+      s += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${er}" fill="${laatste&&opt.valentie!==false?'var(--valentie)':'var(--elektron)'}" stroke="var(--ink)" stroke-width="1"/>`; } });
+  if (opt.labels) ['K','L','M','N','O'].slice(0,sch.length).forEach((l,i)=>{ s += `<text x="${cx+R[i+1]*0.71+4}" y="${cy-R[i+1]*0.71-4}" font-size="12" font-family="var(--f-mono)" fill="var(--muted)">${l}</text>`; });
+  return s + '</svg>';
+}
+
+/* elementen: Z, symbool, naam, (meest voorkomend) massagetal, Ar, groep (1-18), periode, EN, categorie */
+const ELEM = [
+ [1,'H','waterstof',1,1.0,1,1,2.1,'nm'],[2,'He','helium',4,4.0,18,1,null,'eg'],
+ [3,'Li','lithium',7,6.9,1,2,1.0,'m'],[4,'Be','beryllium',9,9.0,2,2,1.5,'m'],[5,'B','boor',11,10.8,13,2,2.0,'nm'],[6,'C','koolstof',12,12.0,14,2,2.5,'nm'],[7,'N','stikstof',14,14.0,15,2,3.0,'nm'],[8,'O','zuurstof',16,16.0,16,2,3.5,'nm'],[9,'F','fluor',19,19.0,17,2,4.0,'nm'],[10,'Ne','neon',20,20.2,18,2,null,'eg'],
+ [11,'Na','natrium',23,23.0,1,3,0.9,'m'],[12,'Mg','magnesium',24,24.3,2,3,1.2,'m'],[13,'Al','aluminium',27,27.0,13,3,1.5,'m'],[14,'Si','silicium',28,28.1,14,3,1.8,'nm'],[15,'P','fosfor',31,31.0,15,3,2.1,'nm'],[16,'S','zwavel',32,32.1,16,3,2.5,'nm'],[17,'Cl','chloor',35,35.5,17,3,3.0,'nm'],[18,'Ar','argon',40,39.9,18,3,null,'eg'],
+ [19,'K','kalium',39,39.1,1,4,0.8,'m'],[20,'Ca','calcium',40,40.1,2,4,1.0,'m'],[31,'Ga','gallium',69,69.7,13,4,1.6,'m'],[32,'Ge','germanium',74,72.6,14,4,1.8,'m'],[33,'As','arseen',75,74.9,15,4,2.0,'nm'],[34,'Se','seleen',80,79.0,16,4,2.4,'nm'],[35,'Br','broom',79,79.9,17,4,2.8,'nm'],[36,'Kr','krypton',84,83.8,18,4,null,'eg'],
+ [37,'Rb','rubidium',85,85.5,1,5,0.8,'m'],[38,'Sr','strontium',88,87.6,2,5,1.0,'m'],[49,'In','indium',115,114.8,13,5,1.7,'m'],[50,'Sn','tin',120,118.7,14,5,1.8,'m'],[51,'Sb','antimoon',121,121.8,15,5,1.9,'m'],[52,'Te','telluur',130,127.6,16,5,2.1,'nm'],[53,'I','jood',127,126.9,17,5,2.5,'nm'],[54,'Xe','xenon',132,131.3,18,5,null,'eg'],
+ [55,'Cs','cesium',133,132.9,1,6,0.7,'m'],[56,'Ba','barium',138,137.3,2,6,0.9,'m'],[81,'Tl','thallium',205,204.4,13,6,1.8,'m'],[82,'Pb','lood',208,207.2,14,6,1.8,'m'],[83,'Bi','bismut',209,209.0,15,6,1.9,'m'],[84,'Po','polonium',209,209,16,6,2.0,'m'],[85,'At','astaat',210,210,17,6,2.2,'nm'],[86,'Rn','radon',222,222,18,6,null,'eg'],
+ [87,'Fr','francium',223,223,1,7,0.7,'m'],[88,'Ra','radium',226,226,2,7,0.9,'m']
+].map(([Z,sym,naam,A,Ar,g,per,en,cat])=>({Z,sym,naam,A,Ar,g,per,en,cat}));
+const BIJZ = {Z:{}, sym:{}}; ELEM.forEach(e => { BIJZ.Z[e.Z]=e; BIJZ.sym[e.sym]=e; });
+const GROEP_ROMEINS = {1:'Ia',2:'IIa',13:'IIIa',14:'IVa',15:'Va',16:'VIa',17:'VIIa',18:'VIIIa'};
+const VALENTIE = g => g<=2 ? g : g-10;
+
+
+const CATNAAM = {m:'metaal', nm:'niet-metaal', eg:'edelgas'};
+const CATKLEUR = {m:'--c-metaal', nm:'--c-nietmetaal', eg:'--c-edelgas'};
+const GROEPNAAM = e => e.g===1 && e.Z!==1 ? 'alkalimetalen' : e.g===2 ? 'aardalkalimetalen' : e.g===17 ? 'halogenen' : e.g===18 ? 'edelgassen' : '';
+const GROEPKLEUR = {alkalimetalen:'--c-alkali', aardalkalimetalen:'--c-aardalkali', halogenen:'--c-halogeen', edelgassen:'--c-edelgas'};
+const valentie = e => e.Z===2 ? 2 : VALENTIE(e.g);
+const BG = {4:['Sc','Ti','V','Cr','Mn','Fe','Co','Ni','Cu','Zn',21], 5:['Y','Zr','Nb','Mo','Tc','Ru','Rh','Pd','Ag','Cd',39], 6:['La','Hf','Ta','W','Re','Os','Ir','Pt','Au','Hg',0], 7:['Ac','Rf','Db','Sg','Bh','Hs','Mt','Ds','Rg','Cn',0]};
+const BGZ = {6:[57,72,73,74,75,76,77,78,79,80], 7:[89,104,105,106,107,108,109,110,111,112]};
+const P7 = [['Nh',113,13],['Fl',114,14],['Mc',115,15],['Lv',116,16],['Ts',117,17],['Og',118,18]];
+
+/* bolmodellen van kleine deeltjes */
+const AK = {H:'#f4f4f4', O:'#e5484d', C:'#3d3d3d', N:'#3b6fd8', Cl:'#3fae49', Na:'#8e5bd0', Fe:'#9aa3ab', He:'#7fd3e8', S:'#e8c23b', Mg:'#5aa469', Cu:'#c87533', Al:'#b9c2cc', K:'#a05fd0', Ca:'#c9a46b'};
+const AR = s => s==='H' ? 9 : (s==='Na'||s==='Cl'||s==='K') ? 15 : 13;
+const VORM = {
+  H2:[['H',-8,0],['H',8,0]], O2:[['O',-10,0],['O',10,0]], N2:[['N',-10,0],['N',10,0]], Cl2:[['Cl',-12,0],['Cl',12,0]],
+  O3:[['O',-17,7],['O',0,-4],['O',17,7]], He:[['He',0,0]], Fe:[['Fe',0,0]], Cu:[['Cu',0,0]],
+  H2O:[['O',0,0],['H',-14,10],['H',14,10]], CO2:[['O',-22,0],['C',0,0],['O',22,0]],
+  NH3:[['N',0,0],['H',-15,9],['H',15,9],['H',0,-16]], CH4:[['C',0,0],['H',-15,-11],['H',15,-11],['H',-15,11],['H',15,11]],
+  HCl:[['H',-11,0],['Cl',8,0]], NaCl:[['Na',-12,0],['Cl',12,0]], CO:[['C',-10,0],['O',10,0]], SO2:[['O',-19,8],['S',0,0],['O',19,8]],
+  Mg:[['Mg',0,0]], Na:[['Na',0,0]], C:[['C',0,0]], Al:[['Al',0,0]], MgO:[['Mg',-12,0],['O',11,0]],
+  Al2O3:[['O',-34,9],['Al',-17,-5],['O',0,9],['Al',17,-5],['O',34,9]], FeS:[['Fe',-11,0],['S',11,0]], S:[['S',0,0]]
+};
+let gradId = 0;
+function molSvg(f, x, y, sc=1, rot=0){
+  const v = VORM[f]; const c = Math.cos(rot), s = Math.sin(rot);
+  return v.map(([el,dx,dy]) => [el, x+(dx*c-dy*s)*sc, y+(dx*s+dy*c)*sc]).sort((a,b)=>a[2]-b[2]).map(([el,ax,ay]) =>
+    `<circle cx="${ax.toFixed(1)}" cy="${ay.toFixed(1)}" r="${(AR(el)*sc).toFixed(1)}" fill="url(#g-${el})" stroke="#1a1a1a" stroke-width="${0.8*sc}"/>`).join('');
+}
+function molDefsGlobaal(){
+  const d=document.createElement('div'); d.innerHTML='<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>' + Object.entries(AK).map(([el,k]) => `<radialGradient id="g-${el}" cx="35%" cy="30%" r="70%"><stop offset="0" stop-color="#fff" stop-opacity=".9"/><stop offset=".35" stop-color="${k}"/><stop offset="1" stop-color="${k}" stop-opacity="1"/></radialGradient>`).join('') + '</defs></svg>'; document.body.prepend(d.firstChild);
+}
+molDefsGlobaal();
+const molDefs = () => '';
+const fHtml = f => f.replace(/(\d+)/g,'<sub>$1</sub>');
+const telAtomen = f => { const r = {}; for (const m of f.matchAll(/([A-Z][a-z]?)(\d*)/g)) r[m[1]] = (r[m[1]]||0) + (+m[2]||1); return r; };
+function doosSvg(f, n=6, w=220, h=150, sc=1){
+  const pos = [[45,40],[115,32],[180,50],[60,108],[132,98],[188,118],[100,66]];
+  let s = `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="deeltjesmodel">${molDefs()}<rect x="2" y="2" width="${w-4}" height="${h-4}" rx="10" fill="#f8fbfa" stroke="var(--line)" stroke-width="2"/>`;
+  for (let i=0;i<n;i++) s += molSvg(f, pos[i][0]*w/220, pos[i][1]*h/150, sc, (i*1.3)%3);
+  return s + '</svg>';
+}
+
+/* proef van Lavoisier */
+let laDicht = true, laT = 0, laLoopt = false;
+function tekenLa(){
+  const k = Math.min(1, laT); const m0 = 412.5; const ontsnapt = laDicht ? 0 : 2.2*k; const m = m0 - ontsnapt;
+  let s = `<rect x="110" y="232" width="300" height="26" rx="6" fill="#cfd8dc" stroke="var(--ink)"/><rect x="220" y="240" width="80" height="14" rx="3" fill="#10261f"/><text x="260" y="251" text-anchor="middle" font-size="12" fill="#7CFFB2" style="font-family:var(--f-mono)">${m.toFixed(1).replace('.',',')} g</text>`;
+  s += `<path d="M215 232 V150 Q215 128 240 118 V92 H280 V118 Q305 128 305 150 V232 Z" fill="rgba(180,220,240,.35)" stroke="var(--ink)" stroke-width="2"/>`;
+  s += `<path d="M217 230 V${200-20*k} H303 V230 Z" fill="rgba(240,230,190,.8)"/>`;
+  for (let i=0;i<10*k;i++){ const x = 228+((i*37)%70), y = 220 - ((laT*90 + i*23)%110); if (y>130) s += `<circle cx="${x}" cy="${y}" r="3" fill="#fff" stroke="#9aa"/>`; }
+  if (laDicht){ const r = 14 + 30*k; s += `<ellipse cx="260" cy="${90 - r*0.9}" rx="${r*0.8}" ry="${r}" fill="#e5484d" opacity=".85" stroke="var(--ink)"/><rect x="246" y="84" width="28" height="12" rx="3" fill="#e5484d" stroke="var(--ink)"/>`; }
+  else for (let i=0;i<8*k;i++){ const y = 80 - ((laT*80+i*19)%60); s += `<circle cx="${250+((i*13)%22)}" cy="${y}" r="2.5" fill="none" stroke="#889"/>`; }
+  s += `<text x="20" y="30" font-size="14" font-weight="700">massa vóór de reactie: ${m0.toFixed(1).replace('.',',')} g</text><text x="20" y="52" font-size="14" font-weight="700">massa nu: ${m.toFixed(1).replace('.',',')} g</text>`;
+  $('#la-svg').innerHTML = s;
+  $('#la-zin').innerHTML = laT<0.01 ? 'Druk op <b>Laat reageren</b>.' : laDicht ? '<b>De massa blijft gelijk.</b> Het gas blijft in de ballon. Alle reactieproducten worden mee gewogen.' : '<b>De massa lijkt te dalen.</b> Het gas ontsnapt uit de fles en wordt niet meer gewogen. Er gaat geen massa verloren: ze zit in de lucht.';
+}
+function laKies(d){ laDicht = d; laT = 0; $('#la-dicht').setAttribute('aria-pressed', d); $('#la-open').setAttribute('aria-pressed', !d); tekenLa(); }
+$('#la-dicht').onclick = () => laKies(true); $('#la-open').onclick = () => laKies(false);
+$('#la-start').onclick = () => { laT = 0; if (laLoopt) return; laLoopt = true; (function stap(){ laT += 0.012; tekenLa(); if (laT < 1.6) requestAnimationFrame(stap); else laLoopt = false; })(); };
+tekenLa();
+
+/* balanceren */
+const RX = [
+  {l:['H2','O2'], r:['H2O'], o:[2,1,2]}, {l:['N2','H2'], r:['NH3'], o:[1,3,2]}, {l:['H2','Cl2'], r:['HCl'], o:[1,1,2]},
+  {l:['Mg','O2'], r:['MgO'], o:[2,1,2]}, {l:['Na','Cl2'], r:['NaCl'], o:[2,1,2]}, {l:['CH4','O2'], r:['CO2','H2O'], o:[1,2,1,2]}, {l:['Al','O2'], r:['Al2O3'], o:[4,3,2]}];
+let rx = 0, co = [];
+const atomenKant = (fs, cs) => { const t = {}; fs.forEach((f,i) => Object.entries(telAtomen(f)).forEach(([e,n]) => t[e] = (t[e]||0) + n*cs[i])); return t; };
+function toonBal(){
+  const R = RX[rx], alle = [...R.l, ...R.r], cl = co.slice(0, R.l.length), cr = co.slice(R.l.length);
+  const st = (f,i) => `<span class="st"><button type="button" data-i="${i}" data-d="-1" aria-label="minder">−</button><span class="c">${co[i]>1?co[i]:''}</span><span>${fHtml(f)}</span><button type="button" data-i="${i}" data-d="1" aria-label="meer">+</button></span>`;
+  $('#bal').innerHTML = R.l.map((f,i)=>st(f,i)).join('<span class="op">+</span>') + '<span class="op">→</span>' + R.r.map((f,i)=>st(f,i+R.l.length)).join('<span class="op">+</span>');
+  $$('#bal .st button').forEach(b => b.onclick = () => { const i = +b.dataset.i; co[i] = Math.min(6, Math.max(1, co[i] + +b.dataset.d)); toonBal(); });
+  const L = atomenKant(R.l, cl), Rr = atomenKant(R.r, cr); let ok = true;
+  $('#bal-tabel').innerHTML = Object.keys(L).map(e => { const g = L[e]===Rr[e]; ok = ok && g; return `<tr><td><b>${e}</b></td><td>${L[e]}</td><td>${Rr[e]}</td><td>${g?'<span class="ok-t">✓ gelijk</span>':'<span class="nok-t">✗ niet gelijk</span>'}</td></tr>`; }).join('');
+  let w = 0; const groep = (fs, cs) => { let o = ''; fs.forEach((f,i) => { for (let k=0;k<cs[i];k++){ o += molSvg(f, w + 34, 60, 1.05, 0); w += 72; } w += 26; }); return o; };
+  let svg = groep(R.l, cl); const pijlX = w; w += 50; svg += `<path d="M${pijlX} 60 H${pijlX+34}" stroke="var(--accent)" stroke-width="4"/><path d="M${pijlX+34} 52 L${pijlX+46} 60 L${pijlX+34} 68 Z" fill="var(--accent)"/>`; svg += groep(R.r, cr);
+  $('#bal-fig').innerHTML = `<svg viewBox="0 0 ${Math.max(w,300)} 120" style="max-width:${Math.min(900,Math.max(w,300)*2)}px">${svg}</svg>`;
+  $('#bal-zin').innerHTML = ok ? '<b class="ok-t">Uitgebalanceerd!</b> Links en rechts staan evenveel atomen van elke soort.' : 'Pas de coëfficiënten aan met + en −.';
+  $$('#bal-kies .knop').forEach((b,i) => b.setAttribute('aria-pressed', i===rx));
+}
+$('#bal-kies').innerHTML = RX.map((R,i) => `<button type="button" class="knop" data-i="${i}">${R.l.map(fHtml).join(' + ')} → ${R.r.map(fHtml).join(' + ')}</button>`).join('');
+$$('#bal-kies .knop').forEach(b => b.onclick = () => { rx = +b.dataset.i; co = RX[rx].o.map(()=>1); toonBal(); });
+co = RX[0].o.map(()=>1); toonBal();
+
+/* energiediagram */
+const ED = [
+  ['verbranding van aardgas','exo','Er komt warmte en licht vrij: je kookt erop.'],
+  ['fotosynthese','endo','De plant neemt lichtenergie op om glucose te maken.'],
+  ['een batterij die een lamp laat branden','exo','Er komt elektrische energie vrij.'],
+  ['elektrolyse van water','endo','Je moet elektrische energie blijven toevoegen.'],
+  ['een coldpack','endo','De zak wordt koud: de reactie neemt warmte op uit je hand.'],
+  ['een handwarmer','exo','De zak wordt warm: er komt warmte vrij.'],
+  ['suiker verhitten tot koolstof en water','endo','Je moet blijven verwarmen.'],
+  ['ijzer dat roest','exo','Er komt (heel langzaam) warmte vrij.']];
+function diagram(soort, w=420, h=300, klein=false){
+  const yb = soort==='exo' ? 110 : 200, ye = soort==='exo' ? 210 : 100, top = 60, fs = klein ? 18 : 14;
+  let s = `<path d="M50 ${h-30} V20" stroke="var(--ink)" stroke-width="2"/><path d="M44 28 L50 14 L56 28 Z" fill="var(--ink)"/><path d="M50 ${h-30} H${w-20}" stroke="var(--ink)" stroke-width="2"/>`;
+  s += `<text x="38" y="${h/2}" font-size="${fs}" transform="rotate(-90 38 ${h/2})" text-anchor="middle">energie</text><text x="${w-24}" y="${h-10}" font-size="${fs}" text-anchor="end">verloop van de reactie</text>`;
+  s += `<path d="M70 ${yb} H150 C190 ${yb} 190 ${top} 220 ${top} C250 ${top} 250 ${ye} 290 ${ye} H${w-22}" fill="none" stroke="var(--accent)" stroke-width="4"/>`;
+  s += `<path d="M300 ${yb} H${w-22}" stroke="var(--muted)" stroke-dasharray="5 5"/><path d="M${w-32} ${yb} V${ye+(ye>yb?-10:10)}" stroke="${soort==='exo'?'var(--bad)':'var(--good)'}" stroke-width="3"/><path d="M${w-39} ${ye+(ye>yb?-12:12)} L${w-32} ${ye} L${w-25} ${ye+(ye>yb?-12:12)} Z" fill="${soort==='exo'?'var(--bad)':'var(--good)'}"/>`;
+  if (!klein) s += `<text x="110" y="${yb-10}" font-size="14" font-weight="700" text-anchor="middle">reagentia</text><text x="${w-90}" y="${ye+24}" font-size="14" font-weight="700" text-anchor="middle">reactieproducten</text>`;
+  return s;
+}
+function toonED(i){
+  const [n, soort, uitleg] = ED[i];
+  $('#ed-svg').innerHTML = diagram(soort);
+  $('#ed-uitleg').innerHTML = `<h3>${n[0].toUpperCase()+n.slice(1)}</h3><p>${uitleg}</p><p><b>${soort==='exo'?'Exo-energetisch':'Endo-energetisch'}.</b> De reactieproducten liggen <b>${soort==='exo'?'lager':'hoger'}</b> dan de reagentia: er is energie ${soort==='exo'?'afgegeven aan':'opgenomen uit'} de omgeving.</p>`;
+  $$('#ed-kies .knop').forEach((b,k) => b.setAttribute('aria-pressed', k===i));
+}
+$('#ed-kies').innerHTML = ED.map((e,i) => `<button type="button" class="knop" data-i="${i}">${e[0]}</button>`).join('');
+$$('#ed-kies .knop').forEach(b => b.onclick = () => toonED(+b.dataset.i)); toonED(0);
+
+/* oefeningen */
+sorteer($('#oef-beg'), {id:'beg', titel:'Oefening 1 · Begrippen', opdracht:'Reactie: koolstof + zuurstofgas → koolstofdioxide.', items:[
+  {tekst:'koolstof', opties:[{k:'r',label:'reagens'},{k:'p',label:'reactieproduct'}], antwoord:'r', uitleg:'Het staat links van de pijl.'},
+  {tekst:'koolstofdioxide', opties:[{k:'r',label:'reagens'},{k:'p',label:'reactieproduct'}], antwoord:'p', uitleg:'Het staat rechts van de pijl.'},
+  {tekst:'zuurstofgas', opties:[{k:'r',label:'reagens'},{k:'p',label:'reactieproduct'}], antwoord:'r'},
+  {tekst:'Wat is een aflopende reactie?', opties:[{k:'a',label:'een reactie die verloopt tot minstens één reagens op is'},{k:'b',label:'een reactie die nooit stopt'},{k:'c',label:'een reactie zonder reactieproducten'}], antwoord:'a'},
+  {tekst:'Wat staat er in een reactievergelijking links van de pijl?', opties:[{k:'a',label:'de reagentia'},{k:'b',label:'de reactieproducten'},{k:'c',label:'de energie'}], antwoord:'a'}]});
+invul($('#oef-massa'), {id:'massa', titel:'Oefening 2 · Wet van behoud van massa', opdracht:'Geef je antwoord in gram, zonder eenheid.', items:() => {
+  const r = (a,b) => a + Math.floor(Math.random()*(b-a+1));
+  const a = r(20,60), b = r(10,40), c = r(30,80), d = r(5,20), e = r(40,90), f = r(10,30);
+  return [{tekst:`${a} g ijzer reageert volledig met ${b} g zwavel. Hoeveel gram ijzersulfide ontstaat er?`, antwoord:[String(a+b)], uitleg:`${a} g + ${b} g = ${a+b} g.`},
+    {tekst:`Bij een analyse ontleed je ${c+d} g kwikoxide. Er ontstaat ${c} g kwik. Hoeveel gram zuurstofgas ontstaat er?`, antwoord:[String(d)], uitleg:`${c+d} g − ${c} g = ${d} g.`},
+    {tekst:`${e} g magnesium verbrandt met zuurstofgas tot ${e+f} g magnesiumoxide. Hoeveel gram zuurstofgas heeft gereageerd?`, antwoord:[String(f)], uitleg:`${e+f} g − ${e} g = ${f} g.`}]; }});
+sorteer($('#oef-atoom'), {id:'atoom', titel:'Oefening 3 · Behoud van atomen', items:[
+  {tekst:'Wat gebeurt er met de atomen bij een chemische reactie?', opties:[{k:'a',label:'Ze worden anders gegroepeerd.'},{k:'b',label:'Er verdwijnen atomen.'},{k:'c',label:'Er ontstaan nieuwe atomen.'}], antwoord:'a'},
+  {tekst:'Wat mag je veranderen om een reactievergelijking uit te balanceren?', opties:[{k:'a',label:'de coëfficiënten'},{k:'b',label:'de indexen'},{k:'c',label:'de symbolen'}], antwoord:'a', uitleg:'Als je een index verandert, krijg je een andere stof.'},
+  {tekst:'Is H<sub>2</sub> + O<sub>2</sub> → H<sub>2</sub>O uitgebalanceerd?', opties:[{k:'j',label:'ja'},{k:'n',label:'nee'}], antwoord:'n', uitleg:'Links 2 O-atomen, rechts maar 1.'},
+  {tekst:'Is 2 H<sub>2</sub> + O<sub>2</sub> → 2 H<sub>2</sub>O uitgebalanceerd?', opties:[{k:'j',label:'ja'},{k:'n',label:'nee'}], antwoord:'j', uitleg:'Links en rechts 4 H en 2 O.'}]});
+sorteer($('#oef-bal'), {id:'bal', titel:'Oefening 4 · Kies de juiste coëfficiënten', items:[
+  {tekst:'… N<sub>2</sub> + … H<sub>2</sub> → … NH<sub>3</sub>', opties:[{k:'a',label:'1, 3, 2'},{k:'b',label:'1, 1, 1'},{k:'c',label:'2, 3, 2'}], antwoord:'a', uitleg:'Links 2 N en 6 H, rechts 2 N en 6 H.'},
+  {tekst:'… Mg + … O<sub>2</sub> → … MgO', opties:[{k:'a',label:'1, 1, 1'},{k:'b',label:'2, 1, 2'},{k:'c',label:'1, 2, 2'}], antwoord:'b'},
+  {tekst:'… Na + … Cl<sub>2</sub> → … NaCl', opties:[{k:'a',label:'2, 1, 2'},{k:'b',label:'1, 1, 1'},{k:'c',label:'1, 2, 1'}], antwoord:'a'},
+  {tekst:'… CH<sub>4</sub> + … O<sub>2</sub> → … CO<sub>2</sub> + … H<sub>2</sub>O', opties:[{k:'a',label:'1, 1, 1, 1'},{k:'b',label:'1, 2, 1, 2'},{k:'c',label:'2, 2, 1, 2'}], antwoord:'b', uitleg:'Links 1 C, 4 H, 4 O. Rechts 1 C, 4 H, 2 + 2 = 4 O.'},
+  {tekst:'… H<sub>2</sub> + … Cl<sub>2</sub> → … HCl', opties:[{k:'a',label:'2, 1, 2'},{k:'b',label:'1, 1, 2'},{k:'c',label:'1, 1, 1'}], antwoord:'b'}]});
+sorteer($('#oef-ee'), {id:'ee', titel:'Oefening 5 · Exo- of endo-energetisch?', opties:[{k:'exo',label:'exo-energetisch'},{k:'endo',label:'endo-energetisch'}],
+  items: ED.map(([n,s,u]) => ({tekst:n, antwoord:s, uitleg:u})).concat([{tekst:'De temperatuur van de omgeving stijgt.', antwoord:'exo'},{tekst:'De reactie neemt energie op.', antwoord:'endo'}])});
+sorteer($('#oef-ed'), {id:'ed', titel:'Oefening 6 · Lees het energiediagram', opties:[{k:'exo',label:'exo-energetisch'},{k:'endo',label:'endo-energetisch'}],
+  items: ['exo','endo','endo','exo'].map((s,i) => ({tekst:`Is deze reactie exo- of endo-energetisch?<svg viewBox="0 0 420 300">${diagram(s)}</svg>`, antwoord:s, uitleg: s==='exo'?'De reactieproducten liggen lager: energie afgegeven.':'De reactieproducten liggen hoger: energie opgenomen.'}))});
+const som = (...k) => { const a = k.map(x=>scores[x]).filter(Boolean); if(!a.length) return null; return {juist:a.reduce((t,x)=>t+x.juist,0), totaal:k.map(x=>scores[x]?scores[x].totaal:0).reduce((t,x)=>t+x,0), klaar:k.every(x=>scores[x]&&scores[x].klaar)}; };
+ikkanFn = () => { $('#ikkan').innerHTML = `<h3>Controle thema 4</h3><ul>
+  ${regel('Ik hanteer de begrippen reactievergelijking, aflopende reactie, reagentia en reactieproducten.', scores.beg)}
+  ${regel('Ik geef de wet van behoud van massa weer en hanteer ze correct.', scores.massa)}
+  ${regel('Ik geef de wet van behoud van atomen weer en hanteer ze correct.', scores.atoom)}
+  ${regel('Ik kan een reactievergelijking uitbalanceren.', scores.bal)}
+  ${regel('Ik onderscheid exo- en endo-energetische reacties vanuit de energie-uitwisseling.', scores.ee)}
+  ${regel('Ik leid uit een energiediagram af of een reactie endo- of exo-energetisch is.', scores.ed)}</ul>`; };
+updateIkKan();
+
+tabs();
+})();
+</script>
+</body>
+</html>
