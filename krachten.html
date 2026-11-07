@@ -620,7 +620,10 @@ const ONDER = [['Rubber op droog asfalt', 0.9, 0.7], ['Rubber op nat asfalt', 0.
   $('wr2o').onchange = $('wr2n').oninput = teken; teken();
 })();
 (function(){
-  const band = (blok, nat) => `<svg viewBox="0 0 300 150"><rect x="0" y="110" width="300" height="40" fill="#57534E"/>${nat ? '<rect x="0" y="102" width="300" height="9" fill="#60A5FA" opacity=".8"/>' : ''}<circle cx="150" cy="${nat ? 58 : 64}" r="46" fill="#1F2937"/><circle cx="150" cy="${nat ? 58 : 64}" r="20" fill="#9CA3AF"/>${blok ? '<line x1="150" y1="64" x2="150" y2="22" stroke="#F87171" stroke-width="5"/>' : '<path d="M150 64 m-30 -10 a32 32 0 0 1 50 -14" stroke="#9CA3AF" stroke-width="3" fill="none"/>'}${blok ? '<path d="M110 112 h-50" stroke="#F59E0B" stroke-width="3" stroke-dasharray="6 5"/>' : ''}</svg>`;
+  // draairichting van een rollend wiel (rijdt naar rechts → draait met de wijzers van de klok mee)
+  const draai = cy => { const r = 58, x1 = 150 + r * Math.cos(Math.PI * 7 / 6), y1 = cy + r * Math.sin(Math.PI * 7 / 6), x2 = 150 + r * Math.cos(Math.PI * 11 / 6), y2 = cy + r * Math.sin(Math.PI * 11 / 6);
+    return `<path d="M${x1} ${y1} A${r} ${r} 0 0 1 ${x2 - 3} ${y2 - 4}" stroke="#2563EB" stroke-width="4" fill="none" stroke-linecap="round"/><polygon points="${x2 + 4},${y2 + 7} ${x2 - 10},${y2 - 1} ${x2 + 1},${y2 - 12}" fill="#2563EB"/>`; };
+  const band = (blok, nat) => `<svg viewBox="0 0 300 150"><rect x="0" y="110" width="300" height="40" fill="#57534E"/>${nat ? '<rect x="0" y="102" width="300" height="9" fill="#60A5FA" opacity=".8"/>' : ''}<circle cx="150" cy="${nat ? 58 : 64}" r="46" fill="#1F2937"/><circle cx="150" cy="${nat ? 58 : 64}" r="20" fill="#9CA3AF"/>${blok ? '<line x1="150" y1="64" x2="150" y2="22" stroke="#F87171" stroke-width="5"/>' : draai(nat ? 58 : 64)}${blok ? '<path d="M110 112 h-50" stroke="#F59E0B" stroke-width="3" stroke-dasharray="6 5"/>' : ''}</svg>`;
   const kaarten = [
     {t:'Een rollend wiel', tag:'stat', s:band(false), p:'Het stukje band dat de weg raakt, staat even <b>stil</b> ten opzichte van de weg. Er werkt dus <b>statische</b> wrijving, ook al rijdt de auto.'},
     {t:'Een geblokkeerd wiel', tag:'dyn', s:band(true), p:'Remt de bestuurder te hard, dan blokkeert het wiel en <b>glijdt</b> de band over de weg: <b>dynamische</b> wrijving. Die is kleiner, dus de remweg wordt langer en je kunt niet sturen.'},
