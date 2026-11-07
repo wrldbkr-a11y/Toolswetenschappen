@@ -248,6 +248,7 @@ footer a{color:inherit;}
       <div class="ctrl"><label for="v7t">Tijd t (in halveringstijden) <span id="v7tv"></span></label><input type="range" id="v7t" min="0" max="5" step="0.1" value="1"></div>
       <div class="formule">A = A₀ · (½)<sup>t / T½</sup></div>
       <div class="readout" id="r_v7"></div>
+      <div class="note">Verband met de vervalwet: de activiteit is hoe snel het aantal kernen N daalt. Op de N(t)-grafiek is dat de <b>steilheid van de raaklijn</b>. Veel kernen = steile grafiek = grote activiteit.</div>
       <div class="note">Ter vergelijking: een banaan heeft een activiteit van ongeveer 15 Bq (kalium-40), je eigen lichaam enkele duizenden Bq.</div>
     </div>
   </div>
@@ -422,6 +423,7 @@ const NAAM = {1: 'waterstof', 2: 'helium', 3: 'lithium', 6: 'koolstof', 7: 'stik
   const B = [['Georges Lemaître (Leuven)', 'Priester en fysicus. Stelde in 1927 voor dat het heelal uitdijt, en later dat het ontstaan is uit een "oeratoom": de basis van de <b>oerknaltheorie</b>.'],
     ['Robert Brout en François Englert (ULB)', 'Beschreven in 1964 hoe elementaire deeltjes hun <b>massa</b> krijgen via een veld (het Brout-Englert-Higgsmechanisme). Na de ontdekking van het higgsboson kreeg Englert in 2013 de Nobelprijs fysica, samen met Peter Higgs.'],
     ['Francis Halzen (Tienen)', 'Kreeg in 2026 de Nobelprijs fysica voor zijn beslissende bijdrage aan de <b>IceCube</b>-neutrinodetector in het ijs van de Zuidpool, en de ontdekking van hoogenergetische <b>neutrino\'s uit de kosmos</b>. Neutrino\'s komen bijna ongehinderd van verre bronnen en tonen zo delen van het heelal die we anders niet kunnen zien.'],
+    ['De Solvay-conferenties (Brussel)', 'Ernest Solvay bracht vanaf 1911 de grootste fysici samen in Brussel. Op de conferentie van 1927 discussieerden onder anderen Einstein, Bohr, Marie Curie en Planck over de nieuwe <b>quantumfysica</b>. De foto van die bijeenkomst is wereldberoemd.'],
     ['Een theorie in opbouw', 'Van Daltons ondeelbare atomen, via Thomson (elektron), Rutherford (kern) en Bohr (schillen) naar de quantummechanica en het standaardmodel: elke nieuwe meting dwong de fysici hun model aan te passen.']];
   $('c_a2').innerHTML = B.map(([t, p]) => `<div class="card"><div class="txt"><h4>${t}</h4><p>${p}</p></div></div>`).join('');
 })();
@@ -645,7 +647,10 @@ const KERN = [['H-2', 1, 1, 2.014102], ['He-4', 2, 2, 4.002602], ['Li-6', 3, 3, 
   const K = [['De zon: onze fusiereactor', 'In de kern van de zon (ongeveer 15 miljoen °C) fuseren waterstofkernen tot helium. Elke seconde zet de zon zo miljoenen ton massa om in energie. Zonder die fusie geen leven op aarde.'],
     ['Kernfusie op aarde', 'In een <b>tokamak</b> wordt een plasma van waterstofisotopen verhit tot meer dan 100 miljoen °C en met sterke magneetvelden ingesloten. ITER in Frankrijk is het grootste project.'],
     ['Technische beperkingen van fusie', 'Zo\'n heet plasma stabiel houden is extreem moeilijk. De wanden krijgen veel neutronen te verwerken. Een fusiereactor die meer energie levert dan hij verbruikt en zo elektriciteit maakt, bestaat nog niet.'],
-    ['Kernfissie in een kerncentrale', 'Uraniumkernen splitsen in een gecontroleerde kettingreactie. Een <b>moderator</b> (water) remt de neutronen af, <b>regelstaven</b> vangen neutronen op en regelen het vermogen. De warmte maakt stoom die een turbine en generator aandrijft. Nadeel: langlevend radioactief afval.']];
+    ['Kernfissie in een kerncentrale', 'Uraniumkernen splitsen in een gecontroleerde kettingreactie. Een <b>moderator</b> (water) remt de neutronen af, <b>regelstaven</b> vangen neutronen op en regelen het vermogen. De warmte maakt stoom die een turbine en generator aandrijft. Nadeel: langlevend radioactief afval.'],
+    ['Radioactief afval', '<b>Laagradioactief</b> afval (handschoenen, filters) straalt zwak en kort. <b>Hoogradioactief</b> afval (opgebruikte splijtstof) straalt sterk en blijft duizenden jaren gevaarlijk. Men zoekt een veilige berging diep in een stabiele kleilaag, en onderzoekt hoe men langlevend afval kan omzetten in kortlevende isotopen.'],
+    ['Veiligheid en klimaat', 'Een kerncentrale levert veel elektriciteit en stoot daarbij bijna geen <b>CO₂</b> uit. Het risico is een kettingreactie die niet meer onder controle is, zoals in <b>Tsjernobyl</b> (1986) of de oververhitting in <b>Fukushima</b> (2011). Daarom zijn er regelstaven, koelsystemen en een dikke betonnen omhulling.'],
+    ['Sterren maken de elementen', 'Bijna alle atomen in je lichaam (koolstof, zuurstof, ijzer ...) zijn ooit gemaakt door kernfusie in sterren. Elementen zwaarder dan ijzer ontstaan bij de explosie van een ster (<b>supernova</b>) of bij botsende neutronensterren (<b>kilonova</b>).']];
   $('c_r4').innerHTML = K.map(([t, p]) => `<div class="card"><div class="txt"><h4>${t}</h4><p>${p}</p></div></div>`).join('');
 })();
 (function(){

@@ -396,6 +396,7 @@ function sliders(div,ids,R,cb,pref){
     const k=root.c;
     if(soort==='S') read.innerHTML='<b>Serie</b><br>R<sub>s</sub> = '+k.map(x=>'R'+x.n).join(' + ')+' = <b>'+nl(root.R)+' Ω</b><br>I = U / R<sub>s</sub> = <b>'+nl(root.I)+' A</b> (overal dezelfde)<br>U = '+k.map(x=>'U'+x.n).join(' + ')+' = '+k.map(x=>nl(x.U)).join(' + ')+' = '+nl(U)+' V<br><span class="k">Grootste weerstand → grootste deelspanning.</span>';
     else read.innerHTML='<b>Parallel</b><br>1/R<sub>s</sub> = '+k.map(x=>'1/R'+x.n).join(' + ')+' → R<sub>s</sub> = <b>'+nl(root.R)+' Ω</b><br>U = <b>'+U+' V</b> over elke tak<br>I = '+k.map(x=>'I'+x.n).join(' + ')+' = '+k.map(x=>nl(x.I)).join(' + ')+' = <b>'+nl(root.I)+' A</b><br><span class="k">R<sub>s</sub> is kleiner dan de kleinste weerstand. Kleinste weerstand → grootste stroom.</span>';
+    read.innerHTML+='<br><span class="k">Vermogen (joule-effect):</span><br>'+k.map(x=>'P<sub>'+x.n+'</sub> = U<sub>'+x.n+'</sub> · I<sub>'+x.n+'</sub> = '+nl(x.U*x.I)+'&nbsp;W').join('<br>')+'<br>P<sub>totaal</sub> = U · I = <b>'+nl(U*root.I)+' W</b>';
   }
   Us.oninput=draw; bouwS();
 })();
