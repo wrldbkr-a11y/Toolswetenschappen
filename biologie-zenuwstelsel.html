@@ -233,6 +233,10 @@ td b{font-family:var(--f-display)}
     <section class="blok">
       <div class="blok-kop"><span class="letter">3.3</span><h2>Impulsoverdracht tussen neuronen: de synaps</h2></div>
       <p>Neuronen raken elkaar niet. Tussen een eindknopje en de volgende cel zit een smalle spleet: de <b>synapsspleet</b>. Een elektrische impuls kan daar niet over. Het doorgeven gaat <b>chemisch</b>.</p>
+      <div class="fig"><svg id="ov-svg" viewBox="0 0 1000 400" role="img" aria-label="twee neuronen die een impuls doorgeven, met inzoomen op de synaps"></svg></div>
+      <div class="knoppen"><button type="button" class="knop hoofd" id="ov-start">▶ Stuur een impuls van neuron 1 naar neuron 2</button><button type="button" class="knop" id="ov-zoom" aria-pressed="false">🔍 Zoom in op de synaps</button></div>
+      <p id="ov-zin">Neuron 1 geeft een impuls door aan neuron 2. Druk op de knop.</p>
+      <p>Hieronder kan je de chemische overdracht stap voor stap bekijken.</p>
       <div class="knoppen" id="syn-stap"></div>
       <div class="fig"><svg id="syn-svg" viewBox="0 0 640 380" role="img" aria-label="synaps"></svg></div>
       <p id="syn-zin"></p>
@@ -589,6 +593,87 @@ let neuronPad = [];
   (function lus(ts){ requestAnimationFrame(lus); if (!zichtbaar(S)) return; const dt = ts && t0 ? Math.min(50, ts-t0)/1000 : 0; t0 = ts || 0; if (t < 0){ $('#neu-dyn').innerHTML=''; return; }
     t += dt*.45; if (t > 1.15){ t = -1; return; } const p = langs(neuronPad, Math.min(1,t));
     $('#neu-dyn').innerHTML = `<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="26" fill="url(#n-gloed)"/><text x="460" y="24" text-anchor="middle" font-size="15" font-weight="700" fill="#b45309">elektrische impuls</text>`; })();
+})();
+
+/* ---------- 3.3 twee neuronen met inzoomen op de synaps ---------- */
+(function(){
+  const S = $('#ov-svg'), R = rng(41);
+  const AD = '#8e3b8a', AL = '#d9a3d4', BD = '#1d6f8c', BL = '#9fd3e3';
+  const SX = 548, SY = 212;                     // plaats van de synaps
+  let s = `<defs>
+    <radialGradient id="ov-sa" cx="40%" cy="35%" r="70%"><stop offset="0" stop-color="#fff"/><stop offset=".3" stop-color="#f1d3ee"/><stop offset="1" stop-color="${AD}"/></radialGradient>
+    <radialGradient id="ov-sb" cx="40%" cy="35%" r="70%"><stop offset="0" stop-color="#fff"/><stop offset=".3" stop-color="#d3eef5"/><stop offset="1" stop-color="${BD}"/></radialGradient>
+    <linearGradient id="ov-pre" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#d9a3d4"/><stop offset="1" stop-color="#f3dcf0"/></linearGradient>
+    <linearGradient id="ov-post" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#d6eff6"/><stop offset="1" stop-color="#8ccbdd"/></linearGradient>
+    <radialGradient id="ov-bl" cx="40%" cy="35%" r="70%"><stop offset="0" stop-color="#fff"/><stop offset=".7" stop-color="#f9eef8"/><stop offset="1" stop-color="#d7b6d3"/></radialGradient>
+    <radialGradient id="ov-gl"><stop offset="0" stop-color="#fff"/><stop offset=".35" stop-color="#ffd23f" stop-opacity=".95"/><stop offset="1" stop-color="#ffb000" stop-opacity="0"/></radialGradient></defs>`;
+  s += `<rect x="-2000" y="-2000" width="5000" height="5000" fill="#fbf9f6"/>`;
+  // overzicht
+  const myel = (pts, n, dk, lc) => { const P = bemonster(glad(pts,false), 140); let o = `<path d="${glad(P,false)}" fill="none" stroke="${dk}" stroke-width="4" stroke-linecap="round"/>`;
+    for (let i = 0; i < n; i++){ const a = Math.floor((i+.12)/n*140), b = Math.floor((i+.88)/n*140); const d = glad(P.slice(a,b),false);
+      o += `<path d="${d}" fill="none" stroke="${dk}" stroke-width="16" stroke-linecap="round"/><path d="${d}" fill="none" stroke="${lc}" stroke-width="10" stroke-linecap="round"/>`; } return [o, P]; };
+  const dendr = (x, y, a, len, w, d, k, Q) => { let o=''; const pts = [[x,y]]; let px=x, py=y, pa=a; for (let i=0;i<3;i++){ pa += (Q()-.5)*.4; px += Math.cos(pa)*len/3; py += Math.sin(pa)*len/3; pts.push([px,py]); }
+    o += `<path d="${glad(pts,false)}" fill="none" stroke="${k}" stroke-width="${w}" stroke-linecap="round"/>`; if (d>0){ o += dendr(pts[2][0],pts[2][1],pa-.6,len*.55,w*.65,d-1,k,Q) + dendr(pts[3][0],pts[3][1],pa+.55,len*.5,w*.65,d-1,k,Q); } return o; };
+  const Q1 = rng(42), Q2 = rng(43);
+  let ov = '';
+  [Math.PI-.7, Math.PI-.1, Math.PI+.5, -2.2, 2.2].forEach(a => ov += dendr(130, 200, a, 60, 5, 1, AD, Q1));
+  const [axA, PA] = myel([[156,204],[260,196],[380,214],[500,208],[534,210]], 5, AD, AL); ov += axA;
+  ov += `<path d="${blob(130, 200, 30, 27, Q1, 10, .1)}" fill="url(#ov-sa)" stroke="${AD}" stroke-width="2.5"/><circle cx="130" cy="200" r="11" fill="${AD}"/>`;
+  ov += `<path d="M534 210 C540 196 544 190 548 184" stroke="${AD}" stroke-width="3" fill="none"/><circle cx="550" cy="180" r="6" fill="${AL}" stroke="${AD}" stroke-width="1.5"/><path d="M534 210 C540 222 544 232 546 240" stroke="${AD}" stroke-width="3" fill="none"/><circle cx="547" cy="245" r="6" fill="${AL}" stroke="${AD}" stroke-width="1.5"/><circle cx="${SX-6}" cy="${SY}" r="7" fill="${AL}" stroke="${AD}" stroke-width="1.5"/>`;
+  // neuron 2
+  const dB = bemonster(glad([[560,214],[620,224],[700,230],[742,232]],false), 40);
+  ov += `<path d="${glad(dB,false)}" fill="none" stroke="${BD}" stroke-width="5" stroke-linecap="round"/><path d="M560 214 l-4 -8 M560 214 l-5 6" stroke="${BD}" stroke-width="3" stroke-linecap="round"/>`;
+  [-1.4,-.6,.9,1.6].forEach(a => ov += dendr(770, 232, a - (a<0?0:0), 50, 5, 1, BD, Q2));
+  ov += dendr(600, 222, -1.9, 34, 3.5, 0, BD, Q2) + dendr(640, 226, 1.9, 30, 3.5, 0, BD, Q2);
+  const [axB, PB] = myel([[798,238],[880,248],[1000,244]], 3, BD, BL); ov += axB;
+  ov += `<path d="${blob(770, 232, 30, 27, Q2, 10, .1)}" fill="url(#ov-sb)" stroke="${BD}" stroke-width="2.5"/><circle cx="770" cy="232" r="11" fill="${BD}"/>`;
+  const lab = (x, y, tx, ty, t, kl='#1d2a36', a='middle', fs=16) => `<path d="M${x} ${y} L${tx} ${ty}" stroke="#334155" stroke-width="1.3"/><text x="${tx + (a==='start'?5:a==='end'?-5:0)}" y="${ty + (a==='middle' ? (ty>y?16:-6) : 5)}" text-anchor="${a}" font-size="${fs}" font-weight="700" fill="${kl}" paint-order="stroke" stroke="#fbf9f6" stroke-width="4">${t}</text>`;
+  ov += `<text x="130" y="120" text-anchor="middle" font-size="19" font-weight="800" fill="${AD}">neuron 1</text><text x="770" y="140" text-anchor="middle" font-size="19" font-weight="800" fill="${BD}">neuron 2</text>`;
+  ov += lab(320, 204, 320, 290, 'axon') + lab(130, 200, 60, 320, 'cellichaam') + lab(680, 230, 680, 320, 'dendriet') + `<circle cx="${SX}" cy="${SY}" r="22" fill="none" stroke="#b45309" stroke-width="2" stroke-dasharray="5 4"/>` + lab(SX+16, SY-16, 600, 120, 'synaps', '#b45309', 'start');
+  // detail van de synaps (lokale eenheden, schaal 0,1)
+  const vesk = []; for (let i = 0; i < 8; i++) vesk.push([-250 + (i%4)*52 + (R()-.5)*14, -50 + Math.floor(i/4)*90 + (R()-.5)*20]);
+  const recY = [-75, -35, 5, 45, 85];
+  let dt = `<path d="M-620 -55 C-420 -55 -320 -125 -160 -125 C-62 -125 -18 -95 -18 -50 V50 C-18 95 -62 125 -160 125 C-320 125 -420 55 -620 55 Z" fill="url(#ov-pre)" stroke="${AD}" stroke-width="4"/>`;
+  dt += `<path d="M18 -200 C34 -70 34 70 18 200 H620 V-200 Z" fill="url(#ov-post)" stroke="${BD}" stroke-width="4"/>`;
+  recY.forEach(y => dt += `<path d="M22 ${y-10} C10 ${y-11} 4 ${y-7} 2 ${y-4} L10 ${y-2} L10 ${y+2} L2 ${y+4} C4 ${y+7} 10 ${y+11} 22 ${y+10} Z" fill="#2e7d8c" stroke="#1f5a66" stroke-width="1.5"/>`);
+  for (let i = 0; i < 14; i++){ dt += `<path d="${blob(-300 + R()*260, -70 + R()*140, 14, 5, R, 7, .2, R()*3)}" fill="#e6c2e2" opacity=".7"/>`; }
+  const dlab = (x, y, tx, ty, t, a='middle') => `<path d="M${x} ${y} L${tx} ${ty}" stroke="#334155" stroke-width="1.2"/><text x="${tx + (a==='start'?4:a==='end'?-4:0)}" y="${ty + (a==='middle' ? (ty>y?14:-5) : 4)}" text-anchor="${a}" font-size="13" font-weight="700" fill="#1d2a36" paint-order="stroke" stroke="#fbf9f6" stroke-width="3">${t}</text>`;
+  dt += `<text x="-200" y="-140" text-anchor="middle" font-size="15" font-weight="800" fill="${AD}">eindknopje van neuron 1</text><text x="180" y="-140" text-anchor="middle" font-size="15" font-weight="800" fill="${BD}">dendriet van neuron 2</text>`;
+  dt += dlab(0, 110, 0, 150, 'synapsspleet') + dlab(6, -75, 80, -100, 'receptor', 'start') + dlab(-200, 30, -280, 140, 'blaasje met neurotransmitter');
+  S.innerHTML = s + `<g id="ov-over">${ov}</g><g id="ov-dyn-o"></g><g id="ov-detail" transform="translate(${SX} ${SY}) scale(0.1)" opacity="0">${dt}<g id="ov-dyn-d"></g></g>`;
+
+  // animatie
+  const nt = []; for (let i = 0; i < 30; i++) nt.push({y0:(R()-.5)*160, ry:recY[i%5] + (R()-.5)*6, d:R()*.3});
+  let z = 0, zDoel = 0, t = -1, t0 = 0, handZoom = false, lusT = 0;
+  const zet = () => { const w = 1000 * Math.pow(86/1000, z), h = w*.4, cx = 500 + (SX-500)*z, cy = 200 + (SY-200)*z; S.setAttribute('viewBox', `${(cx-w/2).toFixed(2)} ${(cy-h/2).toFixed(2)} ${w.toFixed(2)} ${h.toFixed(2)}`);
+    $('#ov-over').setAttribute('opacity', Math.max(0, 1 - z*1.4).toFixed(2)); $('#ov-detail').setAttribute('opacity', Math.max(0, (z-.45)/.55).toFixed(2)); };
+  const ZIN = {a:'<b>Elektrisch.</b> Een elektrische impuls loopt over het axon van neuron 1, van het cellichaam naar het eindknopje.',
+    c1:'<b>Chemisch.</b> In het eindknopje gaan blaasjes naar het membraan. Ze laten <b>neurotransmitter</b> vrij in de synapsspleet.',
+    c2:'<b>Chemisch.</b> De neurotransmitter beweegt door de synapsspleet en bindt op de <b>receptoren</b> van neuron 2.',
+    c3:'Daardoor ontstaat in neuron 2 een <b>nieuwe elektrische impuls</b>.', b:'<b>Elektrisch.</b> De impuls loopt verder door neuron 2.'};
+  let fase = '';
+  const zeg = f => { if (f !== fase){ fase = f; $('#ov-zin').innerHTML = ZIN[f]; } };
+  function chemisch(k){ // k van 0 tot 1
+    let o = ''; const e = x => Math.max(0, Math.min(1, x));
+    vesk.forEach(([x,y],i) => { const f = i < 4 ? e(k/.3) : 0; const bx = x + (-42 - x)*f, by = y + ((-84 + i*56) - y)*f; const open = i < 4 ? e((k-.28)/.08) : 0;
+      if (open < 1) o += `<circle cx="${bx.toFixed(1)}" cy="${by.toFixed(1)}" r="${(20*(1-open*.4)).toFixed(1)}" fill="url(#ov-bl)" stroke="${AD}" stroke-width="2"/>` + [0,1,2,3,4].map(q=>`<circle cx="${(bx+Math.cos(q*1.26+i)*8).toFixed(1)}" cy="${(by+Math.sin(q*1.26+i)*8).toFixed(1)}" r="3.4" fill="#e07b1f"/>`).join(''); });
+    if (k > .34) nt.forEach((n,i) => { const f = e((k - .36 - n.d*.4)/.34); const x = -16 + f*22, y = n.y0 + (n.ry - n.y0)*f; o += `<circle cx="${(x + Math.sin(f*12+i)*3).toFixed(1)}" cy="${y.toFixed(1)}" r="3.4" fill="#e07b1f"/>`; });
+    if (k > .82){ const f = e((k-.82)/.18); o += `<circle cx="${(30 + f*240).toFixed(1)}" cy="5" r="44" fill="url(#ov-gl)"/>`; }
+    return o; }
+  $('#ov-start').onclick = () => { t = 0; handZoom = false; $('#ov-zoom').setAttribute('aria-pressed', false); };
+  $('#ov-zoom').onclick = () => { handZoom = !handZoom; t = -1; zDoel = handZoom ? 1 : 0; lusT = 0; $('#ov-zoom').setAttribute('aria-pressed', handZoom); if (handZoom) $('#ov-zin').innerHTML = 'Ingezoomd op de synaps: hier gebeurt de overdracht <b>chemisch</b>.'; else $('#ov-zin').innerHTML = 'Neuron 1 geeft een impuls door aan neuron 2. Druk op de knop.'; fase=''; };
+  (function lus(ts){ requestAnimationFrame(lus); if (!zichtbaar(S)) return; const dtt = ts && t0 ? Math.min(50, ts-t0)/1000 : 0; t0 = ts || 0;
+    let oo = '', od = '';
+    if (t >= 0){ t += dtt*.22;
+      if (t < 1){ zDoel = 0; zeg('a'); const p = langs(PA, t); oo = `<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="24" fill="url(#ov-gl)"/>`; }
+      else if (t < 1.5){ zDoel = 1; zeg('c1'); od = chemisch(0); }
+      else if (t < 3.3){ zDoel = 1; const k = (t-1.5)/1.8; zeg(k < .35 ? 'c1' : k < .82 ? 'c2' : 'c3'); od = chemisch(k); }
+      else if (t < 3.8){ zDoel = 0; od = chemisch(1); }
+      else if (t < 4.8){ zDoel = 0; zeg('b'); const pts = [...dB, ...PB]; const p = langs(pts, t-3.8); oo = `<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="24" fill="url(#ov-gl)"/>`; }
+      else t = -1; }
+    else if (handZoom){ lusT = (lusT + dtt*.25) % 1.2; od = chemisch(Math.min(1, lusT)); }
+    z += (zDoel - z) * Math.min(1, dtt*3.2); if (Math.abs(zDoel - z) < .002) z = zDoel; zet();
+    $('#ov-dyn-o').innerHTML = oo; $('#ov-dyn-d').innerHTML = od; })();
 })();
 
 /* ---------- 3.3 synaps ---------- */
