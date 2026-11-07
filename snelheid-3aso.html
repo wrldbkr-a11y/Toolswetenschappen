@@ -230,7 +230,7 @@
   <!-- 2.1 GEMIDDELDE EN OGENBLIKKELIJKE SNELHEID -->
   <section class="scene" id="s2" data-nr="2.1" data-title="Gemiddelde en ogenblikkelijke snelheid">
     <div class="shead"><span class="num">2.1</span><h2>Gemiddelde en ogenblikkelijke snelheid</h2></div>
-    <p class="lead">De x(t)-grafiek van een tramrit, met optrekken, remmen en een halte. Kies een tijdsinterval. De <b>gemiddelde snelheid</b> is de helling van de rode lijn. Maak Δt kleiner: de gemiddelde snelheid nadert de <b>ogenblikkelijke snelheid</b> op de snelheidsmeter.</p>
+    <p class="lead">De x(t)-grafiek van een tramrit: stukken met een andere constante snelheid en een halte. Kies een tijdsinterval. De <b>gemiddelde snelheid</b> is de helling van de rode lijn. Maak Δt kleiner: de gemiddelde snelheid nadert de <b>ogenblikkelijke snelheid</b> op de snelheidsmeter.</p>
     <div class="grid2">
       <div class="graph"><svg id="g_svg" viewBox="0 0 760 420"></svg></div>
       <div class="side">
@@ -421,7 +421,7 @@
   var CELL = 30, ML = 56, MR = 24, MT = 22, MB = 54, TMAX = 20;
   var COL = ['var(--c1)', 'var(--c2)', 'var(--c3)', 'var(--c4)', 'var(--c5)'];
   var TLAB = { erb: 'ERB', stil: 'Stilstand', vers: 'Versnellen', vert: 'Vertragen' };
-  var TORDER = ['erb', 'stil', 'vers', 'vert'];
+  var TORDER = ['erb', 'stil'];
   var $ = function (id) { return document.getElementById(id); };
   var mode = 'xt', data = null;
 
@@ -812,7 +812,7 @@
   $('o_in').addEventListener('input', omzet); $('o_eh').addEventListener('change', omzet); omzet();
 
   /* ---- 2.1 tramrit x(t) ---- */
-  function vrit(tt) { if (tt < 10) return tt; if (tt < 40) return 10; if (tt < 50) return 10 - (tt - 40); if (tt < 70) return 0; if (tt < 80) return (tt - 70) * 1.2; return 12; }
+  function vrit(tt) { if (tt < 30) return 8; if (tt < 50) return 15; if (tt < 70) return 0; return 10; }
   var XR = [0], DT = 0.05; for (var k = 1; k <= 100 / DT; k++) XR.push(XR[k - 1] + (vrit((k - 0.5) * DT)) * DT);
   function xrit(tt) { return XR[Math.round(tt / DT)]; }
   function gem() {

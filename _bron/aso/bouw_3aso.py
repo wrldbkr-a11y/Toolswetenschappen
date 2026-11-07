@@ -86,5 +86,10 @@ bouw('snelheid-afgelegde-weg.html', 'snelheid-3aso.html', lambda s: vervang(s, [
     ("if (te > 1) p += t(B.X(te / 2), (B.Y(0) + B.Y(v)) / 2 + 5, 'oppervlakte = Δx', {s: 13, w: 700, c: INK, a: 'middle'});", ''),
     ('fill="\' + (v >= 0 ? \'#2fa36b\' : \'#d9455f\') + \'" opacity=".22"', 'fill="none" opacity="0"'),
     (' De oppervlakte ligt onder de t-as.', ' De v(t)-grafiek ligt onder de t-as.'),
+    # 3ASO: geen versnellen of vertragen; de snelheid verandert plots (rechte stukken met een knik)
+    ("function vrit(tt) { if (tt < 10) return tt; if (tt < 40) return 10; if (tt < 50) return 10 - (tt - 40); if (tt < 70) return 0; if (tt < 80) return (tt - 70) * 1.2; return 12; }",
+     "function vrit(tt) { if (tt < 30) return 8; if (tt < 50) return 15; if (tt < 70) return 0; return 10; }"),
+    ('De x(t)-grafiek van een tramrit, met optrekken, remmen en een halte.', 'De x(t)-grafiek van een tramrit: stukken met een andere constante snelheid en een halte.'),
+    ("var TORDER = ['erb', 'stil', 'vers', 'vert'];", "var TORDER = ['erb', 'stil'];"),
     ('  <!-- 2.2 GRAFIEKEN OEFENEN', bijvoeg('grafiektekenen.html') + '\n  <!-- 2.2 GRAFIEKEN OEFENEN'),
 ]))
