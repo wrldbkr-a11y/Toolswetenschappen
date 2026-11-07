@@ -61,7 +61,7 @@ body = r'''
         <div class="kaart"><h3><span style="color:#16a34a">●</span> Motorisch neuron</h3><p>Ook <b>bewegingszenuwcel</b>. Brengt een impuls van het CZS naar een <b>effector</b>: een spier of een klier.</p><p><b>Voorbeelden:</b> van je ruggenmerg naar je armspier; van je hersenstam naar je speekselklieren.</p></div>
       </div>
       <p>Zo werken de drie samen als je een hete pan aanraakt. Druk op de knop en volg de impuls.</p>
-      <div class="fig"><svg id="rb-svg" viewBox="0 0 920 460" role="img" aria-label="reflexboog: receptor, sensorisch neuron, schakelneuron, motorisch neuron en effector"></svg></div>
+      <div class="fig"><svg id="rb-svg" viewBox="0 0 1000 540" role="img" aria-label="reflexboog: receptor, sensorisch neuron, schakelneuron, motorisch neuron en effector"></svg></div>
       <div class="knoppen"><button type="button" class="knop hoofd" id="rb-start">▶ Raak de hete pan aan</button></div>
       <p id="rb-zin">Receptor → sensorisch neuron → schakelneuron → motorisch neuron → effector.</p>
     </section>
@@ -293,61 +293,81 @@ const bschActief = w => { const b = $('#bsch-boven'), o = $('#bsch-onder'); if (
 /* ---------- 3.1 reflexboog ---------- */
 (function(){
   const S = $('#rb-svg'), R = rng(17);
-  let s = `<defs><radialGradient id="rb-wit" cx="45%" cy="40%" r="70%"><stop offset="0" stop-color="#fbf5e8"/><stop offset="1" stop-color="#e6d6b6"/></radialGradient>
-    <radialGradient id="rb-grijs" cx="50%" cy="45%" r="65%"><stop offset="0" stop-color="#d9b9c2"/><stop offset="1" stop-color="#b98e9c"/></radialGradient>
+  let s = `<defs><radialGradient id="rb-wit" cx="45%" cy="40%" r="70%"><stop offset="0" stop-color="#fbf5e8"/><stop offset="1" stop-color="#e9dcc0"/></radialGradient>
+    <radialGradient id="rb-grijs" cx="50%" cy="45%" r="65%"><stop offset="0" stop-color="#e6cfd5"/><stop offset="1" stop-color="#ccaab4"/></radialGradient>
     <linearGradient id="rb-spier" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d9545a"/><stop offset=".5" stop-color="#b8343c"/><stop offset="1" stop-color="#8e2229"/></linearGradient>
     <linearGradient id="rb-huid" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e8b996"/><stop offset="1" stop-color="#d79a7c"/></linearGradient>
-    <radialGradient id="rb-gloed"><stop offset="0" stop-color="#fff"/><stop offset=".35" stop-color="#ffd23f" stop-opacity=".95"/><stop offset="1" stop-color="#ffb000" stop-opacity="0"/></radialGradient></defs>`;
-  s += `<rect width="920" height="460" rx="16" fill="#f5f2ee"/>`;
-  // ruggenmerg (doorsnede): witte stof met vlindervormige grijze stof
-  const cx = 210, cy = 235;
-  s += `<path d="${blob(cx, cy, 128, 100, R, 14, .04)}" fill="url(#rb-wit)" stroke="#b89f73" stroke-width="3"/>`;
-  s += `<path d="${glad([[cx,cy-12],[cx+26,cy-30],[cx+46,cy-76],[cx+62,cy-80],[cx+56,cy-40],[cx+40,cy-6],[cx+62,cy+28],[cx+80,cy+62],[cx+56,cy+74],[cx+26,cy+30],[cx,cy+16],[cx-26,cy+30],[cx-56,cy+74],[cx-80,cy+62],[cx-62,cy+28],[cx-40,cy-6],[cx-56,cy-40],[cx-62,cy-80],[cx-46,cy-76],[cx-26,cy-30]])}" fill="url(#rb-grijs)" stroke="#9b6f7e" stroke-width="1.5"/>`;
-  s += `<circle cx="${cx}" cy="${cy+2}" r="5" fill="#f5f2ee" stroke="#9b6f7e"/>`;
-  for (let i = 0; i < 40; i++){ const a = R()*6.28, r = 70 + R()*45; s += `<circle cx="${(cx+Math.cos(a)*r).toFixed(1)}" cy="${(cy+Math.sin(a)*r*.78).toFixed(1)}" r="${(1+R()*1.5).toFixed(1)}" fill="#d8c49c" opacity=".7"/>`; }
-  // huid met hete pan (rechtsboven)
-  s += `<path d="M640 90 C700 80 800 84 900 96 V154 C800 146 700 142 640 150 Z" fill="url(#rb-huid)" stroke="#b97d61" stroke-width="2"/><path d="M640 102 C700 92 800 96 900 108" fill="none" stroke="#f3d6c0" stroke-width="2" opacity=".8"/>`;
-  s += `<path d="${glad([[690,44],[850,44],[862,66],[700,66]])}" fill="#3b3b3b"/><path d="${glad([[700,48],[840,48],[846,54],[706,54]])}" fill="#5a5a5a" opacity=".6"/><path d="M856 52 H906" stroke="#2a2a2a" stroke-width="8" stroke-linecap="round"/><text x="700" y="34" font-size="13" font-weight="700" fill="#b91c1c">hete pan</text>`;
-  [760,790,820].forEach(x => s += `<path d="M${x} 40 C${x-6} 32 ${x+6} 26 ${x} 18" stroke="#ef4444" stroke-width="2" fill="none" opacity=".6"/>`);
-  // spier (rechtsonder): spoelvormig met vezels en pees
-  const sp = glad([[600,350],[660,318],[760,306],[850,318],[900,348],[850,380],[760,392],[660,382]]);
-  s += `<path d="M560 352 L604 350" stroke="#efe6d6" stroke-width="10" stroke-linecap="round"/><path d="M896 348 L918 346" stroke="#efe6d6" stroke-width="12" stroke-linecap="round"/><path d="${sp}" fill="url(#rb-spier)" stroke="#7a1c22" stroke-width="2"/>`;
-  for (let i = 0; i < 9; i++){ const y = 318 + i*8; s += `<path d="M${640+Math.abs(i-4)*8} ${y} C720 ${y-6+i} 800 ${y-4+i} ${870-Math.abs(i-4)*6} ${y}" stroke="#e98a8f" stroke-width="1.2" fill="none" opacity=".55"/>`; }
-  // neuronbanen
-  const zenuw = (pts, kl, w=6) => `<path d="${glad(pts,false)}" fill="none" stroke="${kl}" stroke-width="${w+3}" stroke-linecap="round" opacity=".35"/><path d="${glad(pts,false)}" fill="none" stroke="${kl}" stroke-width="${w}" stroke-linecap="round"/>`;
-  const myel = (pts, n) => { let o = ''; const P = bemonster(glad(pts,false), 120); for (let i = 0; i < n; i++){ const a = Math.floor((i+.15)/n*120), b = Math.floor((i+.85)/n*120); o += `<path d="${glad(P.slice(a,b),false)}" fill="none" stroke="#d8c28a" stroke-width="12" stroke-linecap="round" opacity=".75"/><path d="${glad(P.slice(a,b),false)}" fill="none" stroke="#fbf3d9" stroke-width="3" stroke-linecap="round" opacity=".7" transform="translate(0 -3)"/>`; } return o; };
-  const soma = (x, y, r, kl, seed) => { const Q = rng(seed); return `<path d="${blob(x, y, r, r*.86, Q, 10, .14)}" fill="${kl}" stroke="#3b2a3a" stroke-width="1.5" opacity=".95"/><path d="${blob(x-1, y-1, r*.42, r*.38, Q, 8, .1)}" fill="url(#o-kern)"/>`; };
-  const rec = [[760,72]];
-  const sens1 = [[760,124],[700,160],[600,170],[480,150],[392,128]];      // receptor → ganglion
-  const sens2 = [[392,128],[330,120],[275,150],[248,182],[232,205]];     // ganglion → achterhoorn
-  const schak = [[232,205],[218,232],[226,262],[244,276]];               // schakelneuron
-  const mot = [[262,286],[300,312],[350,330],[440,346],[540,352],[600,350]]; // voorhoorn → spier
-  s += myel(sens1, 6) + myel(mot, 6) + zenuw(sens1, '#d97706', 5) + zenuw(sens2, '#d97706', 5) + zenuw(schak, '#7c3aed', 5) + zenuw(mot, '#16a34a', 5);
-  // vrije zenuwuiteinden in de huid (receptor)
-  [[-28,-16],[-12,-24],[6,-22],[22,-14]].forEach(([dx,dy]) => s += `<path d="M760 124 C${760+dx*.4} ${124+dy*.5} ${760+dx*.8} ${124+dy*.8} ${760+dx} ${124+dy}" stroke="#d97706" stroke-width="2.4" fill="none" stroke-linecap="round"/>`);
-  // cellichamen: sensorisch in het spinale ganglion, schakelneuron in de grijze stof, motorisch in de voorhoorn
-  s += `<path d="${blob(392, 128, 32, 22, R, 10, .06)}" fill="#f0dcc0" stroke="#b89f73" stroke-width="1.5" opacity=".9"/>` + soma(392, 128, 13, '#f2b46b', 3) + soma(222, 236, 10, '#b794f4', 4) + soma(254, 284, 16, '#86d29d', 5);
-  for (let k = 0; k < 6; k++){ const a = 2.2 + k*.55; s += `<path d="M${254+Math.cos(a)*14} ${284+Math.sin(a)*12} l${Math.cos(a)*14} ${Math.sin(a)*12}" stroke="#16a34a" stroke-width="3" stroke-linecap="round"/>`; }
-  // motorische eindplaat
-  s += `<path d="M600 350 l10 -8 M600 350 l12 0 M600 350 l10 8" stroke="#16a34a" stroke-width="3" stroke-linecap="round"/>`;
-  const lab = (x, y, tx, ty, t, kl='#1d2a36', a='middle') => `<path d="M${x} ${y} L${tx} ${ty + (ty > y ? -18 : 6)}" stroke="#1d2a36" stroke-width="1.3"/><circle cx="${x}" cy="${y}" r="3" fill="#1d2a36"/><text x="${tx}" y="${ty}" text-anchor="${a}" font-size="16" font-weight="800" fill="${kl}" paint-order="stroke" stroke="#f5f2ee" stroke-width="4">${t}</text>`;
-  s += lab(762, 120, 815, 186, '1 receptor in de huid') + lab(540, 158, 520, 226, '2 sensorisch neuron', '#b45309') + lab(222, 236, 120, 440, '3 schakelneuron', '#6d28d9') + lab(300, 312, 380, 420, '4 motorisch neuron', '#15803d') + lab(760, 350, 760, 440, '5 effector: armspier');
-  s += `<text x="${cx}" y="${cy-112}" text-anchor="middle" font-size="16" font-weight="800">ruggenmerg (doorsnede)</text><text x="392" y="94" text-anchor="middle" font-size="12" fill="#6b5a3a">spinaal ganglion</text>`;
+    <radialGradient id="rb-gloed"><stop offset="0" stop-color="#fff"/><stop offset=".35" stop-color="#ffd23f" stop-opacity=".95"/><stop offset="1" stop-color="#ffb000" stop-opacity="0"/></radialGradient>
+    ${[['s','#fbd9a8','#d97706'],['k','#ddd0fb','#7c3aed'],['m','#bfe8cb','#16a34a']].map(([id,l,d])=>`<radialGradient id="rb-soma-${id}" cx="40%" cy="35%" r="70%"><stop offset="0" stop-color="#fff"/><stop offset=".35" stop-color="${l}"/><stop offset="1" stop-color="${d}"/></radialGradient>`).join('')}</defs>`;
+  s += `<rect width="1000" height="540" rx="16" fill="#f5f2ee"/>`;
+  // ruggenmerg (doorsnede)
+  const cx = 290, cy = 290;
+  s += `<path d="${blob(cx, cy, 175, 140, R, 14, .03)}" fill="url(#rb-wit)" stroke="#b89f73" stroke-width="3"/>`;
+  s += `<path d="${glad([[cx,cy-16],[cx+36,cy-40],[cx+60,cy-104],[cx+84,cy-108],[cx+76,cy-52],[cx+54,cy-8],[cx+86,cy+40],[cx+110,cy+86],[cx+76,cy+102],[cx+36,cy+42],[cx,cy+22],[cx-36,cy+42],[cx-76,cy+102],[cx-110,cy+86],[cx-86,cy+40],[cx-54,cy-8],[cx-76,cy-52],[cx-84,cy-108],[cx-60,cy-104],[cx-36,cy-40]])}" fill="url(#rb-grijs)" stroke="#b08a96" stroke-width="1.5"/>`;
+  s += `<circle cx="${cx}" cy="${cy+3}" r="6" fill="#f5f2ee" stroke="#b08a96"/><text x="${cx}" y="${cy-152}" text-anchor="middle" font-size="17" font-weight="800">ruggenmerg (doorsnede)</text>`;
+  // huid met hete pan
+  s += `<path d="M700 96 C760 86 860 90 1000 102 V160 C860 152 760 148 700 156 Z" fill="url(#rb-huid)" stroke="#b97d61" stroke-width="2"/><path d="M700 108 C760 98 860 102 1000 114" fill="none" stroke="#f3d6c0" stroke-width="2" opacity=".8"/>`;
+  s += `<path d="${glad([[760,48],[920,48],[932,70],[770,70]])}" fill="#3b3b3b"/><path d="M926 56 H990" stroke="#2a2a2a" stroke-width="8" stroke-linecap="round"/><text x="760" y="36" font-size="14" font-weight="700" fill="#b91c1c">hete pan</text>`;
+  [820,850,880].forEach(x => s += `<path d="M${x} 44 C${x-6} 36 ${x+6} 30 ${x} 22" stroke="#ef4444" stroke-width="2" fill="none" opacity=".6"/>`);
+  // spier
+  const sp = glad([[700,440],[760,406],[860,394],[950,406],[990,436],[950,470],[860,482],[760,472]]);
+  s += `<path d="M660 442 L704 440" stroke="#efe6d6" stroke-width="10" stroke-linecap="round"/><path d="${sp}" fill="url(#rb-spier)" stroke="#7a1c22" stroke-width="2"/>`;
+  for (let i = 0; i < 9; i++){ const y = 408 + i*8; s += `<path d="M${740+Math.abs(i-4)*8} ${y} C820 ${y-6+i} 900 ${y-4+i} ${970-Math.abs(i-4)*6} ${y}" stroke="#e98a8f" stroke-width="1.2" fill="none" opacity=".55"/>`; }
+
+  /* één neuron: cellichaam (met kern), vertakte dendrieten, axon (met of zonder myeline) en eindknopjes */
+  function neuron(o){
+    const Q = rng(o.seed), K = o.donker, L = o.licht; let g = '';
+    const dendriet = (x, y, a, len, w, d) => { const pts = [[x,y]]; let px = x, py = y, pa = a; for (let i = 0; i < 3; i++){ pa += (Q()-.5)*.5; px += Math.cos(pa)*len/3; py += Math.sin(pa)*len/3; pts.push([px,py]); }
+      g += `<path d="${glad(pts,false)}" fill="none" stroke="${K}" stroke-width="${w}" stroke-linecap="round"/>`;
+      if (d > 0){ dendriet(pts[2][0], pts[2][1], pa - .55, len*.6, w*.65, d-1); dendriet(pts[3][0], pts[3][1], pa + .5, len*.55, w*.65, d-1); } };
+    (o.dendrieten||[]).forEach(([ax, ay, a, len]) => dendriet(ax, ay, a, len, o.dw || 4.5, o.dd ?? 1));
+    const A = bemonster(glad(o.axon,false), 120);
+    g += `<path d="${glad(A,false)}" fill="none" stroke="${K}" stroke-width="${o.aw||5}" stroke-linecap="round"/>`;
+    if (o.myeline){ for (let i = 0; i < o.myeline; i++){ const a = Math.floor((i+.12)/o.myeline*120), b = Math.floor((i+.88)/o.myeline*120); const d = glad(A.slice(a,b),false);
+      g += `<path d="${d}" fill="none" stroke="#c9b27a" stroke-width="15" stroke-linecap="round"/><path d="${d}" fill="none" stroke="#f3e6bf" stroke-width="12" stroke-linecap="round"/><path d="${d}" fill="none" stroke="#fffaf0" stroke-width="3" stroke-linecap="round" opacity=".8" transform="translate(0 -3)"/>`; } g += `<path d="${glad(A,false)}" fill="none" stroke="${K}" stroke-width="3" stroke-linecap="round" opacity=".9"/>`; }
+    const e = A[A.length-1], pe = A[A.length-6], ea = Math.atan2(e[1]-pe[1], e[0]-pe[0]);
+    (o.eind || [-.6, 0, .6]).forEach(da => { const a = ea + da, x2 = e[0] + Math.cos(a)*16, y2 = e[1] + Math.sin(a)*16; g += `<path d="M${e[0].toFixed(1)} ${e[1].toFixed(1)} L${x2.toFixed(1)} ${y2.toFixed(1)}" stroke="${K}" stroke-width="3" stroke-linecap="round"/><path d="${blob(x2+Math.cos(a)*4, y2+Math.sin(a)*4, 5.5, 5, Q, 7, .1)}" fill="${L}" stroke="${K}" stroke-width="1.5"/>`; });
+    const [sx, sy, r] = o.soma;
+    g += `<path d="${blob(sx, sy, r, r*.85, Q, 10, .13)}" fill="url(#rb-soma-${o.id})" stroke="${K}" stroke-width="2.5"/><path d="${blob(sx-1, sy-1, r*.4, r*.36, Q, 8, .1)}" fill="url(#o-kern)"/><circle cx="${sx}" cy="${sy-1}" r="${(r*.12).toFixed(1)}" fill="#2d1446"/>`;
+    return {svg: g, axon: A};
+  }
+  // sensorisch neuron: dendrieten bij de receptor in de huid, cellichaam onderweg, axon naar het ruggenmerg
+  const sens = neuron({id:'s', seed:3, donker:'#c26a06', licht:'#fbd9a8', soma:[600,190,20], myeline:5, aw:5,
+    axon:[[582,196],[500,186],[420,170],[370,190],[338,214]], dendrieten:[[618,184,-.15,0]], dd:0, eind:[-.7,0,.7]});
+  const sensDendriet = bemonster(glad([[618,184],[680,160],[760,140],[840,128]],false), 60);
+  let sd = `<path d="${glad(sensDendriet,false)}" fill="none" stroke="#c26a06" stroke-width="5" stroke-linecap="round"/>`;
+  for (let i = 0; i < 4; i++){ const a = Math.floor((i+.15)/4*60), b = Math.floor((i+.85)/4*60); const d = glad(sensDendriet.slice(a,b),false); sd += `<path d="${d}" fill="none" stroke="#c9b27a" stroke-width="15" stroke-linecap="round"/><path d="${d}" fill="none" stroke="#f3e6bf" stroke-width="12" stroke-linecap="round"/>`; }
+  sd += `<path d="${glad(sensDendriet,false)}" fill="none" stroke="#c26a06" stroke-width="3" stroke-linecap="round" opacity=".9"/><path d="${glad(sensDendriet.slice(-14),false)}" fill="none" stroke="#c26a06" stroke-width="5" stroke-linecap="round"/>`;
+  [[-36,-14],[-18,-24],[0,-26],[18,-20],[30,-8]].forEach(([dx,dy]) => sd += `<path d="M840 128 C${840+dx*.4} ${128+dy*.6} ${840+dx*.8} ${128+dy*.8} ${840+dx} ${128+dy}" stroke="#c26a06" stroke-width="2.6" fill="none" stroke-linecap="round"/>`);
+  // schakelneuron in de grijze stof
+  const schak = neuron({id:'k', seed:4, donker:'#6d28d9', licht:'#ddd0fb', soma:[300,262,15], aw:4, dw:3.5,
+    axon:[[312,272],[326,296],[330,322]], dendrieten:[[290,250,-2.2,34],[306,250,-1.0,30],[288,272,2.6,26]], dd:1, eind:[-.5,.5]});
+  // motorisch neuron in de voorhoorn
+  const mot = neuron({id:'m', seed:5, donker:'#15803d', licht:'#bfe8cb', soma:[352,352,22], myeline:6, aw:6, dw:5,
+    axon:[[372,362],[430,392],[520,420],[620,438],[700,440]], dendrieten:[[336,340,-2.4,44],[346,334,-1.6,40],[332,362,2.8,44],[342,372,2.1,40],[360,334,-.9,30]], dd:1, eind:[-.6,0,.6]});
+  s += mot.svg + schak.svg + sd + sens.svg;
+  // labels
+  const lab = (x, y, tx, ty, t, kl='#1d2a36', a='middle', fs=16) => `<path d="M${x} ${y} L${tx} ${ty + (ty > y ? -18 : 6)}" stroke="#1d2a36" stroke-width="1.3"/><circle cx="${x}" cy="${y}" r="3" fill="#1d2a36"/><text x="${tx}" y="${ty}" text-anchor="${a}" font-size="${fs}" font-weight="800" fill="${kl}" paint-order="stroke" stroke="#f5f2ee" stroke-width="4">${t}</text>`;
+  const klein = (x, y, tx, ty, t, a='middle') => lab(x, y, tx, ty, t, '#334155', a, 13);
+  s += lab(842, 124, 900, 196, '1 receptor') + lab(470, 178, 470, 120, '2 sensorisch neuron', '#b45309') + lab(300, 262, 130, 470, '3 schakelneuron', '#6d28d9') + lab(560, 428, 520, 520, '4 motorisch neuron', '#15803d') + lab(860, 440, 860, 520, '5 effector: spier');
+  s += klein(600, 190, 640, 250, 'cellichaam') + klein(720, 152, 730, 210, 'dendriet') + klein(395, 176, 400, 232, 'axon');
+  s += klein(352, 352, 470, 340, 'cellichaam', 'start') + klein(326, 330, 190, 380, 'dendrieten', 'end') + klein(460, 404, 470, 480, 'axon') + klein(708, 440, 650, 500, 'eindknopjes');
   S.innerHTML = s + '<g id="rb-dyn"></g>';
-  const pad = [...sens1, ...sens2.slice(1), ...schak.slice(1), [262,286], ...mot.slice(1)];
-  const n1 = sens1.length + sens2.length - 1, n2 = n1 + schak.length - 1;
-  const ZIN = ['De <b>receptor</b> in je huid voelt de hitte en maakt een elektrische impuls.', 'Het <b>sensorisch neuron</b> brengt de impuls naar het ruggenmerg.', 'In het ruggenmerg geeft een <b>schakelneuron</b> de impuls door.', 'Het <b>motorisch neuron</b> brengt de impuls naar de spier.', 'De <b>effector</b>, je armspier, trekt samen: je hand gaat weg van de pan.'];
+  const pad = [...[...sensDendriet].reverse(), [600,190], ...sens.axon, [300,262], ...schak.axon, [352,352], ...mot.axon];
+  const n1 = sensDendriet.length + 1 + sens.axon.length, n2 = n1 + 1 + schak.axon.length;
+  const ZIN = ['De <b>receptor</b> in je huid voelt de hitte en maakt een elektrische impuls.', 'Het <b>sensorisch neuron</b> brengt de impuls naar het ruggenmerg: eerst via de dendriet naar het cellichaam, dan via het axon.', 'In het ruggenmerg geeft een <b>schakelneuron</b> de impuls door.', 'Het <b>motorisch neuron</b> ontvangt de impuls met zijn dendrieten en stuurt hem via zijn lange axon naar de spier.', 'De <b>effector</b>, je spier, trekt samen: je hand gaat weg van de pan.'];
   let t = -1, t0 = 0, fase = -1;
   $('#rb-start').onclick = () => { t = 0; };
   (function lus(ts){ requestAnimationFrame(lus); if (!zichtbaar(S)) return; const dt = ts && t0 ? Math.min(50, ts-t0)/1000 : 0; t0 = ts || 0;
-    if (t < 0){ $('#rb-dyn').innerHTML = ''; return; } t += dt*.22;
-    const L = pad.length - 1, i = Math.min(L, t*L); const f = i < .4 ? 0 : i < n1-1 ? 1 : i < n2-1 ? 2 : i < L-.2 ? 3 : 4;
+    if (t < 0){ $('#rb-dyn').innerHTML = ''; return; } t += dt*.16;
+    const L = pad.length - 1, i = Math.min(L, t*L); const f = i < 3 ? 0 : i < n1 ? 1 : i < n2 ? 2 : i < L-.5 ? 3 : 4;
     if (f !== fase){ fase = f; $('#rb-zin').innerHTML = `<b>${f+1}.</b> ` + ZIN[f]; }
-    const p = langs(pad, Math.min(1,t)); let o = `<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="24" fill="url(#rb-gloed)"/>`;
-    if (t >= 1){ const k = Math.min(1, (t-1)*2.5); o += `<path d="${glad([[600,350],[660,320+k*6],[760,306+k*4],[850,318+k*6],[900,348],[850,380-k*6],[760,392-k*4],[660,382-k*6]])}" fill="#e46b70" opacity="${.5*k}"/>`; }
+    const p = langs(pad, Math.min(1,t)); let o = `<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="26" fill="url(#rb-gloed)"/>`;
+    if (t >= 1){ const k = Math.min(1, (t-1)*2.5); o += `<path d="${sp}" fill="#f08a8f" opacity="${.55*k}"/>`; }
     if (t > 1.6) t = -1;
     $('#rb-dyn').innerHTML = o; })();
 })();
+
 /* ---------- 5.3 bloedsuikerspiegel ---------- */
 (function(){
   const S = $('#bs-svg'); let g = 0.9, ins = 0, glu = 0, hist = [], t0 = 0, acc = 0, opname = 0, verbruik = 0, msg = 'Kies een actie.';
