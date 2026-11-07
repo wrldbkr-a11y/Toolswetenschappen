@@ -38,7 +38,7 @@ def lesdoelen(sleutel, groepen, breed='1180px', pad='0 24px'):
     li = ''
     for kop, doelen in groepen:
         li += '<p style="margin:10px 0 2px;font-weight:700">%s</p><ul class="doelen" style="margin:0;font-size:14px;line-height:1.5">%s</ul>' % (kop, ''.join('<li>%s</li>' % d for d in doelen))
-    return ('<div style="max-width:%s;margin:14px auto 0;padding:%s"><details id="ld3" style="border:1px solid #c9d6e3;border-radius:10px;padding:8px 14px;background:rgba(127,160,200,.08)">'
+    return ('<div style="max-width:%s;margin:14px auto 0;padding:%s"><details id="ld3" open style="border:1px solid #c9d6e3;border-radius:10px;padding:8px 14px;background:rgba(127,160,200,.08)">'
             '<summary style="cursor:pointer;font-weight:700">Lesdoelen · Ik kan …</summary>%s'
             '<p style="font-size:12px;opacity:.75;margin:8px 0 4px">Vink aan wat je al kan. Wat je niet kan aanvinken, oefen je nog eens.</p></details></div>\n') % (breed, pad, li)
 
