@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Elektriciteit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EEF2F5; --panel:#FFFFFF; --panel-2:#F5F8FB; --line:#D3DCE5;
+  --text:#1D2A36; --text-dim:#51606E;
+  --accent:#2F6FB0; --accent-dark:#245A91; --accent-soft:#E4EEF8;
+  --ok-text:#1F7A4A; --ok-bg:#E3F3E9; --flag-text:#B3362B; --flag-bg:#FBE6E3;
+  --fz:#7c3aed; --fn:#059669; --g:#d97706; --f:#2563eb; --fw:#dc2626; --fv:#0891b2;
+  --font:'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:var(--font);}
+body{-webkit-font-smoothing:antialiased;line-height:1.55;}
+.top{max-width:1180px;margin:0 auto;padding:36px 24px 0;}
+.top .eyebrow{font-size:13px;font-weight:700;color:var(--accent-dark);letter-spacing:.04em;text-transform:uppercase;margin-bottom:6px;}
+.top h1{font-size:2rem;font-weight:700;letter-spacing:-0.015em;margin:0 0 8px;}
+.top .intro{color:var(--text-dim);max-width:72ch;font-size:15px;line-height:1.6;margin:0;}
+.top .intro strong{color:var(--text);}
+nav{display:flex;flex-wrap:wrap;gap:8px;}
+.catnav{gap:4px;margin:22px 0 14px;border-bottom:1px solid var(--line);}
+.catnav button{font-family:var(--font);font-weight:500;font-size:15px;background:none;border:none;border-bottom:2px solid transparent;margin-bottom:-1px;color:var(--text-dim);padding:9px 14px;cursor:pointer;}
+.catnav button:hover{color:var(--text);}
+.catnav button.active{color:var(--text);font-weight:600;border-bottom-color:var(--accent);}
+#nav button{display:flex;align-items:center;gap:9px;font-family:var(--font);font-size:14px;font-weight:500;background:var(--panel);border:1px solid var(--line);color:var(--text-dim);padding:9px 14px 9px 10px;border-radius:10px;cursor:pointer;text-align:left;}
+#nav button .nr{flex:none;min-width:24px;height:24px;border-radius:12px;padding:0 6px;display:inline-flex;align-items:center;justify-content:center;background:var(--accent-soft);color:var(--accent-dark);font-size:12px;font-weight:700;}
+#nav button:hover{border-color:var(--accent);color:var(--text);}
+#nav button.active{background:var(--accent-soft);border-color:var(--accent);color:var(--text);font-weight:600;}
+#nav button.active .nr{background:var(--accent);color:#fff;}
+main{max-width:1180px;margin:0 auto;padding:26px 24px 70px;}
+.scene{display:none;}
+.scene.active{display:block;animation:fade .25s ease;}
+@keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+.scene-head{display:flex;align-items:center;gap:10px;margin-bottom:4px;flex-wrap:wrap;}
+.scene-head .num{min-width:28px;height:28px;border-radius:14px;padding:0 7px;display:inline-flex;align-items:center;justify-content:center;background:var(--accent);color:#fff;font-size:13px;font-weight:700;}
+.scene-head h3{font-size:1.5rem;letter-spacing:-0.01em;margin:0;font-weight:700;}
+.scene-sub{color:var(--text-dim);font-size:15px;margin:4px 0 18px;max-width:78ch;line-height:1.55;}
+.scene-sub strong{color:var(--text);}
+.grid{display:grid;grid-template-columns:1fr 330px;gap:18px;align-items:start;}
+@media(max-width:880px){.grid{grid-template-columns:1fr;}}
+.tek{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;}
+.tek svg{display:block;width:100%;height:auto;touch-action:none;}
+.controls{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 16px 18px;display:flex;flex-direction:column;gap:14px;}
+.ctrl label{display:flex;justify-content:space-between;font-size:13px;font-weight:600;margin-bottom:6px;}
+.ctrl label span{font-weight:700;color:var(--accent-dark);font-variant-numeric:tabular-nums;}
+.ctrl input[type=range]{width:100%;accent-color:var(--accent);}
+select{font-family:var(--font);font-size:15px;padding:7px 9px;border:1px solid var(--line);border-radius:8px;background:#fff;width:100%;}
+.knoppen{display:flex;flex-wrap:wrap;gap:6px;}
+.btn{background:#fff;border:1px solid var(--line);color:var(--text);border-radius:8px;padding:8px 12px;font-family:var(--font);font-weight:600;font-size:14px;cursor:pointer;}
+.btn:hover{border-color:var(--accent);}
+.btn.on{background:var(--accent-soft);border-color:var(--accent);}
+.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent);}
+.readout{background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:14.5px;line-height:1.75;font-variant-numeric:tabular-nums;}
+.readout b{color:var(--text);}
+.readout .ok{color:var(--ok-text);font-weight:700;}
+.readout .flag{color:var(--flag-text);font-weight:700;}
+.kader{border-left:4px solid var(--ok-text);background:var(--ok-bg);border-radius:0 10px 10px 0;padding:10px 14px;font-size:14.5px;}
+.kader .kop{font-weight:700;color:var(--ok-text);margin-bottom:2px;}
+.kader p{margin:0 0 4px;}.kader p:last-child{margin:0;}
+.note{background:var(--panel-2);border-left:4px solid var(--accent);border-radius:0 8px 8px 0;padding:10px 12px;font-size:14px;color:var(--text-dim);line-height:1.6;}
+.note strong{color:var(--text);}
+.formule{font-size:18px;font-weight:700;text-align:center;background:#fff;border:1px solid var(--line);border-radius:8px;padding:8px;}
+.omvorm{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;font-size:14px;text-align:center;}
+.omvorm div{background:#fff;border:1px solid var(--line);border-radius:8px;padding:6px 4px;font-weight:600;}
+.legend{display:flex;flex-direction:column;gap:5px;font-size:13px;color:var(--text-dim);}
+.legend .row{display:flex;align-items:center;gap:8px;}
+.legend .sw{width:18px;height:4px;border-radius:2px;flex:none;}
+label.chk{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:500;}
+table.t{border-collapse:collapse;width:100%;font-size:14px;margin-top:14px;background:#fff;border:1px solid var(--line);border-radius:8px;overflow:hidden;}
+table.t th,table.t td{border-bottom:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top;}
+table.t th{background:var(--panel-2);font-size:12.5px;color:var(--text-dim);}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px;}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden;}
+.card svg{display:block;width:100%;height:auto;background:#fbfcfe;border-bottom:1px solid #E6ECF2;}
+.card .txt{padding:12px 16px 14px;}
+.card h4{margin:0 0 4px;font-size:1rem;}
+.card p{margin:0;font-size:14px;color:var(--text-dim);line-height:1.55;}
+.card p b{color:var(--text);}
+.tag{display:inline-block;font-size:12px;font-weight:700;padding:2px 8px;border-radius:999px;margin-bottom:6px;background:var(--accent-soft);color:var(--accent-dark);}
+.tag.dyn{background:var(--flag-bg);color:var(--flag-text);}
+.tag.stat{background:var(--ok-bg);color:var(--ok-text);}
+.mini{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px;}
+@media(max-width:700px){.mini{grid-template-columns:1fr;}}
+.mini .tek{padding:4px;}
+.mini h5{margin:6px 8px 0;font-size:13px;}
+/* oefenen */
+.oef{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px;}
+.oef-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px;}
+.score{font-size:14px;font-weight:600;color:var(--ok-text);background:var(--ok-bg);padding:3px 10px;border-radius:999px;}
+.soort{display:flex;flex-wrap:wrap;gap:6px;}
+.soort .btn{font-weight:500;padding:6px 11px;}
+.vraag{font-weight:600;font-size:16px;margin:14px 0 10px;}
+.keuzes{display:flex;flex-direction:column;gap:8px;}
+.keuzes .btn{font-weight:500;text-align:left;}
+.keuzes .btn.goed{background:var(--ok-bg);border-color:var(--ok-text);color:var(--ok-text);font-weight:700;}
+.keuzes .btn.fout{background:var(--flag-bg);border-color:var(--flag-text);color:var(--flag-text);}
+.antw{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+.antw input{font-family:var(--font);font-size:16px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;width:9em;}
+.feedback{margin-top:12px;font-size:15px;line-height:1.6;}
+.feedback.goed{color:var(--ok-text);}
+.feedback.fout{color:var(--flag-text);}
+.feedback .uitleg{color:var(--text);display:block;margin-top:4px;}
+footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-dim);font-size:12px;}
+footer a{color:inherit;}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="eyebrow">Fysica 4de jaar · Thema 3 · Elektriciteit · hoofdstuk 1 tot 4</div>
+  <h1>Elektriciteit</h1>
+  <p class="intro"><strong>Van geladen ballonnen tot het stopcontact.</strong> Wat is lading, spanning en stroom? Hoe werkt de wet van Ohm, en waarom springt de zekering?</p>
+  <nav id="catnav" class="catnav"></nav>
+  <nav id="nav"></nav>
+</header>
+<main>
+
+<section class="scene" id="e1" data-nr="1.1" data-cat="h1" data-title="Statisch geladen toestand">
+  <div class="scene-head"><span class="num"></span><h3>Positieve en negatieve lading</h3></div>
+  <p class="scene-sub">Wrijf een ballon over je trui. Er gaan <strong>elektronen</strong> van de trui naar de ballon. De ballon krijgt een <strong>teveel</strong> aan elektronen: negatief. De trui krijgt een <strong>tekort</strong>: positief.</p>
+  <div class="grid">
+    <div class="tek"><svg id="s_e1" viewBox="0 0 640 360"></svg></div>
+    <div class="controls">
+      <div class="ctrl"><label for="e1w">Wrijven <span id="e1wv"></span></label><input type="range" id="e1w" min="0" max="6" value="0"></div>
+      <div class="readout" id="r_e1"></div>
+      <div class="kader"><div class="kop">Onthoud</div>
+        <p>Een voorwerp met een <b>teveel aan elektronen</b> is <b>negatief</b> geladen, met een <b>tekort</b> is het <b>positief</b> geladen.</p>
+        <p><b>Gelijke ladingen stoten af, ongelijke ladingen trekken aan.</b></p>
+        <p>De eenheid van lading is de <b>coulomb (C)</b>. Eén elektron heeft een lading van −1,6 · 10⁻¹⁹ C.</p></div>
+      <div class="note">Alleen <strong>elektronen</strong> verplaatsen. De protonen zitten vast in de kern.</div>
+    </div>
+  </div>
+</section>
+
+<section class="scene" id="e2" data-nr="1.2" data-cat="h1" data-title="Geleider en isolator">
+  <div class="scene-head"><span class="num"></span><h3>Geleider en isolator</h3></div>
+  <p class="scene-sub">Breng een geladen staaf dicht bij een metalen bol of een plastic bol. Kijk wat de elektronen doen.</p>
+  <div class="grid">
+    <div class="tek"><svg id="s_e2" viewBox="0 0 640 340"></svg></div>
+    <div class="controls">
+      <div class="knoppen" id="e2m"><button class="btn on" data-m="g">Metaal (geleider)</button><button class="btn" data-m="i">Plastic (isolator)</button></div>
+      <div class="knoppen" id="e2l"><button class="btn on" data-l="-">Staaf negatief</button><button class="btn" data-l="+">Staaf positief</button></div>
+      <div class="ctrl"><label for="e2d">Afstand van de staaf <span id="e2dv"></span></label><input type="range" id="e2d" min="0" max="100" value="30"></div>
+      <div class="readout" id="r_e2"></div>
+      <div class="kader"><div class="kop">Link met chemie</div><p>In een <b>metaal</b> zijn de valentie-elektronen niet gebonden aan één atoom: het zijn <b>vrije elektronen</b> (metaalbinding). Die kunnen door het hele voorwerp bewegen. In een <b>isolator</b> zitten alle elektronen vast in hun atomen of moleculen.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="scene" id="e3" data-nr="2.1" data-cat="h2" data-title="Elektrische spanning">
+  <div class="scene-head"><span class="num"></span><h3>Spanning: energie per lading</h3></div>
+  <p class="scene-sub">Een batterij is een <strong>gelijkspanningsbron</strong>. Ze zet chemische energie om in elektrische energie en geeft die mee aan de ladingen. De <strong>spanning</strong> zegt hoeveel energie elke coulomb lading meekrijgt.</p>
+  <div class="grid">
+    <div class="tek"><svg id="s_e3" viewBox="0 0 640 340"></svg></div>
+    <div class="controls">
+      <div class="ctrl"><label for="e3u">Spanningsbron</label><select id="e3u"><option value="1.5">AA-batterij · 1,5 V</option><option value="4.5">platte batterij · 4,5 V</option><option value="9">blokbatterij · 9 V</option><option value="12">autobatterij · 12 V</option><option value="230">stopcontact · 230 V</option></select></div>
+      <div class="ctrl"><label for="e3q">Lading Q die door de bron gaat <span id="e3qv"></span></label><input type="range" id="e3q" min="1" max="20" value="5"></div>
+      <div class="formule">U = E / Q</div>
+      <div class="omvorm"><div>U = E / Q</div><div>E = U · Q</div><div>Q = E / U</div></div>
+      <div class="readout" id="r_e3"></div>
+      <div class="kader"><div class="kop">Elektrische spanning U</div><p>De energie die een spanningsbron aan elke coulomb lading meegeeft. Eenheid: <b>volt (V)</b>, 1 V = 1 J/C.</p><p>Een <b>gelijkspanningsbron</b> heeft een vaste <b>pluspool</b> en <b>minpool</b>: de ladingen stromen altijd in dezelfde richting.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="scene" id="e4" data-nr="2.2" data-cat="h2" data-title="Elektrische stroomsterkte">
+  <div class="scene-head"><span class="num"></span><h3>Stroom en stroomsterkte</h3></div>
+  <p class="scene-sub">Elektrische stroom is <strong>lading in beweging</strong>. De elektronen bewegen van de <strong>min</strong>pool door de kring naar de <strong>plus</strong>pool. Afgesproken is dat de stroom van <strong>plus naar min</strong> loopt: de conventionele stroomzin.</p>
+  <div class="grid">
+    <div class="tek"><svg id="s_e4" viewBox="0 0 640 360"></svg></div>
+    <div class="controls">
+      <div class="knoppen"><button class="btn on" id="e4e">Werkelijke stroomzin (elektronen)</button><button class="btn on" id="e4c">Conventionele stroomzin</button></div>
+      <div class="ctrl"><label for="e4i">Stroomsterkte I <span id="e4iv"></span></label><input type="range" id="e4i" min="0.1" max="3" step="0.1" value="1"></div>
+      <div class="ctrl"><label for="e4t">Tijdsverloop Δt <span id="e4tv"></span></label><input type="range" id="e4t" min="1" max="60" value="10"></div>
+      <div class="formule">I = Q / Δt</div>
+      <div class="omvorm"><div>I = Q / Δt</div><div>Q = I · Δt</div><div>Δt = Q / I</div></div>
+      <div class="readout" id="r_e4"></div>
+      <div class="kader"><div class="kop">Stroomsterkte I</div><p>De hoeveelheid lading die per seconde door een doorsnede van een geleider stroomt. Eenheid: <b>ampère (A)</b>, 1 A = 1 C/s.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="scene" id="e5" data-nr="3.1" data-cat="h3" data-title="Weerstand en meters">
+  <div class="scene-head"><span class="num"></span><h3>Weerstand, ampèremeter en voltmeter</h3></div>
+  <p class="scene-sub">Een <strong>weerstand</strong> bemoeilijkt de doorgang van de stroom. Meet de stroom met een <strong>ampèremeter in serie</strong> en de spanning met een <strong>voltmeter in parallel</strong>. Kies waar je de meters aansluit.</p>
+  <div class="grid">
+    <div class="tek"><svg id="s_e5" viewBox="0 0 640 380"></svg></div>
+    <div class="controls">
+      <div class="ctrl"><label>Ampèremeter</label><div class="knoppen" id="e5a"><button class="btn on" data-v="s">in serie</button><button class="btn" data-v="p">in parallel</button></div></div>
+      <div class="ctrl"><label>Voltmeter</label><div class="knoppen" id="e5v"><button class="btn on" data-v="p">in parallel</button><button class="btn" data-v="s">in serie</button></div></div>
+      <div class="readout" id="r_e5"></div>
+      <div class="kader"><div class="kop">Elektrische weerstand R</div><p>De mate waarin een component de stroom tegenwerkt. Eenheid: <b>ohm (Ω)</b>.</p><p>Een <b>ampèremeter</b> heeft een heel kleine weerstand en sluit je <b>in serie</b> aan. Een <b>voltmeter</b> heeft een heel grote weerstand en sluit je <b>in parallel</b> aan.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="scene" id="e6" data-nr="3.2" data-cat="h3" data-title="Wet van Ohm en geleidbaarheid">
+  <div class="scene-head"><span class="num"></span><h3>De wet van Ohm</h3></div>
+  <p class="scene-sub">Verhoog de spanning: de stroom stijgt evenredig mee. Neem een grotere weerstand: de stroom wordt kleiner.</p>
+  <div class="grid">
+    <div><div class="tek"><svg id="s_e6" viewBox="0 0 640 230"></svg></div>
+      <div class="mini" style="grid-template-columns:1fr 1fr"><div class="tek"><h5>U(I) bij verschillende R</h5><svg id="g_e6a" viewBox="0 0 300 220"></svg></div><div class="tek"><h5>I(R) bij gelijke U</h5><svg id="g_e6b" viewBox="0 0 300 220"></svg></div></div></div>
+    <div class="controls">
+      <div class="ctrl"><label for="e6u">Spanning U <span id="e6uv"></span></label><input type="range" id="e6u" min="0" max="12" step="0.5" value="6"></div>
+      <div class="ctrl"><label for="e6r">Weerstand R <span id="e6rv"></span></label><input type="range" id="e6r" min="2" max="40" value="10"></div>
+      <div class="formule">R = U / I</div>
+      <div class="omvorm"><div>R = U / I</div><div>U = R · I</div><div>I = U / R</div></div>
+      <div class="readout" id="r_e6"></div>
+      <div class="kader"><div class="kop">Definities</div><p><b>Wet van Ohm:</b> bij een constante temperatuur is de stroomsterkte door een geleider recht evenredig met de spanning erover. De verhouding U / I is de weerstand R.</p><p><b>Geleidbaarheid G:</b> het omgekeerde van de weerstand, G = 1 / R. Eenheid: <b>siemens (S)</b>. Hoe groter G, hoe beter de component geleidt.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="scene" id="e7" data-nr="3.3" data-cat="h3" data-title="Risico's en veiligheid">
+  <div class="scene-head"><span class="num"></span><h3>Overbelasting en de zekering</h3></div>
+  <p class="scene-sub">Steek toestellen in dezelfde stroomkring. Elk toestel trekt stroom. Wordt de totale stroom te groot, dan worden de draden heet door het <strong>joule-effect</strong>. De <strong>automatische zekering</strong> (16 A) onderbreekt dan de kring.</p>
+  <div class="grid">
+    <div class="tek"><svg id="s_e7" viewBox="0 0 640 300"></svg></div>
+    <div class="controls">
+      <div class="knoppen" id="e7k"></div>
+      <div class="readout" id="r_e7"></div>
+      <div class="kader"><div class="kop">Joule-effect</div><p>Als er stroom door een geleider gaat, wordt die <b>warm</b>: elektrische energie wordt omgezet in thermische energie.</p><p><b>Gewenst:</b> waterkoker, broodrooster, verwarming. <b>Ongewenst:</b> lampen, computers, elektrische leidingen.</p></div>
+    </div>
+  </div>
+  <div class="cards" id="c_e7" style="margin-top:16px"></div>
+</section>
+
+<section class="scene" id="e8" data-nr="4.1" data-cat="h4" data-title="Serie en parallel">
+  <div class="scene-head"><span class="num"></span><h3>Serie- en parallelschakeling</h3></div>
+  <p class="scene-sub">Kies een schakeling en verander de weerstanden. Kijk naar de <strong>substitutieweerstand</strong> R<sub>s</sub>: de ene weerstand die hetzelfde effect heeft als alle weerstanden samen.</p>
+  <div class="grid">
+    <div class="tek"><svg id="s_e8" viewBox="0 0 640 360"></svg></div>
+    <div class="controls">
+      <div class="knoppen" id="e8s"><button class="btn on" data-s="serie">Serie</button><button class="btn" data-s="parallel">Parallel</button></div>
+      <div class="ctrl"><label for="e8u">Spanning U <span id="e8uv"></span></label><input type="range" id="e8u" min="1" max="24" value="12"></div>
+      <div class="ctrl"><label for="e8r1">R₁ <span id="e8r1v"></span></label><input type="range" id="e8r1" min="1" max="50" value="10"></div>
+      <div class="ctrl"><label for="e8r2">R₂ <span id="e8r2v"></span></label><input type="range" id="e8r2" min="1" max="50" value="20"></div>
+      <div class="ctrl"><label for="e8r3">R₃ (0 = geen derde weerstand) <span id="e8r3v"></span></label><input type="range" id="e8r3" min="0" max="50" value="0"></div>
+      <div class="readout" id="r_e8"></div>
+      <div class="kader"><div class="kop">Substitutieweerstand</div><p><b>Serie:</b> R<sub>s</sub> = R₁ + R₂ + R₃. De stroom is overal gelijk, de spanning verdeelt zich.</p><p><b>Parallel:</b> 1 / R<sub>s</sub> = 1 / R₁ + 1 / R₂ + 1 / R₃. De spanning is overal gelijk, de stroom verdeelt zich. R<sub>s</sub> is kleiner dan de kleinste weerstand.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="scene" id="oef" data-nr="" data-cat="oef" data-title="Oefenen">
+  <div class="scene-head"><span class="num"></span><h3>Oefenen</h3></div>
+  <p class="scene-sub">Kies een hoofdstuk of oefen alles door elkaar. Gebruik een komma voor decimalen.</p>
+  <div class="oef">
+    <div class="oef-head"><div class="soort" id="soort"></div><span class="score" id="score">0 / 0</span></div>
+    <div class="vraag" id="vraag"></div>
+    <div id="invoer"></div>
+    <div class="feedback" id="fb"></div>
+    <div style="margin-top:12px"><button class="btn primary" id="volgende">Nieuwe vraag</button></div>
+  </div>
+</section>
+</main>
+<footer>Gemaakt door de vakgroep wetenschappen · Maria Assumpta Lyceum · ontwikkeld met hulp van AI · <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.nl">CC BY-NC-SA 4.0</a></footer>
+
+<script>
+//////////////////// NAVIGATIE ////////////////////
+const scenes = [...document.querySelectorAll('.scene')];
+const nav = document.getElementById('nav'), catNav = document.getElementById('catnav');
+const categories = [{id:'h1',label:'1 Geladen toestand'},{id:'h2',label:'2 Spanning en stroomsterkte'},{id:'h3',label:'3 Enkelvoudige stroomkring'},{id:'h4',label:'4 Schakelingen'},{id:'oef',label:'Oefenen'}];
+let current = 0, activeCat = 'h1';
+function renderNav(){
+  catNav.innerHTML = ''; nav.innerHTML = '';
+  categories.forEach(c => { const b = document.createElement('button'); b.textContent = c.label; b.classList.toggle('active', c.id === activeCat); b.onclick = () => activate(scenes.findIndex(s => s.dataset.cat === c.id)); catNav.appendChild(b); });
+  scenes.forEach((s, i) => { if (s.dataset.cat !== activeCat || activeCat === 'oef') return; const b = document.createElement('button'); b.innerHTML = `<span class="nr">${s.dataset.nr}</span>${s.dataset.title}`; b.classList.toggle('active', i === current); b.onclick = () => activate(i); nav.appendChild(b); });
+}
+function activate(i){
+  current = i; activeCat = scenes[i].dataset.cat;
+  scenes.forEach((s, j) => s.classList.toggle('active', j === i));
+  renderNav();
+  if (location.hash !== '#' + scenes[i].id) history.replaceState(null, '', '#' + scenes[i].id);
+}
+scenes.forEach(s => { const n = s.querySelector('.num'); if (n){ if (s.dataset.nr) n.textContent = s.dataset.nr; else n.remove(); } });
+activate(Math.max(0, scenes.findIndex(s => '#' + s.id === location.hash)));
+window.addEventListener('hashchange', () => { const i = scenes.findIndex(s => '#' + s.id === location.hash); if (i >= 0 && i !== current) activate(i); });
+
+
+//////////////////// HULPFUNCTIES ////////////////////
+const $ = id => document.getElementById(id);
+const fmt = (v, d = 1) => (Math.abs(v) < 0.5 * Math.pow(10, -d) ? 0 : v).toFixed(d).replace('.', ',');
+const C = {fz:'#7c3aed', fn:'#059669', g:'#d97706', f:'#2563eb', fw:'#dc2626', fv:'#0891b2', lijn:'#94A3B8', tekst:'#1D2A36', dim:'#51606E'};
+function pijl(x1, y1, x2, y2, kleur, label, lx = 0, ly = 0, dik = 4){
+  const len = Math.hypot(x2 - x1, y2 - y1); if (len < 2) return `<circle cx="${x1}" cy="${y1}" r="4" fill="${kleur}"/>`;
+  const a = Math.atan2(y2 - y1, x2 - x1), hs = Math.min(15, len * 0.45);
+  const bx = x2 - Math.cos(a) * hs * 0.85, by = y2 - Math.sin(a) * hs * 0.85;
+  const p1 = [x2 - hs * Math.cos(a - 0.42), y2 - hs * Math.sin(a - 0.42)], p2 = [x2 - hs * Math.cos(a + 0.42), y2 - hs * Math.sin(a + 0.42)];
+  return `<g><line x1="${x1}" y1="${y1}" x2="${bx}" y2="${by}" stroke="${kleur}" stroke-width="${dik}" stroke-linecap="round"/><polygon points="${x2},${y2} ${p1} ${p2}" fill="${kleur}"/><circle cx="${x1}" cy="${y1}" r="4.5" fill="${kleur}"/>${label ? `<text x="${(x1 + x2) / 2 + lx}" y="${(y1 + y2) / 2 + ly}" fill="${kleur}" font-size="17" font-weight="700" text-anchor="middle">${label}</text>` : ''}</g>`;
+}
+const sub = (a, b) => `${a}<tspan font-size="70%" dy="4">${b}</tspan><tspan dy="-4"></tspan>`;
+const txt = (x, y, t, o = {}) => `<text x="${x}" y="${y}" font-size="${o.s || 14}" font-weight="${o.w || 500}" fill="${o.c || C.tekst}" text-anchor="${o.a || 'start'}">${t}</text>`;
+function grafiek(svg, {w, h, x0 = 40, y0, xmax, ymax, xlab, ylab, xt = [], yt = []}){
+  const X = v => x0 + v / xmax * (w - x0 - 16), Y = v => y0 - v / ymax * (y0 - 14);
+  let s = `<line x1="${x0}" y1="${y0}" x2="${w - 8}" y2="${y0}" stroke="${C.dim}"/><line x1="${x0}" y1="${y0}" x2="${x0}" y2="8" stroke="${C.dim}"/>`;
+  xt.forEach(v => s += `<line x1="${X(v)}" y1="${y0}" x2="${X(v)}" y2="${y0 + 4}" stroke="${C.dim}"/>${txt(X(v), y0 + 16, fmt(v, v % 1 ? 1 : 0), {s: 11, c: C.dim, a: 'middle'})}`);
+  yt.forEach(v => s += `<line x1="${x0 - 4}" y1="${Y(v)}" x2="${x0}" y2="${Y(v)}" stroke="${C.dim}"/><line x1="${x0}" y1="${Y(v)}" x2="${w - 8}" y2="${Y(v)}" stroke="#EEF2F5"/>${txt(x0 - 6, Y(v) + 4, fmt(v, v % 1 ? 1 : 0), {s: 11, c: C.dim, a: 'end'})}`);
+  s += txt(w - 8, y0 - 6, xlab, {s: 12, w: 700, c: C.dim, a: 'end'}) + txt(x0 + 6, 18, ylab, {s: 12, w: 700, c: C.dim});
+  return {s, X, Y};
+}
+function svgPunt(svg, e){ const p = svg.createSVGPoint(); p.x = e.clientX; p.y = e.clientY; return p.matrixTransform(svg.getScreenCTM().inverse()); }
+
+
+
+const isOn = id => $(id).classList.contains('active');
+const draad = pts => `<polyline points="${pts.map(p => p.join(',')).join(' ')}" fill="none" stroke="#334155" stroke-width="3" stroke-linejoin="round"/>`;
+function batterij(x, y, U){ // verticaal, pluspool boven
+  return `<rect x="${x - 20}" y="${y - 22}" width="40" height="44" fill="#fff"/><line x1="${x - 18}" y1="${y - 6}" x2="${x + 18}" y2="${y - 6}" stroke="#334155" stroke-width="3"/><line x1="${x - 9}" y1="${y + 6}" x2="${x + 9}" y2="${y + 6}" stroke="#334155" stroke-width="7"/>` +
+    txt(x + 24, y - 6, '+', {s: 16, w: 700, c: C.fw}) + txt(x + 24, y + 14, '−', {s: 16, w: 700, c: C.f}) + (U !== undefined ? txt(x - 26, y + 5, fmt(U, U % 1 ? 1 : 0) + ' V', {s: 13, w: 700, a: 'end'}) : '');
+}
+const weerstand = (x, y, w, h, lab, verticaal) => verticaal ? `<rect x="${x - h / 2}" y="${y - w / 2}" width="${h}" height="${w}" fill="#fff" stroke="#334155" stroke-width="3"/>` + txt(x + h / 2 + 6, y + 5, lab, {s: 13, w: 700})
+  : `<rect x="${x - w / 2}" y="${y - h / 2}" width="${w}" height="${h}" fill="#fff" stroke="#334155" stroke-width="3"/>` + txt(x, y - h / 2 - 8, lab, {s: 13, w: 700, a: 'middle'});
+const meter = (x, y, l, v, kleur = C.tekst) => `<circle cx="${x}" cy="${y}" r="17" fill="#fff" stroke="#334155" stroke-width="3"/>` + txt(x, y + 6, l, {s: 17, w: 700, a: 'middle'}) + (v ? txt(x, y + 38, v, {s: 13, w: 700, a: 'middle', c: kleur}) : '');
+const el = (x, y, r = 8) => `<circle cx="${x}" cy="${y}" r="${r}" fill="#2563eb"/><text x="${x}" y="${y + 4}" font-size="${r * 1.6}" font-weight="700" fill="#fff" text-anchor="middle">−</text>`;
+const pr = (x, y, r = 8) => `<circle cx="${x}" cy="${y}" r="${r}" fill="${C.fw}"/><text x="${x}" y="${y + 4.5}" font-size="${r * 1.6}" font-weight="700" fill="#fff" text-anchor="middle">+</text>`;
+
+//////////////////// 1.1 ////////////////////
+(function(){
+  function teken(){
+    const n = +$('e1w').value; $('e1wv').textContent = n + '×';
+    let o = `<rect x="60" y="70" width="200" height="220" rx="30" fill="#FDE68A" stroke="#92400E" stroke-width="2"/>` + txt(160, 60, 'trui', {s: 15, w: 700, a: 'middle'});
+    const tp = [], te = [];
+    for (let i = 0; i < 12; i++){ const x = 95 + (i % 4) * 44, y = 110 + Math.floor(i / 4) * 60; tp.push(pr(x, y)); if (i >= n) te.push(el(x + 18, y + 18)); }
+    o += tp.join('') + te.join('');
+    const bx = 450, by = 180;
+    o += `<ellipse cx="${bx}" cy="${by}" rx="95" ry="115" fill="#FCA5A5" fill-opacity=".5" stroke="#B91C1C" stroke-width="2"/><path d="M${bx} ${by + 115} l-8 14 h16 z" fill="#B91C1C"/>` + txt(bx, 52, 'ballon', {s: 15, w: 700, a: 'middle'});
+    for (let i = 0; i < 6; i++){ const x = bx - 50 + (i % 3) * 50, y = by - 50 + Math.floor(i / 3) * 70; o += pr(x, y) + el(x + 18, y + 18); }
+    for (let i = 0; i < n; i++) o += el(bx - 50 + i * 20, by + 80);
+    if (n > 0) o += pijl(345, 330, 270, 330, '#1F7A4A', 'trekken aan', 0, -10, 3) + pijl(275, 330, 350, 330, '#1F7A4A', '', 0, 0, 3);
+    o += txt(160, 320, n ? `+${n}` : 'neutraal', {s: 16, w: 700, a: 'middle', c: n ? C.fw : C.dim}) + txt(bx, 330, n ? `−${n}` : 'neutraal', {s: 16, w: 700, a: 'middle', c: n ? C.f : C.dim});
+    $('s_e1').innerHTML = o;
+    $('r_e1').innerHTML = n === 0 ? 'Beide voorwerpen zijn <b>neutraal</b>: evenveel protonen als elektronen.' :
+      `${n} elektronen gingen van de trui naar de ballon.<br>trui: tekort → <b style="color:${C.fw}">positief</b><br>ballon: teveel → <b style="color:${C.f}">negatief</b><br>lading ballon: −${n} · 1,6 · 10⁻¹⁹ C = <b>−${fmt(n * 1.6, 1)} · 10⁻¹⁹ C</b><br>Ongelijke ladingen: ze <b>trekken elkaar aan</b>.<br><span style="color:${C.dim}">(In het echt gaan er miljarden elektronen over.)</span>`;
+  }
+  $('e1w').oninput = teken; teken();
+})();
+
+//////////////////// 1.2 ////////////////////
+(function(){
+  let mat = 'g', lad = '-';
+  $('e2m').onclick = e => { const b = e.target.closest('button'); if (!b) return; mat = b.dataset.m; $('e2m').querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b)); teken(); };
+  $('e2l').onclick = e => { const b = e.target.closest('button'); if (!b) return; lad = b.dataset.l; $('e2l').querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b)); teken(); };
+  function teken(){
+    const d = +$('e2d').value, sterk = 1 - d / 100; $('e2dv').textContent = (d < 35 ? 'dichtbij' : d < 70 ? 'middel' : 'ver');
+    const sx = 60 + (1 - sterk) * 120, cx = 430, cy = 170, R = 110;
+    let o = `<rect x="${sx}" y="${cy - 18}" width="150" height="36" rx="10" fill="${lad === '-' ? '#BFDBFE' : '#FECACA'}" stroke="#334155"/>`;
+    for (let i = 0; i < 5; i++) o += lad === '-' ? el(sx + 18 + i * 28, cy) : pr(sx + 18 + i * 28, cy);
+    o += `<circle cx="${cx}" cy="${cy}" r="${R}" fill="${mat === 'g' ? '#E2E8F0' : '#FEF3C7'}" stroke="#334155" stroke-width="2"/>` + txt(cx, cy + R + 26, mat === 'g' ? 'metalen bol (geleider)' : 'plastic bol (isolator)', {s: 14, w: 700, a: 'middle'});
+    if (mat === 'g'){
+      const shift = sterk * 70 * (lad === '-' ? 1 : -1);
+      for (let i = 0; i < 6; i++){ const a = -1.1 + i * 0.44; o += pr(cx + Math.cos(a) * 0 + (i % 3 - 1) * 50, cy - 60 + Math.floor(i / 3) * 120, 7); }
+      for (let i = 0; i < 6; i++){ const bx = cx + (i % 3 - 1) * 50 + 20 + shift * (1 + (i % 3) * 0.15), byy = cy - 30 + Math.floor(i / 3) * 60; o += el(Math.max(cx - R + 14, Math.min(cx + R - 14, bx)), byy, 7); }
+      if (sterk > 0.05) o += txt(cx - R + 20, cy - R - 6, lad === '-' ? '+ kant' : '− kant', {s: 13, w: 700, c: lad === '-' ? C.fw : C.f}) + txt(cx + R - 20, cy - R - 6, lad === '-' ? '− kant' : '+ kant', {s: 13, w: 700, c: lad === '-' ? C.f : C.fw, a: 'end'});
+    } else {
+      for (let i = 0; i < 9; i++){ const mx = cx - 70 + (i % 3) * 70, my = cy - 60 + Math.floor(i / 3) * 60, sh = sterk * 8 * (lad === '-' ? 1 : -1);
+        o += `<ellipse cx="${mx}" cy="${my}" rx="${22 + Math.abs(sh)}" ry="15" fill="none" stroke="#94A3B8"/>` + pr(mx - 8 - sh, my, 6) + el(mx + 8 + sh, my, 6); }
+    }
+    if (sterk > 0.05) o += pijl(cx - R, cy + R - 20, cx - R - 30 - sterk * 40, cy + R - 20, '#1F7A4A', 'aantrekking', 0, 22, 3);
+    $('s_e2').innerHTML = o;
+    $('r_e2').innerHTML = mat === 'g' ? `De <b>vrije elektronen</b> bewegen door de hele bol ${lad === '-' ? '<b>weg van</b>' : '<b>naar</b>'} de staaf. De bol blijft neutraal, maar de lading is verdeeld: de kant bij de staaf krijgt de <b>tegengestelde</b> lading. Daardoor wordt de bol <b>aangetrokken</b>.`
+      : `De elektronen kunnen hun atoom of molecule <b>niet verlaten</b>. Ze verschuiven alleen een klein beetje binnen elk molecule: de moleculen worden een beetje + en −. Ook nu wordt de bol <b>aangetrokken</b>, maar minder sterk.`;
+  }
+  $('e2d').oninput = teken; teken();
+})();
+
+//////////////////// 2.1 ////////////////////
+(function(){
+  function teken(){
+    const U = +$('e3u').value, Q = +$('e3q').value, E = U * Q; $('e3qv').textContent = Q + ' C';
+    let o = draad([[120, 170], [120, 60], [520, 60], [520, 280], [120, 280], [120, 190]]) + batterij(120, 170, U);
+    o += `<circle cx="520" cy="170" r="24" fill="#FEF9C3" stroke="#334155" stroke-width="3"/><path d="M503 153 L537 187 M537 153 L503 187" stroke="#334155" stroke-width="2"/>` + txt(560, 175, 'lamp', {s: 13, w: 600, c: C.dim});
+    const n = Math.min(Q, 12);
+    for (let i = 0; i < n; i++){ const x = 160 + i * 28; o += `<circle cx="${x}" cy="60" r="9" fill="#2563eb"/>` + `<rect x="${x - 5}" y="${36 - Math.min(20, U * 1.6)}" width="10" height="${Math.min(20, U * 1.6)}" fill="#F59E0B"/>`; }
+    o += txt(320, 110, `elke coulomb krijgt ${fmt(U, U % 1 ? 1 : 0)} J energie mee`, {s: 15, w: 700, a: 'middle', c: '#B45309'});
+    o += txt(320, 320, `De lamp zet ${fmt(E, E % 1 ? 1 : 0)} J elektrische energie om in licht en warmte.`, {s: 14, a: 'middle', c: C.dim});
+    $('s_e3').innerHTML = o;
+    $('r_e3').innerHTML = `U = ${fmt(U, U % 1 ? 1 : 0)} V = ${fmt(U, U % 1 ? 1 : 0)} J/C<br>E = U · Q = ${fmt(U, U % 1 ? 1 : 0)} · ${Q} = <b>${fmt(E, E % 1 ? 1 : 0)} J</b>`;
+  }
+  $('e3u').onchange = $('e3q').oninput = teken; teken();
+})();
+
+//////////////////// 2.2 ////////////////////
+(function(){
+  let toonE = true, toonC = true, fase = 0;
+  $('e4e').onclick = () => { toonE = !toonE; $('e4e').classList.toggle('on', toonE); };
+  $('e4c').onclick = () => { toonC = !toonC; $('e4c').classList.toggle('on', toonC); };
+  // lus: batterij links (x=110, +boven y=180-? ), pad tegen wijzerzin voor elektronen: van min (onder) → onderaan rechts → op → bovenaan links → plus
+  const P = [[110, 200], [110, 300], [530, 300], [530, 60], [110, 60], [110, 160]];
+  const L = []; let tot = 0; for (let i = 0; i < P.length - 1; i++){ const l = Math.hypot(P[i + 1][0] - P[i][0], P[i + 1][1] - P[i][1]); L.push(l); tot += l; }
+  function punt(s){ s = ((s % tot) + tot) % tot; for (let i = 0; i < L.length; i++){ if (s <= L[i]){ const f = s / L[i]; return [P[i][0] + (P[i + 1][0] - P[i][0]) * f, P[i][1] + (P[i + 1][1] - P[i][1]) * f]; } s -= L[i]; } return P[0]; }
+  function teken(){
+    const I = +$('e4i').value, dt = +$('e4t').value, Q = I * dt; $('e4iv').textContent = fmt(I, 1) + ' A'; $('e4tv').textContent = dt + ' s';
+    fase += I * 1.2;
+    let o = draad(P) + batterij(110, 180) + `<circle cx="530" cy="180" r="24" fill="#FEF9C3" stroke="#334155" stroke-width="3"/><path d="M513 163 L547 197 M547 163 L513 197" stroke="#334155" stroke-width="2"/>`;
+    if (toonE) for (let k = 0; k < 18; k++){ const [x, y] = punt(fase + k * tot / 18); o += `<circle cx="${x}" cy="${y}" r="6" fill="#2563eb"/>`; }
+    if (toonC){ o += pijl(250, 40, 380, 40, C.fw, 'I', 0, -8, 3) + pijl(560, 110, 560, 240, C.fw, '', 0, 0, 3) + pijl(380, 320, 250, 320, C.fw, '', 0, 0, 3); }
+    if (toonE) o += txt(320, 345, 'elektronen: van − naar + door de kring', {s: 13, w: 700, c: '#2563eb', a: 'middle'});
+    if (toonC) o += txt(320, 22, 'conventionele stroomzin: van + naar − door de kring', {s: 13, w: 700, c: C.fw, a: 'middle'});
+    $('s_e4').innerHTML = o;
+    $('r_e4').innerHTML = `Q = I · Δt = ${fmt(I, 1)} · ${dt} = <b>${fmt(Q, 1)} C</b><br>aantal elektronen = Q / (1,6 · 10⁻¹⁹ C) ≈ <b>${fmt(Q / 1.6, 1)} · 10¹⁹</b>`;
+  }
+  function lus(){ if (isOn('e4')) teken(); requestAnimationFrame(lus); } lus();
+})();
+
+//////////////////// 3.1 meters ////////////////////
+(function(){
+  let A = 's', V = 'p'; const U = 6, R = 12;
+  $('e5a').onclick = e => { const b = e.target.closest('button'); if (!b) return; A = b.dataset.v; $('e5a').querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b)); teken(); };
+  $('e5v').onclick = e => { const b = e.target.closest('button'); if (!b) return; V = b.dataset.v; $('e5v').querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b)); teken(); };
+  function teken(){
+    // kring: batterij links (100,190), weerstand boven (330,80), rechts naar beneden, onderaan terug
+    let o = batterij(100, 190, U) + weerstand(330, 80, 110, 34, 'R = 12 Ω') + draad([[100, 170], [100, 80], [275, 80]]);
+    const Iok = U / R;
+    // rechterkant: van weerstand naar rechts; eventueel voltmeter in serie
+    if (V === 's') o += draad([[385, 80], [450, 80]]) + meter(468, 80, 'V', '≈ 6 V') + draad([[486, 80], [540, 80], [540, 300]]);
+    else o += draad([[385, 80], [540, 80], [540, 300]]);
+    // onderkant: ampèremeter in serie of gewone draad
+    if (A === 's') o += draad([[540, 300], [398, 300]]) + meter(380, 300, 'A', V === 's' ? '≈ 0 A' : fmt(Iok, 2) + ' A') + draad([[362, 300], [100, 300], [100, 210]]);
+    else o += draad([[540, 300], [100, 300], [100, 210]]) + draad([[260, 80], [260, 160], [313, 160]]) + meter(330, 160, 'A', 'kortsluiting!', '#B3362B') + draad([[347, 160], [400, 160], [400, 80]]);
+    // voltmeter in parallel over R
+    if (V === 'p') o += draad([[250, 80], [250, 20], [313, 20]]) + meter(330, 20, 'V', '') + draad([[347, 20], [410, 20], [410, 80]]) + txt(370, 25, A === 'p' ? '0 V' : '6,0 V', {s: 13, w: 700});
+    $('s_e5').innerHTML = o;
+    let msg;
+    if (A === 's' && V === 'p') msg = `<span class="ok">Juist aangesloten.</span><br>ampèremeter: <b>${fmt(Iok, 2)} A</b><br>voltmeter: <b>6,0 V</b><br>R = U / I = 6,0 / ${fmt(Iok, 2)} = <b>12 Ω</b>`;
+    else if (A === 'p') msg = `<span class="flag">Fout: ampèremeter in parallel.</span><br>De ampèremeter heeft bijna geen weerstand. De stroom gaat erdoor in plaats van door R: <b>kortsluiting</b>. De meter of de zekering gaat stuk.`;
+    else msg = `<span class="flag">Fout: voltmeter in serie.</span><br>De voltmeter heeft een enorme weerstand: er loopt bijna <b>geen stroom</b> meer. De kring werkt niet, en de voltmeter meet de spanning van de bron.`;
+    $('r_e5').innerHTML = msg;
+  }
+  teken();
+})();
+
+//////////////////// 3.2 Ohm ////////////////////
+(function(){
+  function teken(){
+    const U = +$('e6u').value, R = +$('e6r').value, I = U / R; $('e6uv').textContent = fmt(U, 1) + ' V'; $('e6rv').textContent = R + ' Ω';
+    let o = batterij(90, 120, U) + draad([[90, 100], [90, 40], [260, 40]]) + weerstand(320, 40, 120, 34, 'R = ' + R + ' Ω') + draad([[380, 40], [540, 40], [540, 200], [380, 200]]) + meter(360, 200, 'A', fmt(I, 2) + ' A') + draad([[342, 200], [90, 200], [90, 140]]);
+    $('s_e6').innerHTML = o;
+    const g = grafiek(null, {w: 300, h: 220, x0: 40, y0: 190, xmax: 3, ymax: 12, xlab: 'I (A)', ylab: 'U (V)', xt: [0, 1, 2, 3], yt: [4, 8, 12]});
+    let a = g.s; [5, 10, 20, 40].forEach((r, i) => { const xe = Math.min(3, 12 / r); a += `<line x1="${g.X(0)}" y1="${g.Y(0)}" x2="${g.X(xe)}" y2="${g.Y(r * xe)}" stroke="${['#2563eb', '#0891b2', '#7c3aed', '#d97706'][i]}" stroke-width="${r === R ? 4 : 2}"/>` + txt(g.X(xe) - 2, g.Y(r * xe) - 4, r + ' Ω', {s: 10, w: 700, c: ['#2563eb', '#0891b2', '#7c3aed', '#d97706'][i], a: 'end'}); });
+    if (I <= 3) a += `<circle cx="${g.X(I)}" cy="${g.Y(U)}" r="5" fill="${C.tekst}"/>`;
+    $('g_e6a').innerHTML = a;
+    const h = grafiek(null, {w: 300, h: 220, x0: 40, y0: 190, xmax: 40, ymax: 3, xlab: 'R (Ω)', ylab: 'I (A)', xt: [0, 10, 20, 30, 40], yt: [1, 2, 3]});
+    let pts = []; for (let r = Math.max(1, U / 3); r <= 40; r += 0.5) pts.push(h.X(r) + ',' + h.Y(U / r));
+    $('g_e6b').innerHTML = h.s + (U > 0 ? `<polyline points="${pts.join(' ')}" fill="none" stroke="#2563eb" stroke-width="3"/><circle cx="${h.X(R)}" cy="${h.Y(I)}" r="5" fill="${C.tekst}"/>` : '');
+    $('r_e6').innerHTML = `I = U / R = ${fmt(U, 1)} / ${R} = <b>${fmt(I, 3)} A</b><br>G = 1 / R = 1 / ${R} = <b>${fmt(1 / R, 3)} S</b><br><br>U en I zijn <b>recht evenredig</b> (rechte door de oorsprong, helling = R). I en R zijn bij gelijke U <b>omgekeerd evenredig</b>.`;
+  }
+  $('e6u').oninput = $('e6r').oninput = teken; teken();
+})();
+
+//////////////////// 3.3 veiligheid ////////////////////
+(function(){
+  const T = [['Waterkoker', 8.7], ['Strijkijzer', 9.6], ['Föhn', 7.8], ['Microgolfoven', 4.3], ['Laptop', 0.3], ['Televisie', 0.5]];
+  const aan = new Set([0]);
+  $('e7k').innerHTML = T.map(([n], i) => `<button class="btn ${aan.has(i) ? 'on' : ''}" data-i="${i}">${n}</button>`).join('');
+  $('e7k').onclick = e => { const b = e.target.closest('button'); if (!b) return; const i = +b.dataset.i; aan.has(i) ? aan.delete(i) : aan.add(i); b.classList.toggle('on'); teken(); };
+  function teken(){
+    const I = [...aan].reduce((s, i) => s + T[i][1], 0), uit = I > 16;
+    let o = `<rect x="40" y="120" width="560" height="50" rx="10" fill="#F1F5F9" stroke="#334155" stroke-width="2"/>`;
+    [...aan].forEach((i, k) => o += `<rect x="${60 + k * 90}" y="60" width="76" height="46" rx="6" fill="#E0E7FF" stroke="#334155"/>` + txt(98 + k * 90, 88, T[i][0].slice(0, 10), {s: 11, w: 700, a: 'middle'}) + `<line x1="${98 + k * 90}" y1="106" x2="${98 + k * 90}" y2="125" stroke="#334155" stroke-width="3"/>` + txt(98 + k * 90, 150, fmt(T[i][1], 1) + ' A', {s: 12, a: 'middle', c: C.dim}));
+    const bw = 520, frac = Math.min(1, I / 24);
+    o += `<rect x="60" y="210" width="${bw}" height="26" rx="6" fill="#E2E8F0"/><rect x="60" y="210" width="${bw * frac}" height="26" rx="6" fill="${uit ? '#DC2626' : I > 12 ? '#F59E0B' : '#22C55E'}"/><line x1="${60 + bw * 16 / 24}" y1="200" x2="${60 + bw * 16 / 24}" y2="246" stroke="#1D2A36" stroke-width="2" stroke-dasharray="4 3"/>` + txt(60 + bw * 16 / 24, 262, 'zekering 16 A', {s: 12, w: 700, a: 'middle'}) + txt(60, 200, 'totale stroom: ' + fmt(I, 1) + ' A', {s: 14, w: 700});
+    if (uit) o += txt(320, 40, '⚡ De zekering springt!', {s: 18, w: 700, a: 'middle', c: '#DC2626'});
+    $('s_e7').innerHTML = o;
+    $('r_e7').innerHTML = uit ? `<span class="flag">Overbelasting: ${fmt(I, 1)} A &gt; 16 A.</span><br>De draden zouden te warm worden (joule-effect) en kunnen brand veroorzaken. De automatische zekering onderbreekt de kring.` : `Totale stroom ${fmt(I, 1)} A ≤ 16 A: <span class="ok">geen gevaar</span>.<br>In een parallelschakeling tellen de stromen van alle toestellen op.`;
+  }
+  teken();
+  const K = [
+    ['Kortsluiting', 'Twee draden raken elkaar zonder weerstand ertussen, bv. door beschadigde isolatie. De stroom wordt <b>zeer groot</b>.'],
+    ['Overbelasting', 'Te veel toestellen op dezelfde kring: de totale stroom is groter dan de draden aankunnen. De draden worden heet.'],
+    ['Elektrocutie', 'Stroom loopt <b>door je lichaam</b> naar de aarde. Al vanaf ongeveer 30 mA is dat gevaarlijk voor je hart.'],
+    ['Automatische zekering', 'Onderbreekt de kring als de stroom te groot wordt (kortsluiting of overbelasting). Beschermt de <b>leidingen</b> tegen brand.'],
+    ['Aarding', 'Verbindt de metalen behuizing van een toestel met de aarde. Komt er spanning op de behuizing, dan loopt de stroom via de aardingsdraad weg en <b>niet door jou</b>.'],
+    ['Verliesstroomschakelaar', 'Vergelijkt de stroom die het huis in gaat met de stroom die terugkomt. Is er een verschil (stroom die "weglekt", bv. door je lichaam), dan schakelt hij binnen een fractie van een seconde uit. Beschermt <b>mensen</b>.']
+  ];
+  $('c_e7').innerHTML = K.map(([t, p]) => `<div class="card"><div class="txt"><h4>${t}</h4><p>${p}</p></div></div>`).join('');
+})();
+
+//////////////////// 4.1 serie en parallel ////////////////////
+(function(){
+  let mode = 'serie';
+  $('e8s').onclick = e => { const b = e.target.closest('button'); if (!b) return; mode = b.dataset.s; $('e8s').querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b)); teken(); };
+  function teken(){
+    const U = +$('e8u').value, R = [+$('e8r1').value, +$('e8r2').value, +$('e8r3').value].filter(r => r > 0);
+    $('e8uv').textContent = U + ' V'; $('e8r1v').textContent = $('e8r1').value + ' Ω'; $('e8r2v').textContent = $('e8r2').value + ' Ω'; $('e8r3v').textContent = +$('e8r3').value ? $('e8r3').value + ' Ω' : 'geen';
+    let o = batterij(80, 190, U), r;
+    if (mode === 'serie'){
+      const Rs = R.reduce((a, b) => a + b, 0), I = U / Rs, xs = R.length === 2 ? [250, 430] : [210, 340, 470];
+      o += draad([[80, 170], [80, 60], [570, 60], [570, 320], [80, 320], [80, 210]]);
+      R.forEach((rv, i) => o += `<rect x="${xs[i] - 45}" y="43" width="90" height="34" fill="#fff" stroke="#334155" stroke-width="3"/>` + txt(xs[i], 33, 'R' + (i + 1) + ' = ' + rv + ' Ω', {s: 13, w: 700, a: 'middle'}) + txt(xs[i], 100, 'U = ' + fmt(I * rv, 2) + ' V', {s: 12, w: 700, a: 'middle', c: '#7c3aed'}));
+      o += txt(330, 345, 'I = ' + fmt(I, 3) + ' A (overal gelijk)', {s: 14, w: 700, a: 'middle', c: C.fw});
+      r = `R<sub>s</sub> = ${R.join(' + ')} = <b>${fmt(Rs, 0)} Ω</b><br>I = U / R<sub>s</sub> = ${U} / ${fmt(Rs, 0)} = <b>${fmt(I, 3)} A</b><br>` + R.map((rv, i) => `U<sub>${i + 1}</sub> = I · R<sub>${i + 1}</sub> = <b>${fmt(I * rv, 2)} V</b>`).join('<br>') + `<br>Samen: ${fmt(U, 0)} V = U van de bron.`;
+    } else {
+      const Rs = 1 / R.reduce((a, b) => a + 1 / b, 0), I = U / Rs, ys = R.length === 2 ? [130, 250] : [100, 190, 280];
+      const yl = ys[ys.length - 1];
+      o += draad([[80, 170], [80, 40], [300, 40], [300, yl]]) + draad([[540, ys[0]], [540, 340], [80, 340], [80, 210]]);
+      R.forEach((rv, i) => o += draad([[300, ys[i]], [375, ys[i]]]) + `<rect x="375" y="${ys[i] - 17}" width="90" height="34" fill="#fff" stroke="#334155" stroke-width="3"/>` + draad([[465, ys[i]], [540, ys[i]]]) + txt(420, ys[i] - 24, 'R' + (i + 1) + ' = ' + rv + ' Ω', {s: 13, w: 700, a: 'middle'}) + txt(420, ys[i] + 32, 'I = ' + fmt(U / rv, 2) + ' A', {s: 12, w: 700, c: C.fw, a: 'middle'}));
+      o += txt(190, 30, 'I = ' + fmt(I, 2) + ' A', {s: 14, w: 700, c: C.fw}) + txt(420, 365, 'U = ' + U + ' V over elke weerstand', {s: 13, w: 700, a: 'middle', c: '#7c3aed'});
+      r = `1 / R<sub>s</sub> = ${R.map(v => '1/' + v).join(' + ')}<br>R<sub>s</sub> = <b>${fmt(Rs, 2)} Ω</b> (kleiner dan ${Math.min(...R)} Ω)<br>I = U / R<sub>s</sub> = <b>${fmt(I, 2)} A</b><br>` + R.map((rv, i) => `I<sub>${i + 1}</sub> = U / R<sub>${i + 1}</sub> = <b>${fmt(U / rv, 2)} A</b>`).join('<br>');
+    }
+    $('s_e8').innerHTML = o; $('r_e8').innerHTML = r;
+  }
+  ['e8u', 'e8r1', 'e8r2', 'e8r3'].forEach(id => $(id).oninput = teken); teken();
+})();
+
+//////////////////// OEFENEN ////////////////////
+(function(){
+  const rnd = (a, b) => a + Math.floor(Math.random() * (b - a + 1)), kies = a => a[rnd(0, a.length - 1)];
+  const lees = s => parseFloat(String(s).trim().replace(/\s/g, '').replace(',', '.').replace('−', '-'));
+  const dicht = (a, b) => isFinite(a) && Math.abs(a - b) <= Math.max(0.02 * Math.abs(b), 0.0051);
+  const MC = {
+    h1: [['Een ballon is negatief geladen. Wat betekent dat?', ['Hij heeft te weinig protonen.', 'Hij heeft een teveel aan elektronen.', 'Hij heeft een tekort aan elektronen.', 'Hij heeft te veel neutronen.'], 1, 'Negatief geladen = teveel aan elektronen. Alleen elektronen verplaatsen.'],
+      ['Waarom geleidt een metaal elektriciteit en plastic niet?', ['Metaal is zwaarder.', 'Metaal heeft vrije elektronen die kunnen bewegen.', 'Plastic heeft geen elektronen.', 'Metaal heeft vrije protonen.'], 1, 'In een metaal zijn de valentie-elektronen vrij (metaalbinding). In een isolator zitten de elektronen vast.'],
+      ['Twee negatief geladen ballonnen hangen naast elkaar. Wat gebeurt er?', ['Ze trekken elkaar aan.', 'Ze stoten elkaar af.', 'Er gebeurt niets.', 'Ze worden neutraal.'], 1, 'Gelijke ladingen stoten elkaar af.']],
+    h2: [['Wat is de conventionele stroomzin?', ['Van − naar + door de kring.', 'Van + naar − door de kring.', 'De richting van de elektronen.', 'Er is geen afgesproken richting.'], 1, 'Afgesproken: van de pluspool door de kring naar de minpool. De elektronen bewegen in de andere richting.'],
+      ['Een batterij van 9 V. Wat betekent dat?', ['Er gaat 9 C per seconde door.', 'Elke coulomb lading krijgt 9 J energie mee.', 'De batterij levert 9 A.', 'De batterij bevat 9 J.'], 1, 'Spanning is energie per lading: 9 V = 9 J/C.']],
+    h3: [['Hoe sluit je een ampèremeter aan?', ['In parallel met de weerstand.', 'In serie.', 'Rechtstreeks op de batterij.', 'Het maakt niet uit.'], 1, 'De stroom moet door de ampèremeter gaan: in serie. In parallel veroorzaak je kortsluiting.'],
+      ['Wat doet een verliesstroomschakelaar?', ['Hij beschermt de draden tegen overbelasting.', 'Hij schakelt uit als er stroom weglekt, bv. door je lichaam.', 'Hij verhoogt de spanning.', 'Hij verbindt het toestel met de aarde.'], 1, 'Hij vergelijkt de stroom heen en terug. Een verschil betekent lekstroom: hij schakelt uit en beschermt mensen.'],
+      ['Waar is het joule-effect ongewenst?', ['In een waterkoker.', 'In een broodrooster.', 'In de elektrische leidingen van een huis.', 'In een verwarming.'], 2, 'In leidingen, lampen en computers is de warmte energieverlies en soms gevaarlijk.'],
+      ['Je verdubbelt de spanning over een weerstand. Wat gebeurt er met de stroom?', ['Ze halveert.', 'Ze blijft gelijk.', 'Ze verdubbelt.', 'Ze wordt vier keer zo groot.'], 2, 'Wet van Ohm: I = U / R. Bij gelijke R zijn U en I recht evenredig.']],
+    h4: [['Je schakelt een extra weerstand in parallel. Wat gebeurt er met de substitutieweerstand?', ['Ze wordt groter.', 'Ze wordt kleiner.', 'Ze blijft gelijk.', 'Ze wordt nul.'], 1, 'Een extra parallelle tak geeft de stroom een extra weg: R<sub>s</sub> wordt kleiner.'],
+      ['In een serieschakeling is ... overal gelijk.', ['de spanning', 'de stroomsterkte', 'de weerstand', 'het vermogen'], 1, 'In serie is er maar één weg: de stroomsterkte is overal gelijk. De spanning verdeelt zich.']]
+  };
+  const REK = {
+    h1: [() => { const n = kies([2, 5, 10, 50]); return {q: `Een voorwerp heeft ${n} · 10¹⁹ elektronen te veel. Hoe groot is zijn lading? Geef de grootte in C. (e = 1,6 · 10⁻¹⁹ C)`, a: n * 1.6, u: 'C', u2: `Q = ${n} · 10¹⁹ · 1,6 · 10⁻¹⁹ C = ${fmt(n * 1.6, 1)} C (negatief)`}; }],
+    h2: [() => { const I = kies([0.2, 0.5, 1.5, 2]), t = kies([10, 30, 60, 120]); return {q: `Door een lampje loopt ${fmt(I, 1)} A gedurende ${t} s. Bereken de lading die erdoor stroomt.`, a: I * t, u: 'C', u2: `Q = I · Δt = ${fmt(I, 1)} · ${t} = ${fmt(I * t, 0)} C`}; },
+      () => { const Q = kies([30, 60, 120, 240]), t = kies([10, 20, 60]); return {q: `In ${t} s stroomt ${Q} C door een draad. Bereken de stroomsterkte.`, a: Q / t, u: 'A', u2: `I = Q / Δt = ${Q} / ${t} = ${fmt(Q / t, 2)} A`}; },
+      () => { const U = kies([1.5, 4.5, 9, 12]), Q = kies([10, 20, 50]); return {q: `Een batterij van ${fmt(U, 1)} V laat ${Q} C door een kring stromen. Hoeveel energie geeft ze?`, a: U * Q, u: 'J', u2: `E = U · Q = ${fmt(U, 1)} · ${Q} = ${fmt(U * Q, 0)} J`}; }],
+    h3: [() => { const U = kies([3, 6, 9, 12]), I = kies([0.2, 0.25, 0.5, 1.5]); return {q: `Over een weerstand staat ${U} V en er loopt ${fmt(I, 2)} A door. Bereken de weerstand.`, a: U / I, u: 'Ω', u2: `R = U / I = ${U} / ${fmt(I, 2)} = ${fmt(U / I, 1)} Ω`}; },
+      () => { const R = kies([10, 20, 47, 100]), U = kies([5, 12, 230]); return {q: `Een weerstand van ${R} Ω staat op ${U} V. Bereken de stroomsterkte.`, a: U / R, u: 'A', u2: `I = U / R = ${U} / ${R} = ${fmt(U / R, 2)} A`}; },
+      () => { const R = kies([20, 50, 100, 250]); return {q: `Bereken de geleidbaarheid van een weerstand van ${R} Ω.`, a: 1 / R, u: 'S', u2: `G = 1 / R = 1 / ${R} = ${fmt(1 / R, 3)} S`}; }],
+    h4: [() => { const a = rnd(5, 40), b = rnd(5, 40); return {q: `R₁ = ${a} Ω en R₂ = ${b} Ω staan in serie. Bereken de substitutieweerstand.`, a: a + b, u: 'Ω', u2: `R<sub>s</sub> = R₁ + R₂ = ${a} + ${b} = ${a + b} Ω`}; },
+      () => { const a = kies([10, 20, 30, 60]), b = kies([10, 20, 30, 60]); const r = 1 / (1 / a + 1 / b); return {q: `R₁ = ${a} Ω en R₂ = ${b} Ω staan in parallel. Bereken de substitutieweerstand.`, a: r, u: 'Ω', u2: `1 / R<sub>s</sub> = 1/${a} + 1/${b} → R<sub>s</sub> = ${fmt(r, 2)} Ω`}; }]
+  };
+  const SO = [['alles', 'Door elkaar'], ['h1', '1 Geladen toestand'], ['h2', '2 Spanning en stroom'], ['h3', '3 Stroomkring'], ['h4', '4 Schakelingen']];
+  let soort = 'alles', goed = 0, tot = 0, klaar = false;
+  $('soort').innerHTML = SO.map(([k, n]) => `<button class="btn ${k === soort ? 'on' : ''}" data-k="${k}">${n}</button>`).join('');
+  $('soort').onclick = e => { const b = e.target.closest('button'); if (!b) return; soort = b.dataset.k; $('soort').querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b)); nieuw(); };
+  function tel(ok){ if (!klaar){ tot++; if (ok) goed++; klaar = true; } $('score').textContent = `${goed} / ${tot}`; }
+  function nieuw(){
+    klaar = false; $('fb').innerHTML = ''; $('fb').className = 'feedback';
+    const t = soort === 'alles' ? kies(['h1', 'h2', 'h3', 'h4']) : soort;
+    if (Math.random() < 0.45){
+      const [q, opts, j, u] = kies(MC[t]); $('vraag').innerHTML = q;
+      $('invoer').innerHTML = `<div class="keuzes">${opts.map((o, i) => `<button class="btn" data-i="${i}">${'ABCD'[i]}. ${o}</button>`).join('')}</div>`;
+      $('invoer').querySelector('.keuzes').onclick = e => { const b = e.target.closest('button'); if (!b) return; const ok = +b.dataset.i === j;
+        $('invoer').querySelectorAll('.keuzes .btn').forEach((x, i) => { x.classList.toggle('goed', i === j); if (x === b && !ok) x.classList.add('fout'); });
+        tel(ok); $('fb').className = 'feedback ' + (ok ? 'goed' : 'fout'); $('fb').innerHTML = (ok ? '✓ Juist!' : '✗ Niet juist.') + `<span class="uitleg">${u}</span>`; };
+    } else {
+      const r = kies(REK[t])(); $('vraag').innerHTML = r.q;
+      $('invoer').innerHTML = `<div class="antw"><input type="text" id="oa" inputmode="decimal" autocomplete="off"> <b>${r.u}</b> <button class="btn primary" id="oc">Controleer</button></div>`;
+      const go = () => { const w = lees($('oa').value); if (!isFinite(w)){ $('fb').className = 'feedback fout'; $('fb').innerHTML = 'Vul een getal in.'; return; }
+        const ok = dicht(w, r.a); tel(ok); $('fb').className = 'feedback ' + (ok ? 'goed' : 'fout'); $('fb').innerHTML = (ok ? '✓ Juist!' : '✗ Nog niet juist.') + `<span class="uitleg">${r.u2}</span>`; };
+      $('oc').onclick = go; $('oa').onkeydown = e => { if (e.key === 'Enter') go(); };
+    }
+  }
+  $('volgende').onclick = nieuw; nieuw();
+})();
+
+</script>
+</body>
+</html>
