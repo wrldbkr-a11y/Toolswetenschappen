@@ -133,3 +133,10 @@ u5 = oef('opl_x', 0, 'Uitdaging · Een rotonde', 'Een auto rijdt aan constant 30
     + aanpak('de snelheid is een vector (hoofdstuk 3.1): kijk niet alleen naar de grootte. Wat doet een kracht loodrecht op de beweging (hoofdstuk 3.2)?'),
     [('Schets', 'twee even lange pijlen, rakend aan de cirkel, in verschillende richtingen'), ('Analyse', 'de grootte blijft gelijk, maar de richting verandert: de bewegingstoestand verandert'),
      ('Besluit', 'er is een resulterende kracht nodig, loodrecht op de beweging, naar het midden van de rotonde (de wrijving tussen banden en weg)')], 'Ilias heeft geen gelijk: F<sub>r</sub> ≠ 0 en wijst naar het midden.')
+
+# leerlijn voor de denkstappen: volledig in 2.2 en 4.2, daarna enkel een korte geheugensteun, in hoofdstuk 5 niets meer
+def steun(t_):
+    return f'<p style="font-size:.93em;color:#475569;margin:10px 0 4px">🧭 <i>{t_}</i></p>'
+_K = steun('Denkstappen van 2.2: op welk voorwerp? · wie oefent uit? · aangrijpingspunt? · richting en zin? · grootte → lengte.')
+h3c = h3c.replace('<p><b>Uitgewerkt voorbeeld · De resulterende kracht tekenen.</b>', _K + '<p><b>Uitgewerkt voorbeeld · De resulterende kracht tekenen.</b>', 1)
+h4c = h4c.replace('<p><b>Uitgewerkt voorbeeld · Drie krachten tekenen.</b>', steun('Gebruik de denkstappen van 2.2 voor elke kracht apart.') + '<p><b>Uitgewerkt voorbeeld · Drie krachten tekenen.</b>', 1)
