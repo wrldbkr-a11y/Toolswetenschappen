@@ -18,6 +18,9 @@ LET = '<div style="background:#FFF7ED;border-left:4px solid #D97706;border-radiu
 TAB = '<table style="border-collapse:collapse;margin:8px 0 12px;font-size:15px" cellpadding="5" border="1" bordercolor="#cbd5e1">'
 # tools van 3ASO in plaats van 3NW
 def aso(s):
+    s = (s.replace('<div class="kop">Traagheid en resulterende kracht in het dagelijks leven', '<div class="kop">Voorbeelden uit het dagelijks leven')
+          .replace('<div class="kader"><div class="kop">', '<div class="kader"><div class="kop">Ken dit · ')
+          .replace('Ken dit · Voorbeelden uit het dagelijks leven', 'Voorbeelden uit het dagelijks leven'))
     return (s.replace('krachten-beweging.html', 'krachten-beweging-3aso.html')
              .replace('krachten.html', 'krachten-3aso.html'))
 
@@ -155,12 +158,12 @@ def sc_boek(opl):
         o += pijl(280, 140, 280, 140 - 4 * HK, G) + label(270, 70, 'F', 'N', G, 'end')
         o += pijl(320, 142, 320, 142 + 4 * HK, ORANJE) + label(330, 226, 'F', 'G', ORANJE)
     return svg(o, w, h)
-def sc_lamp(opl):
+def sc_lamp(opl, n=3):
     w, h = 600, 260
     o = rooster(w, h) + f'<rect x="0" y="0" width="{w}" height="20" fill="#cbd5e1"/><line x1="300" y1="20" x2="300" y2="140" stroke="{INK}" stroke-width="2"/>' + '<path d="M270 180 L330 180 L318 140 L282 140 Z" fill="#fcd34d" stroke="#92400e" stroke-width="2"/>' + punt(300, 160, INK, 4) + punt(300, 20, INK, 4)
     if opl:
-        o += pijl(300, 160, 300, 160 + 3 * HK, PAARS) + label(306, 226, 'F', 'z', PAARS)
-        o += pijl(300, 20, 300, 20 + 3 * HK, ORANJE) + label(310, 70, 'F', 'G', ORANJE)
+        o += pijl(300, 160, 300, 160 + n * HK, PAARS) + label(306, 166 + n * HK, 'F', 'z', PAARS)
+        o += pijl(300, 20, 300, 20 + n * HK, ORANJE) + label(310, 30 + n * HK, 'F', 'G', ORANJE)
     return svg(o, w, h)
 def sc_slee(opl):
     w, h = 600, 220
@@ -206,11 +209,11 @@ t_bal = oef_fig('opl_x', 0, 'De snelheidsvector van een bal', 'Je gooit een bal 
     [('t₁', 'een lange pijl naar boven'), ('t₂', 'een kortere pijl naar boven'), ('t₃', 'de bal staat even stil: v = 0, geen pijl')], 'De pijl wordt korter en verdwijnt op het hoogste punt.', sc_bal(True))
 t_boek = oef_fig('opl_x', 0, 'Boek op tafel: drie krachten', 'Een boek van 2,0 kg ligt op een tafel (g ≈ 10 N/kg). Teken F<sub>z</sub>, F<sub>N</sub> en F<sub>G</sub>. Schaal: 1 hokje ≙ 5 N. ' + TEKEN, sc_boek(False),
     [('Grootte', 'F<sub>z</sub> = 2,0 · 10 = 20 N; F<sub>N</sub> = F<sub>G</sub> = 20 N → 4 hokjes'), ('F<sub>z</sub>', 'vanuit het midden van het boek, naar beneden'), ('F<sub>N</sub>', 'vanuit het contactvlak, op het boek, naar boven'), ('F<sub>G</sub>', 'vanuit het contactvlak, op de tafel, naar beneden')], 'Drie pijlen van 4 hokjes, dicht bij elkaar.', sc_boek(True))
-t_lamp = oef_fig('opl_x', 0, 'Een lamp aan het plafond', 'Een lamp van 1,5 kg hangt aan een snoer (g ≈ 10 N/kg). Teken F<sub>z</sub> en F<sub>G</sub>. Schaal: 1 hokje ≙ 5 N. Waarom is er hier geen normaalkracht?', sc_lamp(False),
-    [('Grootte', 'F<sub>z</sub> = F<sub>G</sub> = 1,5 · 10 = 15 N → 3 hokjes'), ('F<sub>z</sub>', 'vanuit het midden van de lamp, naar beneden'), ('F<sub>G</sub>', 'vanuit het ophangpunt aan het plafond, naar beneden'), ('Geen F<sub>N</sub>', 'de lamp ligt niet op een steun')], 'F<sub>z</sub> werkt op de lamp, F<sub>G</sub> op het plafond.', sc_lamp(True))
+t_lamp = oef_fig('opl_x', 0, 'Een lamp aan het plafond', 'Een lamp van 0,80 kg hangt aan een snoer (g ≈ 10 N/kg). Teken F<sub>z</sub> en F<sub>G</sub>. Schaal: 1 hokje ≙ 2 N. Waarom is er hier geen normaalkracht?', sc_lamp(False),
+    [('Grootte', 'F<sub>z</sub> = F<sub>G</sub> = 0,80 · 10 = 8,0 N → 4 hokjes'), ('F<sub>z</sub>', 'vanuit het midden van de lamp, naar beneden'), ('F<sub>G</sub>', 'vanuit het ophangpunt aan het plafond, naar beneden'), ('Geen F<sub>N</sub>', 'de lamp ligt niet op een steun')], 'F<sub>z</sub> werkt op de lamp, F<sub>G</sub> op het plafond.', sc_lamp(True, 4))
 t_veer = oef_fig('opl_x', 0, 'Veerkracht tekenen', 'Aan een veer hangt een massa van 200 g. Ze hangt stil (g ≈ 10 N/kg). Teken F<sub>z</sub> en F<sub>v</sub> op de massa. Schaal: 1 hokje ≙ 0,5 N. ' + TEKEN, sc_veer(False),
     [('F<sub>z</sub>', '0,200 kg · 10 N/kg = 2,0 N → 4 hokjes, vanuit het midden naar beneden'), ('F<sub>v</sub>', 'de massa hangt stil: F<sub>v</sub> = F<sub>z</sub> = 2,0 N → 4 hokjes, vanuit het ophangpunt naar boven')], 'Twee even lange pijlen in tegengestelde zin.', sc_veer(True))
-oefs = STAP + ''.join([
+_O = [
  oef('opl_1', 1, 'Eenheden omzetten', 'Zet om naar de SI-eenheid.<ol class="deelvragen" type="a"><li>3,2 km</li><li>750 g</li><li>2 min 30 s</li><li>45 cm</li></ol>',
      [('a', '3,2 · 1000 m = 3200 m'), ('b', '750 : 1000 kg = 0,750 kg'), ('c', '2 · 60 s + 30 s = 150 s'), ('d', '45 · 0,01 m = 0,45 m')], 'SI-eenheden: m, kg, s.'),
  oef('opl_2', 2, 'Wetenschappelijke notatie', 'Schrijf in wetenschappelijke notatie.<ol class="deelvragen" type="a"><li>150 000 000 km (afstand aarde–zon)</li><li>0,0035 m</li><li>7 800 000 inwoners</li></ol>',
@@ -239,6 +242,17 @@ oefs = STAP + ''.join([
  oef('opl_12', 12, 'Veerkracht', 'a) Een veer met k = 40 N/m wordt 15 cm uitgerekt. Bereken de veerkracht. b) Een kracht van 3,0 N rekt een veer 6,0 cm uit. Bereken k. c) Welke veer is stijver: die van a of die van b?',
      [('a', 'F<sub>v</sub> = k · Δl = 40 N/m · 0,15 m = 6,0 N'), ('b', 'k = F<sub>v</sub> / Δl = 3,0 N / 0,060 m = 50 N/m'), ('c', 'de veer van b: grotere k')], 'a) 6,0 N · b) 50 N/m · c) de veer van b'),
    o_balpen, o_twee, t_veer,
+]
+exec(open('/home/claude/toolswetenschappen/_bron/cursus/aso_extra.py', encoding='utf-8').read())
+def _groep(kop, items):
+    return f'<h3>{kop}</h3>' + ''.join(items)
+oefs = STAP + ''.join([
+    _groep('Hoofdstuk 1 · Rekenen in de fysica', [_O[0], _O[1], n1a, _O[2], n1b]),
+    _groep('Hoofdstuk 2 · Krachten', [_O[3], _O[5], _O[4], n2]),
+    _groep('Hoofdstuk 3 · Kracht en beweging', [_O[8], _O[9], _O[10], n3, _O[7], n3b]),
+    _groep('Hoofdstuk 4 · Zwaartekracht, massa en gewicht', [_O[11], _O[12], _O[13], _O[6], _O[14], _O[15], _O[16]]),
+    _groep('Hoofdstuk 5 · Veerkracht', [_O[17], _O[18], _O[19], _O[20]]),
+    _groep('Gemengd', [g1, g2, g3]),
 ]) + tool('krachten-3aso.html#oef', 'Extra oefenen in de tool')
 # hernummeren in volgorde
 _n = [0]
@@ -263,7 +277,7 @@ delen = [('Rekenen in de fysica', h1), ('Effect van een kracht', h2a), ('Een kra
 blokken = [blok('lesdoelen', '', 'Lesdoelen', lesdoelen), blok('voorkennis', '', 'Voorkennis', voorkennis)]
 NRS = ['1', '2.1', '2.2', '3.1', '3.2', '3.2', '4.1', '4.2', '4.3–4.4', '5']  # hoofdstuknummers van het leerboek
 blokken += [blok(f'deel{i}', NRS[i - 1], kop, inh, f'deel{i}') for i, (kop, inh) in enumerate(delen, start=1)]
-blokken += [blok('oefeningen', '', 'Oefeningen op papier', oefs, 'oefeningen'), blok('samenvatting', '', 'Samenvatting', samenv, 'samenvatting')]
+blokken += [blok('oefeningen', '', 'Oefeningen op papier', oefs, 'oefeningen'), blok('begrippen', '', 'Begrippenlijst', begrippen), blok('samenvatting', '', 'Samenvatting', samenv, 'samenvatting')]
 alle = ''.join(blokken)
 denks = sorted(set(re.findall(r'data-vrij="(denk_\d+)"', alle)), key=lambda x: int(x.split('_')[1]))
 vrij = [(f'deel{i}', i == 1, kop) for i, (kop, _) in enumerate(delen, start=1)]
