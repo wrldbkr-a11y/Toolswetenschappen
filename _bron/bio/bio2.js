@@ -292,21 +292,21 @@ const NETVLIES=(function(){
   for(let i=0;i<15;i++){const x=i*62+31;s+=`<path d="${blob(x,538,9,7,R,8,.1)}" fill="#a3825e"/>`;for(let k=0;k<14;k++)s+=`<circle cx="${(x-26+R()*52).toFixed(1)}" cy="${(512+R()*46).toFixed(1)}" r="1.4" fill="#2a190c" opacity=".7"/>`;}
   // fotoreceptoren
   const recs=[];for(let i=0;i<34;i++){const x=14+i*26.4;recs.push({x,k:(i%4===2),t:[x,302]});}
-  let staaf='',kegel='',schijf='';
+  let staaf='',kegel=['','',''],schijf='',kn=0;
   recs.forEach(r=>{const x=r.x;
     if(!r.k){ staaf+=`<path d="${buis([[x,298],[x,312],[x+1,326]],5,3.2,false)}"/><path d="${blob(x,302,5.5,5,R,8,.1)}"/><path d="${blob(x,336,6.5,10,R,9,.08)}"/>`+
         `<path d="${buis([[x+1,344],[x,372],[x,398]],5,9,false)}"/><path d="${buis([[x,396],[x,450],[x,496]],10,10)}"/>`;
-      for(let y=404;y<492;y+=6)schijf+=`<path d="M${x-4} ${y} H${x+4}" stroke="#4a5fa8" stroke-width="1" opacity=".55"/>`; }
-    else { kegel+=`<path d="${buis([[x,298],[x,312],[x+1,326]],6,3.6,false)}"/><path d="${blob(x,302,6.5,5.5,R,8,.1)}"/><path d="${blob(x,340,8,11,R,9,.08)}"/>`+
+      for(let y=404;y<492;y+=6)schijf+=`<path d="M${x-4} ${y} H${x+4}" stroke="#6b6f85" stroke-width="1" opacity=".55"/>`; }
+    else { const c=kn++%3; kegel[c]+=`<path d="${buis([[x,298],[x,312],[x+1,326]],6,3.6,false)}"/><path d="${blob(x,302,6.5,5.5,R,8,.1)}"/><path d="${blob(x,340,8,11,R,9,.08)}"/>`+
         `<path d="${buis([[x,350],[x,392],[x,432]],7,19,false)}"/><path d="${buis([[x,430],[x,462],[x,490]],19,4)}"/>`;
-      for(let y=438;y<486;y+=6){const w=9-(y-430)/60*7.5;schijf+=`<path d="M${(x-w).toFixed(1)} ${y} H${(x+w).toFixed(1)}" stroke="#9a6418" stroke-width="1" opacity=".5"/>`;} } });
-  s+=`<g filter="url(#nv-3d)" fill="#93a6e6">${staaf}</g><g filter="url(#nv-3d)" fill="#f2b955">${kegel}</g>${schijf}`;
+      for(let y=438;y<486;y+=6){const w=9-(y-430)/60*7.5;schijf+=`<path d="M${(x-w).toFixed(1)} ${y} H${(x+w).toFixed(1)}" stroke="#ffffff" stroke-width="1" opacity=".45"/>`;} } });
+  s+=`<g filter="url(#nv-3d)" fill="#b9bccb">${staaf}</g>`+['#e5484d','#3fae49','#3b6fd8'].map((k,i)=>`<g filter="url(#nv-3d)" fill="${k}">${kegel[i]}</g>`).join('')+schijf;
   recs.forEach(r=>{s+=`<path d="${blob(r.x,r.k?340:336,r.k?4.2:3.4,r.k?5.6:5,R,8,.08)}" fill="url(#nv-kern)"/>`;});
   // bipolaire cellen: dendrieten eindigen op de eindknopjes van de fotoreceptoren, axon omhoog
   const bip=[];let bv='';for(let j=0;j<12;j++){const xb=40+j*74;bip.push(xb);
     recs.filter(r=>Math.abs(r.x-xb)<38).forEach(r=>{bv+=`<path d="${buis([[xb,262],[xb+(r.x-xb)*.4,276],[r.x,288],[r.x,296]],6,2.6)}"/>`;});
     bv+=`<path d="${blob(xb,248,12,17,R,10,.08)}"/><path d="${buis([[xb,236],[xb+1,214],[xb,198]],6,3.4)}"/><path d="${blob(xb,196,6,5.5,R,8,.1)}"/>`;}
-  s+=`<g filter="url(#nv-3d)" fill="#62c27f">${bv}</g>`;bip.forEach(xb=>s+=`<path d="${blob(xb,248,5.5,7,R,8,.08)}" fill="url(#nv-kern)"/>`);
+  s+=`<g filter="url(#nv-3d)" fill="#f2a65a">${bv}</g>`;bip.forEach(xb=>s+=`<path d="${blob(xb,248,5.5,7,R,8,.08)}" fill="url(#nv-kern)"/>`);
   // ganglioncellen: dendrieten eindigen op de axonuiteinden van de bipolaire cellen, axon naar de oogzenuw
   let gv='';const gang=[];for(let k=0;k<7;k++){const xg=70+k*128;gang.push(xg);
     bip.filter(xb=>Math.abs(xb-xg)<=64).forEach(xb=>{gv+=`<path d="${buis([[xg,160],[xg+(xb-xg)*.5,176],[xb,188],[xb,193]],7,3)}"/>`;});

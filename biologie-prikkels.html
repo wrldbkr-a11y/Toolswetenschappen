@@ -656,14 +656,14 @@ labelFig({wrap:'fig-blad',ctl:'ctl-blad',img:IMG.blad,w:900,h:897,ml:300,mr:300,
   $('blad-2d').onclick=()=>{ $('blad-2d').classList.add('on'); $('blad-3d').classList.remove('on'); $('fig-blad').style.display=''; $('ctl-blad').style.display=''; $('blad3d-wrap').style.display='none'; ctl.style.display='none'; };
   $('blad-3d').onclick=()=>{ $('blad-3d').classList.add('on'); $('blad-2d').classList.remove('on'); $('fig-blad').style.display='none'; $('ctl-blad').style.display='none'; $('blad3d-wrap').style.display=''; ctl.style.display=''; if(!klaar) bouw(); render(); };
   const LAGEN=[
-    {id:'was', naam:'waslaagje', kleur:'#bae6fd', info:'Een dun, doorzichtig <b>waslaagje</b> op het dekweefsel. Het laat geen water door en <b>beperkt de verdamping</b>.'},
-    {id:'dek', naam:'dekweefsel', kleur:'#d9f99d', info:'Eén laag platte, doorzichtige cellen aan de boven- en onderkant, zonder bladgroenkorrels. Het <b>dekweefsel</b> beschermt het blad en laat het licht door.'},
-    {id:'pal', naam:'vulweefsel (dicht)', kleur:'#22c55e', info:'Bovenaan: lange cellen <b>dicht tegen elkaar</b>, vol bladgroenkorrels. Hier gebeurt de meeste <b>fotosynthese</b>.'},
-    {id:'spo', naam:'vulweefsel (los)', kleur:'#86efac', info:'Onderaan: losse, onregelmatige cellen. De ruimte tussen de cellen heet de <b>intercellulaire ruimte</b>. Daarin verspreiden CO₂, O₂ en waterdamp zich.'},
-    {id:'nerf', naam:'vaatbundel (nerf)', kleur:'#fde68a', info:'Een <b>nerf</b> is een vaatbundel in het blad, omringd door een laag cellen. Bovenaan liggen de houtvaten, onderaan de zeefvaten.'},
-    {id:'hout', naam:'houtvaten', kleur:'#3b82f6', info:'<b>Houtvaten</b> zijn lange, holle buizen met verstevigde ringen. Ze brengen water en mineralen aan (bovenaan in de nerf).'},
-    {id:'zeef', naam:'zeefvaten', kleur:'#f59e0b', info:'<b>Zeefvaten</b> zijn rijen cellen met zeefplaten ertussen. Ze voeren de assimilaten (suikers) af (onderaan in de nerf).'},
-    {id:'sluit', naam:'sluitcellen en huidmondjes', kleur:'#15803d', info:'Onderaan in het dekweefsel: twee boonvormige <b>sluitcellen</b> rond een opening, het <b>huidmondje</b>. Langs hier komt CO₂ binnen en gaan O₂ en waterdamp naar buiten.'},
+    {id:'was', naam:'waslaagje', kleur:'#7dd3fc', info:'Een dun, doorzichtig <b>waslaagje</b> op het dekweefsel. Het laat geen water door en <b>beperkt de verdamping</b>.'},
+    {id:'dek', naam:'dekweefsel', kleur:'#f3e2bd', info:'Eén laag platte, doorzichtige cellen aan de boven- en onderkant, zonder bladgroenkorrels. Het <b>dekweefsel</b> beschermt het blad en laat het licht door.'},
+    {id:'pal', naam:'vulweefsel (dicht)', kleur:'#6fbf5e', info:'Bovenaan: lange cellen <b>dicht tegen elkaar</b>, vol bladgroenkorrels. Hier gebeurt de meeste <b>fotosynthese</b>.'},
+    {id:'spo', naam:'vulweefsel (los)', kleur:'#d9ec98', info:'Onderaan: losse, onregelmatige cellen. De ruimte tussen de cellen heet de <b>intercellulaire ruimte</b>. Daarin verspreiden CO₂, O₂ en waterdamp zich.'},
+    {id:'nerf', naam:'vaatbundel (nerf)', kleur:'#e9a23b', info:'Een <b>nerf</b> is een vaatbundel in het blad, omringd door een laag cellen. Bovenaan liggen de houtvaten, onderaan de zeefvaten.'},
+    {id:'hout', naam:'houtvaten', kleur:'#2563eb', info:'<b>Houtvaten</b> zijn lange, holle buizen met verstevigde ringen. Ze brengen water en mineralen aan (bovenaan in de nerf).'},
+    {id:'zeef', naam:'zeefvaten', kleur:'#dc2626', info:'<b>Zeefvaten</b> zijn rijen cellen met zeefplaten ertussen. Ze voeren de assimilaten (suikers) af (onderaan in de nerf).'},
+    {id:'sluit', naam:'sluitcellen en huidmondjes', kleur:'#0d9488', info:'Onderaan in het dekweefsel: twee boonvormige <b>sluitcellen</b> rond een opening, het <b>huidmondje</b>. Langs hier komt CO₂ binnen en gaan O₂ en waterdamp naar buiten.'},
   ];
   const UITY={was:1.8,dek:1.1,pal:0.55,spo:0,nerf:0,hout:0,zeef:0,sluit:1.1};
   let sel=null, uit=0, doelUit=0, yaw=-0.7, pitch=0.45, afstand=17, auto=true, drag=null;
@@ -677,6 +677,14 @@ labelFig({wrap:'fig-blad',ctl:'ctl-blad',img:IMG.blad,w:900,h:897,ml:300,mr:300,
     for(let i=0;i<p.count;i++){ v.fromBufferAttribute(p,i);
       c.set(Math.max(-hw,Math.min(hw,v.x)),Math.max(-hh,Math.min(hh,v.y)),Math.max(-hd,Math.min(hd,v.z)));
       v.sub(c).normalize().multiplyScalar(r).add(c); p.setXYZ(i,v.x,v.y,v.z); }
+    g.computeVertexNormals(); return g;
+  }
+  // organisch: duw elk punt een beetje naar binnen of buiten (zelfde positie = zelfde verschuiving, dus geen naden)
+  function vervorm(g,amp,f,zaad){
+    const p=g.attributes.position, v=new THREE.Vector3(); g.computeBoundingBox(); const c=new THREE.Vector3(); g.boundingBox.getCenter(c);
+    for(let i=0;i<p.count;i++){ v.fromBufferAttribute(p,i); const d=v.clone().sub(c); const L=d.length()||1;
+      const n=Math.sin(v.x*f+zaad)*Math.cos(v.y*f*1.3+zaad*2.1)*0.6+Math.sin(v.z*f*1.7+zaad*3.3)*0.4+Math.sin((v.x+v.y+v.z)*f*0.6+zaad)*0.3;
+      v.add(d.multiplyScalar(amp*n/L)); p.setXYZ(i,v.x,v.y,v.z); }
     g.computeVertexNormals(); return g;
   }
   // onregelmatige bol (cel van het los vulweefsel)
@@ -694,7 +702,7 @@ labelFig({wrap:'fig-blad',ctl:'ctl-blad',img:IMG.blad,w:900,h:897,ml:300,mr:300,
   function zet(laag,geo,m,x,y,z,rot){ const me=new THREE.Mesh(geo,m); me.position.set(x-5,y-3,z-3); if(rot) me.rotation.set(...rot); me.userData.laag=laag; groep(laag).add(me); return me; }
   // bladgroenkorrels als één InstancedMesh per laag
   function korrels(laag,lijst){
-    const geo=new THREE.SphereGeometry(0.075,10,8), m=mat(laag,'#15803d',{roughness:0.4});
+    const geo=new THREE.SphereGeometry(0.075,10,8), m=mat(laag,'#14532d',{roughness:0.4});
     const im=new THREE.InstancedMesh(geo,m,lijst.length), d=new THREE.Object3D();
     lijst.forEach((q,i)=>{ d.position.set(q[0]-5,q[1]-3,q[2]-3); d.scale.set(1.5,0.8,1); d.rotation.set(q[3]||0,q[4]||0,0); d.updateMatrix(); im.setMatrixAt(i,d.matrix); });
     im.userData.laag=laag; im.userData.dir=Math.sign(lijst.reduce((a,q)=>a+q[1],0)/lijst.length-3)||1; groep(laag).add(im);
@@ -713,29 +721,29 @@ labelFig({wrap:'fig-blad',ctl:'ctl-blad',img:IMG.blad,w:900,h:897,ml:300,mr:300,
     pivot=new THREE.Group(); scene.add(pivot);
 
     // --- waslaagje: dunne, glanzende, doorzichtige laag boven en onder
-    const wm=mat('was','#bae6fd',{transparent:true,opacity:0.45,roughness:0.15});
+    const wm=mat('was','#7dd3fc',{transparent:true,opacity:0.35,roughness:0.1,depthWrite:false});
     zet('was',new THREE.BoxGeometry(10,0.1,6),wm,5,6.08,3); zet('was',new THREE.BoxGeometry(10,0.1,6),wm,5,-0.08,3);
     // --- dekweefsel: platte, afgeronde cellen (boven en onder), zonder bladgroen
-    const dm=mat('dek','#e7f5c8',{transparent:true,opacity:0.92,roughness:0.35});
+    const dm=mat('dek','#f3e2bd',{roughness:0.45});
     const gaten=[[2.5,2.5],[2.5,4.5],[7.5,1.5],[7.5,4.5]];
     for(let i=0;i<10;i++) for(let k=0;k<6;k++){
       const w=0.96, x=i+0.5, z=k+0.5;
-      zet('dek',rondeBalk(w,0.5,0.94,0.14),dm,x,5.73,z);
+      zet('dek',vervorm(rondeBalk(w,0.5,0.94,0.16),0.05,5,i*7+k),dm,x,5.73,z);
       if(gaten.some(([gx,gz])=>Math.abs(gx-x)<0.6&&Math.abs(gz-z)<0.6)) continue;
-      zet('dek',rondeBalk(w,0.45,0.94,0.14),dm,x,0.25,z);
+      zet('dek',vervorm(rondeBalk(w,0.45,0.94,0.16),0.05,5,i*5+k*3),dm,x,0.25,z);
     }
     // --- vulweefsel (dicht): lange, afgeronde cellen dicht tegen elkaar, met veel bladgroenkorrels langs de wand
-    const pm=mat('pal','#86efac',{transparent:true,opacity:0.8,roughness:0.5});
+    const pm=mat('pal','#6fbf5e',{roughness:0.55});
     const pk=[];
     for(let i=0;i<14;i++) for(let k=0;k<8;k++){
       const x=0.38+i*0.7+(rnd(i*13+k)-0.5)*0.05, z=0.38+k*0.75, h=2.0+rnd(i+k*7)*0.15;
-      zet('pal',rondeBalk(0.6,h,0.66,0.26),pm,x,3.35+h/2,z);
+      zet('pal',vervorm(rondeBalk(0.6,h,0.66,0.27),0.035,4,i*11+k*3),pm,x,3.35+h/2,z);
       for(let n=0;n<16;n++){ const a=rnd(i*31+k*17+n)*Math.PI*2, yy=3.5+rnd(n*5+i+k*3+n*n)*(h-0.3);
-        pk.push([x+Math.cos(a)*0.25,yy,z+Math.sin(a)*0.28,0,a]); }
+        pk.push([x+Math.cos(a)*0.3,yy,z+Math.sin(a)*0.33,0,a]); }
     }
     korrels('pal',pk);
     // --- vulweefsel (los): onregelmatige cellen met luchtholtes, weinig bladgroen
-    const sm=mat('spo','#bbf7d0',{transparent:true,opacity:0.85,roughness:0.6});
+    const sm=mat('spo','#d9ec98',{roughness:0.6});
     const sk=[];
     for(let i=0;i<10;i++) for(let k=0;k<6;k++) for(let l=0;l<2;l++){
       const x=0.55+i*0.98+(rnd(i*7+k+l)-0.5)*0.3, z=0.5+k*1.0+(rnd(k*3+i+l)-0.5)*0.3, y=1.1+l*1.45+(rnd(i+k*11+l)-0.5)*0.25;
@@ -743,35 +751,35 @@ labelFig({wrap:'fig-blad',ctl:'ctl-blad',img:IMG.blad,w:900,h:897,ml:300,mr:300,
       if(gaten.some(([gx,gz])=>Math.hypot(gx-x,gz-z)<0.7) && l===0) continue;  // intercellulaire ruimte boven het huidmondje
       const r=0.38+rnd(i*5+k+l*3)*0.08;
       zet('spo',klont(r,i*3+k+l),sm,x,y,z);
-      for(let n=0;n<6;n++){ const a=rnd(i*19+k*7+n+l)*Math.PI*2, b=(rnd(n+i+k+l)-0.5)*1.6; sk.push([x+Math.cos(a)*Math.cos(b)*r*0.85,y+Math.sin(b)*r*0.85,z+Math.sin(a)*Math.cos(b)*r*0.85,0,a]); }
+      for(let n=0;n<6;n++){ const a=rnd(i*19+k*7+n+l)*Math.PI*2, b=(rnd(n+i+k+l)-0.5)*1.6; sk.push([x+Math.cos(a)*Math.cos(b)*r*1.0,y+Math.sin(b)*r*1.0,z+Math.sin(a)*Math.cos(b)*r*1.0,0,a]); }
     }
     korrels('spo',sk);
     // --- nerf: schede van cellen rond de vaatbundel (loopt in de lengte, langs z)
-    const nm=mat('nerf','#fef3c7',{transparent:true,opacity:0.8,roughness:0.6});
-    for(let a=0;a<14;a++){ const t=a/14*Math.PI*2; const c=new THREE.CylinderGeometry(0.2,0.2,6,14);
+    const nm=mat('nerf','#e9a23b',{roughness:0.6});
+    for(let a=0;a<14;a++){ const t=a/14*Math.PI*2; const c=vervorm(new THREE.CylinderGeometry(0.21,0.21,6,16,30),0.03,6,a*3);
       const me=zet('nerf',c,nm,6.5+Math.cos(t)*1.12,1.95+Math.sin(t)*1.0,3,[Math.PI/2,0,0]); }
     // --- houtvaten: holle buizen met ringen
-    const hm=mat('hout','#93c5fd',{transparent:true,opacity:0.75,roughness:0.3,side:THREE.DoubleSide});
+    const hm=mat('hout','#60a5fa',{transparent:true,opacity:0.85,roughness:0.3,side:THREE.DoubleSide,depthWrite:false});
     const hr=mat('hout','#1d4ed8',{roughness:0.45});
     [[6.1,2.45,0.27],[6.62,2.6,0.3],[7.05,2.35,0.24]].forEach(([x,y,r])=>{
       zet('hout',new THREE.CylinderGeometry(r,r,6,24,1,true),hm,x,y,3,[Math.PI/2,0,0]);
       for(let z=0.2;z<6;z+=0.3) zet('hout',new THREE.TorusGeometry(r,0.035,8,24),hr,x,y,z);
     });
     // --- zeefvaten: rijen cellen met zeefplaten
-    const zm=mat('zeef','#fcd34d',{transparent:true,opacity:0.8,roughness:0.45});
-    const zp=mat('zeef','#b45309',{roughness:0.5});
+    const zm=mat('zeef','#f87171',{roughness:0.45});
+    const zp=mat('zeef','#991b1b',{roughness:0.5});
     [[6.2,1.35,0.2],[6.7,1.3,0.18],[7.05,1.55,0.15]].forEach(([x,y,r])=>{
-      zet('zeef',new THREE.CylinderGeometry(r,r,6,20),zm,x,y,3,[Math.PI/2,0,0]);
+      zet('zeef',vervorm(new THREE.CylinderGeometry(r,r,6,20,30),0.02,7,x*9),zm,x,y,3,[Math.PI/2,0,0]);
       for(let z=0.5;z<6;z+=1.0) zet('zeef',new THREE.CylinderGeometry(r*1.02,r*1.02,0.05,20),zp,x,y,z,[Math.PI/2,0,0]);
     });
     // --- sluitcellen: twee boonvormen rond het huidmondje, met bladgroenkorrels
-    const gm=mat('sluit','#4ade80',{roughness:0.45});
+    const gm=mat('sluit','#14b8a6',{roughness:0.45});
     const gk=[];
     gaten.forEach(([x,z])=>{
       for(const s of [-1,1]){
         const t=new THREE.TorusGeometry(0.3,0.15,14,28,Math.PI);
         t.rotateZ(s>0?-Math.PI/2:Math.PI/2); t.scale(1,1.55,1); t.rotateX(-Math.PI/2);
-        zet('sluit',t,gm,x,0.25,z);
+        zet('sluit',vervorm(t,0.025,6,x*3+z+s),gm,x,0.25,z);
         for(let n=0;n<4;n++){ const a=(n+0.5)/4*Math.PI-Math.PI/2; gk.push([x+s*0.3*Math.cos(a),0.25,z+0.46*Math.sin(a)]); }
       }
     });
@@ -791,7 +799,7 @@ labelFig({wrap:'fig-blad',ctl:'ctl-blad',img:IMG.blad,w:900,h:897,ml:300,mr:300,
       o.m.opacity=o.op; o.m.transparent=o.tr;
       if(!sel){ o.m.color.copy(o.kleur); o.m.emissive.set(0x000000); }
       else if(actief){ o.m.color.copy(o.kleur); o.m.emissive.copy(o.kleur); o.m.emissiveIntensity=0.35; if(o.tr) o.m.opacity=Math.max(o.op,0.95); }
-      else { o.m.color.copy(o.kleur).lerp(grijs,0.85); o.m.emissive.set(0x000000); }
+      else { o.m.color.copy(o.kleur).lerp(grijs,0.5); o.m.emissive.set(0x000000); }
       o.m.needsUpdate=true;
     });
   }
@@ -818,7 +826,7 @@ labelFig({wrap:'fig-blad',ctl:'ctl-blad',img:IMG.blad,w:900,h:897,ml:300,mr:300,
   ctl.innerHTML=`<div class="ctrl-row"><button class="btn" id="b3-auto">⏸ Stop met draaien</button><button class="btn" id="b3-uit">Lagen uit elkaar</button></div>
     <div class="chips" id="b3-chips">${LAGEN.map(l=>`<button class="chip" data-l="${l.id}" style="border-left:10px solid ${l.kleur}">${l.naam}</button>`).join('')}</div>
     <div class="readout" id="b3-read">Klik op een weefsel, in de lijst of in de tekening.</div>
-    <div class="note">Sleep om te draaien, scroll om te zoomen. Een gekozen weefsel licht op in zijn eigen kleur; de rest wordt grijs. Bij sommige weefsels draait het blad zodat je ze goed ziet.</div>`;
+    <div class="note">Sleep om te draaien, scroll om te zoomen. Een gekozen weefsel licht op in zijn eigen kleur; de rest wordt bleker. Bij sommige weefsels draait het blad zodat je ze goed ziet.</div>`;
   ctl.querySelectorAll('[data-l]').forEach(b=>b.onclick=()=>kies(b.dataset.l));
   $('b3-uit').onclick=()=>{ doelUit=doelUit?0:1; $('b3-uit').textContent=doelUit?'Lagen samen':'Lagen uit elkaar'; };
   $('b3-auto').onclick=()=>{ auto=!auto; $('b3-auto').textContent=auto?'⏸ Stop met draaien':'⟳ Automatisch draaien'; };
@@ -1282,21 +1290,21 @@ const NETVLIES=(function(){
   for(let i=0;i<15;i++){const x=i*62+31;s+=`<path d="${blob(x,538,9,7,R,8,.1)}" fill="#a3825e"/>`;for(let k=0;k<14;k++)s+=`<circle cx="${(x-26+R()*52).toFixed(1)}" cy="${(512+R()*46).toFixed(1)}" r="1.4" fill="#2a190c" opacity=".7"/>`;}
   // fotoreceptoren
   const recs=[];for(let i=0;i<34;i++){const x=14+i*26.4;recs.push({x,k:(i%4===2),t:[x,302]});}
-  let staaf='',kegel='',schijf='';
+  let staaf='',kegel=['','',''],schijf='',kn=0;
   recs.forEach(r=>{const x=r.x;
     if(!r.k){ staaf+=`<path d="${buis([[x,298],[x,312],[x+1,326]],5,3.2,false)}"/><path d="${blob(x,302,5.5,5,R,8,.1)}"/><path d="${blob(x,336,6.5,10,R,9,.08)}"/>`+
         `<path d="${buis([[x+1,344],[x,372],[x,398]],5,9,false)}"/><path d="${buis([[x,396],[x,450],[x,496]],10,10)}"/>`;
-      for(let y=404;y<492;y+=6)schijf+=`<path d="M${x-4} ${y} H${x+4}" stroke="#4a5fa8" stroke-width="1" opacity=".55"/>`; }
-    else { kegel+=`<path d="${buis([[x,298],[x,312],[x+1,326]],6,3.6,false)}"/><path d="${blob(x,302,6.5,5.5,R,8,.1)}"/><path d="${blob(x,340,8,11,R,9,.08)}"/>`+
+      for(let y=404;y<492;y+=6)schijf+=`<path d="M${x-4} ${y} H${x+4}" stroke="#6b6f85" stroke-width="1" opacity=".55"/>`; }
+    else { const c=kn++%3; kegel[c]+=`<path d="${buis([[x,298],[x,312],[x+1,326]],6,3.6,false)}"/><path d="${blob(x,302,6.5,5.5,R,8,.1)}"/><path d="${blob(x,340,8,11,R,9,.08)}"/>`+
         `<path d="${buis([[x,350],[x,392],[x,432]],7,19,false)}"/><path d="${buis([[x,430],[x,462],[x,490]],19,4)}"/>`;
-      for(let y=438;y<486;y+=6){const w=9-(y-430)/60*7.5;schijf+=`<path d="M${(x-w).toFixed(1)} ${y} H${(x+w).toFixed(1)}" stroke="#9a6418" stroke-width="1" opacity=".5"/>`;} } });
-  s+=`<g filter="url(#nv-3d)" fill="#93a6e6">${staaf}</g><g filter="url(#nv-3d)" fill="#f2b955">${kegel}</g>${schijf}`;
+      for(let y=438;y<486;y+=6){const w=9-(y-430)/60*7.5;schijf+=`<path d="M${(x-w).toFixed(1)} ${y} H${(x+w).toFixed(1)}" stroke="#ffffff" stroke-width="1" opacity=".45"/>`;} } });
+  s+=`<g filter="url(#nv-3d)" fill="#b9bccb">${staaf}</g>`+['#e5484d','#3fae49','#3b6fd8'].map((k,i)=>`<g filter="url(#nv-3d)" fill="${k}">${kegel[i]}</g>`).join('')+schijf;
   recs.forEach(r=>{s+=`<path d="${blob(r.x,r.k?340:336,r.k?4.2:3.4,r.k?5.6:5,R,8,.08)}" fill="url(#nv-kern)"/>`;});
   // bipolaire cellen: dendrieten eindigen op de eindknopjes van de fotoreceptoren, axon omhoog
   const bip=[];let bv='';for(let j=0;j<12;j++){const xb=40+j*74;bip.push(xb);
     recs.filter(r=>Math.abs(r.x-xb)<38).forEach(r=>{bv+=`<path d="${buis([[xb,262],[xb+(r.x-xb)*.4,276],[r.x,288],[r.x,296]],6,2.6)}"/>`;});
     bv+=`<path d="${blob(xb,248,12,17,R,10,.08)}"/><path d="${buis([[xb,236],[xb+1,214],[xb,198]],6,3.4)}"/><path d="${blob(xb,196,6,5.5,R,8,.1)}"/>`;}
-  s+=`<g filter="url(#nv-3d)" fill="#62c27f">${bv}</g>`;bip.forEach(xb=>s+=`<path d="${blob(xb,248,5.5,7,R,8,.08)}" fill="url(#nv-kern)"/>`);
+  s+=`<g filter="url(#nv-3d)" fill="#f2a65a">${bv}</g>`;bip.forEach(xb=>s+=`<path d="${blob(xb,248,5.5,7,R,8,.08)}" fill="url(#nv-kern)"/>`);
   // ganglioncellen: dendrieten eindigen op de axonuiteinden van de bipolaire cellen, axon naar de oogzenuw
   let gv='';const gang=[];for(let k=0;k<7;k++){const xg=70+k*128;gang.push(xg);
     bip.filter(xb=>Math.abs(xb-xg)<=64).forEach(xb=>{gv+=`<path d="${buis([[xg,160],[xg+(xb-xg)*.5,176],[xb,188],[xb,193]],7,3)}"/>`;});
