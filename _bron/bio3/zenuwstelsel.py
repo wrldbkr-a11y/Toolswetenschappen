@@ -56,10 +56,14 @@ body = r'''
     <section class="blok">
       <div class="blok-kop"><span class="letter">3.1</span><h2>Drie soorten neuronen</h2></div>
       <div class="trio">
-        <div class="kaart"><h3>Sensorisch neuron</h3><p>Ook <b>gevoelszenuwcel</b>. Brengt een impuls van een <b>zintuig</b> naar het CZS.</p></div>
-        <div class="kaart"><h3>Schakelneuron</h3><p>Ligt in het <b>CZS</b>. Verbindt neuronen met elkaar.</p></div>
-        <div class="kaart"><h3>Motorisch neuron</h3><p>Ook <b>bewegingszenuwcel</b>. Brengt een impuls van het CZS naar een <b>spier</b> of <b>klier</b>.</p></div>
+        <div class="kaart"><h3><span style="color:#d97706">●</span> Sensorisch neuron</h3><p>Ook <b>gevoelszenuwcel</b>. Brengt een impuls van een <b>receptor</b> (zintuig) naar het CZS.</p><p><b>Voorbeelden:</b> van een pijnreceptor in je vingertop naar het ruggenmerg; van je oog naar je hersenen.</p></div>
+        <div class="kaart"><h3><span style="color:#7c3aed">●</span> Schakelneuron</h3><p>Ligt in het <b>CZS</b>. Verbindt een sensorisch neuron met een motorisch neuron, of neuronen onderling.</p><p><b>Voorbeelden:</b> in het ruggenmerg bij een reflex; miljarden in je hersenen als je nadenkt.</p></div>
+        <div class="kaart"><h3><span style="color:#16a34a">●</span> Motorisch neuron</h3><p>Ook <b>bewegingszenuwcel</b>. Brengt een impuls van het CZS naar een <b>effector</b>: een spier of een klier.</p><p><b>Voorbeelden:</b> van je ruggenmerg naar je armspier; van je hersenstam naar je speekselklieren.</p></div>
       </div>
+      <p>Zo werken de drie samen als je een hete pan aanraakt. Druk op de knop en volg de impuls.</p>
+      <div class="fig"><svg id="rb-svg" viewBox="0 0 920 460" role="img" aria-label="reflexboog: receptor, sensorisch neuron, schakelneuron, motorisch neuron en effector"></svg></div>
+      <div class="knoppen"><button type="button" class="knop hoofd" id="rb-start">▶ Raak de hete pan aan</button></div>
+      <p id="rb-zin">Receptor → sensorisch neuron → schakelneuron → motorisch neuron → effector.</p>
     </section>
     <section class="blok">
       <div class="blok-kop"><span class="letter">3.2</span><h2>Impulsgeleiding binnen een neuron</h2></div>
@@ -111,10 +115,7 @@ body = r'''
     <section class="blok">
       <div class="blok-kop"><span class="letter">5.3</span><h2>Homeostase van de bloedsuikerspiegel</h2></div>
       <p><b>Homeostase</b> betekent dat het lichaam iets constant houdt. De hoeveelheid glucose (suiker) in je bloed moet tussen 0,7 en 1,1 gram per liter blijven. De <b>alvleesklier</b> regelt dat met twee hormonen.</p>
-      <div class="duo hk"><div class="fig"><svg viewBox="0 0 600 500" role="img" aria-label="alvleesklier tussen de nieren"><image href="__ALV__" width="600" height="500"/><g font-size="26" font-weight="700"><rect x="300" y="420" width="190" height="44" rx="10" fill="#fff" opacity=".92"/><text x="395" y="451" text-anchor="middle">alvleesklier</text><path d="M330 420 L300 330" stroke="#1d2a36" stroke-width="3"/><rect x="18" y="20" width="110" height="44" rx="10" fill="#fff" opacity=".92"/><text x="73" y="51" text-anchor="middle">bijnier</text><path d="M110 64 L140 130" stroke="#1d2a36" stroke-width="3"/><rect x="430" y="20" width="90" height="44" rx="10" fill="#fff" opacity=".92"/><text x="475" y="51" text-anchor="middle">nier</text><path d="M470 64 L500 230" stroke="#1d2a36" stroke-width="3"/></g></svg></div>
-        <div><div class="def"><span class="eyebrow">Insuline</span><p>Te <b>veel</b> suiker in het bloed (na het eten)? De alvleesklier geeft <b>insuline</b> af. De cellen nemen glucose op, de lever slaat glucose op als <b>glycogeen</b>. De bloedsuikerspiegel <b>daalt</b>.</p></div>
-        <div class="def"><span class="eyebrow">Glucagon</span><p>Te <b>weinig</b> suiker (na sporten of lang niet eten)? De alvleesklier geeft <b>glucagon</b> af. De lever zet glycogeen om in glucose en geeft die aan het bloed. De bloedsuikerspiegel <b>stijgt</b>.</p></div></div>
-      </div>
+      <div class="fig"><svg id="bsch-svg" viewBox="0 0 920 470" role="img" aria-label="schema van de regeling van de bloedsuikerspiegel met insuline en glucagon"></svg></div>
       <div class="knoppen"><button type="button" class="knop" id="bs-eet">🍞 eet een boterham</button><button type="button" class="knop" id="bs-sport">🏃 sport een half uur</button><label class="knop" style="display:inline-flex;gap:6px;align-items:center"><input type="checkbox" id="bs-d1"> diabetes type 1 (geen insuline)</label></div>
       <div class="fig"><svg id="bs-svg" viewBox="0 0 760 300" role="img" aria-label="bloedsuikerspiegel in de tijd"></svg></div>
       <p id="bs-zin"></p>
@@ -143,7 +144,7 @@ body = r'''
       <div class="oefening" id="oef-bs"></div>
     </section>
     <section class="ikkan" id="ikkan"></section>
-    <p class="credit">Afbeeldingen: zenuwstelsel naar <i>Nervous system diagram</i>, Medium69 &amp; Jmarchn, CC BY-SA 4.0 (Engelse namen weggelaten). Hersenen: <i>Brain human sagittal section</i>, Patrick J. Lynch (medisch illustrator) &amp; C. Carl Jaffe, CC BY 2.5. Alvleesklier uit <i>Endocrine English</i>, OpenStax &amp; Tomáš Kebert &amp; umimeto.org, CC BY-SA 4.0. Alle via Wikimedia Commons. De andere tekeningen zijn eigen werk.</p>
+    <p class="credit">Afbeeldingen: zenuwstelsel naar <i>Nervous system diagram</i>, Medium69 &amp; Jmarchn, CC BY-SA 4.0 (Engelse namen weggelaten). Hersenen: <i>Brain human sagittal section</i>, Patrick J. Lynch (medisch illustrator) &amp; C. Carl Jaffe, CC BY 2.5. Alle via Wikimedia Commons. De andere tekeningen zijn eigen werk.</p>
   </main>
 '''
 css = r'''
@@ -270,6 +271,83 @@ let neuronPad = [];
     $('#rf-dyn').innerHTML = o; })();
 })();
 
+
+/* ---------- 5.3 schema bloedsuiker ---------- */
+(function(){
+  const S = $('#bsch-svg');
+  const box = (x, y, w, h, t, kl, id) => `<g id="${id||''}"><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="16" fill="#fff" stroke="${kl}" stroke-width="3"/>${t.map((r,i)=>`<text x="${x+w/2}" y="${y+h/2 + (i-(t.length-1)/2)*20 + 6}" text-anchor="middle" font-size="16" font-weight="${i?500:800}">${r}</text>`).join('')}</g>`;
+  const pijl = (d, kl) => `<path d="${d}" fill="none" stroke="${kl}" stroke-width="4" marker-end="url(#bsch-${kl.slice(1)})"/>`;
+  const B = '#2563eb', P = '#9333ea', G = '#16a34a';
+  let s = `<defs>${[B,P,G].map(k=>`<marker id="bsch-${k.slice(1)}" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L10 5 L0 10Z" fill="${k}"/></marker>`).join('')}</defs>`;
+  s += `<g id="bsch-normaal">${box(330, 196, 260, 78, ['normale bloedsuikerspiegel','0,7 – 1,1 g/L'], G)}</g>`;
+  s += `<g id="bsch-boven" class="tak">${box(20, 20, 220, 78, ['te veel suiker','bv. na het eten'], B)}${box(350, 20, 220, 78, ['alvleesklier','maakt insuline'], B)}${box(680, 20, 220, 78, ['lever en spieren','nemen glucose op'], B)}${box(680, 140, 220, 56, ['bloedsuikerspiegel daalt'], B)}
+    ${pijl('M244 59 H344', B)}${pijl('M574 59 H674', B)}${pijl('M790 102 V134', B)}${pijl('M676 168 C640 168 620 190 596 214', B)}${pijl('M400 194 C300 170 160 150 130 104', G)}
+    <text x="780" y="122" font-size="13" text-anchor="end" fill="#334155">glucose → glycogeen</text></g>`;
+  s += `<g id="bsch-onder" class="tak">${box(20, 372, 220, 78, ['te weinig suiker','bv. na het sporten'], P)}${box(350, 372, 220, 78, ['alvleesklier','maakt glucagon'], P)}${box(680, 372, 220, 78, ['lever','geeft glucose af'], P)}${box(680, 274, 220, 56, ['bloedsuikerspiegel stijgt'], P)}
+    ${pijl('M244 411 H344', P)}${pijl('M574 411 H674', P)}${pijl('M790 368 V336', P)}${pijl('M676 302 C640 302 620 280 596 258', P)}${pijl('M400 276 C300 300 160 320 130 366', G)}
+    <text x="780" y="356" font-size="13" text-anchor="end" fill="#334155">glycogeen → glucose</text></g>`;
+  S.innerHTML = s;
+})();
+const bschActief = w => { const b = $('#bsch-boven'), o = $('#bsch-onder'); if (!b) return; b.style.opacity = w==='o' ? .3 : 1; o.style.opacity = w==='b' ? .3 : 1; };
+
+/* ---------- 3.1 reflexboog ---------- */
+(function(){
+  const S = $('#rb-svg'), R = rng(17);
+  let s = `<defs><radialGradient id="rb-wit" cx="45%" cy="40%" r="70%"><stop offset="0" stop-color="#fbf5e8"/><stop offset="1" stop-color="#e6d6b6"/></radialGradient>
+    <radialGradient id="rb-grijs" cx="50%" cy="45%" r="65%"><stop offset="0" stop-color="#d9b9c2"/><stop offset="1" stop-color="#b98e9c"/></radialGradient>
+    <linearGradient id="rb-spier" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d9545a"/><stop offset=".5" stop-color="#b8343c"/><stop offset="1" stop-color="#8e2229"/></linearGradient>
+    <linearGradient id="rb-huid" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e8b996"/><stop offset="1" stop-color="#d79a7c"/></linearGradient>
+    <radialGradient id="rb-gloed"><stop offset="0" stop-color="#fff"/><stop offset=".35" stop-color="#ffd23f" stop-opacity=".95"/><stop offset="1" stop-color="#ffb000" stop-opacity="0"/></radialGradient></defs>`;
+  s += `<rect width="920" height="460" rx="16" fill="#f5f2ee"/>`;
+  // ruggenmerg (doorsnede): witte stof met vlindervormige grijze stof
+  const cx = 210, cy = 235;
+  s += `<path d="${blob(cx, cy, 128, 100, R, 14, .04)}" fill="url(#rb-wit)" stroke="#b89f73" stroke-width="3"/>`;
+  s += `<path d="${glad([[cx,cy-12],[cx+26,cy-30],[cx+46,cy-76],[cx+62,cy-80],[cx+56,cy-40],[cx+40,cy-6],[cx+62,cy+28],[cx+80,cy+62],[cx+56,cy+74],[cx+26,cy+30],[cx,cy+16],[cx-26,cy+30],[cx-56,cy+74],[cx-80,cy+62],[cx-62,cy+28],[cx-40,cy-6],[cx-56,cy-40],[cx-62,cy-80],[cx-46,cy-76],[cx-26,cy-30]])}" fill="url(#rb-grijs)" stroke="#9b6f7e" stroke-width="1.5"/>`;
+  s += `<circle cx="${cx}" cy="${cy+2}" r="5" fill="#f5f2ee" stroke="#9b6f7e"/>`;
+  for (let i = 0; i < 40; i++){ const a = R()*6.28, r = 70 + R()*45; s += `<circle cx="${(cx+Math.cos(a)*r).toFixed(1)}" cy="${(cy+Math.sin(a)*r*.78).toFixed(1)}" r="${(1+R()*1.5).toFixed(1)}" fill="#d8c49c" opacity=".7"/>`; }
+  // huid met hete pan (rechtsboven)
+  s += `<path d="M640 90 C700 80 800 84 900 96 V154 C800 146 700 142 640 150 Z" fill="url(#rb-huid)" stroke="#b97d61" stroke-width="2"/><path d="M640 102 C700 92 800 96 900 108" fill="none" stroke="#f3d6c0" stroke-width="2" opacity=".8"/>`;
+  s += `<path d="${glad([[690,44],[850,44],[862,66],[700,66]])}" fill="#3b3b3b"/><path d="${glad([[700,48],[840,48],[846,54],[706,54]])}" fill="#5a5a5a" opacity=".6"/><path d="M856 52 H906" stroke="#2a2a2a" stroke-width="8" stroke-linecap="round"/><text x="700" y="34" font-size="13" font-weight="700" fill="#b91c1c">hete pan</text>`;
+  [760,790,820].forEach(x => s += `<path d="M${x} 40 C${x-6} 32 ${x+6} 26 ${x} 18" stroke="#ef4444" stroke-width="2" fill="none" opacity=".6"/>`);
+  // spier (rechtsonder): spoelvormig met vezels en pees
+  const sp = glad([[600,350],[660,318],[760,306],[850,318],[900,348],[850,380],[760,392],[660,382]]);
+  s += `<path d="M560 352 L604 350" stroke="#efe6d6" stroke-width="10" stroke-linecap="round"/><path d="M896 348 L918 346" stroke="#efe6d6" stroke-width="12" stroke-linecap="round"/><path d="${sp}" fill="url(#rb-spier)" stroke="#7a1c22" stroke-width="2"/>`;
+  for (let i = 0; i < 9; i++){ const y = 318 + i*8; s += `<path d="M${640+Math.abs(i-4)*8} ${y} C720 ${y-6+i} 800 ${y-4+i} ${870-Math.abs(i-4)*6} ${y}" stroke="#e98a8f" stroke-width="1.2" fill="none" opacity=".55"/>`; }
+  // neuronbanen
+  const zenuw = (pts, kl, w=6) => `<path d="${glad(pts,false)}" fill="none" stroke="${kl}" stroke-width="${w+3}" stroke-linecap="round" opacity=".35"/><path d="${glad(pts,false)}" fill="none" stroke="${kl}" stroke-width="${w}" stroke-linecap="round"/>`;
+  const myel = (pts, n) => { let o = ''; const P = bemonster(glad(pts,false), 120); for (let i = 0; i < n; i++){ const a = Math.floor((i+.15)/n*120), b = Math.floor((i+.85)/n*120); o += `<path d="${glad(P.slice(a,b),false)}" fill="none" stroke="#d8c28a" stroke-width="12" stroke-linecap="round" opacity=".75"/><path d="${glad(P.slice(a,b),false)}" fill="none" stroke="#fbf3d9" stroke-width="3" stroke-linecap="round" opacity=".7" transform="translate(0 -3)"/>`; } return o; };
+  const soma = (x, y, r, kl, seed) => { const Q = rng(seed); return `<path d="${blob(x, y, r, r*.86, Q, 10, .14)}" fill="${kl}" stroke="#3b2a3a" stroke-width="1.5" opacity=".95"/><path d="${blob(x-1, y-1, r*.42, r*.38, Q, 8, .1)}" fill="url(#o-kern)"/>`; };
+  const rec = [[760,72]];
+  const sens1 = [[760,124],[700,160],[600,170],[480,150],[392,128]];      // receptor → ganglion
+  const sens2 = [[392,128],[330,120],[275,150],[248,182],[232,205]];     // ganglion → achterhoorn
+  const schak = [[232,205],[218,232],[226,262],[244,276]];               // schakelneuron
+  const mot = [[262,286],[300,312],[350,330],[440,346],[540,352],[600,350]]; // voorhoorn → spier
+  s += myel(sens1, 6) + myel(mot, 6) + zenuw(sens1, '#d97706', 5) + zenuw(sens2, '#d97706', 5) + zenuw(schak, '#7c3aed', 5) + zenuw(mot, '#16a34a', 5);
+  // vrije zenuwuiteinden in de huid (receptor)
+  [[-28,-16],[-12,-24],[6,-22],[22,-14]].forEach(([dx,dy]) => s += `<path d="M760 124 C${760+dx*.4} ${124+dy*.5} ${760+dx*.8} ${124+dy*.8} ${760+dx} ${124+dy}" stroke="#d97706" stroke-width="2.4" fill="none" stroke-linecap="round"/>`);
+  // cellichamen: sensorisch in het spinale ganglion, schakelneuron in de grijze stof, motorisch in de voorhoorn
+  s += `<path d="${blob(392, 128, 32, 22, R, 10, .06)}" fill="#f0dcc0" stroke="#b89f73" stroke-width="1.5" opacity=".9"/>` + soma(392, 128, 13, '#f2b46b', 3) + soma(222, 236, 10, '#b794f4', 4) + soma(254, 284, 16, '#86d29d', 5);
+  for (let k = 0; k < 6; k++){ const a = 2.2 + k*.55; s += `<path d="M${254+Math.cos(a)*14} ${284+Math.sin(a)*12} l${Math.cos(a)*14} ${Math.sin(a)*12}" stroke="#16a34a" stroke-width="3" stroke-linecap="round"/>`; }
+  // motorische eindplaat
+  s += `<path d="M600 350 l10 -8 M600 350 l12 0 M600 350 l10 8" stroke="#16a34a" stroke-width="3" stroke-linecap="round"/>`;
+  const lab = (x, y, tx, ty, t, kl='#1d2a36', a='middle') => `<path d="M${x} ${y} L${tx} ${ty + (ty > y ? -18 : 6)}" stroke="#1d2a36" stroke-width="1.3"/><circle cx="${x}" cy="${y}" r="3" fill="#1d2a36"/><text x="${tx}" y="${ty}" text-anchor="${a}" font-size="16" font-weight="800" fill="${kl}" paint-order="stroke" stroke="#f5f2ee" stroke-width="4">${t}</text>`;
+  s += lab(762, 120, 815, 186, '1 receptor in de huid') + lab(540, 158, 520, 226, '2 sensorisch neuron', '#b45309') + lab(222, 236, 120, 440, '3 schakelneuron', '#6d28d9') + lab(300, 312, 380, 420, '4 motorisch neuron', '#15803d') + lab(760, 350, 760, 440, '5 effector: armspier');
+  s += `<text x="${cx}" y="${cy-112}" text-anchor="middle" font-size="16" font-weight="800">ruggenmerg (doorsnede)</text><text x="392" y="94" text-anchor="middle" font-size="12" fill="#6b5a3a">spinaal ganglion</text>`;
+  S.innerHTML = s + '<g id="rb-dyn"></g>';
+  const pad = [...sens1, ...sens2.slice(1), ...schak.slice(1), [262,286], ...mot.slice(1)];
+  const n1 = sens1.length + sens2.length - 1, n2 = n1 + schak.length - 1;
+  const ZIN = ['De <b>receptor</b> in je huid voelt de hitte en maakt een elektrische impuls.', 'Het <b>sensorisch neuron</b> brengt de impuls naar het ruggenmerg.', 'In het ruggenmerg geeft een <b>schakelneuron</b> de impuls door.', 'Het <b>motorisch neuron</b> brengt de impuls naar de spier.', 'De <b>effector</b>, je armspier, trekt samen: je hand gaat weg van de pan.'];
+  let t = -1, t0 = 0, fase = -1;
+  $('#rb-start').onclick = () => { t = 0; };
+  (function lus(ts){ requestAnimationFrame(lus); if (!zichtbaar(S)) return; const dt = ts && t0 ? Math.min(50, ts-t0)/1000 : 0; t0 = ts || 0;
+    if (t < 0){ $('#rb-dyn').innerHTML = ''; return; } t += dt*.22;
+    const L = pad.length - 1, i = Math.min(L, t*L); const f = i < .4 ? 0 : i < n1-1 ? 1 : i < n2-1 ? 2 : i < L-.2 ? 3 : 4;
+    if (f !== fase){ fase = f; $('#rb-zin').innerHTML = `<b>${f+1}.</b> ` + ZIN[f]; }
+    const p = langs(pad, Math.min(1,t)); let o = `<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="24" fill="url(#rb-gloed)"/>`;
+    if (t >= 1){ const k = Math.min(1, (t-1)*2.5); o += `<path d="${glad([[600,350],[660,320+k*6],[760,306+k*4],[850,318+k*6],[900,348],[850,380-k*6],[760,392-k*4],[660,382-k*6]])}" fill="#e46b70" opacity="${.5*k}"/>`; }
+    if (t > 1.6) t = -1;
+    $('#rb-dyn').innerHTML = o; })();
+})();
 /* ---------- 5.3 bloedsuikerspiegel ---------- */
 (function(){
   const S = $('#bs-svg'); let g = 0.9, ins = 0, glu = 0, hist = [], t0 = 0, acc = 0, opname = 0, verbruik = 0, msg = 'Kies een actie.';
@@ -291,7 +369,7 @@ let neuronPad = [];
     const bar = (x, v, kl, n) => `<rect x="${x}" y="30" width="16" height="70" rx="4" fill="#eee"/><rect x="${x}" y="${100-Math.min(1,v)*70}" width="16" height="${Math.min(1,v)*70}" rx="4" fill="${kl}"/><text x="${x+8}" y="118" text-anchor="middle" font-size="12" font-weight="700">${n}</text>`;
     s += bar(640, ins*1.2, '#2563eb', 'insuline') + bar(700, glu*1.2, '#9333ea', 'glucagon');
     S.innerHTML = s;
-    let z = msg; if (ins > .05) z += ' <b>De alvleesklier geeft insuline af</b>: de bloedsuikerspiegel daalt.'; else if (glu > .05) z += ' <b>De alvleesklier geeft glucagon af</b>: de lever geeft glucose af, de bloedsuikerspiegel stijgt.'; else if (d1 && g > 1.1) z += ' <b>Zonder insuline blijft de bloedsuikerspiegel te hoog.</b> Iemand met diabetes type 1 moet insuline inspuiten.'; else z += ' De bloedsuikerspiegel is normaal.';
+    bschActief(ins > .05 ? 'b' : glu > .05 ? 'o' : (d1 && g > 1.1) ? 'b' : ''); let z = msg; if (ins > .05) z += ' <b>De alvleesklier geeft insuline af</b>: de bloedsuikerspiegel daalt.'; else if (glu > .05) z += ' <b>De alvleesklier geeft glucagon af</b>: de lever geeft glucose af, de bloedsuikerspiegel stijgt.'; else if (d1 && g > 1.1) z += ' <b>Zonder insuline blijft de bloedsuikerspiegel te hoog.</b> Iemand met diabetes type 1 moet insuline inspuiten.'; else z += ' De bloedsuikerspiegel is normaal.';
     $('#bs-zin').innerHTML = z; })();
 })();
 
@@ -342,7 +420,7 @@ ikkanFn = () => { $('#ikkan').innerHTML = `<h3>Controle thema 4</h3><ul>
   ${regel('Ik benoem de drie vormen van diabetes.', scores.bs)}</ul>`; };
 updateIkKan();
 '''
-body = body.replace('__ZS__', img('zenuwstelsel.jpg')).replace('__BRAIN__', img('hersenen.jpg')).replace('__ALV__', img('alvleesklier.jpg'))
+body = body.replace('__ZS__', img('zenuwstelsel.jpg')).replace('__BRAIN__', img('hersenen.jpg'))
 pagina('biologie-zenuwstelsel.html', 'Coördinatie van reacties op prikkels', 'Biologie · 3de jaar · thema 4',
   'Je zenuwstelsel en je hormoonstelsel zorgen ervoor dat je lichaam op het juiste moment juist reageert.',
   'LPD 4B: De leerlingen lichten de overdracht van informatie via impulsgeleiding en impulsoverdracht in zenuwen toe. LPD 7B: De leerlingen leggen aan de hand van een voorbeeld uit hoe de coördinerende rol van het endocriene stelsel bij een reactie op een prikkel bijdraagt tot het functioneren van een dierlijk organisme.',
