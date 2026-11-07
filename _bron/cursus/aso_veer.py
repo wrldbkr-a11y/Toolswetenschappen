@@ -72,17 +72,26 @@ def vingers(samen):
     a, b = (230, 370) if samen else (170, 430)
     n = 10; dx = (b - a - 20) / n
     zz = f'M{a},{y} h10 ' + ' '.join(f'l{dx/2:.1f},{-12 if i % 2 == 0 else 12} l{dx/2:.1f},{12 if i % 2 == 0 else -12}' for i in range(n)) + ' h10'
-    huid, rand = '#f2c6a0', '#b7794f'
-    # vingertoppen: afgeronde vorm die naar de veer wijst
-    vl = f'<path d="M{a-2},{y} C{a-2},{y-16} {a-14},{y-20} {a-40},{y-20} L{a-160},{y-22} L{a-160},{y+22} L{a-40},{y+20} C{a-14},{y+20} {a-2},{y+16} {a-2},{y}Z" fill="{huid}" stroke="{rand}" stroke-width="1.5"/><path d="M{a-30},{y-12} C{a-22},{y-6} {a-22},{y+6} {a-30},{y+12}" fill="none" stroke="{rand}" stroke-width="1" opacity=".6"/>'
-    vr = f'<path d="M{b+2},{y} C{b+2},{y-16} {b+14},{y-20} {b+40},{y-20} L{b+160},{y-22} L{b+160},{y+22} L{b+40},{y+20} C{b+14},{y+20} {b+2},{y+16} {b+2},{y}Z" fill="{huid}" stroke="{rand}" stroke-width="1.5"/><path d="M{b+30},{y-12} C{b+22},{y-6} {b+22},{y+6} {b+30},{y+12}" fill="none" stroke="{rand}" stroke-width="1" opacity=".6"/>'
-    o = f'<rect width="{w}" height="{h}" fill="#fff"/>' + vl + vr + f'<path d="{zz}" fill="none" stroke="#475569" stroke-width="3" stroke-linejoin="round"/>'
+    # wijsvinger in zijaanzicht (top naar rechts, top op x = a), met nagel en knokkelplooien; de rechtse is gespiegeld
+    rand = '#b07a55'
+    def vinger(a):
+        g = (f'<path d="M{a-170},{y-25} C{a-110},{y-25} {a-55},{y-21} {a-30},{y-19} C{a-12},{y-18} {a},{y-10} {a},{y+1} '
+             f'C{a},{y+13} {a-10},{y+20} {a-30},{y+20} C{a-65},{y+22} {a-120},{y+25} {a-170},{y+25} Z" fill="url(#huid)" stroke="{rand}" stroke-width="1.5"/>'
+             f'<path d="M{a-44},{y-19.5} C{a-32},{y-24} {a-14},{y-23} {a-6},{y-13} C{a-12},{y-10} {a-30},{y-11} {a-44},{y-14} Z" fill="#fbe9dd" stroke="#c48c66" stroke-width="1.2"/>'
+             f'<path d="M{a-40},{y-15} C{a-36},{y-18} {a-34},{y-18} {a-31},{y-12}" fill="none" stroke="#e9c2a6" stroke-width="1.2"/>'
+             f'<path d="M{a-82},{y-22} q5,5 1,10 M{a-88},{y-23} q5,6 1,11 M{a-85},{y+22} q4,-4 1,-8" fill="none" stroke="{rand}" stroke-width="1" opacity=".7"/>'
+             f'<path d="M{a-150},{y-24} q5,6 1,12" fill="none" stroke="{rand}" stroke-width="1" opacity=".5"/>')
+        return g
+    defs = '<defs><linearGradient id="huid" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f6d2b4"/><stop offset=".55" stop-color="#eebc94"/><stop offset="1" stop-color="#d99b72"/></linearGradient></defs>'
+    vl = vinger(a)
+    vr = f'<g transform="translate({a + b},0) scale(-1,1)">{vinger(a)}</g>'
+    o = defs + f'<rect width="{w}" height="{h}" fill="#fff"/>' + vl + vr + f'<path d="{zz}" fill="none" stroke="#475569" stroke-width="3" stroke-linejoin="round"/>'
     if not samen:  # oogjes aan de uiteinden, om de vingertop gehaakt
         o += f'<ellipse cx="{a-10}" cy="{y}" rx="12" ry="16" fill="none" stroke="#475569" stroke-width="3"/><ellipse cx="{b+10}" cy="{y}" rx="12" ry="16" fill="none" stroke="#475569" stroke-width="3"/>'
     L = 55; s_ = 1 if samen else -1   # zin van de vingerkracht op de linkerkant van de veer
     o += punt(a, y, INK, 4) + punt(b, y, INK, 4)
-    o += pijl(a, y, a + s_ * L, y, B) + label(a + s_ * L / 2 - 6, y - 22, 'F', 'vinger', B, 'middle')
-    o += pijl(b, y, b - s_ * L, y, B) + label(b - s_ * L / 2 - 6, y - 22, 'F', 'vinger', B, 'middle')
+    o += pijl(a, y, a + s_ * L, y, B) + label(a + s_ * L / 2 - 6, y - 34, 'F', 'vinger', B, 'middle')
+    o += pijl(b, y, b - s_ * L, y, B) + label(b - s_ * L / 2 - 6, y - 34, 'F', 'vinger', B, 'middle')
     o += pijl(a, y, a - s_ * L, y, G) + label(a - s_ * L / 2, y + 40, 'F', 'v', G, 'middle')
     o += pijl(b, y, b + s_ * L, y, G) + label(b + s_ * L / 2, y + 40, 'F', 'v', G, 'middle')
     o += t(w / 2, h - 10, 'samendrukken' if samen else 'uitrekken', INK, size=14, w=700)
