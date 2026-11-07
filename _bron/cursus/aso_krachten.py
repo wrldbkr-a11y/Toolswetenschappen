@@ -254,6 +254,9 @@ samenv = kader('Samenvatting', '''<p><b>SI-eenheden</b>: m, kg, s, N. Wetenschap
 <p><b>Zwaartekracht</b> F<sub>z</sub> = m · g werkt in het <b>zwaarteveld</b>. <b>Massa</b> (kg) is overal gelijk. <b>Gewicht</b> F<sub>G</sub> werkt op de steun. <b>Normaalkracht</b> F<sub>N</sub> werkt op het voorwerp.</p>
 <p><b>Veerkracht</b> F<sub>v</sub> = k · Δl. Grote k: stijve veer, kleine k: slappe veer.</p>''')
 
+exec(open('/home/claude/toolswetenschappen/_bron/cursus/aso_wisbord.py', encoding='utf-8').read())
+h1 = EDI_CSS + WB['h1'] + h1; h2a = WB['h2a'] + h2a; h2b = WB['h2b'] + h2b; h3a = WB['h3a'] + h3a; h3b = WB['h3b'] + h3b; h3c = WB['h3c'] + h3c
+h4a = WB['h4a'] + h4a; h4b = WB['h4b'] + h4b; h4c = WB['h4c'] + h4c
 delen = [('Rekenen in de fysica', h1), ('Effect van een kracht', h2a), ('Een kracht is een vector', h2b),
          ('De bewegingstoestand en de snelheidsvector', h3a), ('Traagheid', h3b), ('Resulterende kracht en beweging', h3c),
          ('Zwaartekracht en zwaarteveld', h4a), ('Zwaartekracht berekenen', h4b), ('Massa, gewicht en normaalkracht', h4c), ('Veerkracht', h5)]

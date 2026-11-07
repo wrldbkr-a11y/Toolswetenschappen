@@ -81,7 +81,7 @@ DRAAIBOEK = edi([
    + wisbord('De veer blijft langer na een zware massa. Waarom?', 'voorbij de elasticiteitsgrens (plastisch)') + '</ol>'),
 ])
 
-h5 = (EDI_CSS + DRAAIBOEK
+h5 = (DRAAIBOEK
  + '<p>Hang je een massa aan een veer, dan rekt de veer uit. De veer trekt terug omhoog: dat is de <b>veerkracht F<sub>v</sub></b>. Hangt de massa stil, dan is F<sub>v</sub> even groot als F<sub>z</sub>.</p>'
  + '<p>Amina hing telkens meer massa aan dezelfde veer en mat de uitrekking Δl (g ≈ 10 N/kg):</p>' + tab_meet
  + figuur(grafiek([(2, .5), (4, 1), (6, 1.5), (8, 2)], [(0, 0, 10, 2.5, B, '')]), 'De punten liggen op een rechte door de oorsprong: dubbel zoveel kracht geeft dubbel zoveel uitrekking.')
