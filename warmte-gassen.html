@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Warmte en gassen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EEF2F5; --panel:#FFFFFF; --panel-2:#F5F8FB; --line:#D3DCE5;
+  --text:#1D2A36; --text-dim:#51606E;
+  --accent:#2F6FB0; --accent-dark:#245A91; --accent-soft:#E4EEF8;
+  --ok-text:#1F7A4A; --ok-bg:#E3F3E9; --flag-text:#B3362B; --flag-bg:#FBE6E3;
+  --fz:#7c3aed; --fn:#059669; --g:#d97706; --f:#2563eb; --fw:#dc2626; --fv:#0891b2;
+  --font:'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:var(--font);}
+body{-webkit-font-smoothing:antialiased;line-height:1.55;}
+.top{max-width:1180px;margin:0 auto;padding:36px 24px 0;}
+.top .eyebrow{font-size:13px;font-weight:700;color:var(--accent-dark);letter-spacing:.04em;text-transform:uppercase;margin-bottom:6px;}
+.top h1{font-size:2rem;font-weight:700;letter-spacing:-0.015em;margin:0 0 8px;}
+.top .intro{color:var(--text-dim);max-width:72ch;font-size:15px;line-height:1.6;margin:0;}
+.top .intro strong{color:var(--text);}
+nav{display:flex;flex-wrap:wrap;gap:8px;}
+.catnav{gap:4px;margin:22px 0 14px;border-bottom:1px solid var(--line);}
+.catnav button{font-family:var(--font);font-weight:500;font-size:15px;background:none;border:none;border-bottom:2px solid transparent;margin-bottom:-1px;color:var(--text-dim);padding:9px 14px;cursor:pointer;}
+.catnav button:hover{color:var(--text);}
+.catnav button.active{color:var(--text);font-weight:600;border-bottom-color:var(--accent);}
+#nav button{display:flex;align-items:center;gap:9px;font-family:var(--font);font-size:14px;font-weight:500;background:var(--panel);border:1px solid var(--line);color:var(--text-dim);padding:9px 14px 9px 10px;border-radius:10px;cursor:pointer;text-align:left;}
+#nav button .nr{flex:none;min-width:24px;height:24px;border-radius:12px;padding:0 6px;display:inline-flex;align-items:center;justify-content:center;background:var(--accent-soft);color:var(--accent-dark);font-size:12px;font-weight:700;}
+#nav button:hover{border-color:var(--accent);color:var(--text);}
+#nav button.active{background:var(--accent-soft);border-color:var(--accent);color:var(--text);font-weight:600;}
+#nav button.active .nr{background:var(--accent);color:#fff;}
+main{max-width:1180px;margin:0 auto;padding:26px 24px 70px;}
+.scene{display:none;}
+.scene.active{display:block;animation:fade .25s ease;}
+@keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+.scene-head{display:flex;align-items:center;gap:10px;margin-bottom:4px;flex-wrap:wrap;}
+.scene-head .num{min-width:28px;height:28px;border-radius:14px;padding:0 7px;display:inline-flex;align-items:center;justify-content:center;background:var(--accent);color:#fff;font-size:13px;font-weight:700;}
+.scene-head h3{font-size:1.5rem;letter-spacing:-0.01em;margin:0;font-weight:700;}
+.scene-sub{color:var(--text-dim);font-size:15px;margin:4px 0 18px;max-width:78ch;line-height:1.55;}
+.scene-sub strong{color:var(--text);}
+.grid{display:grid;grid-template-columns:1fr 330px;gap:18px;align-items:start;}
+@media(max-width:880px){.grid{grid-template-columns:1fr;}}
+.tek{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;}
+.tek svg{display:block;width:100%;height:auto;touch-action:none;}
+.controls{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 16px 18px;display:flex;flex-direction:column;gap:14px;}
+.ctrl label{display:flex;justify-content:space-between;font-size:13px;font-weight:600;margin-bottom:6px;}
+.ctrl label span{font-weight:700;color:var(--accent-dark);font-variant-numeric:tabular-nums;}
+.ctrl input[type=range]{width:100%;accent-color:var(--accent);}
+select{font-family:var(--font);font-size:15px;padding:7px 9px;border:1px solid var(--line);border-radius:8px;background:#fff;width:100%;}
+.knoppen{display:flex;flex-wrap:wrap;gap:6px;}
+.btn{background:#fff;border:1px solid var(--line);color:var(--text);border-radius:8px;padding:8px 12px;font-family:var(--font);font-weight:600;font-size:14px;cursor:pointer;}
+.btn:hover{border-color:var(--accent);}
+.btn.on{background:var(--accent-soft);border-color:var(--accent);}
+.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent);}
+.readout{background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:14.5px;line-height:1.75;font-variant-numeric:tabular-nums;}
+.readout b{color:var(--text);}
+.readout .ok{color:var(--ok-text);font-weight:700;}
+.readout .flag{color:var(--flag-text);font-weight:700;}
+.kader{border-left:4px solid var(--ok-text);background:var(--ok-bg);border-radius:0 10px 10px 0;padding:10px 14px;font-size:14.5px;}
+.kader .kop{font-weight:700;color:var(--ok-text);margin-bottom:2px;}
+.kader p{margin:0 0 4px;}.kader p:last-child{margin:0;}
+.note{background:var(--panel-2);border-left:4px solid var(--accent);border-radius:0 8px 8px 0;padding:10px 12px;font-size:14px;color:var(--text-dim);line-height:1.6;}
+.note strong{color:var(--text);}
+.formule{font-size:18px;font-weight:700;text-align:center;background:#fff;border:1px solid var(--line);border-radius:8px;padding:8px;}
+.omvorm{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;font-size:14px;text-align:center;}
+.omvorm div{background:#fff;border:1px solid var(--line);border-radius:8px;padding:6px 4px;font-weight:600;}
+.legend{display:flex;flex-direction:column;gap:5px;font-size:13px;color:var(--text-dim);}
+.legend .row{display:flex;align-items:center;gap:8px;}
+.legend .sw{width:18px;height:4px;border-radius:2px;flex:none;}
+label.chk{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:500;}
+table.t{border-collapse:collapse;width:100%;font-size:14px;margin-top:14px;background:#fff;border:1px solid var(--line);border-radius:8px;overflow:hidden;}
+table.t th,table.t td{border-bottom:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top;}
+table.t th{background:var(--panel-2);font-size:12.5px;color:var(--text-dim);}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px;}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden;}
+.card svg{display:block;width:100%;height:auto;background:#fbfcfe;border-bottom:1px solid #E6ECF2;}
+.card .txt{padding:12px 16px 14px;}
+.card h4{margin:0 0 4px;font-size:1rem;}
+.card p{margin:0;font-size:14px;color:var(--text-dim);line-height:1.55;}
+.card p b{color:var(--text);}
+.tag{display:inline-block;font-size:12px;font-weight:700;padding:2px 8px;border-radius:999px;margin-bottom:6px;background:var(--accent-soft);color:var(--accent-dark);}
+.tag.dyn{background:var(--flag-bg);color:var(--flag-text);}
+.tag.stat{background:var(--ok-bg);color:var(--ok-text);}
+.mini{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px;}
+@media(max-width:700px){.mini{grid-template-columns:1fr;}}
+.mini .tek{padding:4px;}
+.mini h5{margin:6px 8px 0;font-size:13px;}
+/* oefenen */
+.oef{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px;}
+.oef-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px;}
+.score{font-size:14px;font-weight:600;color:var(--ok-text);background:var(--ok-bg);padding:3px 10px;border-radius:999px;}
+.soort{display:flex;flex-wrap:wrap;gap:6px;}
+.soort .btn{font-weight:500;padding:6px 11px;}
+.vraag{font-weight:600;font-size:16px;margin:14px 0 10px;}
+.keuzes{display:flex;flex-direction:column;gap:8px;}
+.keuzes .btn{font-weight:500;text-align:left;}
+.keuzes .btn.goed{background:var(--ok-bg);border-color:var(--ok-text);color:var(--ok-text);font-weight:700;}
+.keuzes .btn.fout{background:var(--flag-bg);border-color:var(--flag-text);color:var(--flag-text);}
+.antw{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+.antw input{font-family:var(--font);font-size:16px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;width:9em;}
+.feedback{margin-top:12px;font-size:15px;line-height:1.6;}
+.feedback.goed{color:var(--ok-text);}
+.feedback.fout{color:var(--flag-text);}
+.feedback .uitleg{color:var(--text);display:block;margin-top:4px;}
+footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-dim);font-size:12px;}
+footer a{color:inherit;}
+.inv{font-family:var(--font);font-size:15px;padding:7px 9px;border:1px solid var(--line);border-radius:8px;width:100%;}
+.inv:disabled{background:var(--accent-soft);}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="eyebrow">Fysica 4de jaar · Thema 5 · Thermodynamica · hoofdstuk 1 tot 3</div>
+  <h1>Warmte en gassen</h1>
+  <p class="intro"><strong>Wat gebeurt er met de deeltjes als een stof warmer wordt, smelt of verdampt?</strong> En hoe hangen druk, volume en temperatuur van een gas samen? Verander de waarden en kijk naar de deeltjes.</p>
+  <nav id="catnav" class="catnav"></nav>
+  <nav id="nav"></nav>
+</header>
+<main>
+
+<!-- 1.1 -->
+<section class="scene" id="w1" data-nr="1.1" data-cat="wa" data-title="Temperatuur en warmte">
+  <div class="scene-head"><span class="num"></span><h3>Temperatuur, warmte en thermisch evenwicht</h3></div>
+  <p class="scene-sub">Twee blokken raken elkaar. De deeltjes in het warme blok bewegen sneller. Bij botsingen geven ze energie door: er stroomt <strong>warmte</strong> van warm naar koud, tot beide even warm zijn. Dat is <strong>thermisch evenwicht</strong>.</p>
+  <div class="grid">
+    <div class="tek"><svg id="s_w1" viewBox="0 0 640 380"></svg></div>
+    <div class="controls">
+      <div class="ctrl"><label for="w1a">Begintemperatuur links <span id="w1av"></span></label><input type="range" id="w1a" min="-20" max="100" value="80"></div>
+      <div class="ctrl"><label for="w1b">Begintemperatuur rechts <span id="w1bv"></span></label><input type="range" id="w1b" min="-20" max="100" value="10"></div>
+      <div class="knoppen"><button class="btn primary" id="w1go">▶ Contact maken</button><button class="btn" id="w1re">↺ Opnieuw</button></div>
+      <div class="readout" id="r_w1"></div>
+      <div class="kader"><div class="kop">Definities</div>
+        <p><b>Temperatuur:</b> een maat voor de gemiddelde bewegingsenergie van de deeltjes van een stof.</p>
+        <p><b>Thermische energie:</b> de totale bewegingsenergie van alle deeltjes van een stof.</p>
+        <p><b>Warmte Q:</b> de energie die overgaat van een warm naar een koud voorwerp door een temperatuurverschil (in J).</p>
+        <p><b>Thermisch evenwicht:</b> twee voorwerpen hebben dezelfde temperatuur; er gaat geen warmte meer over.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="scene" id="w1k" data-nr="1.1" data-cat="wa" data-title="Absolute temperatuur">
+  <div class="scene-head"><span class="num"></span><h3>Het absolute nulpunt en de kelvinschaal</h3></div>
+  <p class="scene-sub">Hoe kouder een stof, hoe trager de deeltjes. Bij <strong>−273 °C</strong> bewegen ze (bijna) niet meer: kouder kan niet. Dat is het <strong>absolute nulpunt</strong>, 0 K.</p>
+  <div class="grid">
+    <div class="tek"><svg id="s_w1b" viewBox="0 0 640 360"></svg></div>
+    <div class="controls">
+      <div class="ctrl"><label for="w1t">Temperatuur <span id="w1tv"></span></label><input type="range" id="w1t" min="-273" max="200" value="20"></div>
+      <div class="formule">T = t + 273 &nbsp;·&nbsp; t = T − 273</div>
+      <div class="readout" id="r_w1b"></div>
+      <div class="kader"><div class="kop">Definities</div>
+        <p><b>Absolute nulpunt:</b> de laagst mogelijke temperatuur, 0 K = −273 °C. De deeltjes hebben dan de kleinste bewegingsenergie.</p>
+        <p><b>Absolute temperatuur T:</b> de temperatuur in kelvin (K), gemeten vanaf het absolute nulpunt.</p>
+        <p><b>Cohesiekracht:</b> de aantrekkingskracht tussen de deeltjes van dezelfde stof.</p></div>
+      <div class="note">Een temperatuur<strong>verschil</strong> is in °C en in K even groot: ΔT = 10 °C = 10 K.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 1.2 -->
+<section class="scene" id="w2" data-nr="1.2" data-cat="wa" data-title="Vormen van energietransport">
+  <div class="scene-head"><span class="num"></span><h3>Geleiding, convectie en straling</h3></div>
+  <p class="scene-sub">Warmte gaat op drie manieren van een warme naar een koude plaats. Kijk telkens naar wat de <strong>deeltjes</strong> doen.</p>
+  <div class="cards" id="c_w2"></div>
+</section>
+
+<!-- 1.3 -->
+<section class="scene" id="w3" data-nr="1.3" data-cat="wa" data-title="Warmtecapaciteit">
+  <div class="scene-head"><span class="num"></span><h3>Specifieke warmtecapaciteit</h3></div>
+  <p class="scene-sub">Hoeveel warmte heb je nodig om een stof op te warmen? Dat hangt af van de <strong>soort stof</strong>, de <strong>massa</strong> en de <strong>temperatuurstijging</strong>.</p>
+  <div class="grid">
+    <div class="tek"><svg id="s_w3" viewBox="0 0 640 380"></svg></div>
+    <div class="controls">
+      <div class="ctrl"><label for="w3s">Stof</label><select id="w3s"></select></div>
+      <div class="ctrl"><label for="w3m">Massa m <span id="w3mv"></span></label><input type="range" id="w3m" min="0.1" max="5" step="0.1" value="1"></div>
+      <div class="ctrl"><label for="w3t">Temperatuurstijging ΔT <span id="w3tv"></span></label><input type="range" id="w3t" min="1" max="80" value="20"></div>
+      <div class="formule">Q = c · m · ΔT</div>
+      <div class="omvorm"><div>c = Q / (m · ΔT)</div><div>m = Q / (c · ΔT)</div><div>ΔT = Q / (c · m)</div></div>
+      <div class="readout" id="r_w3"></div>
+      <div class="kader"><div class="kop">Definities</div>
+        <p><b>Specifieke warmtecapaciteit c:</b> de warmte die nodig is om 1 kg van een stof 1 °C op te warmen (in J/(kg·°C)).</p>
+        <p><b>Warmtecapaciteit C:</b> de warmte die nodig is om een voorwerp 1 °C op te warmen: C = c · m (in J/°C).</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 1.4 -->
+<section class="scene" id="w4" data-nr="1.4" data-cat="wa" data-title="Warmtebalans">
+  <div class="scene-head"><span class="num"></span><h3>De warmtebalans</h3></div>
+  <p class="scene-sub">Je legt een warm metalen blokje in koud water, in een goed geïsoleerd vat. Het blokje <strong>staat warmte af</strong>, het water <strong>neemt warmte op</strong>, tot ze dezelfde eindtemperatuur hebben.</p>
+  <div class="grid">
+    <div class="tek"><svg id="s_w4" viewBox="0 0 640 380"></svg></div>
+    <div class="controls">
+      <div class="ctrl"><label for="w4s">Blokje</label><select id="w4s"></select></div>
+      <div class="ctrl"><label for="w4m1">Massa blokje <span id="w4m1v"></span></label><input type="range" id="w4m1" min="0.1" max="2" step="0.1" value="0.5"></div>
+      <div class="ctrl"><label for="w4t1">Temperatuur blokje <span id="w4t1v"></span></label><input type="range" id="w4t1" min="30" max="200" value="100"></div>
+      <div class="ctrl"><label for="w4m2">Massa water <span id="w4m2v"></span></label><input type="range" id="w4m2" min="0.1" max="2" step="0.1" value="0.5"></div>
+      <div class="ctrl"><label for="w4t2">Temperatuur water <span id="w4t2v"></span></label><input type="range" id="w4t2" min="0" max="40" value="20"></div>
+      <div class="formule">Q<sub>af</sub> = Q<sub>op</sub></div>
+      <div class="readout" id="r_w4"></div>
+      <div class="note"><strong>Warmtebalans:</strong> in een geïsoleerd systeem is de afgestane warmte gelijk aan de opgenomen warmte. Dat is de wet van behoud van energie.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 2.1 -->
+<section class="scene" id="f1" data-nr="2.1" data-cat="fa" data-title="Merkbare en latente warmte">
+  <div class="scene-head"><span class="num"></span><h3>Opwarmen van ijs tot stoom</h3></div>
+  <p class="scene-sub">Je warmt 1 kg ijs van −20 °C gelijkmatig op. Schuif de toegevoerde warmte verder. Bij <strong>merkbare warmte</strong> stijgt de temperatuur. Bij <strong>latente warmte</strong> blijft de temperatuur gelijk: de energie wordt gebruikt om de deeltjes los te maken.</p>
+  <div class="grid">
+    <div>
+      <div class="tek"><svg id="g_f1" viewBox="0 0 640 380"></svg></div>
+    </div>
+    <div class="controls">
+      <div class="ctrl"><label for="f1q">Toegevoerde warmte Q <span id="f1qv"></span></label><input type="range" id="f1q" min="0" max="3100" step="10" value="200"></div>
+      <div class="tek" style="border:none"><svg id="s_f1" viewBox="0 0 300 150"></svg></div>
+      <div class="readout" id="r_f1"></div>
+      <div class="kader"><div class="kop">Definities</div>
+        <p><b>Merkbare warmte:</b> warmte die de temperatuur van een stof doet veranderen. De deeltjes bewegen sneller of trager.</p>
+        <p><b>Latente warmte:</b> warmte die een faseovergang veroorzaakt, zonder dat de temperatuur verandert. De afstand tussen de deeltjes verandert.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 2.2 -->
+<section class="scene" id="f2" data-nr="2.2" data-cat="fa" data-title="Faseovergangen en warmtebalans">
+  <div class="scene-head"><span class="num"></span><h3>Faseovergangen en de warmtebalans</h3></div>
+  <p class="scene-sub">Klik op een pijl om de faseovergang te zien. Rode pijlen: de stof <strong>neemt warmte op</strong>. Blauwe pijlen: de stof <strong>staat warmte af</strong>.</p>
+  <div class="grid">
+    <div class="tek"><svg id="s_f2" viewBox="0 0 640 400"></svg></div>
+    <div class="controls">
+      <div class="readout" id="r_f2a">Klik op een pijl.</div>
+      <div class="formule">Q = m · L</div>
+      <div class="kader"><div class="kop">Ijsblokjes in je drankje</div><p>Ijs van 0 °C in water. Het water staat warmte af, het ijs neemt warmte op om te <b>smelten</b> en daarna om <b>op te warmen</b>.</p></div>
+      <div class="ctrl"><label for="f2i">Massa ijs (0 °C) <span id="f2iv"></span></label><input type="range" id="f2i" min="10" max="300" step="10" value="50"></div>
+      <div class="ctrl"><label for="f2w">Massa water <span id="f2wv"></span></label><input type="range" id="f2w" min="100" max="500" step="10" value="300"></div>
+      <div class="ctrl"><label for="f2t">Temperatuur water <span id="f2tv"></span></label><input type="range" id="f2t" min="5" max="40" value="25"></div>
+      <div class="readout" id="r_f2"></div>
+    </div>
+  </div>
+</section>
+
+<!-- 3.1 - 3.3 -->
+<section class="scene" id="g1" data-nr="3.1" data-cat="ga" data-title="Constante temperatuur">
+  <div class="scene-head"><span class="num"></span><h3>Gas bij constante temperatuur</h3></div>
+  <p class="scene-sub">Duw de zuiger in. Het <strong>volume</strong> wordt kleiner, de deeltjes botsen vaker tegen de wand: de <strong>druk</strong> wordt groter. Bij constante temperatuur is <strong>p · V constant</strong>.</p>
+  <div class="grid">
+    <div><div class="tek"><svg id="s_g1" viewBox="0 0 640 260"></svg></div><div class="tek" style="margin-top:12px"><svg id="gr_g1" viewBox="0 0 640 260"></svg></div></div>
+    <div class="controls">
+      <div class="ctrl"><label for="g1v">Volume V <span id="g1vv"></span></label><input type="range" id="g1v" min="0.5" max="3" step="0.1" value="2"></div>
+      <div class="formule">p₁ · V₁ = p₂ · V₂</div>
+      <div class="readout" id="r_g1"></div>
+      <div class="note">p en V zijn <strong>omgekeerd evenredig</strong>: halveer je het volume, dan verdubbelt de druk. De grafiek is een hyperbool.</div>
+    </div>
+  </div>
+</section>
+<section class="scene" id="g2" data-nr="3.2" data-cat="ga" data-title="Constant volume">
+  <div class="scene-head"><span class="num"></span><h3>Gas bij constant volume</h3></div>
+  <p class="scene-sub">Het vat is gesloten en de zuiger zit vast. Warm het gas op: de deeltjes bewegen sneller en botsen harder. De <strong>druk</strong> stijgt. Bij constant volume is <strong>p / T constant</strong> (T in kelvin).</p>
+  <div class="grid">
+    <div><div class="tek"><svg id="s_g2" viewBox="0 0 640 260"></svg></div><div class="tek" style="margin-top:12px"><svg id="gr_g2" viewBox="0 0 640 260"></svg></div></div>
+    <div class="controls">
+      <div class="ctrl"><label for="g2t">Temperatuur <span id="g2tv"></span></label><input type="range" id="g2t" min="-100" max="300" step="5" value="20"></div>
+      <div class="formule">p₁ / T₁ = p₂ / T₂</div>
+      <div class="readout" id="r_g2"></div>
+      <div class="note">Rechte door de oorsprong als je T in <strong>kelvin</strong> zet. Verleng je de rechte, dan wordt p = 0 bij 0 K (−273 °C).</div>
+    </div>
+  </div>
+</section>
+<section class="scene" id="g3" data-nr="3.3" data-cat="ga" data-title="Constante druk">
+  <div class="scene-head"><span class="num"></span><h3>Gas bij constante druk</h3></div>
+  <p class="scene-sub">De zuiger kan vrij bewegen: de druk blijft gelijk. Warm het gas op: het <strong>volume</strong> neemt toe. Bij constante druk is <strong>V / T constant</strong> (T in kelvin).</p>
+  <div class="grid">
+    <div><div class="tek"><svg id="s_g3" viewBox="0 0 640 260"></svg></div><div class="tek" style="margin-top:12px"><svg id="gr_g3" viewBox="0 0 640 260"></svg></div></div>
+    <div class="controls">
+      <div class="ctrl"><label for="g3t">Temperatuur <span id="g3tv"></span></label><input type="range" id="g3t" min="-100" max="300" step="5" value="20"></div>
+      <div class="formule">V₁ / T₁ = V₂ / T₂</div>
+      <div class="readout" id="r_g3"></div>
+      <div class="note">Een ballon in de diepvries krimpt, een fietsband in de zon zet uit (als de band nog kan rekken).</div>
+    </div>
+  </div>
+</section>
+<section class="scene" id="g4" data-nr="3.4" data-cat="ga" data-title="Algemene en ideale gaswet">
+  <div class="scene-head"><span class="num"></span><h3>De algemene en de ideale gaswet</h3></div>
+  <p class="scene-sub">Druk p, volume V en temperatuur T zijn de <strong>toestandsgrootheden</strong> van een gas. Samen met de <strong>stofhoeveelheid n</strong> beschrijven ze de toestand van een ideaal gas volledig. Kies wat je zoekt en vul de rest in.</p>
+  <div class="grid">
+    <div>
+      <div class="tek" style="padding:16px">
+        <div class="ctrl"><label for="g4z">Wat zoek je?</label><select id="g4z"><option value="p">druk p</option><option value="V">volume V</option><option value="n">stofhoeveelheid n</option><option value="T" >temperatuur T</option></select></div>
+        <div class="mini" style="grid-template-columns:repeat(2,1fr)">
+          <div class="ctrl"><label for="g4p">p (Pa)</label><input class="inv" type="text" id="g4p" value="101325"></div>
+          <div class="ctrl"><label for="g4V">V (m³)</label><input class="inv" type="text" id="g4V" value="0,0224"></div>
+          <div class="ctrl"><label for="g4n">n (mol)</label><input class="inv" type="text" id="g4n" value="1"></div>
+          <div class="ctrl"><label for="g4T">T (K)</label><input class="inv" type="text" id="g4T" value="273"></div>
+        </div>
+        <div class="readout" id="r_g4" style="margin-top:12px"></div>
+        <button class="btn" id="g4norm" style="margin-top:10px">Normomstandigheden: molair volume</button>
+      </div>
+    </div>
+    <div class="controls">
+      <div class="formule">p · V / T = constant</div>
+      <div class="formule">p · V = n · R · T</div>
+      <div class="kader"><div class="kop">Definities</div>
+        <p><b>Algemene gaswet:</b> p₁ · V₁ / T₁ = p₂ · V₂ / T₂ voor een vaste hoeveelheid gas.</p>
+        <p><b>Ideale gaswet:</b> p · V = n · R · T met R = 8,31 J/(mol·K).</p>
+        <p><b>Ideaal gas:</b> een model: de deeltjes hebben geen eigen volume en trekken elkaar niet aan. Een ideaal gas kan dus nooit condenseren.</p>
+        <p><b>Reëel gas:</b> bij lage temperatuur of hoge druk trekken de deeltjes elkaar wel aan (cohesie) en <b>condenseert</b> het gas.</p>
+        <p><b>Normomstandigheden:</b> 0 °C (273 K) en 101 325 Pa. Het molair volume is dan 22,4 L/mol.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- OEFENEN -->
+<section class="scene" id="oef" data-nr="" data-cat="oef" data-title="Oefenen">
+  <div class="scene-head"><span class="num"></span><h3>Oefenen</h3></div>
+  <p class="scene-sub">Kies een hoofdstuk of oefen alles door elkaar. Gebruik een komma voor decimalen. c<sub>water</sub> = 4186 J/(kg·°C), R = 8,31 J/(mol·K).</p>
+  <div class="oef">
+    <div class="oef-head"><div class="soort" id="soort"></div><span class="score" id="score">0 / 0</span></div>
+    <div class="vraag" id="vraag"></div>
+    <div id="invoer"></div>
+    <div class="feedback" id="fb"></div>
+    <div style="margin-top:12px"><button class="btn primary" id="volgende">Nieuwe vraag</button></div>
+  </div>
+</section>
+</main>
+<footer>Gemaakt door de vakgroep wetenschappen · Maria Assumpta Lyceum · ontwikkeld met hulp van AI · <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.nl">CC BY-NC-SA 4.0</a></footer>
+
+<script>
+//////////////////// NAVIGATIE ////////////////////
+const scenes = [...document.querySelectorAll('.scene')];
+const nav = document.getElementById('nav'), catNav = document.getElementById('catnav');
+const categories = [{id:'wa',label:'1 Warmte'},{id:'fa',label:'2 Faseovergangen'},{id:'ga',label:'3 De gaswetten'},{id:'oef',label:'Oefenen'}];
+let current = 0, activeCat = 'wa';
+function renderNav(){
+  catNav.innerHTML = ''; nav.innerHTML = '';
+  categories.forEach(c => { const b = document.createElement('button'); b.textContent = c.label; b.classList.toggle('active', c.id === activeCat); b.onclick = () => activate(scenes.findIndex(s => s.dataset.cat === c.id)); catNav.appendChild(b); });
+  scenes.forEach((s, i) => { if (s.dataset.cat !== activeCat || activeCat === 'oef') return; const b = document.createElement('button'); b.innerHTML = `<span class="nr">${s.dataset.nr}</span>${s.dataset.title}`; b.classList.toggle('active', i === current); b.onclick = () => activate(i); nav.appendChild(b); });
+}
+function activate(i){
+  current = i; activeCat = scenes[i].dataset.cat;
+  scenes.forEach((s, j) => s.classList.toggle('active', j === i));
+  renderNav();
+  if (location.hash !== '#' + scenes[i].id) history.replaceState(null, '', '#' + scenes[i].id);
+}
+scenes.forEach(s => { const n = s.querySelector('.num'); if (n){ if (s.dataset.nr) n.textContent = s.dataset.nr; else n.remove(); } });
+activate(Math.max(0, scenes.findIndex(s => '#' + s.id === location.hash)));
+window.addEventListener('hashchange', () => { const i = scenes.findIndex(s => '#' + s.id === location.hash); if (i >= 0 && i !== current) activate(i); });
+
+
+//////////////////// HULPFUNCTIES ////////////////////
+const $ = id => document.getElementById(id);
+const fmt = (v, d = 1) => (Math.abs(v) < 0.5 * Math.pow(10, -d) ? 0 : v).toFixed(d).replace('.', ',');
+const C = {fz:'#7c3aed', fn:'#059669', g:'#d97706', f:'#2563eb', fw:'#dc2626', fv:'#0891b2', lijn:'#94A3B8', tekst:'#1D2A36', dim:'#51606E'};
+function pijl(x1, y1, x2, y2, kleur, label, lx = 0, ly = 0, dik = 4){
+  const len = Math.hypot(x2 - x1, y2 - y1); if (len < 2) return `<circle cx="${x1}" cy="${y1}" r="4" fill="${kleur}"/>`;
+  const a = Math.atan2(y2 - y1, x2 - x1), hs = Math.min(15, len * 0.45);
+  const bx = x2 - Math.cos(a) * hs * 0.85, by = y2 - Math.sin(a) * hs * 0.85;
+  const p1 = [x2 - hs * Math.cos(a - 0.42), y2 - hs * Math.sin(a - 0.42)], p2 = [x2 - hs * Math.cos(a + 0.42), y2 - hs * Math.sin(a + 0.42)];
+  return `<g><line x1="${x1}" y1="${y1}" x2="${bx}" y2="${by}" stroke="${kleur}" stroke-width="${dik}" stroke-linecap="round"/><polygon points="${x2},${y2} ${p1} ${p2}" fill="${kleur}"/><circle cx="${x1}" cy="${y1}" r="4.5" fill="${kleur}"/>${label ? `<text x="${(x1 + x2) / 2 + lx}" y="${(y1 + y2) / 2 + ly}" fill="${kleur}" font-size="17" font-weight="700" text-anchor="middle">${label}</text>` : ''}</g>`;
+}
+const sub = (a, b) => `${a}<tspan font-size="70%" dy="4">${b}</tspan><tspan dy="-4"></tspan>`;
+const txt = (x, y, t, o = {}) => `<text x="${x}" y="${y}" font-size="${o.s || 14}" font-weight="${o.w || 500}" fill="${o.c || C.tekst}" text-anchor="${o.a || 'start'}">${t}</text>`;
+function grafiek(svg, {w, h, x0 = 40, y0, xmax, ymax, xlab, ylab, xt = [], yt = []}){
+  const X = v => x0 + v / xmax * (w - x0 - 16), Y = v => y0 - v / ymax * (y0 - 14);
+  let s = `<line x1="${x0}" y1="${y0}" x2="${w - 8}" y2="${y0}" stroke="${C.dim}"/><line x1="${x0}" y1="${y0}" x2="${x0}" y2="8" stroke="${C.dim}"/>`;
+  xt.forEach(v => s += `<line x1="${X(v)}" y1="${y0}" x2="${X(v)}" y2="${y0 + 4}" stroke="${C.dim}"/>${txt(X(v), y0 + 16, fmt(v, v % 1 ? 1 : 0), {s: 11, c: C.dim, a: 'middle'})}`);
+  yt.forEach(v => s += `<line x1="${x0 - 4}" y1="${Y(v)}" x2="${x0}" y2="${Y(v)}" stroke="${C.dim}"/><line x1="${x0}" y1="${Y(v)}" x2="${w - 8}" y2="${Y(v)}" stroke="#EEF2F5"/>${txt(x0 - 6, Y(v) + 4, fmt(v, v % 1 ? 1 : 0), {s: 11, c: C.dim, a: 'end'})}`);
+  s += txt(w - 8, y0 - 6, xlab, {s: 12, w: 700, c: C.dim, a: 'end'}) + txt(x0 + 6, 18, ylab, {s: 12, w: 700, c: C.dim});
+  return {s, X, Y};
+}
+function svgPunt(svg, e){ const p = svg.createSVGPoint(); p.x = e.clientX; p.y = e.clientY; return p.matrixTransform(svg.getScreenCTM().inverse()); }
+
+
+
+const STOF = [['water', 4186], ['ijs', 2100], ['olijfolie', 1970], ['aluminium', 900], ['zand', 830], ['glas', 840], ['ijzer', 450], ['koper', 390], ['lood', 130]];
+const isOn = id => $(id).classList.contains('active');
+const kl = t => { const u = Math.max(0, Math.min(1, (t + 20) / 120)); return `rgb(${Math.round(60 + 195 * u)},${Math.round(110 - 40 * u)},${Math.round(230 - 190 * u)})`; };
+// deeltjes in een rechthoek
+function deeltjes(n, box){ return Array.from({length: n}, () => ({x: box.x + 8 + Math.random() * (box.w - 16), y: box.y + 8 + Math.random() * (box.h - 16), a: Math.random() * 6.28})); }
+function beweeg(ps, box, v){ ps.forEach(p => { p.a += (Math.random() - 0.5) * 0.8; p.x += Math.cos(p.a) * v; p.y += Math.sin(p.a) * v;
+  if (p.x < box.x + 6){ p.x = box.x + 6; p.a = Math.PI - p.a; } if (p.x > box.x + box.w - 6){ p.x = box.x + box.w - 6; p.a = Math.PI - p.a; }
+  if (p.y < box.y + 6){ p.y = box.y + 6; p.a = -p.a; } if (p.y > box.y + box.h - 6){ p.y = box.y + box.h - 6; p.a = -p.a; } }); }
+const bol = (p, c, r = 6) => `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${r}" fill="${c}"/>`;
+const snel = T => Math.sqrt(Math.max(T, 0) / 293) * 2.4; // T in K
+
+//////////////////// 1.1 thermisch evenwicht ////////////////////
+(function(){
+  const A = {x: 80, y: 90, w: 220, h: 200}, B = {x: 340, y: 90, w: 220, h: 200};
+  let pa = deeltjes(26, A), pb = deeltjes(26, B), ta, tb, contact = false, Q = 0;
+  function reset(){ ta = +$('w1a').value; tb = +$('w1b').value; contact = false; Q = 0; }
+  function teken(){
+    $('w1av').textContent = Math.round(ta) + ' °C'; $('w1bv').textContent = Math.round(tb) + ' °C';
+    let o = `<rect x="${A.x}" y="${A.y}" width="${A.w}" height="${A.h}" rx="6" fill="${kl(ta)}" fill-opacity=".18" stroke="${kl(ta)}" stroke-width="3"/><rect x="${B.x}" y="${B.y}" width="${B.w}" height="${B.h}" rx="6" fill="${kl(tb)}" fill-opacity=".18" stroke="${kl(tb)}" stroke-width="3"/>`;
+    o += pa.map(p => bol(p, kl(ta))).join('') + pb.map(p => bol(p, kl(tb))).join('');
+    o += txt(A.x + A.w / 2, 70, Math.round(ta) + ' °C', {s: 20, w: 700, a: 'middle', c: kl(ta)}) + txt(B.x + B.w / 2, 70, Math.round(tb) + ' °C', {s: 20, w: 700, a: 'middle', c: kl(tb)});
+    if (contact && Math.abs(ta - tb) > 0.3){ const naarR = ta > tb; o += pijl(naarR ? 280 : 360, 330, naarR ? 360 : 280, 330, C.fw, 'Q', 0, -10); }
+    if (contact && Math.abs(ta - tb) <= 0.3) o += txt(320, 340, 'thermisch evenwicht', {s: 16, w: 700, a: 'middle', c: '#1F7A4A'});
+    $('s_w1').innerHTML = o;
+    $('r_w1').innerHTML = !contact ? 'De blokken raken elkaar nog niet.<br>Sneller bewegende deeltjes = hogere temperatuur.' :
+      (Math.abs(ta - tb) > 0.3 ? `Er stroomt warmte van het <b>warme</b> naar het <b>koude</b> blok.<br>links ${fmt(ta, 1)} °C · rechts ${fmt(tb, 1)} °C` : `<span class="ok">Thermisch evenwicht bij ${fmt(ta, 1)} °C.</span><br>Er stroomt geen warmte meer.`);
+  }
+  function stap(){
+    if (isOn('w1')){
+      if (contact && Math.abs(ta - tb) > 0.05){ const d = (ta - tb) * 0.006; ta -= d; tb += d; }
+      beweeg(pa, A, snel(ta + 273)); beweeg(pb, B, snel(tb + 273)); teken();
+    }
+    requestAnimationFrame(stap);
+  }
+  $('w1a').oninput = $('w1b').oninput = () => { reset(); teken(); };
+  $('w1go').onclick = () => { contact = true; }; $('w1re').onclick = () => { reset(); teken(); };
+  reset(); stap();
+})();
+
+//////////////////// 1.1 absolute nulpunt ////////////////////
+(function(){
+  const box = {x: 330, y: 60, w: 270, h: 240}; let ps = deeltjes(30, box);
+  function stap(){
+    if (isOn('w1k')){
+      const t = +$('w1t').value, T = t + 273; $('w1tv').textContent = t + ' °C';
+      beweeg(ps, box, snel(T));
+      // thermometer met twee schalen
+      const y = v => 320 - (v + 273) / 473 * 260;
+      let o = `<rect x="110" y="50" width="26" height="275" rx="13" fill="#fff" stroke="${C.dim}"/><circle cx="123" cy="330" r="20" fill="${C.fw}"/><rect x="116" y="${y(t)}" width="14" height="${330 - y(t)}" fill="${C.fw}"/>`;
+      [-273, -200, -100, 0, 100, 200].forEach(v => o += `<line x1="136" y1="${y(v)}" x2="146" y2="${y(v)}" stroke="${C.dim}"/>` + txt(150, y(v) + 4, v + ' °C', {s: 12, c: C.dim}) + `<line x1="100" y1="${y(v)}" x2="110" y2="${y(v)}" stroke="${C.dim}"/>` + txt(96, y(v) + 4, (v + 273) + ' K', {s: 12, c: C.dim, a: 'end'}));
+      o += `<rect x="${box.x}" y="${box.y}" width="${box.w}" height="${box.h}" rx="6" fill="#F8FAFC" stroke="${C.dim}"/>` + ps.map(p => bol(p, kl(t))).join('');
+      o += txt(box.x + box.w / 2, 330, T <= 0 ? 'de deeltjes staan (bijna) stil' : 'deeltjes van een gas', {s: 13, w: 600, a: 'middle', c: C.dim});
+      $('s_w1b').innerHTML = o;
+      $('r_w1b').innerHTML = `t = <b>${t} °C</b><br>T = t + 273 = <b>${T} K</b>` + (T === 0 ? '<br><span class="ok">Absolute nulpunt!</span>' : '');
+    }
+    requestAnimationFrame(stap);
+  }
+  stap();
+})();
+
+//////////////////// 1.2 energietransport ////////////////////
+(function(){
+  const k = [
+    {t:'Geleiding', s:`<svg viewBox="0 0 300 150"><rect x="20" y="60" width="260" height="30" fill="#CBD5E1"/>${[...Array(12)].map((_, i) => `<circle cx="${32 + i * 21}" cy="75" r="7" fill="${kl(100 - i * 9)}"/>`).join('')}<path d="M30 130 q10 -30 0 -40 q-10 -10 0 -30" stroke="#F97316" stroke-width="5" fill="none"/>${pijl(120, 40, 240, 40, C.fw, '', 0, 0, 3)}</svg>`, p:'De deeltjes <b>trillen</b> op hun plaats en geven hun energie door aan hun buren. De deeltjes verplaatsen zich niet. Vooral in <b>vaste stoffen</b>, het best in metalen. Voorbeeld: het handvat van een metalen pan wordt warm.'},
+    {t:'Convectie (stroming)', s:`<svg viewBox="0 0 300 150"><rect x="60" y="20" width="180" height="110" fill="#DBEAFE" stroke="#64748B"/><path d="M110 120 v-80 h80 v80" stroke="${C.fw}" stroke-width="3" fill="none" stroke-dasharray="6 4"/>${pijl(110, 80, 110, 45, C.fw, '', 0, 0, 3)}${pijl(190, 50, 190, 100, '#2563eb', '', 0, 0, 3)}<path d="M95 140 q8 -14 0 -22 q-8 -8 0 -18" stroke="#F97316" stroke-width="4" fill="none" transform="translate(15 0)"/></svg>`, p:'Warme deeltjes <b>verplaatsen zich</b>: warm water of warme lucht stijgt, koud daalt. Dat kan alleen in <b>vloeistoffen en gassen</b>. Voorbeeld: een radiator verwarmt de lucht in de klas.'},
+    {t:'Straling', s:`<svg viewBox="0 0 300 150"><circle cx="60" cy="75" r="32" fill="#FCD34D"/>${[0, 1, 2].map(i => `<path d="M110 ${45 + i * 30} q15 -10 30 0 t30 0 t30 0 t30 0" stroke="#F97316" stroke-width="3" fill="none"/>`).join('')}<rect x="240" y="45" width="40" height="60" fill="#475569"/></svg>`, p:'Energie gaat over als <b>elektromagnetische straling</b> (bv. infrarood). Daar zijn <b>geen deeltjes</b> voor nodig: het werkt ook in het vacuüm. Voorbeeld: de zon verwarmt de aarde, een terrasverwarmer.'}
+  ];
+  $('c_w2').innerHTML = k.map(c => `<div class="card">${c.s}<div class="txt"><h4>${c.t}</h4><p>${c.p}</p></div></div>`).join('');
+})();
+
+//////////////////// 1.3 warmtecapaciteit ////////////////////
+(function(){
+  $('w3s').innerHTML = STOF.map(([n, c], i) => `<option value="${i}">${n} (c = ${c} J/(kg·°C))</option>`).join('');
+  function teken(){
+    const [n, c] = STOF[+$('w3s').value], m = +$('w3m').value, dT = +$('w3t').value, Q = c * m * dT;
+    $('w3mv').textContent = fmt(m, 1) + ' kg'; $('w3tv').textContent = dT + ' °C';
+    const g = grafiek(null, {w: 640, h: 380, x0: 110, y0: 340, xmax: 4800, ymax: STOF.length, xlab: 'c (J/(kg·°C))', ylab: '', xt: [0, 1000, 2000, 3000, 4000], yt: []});
+    let o = g.s.replace(/<line x1="110" y1="340" x2="110" y2="8"[^>]*>/, '');
+    STOF.forEach(([sn, sc], i) => { const y = 24 + i * 34; o += `<rect x="110" y="${y}" width="${g.X(sc) - 110}" height="22" fill="${i == $('w3s').value ? C.fw : '#CBD5E1'}"/>` + txt(102, y + 16, sn, {s: 13, a: 'end', w: i == $('w3s').value ? 700 : 500}) + txt(g.X(sc) + 6, y + 16, sc, {s: 12, c: C.dim}); });
+    $('s_w3').innerHTML = o;
+    $('r_w3').innerHTML = `Q = c · m · ΔT = ${c} · ${fmt(m, 1)} · ${dT}<br>Q = <b>${fmt(Q, 0)} J</b> = <b>${fmt(Q / 1000, 1)} kJ</b><br>warmtecapaciteit C = c · m = <b>${fmt(c * m, 0)} J/°C</b>` +
+      (n === 'water' ? '<br><br>Water heeft een <b>zeer grote</b> c: het warmt traag op en koelt traag af. Daarom is de zee in september nog warm en gebruik je water in een kruik of een radiator.' : `<br><br>Voor dezelfde opwarming heeft water <b>${fmt(4186 / c, 1)} keer</b> meer warmte nodig.`);
+  }
+  ['w3s', 'w3m', 'w3t'].forEach(id => $(id).oninput = teken); teken();
+})();
+
+//////////////////// 1.4 warmtebalans ////////////////////
+(function(){
+  const B = STOF.filter(s => !['water', 'ijs', 'olijfolie', 'zand'].includes(s[0]));
+  $('w4s').innerHTML = B.map(([n, c], i) => `<option value="${i}">${n} (c = ${c} J/(kg·°C))</option>`).join('');
+  function teken(){
+    const [n, c1] = B[+$('w4s').value], m1 = +$('w4m1').value, t1 = +$('w4t1').value, m2 = +$('w4m2').value, t2 = +$('w4t2').value, c2 = 4186;
+    $('w4m1v').textContent = fmt(m1, 1) + ' kg'; $('w4t1v').textContent = t1 + ' °C'; $('w4m2v').textContent = fmt(m2, 1) + ' kg'; $('w4t2v').textContent = t2 + ' °C';
+    const te = (c1 * m1 * t1 + c2 * m2 * t2) / (c1 * m1 + c2 * m2), Qaf = c1 * m1 * (t1 - te), Qop = c2 * m2 * (te - t2);
+    let o = `<rect x="150" y="90" width="240" height="250" fill="#fff" stroke="#475569" stroke-width="3"/><rect x="153" y="${340 - 150 * m2 / 2 - 60}" width="234" height="${150 * m2 / 2 + 57}" fill="#BFDBFE"/>`;
+    o += `<rect x="230" y="250" width="80" height="60" rx="4" fill="${kl(t1)}" stroke="#334155"/>` + txt(270, 285, n, {s: 12, w: 700, a: 'middle', c: '#fff'});
+    o += pijl(300, 260, 360, 220, C.fw, 'Q', 14, 0, 3);
+    o += txt(450, 140, 'blokje: ' + t1 + ' °C → ' + fmt(te, 1) + ' °C', {s: 14, w: 600, c: C.fw}) + txt(450, 170, 'water: ' + t2 + ' °C → ' + fmt(te, 1) + ' °C', {s: 14, w: 600, c: '#2563eb'});
+    o += txt(270, 60, 'eindtemperatuur ' + fmt(te, 1) + ' °C', {s: 18, w: 700, a: 'middle'});
+    $('s_w4').innerHTML = o;
+    $('r_w4').innerHTML = `Q<sub>af</sub> = c<sub>1</sub> · m<sub>1</sub> · (T<sub>1</sub> − T<sub>e</sub>)<br>Q<sub>op</sub> = c<sub>2</sub> · m<sub>2</sub> · (T<sub>e</sub> − T<sub>2</sub>)<br>` +
+      `${c1} · ${fmt(m1, 1)} · (${t1} − T<sub>e</sub>) = 4186 · ${fmt(m2, 1)} · (T<sub>e</sub> − ${t2})<br>T<sub>e</sub> = <b>${fmt(te, 1)} °C</b><br>Q<sub>af</sub> = Q<sub>op</sub> = <b>${fmt(Qaf, 0)} J</b>`;
+  }
+  ['w4s', 'w4m1', 'w4t1', 'w4m2', 'w4t2'].forEach(id => $(id).oninput = teken); teken();
+})();
+
+//////////////////// 2.1 opwarmgrafiek ////////////////////
+const FASE = (() => { // 1 kg ijs van -20 °C tot stoom 120 °C; Q in kJ
+  const d = [['ijs warmt op', 2.1 * 20, -20, 0, 'vast'], ['smelten', 334, 0, 0, 'vast + vloeibaar'], ['water warmt op', 4.186 * 100, 0, 100, 'vloeibaar'], ['verdampen', 2257, 100, 100, 'vloeibaar + gas'], ['stoom warmt op', 2.01 * 20, 100, 120, 'gas']];
+  let q = 0; return d.map(([n, dq, a, b, f]) => { const o = {n, q0: q, q1: q + dq, a, b, f}; q += dq; return o; });
+})();
+(function(){
+  const box = {x: 30, y: 20, w: 240, h: 110}; let ps = [];
+  for (let i = 0; i < 4; i++) for (let j = 0; j < 7; j++) ps.push({x: 60 + j * 30, y: 45 + i * 22, hx: 60 + j * 30, hy: 45 + i * 22, a: Math.random() * 6});
+  function toestand(Q){ const s = FASE.find(s => Q <= s.q1) || FASE[FASE.length - 1]; const fr = Math.min(1, (Q - s.q0) / (s.q1 - s.q0)); return {s, fr, T: s.a + (s.b - s.a) * fr}; }
+  function teken(){
+    const Q = +$('f1q').value, {s, fr, T} = toestand(Q);
+    $('f1qv').textContent = fmt(Q, 0) + ' kJ';
+    const g = grafiek(null, {w: 640, h: 380, x0: 60, y0: 340, xmax: 3100, ymax: 140, xlab: 'Q (kJ)', ylab: 't (°C)', xt: [0, 500, 1000, 1500, 2000, 2500, 3000], yt: [20, 40, 60, 80, 100, 120, 140]});
+    const Yt = t => g.Y(t + 20) ; // verschuiving: -20 °C onderaan
+    let o = g.s.replace(/>(\d+)<\/text>/g, (m, v) => m); // ticks als gewone getallen
+    // eigen y-ticks voor -20..120
+    o = grafiek(null, {w: 640, h: 380, x0: 60, y0: 340, xmax: 3100, ymax: 140, xlab: 'Q (kJ)', ylab: 't (°C)', xt: [0, 500, 1000, 1500, 2000, 2500, 3000], yt: []}).s;
+    [-20, 0, 20, 40, 60, 80, 100, 120].forEach(v => o += `<line x1="56" y1="${Yt(v)}" x2="632" y2="${Yt(v)}" stroke="#EEF2F5"/>` + txt(54, Yt(v) + 4, v, {s: 11, c: C.dim, a: 'end'}));
+    const kleuren = ['#60A5FA', '#A78BFA', '#34D399', '#A78BFA', '#F87171'];
+    FASE.forEach((f, i) => { o += `<line x1="${g.X(f.q0)}" y1="${Yt(f.a)}" x2="${g.X(f.q1)}" y2="${Yt(f.b)}" stroke="${kleuren[i]}" stroke-width="4"/>`;
+      if (f.a === f.b) o += txt((g.X(f.q0) + g.X(f.q1)) / 2, Yt(f.a) - 10, f.n + ': latente warmte', {s: 12, w: 700, c: '#7C3AED', a: 'middle'}); });
+    o += txt(g.X(20), Yt(-10) + 2, 'merkbaar', {s: 11, c: C.dim}) + `<circle cx="${g.X(Q)}" cy="${Yt(T)}" r="7" fill="${C.tekst}"/>`;
+    $('g_f1').innerHTML = o;
+    // deeltjes
+    const vast = s.f === 'vast' || (s.n === 'smelten' && fr < 0.5), gas = s.f === 'gas' || (s.n === 'verdampen' && fr > 0.5);
+    ps.forEach(p => { p.a += (Math.random() - .5) * .9;
+      if (vast){ p.x = p.hx + (Math.random() - .5) * (2 + (T + 20) / 10); p.y = p.hy + (Math.random() - .5) * (2 + (T + 20) / 10); }
+      else { const v = gas ? 6 : 1.6; p.x += Math.cos(p.a) * v; p.y += Math.sin(p.a) * v; const yb = gas ? 20 : 70;
+        if (p.x < 36 || p.x > 264) p.a = Math.PI - p.a; if (p.y < yb + 6 || p.y > 124) p.a = -p.a; p.x = Math.max(36, Math.min(264, p.x)); p.y = Math.max(yb + 6, Math.min(124, p.y)); } });
+    $('s_f1').innerHTML = `<rect x="${box.x}" y="${box.y}" width="${box.w}" height="${box.h}" fill="#F8FAFC" stroke="${C.dim}"/>` + ps.map(p => bol(p, kl(T), 7)).join('');
+    $('r_f1').innerHTML = `<b>${s.n}</b> · ${s.f}<br>temperatuur: <b>${fmt(T, 1)} °C</b><br>` + (s.a === s.b ? '<span class="flag">Latente warmte: T blijft gelijk.</span> De energie maakt de deeltjes los van elkaar.' : '<span class="ok">Merkbare warmte: T stijgt.</span> De deeltjes bewegen sneller.') +
+      '<br><br>Smelten kost 334 kJ, verdampen 2257 kJ: bijna 7 keer zoveel. Daarom koelt zweten je zo goed af.';
+  }
+  function lus(){ if (isOn('f1')) teken(); requestAnimationFrame(lus); }
+  lus();
+})();
+
+//////////////////// 2.2 faseovergangen ////////////////////
+(function(){
+  const P = {v: [320, 70], l: [130, 330], g: [510, 330]}, N = {v: 'vast', l: 'vloeibaar', g: 'gas'};
+  const OV = [['v', 'l', 'smelten', 1], ['l', 'v', 'stollen', 0], ['l', 'g', 'verdampen', 1], ['g', 'l', 'condenseren', 0], ['v', 'g', 'sublimeren', 1], ['g', 'v', 'desublimeren', 0]];
+  const VB = {smelten: 'ijs smelt in je drankje', stollen: 'water bevriest in de diepvries', verdampen: 'een plas droogt op in de zon', condenseren: 'damp op de badkamerspiegel', sublimeren: 'droog ijs (vast CO₂) wordt gas', desublimeren: 'rijp op een autoruit in de winter'};
+  let k = -1;
+  function teken(){
+    let o = '';
+    OV.forEach(([a, b, n, op], i) => { const [x1, y1] = P[a], [x2, y2] = P[b], dx = x2 - x1, dy = y2 - y1, L = Math.hypot(dx, dy), ux = dx / L, uy = dy / L, nx = -uy * 16, ny = ux * 16;
+      const sx = x1 + ux * 70 + nx, sy = y1 + uy * 70 + ny, ex = x2 - ux * 70 + nx, ey = y2 - uy * 70 + ny, kleur = op ? C.fw : '#2563eb';
+      o += `<g style="cursor:pointer" data-i="${i}"><line x1="${sx}" y1="${sy}" x2="${ex}" y2="${ey}" stroke="transparent" stroke-width="22"/>${pijl(sx, sy, ex, ey, kleur, '', 0, 0, i === k ? 6 : 3.5)}${txt((sx + ex) / 2 + nx * 1.6, (sy + ey) / 2 + ny * 1.6 + 4, n, {s: 13, w: 700, c: kleur, a: 'middle'})}</g>`; });
+    Object.entries(P).forEach(([key, [x, y]]) => o += `<circle cx="${x}" cy="${y}" r="52" fill="#F8FAFC" stroke="${C.dim}" stroke-width="2"/>` + txt(x, y + 6, N[key], {s: 17, w: 700, a: 'middle'}));
+    $('s_f2').innerHTML = o;
+    $('s_f2').querySelectorAll('g[data-i]').forEach(g => g.onclick = () => { k = +g.dataset.i; teken(); const [a, b, n, op] = OV[k];
+      $('r_f2a').innerHTML = `<b>${n}</b>: van ${N[a]} naar ${N[b]}<br>De stof <b>${op ? 'neemt warmte op' : 'staat warmte af'}</b>.<br>Voorbeeld: ${VB[n]}.`; });
+  }
+  teken();
+  function ijs(){
+    const mi = +$('f2i').value / 1000, mw = +$('f2w').value / 1000, tw = +$('f2t').value, c = 4186, L = 334000;
+    $('f2iv').textContent = Math.round(mi * 1000) + ' g'; $('f2wv').textContent = Math.round(mw * 1000) + ' g'; $('f2tv').textContent = tw + ' °C';
+    const Qbeschikbaar = c * mw * tw, Qsmelt = mi * L;
+    let r = `Warmte om al het ijs te smelten: Q = m · L<sub>s</sub> = ${fmt(mi, 3)} · 334 000 = <b>${fmt(Qsmelt, 0)} J</b><br>Warmte die het water afstaat tot 0 °C: c · m · ΔT = <b>${fmt(Qbeschikbaar, 0)} J</b><br>`;
+    if (Qsmelt >= Qbeschikbaar){ const gesmolten = Qbeschikbaar / L; r += `Niet genoeg om al het ijs te smelten.<br>Eindtemperatuur: <b>0 °C</b>, er smelt ${fmt(gesmolten * 1000, 0)} g ijs.`; }
+    else { const te = (c * mw * tw - mi * L) / (c * (mw + mi)); r += `Q<sub>af</sub> = Q<sub>op</sub>:<br>4186 · ${fmt(mw, 3)} · (${tw} − T<sub>e</sub>) = ${fmt(mi, 3)} · 334 000 + 4186 · ${fmt(mi, 3)} · (T<sub>e</sub> − 0)<br>T<sub>e</sub> = <b>${fmt(te, 1)} °C</b>`; }
+    $('r_f2').innerHTML = r + '<br><br>L<sub>s</sub> (smelten van ijs) = 334 kJ/kg · L<sub>v</sub> (verdampen van water) = 2257 kJ/kg';
+  }
+  ['f2i', 'f2w', 'f2t'].forEach(id => $(id).oninput = ijs); ijs();
+})();
+
+//////////////////// 3.1 - 3.3 gaswetten ////////////////////
+function cilinder(svgId, ps, Vrel, T, druk, vast){ // Vrel 0..1 lengte, T in K
+  const x0 = 60, y0 = 50, h = 150, L = 80 + Vrel * 340, box = {x: x0, y: y0, w: L, h};
+  beweeg(ps, box, snel(T) * 1.4);
+  let o = `<rect x="${x0 - 6}" y="${y0 - 6}" width="${470}" height="${h + 12}" fill="none"/><path d="M${x0 + 480} ${y0 - 6} H${x0 - 6} V${y0 + h + 6} H${x0 + 480}" fill="none" stroke="#475569" stroke-width="5"/>`;
+  o += `<rect x="${x0}" y="${y0}" width="${L}" height="${h}" fill="${kl(T - 273)}" fill-opacity=".10"/>` + ps.map(p => bol(p, kl(T - 273), 5)).join('');
+  o += `<rect x="${x0 + L}" y="${y0 - 4}" width="16" height="${h + 8}" fill="#94A3B8" stroke="#334155"/><rect x="${x0 + L + 16}" y="${y0 + h / 2 - 6}" width="90" height="12" fill="#94A3B8"/>`;
+  if (vast) o += `<rect x="${x0 + L + 20}" y="${y0 - 26}" width="10" height="${h + 52}" fill="#B3362B"/>` + txt(x0 + L + 36, y0 - 12, 'vast', {s: 12, w: 700, c: '#B3362B'});
+  o += txt(x0, 30, druk, {s: 15, w: 700});
+  $(svgId).innerHTML = o;
+}
+(function(){ // Boyle
+  const ps = deeltjes(30, {x: 60, y: 50, w: 300, h: 150}), p1 = 100, V1 = 2;
+  function teken(){
+    const V = +$('g1v').value, p = p1 * V1 / V; $('g1vv').textContent = fmt(V, 1) + ' L';
+    cilinder('s_g1', ps, (V - 0.5) / 2.5, 293, 'p = ' + fmt(p, 0) + ' kPa · V = ' + fmt(V, 1) + ' L · T = 20 °C (constant)');
+    const g = grafiek(null, {w: 640, h: 260, x0: 60, y0: 230, xmax: 3, ymax: 420, xlab: 'V (L)', ylab: 'p (kPa)', xt: [0, 0.5, 1, 1.5, 2, 2.5, 3], yt: [100, 200, 300, 400]});
+    let pts = []; for (let v = 0.48; v <= 3; v += 0.02) pts.push(g.X(v) + ',' + g.Y(p1 * V1 / v));
+    $('gr_g1').innerHTML = g.s + `<polyline points="${pts.join(' ')}" fill="none" stroke="${C.f}" stroke-width="3"/><circle cx="${g.X(V)}" cy="${g.Y(p)}" r="6" fill="${C.f}"/>`;
+    $('r_g1').innerHTML = `p · V = ${fmt(p, 0)} kPa · ${fmt(V, 1)} L = <b>${fmt(p * V, 0)} kPa·L</b><br>(blijft gelijk)`;
+  }
+  function lus(){ if (isOn('g1')) teken(); requestAnimationFrame(lus); } lus();
+})();
+(function(){ // constant volume
+  const ps = deeltjes(30, {x: 60, y: 50, w: 300, h: 150}), p1 = 100, T1 = 293;
+  function teken(){
+    const t = +$('g2t').value, T = t + 273, p = p1 * T / T1; $('g2tv').textContent = t + ' °C';
+    cilinder('s_g2', ps, 0.6, T, 'p = ' + fmt(p, 0) + ' kPa · V constant · T = ' + T + ' K', true);
+    const g = grafiek(null, {w: 640, h: 260, x0: 60, y0: 230, xmax: 600, ymax: 200, xlab: 'T (K)', ylab: 'p (kPa)', xt: [0, 100, 200, 273, 400, 500, 600], yt: [50, 100, 150, 200]});
+    $('gr_g2').innerHTML = g.s + `<line x1="${g.X(0)}" y1="${g.Y(0)}" x2="${g.X(173)}" y2="${g.Y(p1 * 173 / T1)}" stroke="${C.f}" stroke-width="2" stroke-dasharray="5 5"/><line x1="${g.X(173)}" y1="${g.Y(p1 * 173 / T1)}" x2="${g.X(573)}" y2="${g.Y(p1 * 573 / T1)}" stroke="${C.f}" stroke-width="3"/><circle cx="${g.X(T)}" cy="${g.Y(p)}" r="6" fill="${C.f}"/>`;
+    $('r_g2').innerHTML = `T = t + 273 = <b>${T} K</b><br>p / T = ${fmt(p, 0)} / ${T} = <b>${fmt(p / T, 3)} kPa/K</b> (blijft gelijk)`;
+  }
+  function lus(){ if (isOn('g2')) teken(); requestAnimationFrame(lus); } lus();
+})();
+(function(){ // constante druk
+  const ps = deeltjes(30, {x: 60, y: 50, w: 300, h: 150}), V1 = 2, T1 = 293;
+  function teken(){
+    const t = +$('g3t').value, T = t + 273, V = V1 * T / T1; $('g3tv').textContent = t + ' °C';
+    cilinder('s_g3', ps, (V - 0.5) / 2.5, T, 'p = 100 kPa (constant) · V = ' + fmt(V, 2) + ' L · T = ' + T + ' K');
+    const g = grafiek(null, {w: 640, h: 260, x0: 60, y0: 230, xmax: 600, ymax: 4, xlab: 'T (K)', ylab: 'V (L)', xt: [0, 100, 200, 273, 400, 500, 600], yt: [1, 2, 3, 4]});
+    $('gr_g3').innerHTML = g.s + `<line x1="${g.X(0)}" y1="${g.Y(0)}" x2="${g.X(173)}" y2="${g.Y(V1 * 173 / T1)}" stroke="${C.f}" stroke-width="2" stroke-dasharray="5 5"/><line x1="${g.X(173)}" y1="${g.Y(V1 * 173 / T1)}" x2="${g.X(573)}" y2="${g.Y(V1 * 573 / T1)}" stroke="${C.f}" stroke-width="3"/><circle cx="${g.X(T)}" cy="${g.Y(V)}" r="6" fill="${C.f}"/>`;
+    $('r_g3').innerHTML = `T = <b>${T} K</b><br>V / T = ${fmt(V, 2)} / ${T} = <b>${fmt(V / T * 1000, 2)} · 10⁻³ L/K</b> (blijft gelijk)`;
+  }
+  function lus(){ if (isOn('g3')) teken(); requestAnimationFrame(lus); } lus();
+})();
+(function(){ // ideale gaswet
+  const R = 8.31, lees = id => parseFloat($(id).value.replace(/\s/g, '').replace(',', '.'));
+  function reken(){
+    const z = $('g4z').value; ['p', 'V', 'n', 'T'].forEach(k => { $('g4' + k).disabled = k === z; });
+    const p = lees('g4p'), V = lees('g4V'), n = lees('g4n'), T = lees('g4T');
+    let r;
+    if (z === 'p') r = `p = n · R · T / V = ${fmt(n, 3)} · 8,31 · ${fmt(T, 0)} / ${fmt(V, 4)} = <b>${fmt(n * R * T / V, 0)} Pa</b>`;
+    if (z === 'V') r = `V = n · R · T / p = ${fmt(n, 3)} · 8,31 · ${fmt(T, 0)} / ${fmt(p, 0)} = <b>${fmt(n * R * T / p, 4)} m³</b> = ${fmt(n * R * T / p * 1000, 1)} L`;
+    if (z === 'n') r = `n = p · V / (R · T) = ${fmt(p, 0)} · ${fmt(V, 4)} / (8,31 · ${fmt(T, 0)}) = <b>${fmt(p * V / (R * T), 3)} mol</b>`;
+    if (z === 'T') r = `T = p · V / (n · R) = ${fmt(p, 0)} · ${fmt(V, 4)} / (${fmt(n, 3)} · 8,31) = <b>${fmt(p * V / (n * R), 0)} K</b> = ${fmt(p * V / (n * R) - 273, 0)} °C`;
+    $('r_g4').innerHTML = (r && !/NaN|Infinity/.test(r)) ? r : 'Vul de drie andere grootheden in.';
+  }
+  ['g4z', 'g4p', 'g4V', 'g4n', 'g4T'].forEach(id => $(id).oninput = reken);
+  $('g4norm').onclick = () => { $('g4z').value = 'V'; $('g4p').value = '101325'; $('g4n').value = '1'; $('g4T').value = '273'; reken();
+    $('r_g4').innerHTML += '<br><br>Bij normomstandigheden neemt <b>1 mol</b> van elk ideaal gas <b>22,4 L</b> in: het <b>molair volume</b>.'; };
+  reken();
+})();
+
+//////////////////// OEFENEN ////////////////////
+(function(){
+  const rnd = (a, b) => a + Math.floor(Math.random() * (b - a + 1)), kies = a => a[rnd(0, a.length - 1)];
+  const lees = s => parseFloat(String(s).trim().replace(/\s/g, '').replace(',', '.').replace('−', '-'));
+  const dicht = (a, b) => isFinite(a) && Math.abs(a - b) <= Math.max(0.02 * Math.abs(b), 0.051);
+  const MC = {
+    wa: [
+      ['Welke uitspraak over temperatuur is juist?', ['Temperatuur is de totale energie van een stof.', 'Temperatuur is een maat voor de gemiddelde bewegingsenergie van de deeltjes.', 'Temperatuur is de warmte in een voorwerp.', 'Temperatuur hangt af van de massa.'], 1, 'Temperatuur zegt hoe snel de deeltjes gemiddeld bewegen. Thermische energie is de totale bewegingsenergie van alle deeltjes.'],
+      ['Een metalen lepel in hete soep wordt warm aan het handvat. Hoe gaat de warmte door de lepel?', ['Geleiding.', 'Convectie.', 'Straling.', 'Condensatie.'], 0, 'In een vaste stof trillen de deeltjes op hun plaats en geven ze energie door: geleiding.'],
+      ['Waarom stijgt warme lucht boven een radiator?', ['Door straling.', 'Warme lucht heeft een kleinere dichtheid en stijgt: convectie.', 'Door geleiding.', 'Warme lucht is zwaarder.'], 1, 'De warme lucht zet uit, wordt minder dicht en stijgt. Koude lucht daalt: een convectiestroom.'],
+      ['Hoe bereikt de warmte van de zon de aarde?', ['Geleiding.', 'Convectie.', 'Straling.', 'Via de lucht in de ruimte.'], 2, 'In de ruimte is er vacuüm: geen deeltjes. Alleen straling kan daar energie overbrengen.'],
+      ['Waarom gebruik je water in een kruik?', ['Water is goedkoop.', 'Water heeft een grote specifieke warmtecapaciteit: het slaat veel warmte op en koelt traag af.', 'Water geleidt goed.', 'Water verdampt snel.'], 1, 'Met c = 4186 J/(kg·°C) kan water veel warmte opslaan per kg en per °C.']
+    ],
+    fa: [
+      ['Wat gebeurt er met de temperatuur van ijs dat aan het smelten is?', ['Ze stijgt.', 'Ze daalt.', 'Ze blijft 0 °C tot al het ijs gesmolten is.', 'Ze schommelt.'], 2, 'Tijdens een faseovergang gebruikt de stof de warmte om de deeltjes los te maken: latente warmte. De temperatuur blijft gelijk.'],
+      ['Rijp op een autoruit: van gas rechtstreeks naar vast. Hoe heet die faseovergang?', ['Sublimeren.', 'Desublimeren.', 'Condenseren.', 'Stollen.'], 1, 'Van gas naar vast is desublimeren. Van vast naar gas is sublimeren.'],
+      ['Waarom koelt zweten je af?', ['Zweet is koud.', 'Het zweet verdampt en neemt daarvoor (latente) warmte op van je huid.', 'Zweet geleidt warmte naar buiten.', 'Door straling.'], 1, 'Verdampen kost veel energie (2257 kJ/kg voor water). Die warmte komt van je huid.'],
+      ['Damp op de badkamerspiegel. De waterdamp...', ['neemt warmte op en condenseert.', 'staat warmte af en condenseert.', 'neemt warmte op en verdampt.', 'sublimeert.'], 1, 'Waterdamp raakt de koude spiegel, staat warmte af en wordt vloeibaar: condenseren.']
+    ],
+    ga: [
+      ['Je duwt de zuiger van een fietspomp in en houdt de opening dicht. Wat gebeurt er met de druk?', ['Ze daalt.', 'Ze blijft gelijk.', 'Ze stijgt: kleiner volume, de deeltjes botsen vaker.', 'Ze wordt nul.'], 2, 'Bij constante temperatuur is p · V constant: kleiner volume, grotere druk.'],
+      ['Waarom moet je bij de gaswetten de temperatuur in kelvin gebruiken?', ['Kelvin is nauwkeuriger.', 'p en V zijn recht evenredig met de absolute temperatuur; 0 K is het echte nulpunt.', 'Het mag ook in °C.', 'Omdat R in kelvin staat, verder maakt het niet uit.'], 1, 'Bij 0 °C bewegen de deeltjes nog: de druk is dan niet nul. Alleen met T in kelvin is het verband recht evenredig.'],
+      ['Wat is het verschil tussen een reëel gas en een ideaal gas?', ['Een ideaal gas kan condenseren, een reëel gas niet.', 'Een reëel gas kan condenseren omdat de deeltjes elkaar aantrekken; een ideaal gas niet.', 'Er is geen verschil.', 'Een ideaal gas heeft een hogere temperatuur.'], 1, 'In het model van een ideaal gas trekken de deeltjes elkaar niet aan en hebben ze geen volume. Echte gassen condenseren bij lage temperatuur.']
+    ]
+  };
+  const REK = {
+    wa: [
+      () => { const t = rnd(-50, 150); return {q: `Zet ${t} °C om naar kelvin.`, a: t + 273, u: 'K', u2: `T = t + 273 = ${t} + 273 = ${t + 273} K`}; },
+      () => { const [n, c] = kies(STOF.slice(0, 1).concat(STOF.slice(3))), m = kies([0.2, 0.5, 1, 2, 2.5]), dT = rnd(5, 60); return {q: `Bereken de warmte om ${fmt(m, 1)} kg ${n} ${dT} °C op te warmen. (c = ${c} J/(kg·°C))`, a: c * m * dT, u: 'J', u2: `Q = c · m · ΔT = ${c} · ${fmt(m, 1)} · ${dT} = ${fmt(c * m * dT, 0)} J`}; },
+      () => { const m = kies([0.5, 1, 1.5, 2]), dT = rnd(10, 60), Q = 4186 * m * dT; return {q: `Je voegt ${fmt(Q, 0)} J warmte toe aan water. Het water warmt ${dT} °C op. Bereken de massa van het water.`, a: m, u: 'kg', u2: `m = Q / (c · ΔT) = ${fmt(Q, 0)} / (4186 · ${dT}) = ${fmt(m, 2)} kg`}; },
+      () => { const m1 = kies([0.5, 1]), t1 = rnd(50, 90), m2 = kies([0.5, 1, 1.5]), t2 = rnd(10, 25), te = (m1 * t1 + m2 * t2) / (m1 + m2); return {q: `Je mengt ${fmt(m1, 1)} kg water van ${t1} °C met ${fmt(m2, 1)} kg water van ${t2} °C. Bereken de eindtemperatuur.`, a: te, u: '°C', u2: `c · m₁ · (${t1} − T<sub>e</sub>) = c · m₂ · (T<sub>e</sub> − ${t2}) → T<sub>e</sub> = (${fmt(m1, 1)} · ${t1} + ${fmt(m2, 1)} · ${t2}) / ${fmt(m1 + m2, 1)} = ${fmt(te, 1)} °C`}; }
+    ],
+    fa: [
+      () => { const m = kies([0.1, 0.25, 0.5, 2]); return {q: `Hoeveel warmte heb je nodig om ${fmt(m, 2)} kg ijs van 0 °C te smelten? (L<sub>s</sub> = 334 kJ/kg)`, a: m * 334, u: 'kJ', u2: `Q = m · L<sub>s</sub> = ${fmt(m, 2)} · 334 = ${fmt(m * 334, 1)} kJ`}; },
+      () => { const m = kies([0.1, 0.2, 0.5, 1]); return {q: `Hoeveel warmte is nodig om ${fmt(m, 1)} kg water van 100 °C te verdampen? (L<sub>v</sub> = 2257 kJ/kg)`, a: m * 2257, u: 'kJ', u2: `Q = m · L<sub>v</sub> = ${fmt(m, 1)} · 2257 = ${fmt(m * 2257, 0)} kJ`}; },
+      () => { const m = kies([0.2, 0.5, 1]); const Q = m * 4.186 * 100 + m * 334; return {q: `Bereken de warmte om ${fmt(m, 1)} kg ijs van 0 °C te smelten en het water op te warmen tot 100 °C. (L<sub>s</sub> = 334 kJ/kg, c = 4,186 kJ/(kg·°C))`, a: Q, u: 'kJ', u2: `Q = m · L<sub>s</sub> + c · m · ΔT = ${fmt(m * 334, 1)} + ${fmt(m * 418.6, 1)} = ${fmt(Q, 1)} kJ`}; }
+    ],
+    ga: [
+      () => { const p1 = kies([100, 150, 200]), V1 = kies([2, 3, 4]), V2 = kies([1, 1.5, 6, 8]); return {q: `Een gas heeft een druk van ${p1} kPa bij een volume van ${V1} L. De temperatuur blijft gelijk. Bereken de druk als het volume ${fmt(V2, 1)} L wordt.`, a: p1 * V1 / V2, u: 'kPa', u2: `p₂ = p₁ · V₁ / V₂ = ${p1} · ${V1} / ${fmt(V2, 1)} = ${fmt(p1 * V1 / V2, 0)} kPa`}; },
+      () => { const p1 = kies([200, 220, 250]), t1 = kies([10, 20]), t2 = kies([40, 50, 60]); const T1 = t1 + 273, T2 = t2 + 273; return {q: `Een autoband heeft bij ${t1} °C een druk van ${p1} kPa. In de zon wordt de lucht ${t2} °C. Het volume blijft gelijk. Bereken de nieuwe druk.`, a: p1 * T2 / T1, u: 'kPa', u2: `T₁ = ${T1} K, T₂ = ${T2} K → p₂ = p₁ · T₂ / T₁ = ${p1} · ${T2} / ${T1} = ${fmt(p1 * T2 / T1, 0)} kPa`}; },
+      () => { const V1 = kies([2, 3, 5]), t1 = 20, t2 = kies([-18, 0, 50]); const T1 = 293, T2 = t2 + 273; return {q: `Een ballon heeft bij 20 °C een volume van ${V1} L. De druk blijft gelijk. Bereken het volume bij ${t2} °C.`, a: V1 * T2 / T1, u: 'L', u2: `V₂ = V₁ · T₂ / T₁ = ${V1} · ${T2} / ${T1} = ${fmt(V1 * T2 / T1, 2)} L`}; },
+      () => { const n = kies([0.5, 1, 2]), T = kies([273, 293, 300]), V = kies([0.01, 0.02, 0.05]); return {q: `${fmt(n, 1)} mol gas zit in een vat van ${fmt(V, 2)} m³ bij ${T} K. Bereken de druk. (R = 8,31 J/(mol·K))`, a: n * 8.31 * T / V, u: 'Pa', u2: `p = n · R · T / V = ${fmt(n, 1)} · 8,31 · ${T} / ${fmt(V, 2)} = ${fmt(n * 8.31 * T / V, 0)} Pa`}; }
+    ]
+  };
+  const SO = [['alles', 'Door elkaar'], ['wa', '1 Warmte'], ['fa', '2 Faseovergangen'], ['ga', '3 Gaswetten']];
+  let soort = 'alles', goed = 0, tot = 0, klaar = false;
+  $('soort').innerHTML = SO.map(([k, n]) => `<button class="btn ${k === soort ? 'on' : ''}" data-k="${k}">${n}</button>`).join('');
+  $('soort').onclick = e => { const b = e.target.closest('button'); if (!b) return; soort = b.dataset.k; $('soort').querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b)); nieuw(); };
+  function tel(ok){ if (!klaar){ tot++; if (ok) goed++; klaar = true; } $('score').textContent = `${goed} / ${tot}`; }
+  function nieuw(){
+    klaar = false; $('fb').innerHTML = ''; $('fb').className = 'feedback';
+    const t = soort === 'alles' ? kies(['wa', 'fa', 'ga']) : soort;
+    if (Math.random() < 0.45){
+      const [q, opts, j, u] = kies(MC[t]); $('vraag').innerHTML = q;
+      $('invoer').innerHTML = `<div class="keuzes">${opts.map((o, i) => `<button class="btn" data-i="${i}">${'ABCD'[i]}. ${o}</button>`).join('')}</div>`;
+      $('invoer').querySelector('.keuzes').onclick = e => { const b = e.target.closest('button'); if (!b) return; const ok = +b.dataset.i === j;
+        $('invoer').querySelectorAll('.keuzes .btn').forEach((x, i) => { x.classList.toggle('goed', i === j); if (x === b && !ok) x.classList.add('fout'); });
+        tel(ok); $('fb').className = 'feedback ' + (ok ? 'goed' : 'fout'); $('fb').innerHTML = (ok ? '✓ Juist!' : '✗ Niet juist.') + `<span class="uitleg">${u}</span>`; };
+    } else {
+      const r = kies(REK[t])(); $('vraag').innerHTML = r.q;
+      $('invoer').innerHTML = `<div class="antw"><input type="text" id="oa" inputmode="decimal" autocomplete="off"> <b>${r.u}</b> <button class="btn primary" id="oc">Controleer</button></div>`;
+      const go = () => { const w = lees($('oa').value); if (!isFinite(w)){ $('fb').className = 'feedback fout'; $('fb').innerHTML = 'Vul een getal in.'; return; }
+        const ok = dicht(w, r.a); tel(ok); $('fb').className = 'feedback ' + (ok ? 'goed' : 'fout'); $('fb').innerHTML = (ok ? '✓ Juist!' : '✗ Nog niet juist.') + `<span class="uitleg">${r.u2}</span>`; };
+      $('oc').onclick = go; $('oa').onkeydown = e => { if (e.key === 'Enter') go(); };
+    }
+  }
+  $('volgende').onclick = nieuw; nieuw();
+})();
+
+</script>
+</body>
+</html>
