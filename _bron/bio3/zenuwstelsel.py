@@ -225,7 +225,7 @@ let neuronPad = [];
 (function(){
   const S = $('#ov-svg'), R = rng(41);
   const AD = '#8e3b8a', AL = '#d9a3d4', BD = '#1d6f8c', BL = '#9fd3e3';
-  const SX = 548, SY = 212;                     // plaats van de synaps
+  const SX = 462, SY = 202;                     // plaats van de synaps: tussen eindknopje van neuron 1 en dendriet van neuron 2
   let s = `<defs>
     <radialGradient id="ov-sa" cx="40%" cy="35%" r="70%"><stop offset="0" stop-color="#fff"/><stop offset=".3" stop-color="#f1d3ee"/><stop offset="1" stop-color="${AD}"/></radialGradient>
     <radialGradient id="ov-sb" cx="40%" cy="35%" r="70%"><stop offset="0" stop-color="#fff"/><stop offset=".3" stop-color="#d3eef5"/><stop offset="1" stop-color="${BD}"/></radialGradient>
@@ -242,20 +242,30 @@ let neuronPad = [];
     o += `<path d="${glad(pts,false)}" fill="none" stroke="${k}" stroke-width="${w}" stroke-linecap="round"/>`; if (d>0){ o += dendr(pts[2][0],pts[2][1],pa-.6,len*.55,w*.65,d-1,k,Q) + dendr(pts[3][0],pts[3][1],pa+.55,len*.5,w*.65,d-1,k,Q); } return o; };
   const Q1 = rng(42), Q2 = rng(43);
   let ov = '';
-  [Math.PI-.7, Math.PI-.1, Math.PI+.5, -2.2, 2.2].forEach(a => ov += dendr(130, 200, a, 60, 5, 1, AD, Q1));
-  const [axA, PA] = myel([[156,204],[260,196],[380,214],[500,208],[534,210]], 5, AD, AL); ov += axA;
-  ov += `<path d="${blob(130, 200, 30, 27, Q1, 10, .1)}" fill="url(#ov-sa)" stroke="${AD}" stroke-width="2.5"/><circle cx="130" cy="200" r="11" fill="${AD}"/>`;
-  ov += `<path d="M534 210 C540 196 544 190 548 184" stroke="${AD}" stroke-width="3" fill="none"/><circle cx="550" cy="180" r="6" fill="${AL}" stroke="${AD}" stroke-width="1.5"/><path d="M534 210 C540 222 544 232 546 240" stroke="${AD}" stroke-width="3" fill="none"/><circle cx="547" cy="245" r="6" fill="${AL}" stroke="${AD}" stroke-width="1.5"/><circle cx="${SX-6}" cy="${SY}" r="7" fill="${AL}" stroke="${AD}" stroke-width="1.5"/>`;
-  // neuron 2
-  const dB = bemonster(glad([[560,214],[620,224],[700,230],[742,232]],false), 40);
-  ov += `<path d="${glad(dB,false)}" fill="none" stroke="${BD}" stroke-width="5" stroke-linecap="round"/><path d="M560 214 l-4 -8 M560 214 l-5 6" stroke="${BD}" stroke-width="3" stroke-linecap="round"/>`;
-  [-1.4,-.6,.9,1.6].forEach(a => ov += dendr(770, 232, a - (a<0?0:0), 50, 5, 1, BD, Q2));
-  ov += dendr(600, 222, -1.9, 34, 3.5, 0, BD, Q2) + dendr(640, 226, 1.9, 30, 3.5, 0, BD, Q2);
-  const [axB, PB] = myel([[798,238],[880,248],[1000,244]], 3, BD, BL); ov += axB;
-  ov += `<path d="${blob(770, 232, 30, 27, Q2, 10, .1)}" fill="url(#ov-sb)" stroke="${BD}" stroke-width="2.5"/><circle cx="770" cy="232" r="11" fill="${BD}"/>`;
-  const lab = (x, y, tx, ty, t, kl='#1d2a36', a='middle', fs=16) => `<path d="M${x} ${y} L${tx} ${ty}" stroke="#334155" stroke-width="1.3"/><text x="${tx + (a==='start'?5:a==='end'?-5:0)}" y="${ty + (a==='middle' ? (ty>y?16:-6) : 5)}" text-anchor="${a}" font-size="${fs}" font-weight="700" fill="${kl}" paint-order="stroke" stroke="#fbf9f6" stroke-width="4">${t}</text>`;
-  ov += `<text x="130" y="120" text-anchor="middle" font-size="19" font-weight="800" fill="${AD}">neuron 1</text><text x="770" y="140" text-anchor="middle" font-size="19" font-weight="800" fill="${BD}">neuron 2</text>`;
-  ov += lab(320, 204, 320, 290, 'axon') + lab(130, 200, 60, 320, 'cellichaam') + lab(680, 230, 680, 320, 'dendriet') + `<circle cx="${SX}" cy="${SY}" r="22" fill="none" stroke="#b45309" stroke-width="2" stroke-dasharray="5 4"/>` + lab(SX+16, SY-16, 600, 120, 'synaps', '#b45309', 'start');
+  // twee volledige neuronen achter elkaar: dendrieten, cellichaam, axon met myeline, eindknopjes
+  function neuronVol(x, y, Q, D, L, sid, dendr0){
+    let o = '';
+    [Math.PI-.8, Math.PI-.25, Math.PI+.35, -2.1, 2.1, -1.4, 1.5].forEach(a => o += dendr(x, y, a, 54, 5, 1, D, Q));
+    if (dendr0) o += dendr0;
+    const [ax, P] = myel([[x+26,y+4],[x+120,y-6],[x+230,y+8],[x+318,y+2]], 5, D, L);
+    o += ax;
+    const e = [x+318, y+2]; const kn = [[e[0]+22, e[1]-20],[e[0]+28, e[1]],[e[0]+22, e[1]+20]];
+    kn.forEach(([kx,ky]) => o += `<path d="M${e[0]} ${e[1]} C${e[0]+10} ${e[1]} ${kx-8} ${ky} ${kx} ${ky}" stroke="${D}" stroke-width="3" fill="none"/><circle cx="${kx}" cy="${ky}" r="6.5" fill="${L}" stroke="${D}" stroke-width="1.5"/>`);
+    o += `<path d="${blob(x, y, 28, 25, Q, 10, .1)}" fill="url(#${sid})" stroke="${D}" stroke-width="2.5"/><circle cx="${x}" cy="${y}" r="10" fill="${D}"/>`;
+    return [o, P, kn];
+  }
+  const [n1, PA] = neuronVol(110, 200, Q1, AD, AL, 'ov-sa');
+  // neuron 2: één lange dendriet reikt tot bij het middelste eindknopje van neuron 1
+  const dB = bemonster(glad([[SX+6,SY],[520,203],[560,201],[598,200]],false), 30);
+  const dLang = `<path d="${glad(dB,false)}" fill="none" stroke="${BD}" stroke-width="5" stroke-linecap="round"/><path d="M${SX+6} ${SY} l-3 -9 M${SX+6} ${SY} l-4 8" stroke="${BD}" stroke-width="3" stroke-linecap="round"/>`;
+  const [n2, PB2, kn2] = neuronVol(620, 200, Q2, BD, BL, 'ov-sb', dLang);
+  const PB = PB2;
+  ov += n1 + n2;
+  const lab = (x, y, tx, ty, t, kl='#1d2a36', a='middle', fs=15) => `<path d="M${x} ${y} L${tx} ${ty}" stroke="#334155" stroke-width="1.3"/><circle cx="${x}" cy="${y}" r="2.4" fill="#334155"/><text x="${tx + (a==='start'?5:a==='end'?-5:0)}" y="${ty + (a==='middle' ? (ty>y?15:-6) : 5)}" text-anchor="${a}" font-size="${fs}" font-weight="700" fill="${kl}" paint-order="stroke" stroke="#fbf9f6" stroke-width="4">${t}</text>`;
+  ov += `<text x="110" y="92" text-anchor="middle" font-size="19" font-weight="800" fill="${AD}">neuron 1</text><text x="620" y="92" text-anchor="middle" font-size="19" font-weight="800" fill="${BD}">neuron 2</text>`;
+  ov += lab(70, 150, 40, 120, 'dendrieten', '#1d2a36', 'middle') + lab(110, 200, 130, 320, 'cellichaam') + lab(280, 204, 280, 300, 'axon') + lab(450, 220, 420, 330, 'eindknopjes');
+  ov += lab(660, 160, 700, 120, 'dendrieten', '#1d2a36', 'start') + lab(620, 200, 600, 320, 'cellichaam') + lab(800, 204, 800, 300, 'axon') + lab(966, 222, 940, 330, 'eindknopjes');
+  ov += `<circle cx="${SX}" cy="${SY}" r="20" fill="none" stroke="#b45309" stroke-width="2" stroke-dasharray="5 4"/>` + lab(SX+12, SY-16, 500, 70, 'synaps', '#b45309', 'start');
   // detail van de synaps (lokale eenheden, schaal 0,1)
   const vesk = []; for (let i = 0; i < 8; i++) vesk.push([-250 + (i%4)*52 + (R()-.5)*14, -50 + Math.floor(i/4)*90 + (R()-.5)*20]);
   const recY = [-75, -35, 5, 45, 85];
@@ -295,7 +305,7 @@ let neuronPad = [];
       else if (t < 1.5){ zDoel = 1; zeg('c1'); od = chemisch(0); }
       else if (t < 3.3){ zDoel = 1; const k = (t-1.5)/1.8; zeg(k < .35 ? 'c1' : k < .82 ? 'c2' : 'c3'); od = chemisch(k); }
       else if (t < 3.8){ zDoel = 0; od = chemisch(1); }
-      else if (t < 4.8){ zDoel = 0; zeg('b'); const pts = [...dB, ...PB]; const p = langs(pts, t-3.8); oo = `<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="24" fill="url(#ov-gl)"/>`; }
+      else if (t < 4.8){ zDoel = 0; zeg('b'); const pts = [...dB, [620,200], ...PB, [966,202]]; const p = langs(pts, t-3.8); oo = `<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="24" fill="url(#ov-gl)"/>`; }
       else t = -1; }
     else if (handZoom){ lusT = (lusT + dtt*.25) % 1.2; od = chemisch(Math.min(1, lusT)); }
     z += (zDoel - z) * Math.min(1, dtt*3.2); if (Math.abs(zDoel - z) < .002) z = zDoel; zet();
