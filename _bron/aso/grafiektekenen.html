@@ -1,0 +1,106 @@
+  <!-- 2.2 GRAFIEKEN TEKENEN (alleen 3ASO) -->
+  <section class="scene" id="gt" data-nr="2.2" data-title="Grafieken tekenen">
+    <div class="shead"><span class="num">2.2</span><h2>De x(t)- en v(t)-grafiek tekenen</h2></div>
+    <p class="lead">Lees de situatie. Bereken de positie op elk tijdstip en <b>klik de punten</b> in de x(t)-grafiek. Is die juist, dan teken je daarna de v(t)-grafiek.</p>
+    <div class="grid2">
+      <div class="side">
+        <div class="graph"><svg id="gt-xt" viewBox="0 0 520 330" style="touch-action:none;cursor:crosshair"></svg></div>
+        <div class="graph"><svg id="gt-vt" viewBox="0 0 520 250" style="touch-action:none;cursor:crosshair"></svg></div>
+      </div>
+      <div class="side">
+        <div class="panel">
+          <h2 id="gt-stap">Stap 1: x(t)-grafiek</h2>
+          <p class="task" id="gt-sit"></p>
+          <div id="gt-tab" style="display:none;overflow-x:auto"></div>
+          <div class="actions" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
+            <button type="button" class="btn primary" id="gt-check">Controleer</button>
+            <button type="button" class="btn" id="gt-hulp">Toon tabel</button>
+            <button type="button" class="btn" id="gt-nieuw">Nieuwe situatie</button>
+          </div>
+        </div>
+        <div class="out" id="gt-out" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+<script>
+(function(){
+  var NS='http://www.w3.org/2000/svg', T=[0,1,2,3,4,5];
+  var WIE=[['Een step','rijdt langs het kanaal'],['Een tram','rijdt op de Louizalaan'],['Een fietser','rijdt langs de Kaai'],['Een reiziger','staat op de rolband in de luchthaven'],['Een kind','loopt op de speelplaats']];
+  var xt=document.getElementById('gt-xt'), vt=document.getElementById('gt-vt'), out=document.getElementById('gt-out');
+  var A={x:{svg:xt,min:0,max:50,stap:2,lab:'x (m)',H:330,MB:44},v:{svg:vt,min:-10,max:10,stap:2,lab:'v (m/s)',H:250,MB:30}};
+  var ML=56, MR=20, MT=16, W=520;
+  var opg, stap, pt, klaar;
+  function el(n,a,t){var e=document.createElementNS(NS,n);for(var k in a)e.setAttribute(k,a[k]);if(t!=null)e.textContent=t;return e;}
+  function X(ax,t){return ML+(W-ML-MR)*t/5;}
+  function Y(ax,v){var a=A[ax];return MT+(a.H-MT-a.MB)*(a.max-v)/(a.max-a.min);}
+  function fmt(n){return String(n).replace('.',',').replace('-','−');}
+  function rooster(ax,punten,lijn,status){
+    var a=A[ax], s=a.svg; s.innerHTML='';
+    for(var v=a.min;v<=a.max;v+=a.stap){var maj=v%10===0; s.appendChild(el('line',{x1:ML,x2:W-MR,y1:Y(ax,v),y2:Y(ax,v),stroke:maj?'var(--grid-major)':'var(--grid)','stroke-width':maj?1.2:0.8}));
+      if(maj||a.stap*5>=a.max-a.min) s.appendChild(el('text',{x:ML-8,y:Y(ax,v)+4,'text-anchor':'end','font-size':12,fill:'var(--muted)'},fmt(v)));}
+    T.forEach(function(t){s.appendChild(el('line',{x1:X(ax,t),x2:X(ax,t),y1:MT,y2:a.H-a.MB,stroke:'var(--grid-major)','stroke-width':1}));
+      s.appendChild(el('text',{x:X(ax,t),y:Y(ax,a.min)+18,'text-anchor':'middle','font-size':12,fill:'var(--muted)'},t));});
+    var y0=Y(ax,Math.max(a.min,0)); s.appendChild(el('line',{x1:ML,x2:W-MR+6,y1:y0,y2:y0,stroke:'var(--ink)','stroke-width':1.6}));
+    s.appendChild(el('line',{x1:ML,x2:ML,y1:a.H-a.MB,y2:MT-6,stroke:'var(--ink)','stroke-width':1.6}));
+    s.appendChild(el('text',{x:ML+6,y:MT+2,'font-size':13,'font-weight':700,fill:'var(--ink)'},a.lab));
+    s.appendChild(el('text',{x:W-MR,y:y0-6,'text-anchor':'end','font-size':13,'font-weight':700,fill:'var(--ink)'},'t (s)'));
+    if(lijn) s.appendChild(el('line',{x1:X(ax,0),y1:Y(ax,lijn[0]),x2:X(ax,5),y2:Y(ax,lijn[1]),stroke:'var(--c1)','stroke-width':3}));
+    T.forEach(function(t,i){ if(punten[i]==null) return;
+      var c=status?(status[i]?'var(--ok)':'var(--bad)'):'var(--c2)';
+      s.appendChild(el('circle',{cx:X(ax,t),cy:Y(ax,punten[i]),r:6.5,fill:c,stroke:'var(--paper)','stroke-width':2}));});
+  }
+  function goed(ax){return T.map(function(t){return ax==='x'?opg.x0+opg.v*t:opg.v;});}
+  function tekenAlles(status){
+    if(stap==='x'){ rooster('x',pt,null,status); rooster('v',[],null); }
+    else { rooster('x',goed('x'),[opg.x0,opg.x0+5*opg.v]); rooster('v',pt,klaar?[opg.v,opg.v]:null,status); }
+  }
+  function klik(ax,e){
+    if(ax!==stap||klaar) return;
+    var a=A[ax], r=a.svg.getBoundingClientRect(), px=(e.clientX-r.left)*W/r.width, py=(e.clientY-r.top)*a.H/r.height;
+    var t=Math.round((px-ML)/((W-ML-MR)/5)); if(t<0||t>5) return;
+    var v=a.max-(py-MT)/(a.H-MT-a.MB)*(a.max-a.min); v=Math.round(v/a.stap)*a.stap; v=Math.max(a.min,Math.min(a.max,v));
+    pt[t]=v; tekenAlles();
+  }
+  xt.addEventListener('pointerdown',function(e){klik('x',e);});
+  vt.addEventListener('pointerdown',function(e){klik('v',e);});
+  function tabel(){
+    var h='<table style="border-collapse:collapse;font-size:14px;margin-top:8px"><tr><th style="padding:4px 8px;border:1px solid var(--line)">t (s)</th>';
+    T.forEach(function(t){h+='<td style="padding:4px 10px;border:1px solid var(--line);text-align:center">'+t+'</td>';});
+    h+='</tr><tr><th style="padding:4px 8px;border:1px solid var(--line)">x (m)</th>';
+    T.forEach(function(t){h+='<td style="padding:4px 10px;border:1px solid var(--line);text-align:center">'+(t===0?fmt(opg.x0):'?')+'</td>';});
+    return h+'</tr></table><p class="task" style="margin-top:6px">Elke seconde verandert x met v · 1 s = '+fmt(opg.v)+' m.</p>';
+  }
+  document.getElementById('gt-hulp').onclick=function(){var d=document.getElementById('gt-tab'); d.innerHTML=tabel(); d.style.display=d.style.display==='none'?'block':'none';};
+  document.getElementById('gt-check').onclick=function(){
+    if(klaar) return;
+    var g=goed(stap), st=T.map(function(t,i){return pt[i]===g[i];}), mis=pt.filter(function(p){return p==null;}).length;
+    if(mis){ out.innerHTML='Zet op elk tijdstip (0 tot 5 s) een punt. Er ontbreken nog '+mis+' punten.'; return; }
+    tekenAlles(st);
+    var fout=st.filter(function(b){return !b;}).length;
+    if(fout){ out.innerHTML='<span style="color:var(--bad);font-weight:700">'+fout+' punt'+(fout>1?'en zijn':' is')+' nog niet juist</span> (rood). '+(stap==='x'?'Begin bij x<sub>0</sub> en tel elke seconde v · 1 s erbij.':'Bij een ERB is de snelheid op elk tijdstip dezelfde.')+' Klik opnieuw om te verbeteren.'; return; }
+    if(stap==='x'){
+      stap='v'; pt=[null,null,null,null,null,null];
+      document.getElementById('gt-stap').textContent='Stap 2: v(t)-grafiek'; document.getElementById('gt-hulp').style.display='none'; document.getElementById('gt-tab').style.display='none';
+      out.innerHTML='<span style="color:var(--ok);font-weight:700">Juist!</span> De punten liggen op een <b>rechte</b>. Helling = Δx / Δt = ('+fmt(opg.x0+5*opg.v)+' − '+fmt(opg.x0)+') m / 5 s = <b>'+fmt(opg.v)+' m/s</b> = de snelheid.<br>Klik nu de snelheid op elk tijdstip in de v(t)-grafiek.';
+      tekenAlles();
+    } else {
+      klaar=true; tekenAlles();
+      out.innerHTML='<span style="color:var(--ok);font-weight:700">Juist!</span> Bij een ERB is de v(t)-grafiek een <b>horizontale rechte</b>: de snelheid verandert niet.'+(opg.v<0?' Ze ligt onder de t-as, want het voorwerp beweegt terug.':'')+'<br>Klik op <b>Nieuwe situatie</b> voor een volgende oefening.';
+    }
+  };
+  function nieuw(){
+    var vs=[2,4,6,8,-2,-4,-6,-8], v=vs[Math.floor(Math.random()*vs.length)], lo=Math.max(0,-5*v), hi=Math.min(50,50-5*v), opties=[];
+    for(var x=lo;x<=hi;x+=2) opties.push(x);
+    var w=WIE[Math.floor(Math.random()*WIE.length)];
+    opg={v:v,x0:opties[Math.floor(Math.random()*opties.length)]};
+    stap='x'; klaar=false; pt=[null,null,null,null,null,null];
+    document.getElementById('gt-sit').innerHTML=w[0]+' '+w[1]+' en beweegt <b>eenparig rechtlijnig</b>. Op t = 0 s is de positie <b>x<sub>0</sub> = '+fmt(opg.x0)+' m</b>. De snelheid is <b>v = '+fmt(v)+' m/s</b>'+(v<0?' (terug, naar de oorsprong toe)':'')+'.';
+    document.getElementById('gt-stap').textContent='Stap 1: x(t)-grafiek';
+    var h=document.getElementById('gt-hulp'); h.style.display=''; document.getElementById('gt-tab').style.display='none';
+    out.innerHTML='Klik op elk tijdstip t = 0, 1, 2, 3, 4 en 5 s de juiste positie aan. Een punt verbeteren? Klik opnieuw op die tijdslijn.';
+    tekenAlles();
+  }
+  document.getElementById('gt-nieuw').onclick=nieuw;
+  nieuw();
+})();
+</script>

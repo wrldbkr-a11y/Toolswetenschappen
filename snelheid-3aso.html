@@ -180,6 +180,8 @@
   <div class="eyebrow">Fysica 3de jaar · andere richtingen · Thema 2 · Rechtlijnige bewegingen · hoofdstuk 1 en 2</div>
   <h1>Snelheid</h1>
   <nav class="snav" id="snav"></nav>
+<div style="max-width:none;margin:14px auto 0;padding:0"><details id="ld3" style="border:1px solid #c9d6e3;border-radius:10px;padding:8px 14px;background:rgba(127,160,200,.08)"><summary style="cursor:pointer;font-weight:700">Lesdoelen · Ik kan …</summary><ul style="padding:0;margin:4px 0 6px;font-size:14px;line-height:1.5"><li style="list-style:none;margin:8px 0 2px;font-weight:700">1 Basisbegrippen</li><li style="list-style:none;margin:2px 0"><label style="display:flex;gap:8px;align-items:flex-start;cursor:pointer"><input type="checkbox" style="margin-top:4px;flex:none">Ik geef het verschil weer tussen de begrippen puntmassa, baan, positie, tijdstip, verplaatsing en tijdsverloop.</label></li><li style="list-style:none;margin:8px 0 2px;font-weight:700">2.1 Gemiddelde en ogenblikkelijke snelheid</li><li style="list-style:none;margin:2px 0"><label style="display:flex;gap:8px;align-items:flex-start;cursor:pointer"><input type="checkbox" style="margin-top:4px;flex:none">Ik leg het begrip snelheid uit.</label></li><li style="list-style:none;margin:2px 0"><label style="display:flex;gap:8px;align-items:flex-start;cursor:pointer"><input type="checkbox" style="margin-top:4px;flex:none">Ik geef het verschil weer tussen de gemiddelde snelheid en de ogenblikkelijke snelheid.</label></li><li style="list-style:none;margin:8px 0 2px;font-weight:700">2.2 Eenparig rechtlijnige beweging</li><li style="list-style:none;margin:2px 0"><label style="display:flex;gap:8px;align-items:flex-start;cursor:pointer"><input type="checkbox" style="margin-top:4px;flex:none">Ik beschrijf en herken een eenparig rechtlijnige beweging.</label></li><li style="list-style:none;margin:2px 0"><label style="display:flex;gap:8px;align-items:flex-start;cursor:pointer"><input type="checkbox" style="margin-top:4px;flex:none">Ik gebruik de formule voor het berekenen van de gemiddelde snelheid.</label></li><li style="list-style:none;margin:2px 0"><label style="display:flex;gap:8px;align-items:flex-start;cursor:pointer"><input type="checkbox" style="margin-top:4px;flex:none">Ik vorm de formule van de gemiddelde snelheid om voor het berekenen van de verplaatsing en het tijdsverloop.</label></li><li style="list-style:none;margin:2px 0"><label style="display:flex;gap:8px;align-items:flex-start;cursor:pointer"><input type="checkbox" style="margin-top:4px;flex:none">Ik teken de x(t)-grafiek en de v(t)-grafiek van een eenparig rechtlijnige beweging.</label></li><li style="list-style:none;margin:2px 0"><label style="display:flex;gap:8px;align-items:flex-start;cursor:pointer"><input type="checkbox" style="margin-top:4px;flex:none">Ik geef het verband weer tussen de helling van de grafiek en de snelheid van een lichaam.</label></li><li style="list-style:none;margin:2px 0"><label style="display:flex;gap:8px;align-items:flex-start;cursor:pointer"><input type="checkbox" style="margin-top:4px;flex:none">Ik leg het differentiequotiënt Δx/Δt uit.</label></li></ul><p style="font-size:12px;opacity:.75;margin:4px 0">Vink aan wat je al kan. Wat je niet kan aanvinken, oefen je nog eens.</p></details></div>
+<script>(function(){var K="ld3-snelheid",b=document.querySelectorAll("#ld3 input");var st={};try{st=JSON.parse(localStorage.getItem(K)||"{}")}catch(e){}b.forEach(function(x,i){x.checked=!!st[i];x.onchange=function(){st[i]=x.checked;try{localStorage.setItem(K,JSON.stringify(st))}catch(e){}}})})();</script>
 
   <!-- 1 BASISBEGRIPPEN -->
   <section class="scene" id="s1" data-nr="1" data-title="Basisbegrippen">
@@ -230,7 +232,7 @@
   <!-- 2.2 ERB -->
   <section class="scene" id="s3" data-nr="2.2" data-title="Eenparig rechtlijnige beweging">
     <div class="shead"><span class="num">2.2</span><h2>Eenparig rechtlijnige beweging (ERB)</h2></div>
-    <p class="lead">Bij een ERB is de snelheid constant. Verander de snelheid en de beginpositie. Kijk naar de <b>helling</b> van de x(t)-grafiek en de <b>oppervlakte</b> onder de v(t)-grafiek.</p>
+    <p class="lead">Bij een ERB is de snelheid constant. Verander de snelheid en de beginpositie. Kijk naar de <b>helling</b> van de x(t)-grafiek en naar de v(t)-grafiek.</p>
     <div class="grid2">
       <div class="side">
         <div class="graph"><svg id="e_xt" viewBox="0 0 760 300"></svg></div>
@@ -243,10 +245,117 @@
         <div class="omvorm"><div>v = Δx / Δt</div><div>Δx = v · Δt</div><div>Δt = Δx / v</div></div>
         <div class="out" id="e_out"></div>
         <div class="kader"><div class="kop">ERB</div><p>Een <b>eenparig rechtlijnige beweging</b> is een beweging langs een rechte lijn met een <b>constante snelheid</b>.</p>
-          <p>x(t)-grafiek: een schuine rechte. Hoe steiler, hoe groter de snelheid.</p><p>v(t)-grafiek: een horizontale rechte. De oppervlakte eronder is de verplaatsing.</p></div>
+          <p>x(t)-grafiek: een schuine rechte. Hoe steiler, hoe groter de snelheid.</p><p>v(t)-grafiek: een horizontale rechte, want de snelheid verandert niet.</p></div>
       </div>
     </div>
   </section>
+
+  <!-- 2.2 GRAFIEKEN TEKENEN (alleen 3ASO) -->
+  <section class="scene" id="gt" data-nr="2.2" data-title="Grafieken tekenen">
+    <div class="shead"><span class="num">2.2</span><h2>De x(t)- en v(t)-grafiek tekenen</h2></div>
+    <p class="lead">Lees de situatie. Bereken de positie op elk tijdstip en <b>klik de punten</b> in de x(t)-grafiek. Is die juist, dan teken je daarna de v(t)-grafiek.</p>
+    <div class="grid2">
+      <div class="side">
+        <div class="graph"><svg id="gt-xt" viewBox="0 0 520 330" style="touch-action:none;cursor:crosshair"></svg></div>
+        <div class="graph"><svg id="gt-vt" viewBox="0 0 520 250" style="touch-action:none;cursor:crosshair"></svg></div>
+      </div>
+      <div class="side">
+        <div class="panel">
+          <h2 id="gt-stap">Stap 1: x(t)-grafiek</h2>
+          <p class="task" id="gt-sit"></p>
+          <div id="gt-tab" style="display:none;overflow-x:auto"></div>
+          <div class="actions" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
+            <button type="button" class="btn primary" id="gt-check">Controleer</button>
+            <button type="button" class="btn" id="gt-hulp">Toon tabel</button>
+            <button type="button" class="btn" id="gt-nieuw">Nieuwe situatie</button>
+          </div>
+        </div>
+        <div class="out" id="gt-out" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+<script>
+(function(){
+  var NS='http://www.w3.org/2000/svg', T=[0,1,2,3,4,5];
+  var WIE=[['Een step','rijdt langs het kanaal'],['Een tram','rijdt op de Louizalaan'],['Een fietser','rijdt langs de Kaai'],['Een reiziger','staat op de rolband in de luchthaven'],['Een kind','loopt op de speelplaats']];
+  var xt=document.getElementById('gt-xt'), vt=document.getElementById('gt-vt'), out=document.getElementById('gt-out');
+  var A={x:{svg:xt,min:0,max:50,stap:2,lab:'x (m)',H:330,MB:44},v:{svg:vt,min:-10,max:10,stap:2,lab:'v (m/s)',H:250,MB:30}};
+  var ML=56, MR=20, MT=16, W=520;
+  var opg, stap, pt, klaar;
+  function el(n,a,t){var e=document.createElementNS(NS,n);for(var k in a)e.setAttribute(k,a[k]);if(t!=null)e.textContent=t;return e;}
+  function X(ax,t){return ML+(W-ML-MR)*t/5;}
+  function Y(ax,v){var a=A[ax];return MT+(a.H-MT-a.MB)*(a.max-v)/(a.max-a.min);}
+  function fmt(n){return String(n).replace('.',',').replace('-','−');}
+  function rooster(ax,punten,lijn,status){
+    var a=A[ax], s=a.svg; s.innerHTML='';
+    for(var v=a.min;v<=a.max;v+=a.stap){var maj=v%10===0; s.appendChild(el('line',{x1:ML,x2:W-MR,y1:Y(ax,v),y2:Y(ax,v),stroke:maj?'var(--grid-major)':'var(--grid)','stroke-width':maj?1.2:0.8}));
+      if(maj||a.stap*5>=a.max-a.min) s.appendChild(el('text',{x:ML-8,y:Y(ax,v)+4,'text-anchor':'end','font-size':12,fill:'var(--muted)'},fmt(v)));}
+    T.forEach(function(t){s.appendChild(el('line',{x1:X(ax,t),x2:X(ax,t),y1:MT,y2:a.H-a.MB,stroke:'var(--grid-major)','stroke-width':1}));
+      s.appendChild(el('text',{x:X(ax,t),y:Y(ax,a.min)+18,'text-anchor':'middle','font-size':12,fill:'var(--muted)'},t));});
+    var y0=Y(ax,Math.max(a.min,0)); s.appendChild(el('line',{x1:ML,x2:W-MR+6,y1:y0,y2:y0,stroke:'var(--ink)','stroke-width':1.6}));
+    s.appendChild(el('line',{x1:ML,x2:ML,y1:a.H-a.MB,y2:MT-6,stroke:'var(--ink)','stroke-width':1.6}));
+    s.appendChild(el('text',{x:ML+6,y:MT+2,'font-size':13,'font-weight':700,fill:'var(--ink)'},a.lab));
+    s.appendChild(el('text',{x:W-MR,y:y0-6,'text-anchor':'end','font-size':13,'font-weight':700,fill:'var(--ink)'},'t (s)'));
+    if(lijn) s.appendChild(el('line',{x1:X(ax,0),y1:Y(ax,lijn[0]),x2:X(ax,5),y2:Y(ax,lijn[1]),stroke:'var(--c1)','stroke-width':3}));
+    T.forEach(function(t,i){ if(punten[i]==null) return;
+      var c=status?(status[i]?'var(--ok)':'var(--bad)'):'var(--c2)';
+      s.appendChild(el('circle',{cx:X(ax,t),cy:Y(ax,punten[i]),r:6.5,fill:c,stroke:'var(--paper)','stroke-width':2}));});
+  }
+  function goed(ax){return T.map(function(t){return ax==='x'?opg.x0+opg.v*t:opg.v;});}
+  function tekenAlles(status){
+    if(stap==='x'){ rooster('x',pt,null,status); rooster('v',[],null); }
+    else { rooster('x',goed('x'),[opg.x0,opg.x0+5*opg.v]); rooster('v',pt,klaar?[opg.v,opg.v]:null,status); }
+  }
+  function klik(ax,e){
+    if(ax!==stap||klaar) return;
+    var a=A[ax], r=a.svg.getBoundingClientRect(), px=(e.clientX-r.left)*W/r.width, py=(e.clientY-r.top)*a.H/r.height;
+    var t=Math.round((px-ML)/((W-ML-MR)/5)); if(t<0||t>5) return;
+    var v=a.max-(py-MT)/(a.H-MT-a.MB)*(a.max-a.min); v=Math.round(v/a.stap)*a.stap; v=Math.max(a.min,Math.min(a.max,v));
+    pt[t]=v; tekenAlles();
+  }
+  xt.addEventListener('pointerdown',function(e){klik('x',e);});
+  vt.addEventListener('pointerdown',function(e){klik('v',e);});
+  function tabel(){
+    var h='<table style="border-collapse:collapse;font-size:14px;margin-top:8px"><tr><th style="padding:4px 8px;border:1px solid var(--line)">t (s)</th>';
+    T.forEach(function(t){h+='<td style="padding:4px 10px;border:1px solid var(--line);text-align:center">'+t+'</td>';});
+    h+='</tr><tr><th style="padding:4px 8px;border:1px solid var(--line)">x (m)</th>';
+    T.forEach(function(t){h+='<td style="padding:4px 10px;border:1px solid var(--line);text-align:center">'+(t===0?fmt(opg.x0):'?')+'</td>';});
+    return h+'</tr></table><p class="task" style="margin-top:6px">Elke seconde verandert x met v · 1 s = '+fmt(opg.v)+' m.</p>';
+  }
+  document.getElementById('gt-hulp').onclick=function(){var d=document.getElementById('gt-tab'); d.innerHTML=tabel(); d.style.display=d.style.display==='none'?'block':'none';};
+  document.getElementById('gt-check').onclick=function(){
+    if(klaar) return;
+    var g=goed(stap), st=T.map(function(t,i){return pt[i]===g[i];}), mis=pt.filter(function(p){return p==null;}).length;
+    if(mis){ out.innerHTML='Zet op elk tijdstip (0 tot 5 s) een punt. Er ontbreken nog '+mis+' punten.'; return; }
+    tekenAlles(st);
+    var fout=st.filter(function(b){return !b;}).length;
+    if(fout){ out.innerHTML='<span style="color:var(--bad);font-weight:700">'+fout+' punt'+(fout>1?'en zijn':' is')+' nog niet juist</span> (rood). '+(stap==='x'?'Begin bij x<sub>0</sub> en tel elke seconde v · 1 s erbij.':'Bij een ERB is de snelheid op elk tijdstip dezelfde.')+' Klik opnieuw om te verbeteren.'; return; }
+    if(stap==='x'){
+      stap='v'; pt=[null,null,null,null,null,null];
+      document.getElementById('gt-stap').textContent='Stap 2: v(t)-grafiek'; document.getElementById('gt-hulp').style.display='none'; document.getElementById('gt-tab').style.display='none';
+      out.innerHTML='<span style="color:var(--ok);font-weight:700">Juist!</span> De punten liggen op een <b>rechte</b>. Helling = Δx / Δt = ('+fmt(opg.x0+5*opg.v)+' − '+fmt(opg.x0)+') m / 5 s = <b>'+fmt(opg.v)+' m/s</b> = de snelheid.<br>Klik nu de snelheid op elk tijdstip in de v(t)-grafiek.';
+      tekenAlles();
+    } else {
+      klaar=true; tekenAlles();
+      out.innerHTML='<span style="color:var(--ok);font-weight:700">Juist!</span> Bij een ERB is de v(t)-grafiek een <b>horizontale rechte</b>: de snelheid verandert niet.'+(opg.v<0?' Ze ligt onder de t-as, want het voorwerp beweegt terug.':'')+'<br>Klik op <b>Nieuwe situatie</b> voor een volgende oefening.';
+    }
+  };
+  function nieuw(){
+    var vs=[2,4,6,8,-2,-4,-6,-8], v=vs[Math.floor(Math.random()*vs.length)], lo=Math.max(0,-5*v), hi=Math.min(50,50-5*v), opties=[];
+    for(var x=lo;x<=hi;x+=2) opties.push(x);
+    var w=WIE[Math.floor(Math.random()*WIE.length)];
+    opg={v:v,x0:opties[Math.floor(Math.random()*opties.length)]};
+    stap='x'; klaar=false; pt=[null,null,null,null,null,null];
+    document.getElementById('gt-sit').innerHTML=w[0]+' '+w[1]+' en beweegt <b>eenparig rechtlijnig</b>. Op t = 0 s is de positie <b>x<sub>0</sub> = '+fmt(opg.x0)+' m</b>. De snelheid is <b>v = '+fmt(v)+' m/s</b>'+(v<0?' (terug, naar de oorsprong toe)':'')+'.';
+    document.getElementById('gt-stap').textContent='Stap 1: x(t)-grafiek';
+    var h=document.getElementById('gt-hulp'); h.style.display=''; document.getElementById('gt-tab').style.display='none';
+    out.innerHTML='Klik op elk tijdstip t = 0, 1, 2, 3, 4 en 5 s de juiste positie aan. Een punt verbeteren? Klik opnieuw op die tijdslijn.';
+    tekenAlles();
+  }
+  document.getElementById('gt-nieuw').onclick=nieuw;
+  nieuw();
+})();
+</script>
 
   <!-- 2.2 GRAFIEKEN OEFENEN (bestaande oefening) -->
   <section class="scene" id="s4" data-nr="2.2" data-title="Grafieken oefenen">
@@ -724,12 +833,12 @@
     o += '<circle cx="' + A.X(te) + '" cy="' + A.Y(xe) + '" r="6" class="dot"/>' + t(A.X(te) + 10, A.Y(xe) - 8, 'x = ' + fm(xe, 1) + ' m', {s: 13, w: 700, c: '#2f7de1'});
     $('e_xt').innerHTML = o;
     var B = assen({x0: 70, y0: 230, w: 660, h: 200, xmax: 10, ymin: -6, ymax: 8, xstap: 1, ystap: 2, xl: 't (s)', yl: 'v (m/s)'}), p = B.s;
-    p += '<rect x="' + B.X(0) + '" y="' + Math.min(B.Y(0), B.Y(v)) + '" width="' + (B.X(te) - B.X(0)) + '" height="' + Math.abs(B.Y(v) - B.Y(0)) + '" fill="' + (v >= 0 ? '#2fa36b' : '#d9455f') + '" opacity=".22"/>';
+    p += '<rect x="' + B.X(0) + '" y="' + Math.min(B.Y(0), B.Y(v)) + '" width="' + (B.X(te) - B.X(0)) + '" height="' + Math.abs(B.Y(v) - B.Y(0)) + '" fill="none" opacity="0"/>';
     p += '<line x1="' + B.X(0) + '" y1="' + B.Y(v) + '" x2="' + B.X(10) + '" y2="' + B.Y(v) + '" stroke="#e8871e" stroke-width="4"/>';
-    if (te > 1) p += t(B.X(te / 2), (B.Y(0) + B.Y(v)) / 2 + 5, 'oppervlakte = Δx', {s: 13, w: 700, c: INK, a: 'middle'});
+    
     $('e_vt').innerHTML = p;
     $('e_out').innerHTML = 'helling x(t) = Δx / Δt = <b>' + fm(v, 1) + ' m/s</b> = de snelheid<br>Δx = v · Δt = ' + fm(v, 1) + ' m/s · ' + fm(te, 1) + ' s = <b>' + fm(v * te, 1) + ' m</b><br>x = x<sub>0</sub> + Δx = ' + x0 + ' m + ' + fm(v * te, 1) + ' m = <b>' + fm(xe, 1) + ' m</b>' +
-      (v < 0 ? '<br>v is negatief: het voorwerp beweegt terug, x daalt. De oppervlakte ligt onder de t-as.' : v === 0 ? '<br>v = 0: stilstand, een horizontale lijn in de x(t)-grafiek.' : '');
+      (v < 0 ? '<br>v is negatief: het voorwerp beweegt terug, x daalt. De v(t)-grafiek ligt onder de t-as.' : v === 0 ? '<br>v = 0: stilstand, een horizontale lijn in de x(t)-grafiek.' : '');
   }
   ['e_v', 'e_x0', 'e_t'].forEach(function (id) { $(id).addEventListener('input', erb); }); erb();
 

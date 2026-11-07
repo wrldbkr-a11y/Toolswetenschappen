@@ -153,6 +153,8 @@ footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-di
   <nav id="catnav" class="catnav"></nav>
   <nav id="nav"></nav>
 </header>
+<div style="max-width:1180px;margin:14px auto 0;padding:0 24px"><details id="ld3" style="border:1px solid #c9d6e3;border-radius:10px;padding:8px 14px;background:rgba(127,160,200,.08)"><summary style="cursor:pointer;font-weight:700">Lesdoelen · Ik kan …</summary><ul style="padding:0;margin:4px 0 6px;font-size:14px;line-height:1.5"><li style="list-style:none;margin:8px 0 2px;font-weight:700">2.1 Effect van een kracht</li><li style="list-style:none;margin:2px 0"><label style="display:flex;gap:8px;align-items:flex-start;cursor:pointer"><input type="checkbox" style="margin-top:4px;flex:none">Ik toon het statisch en dynamisch effect van een kracht aan in concrete situaties.</label></li><li style="list-style:none;margin:8px 0 2px;font-weight:700">2.2 Kracht als vector</li><li style="list-style:none;margin:2px 0"><label style="display:flex;gap:8px;align-items:flex-start;cursor:pointer"><input type="checkbox" style="margin-top:4px;flex:none">Ik geef het vectoriële karakter van een kracht weer in concrete situaties.</label></li><li style="list-style:none;margin:2px 0"><label style="display:flex;gap:8px;align-items:flex-start;cursor:pointer"><input type="checkbox" style="margin-top:4px;flex:none">Ik teken krachten als vectoren met behulp van een schaal.</label></li><li style="list-style:none;margin:8px 0 2px;font-weight:700">3.1 Verandering van de bewegingstoestand</li><li style="list-style:none;margin:2px 0"><label style="display:flex;gap:8px;align-items:flex-start;cursor:pointer"><input type="checkbox" style="margin-top:4px;flex:none">Ik toon aan hoe de bewegingstoestand van een lichaam verandert in concrete situaties.</label></li><li style="list-style:none;margin:8px 0 2px;font-weight:700">3.2 Resulterende kracht en beweging</li><li style="list-style:none;margin:2px 0"><label style="display:flex;gap:8px;align-items:flex-start;cursor:pointer"><input type="checkbox" style="margin-top:4px;flex:none">Ik leg het traagheidsbeginsel uit in concrete situaties.</label></li><li style="list-style:none;margin:2px 0"><label style="display:flex;gap:8px;align-items:flex-start;cursor:pointer"><input type="checkbox" style="margin-top:4px;flex:none">Ik teken de snelheidsvector bij verschillende bewegingstoestanden van een lichaam.</label></li></ul><p style="font-size:12px;opacity:.75;margin:4px 0">Vink aan wat je al kan. Wat je niet kan aanvinken, oefen je nog eens.</p></details></div>
+<script>(function(){var K="ld3-krachtbew",b=document.querySelectorAll("#ld3 input");var st={};try{st=JSON.parse(localStorage.getItem(K)||"{}")}catch(e){}b.forEach(function(x,i){x.checked=!!st[i];x.onchange=function(){st[i]=x.checked;try{localStorage.setItem(K,JSON.stringify(st))}catch(e){}}})})();</script>
 
 <main>
 
@@ -310,6 +312,137 @@ footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-di
     <p class="scene-sub">Kijk altijd eerst naar de <strong>resulterende kracht</strong>, en vergelijk ze met de richting van de beweging.</p>
     <div class="cards" id="s5-cards"></div>
   </section>
+
+  <section class="scene" id="sv" data-nr="3.2" data-title="Teken de snelheidsvector" data-cat="fr">
+    <div class="scene-head"><span class="num">3.2</span><h3>Teken de snelheidsvector</h3></div>
+    <p class="scene-sub">De <strong>snelheid</strong> is een vector: ze heeft een grootte, een richting en een zin. De oranje pijl toont de snelheid op tijdstip t<sub>1</sub>. <strong>Teken de snelheid op tijdstip t<sub>2</sub></strong>: klik of sleep vanaf het voorwerp. Let op de richting én de lengte.</p>
+    <div class="grid">
+      <div class="canvas-wrap"><svg id="sv-svg" viewBox="0 0 800 440" style="width:100%;height:auto;display:block;touch-action:none;cursor:crosshair"></svg></div>
+      <div class="controls">
+        <div class="score" id="sv-score">0 / 0 juist</div>
+        <div class="readout" id="sv-vraag"></div>
+        <div class="ctrl-row">
+          <button class="btn primary" id="sv-check">Controleer</button>
+          <button class="btn" id="sv-nul">v = 0 (geen pijl)</button>
+        </div>
+        <div class="ctrl-row"><button class="btn" id="sv-nieuw">Nieuwe situatie →</button></div>
+        <div class="readout" id="sv-fb" aria-live="polite">Teken eerst je pijl.</div>
+        <div class="legend"><div class="row"><span class="sw" style="background:var(--v)"></span><span>snelheid v</span></div></div>
+      </div>
+    </div>
+  </section>
+<script>
+(function(){
+  const S=document.getElementById('sv-svg'), fb=document.getElementById('sv-fb'), vr=document.getElementById('sv-vraag'), sc=document.getElementById('sv-score');
+  const NS='http://www.w3.org/2000/svg';
+  // soort: 'groter' | 'gelijk' | 'kleiner' | 'nul'
+  const SIT=[
+    {id:'vers', tekst:'Een auto vertrekt aan het verkeerslicht en <b>versnelt</b>.', p1:[190,300], p2:[520,300], v1:[90,0], dir:[1,0], soort:'groter', obj:'auto',
+     uitleg:'De auto versnelt: dezelfde richting en zin, maar een <b>langere</b> pijl.'},
+    {id:'erb', tekst:'Een tram rijdt op een rechte baan met een <b>constante snelheid</b>.', p1:[190,300], p2:[520,300], v1:[110,0], dir:[1,0], soort:'gelijk', obj:'tram',
+     uitleg:'Constante snelheid: de pijl blijft <b>even lang</b> en wijst in dezelfde zin.'},
+    {id:'rem', tekst:'Een fietser <b>remt</b> voor een zebrapad.', p1:[190,300], p2:[520,300], v1:[140,0], dir:[1,0], soort:'kleiner', obj:'fiets',
+     uitleg:'De fietser vertraagt: dezelfde richting en zin, maar een <b>kortere</b> pijl.'},
+    {id:'links', tekst:'Een bus rijdt <b>naar links</b> weg van de halte en <b>versnelt</b>.', p1:[610,300], p2:[290,300], v1:[-80,0], dir:[-1,0], soort:'groter', obj:'auto',
+     uitleg:'De bus rijdt naar links en versnelt: de pijl wijst naar links en wordt <b>langer</b>.'},
+    {id:'bocht', tekst:'Je draait een bal rond aan een touw, altijd <b>even snel</b> (bovenaanzicht). Op t<sub>2</sub> is de bal een kwart toer verder.', c:[400,220], r:150, p1:[400,370], p2:[550,220], v1:[100,0], dir:[0,-1], soort:'gelijk', obj:'bal',
+     uitleg:'De snelheid staat altijd <b>rakend</b> aan de cirkel (loodrecht op het touw). Even snel: even lange pijl. Alleen de <b>richting</b> verandert.'},
+    {id:'top', tekst:'Je gooit een bal recht omhoog. Op t<sub>2</sub> is de bal op het <b>hoogste punt</b>.', p1:[400,330], p2:[400,90], v1:[0,-100], dir:[0,-1], soort:'nul', obj:'balv',
+     uitleg:'Op het hoogste punt staat de bal heel even stil: <b>v = 0</b>, dus geen pijl.'},
+    {id:'val', tekst:'Een appel <b>valt</b> uit een boom en gaat steeds sneller.', p1:[400,110], p2:[400,280], v1:[0,50], dir:[0,1], soort:'groter', obj:'balv',
+     uitleg:'De appel valt steeds sneller: de pijl wijst naar beneden en wordt <b>langer</b>.'},
+  ];
+  let volg=[], s=null, tip=null, nul=false, klaar=false, juist=0, totaal=0, sleep=false;
+  const el=(n,a,txt)=>{const e=document.createElementNS(NS,n); for(const k in a) e.setAttribute(k,a[k]); if(txt!=null) e.textContent=txt; return e;};
+  function pijl(g,x,y,dx,dy,kleur,dik,label){
+    const L=Math.hypot(dx,dy); if(L<2) return;
+    const ux=dx/L, uy=dy/L, h=Math.min(16,L*0.5);
+    g.appendChild(el('line',{x1:x,y1:y,x2:x+dx-ux*h*0.8,y2:y+dy-uy*h*0.8,stroke:kleur,'stroke-width':dik,'stroke-linecap':'round'}));
+    const bx=x+dx-ux*h, by=y+dy-uy*h;
+    g.appendChild(el('polygon',{points:`${x+dx},${y+dy} ${bx-uy*h*0.55},${by+ux*h*0.55} ${bx+uy*h*0.55},${by-ux*h*0.55}`,fill:kleur}));
+    if(label){ const t=el('text',{x:x+dx+ (uy===0? (ux>0?10:-10):12), y:y+dy+(uy===0?-8:(uy>0?16:-4)), 'font-size':17,'font-weight':700,fill:kleur,'text-anchor':uy===0&&ux<0?'end':'start'}); t.innerHTML=label; g.appendChild(t);}
+  }
+  function voorwerp(g,o,x,y,lab){
+    const K='#475569';
+    if(o==='auto'||o==='tram'){
+      const w=o==='tram'?96:76, h=o==='tram'?38:26;
+      g.appendChild(el('path',{d:o==='tram'
+        ?`M${x-w/2},${y+h/2} L${x-w/2},${y-h/2+6} Q${x-w/2},${y-h/2} ${x-w/2+6},${y-h/2} L${x+w/2-6},${y-h/2} Q${x+w/2},${y-h/2} ${x+w/2},${y-h/2+6} L${x+w/2},${y+h/2} Z`
+        :`M${x-w/2},${y+h/2} L${x-w/2},${y} Q${x-w/2+4},${y-4} ${x-w/4},${y-5} L${x-w/6},${y-h} L${x+w/5},${y-h} L${x+w/3},${y-5} Q${x+w/2},${y-3} ${x+w/2},${y+3} L${x+w/2},${y+h/2} Z`,
+        fill:o==='tram'?'#93c5fd':'#cbd5e1',stroke:K,'stroke-width':2}));
+      g.appendChild(el('circle',{cx:x-w/3,cy:y+h/2,r:8,fill:'#334155'})); g.appendChild(el('circle',{cx:x+w/3,cy:y+h/2,r:8,fill:'#334155'}));
+      g.appendChild(el('circle',{cx:x,cy:y,r:4,fill:'#0f172a'}));
+    } else if(o==='fiets'){
+      g.appendChild(el('circle',{cx:x-24,cy:y+14,r:15,fill:'none',stroke:K,'stroke-width':2.5}));
+      g.appendChild(el('circle',{cx:x+24,cy:y+14,r:15,fill:'none',stroke:K,'stroke-width':2.5}));
+      g.appendChild(el('path',{d:`M${x-24},${y+14} L${x-4},${y+14} L${x+14},${y-6} L${x-12},${y-6} Z M${x-4},${y+14} L${x-14},${y-14} M${x+14},${y-6} L${x+24},${y+14} M${x+14},${y-6} L${x+10},${y-18}`,fill:'none',stroke:K,'stroke-width':2.5,'stroke-linejoin':'round'}));
+      g.appendChild(el('circle',{cx:x,cy:y,r:4,fill:'#0f172a'}));
+    } else {
+      g.appendChild(el('circle',{cx:x,cy:y,r:13,fill:o==='balv'&&s.id==='val'?'#ef4444':'#60a5fa',stroke:K,'stroke-width':2}));
+    }
+    const t=el('text',{x:x,y:y+(o==='balv'||o==='bal'?(s.id==='top'&&lab==='t₂'?-24:36):48),'font-size':16,'font-weight':700,fill:'#334155','text-anchor':'middle'},lab); g.appendChild(t);
+  }
+  function teken(){
+    S.innerHTML='';
+    const g=el('g',{}); S.appendChild(g);
+    if(s.c){
+      g.appendChild(el('circle',{cx:s.c[0],cy:s.c[1],r:s.r,fill:'none',stroke:'#94a3b8','stroke-width':1.5,'stroke-dasharray':'6 6'}));
+      g.appendChild(el('circle',{cx:s.c[0],cy:s.c[1],r:5,fill:'#334155'}));
+      g.appendChild(el('line',{x1:s.c[0],y1:s.c[1],x2:s.p2[0],y2:s.p2[1],stroke:'#64748b','stroke-width':1.5}));
+      g.appendChild(el('line',{x1:s.c[0],y1:s.c[1],x2:s.p1[0],y2:s.p1[1],stroke:'#cbd5e1','stroke-width':1.5}));
+    } else if(s.obj==='balv'){
+      g.appendChild(el('line',{x1:400,y1:60,x2:400,y2:400,stroke:'#cbd5e1','stroke-width':1.5,'stroke-dasharray':'6 6'}));
+      g.appendChild(el('line',{x1:300,y1:400,x2:500,y2:400,stroke:'#64748b','stroke-width':2}));
+    } else {
+      g.appendChild(el('line',{x1:40,y1:328,x2:760,y2:328,stroke:'#64748b','stroke-width':2}));
+    }
+    voorwerp(g,s.obj,s.p1[0],s.p1[1],'t₁');
+    pijl(g,s.p1[0],s.p1[1],s.v1[0],s.v1[1],'var(--v)',5,'v<tspan baseline-shift="sub" font-size="12">1</tspan>');
+    voorwerp(g,s.obj,s.p2[0],s.p2[1],'t₂');
+    if(nul){ const t=el('text',{x:s.p2[0]+22,y:s.p2[1]+6,'font-size':17,'font-weight':700,fill:'var(--v)'},'v₂ = 0'); g.appendChild(t); }
+    else if(tip) pijl(g,s.p2[0],s.p2[1],tip[0]-s.p2[0],tip[1]-s.p2[1],'var(--v)',5,'v<tspan baseline-shift="sub" font-size="12">2</tspan>');
+    if(klaar && s.soort!=='nul'){
+      const L1=Math.hypot(...s.v1), f={groter:1.6,gelijk:1,kleiner:0.5}[s.soort];
+      const gg=el('g',{opacity:.45}); S.appendChild(gg);
+      pijl(gg,s.p2[0],s.p2[1],s.dir[0]*L1*f,s.dir[1]*L1*f,'#16a34a',4,'');
+    }
+  }
+  function punt(e){ const r=S.getBoundingClientRect(); return [(e.clientX-r.left)*800/r.width,(e.clientY-r.top)*440/r.height]; }
+  function zet(e){ if(klaar) return; let [x,y]=punt(e); const dx=x-s.p2[0], dy=y-s.p2[1], L=Math.hypot(dx,dy);
+    if(L>240){ x=s.p2[0]+dx/L*240; y=s.p2[1]+dy/L*240; } tip=[x,y]; nul=false; teken(); }
+  S.addEventListener('pointerdown',e=>{ sleep=true; try{S.setPointerCapture(e.pointerId);}catch(_){} zet(e); });
+  S.addEventListener('pointermove',e=>{ if(sleep) zet(e); });
+  S.addEventListener('pointerup',()=>{ sleep=false; });
+  document.getElementById('sv-nul').onclick=()=>{ if(klaar) return; nul=true; tip=null; teken(); };
+  document.getElementById('sv-check').onclick=()=>{
+    if(klaar) return;
+    if(!nul && !tip){ fb.innerHTML='Teken eerst een pijl, of kies v = 0.'; return; }
+    let ok=false, msg='';
+    if(s.soort==='nul'){ ok=nul; msg=ok?'':'Niet juist. Denk na: hoe snel gaat de bal op het hoogste punt?'; }
+    else if(nul){ msg='Niet juist: het voorwerp beweegt nog op t<sub>2</sub>, dus v ≠ 0.'; }
+    else {
+      const dx=tip[0]-s.p2[0], dy=tip[1]-s.p2[1], L=Math.hypot(dx,dy), L1=Math.hypot(...s.v1);
+      const hoek=Math.acos(Math.max(-1,Math.min(1,(dx*s.dir[0]+dy*s.dir[1])/L)))*180/Math.PI;
+      const r=L/L1;
+      const lenOk = s.soort==='groter'? r>1.15 : s.soort==='kleiner'? r<0.85 && r>0.08 : r>=0.85 && r<=1.15;
+      if(L<8) msg='Je pijl is te kort om te beoordelen. Teken hem duidelijker.';
+      else if(hoek>20) msg = hoek>160 ? 'De <b>zin</b> klopt niet: je pijl wijst de verkeerde kant op.' : 'De <b>richting</b> klopt niet. In welke richting beweegt het voorwerp op t<sub>2</sub>?';
+      else if(!lenOk) msg = 'De richting is goed, maar de <b>lengte</b> niet. '+(s.soort==='groter'?'Gaat het voorwerp sneller of trager dan op t<sub>1</sub>?':s.soort==='kleiner'?'Gaat het voorwerp sneller of trager dan op t<sub>1</sub>?':'Verandert de grootte van de snelheid?');
+      else ok=true;
+    }
+    totaal++; if(ok) juist++; klaar=true; sc.textContent=juist+' / '+totaal+' juist';
+    fb.innerHTML=(ok?'<span style="color:var(--ok-text);font-weight:700">Juist!</span> ':'<span style="color:var(--flag-text);font-weight:700">'+msg+'</span><br>')+s.uitleg+(s.soort!=='nul'&&!ok?' De groene pijl toont een juiste oplossing.':'');
+    teken();
+  };
+  function nieuw(){
+    if(!volg.length){ volg=SIT.slice().sort(()=>Math.random()-0.5); if(s&&volg[0]===s) volg.push(volg.shift()); }
+    s=volg.shift(); tip=null; nul=false; klaar=false;
+    vr.innerHTML=s.tekst; fb.innerHTML='Teken je pijl vanaf het voorwerp op t<sub>2</sub>.'; teken();
+  }
+  document.getElementById('sv-nieuw').onclick=nieuw;
+  nieuw();
+})();
+</script>
 
   <!-- ===================== DAGELIJKS LEVEN ===================== -->
   <section class="scene" id="s6" data-nr="3" data-title="Voorbeelden uit het dagelijks leven" data-cat="leven">
