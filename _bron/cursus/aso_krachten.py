@@ -244,6 +244,7 @@ _O = [
    o_balpen, o_twee, t_veer,
 ]
 exec(open('/home/claude/toolswetenschappen/_bron/cursus/aso_extra.py', encoding='utf-8').read())
+exec(open('/home/claude/toolswetenschappen/_bron/cursus/aso_begrip.py', encoding='utf-8').read())
 def _groep(kop, items):
     return f'<h3>{kop}</h3>' + ''.join(items)
 oefs = STAP + ''.join([
@@ -253,6 +254,7 @@ oefs = STAP + ''.join([
     _groep('Hoofdstuk 4 · Zwaartekracht, massa en gewicht', [_O[11], _O[12], _O[13], _O[6], _O[14], _O[15], _O[16]]),
     _groep('Hoofdstuk 5 · Veerkracht', [_O[17], _O[18], _O[19], _O[20]]),
     _groep('Gemengd', [g1, g2, g3]),
+    _groep('Uitdaging', [AANPAK, u1, u2, u3, u4, u5]),
 ]) + tool('krachten-3aso.html#oef', 'Extra oefenen in de tool')
 # hernummeren in volgorde
 _n = [0]
@@ -281,7 +283,7 @@ blokken += [blok('oefeningen', '', 'Oefeningen op papier', oefs, 'oefeningen'), 
 alle = ''.join(blokken)
 denks = sorted(set(re.findall(r'data-vrij="(denk_\d+)"', alle)), key=lambda x: int(x.split('_')[1]))
 vrij = [(f'deel{i}', i == 1, kop) for i, (kop, _) in enumerate(delen, start=1)]
-vrij += [(d, False, 'redenering ' + d.replace('_', 'vraag ')) for d in denks]
+vrij += [(d, False, ('antwoorden Test jezelf, deel ' + str(int(d.split('_')[1]) - 100)) if int(d.split('_')[1]) > 100 else 'redenering ' + d.replace('_', 'vraag ')) for d in denks]
 vrij += [(x, False, 'oplossing oefening ' + x.replace('opl_v', '5.')) for x in sorted(set(re.findall(r'data-vrij="(opl_v\d+)"', alle)))]
 vrij += [('oefeningen', False, 'de oefeningen zelf (opgaven)')] + [(f'opl_{i}', False, f'oplossing oefening {i}') for i in range(1, N_OEF + 1)] + [('samenvatting', False, 'samenvatting')]
 bouw('cursus-krachten-3aso.html', "Fysica 3de jaar · andere richtingen · Thema 1 Krachten · Hoofdstuk 1 tot 5", 'Krachten',
