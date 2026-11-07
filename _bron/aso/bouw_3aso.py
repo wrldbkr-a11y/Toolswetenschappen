@@ -36,7 +36,8 @@ bouw('rekenen-fysica.html', 'rekenen-fysica-3aso.html', lambda s: vervang(s, [
     ('Fysica 3de jaar · Thema 2 · Krachten · hoofdstuk 1', EY + 'Thema 1 · Krachten · hoofdstuk 1')]))
 
 bouw('krachten-beweging.html', 'krachten-beweging-3aso.html', lambda s: vervang(s, [
-    ('Fysica 3de jaar · Thema 2 · Krachten · hoofdstuk 2 en 3', EY + 'Thema 1 · Krachten · hoofdstuk 2 en 3')]))
+    ('Fysica 3de jaar · Thema 2 · Krachten · hoofdstuk 2 en 3', EY + 'Thema 1 · Krachten · hoofdstuk 2 en 3'),
+    ('<div class="readout" id="s3b-read"></div>', '<div class="readout" id="s3b-read"></div>\n        <div class="note"><strong>Wrijvingskracht</strong> is een kracht die de beweging <strong>tegenwerkt</strong>. Ze ontstaat waar een voorwerp over een ondergrond schuift of rolt, of door de lucht beweegt. Op een ruwe ondergrond (gras, zand) is er veel wrijving, op ijs bijna geen. Wrijving is ook nuttig: zonder wrijving kan je niet stappen, fietsen of remmen.</div>')]))
 
 def krachten(s):
     s = verberg(s, ['wr1', 'wr3', 'wr2', 'km1', 'km2', 'km3', 'ev1', 'ev2'])
