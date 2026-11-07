@@ -237,7 +237,7 @@ oefs = STAP + ''.join([
  t_boek, t_lamp,
  oef('opl_12', 12, 'Veerkracht', 'a) Een veer met k = 40 N/m wordt 15 cm uitgerekt. Bereken de veerkracht. b) Een kracht van 3,0 N rekt een veer 6,0 cm uit. Bereken k. c) Welke veer is stijver: die van a of die van b?',
      [('a', 'F<sub>v</sub> = k · Δl = 40 N/m · 0,15 m = 6,0 N'), ('b', 'k = F<sub>v</sub> / Δl = 3,0 N / 0,060 m = 50 N/m'), ('c', 'de veer van b: grotere k')], 'a) 6,0 N · b) 50 N/m · c) de veer van b'),
-   t_veer,
+   o_balpen, o_twee, t_veer,
 ]) + tool('krachten-3aso.html#oef', 'Extra oefenen in de tool')
 # hernummeren in volgorde
 _n = [0]

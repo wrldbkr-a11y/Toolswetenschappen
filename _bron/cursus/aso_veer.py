@@ -1,10 +1,22 @@
-# Hoofdstuk 5 Veerkracht voor de cursus Krachten 3ASO, volgens de leerlijn
-# start · uitleg + uitgewerkt voorbeeld · nu jij · controleer · tool.
+# Hoofdstuk 5 Veerkracht voor de cursus Krachten 3ASO.
+# Leerlingen: een ingevulde naslag (niets in te vullen). Leerkracht (?leerkracht): een EDI-draaiboek met wisbordvragen.
 # Wordt uitgevoerd in de naamruimte van aso_krachten.py (exec), dus alle helpers zijn beschikbaar.
 
-def fase(naam):
-    return ('<h3 style="display:flex;align-items:center;gap:8px"><span style="background:#e2e8f0;border-radius:999px;'
-            'padding:2px 10px;font-size:.8rem;letter-spacing:.04em;text-transform:uppercase">%s</span></h3>' % naam)
+# ---- EDI-draaiboek: alleen zichtbaar in de leerkrachtweergave (en in de Word-versie voor de leerkracht) ----
+EDI_CSS = ('<style>.edi{display:none;border:2px solid #7c3aed;border-radius:12px;padding:12px 16px;margin:12px 0 18px;background:#faf5ff}'
+           '.edi .kop{font-weight:800;color:#6d28d9;margin-bottom:6px}.edi h4{margin:12px 0 4px;color:#5b21b6;font-size:1rem}'
+           '.edi .wb{font-weight:700}.edi .antw{color:#047857}.edi .fout{color:#b45309}</style>'
+           '<script>if(new URLSearchParams(location.search).has("leerkracht"))document.write("<style>.edi{display:block}</style>")</script>')
+
+VF = '<span style="position:relative;display:inline-block">F<span style="position:absolute;left:.05em;top:-.62em;font-size:.75em">→</span></span>'
+
+def wisbord(vraag, antwoord, fout=''):
+    f = f' <span class="fout">Typische fout: {fout}</span>' if fout else ''
+    return f'<li><span class="wb">{vraag}</span><br><span class="antw">→ {antwoord}</span>{f}</li>'
+
+def edi(fasen):
+    """fasen: lijst van (titel, html). Geeft een blok dat leerlingen niet zien."""
+    return '<div class="edi"><div class="kop">EDI-draaiboek voor de leerkracht (leerlingen zien dit niet)</div>' + ''.join(f'<h4>{t_}</h4>{h}' for t_, h in fasen) + '</div>'
 
 GX, GY = 60, 260   # oorsprong van de grafiek
 
@@ -31,13 +43,14 @@ def veer(n_z=0, n_v=0, w=600, h=340):
     if n_z: o += pijl(300, 165, 300, 165 + n_z * HK, PAARS) + label(306, 165 + n_z * HK - 6, 'F', 'z', PAARS)
     return svg(o, w, h)
 
-MEET = [(50, 2.0), (100, 4.0), (150, 6.0), (200, 8.0)]
+# ---- leerlingentekst (ingevuld) ----
+MEET = [(50, '0,50', '2,0'), (100, '1,0', '4,0'), (150, '1,5', '6,0'), (200, '2,0', '8,0')]
 TD = '<td style="min-width:56px;text-align:center">'
 tab_meet = ('<table style="border-collapse:collapse;margin:8px 0 12px;font-size:15px" cellpadding="6" border="1" bordercolor="#cbd5e1">'
-    '<tr><th>massa m (g)</th>' + ''.join(f'{TD}{m}</td>' for m, _ in MEET) + '</tr>'
-    '<tr><th>F<sub>z</sub> = F<sub>v</sub> (N)</th>' + ''.join(f'{TD}</td>' for _ in MEET) + '</tr>'
-    '<tr><th>uitrekking Δl (cm)</th>' + ''.join(f'{TD}' + f'{d:.1f}'.replace('.', ',') + '</td>' for _, d in MEET) + '</tr>'
-    '<tr><th>F<sub>v</sub> / Δl (N/cm)</th>' + ''.join(f'{TD}</td>' for _ in MEET) + '</tr></table>')
+    '<tr><th>massa m (g)</th>' + ''.join(f'{TD}{m}</td>' for m, _, _ in MEET) + '</tr>'
+    '<tr><th>F<sub>v</sub> = F<sub>z</sub> (N)</th>' + ''.join(f'{TD}{f}</td>' for _, f, _ in MEET) + '</tr>'
+    '<tr><th>uitrekking Δl (cm)</th>' + ''.join(f'{TD}{d}</td>' for _, _, d in MEET) + '</tr>'
+    '<tr><th>F<sub>v</sub> / Δl (N/cm)</th>' + ''.join(f'{TD}0,25</td>' for _ in MEET) + '</tr></table>')
 
 KEN = kader('Ken dit · Veerkracht', '''<p><b>Veerkracht F<sub>v</sub>:</b> de kracht die een vervormd elastisch voorwerp uitoefent om zijn oorspronkelijke vorm terug aan te nemen.</p>
 <p class="formule">F<sub>v</sub> = k · Δl</p>
@@ -54,32 +67,40 @@ VOORBEELD = ('<p><b>Uitgewerkt voorbeeld.</b> Amina hangt 300 g aan haar veer (k
 
 TWEE = [(0, 0, 4, 2.5, R, 'A'), (0, 0, 10, 1.5, B, 'B')]
 
-h5 = (fase('Start')
+DRAAIBOEK = edi([
+ ('1 · Voorkennis activeren (wisbordjes)', '<ol>'
+   + wisbord('Een massa van 200 g hangt aan een touw. Hoe groot is F<sub>z</sub>? (g ≈ 10 N/kg)', '2,0 N', '2000 N: gram niet omgezet naar kg')
+   + wisbord('Schrijf 8,0 cm in meter.', '0,080 m', '0,8 m')
+   + wisbord('Teken ' + VF + '<sub>z</sub> op een massa die aan een touw hangt.', 'pijl vanuit het midden, verticaal naar beneden', 'pijl vanuit het touw of naar het touw') + '</ol>'),
+ ('2 · Lesdoel', '<p>"Ik leg uit wat veerkracht is. Ik reken met F<sub>v</sub> = k · Δl en ik teken ' + VF + '<sub>v</sub>."</p>'),
+ ('3 · Instructie: ik doe', '<p>Toon een echte veer met massa\'s, of de tool (knop onderaan). Laat de tabel van Amina zien en vraag: <i>"Wat gebeurt er met Δl als de massa verdubbelt?"</i> Wijs op de laatste rij: F<sub>v</sub> / Δl is altijd 0,25 N/cm → dat vaste getal is <b>k</b>. Zet om: 0,25 N/cm = 25 N/m.</p>'
+   '<p>Denk het uitgewerkte voorbeeld (300 g) hardop voor: eerst F<sub>z</sub>, dan "hangt stil → F<sub>v</sub> = F<sub>z</sub>", dan de pijlen (waar begint elke pijl?), dan Δl in meter.</p>'),
+ ('4 · Begrip controleren (wisbordjes)', '<ol>'
+   + wisbord('Veer P heeft k = 200 N/m, veer Q heeft k = 25 N/m. Welke veer is het stijfst?', 'P', 'Q, omdat 25 "minder vervormt"')
+   + wisbord('Teken ' + VF + '<sub>v</sub> op een massa aan een veer. Waar begint de pijl, welke zin?', 'in het ophangpunt van de veer aan de massa, naar boven', 'vanuit het midden, of naar beneden')
+   + wisbord('Je hangt dubbel zoveel massa aan dezelfde veer. Wat gebeurt er met Δl? En met k?', 'Δl verdubbelt, k blijft gelijk', 'k verdubbelt')
+   + wisbord('Wat betekent k = 3,2 N/m? A) 3,2 N voor 1 m uitrekking B) 3,2 m uitrekking per newton C) de veer is 3,2 m lang', 'A', 'B: verband omgedraaid') + '</ol>'),
+ ('5 · Begeleide inoefening: wij doen', '<ol><li>Samen: 150 g aan de veer van Amina. Teken ' + VF + '<sub>z</sub> en ' + VF + '<sub>v</sub> (1 hokje ≙ 0,5 N) op het bord. <span class="antw">→ 1,5 N, 3 hokjes elk; Δl = 1,5 N / 25 N/m = 0,060 m = 6,0 cm</span></li>'
+   '<li>Eerst alleen op het wisbordje, dan samen: een kracht van 4,0 N rekt een veer 10 cm uit. Bereken k. Stijver of slapper dan de veer van Amina? <span class="antw">→ 40 N/m, stijver</span></li></ol>'),
+ ('6 · Zelfstandige inoefening: jij doet', '<p>Oefeningen op papier (in het schrift): <b>Veerkracht</b>, <b>Een veertje in een balpen</b>, <b>Twee veren vergelijken</b> en <b>Veerkracht tekenen</b>. Wie klaar is: de tool, deel Oefenen.</p>'),
+ ('7 · Afsluiting (wisbordjes)', '<ol>'
+   + wisbord('F<sub>v</sub> = 6,0 N en Δl = 0,20 m. Bereken k.', '30 N/m')
+   + wisbord('Je haalt een zware massa van een veer, maar de veer blijft langer. Waarom?', 'voorbij de elasticiteitsgrens: plastische vervorming, de formule geldt niet meer') + '</ol>'),
+])
+
+h5 = (EDI_CSS + DRAAIBOEK
  + '<p>Hang je een massa aan een veer, dan rekt de veer uit. De veer trekt terug omhoog: dat is de <b>veerkracht F<sub>v</sub></b>. Hangt de massa stil, dan is F<sub>v</sub> even groot als F<sub>z</sub>.</p>'
- + '<p>Amina hangt telkens meer massa aan dezelfde veer en meet de uitrekking Δl (g ≈ 10 N/kg).</p>' + tab_meet
- + oef_fig('opl_v1', '5.1', 'Ontdek het verband', 'a) Vul de tabel aan: bereken F<sub>z</sub> = m · g (zet de massa eerst om naar kg) en daarna F<sub>v</sub> / Δl. b) Zet de punten in de grafiek en verbind ze. c) Wat valt je op?', grafiek(),
-    [('a', 'F<sub>z</sub> = 0,5 N · 1,0 N · 1,5 N · 2,0 N. F<sub>v</sub> / Δl = 0,25 N/cm bij elke meting.'), ('b', 'de punten liggen op een rechte door de oorsprong'),
-     ('c', 'dubbel zoveel kracht → dubbel zoveel uitrekking. F<sub>v</sub> / Δl is altijd hetzelfde getal.')],
-    'F<sub>v</sub> en Δl zijn recht evenredig. Het vaste getal heet de veerconstante k.', grafiek([(2, .5), (4, 1), (6, 1.5), (8, 2)], [(0, 0, 10, 2.5, B, '')]))
- + fase('Uitleg') + KEN
+ + '<p>Amina hing telkens meer massa aan dezelfde veer en mat de uitrekking Δl (g ≈ 10 N/kg):</p>' + tab_meet
+ + figuur(grafiek([(2, .5), (4, 1), (6, 1.5), (8, 2)], [(0, 0, 10, 2.5, B, '')]), 'De punten liggen op een rechte door de oorsprong: dubbel zoveel kracht geeft dubbel zoveel uitrekking.')
+ + '<p>F<sub>v</sub> / Δl is bij elke meting hetzelfde getal. Dat vaste getal is de <b>veerconstante k</b> van die veer.</p>'
+ + KEN
  + LET + 'Werk met Δl in <b>meter</b>: 8,0 cm = 0,080 m. De veer van Amina heeft dus k = 2,0 N / 0,080 m = <b>25 N/m</b>.</div>'
  + VOORBEELD
- + fase('Nu jij')
- + oef_fig('opl_v2', '5.2', 'Vul de tekening aan', 'Aan dezelfde veer hangt 150 g. F<sub>z</sub> is al getekend (1 hokje ≙ 0,5 N). Teken F<sub>v</sub> en zet het symbool erbij.', veer(3, 0),
-    [('Grootte', 'F<sub>v</sub> = F<sub>z</sub> = 1,5 N → 3 hokjes'), ('Tekening', 'vanuit het ophangpunt (bovenste stip), naar boven')], 'Een pijl van 3 hokjes naar boven.', veer(3, 3))
- + oef_fig('opl_v3', '5.3', 'Zelf tekenen en rekenen', 'Nu hangt 250 g aan de veer (k = 25 N/m). Teken F<sub>z</sub> en F<sub>v</sub> (1 hokje ≙ 0,5 N) en bereken de uitrekking.', veer(0, 0),
-    [('F<sub>z</sub>', '0,250 kg · 10 N/kg = 2,5 N → 5 hokjes naar beneden'), ('F<sub>v</sub>', '2,5 N → 5 hokjes naar boven'), ('Δl', 'Δl = F<sub>v</sub> / k = 2,5 N / 25 N/m = 0,10 m = 10 cm')], 'Δl = 10 cm', veer(5, 5))
- + oef('opl_v4', '5.4', 'De veerconstante berekenen', 'Een kracht van 4,0 N rekt een andere veer 10 cm uit. Bereken k. Is die veer stijver of slapper dan de veer van Amina?',
-    [('Gegeven', 'F<sub>v</sub> = 4,0 N · Δl = 10 cm = 0,10 m'), ('Formule', 'k = F<sub>v</sub> / Δl'), ('Berekening', '4,0 N / 0,10 m = 40 N/m'), ('Vergelijk', '40 N/m is meer dan 25 N/m')], 'k = 40 N/m: deze veer is stijver.')
- + oef('opl_v5', '5.5', 'De uitrekking berekenen', 'In een balpen zit een veertje met k = 200 N/m. Je drukt er met 3,0 N op. Hoeveel wordt het veertje ingedrukt?',
+ + LET + 'Rek je een veer te ver uit, dan komt ze niet meer terug: <b>plastische vervorming</b>. Voorbij die <b>elasticiteitsgrens</b> geldt F<sub>v</sub> = k · Δl niet meer.</div>'
+ + tool('krachten-3aso.html#ve1', 'Doe de proef zelf in de tool'))
+
+# ---- extra oefeningen voor de oefenreeks (zelfstandige inoefening) ----
+o_balpen = oef('opl_x', 0, 'Een veertje in een balpen', 'In een balpen zit een veertje met k = 200 N/m. Je drukt er met 3,0 N op. Hoeveel wordt het veertje ingedrukt?',
     [('Gegeven', 'F<sub>v</sub> = 3,0 N · k = 200 N/m'), ('Formule', 'Δl = F<sub>v</sub> / k'), ('Berekening', '3,0 N / 200 N/m = 0,015 m')], 'Δl = 0,015 m = 1,5 cm')
- + oef_fig('opl_v6', '5.6', 'Twee veren vergelijken', 'De grafiek toont veer A en veer B. a) Welke veer is het stijfst? b) Bereken k van veer A.', grafiek(lijnen=TWEE),
+o_twee = oef_fig('opl_x', 0, 'Twee veren vergelijken', 'De grafiek toont veer A en veer B. a) Welke veer is het stijfst? b) Bereken k van veer A.', grafiek(lijnen=TWEE),
     [('a', 'bij dezelfde kracht rekt A minder uit: A is het stijfst (steilere lijn)'), ('b', 'A: 2,5 N bij 4 cm = 0,04 m → k = 2,5 N / 0,04 m = 62,5 N/m')], 'Steilere lijn = stijvere veer = grotere k.', grafiek(lijnen=TWEE))
- + fase('Controleer')
- + denk('denk_9', 'Je hangt dubbel zoveel massa aan dezelfde veer. Wat gebeurt er met de uitrekking? En met k?', [
-    ('Kracht', 'dubbele massa → dubbele F<sub>z</sub> → dubbele F<sub>v</sub>'), ('Verband', 'F<sub>v</sub> en Δl zijn recht evenredig'), ('k', 'k hoort bij de veer zelf')],
-    'De uitrekking verdubbelt. k blijft dezelfde.')
- + denk('denk_10', 'Je hangt een heel zware massa aan een veer. Als je ze eraf haalt, blijft de veer langer. Hoe komt dat? Geldt F<sub>v</sub> = k · Δl dan nog?', [
-    ('Grens', 'je bent voorbij de elasticiteitsgrens gegaan'), ('Vervorming', 'de vervorming is plastisch: de veer blijft vervormd')],
-    'Voorbij de elasticiteitsgrens geldt de formule niet meer.')
- + tool('krachten-3aso.html#ve1', 'Doe de proef zelf in de tool en oefen extra'))

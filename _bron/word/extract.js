@@ -37,6 +37,7 @@ fs.mkdirSync(UIT + '/fig', { recursive: true });
       }
       await q.close();
     }
+    await p.evaluate(v => { window.MET_EDI = v; }, !!process.env.EDI);
     const data = await p.evaluate(() => {
       let oplNr = 0;
       const oplVan = red => { const n = red.querySelectorAll('figure.oplfig').length; const r = []; for (let k = 0; k < n; k++) r.push(oplNr++); return r; };
@@ -72,6 +73,8 @@ fs.mkdirSync(UIT + '/fig', { recursive: true });
           }
           flush();
           if (n.hidden && !c.contains('redenering')) return;
+          if (tag === 'STYLE' || tag === 'SCRIPT') return;
+          if (c.contains('edi')) { if (window.MET_EDI) out.push({ type: 'kader', kop: n.querySelector('.kop').textContent, body: items(n) }); return; }
           if (tag === 'P') { if (n.querySelector('button')) return; const r = trim(runsVan(n)); if (r.length) out.push({ type: 'p', runs: r, cls: n.className }); }
           else if (tag === 'H3' || tag === 'H4') out.push({ type: tag.toLowerCase(), t: n.textContent.trim() });
           else if (tag === 'UL' || tag === 'OL') out.push({ type: tag === 'UL' ? 'ul' : 'ol', letters: n.getAttribute('type') === 'a', items: [...n.children].map(li => trim(runsVan(li))) });
