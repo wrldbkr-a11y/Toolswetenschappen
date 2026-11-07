@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<!-- GEGENEREERD door _bron/aso/bouw_3aso.py uit krachten-beweging.html. Pas de bron aan, niet dit bestand. -->
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Traagheid, resulterende kracht en beweging</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EEF2F5;
+  --panel:#FFFFFF;
+  --panel-2:#F5F8FB;
+  --line:#D3DCE5;
+  --text:#1D2A36;
+  --text-dim:#51606E;
+  --accent:#2F6FB0;
+  --accent-dark:#245A91;
+  --accent-soft:#E4EEF8;
+  --ok-text:#1F7A4A;
+  --ok-bg:#E3F3E9;
+  --flag-text:#B3362B;
+  --flag-bg:#FBE6E3;
+  /* krachtkleuren (zelfde betekenis als in de tool krachten construeren) */
+  --f1:#2563eb;
+  --f2:#059669;
+  --fr:#dc2626;
+  --v:#d97706;
+  --font:'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:var(--font);}
+body{-webkit-font-smoothing:antialiased;line-height:1.55;}
+
+.top{max-width:1180px;margin:0 auto;padding:36px 24px 0;}
+.top .eyebrow{font-size:13px;font-weight:700;color:var(--accent-dark);letter-spacing:.04em;text-transform:uppercase;margin-bottom:6px;}
+.top h1{font-size:2rem;font-weight:700;letter-spacing:-0.015em;margin:0 0 8px;}
+.top .intro{color:var(--text-dim);max-width:70ch;font-size:15px;line-height:1.6;margin:0;}
+.top .intro strong{color:var(--text);}
+
+nav{display:flex;flex-wrap:wrap;gap:8px;}
+.catnav{gap:4px;margin:22px 0 14px;border-bottom:1px solid var(--line);}
+.catnav button{
+  font-family:var(--font);font-weight:500;font-size:15px;
+  background:none;border:none;border-bottom:2px solid transparent;margin-bottom:-1px;
+  color:var(--text-dim);padding:9px 14px;cursor:pointer;
+}
+.catnav button:hover{color:var(--text);}
+.catnav button.active{color:var(--text);font-weight:600;border-bottom-color:var(--accent);}
+#nav button{
+  display:flex;align-items:center;gap:9px;
+  font-family:var(--font);font-size:14px;font-weight:500;
+  background:var(--panel);border:1px solid var(--line);color:var(--text-dim);
+  padding:9px 14px 9px 10px;border-radius:10px;cursor:pointer;text-align:left;
+  transition:border-color .15s, background .15s;
+}
+#nav button .nr{
+  flex:none;min-width:24px;height:24px;border-radius:12px;padding:0 6px;
+  display:inline-flex;align-items:center;justify-content:center;
+  background:var(--accent-soft);color:var(--accent-dark);font-size:12px;font-weight:700;
+}
+#nav button:hover{border-color:var(--accent);color:var(--text);}
+#nav button.active{background:var(--accent-soft);border-color:var(--accent);color:var(--text);font-weight:600;}
+#nav button.active .nr{background:var(--accent);color:#fff;}
+
+main{max-width:1180px;margin:0 auto;padding:26px 24px 70px;}
+
+.scene{display:none;}
+.scene.active{display:block;animation:fade .25s ease;}
+@keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+
+.scene-head{display:flex;align-items:center;gap:10px;margin-bottom:4px;flex-wrap:wrap;}
+.scene-head .num{
+  min-width:28px;height:28px;border-radius:14px;padding:0 7px;
+  display:inline-flex;align-items:center;justify-content:center;
+  background:var(--accent);color:#fff;font-size:13px;font-weight:700;
+}
+.scene-head h3{font-size:1.5rem;letter-spacing:-0.01em;margin:0;font-weight:700;}
+.scene-sub{color:var(--text-dim);font-size:15px;margin:4px 0 18px;max-width:75ch;line-height:1.55;}
+.scene-sub strong{color:var(--text);}
+
+.grid{display:grid;grid-template-columns:1fr 310px;gap:18px;align-items:start;}
+@media(max-width:860px){.grid{grid-template-columns:1fr;}}
+
+.canvas-wrap{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;}
+canvas{display:block;width:100%;height:auto;}
+
+.controls{
+  background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 16px 18px;
+  display:flex;flex-direction:column;gap:14px;
+}
+.ctrl-group label{display:block;font-size:13px;font-weight:600;color:var(--text);margin-bottom:6px;}
+.ctrl-group input[type=range]{width:100%;accent-color:var(--accent);}
+.ctrl-row{display:flex;gap:8px;flex-wrap:wrap;}
+.ctrl-row .btn{flex:1;}
+
+.btn{
+  background:#fff;border:1px solid var(--line);color:var(--text);border-radius:8px;padding:9px 12px;
+  font-family:var(--font);font-weight:600;font-size:14px;cursor:pointer;
+}
+.btn:hover{border-color:var(--accent);}
+.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent);}
+.btn.primary:hover{background:var(--accent-dark);border-color:var(--accent-dark);}
+.btn.on{background:var(--accent-soft);border-color:var(--accent);}
+
+.readout{background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:14px;line-height:1.75;font-variant-numeric:tabular-nums;}
+.readout .k{color:var(--text-dim);}
+.readout .v{color:var(--text);font-weight:600;}
+.readout .ok{color:var(--ok-text);font-weight:700;}
+.readout .flag{color:var(--flag-text);font-weight:700;}
+
+.note{background:var(--panel-2);border-left:4px solid var(--accent);border-radius:0 8px 8px 0;padding:10px 12px;font-size:14px;color:var(--text-dim);line-height:1.6;}
+.note strong{color:var(--text);}
+
+.legend{display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--text-dim);}
+.legend .row{display:flex;align-items:center;gap:8px;}
+.legend .sw{width:16px;height:3px;border-radius:2px;flex:none;}
+
+/* kaarten */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden;}
+.card svg{display:block;width:100%;height:auto;background:#fbfcfe;border-bottom:1px solid #E6ECF2;}
+.card .txt{padding:12px 16px 14px;}
+.card h4{margin:0 0 4px;font-size:1rem;font-weight:700;}
+.card p{margin:0;font-size:14px;color:var(--text-dim);line-height:1.55;}
+.card p b{color:var(--text);}
+.tag{display:inline-block;font-size:12px;font-weight:700;padding:2px 8px;border-radius:999px;margin-bottom:6px;background:var(--accent-soft);color:var(--accent-dark);}
+
+/* oefenen */
+.oef{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px;}
+.oef-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px;}
+.score{font-size:14px;font-weight:600;color:var(--ok-text);background:var(--ok-bg);padding:3px 10px;border-radius:999px;}
+.vraag{font-weight:600;margin:14px 0 8px;}
+.keuzes{display:flex;flex-wrap:wrap;gap:8px;}
+.keuzes .btn{font-weight:500;}
+.keuzes .btn.goed{background:var(--ok-bg);border-color:var(--ok-text);color:var(--ok-text);font-weight:700;}
+.keuzes .btn.fout{background:var(--flag-bg);border-color:var(--flag-text);color:var(--flag-text);}
+.feedback{margin-top:10px;font-size:14.5px;line-height:1.6;}
+.feedback.goed{color:var(--ok-text);}
+.feedback.fout{color:var(--flag-text);}
+.feedback .uitleg{color:var(--text);display:block;margin-top:4px;}
+
+footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-dim);font-size:12px;}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="eyebrow">Fysica 3de jaar · andere richtingen · Thema 1 · Krachten · hoofdstuk 2 en 3</div>
+  <h1>Traagheid, resulterende kracht en beweging</h1>
+  <p class="intro"><strong>Wat doet een voorwerp als er krachten op werken?</strong> Ontdek eerst wat een kracht doet en hoe je ze tekent. Daarna leer je wat traagheid is. Bekijk daarna hoe de resulterende kracht F<sub>r</sub> bepaalt of een voorwerp sneller gaat, trager gaat of even snel blijft bewegen.</p>
+  <nav id="catnav" class="catnav"></nav>
+  <nav id="nav"></nav>
+</header>
+
+<main>
+
+  <!-- ===================== WAT IS EEN KRACHT ===================== -->
+  <section class="scene" id="s0" data-nr="2.1" data-title="Effect van een kracht" data-cat="kracht">
+    <div class="scene-head"><span class="num">2.1</span><h3>Effect van een kracht</h3></div>
+    <p class="scene-sub">Een kracht zie je niet. Je herkent ze aan haar <strong>effect</strong>. Een kracht kan een voorwerp <strong>vervormen</strong> (statisch effect) of de <strong>beweging veranderen</strong> (dynamisch effect). Kies een situatie en beslis zelf welk effect je ziet.</p>
+    <div class="grid">
+      <div class="canvas-wrap"><canvas id="c0" width="800" height="400"></canvas></div>
+      <div class="controls">
+        <div class="ctrl-group"><label>Situatie</label><div class="keuzes" id="s0-sit"></div></div>
+        <div class="ctrl-group"><label>Welk effect heeft de kracht?</label>
+          <div class="ctrl-row"><button class="btn" data-eff="statisch">statisch</button><button class="btn" data-eff="dynamisch">dynamisch</button></div></div>
+        <div class="readout" id="s0-read"></div>
+        <div class="note"><strong>Statisch effect:</strong> de vorm verandert (uitrekken, indrukken, buigen).<br><strong>Dynamisch effect:</strong> de beweging verandert: sneller, trager, of van richting.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene" id="s0b" data-nr="2.2" data-title="Kracht tekenen op schaal" data-cat="kracht">
+    <div class="scene-head"><span class="num">2.2</span><h3>Een kracht voorstellen en op schaal tekenen</h3></div>
+    <p class="scene-sub">Een kracht stel je voor met een <strong>pijl</strong> (vector). De pijl toont vier kenmerken: het <strong>aangrijpingspunt</strong>, de <strong>richting</strong>, de <strong>zin</strong> en de <strong>grootte</strong>. Met een <strong>schaal</strong> zet je de grootte om in een lengte. Eén hokje is 1 cm.</p>
+    <div class="grid">
+      <div class="canvas-wrap"><canvas id="c0b" width="800" height="440"></canvas></div>
+      <div class="controls">
+        <div class="ctrl-row"><button class="btn on" id="s0b-teken">Tekenen</button><button class="btn" id="s0b-lees">Grootte aflezen</button></div>
+        <div id="s0b-tekenblok">
+          <div class="ctrl-group"><label id="s0b-F-l">Grootte F</label><input type="range" id="s0b-F" min="10" max="600" step="10" value="200"></div>
+          <div class="ctrl-group"><label id="s0b-h-l">Richting</label><input type="range" id="s0b-h" min="0" max="345" step="15" value="0"></div>
+        </div>
+        <div class="ctrl-group"><label>Schaal</label><div class="keuzes" id="s0b-schaal"></div></div>
+        <div id="s0b-leesblok" style="display:none">
+          <div class="ctrl-group"><label for="s0b-in">Hoe groot is de kracht? (in N)</label>
+            <div class="ctrl-row"><input id="s0b-in" type="number" inputmode="decimal" style="flex:1;padding:8px 10px;border:1px solid var(--line);border-radius:8px;font:inherit"><button class="btn primary" id="s0b-check">Controleer</button></div></div>
+          <div class="ctrl-row"><button class="btn" id="s0b-nieuw">↻ Nieuwe kracht</button></div>
+        </div>
+        <div class="readout" id="s0b-read"></div>
+        <div class="note"><strong>Lengte van de pijl</strong> = F ÷ schaal.<br><strong>Grootte van de kracht</strong> = lengte × schaal.<br>Bv. schaal 1 cm ≙ 50 N en een pijl van 4 cm: F = 4 · 50 N = 200 N.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== TRAAGHEID ===================== -->
+  <section class="scene" id="s1" data-nr="3.2" data-title="Traagheid in de bus" data-cat="traagheid">
+    <div class="scene-head"><span class="num">3.2</span><h3>Traagheid in de bus</h3></div>
+    <p class="scene-sub">Elk voorwerp wil blijven doen wat het al deed: stil blijven staan, of even snel rechtdoor blijven bewegen. Dat noemen we <strong>traagheid</strong>. Laat de bus vertrekken, rijden en remmen. Kijk naar de passagier en naar de bal op de vloer.</p>
+    <div class="grid">
+      <div class="canvas-wrap"><canvas id="c1" width="800" height="420"></canvas></div>
+      <div class="controls">
+        <div class="ctrl-row">
+          <button class="btn primary" id="s1-start">▶ Vertrekken</button>
+          <button class="btn" id="s1-rem">■ Remmen</button>
+        </div>
+        <div class="ctrl-row"><button class="btn" id="s1-reset">↻ Opnieuw</button></div>
+        <div class="readout" id="s1-read"></div>
+        <div class="note"><strong>Onthoud:</strong> traagheid is geen kracht. Niemand duwt de passagier naar achter of naar voor. Zijn lichaam doet gewoon verder wat het deed, terwijl de bus van snelheid verandert.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene" id="s2" data-nr="3.2" data-title="Traagheid en massa" data-cat="traagheid">
+    <div class="scene-head"><span class="num">3.2</span><h3>Traagheid en massa</h3></div>
+    <p class="scene-sub">Twee winkelkarren op een gladde vloer: een lege en een volle. Ze krijgen telkens <strong>dezelfde kracht</strong> (F = 60 N). <strong>Proef 1:</strong> welke kar komt het snelst in beweging? <strong>Proef 2:</strong> beide karren rijden even snel. Welke kar is het moeilijkst tegen te houden?</p>
+    <div class="grid">
+      <div class="canvas-wrap"><canvas id="c2" width="800" height="420"></canvas></div>
+      <div class="controls">
+        <div class="ctrl-row">
+          <button class="btn primary" id="s2-duw">① In beweging brengen</button>
+          <button class="btn primary" id="s2-rem">② Tegenhouden</button>
+        </div>
+        <div class="ctrl-row"><button class="btn" id="s2-reset">↻ Opnieuw</button></div>
+        <div class="readout" id="s2-read"></div>
+        <div class="note"><strong>Hoe groter de massa, hoe groter de traagheid.</strong> Een voorwerp met veel massa is moeilijk in beweging te brengen, en ook moeilijk te stoppen.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== RESULTERENDE KRACHT ===================== -->
+  <section class="scene" id="s3" data-nr="3.2" data-title="Resulterende kracht en snelheid" data-cat="fr">
+    <div class="scene-head"><span class="num">3.2</span><h3>Resulterende kracht en snelheid</h3></div>
+    <p class="scene-sub">Een slee op een ijsbaan zonder wrijving. Twee kinderen trekken aan de slee: F<sub>1</sub> naar rechts en F<sub>2</sub> naar links. De <strong>resulterende kracht F<sub>r</sub></strong> bepaalt wat er met de snelheid gebeurt. Kies de krachten en een beginsnelheid en druk op start.</p>
+    <div class="grid">
+      <div class="canvas-wrap"><canvas id="c3" width="800" height="460"></canvas></div>
+      <div class="controls">
+        <div class="ctrl-group"><label id="s3-f1-l">F₁ naar rechts</label><input type="range" id="s3-f1" min="0" max="100" step="10" value="60"></div>
+        <div class="ctrl-group"><label id="s3-f2-l">F₂ naar links</label><input type="range" id="s3-f2" min="0" max="100" step="10" value="20"></div>
+        <div class="ctrl-group"><label id="s3-v0-l">Beginsnelheid</label><input type="range" id="s3-v0" min="-3" max="3" step="1" value="0"></div>
+        <div class="ctrl-row">
+          <button class="btn primary" id="s3-play">▶ Start</button>
+          <button class="btn" id="s3-reset">↻ Opnieuw</button>
+        </div>
+        <div class="readout" id="s3-read"></div>
+        <div class="legend">
+          <div class="row"><span class="sw" style="background:var(--f1)"></span><span>F₁ (naar rechts)</span></div>
+          <div class="row"><span class="sw" style="background:var(--f2)"></span><span>F₂ (naar links)</span></div>
+          <div class="row"><span class="sw" style="background:var(--fr)"></span><span>F<sub>r</sub> resulterende kracht</span></div>
+          <div class="row"><span class="sw" style="background:var(--v)"></span><span>snelheid v</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="scene" id="s3b" data-nr="3.2" data-title="Een bal die je hand verlaat" data-cat="fr">
+    <div class="scene-head"><span class="num">3.2</span><h3>Een bal die je hand verlaat</h3></div>
+    <p class="scene-sub">Je rolt een bal weg over de grond. Zolang je hand de bal <strong>raakt</strong>, duwt je hand. Zodra de bal je hand <strong>verlaat</strong>, is die kracht weg. Welke kracht blijft er dan nog over?</p>
+    <div class="grid">
+      <div class="canvas-wrap"><canvas id="c3b" width="800" height="420"></canvas></div>
+      <div class="controls">
+        <div class="ctrl-group"><label>Ondergrond</label>
+          <div class="ctrl-row">
+            <button class="btn on" data-grond="gras">gras</button>
+            <button class="btn" data-grond="tegels">tegels</button>
+            <button class="btn" data-grond="ijs">ijs</button>
+          </div>
+        </div>
+        <div class="ctrl-row">
+          <button class="btn primary" id="s3b-play">▶ Rol de bal</button>
+          <button class="btn" id="s3b-reset">↻ Opnieuw</button>
+        </div>
+        <div class="readout" id="s3b-read"></div>
+        <div class="note"><strong>Let op!</strong> De bal krijgt <strong>geen kracht mee</strong> van je hand. Een kracht bestaat alleen zolang je hand de bal raakt. De bal rolt verder door zijn <strong>traagheid</strong>, en stopt door de <strong>wrijving</strong>.</div>
+        <div class="legend">
+          <div class="row"><span class="sw" style="background:var(--f1)"></span><span>F<sub>hand</sub>: kracht van je hand</span></div>
+          <div class="row"><span class="sw" style="background:var(--f2)"></span><span>F<sub>wrijving</sub></span></div>
+          <div class="row"><span class="sw" style="background:var(--fr)"></span><span>F<sub>r</sub> resulterende kracht</span></div>
+          <div class="row"><span class="sw" style="background:var(--v)"></span><span>snelheid v</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene" id="s4" data-nr="3.1" data-title="Kracht loodrecht op de beweging" data-cat="fr">
+    <div class="scene-head"><span class="num">3.1</span><h3>Kracht loodrecht op de beweging</h3></div>
+    <p class="scene-sub">Je draait een bal rond aan een touw (bovenaanzicht). Het touw trekt de bal altijd <strong>naar het midden</strong>, loodrecht op de beweging. Daardoor verandert de <strong>richting</strong> van de snelheid, niet hoe snel de bal gaat. Laat het touw los: wat doet de bal dan?</p>
+    <div class="grid">
+      <div class="canvas-wrap"><canvas id="c4" width="800" height="460"></canvas></div>
+      <div class="controls">
+        <div class="ctrl-row">
+          <button class="btn primary" id="s4-los">✂ Touw loslaten</button>
+          <button class="btn" id="s4-reset">↻ Opnieuw</button>
+        </div>
+        <div class="readout" id="s4-read"></div>
+        <div class="legend">
+          <div class="row"><span class="sw" style="background:var(--fr)"></span><span>F<sub>r</sub>: kracht van het touw (naar het midden)</span></div>
+          <div class="row"><span class="sw" style="background:var(--v)"></span><span>snelheid v</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene" id="s5" data-nr="3.2" data-title="Overzicht" data-cat="fr">
+    <div class="scene-head"><span class="num">3.2</span><h3>Overzicht: wat doet F<sub>r</sub> met de beweging?</h3></div>
+    <p class="scene-sub">Kijk altijd eerst naar de <strong>resulterende kracht</strong>, en vergelijk ze met de richting van de beweging.</p>
+    <div class="cards" id="s5-cards"></div>
+  </section>
+
+  <!-- ===================== DAGELIJKS LEVEN ===================== -->
+  <section class="scene" id="s6" data-nr="3" data-title="Voorbeelden uit het dagelijks leven" data-cat="leven">
+    <div class="scene-head"><span class="num">3</span><h3>Traagheid en F<sub>r</sub> in het dagelijks leven</h3></div>
+    <p class="scene-sub">Je ziet traagheid en resulterende kracht overal rondom je.</p>
+    <div class="cards" id="s6-cards"></div>
+  </section>
+
+  <!-- ===================== OEFENEN ===================== -->
+  <section class="scene" id="s7" data-nr="✎" data-title="Oefenen" data-cat="oefenen">
+    <div class="scene-head"><span class="num">✎</span><h3>Oefenen: wat gebeurt er met de snelheid?</h3></div>
+    <p class="scene-sub">Bepaal eerst de resulterende kracht. Vergelijk ze dan met de beweging.</p>
+    <div class="oef">
+      <div class="oef-head">
+        <div class="score" id="s7-score">0 / 0 juist</div>
+        <button class="btn primary" id="s7-nieuw">Nieuwe opgave →</button>
+      </div>
+      <div class="canvas-wrap"><canvas id="c7" width="800" height="250"></canvas></div>
+      <div id="s7-q"></div>
+    </div>
+  </section>
+
+</main>
+
+<footer>gemaakt voor klasgebruik — fysica: krachten en beweging</footer>
+
+<script>
+//////////////////// NAVIGATIE ////////////////////
+const scenes=[...document.querySelectorAll('.scene')];
+const nav=document.getElementById('nav'), catNav=document.getElementById('catnav');
+const categories=[
+  {id:'kracht',label:'2 Wat is een kracht?'},
+  {id:'traagheid',label:'3 Traagheid'},
+  {id:'fr',label:'3 Resulterende kracht en beweging'},
+  {id:'leven',label:'Dagelijks leven'},
+  {id:'oefenen',label:'Oefenen'},
+];
+let currentIndex=0, activeCat=scenes[0].dataset.cat;
+function renderCatNav(){
+  catNav.innerHTML='';
+  categories.forEach(cat=>{
+    const b=document.createElement('button'); b.textContent=cat.label;
+    b.classList.toggle('active',cat.id===activeCat);
+    b.addEventListener('click',()=>{ const i=scenes.findIndex(s=>s.dataset.cat===cat.id); if(i>=0) activate(i); });
+    catNav.appendChild(b);
+  });
+}
+function renderSectionNav(){
+  nav.innerHTML='';
+  scenes.forEach((sc,i)=>{
+    if(sc.dataset.cat!==activeCat) return;
+    const b=document.createElement('button');
+    b.innerHTML='<span class="nr">'+(sc.dataset.nr||i+1)+'</span>'+sc.dataset.title;
+    b.classList.toggle('active',i===currentIndex);
+    b.addEventListener('click',()=>activate(i));
+    nav.appendChild(b);
+  });
+}
+function activate(i){
+  currentIndex=i;
+  scenes.forEach((sc,j)=>sc.classList.toggle('active',j===i));
+  activeCat=scenes[i].dataset.cat;
+  renderCatNav(); renderSectionNav();
+}
+document.querySelectorAll('.scene').forEach((sc,i)=>{ const n=sc.querySelector('.scene-head .num'); if(n) n.textContent=sc.dataset.nr||i+1; });
+activate(0);
+// directe link naar een sectie, bv. krachten-beweging.html#s3
+if(location.hash){ const i=scenes.findIndex(sc=>sc.id===location.hash.slice(1)); if(i>=0) activate(i); }
+const isActive=id=>document.getElementById(id).classList.contains('active');
+
+//////////////////// HULPFUNCTIES ////////////////////
+function hiDPI(canvas){
+  const dpr=window.devicePixelRatio||1, w=canvas.width, h=canvas.height;
+  canvas.width=w*dpr; canvas.height=h*dpr;
+  const ctx=canvas.getContext('2d'); ctx.scale(dpr,dpr);
+  canvas._w=w; canvas._h=h; return ctx;
+}
+function arrow(ctx,x1,y1,x2,y2,color,width=4,label='',lx=0,ly=-12){
+  const len=Math.hypot(x2-x1,y2-y1); if(len<2) return;
+  const a=Math.atan2(y2-y1,x2-x1), hs=Math.min(14,4+width*2.2);
+  ctx.save(); ctx.strokeStyle=color; ctx.fillStyle=color; ctx.lineWidth=width; ctx.lineCap='round';
+  ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2-Math.cos(a)*hs*0.8,y2-Math.sin(a)*hs*0.8); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(x2,y2);
+  ctx.lineTo(x2-hs*Math.cos(a-0.42),y2-hs*Math.sin(a-0.42));
+  ctx.lineTo(x2-hs*Math.cos(a+0.42),y2-hs*Math.sin(a+0.42)); ctx.closePath(); ctx.fill();
+  if(label){ ctx.font='700 15px Inter, sans-serif'; ctx.textAlign='center'; ctx.fillText(label,(x1+x2)/2+lx,(y1+y2)/2+ly); }
+  ctx.restore();
+}
+function text(ctx,t,x,y,{size=14,weight=500,color='#1D2A36',align='left'}={}){
+  ctx.save(); ctx.font=`${weight} ${size}px Inter, sans-serif`; ctx.fillStyle=color; ctx.textAlign=align; ctx.fillText(t,x,y); ctx.restore();
+}
+function roundRect(ctx,x,y,w,h,r){ ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); }
+const fmt=(v,d=1)=>v.toFixed(d).replace('.',',').replace('-0,0','0,0');
+
+//////////////////// 0 — EFFECT VAN EEN KRACHT ////////////////////
+(function(){
+  const c=document.getElementById('c0'), ctx=hiDPI(c), W=c._w, H=c._h;
+  const SIT=[
+    {id:'veer', naam:'gewicht aan een veer', eff:'statisch', uitleg:'De zwaartekracht op het gewicht rekt de veer uit. De <strong>vorm</strong> van de veer verandert.'},
+    {id:'spons', naam:'spons indrukken', eff:'statisch', uitleg:'Je hand drukt de spons in. De <strong>vorm</strong> van de spons verandert.'},
+    {id:'lat', naam:'plank buigt door', eff:'statisch', uitleg:'Het gewicht van de persoon buigt de plank. De <strong>vorm</strong> verandert.'},
+    {id:'trap', naam:'bal wegtrappen', eff:'dynamisch', uitleg:'De bal lag stil en beweegt daarna. De <strong>snelheid</strong> wordt groter.'},
+    {id:'rem', naam:'fietser remt', eff:'dynamisch', uitleg:'De remkracht maakt de fiets trager. De <strong>snelheid</strong> wordt kleiner.'},
+    {id:'magneet', naam:'magneet en knikker', eff:'dynamisch', uitleg:'De magneet trekt de stalen knikker opzij. De <strong>richting</strong> van de beweging verandert.'},
+  ];
+  let k=0, gekozen=null, t0=performance.now();
+  const sit=document.getElementById('s0-sit'), read=document.getElementById('s0-read');
+  SIT.forEach((s,i)=>{ const b=document.createElement('button'); b.className='btn'; b.textContent=s.naam; b.onclick=()=>{k=i; gekozen=null; t0=performance.now(); upd();}; sit.appendChild(b); });
+  document.querySelectorAll('#s0 [data-eff]').forEach(b=>b.onclick=()=>{ gekozen=b.dataset.eff; upd(); });
+  function upd(){
+    [...sit.children].forEach((b,i)=>b.classList.toggle('on',i===k));
+    document.querySelectorAll('#s0 [data-eff]').forEach(b=>b.classList.toggle('on',b.dataset.eff===gekozen));
+    const s=SIT[k];
+    if(!gekozen) read.innerHTML='Kijk naar de animatie. Verandert de <strong>vorm</strong> of de <strong>beweging</strong>?';
+    else if(gekozen===s.eff) read.innerHTML='<span style="color:#15803d;font-weight:700">Juist: '+s.eff+' effect.</span><br>'+s.uitleg;
+    else read.innerHTML='<span style="color:#b91c1c;font-weight:700">Nog niet juist.</span> Kijk opnieuw: verandert de vorm, of de snelheid of richting?';
+  }
+  const F='#2563eb';
+  function grond(y){ ctx.fillStyle='#E2E8F0'; ctx.fillRect(0,y,W,H-y); ctx.strokeStyle='#94A3B8'; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
+  function draw(now){
+    const s=SIT[k], p=((now-t0)/3200)%1, e=Math.min(1,p/0.5), ease=e*e*(3-2*e);
+    ctx.clearRect(0,0,W,H); ctx.fillStyle='#F8FAFC'; ctx.fillRect(0,0,W,H);
+    if(s.id==='veer'){
+      ctx.fillStyle='#64748B'; ctx.fillRect(250,40,300,14);
+      const L=110+ease*90, x=400, y0=54, n=12;
+      ctx.strokeStyle='#334155'; ctx.lineWidth=3; ctx.beginPath(); ctx.moveTo(x,y0);
+      for(let i=1;i<=n;i++) ctx.lineTo(x+(i===n?0:(i%2?18:-18)),y0+L*i/n); ctx.stroke();
+      const m=p<0.08?0:1; const by=y0+L;
+      ctx.fillStyle='#475569'; roundRect(ctx,x-34,by,68,56,6); ctx.fill(); text(ctx,'1 kg',x-14,by+20,{color:'#fff',weight:700,align:'center',size:13});
+      if(m) arrow(ctx,x,by+28,x,by+28+80,F,5,'Fz',22,0);
+      text(ctx,'de veer wordt langer: haar vorm verandert',W/2,380,{align:'center',color:'#51606E'});
+    }
+    if(s.id==='spons'){
+      grond(300); const h=90-ease*40;
+      ctx.fillStyle='#FACC15'; roundRect(ctx,300,300-h,200,h,10); ctx.fill();
+      ctx.fillStyle='#CA8A04'; for(let i=0;i<14;i++){ ctx.beginPath(); ctx.arc(320+(i*37)%170,300-h+12+((i*23)%Math.max(10,h-22)),4,0,7); ctx.fill(); }
+      ctx.fillStyle='#E9B48A'; roundRect(ctx,330,300-h-60,140,60,24); ctx.fill();
+      arrow(ctx,400,300-h,400,300-h+Math.min(48,h-6),F,5,'F',18,0);
+    }
+    if(s.id==='lat'){
+      const d=ease*38; ctx.fillStyle='#94A3B8'; ctx.fillRect(120,240,50,120); ctx.fillRect(630,240,50,120);
+      ctx.strokeStyle='#92400E'; ctx.lineWidth=14; ctx.lineCap='butt'; ctx.beginPath(); ctx.moveTo(110,234); ctx.quadraticCurveTo(400,234+2*d,690,234); ctx.stroke();
+      const py=234+d-7; ctx.fillStyle='#334155';
+      ctx.beginPath(); ctx.arc(400,py-118,16,0,7); ctx.fill(); ctx.fillRect(388,py-100,24,58); ctx.fillRect(390,py-44,9,44); ctx.fillRect(401,py-44,9,44);
+      arrow(ctx,400,py,400,py+62,F,5,'F',18,0);
+    }
+    if(s.id==='trap'){
+      grond(320); const x=250+(p<0.25?0:(p-0.25)*700);
+      ctx.fillStyle='#fff'; ctx.strokeStyle='#1e293b'; ctx.lineWidth=2; ctx.beginPath(); ctx.arc(x,296,24,0,7); ctx.fill(); ctx.stroke();
+      const v=Math.max(0,Math.min(1,(0.25-p)/0.25)); ctx.fillStyle='#1e293b';
+      ctx.save(); ctx.translate(200-40*v,300); ctx.beginPath(); ctx.ellipse(0,0,30,12,0,0,7); ctx.fill(); ctx.fillRect(-14,-110,22,100); ctx.restore();
+      if(p>0.2&&p<0.32) arrow(ctx,x-24,296,x+56,296,F,5,'F',0,-30);
+      if(p>0.32) arrow(ctx,x,350,x+60,350,'#d97706',4,'v',0,-10);
+    }
+    if(s.id==='rem'){
+      grond(330); const T=p, x=120+600*(1-(1-Math.min(T,0.85)/0.85)**2)*0.85, v=Math.max(0,1-Math.min(T,0.85)/0.85);
+      ctx.strokeStyle='#1e293b'; ctx.lineWidth=4; ctx.beginPath(); ctx.arc(x-40,300,30,0,7); ctx.arc(x+40,300,30,0,7); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(x-40,300); ctx.lineTo(x,260); ctx.lineTo(x+40,300); ctx.moveTo(x,260); ctx.lineTo(x+30,250); ctx.stroke();
+      ctx.fillStyle='#2F6FB0'; ctx.beginPath(); ctx.arc(x-4,200,13,0,7); ctx.fill(); ctx.fillRect(x-12,214,16,44);
+      if(v>0.02){ arrow(ctx,x,370,x+v*110,370,'#d97706',4,'v',0,-10); arrow(ctx,x+30,150,x-40,150,F,5,'F rem',0,-12); }
+    }
+    if(s.id==='magneet'){
+      ctx.fillStyle='#DBE4EE'; ctx.fillRect(0,0,W,H);
+      ctx.fillStyle='#dc2626'; ctx.fillRect(470,40,60,50); ctx.fillStyle='#2563eb'; ctx.fillRect(530,40,60,50);
+      text(ctx,'N',500,72,{color:'#fff',weight:700,align:'center'}); text(ctx,'Z',560,72,{color:'#fff',weight:700,align:'center'});
+      const pts=[]; for(let i=0;i<=60;i++) pts.push([60+i*4,320]); for(let i=1;i<=80;i++){ const u=i/80; pts.push([(1-u)**2*300+2*(1-u)*u*470+u*u*515,(1-u)**2*320+2*(1-u)*u*320+u*u*102]); }
+      ctx.setLineDash([5,6]); ctx.strokeStyle='#94A3B8'; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(60,320); ctx.lineTo(760,320); ctx.stroke(); ctx.setLineDash([]);
+      ctx.strokeStyle='#64748B'; ctx.beginPath(); pts.forEach(([a,b],i)=>i?ctx.lineTo(a,b):ctx.moveTo(a,b)); ctx.stroke();
+      const q=pts[Math.min(pts.length-1,Math.floor(p*pts.length*1.15))];
+      ctx.fillStyle='#475569'; ctx.beginPath(); ctx.arc(q[0],q[1],13,0,7); ctx.fill();
+      if(q[0]>380){ const dx=530-q[0], dy=90-q[1], r=Math.hypot(dx,dy); arrow(ctx,q[0],q[1],q[0]+dx/r*70,q[1]+dy/r*70,F,5,'F',16,0); }
+      text(ctx,'zonder magneet: rechtdoor',560,345,{color:'#51606E'});
+    }
+    if(isActive('s0')) requestAnimationFrame(draw); else setTimeout(()=>requestAnimationFrame(draw),300);
+  }
+  upd(); requestAnimationFrame(draw);
+})();
+
+//////////////////// 0b — KRACHT OP SCHAAL ////////////////////
+(function(){
+  const c=document.getElementById('c0b'), ctx=hiDPI(c), W=c._w, H=c._h, CM=36;
+  const SCH=[10,20,50,100]; let sch=50, modus='teken', lees={F:150,h:0}, antw=null;
+  const Fs=document.getElementById('s0b-F'), hs=document.getElementById('s0b-h'), read=document.getElementById('s0b-read');
+  const sw=document.getElementById('s0b-schaal');
+  SCH.forEach(v=>{ const b=document.createElement('button'); b.className='btn'; b.textContent='1 cm ≙ '+v+' N'; b.onclick=()=>{sch=v; if(modus==='lees') nieuw(); else draw();}; sw.appendChild(b); });
+  const zin=h=>['naar rechts','schuin rechtsboven','naar boven','schuin linksboven','naar links','schuin linksonder','naar onder','schuin rechtsonder'][Math.round(h/45)%8];
+  const richt=h=>(h%180===0)?'horizontaal':(h%180===90)?'verticaal':'schuin, '+(h%90===0?'':((h%180<90?h%180:180-h%180)+'° met de horizontale'));
+  function nieuw(){ const L=[2,2.5,3,3.5,4,4.5,5,5.5,6,6.5,7,8][Math.floor(Math.random()*12)]; lees={F:L*sch,h:[0,90,180,270,45,135,30,330][Math.floor(Math.random()*8)]}; antw=null; document.getElementById('s0b-in').value=''; draw(); }
+  function zetModus(m){ modus=m; document.getElementById('s0b-teken').classList.toggle('on',m==='teken'); document.getElementById('s0b-lees').classList.toggle('on',m==='lees');
+    document.getElementById('s0b-tekenblok').style.display=m==='teken'?'':'none'; document.getElementById('s0b-leesblok').style.display=m==='lees'?'':'none'; if(m==='lees') nieuw(); else draw(); }
+  document.getElementById('s0b-teken').onclick=()=>zetModus('teken');
+  document.getElementById('s0b-lees').onclick=()=>zetModus('lees');
+  document.getElementById('s0b-nieuw').onclick=nieuw;
+  document.getElementById('s0b-check').onclick=()=>{ antw=parseFloat(document.getElementById('s0b-in').value.replace(',','.')); draw(); };
+  document.getElementById('s0b-in').addEventListener('keydown',e=>{ if(e.key==='Enter') document.getElementById('s0b-check').click(); });
+  Fs.oninput=hs.oninput=draw;
+  function draw(){
+    [...sw.children].forEach((b,i)=>b.classList.toggle('on',SCH[i]===sch));
+    const F=modus==='teken'?+Fs.value:lees.F, h=modus==='teken'?+hs.value:lees.h, L=F/sch;
+    document.getElementById('s0b-F-l').textContent='Grootte F = '+F+' N';
+    document.getElementById('s0b-h-l').textContent='Richting: '+h+'° ('+zin(h)+')';
+    ctx.clearRect(0,0,W,H); ctx.fillStyle='#fff'; ctx.fillRect(0,0,W,H);
+    ctx.strokeStyle='#E2E8F0'; ctx.lineWidth=1; ctx.beginPath();
+    for(let x=4;x<W;x+=CM){ctx.moveTo(x,0);ctx.lineTo(x,H);} for(let y=4;y<H;y+=CM){ctx.moveTo(0,y);ctx.lineTo(W,y);} ctx.stroke();
+    const ox=4+CM*11, oy=4+CM*6;
+    ctx.fillStyle='#CBD5E1'; ctx.strokeStyle='#64748B'; ctx.lineWidth=2; roundRect(ctx,ox-CM,oy-CM,2*CM,2*CM,4); ctx.fill(); ctx.stroke();
+    const a=-h*Math.PI/180, ex=ox+Math.cos(a)*L*CM, ey=oy+Math.sin(a)*L*CM, past=Math.abs(L*CM*Math.cos(a))<W/2-10&&Math.abs(L*CM*Math.sin(a))<H/2-10;
+    if(!past){ text(ctx,'Te lang voor het blad: kies een grotere schaal.',W/2,30,{align:'center',color:'#b91c1c',weight:700}); }
+    arrow(ctx,ox,oy,ex,ey,'#2563eb',5);
+    ctx.fillStyle='#dc2626'; ctx.beginPath(); ctx.arc(ox,oy,6,0,7); ctx.fill();
+    // maatstok
+    ctx.strokeStyle='#1D2A36'; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(22,H-24); ctx.lineTo(22+CM,H-24); ctx.moveTo(22,H-30); ctx.lineTo(22,H-18); ctx.moveTo(22+CM,H-30); ctx.lineTo(22+CM,H-18); ctx.stroke();
+    text(ctx,'1 cm ≙ '+sch+' N',30+CM,H-19,{weight:700});
+    if(modus==='teken'){
+      read.innerHTML='<strong>aangrijpingspunt:</strong> rode stip op het voorwerp<br><strong>richting:</strong> '+richt(h)+'<br><strong>zin:</strong> '+zin(h)+'<br><strong>grootte:</strong> '+F+' N<br>lengte pijl = '+F+' N ÷ '+sch+' N/cm = <strong>'+fmt(L,1)+' cm</strong>';
+    } else {
+      let r='Tel de hokjes langs de pijl (1 hokje = 1 cm) en gebruik de schaal.';
+      if(antw!==null&&!isNaN(antw)) r=Math.abs(antw-F)<0.5?'<span style="color:#15803d;font-weight:700">Juist!</span> '+fmt(L,1)+' cm × '+sch+' N/cm = '+F+' N':'<span style="color:#b91c1c;font-weight:700">Nog niet juist.</span> Meet de lengte van de pijl in cm en vermenigvuldig met '+sch+' N/cm.';
+      read.innerHTML=r;
+    }
+  }
+  zetModus('teken');
+})();
+
+//////////////////// 1 — TRAAGHEID IN DE BUS ////////////////////
+(function(){
+  const c=document.getElementById('c1'), ctx=hiDPI(c), W=c._w, H=c._h;
+  const read=document.getElementById('s1-read');
+  const ROAD=340, BUSX=170, BUSW=440, BUSH=200, VMAX=14, ACC=5;
+  let v=0, a=0, mode='stil', offset=0, lean=0;
+  let ball=null; // positie van de bal in de bus (m), snelheid t.o.v. de grond
+  const PX=22; // pixels per meter
+  function reset(){ v=0; a=0; mode='stil'; offset=0; lean=0; ball={x:BUSW/2/PX, vg:0}; }
+  reset();
+  document.getElementById('s1-start').onclick=()=>{ if(mode==='stil'||mode==='remt'){ mode='vertrekt'; } };
+  document.getElementById('s1-rem').onclick=()=>{ if(v>0.01) mode='remt'; };
+  document.getElementById('s1-reset').onclick=reset;
+
+  function step(dt){
+    a = mode==='vertrekt' ? ACC : mode==='remt' ? -ACC : 0;
+    v+=a*dt;
+    if(mode==='vertrekt' && v>=VMAX){ v=VMAX; mode='rijdt'; a=0; }
+    if(mode==='remt' && v<=0){ v=0; mode='stil'; a=0; }
+    offset+=v*dt*PX;
+    // bal: geen wrijving, behoudt zijn snelheid t.o.v. de grond; t.o.v. de bus beweegt hij met (vg - v)
+    ball.x+=(ball.vg-v)*dt;
+    const min=0.6, max=BUSW/PX-0.6;
+    if(ball.x<min){ ball.x=min; ball.vg=v; }       // botst tegen de achterwand en rijdt dan mee
+    if(ball.x>max){ ball.x=max; ball.vg=v; }       // botst tegen de voorwand
+    // passagier helt: naar achter bij versnellen, naar voor bij remmen
+    const target=-a*0.07;
+    lean+=(target-lean)*Math.min(1,dt*6);
+  }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    // lucht en weg
+    ctx.fillStyle='#eaf3fb'; ctx.fillRect(0,0,W,ROAD);
+    ctx.fillStyle='#cfd6de'; ctx.fillRect(0,ROAD,W,H-ROAD);
+    // bomen en strepen die voorbij schuiven
+    for(let k=-1;k<6;k++){
+      const x=((k*190-offset*0.6)%(W+190)+W+190)%(W+190)-95;
+      ctx.fillStyle='#8ab17d'; ctx.beginPath(); ctx.arc(x,ROAD-90,30,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle='#8a6a4a'; ctx.fillRect(x-5,ROAD-62,10,62);
+    }
+    ctx.fillStyle='#fff';
+    for(let k=-1;k<12;k++){ const x=((k*80-offset)%(W+80)+W+80)%(W+80)-40; ctx.fillRect(x,ROAD+38,40,6); }
+    // bus
+    const bx=BUSX, by=ROAD-BUSH-16;
+    ctx.fillStyle='#f3c23c'; roundRect(ctx,bx,by,BUSW,BUSH,18); ctx.fill();
+    ctx.fillStyle='#fdf7e6'; roundRect(ctx,bx+14,by+16,BUSW-28,BUSH-40,10); ctx.fill(); // binnenkant (doorkijk)
+    ctx.strokeStyle='#c99a1a'; ctx.lineWidth=3; roundRect(ctx,bx,by,BUSW,BUSH,18); ctx.stroke();
+    ctx.fillStyle='#333'; [bx+80,bx+BUSW-80].forEach(x=>{ ctx.beginPath(); ctx.arc(x,ROAD-14,22,0,Math.PI*2); ctx.fill(); ctx.fillStyle='#888'; ctx.beginPath(); ctx.arc(x,ROAD-14,9,0,Math.PI*2); ctx.fill(); ctx.fillStyle='#333'; });
+    text(ctx,'rijrichting →',bx+BUSW-12,by-10,{size:13,weight:600,color:'#51606E',align:'right'});
+    // vloer
+    const floor=by+BUSH-24;
+    ctx.strokeStyle='#b08a2a'; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(bx+14,floor); ctx.lineTo(bx+BUSW-14,floor); ctx.stroke();
+    // passagier (draait om de voeten)
+    const px=bx+BUSW*0.42;
+    ctx.save(); ctx.translate(px,floor); ctx.rotate(lean);
+    ctx.strokeStyle='#1D2A36'; ctx.fillStyle='#1D2A36'; ctx.lineWidth=6; ctx.lineCap='round';
+    ctx.beginPath(); ctx.moveTo(-12,0); ctx.lineTo(0,-50); ctx.lineTo(12,0); ctx.moveTo(0,-50); ctx.lineTo(0,-108);
+    ctx.moveTo(0,-98); ctx.lineTo(-16,-70); ctx.moveTo(0,-98); ctx.lineTo(16,-70); ctx.stroke();
+    ctx.beginPath(); ctx.arc(0,-124,14,0,Math.PI*2); ctx.fill();
+    ctx.restore();
+    // bal
+    const ballX=bx+ball.x*PX;
+    ctx.fillStyle='#e0452f'; ctx.beginPath(); ctx.arc(ballX,floor-11,11,0,Math.PI*2); ctx.fill();
+    ctx.strokeStyle='#fff'; ctx.lineWidth=2; ctx.beginPath(); ctx.arc(ballX,floor-11,6,0,Math.PI*2); ctx.stroke();
+    // snelheid- en versnellingspijl van de bus
+    arrow(ctx,bx+BUSW/2-v*8,by-34,bx+BUSW/2+v*8,by-34,'#d97706',4);
+    text(ctx,'snelheid bus: '+fmt(v*3.6,0)+' km/h',20,30,{size:15,weight:700});
+    const status={stil:'De bus staat stil.',vertrekt:'De bus vertrekt: hij gaat sneller.',rijdt:'De bus rijdt even snel rechtdoor.',remt:'De bus remt: hij gaat trager.'}[mode];
+    text(ctx,status,20,54,{size:14,color:'#51606E'});
+
+    const uitleg={
+      stil:'<span class="k">Druk op <b>Vertrekken</b>.</span>',
+      vertrekt:'<span class="v">De passagier helt naar <b>achter</b>.</span><br><span class="k">Zijn lichaam wil blijven <b>stilstaan</b>, maar de bus vertrekt onder zijn voeten. De bal rolt naar achter: hij blijft (t.o.v. de grond) waar hij was.</span>',
+      rijdt:'<span class="v">De passagier staat <b>recht</b>.</span><br><span class="k">De bus gaat even snel rechtdoor. De passagier beweegt gewoon mee. Druk nu op <b>Remmen</b>.</span>',
+      remt:'<span class="v">De passagier helt naar <b>voor</b>.</span><br><span class="k">Zijn lichaam wil <b>even snel verder</b> bewegen, maar de bus remt. Ook de bal rolt naar voor. Daarom draag je een <b>gordel</b>.</span>',
+    }[mode];
+    read.innerHTML=uitleg;
+  }
+  let last=performance.now();
+  function loop(now){
+    const dt=Math.min(0.05,(now-last)/1000); last=now;
+    if(isActive('s1')){ step(dt); draw(); }
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+})();
+
+//////////////////// 2 — TRAAGHEID EN MASSA ////////////////////
+(function(){
+  const c=document.getElementById('c2'), ctx=hiDPI(c), W=c._w, H=c._h;
+  const read=document.getElementById('s2-read');
+  const F=60, DUUR=0.5, PX=40, V0=3, REMX=5;   // kracht (N), duwtijd (s), px per m, beginsnelheid proef 2 (m/s), remstreep (m)
+  const karren=[{naam:'lege kar',m:10,y:150},{naam:'volle kar',m:60,y:330}];
+  let proef=0, duwT=0;
+  function reset(){ proef=0; duwT=0; karren.forEach(k=>{ k.x=1.5; k.v=0; k.remt=false; k.tRem=0; k.xRem=null; k.klaar=false; }); }
+  reset();
+  document.getElementById('s2-duw').onclick=()=>{ reset(); proef=1; duwT=DUUR; };
+  document.getElementById('s2-rem').onclick=()=>{ reset(); proef=2; karren.forEach(k=>{ k.x=0.8; k.v=V0; }); };
+  document.getElementById('s2-reset').onclick=reset;
+
+  function kar(k){
+    const x=k.x*PX, y=k.y;
+    ctx.save(); ctx.strokeStyle='#51606E'; ctx.lineWidth=3; ctx.fillStyle='#f5f8fb';
+    ctx.beginPath(); ctx.moveTo(x-50,y-70); ctx.lineTo(x+50,y-70); ctx.lineTo(x+40,y-20); ctx.lineTo(x-40,y-20); ctx.closePath(); ctx.fill(); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x-50,y-70); ctx.lineTo(x-66,y-90); ctx.stroke();
+    if(k.m>20){ ctx.fillStyle='#b5651d'; for(let i=0;i<3;i++) for(let j=0;j<2;j++) ctx.fillRect(x-38+i*26,y-66+j*21,24,19); }
+    ctx.fillStyle='#333'; [x-30,x+30].forEach(w=>{ ctx.beginPath(); ctx.arc(w,y-8,8,0,Math.PI*2); ctx.fill(); });
+    ctx.restore();
+    text(ctx,k.naam+' ('+k.m+' kg)',x,y-102,{size:14,weight:700,align:'center'});
+    if(Math.abs(k.v)>0.02) arrow(ctx,x,y+22,x+k.v*45,y+22,'#d97706',4,'v',0,-10);
+  }
+  function step(dt){
+    karren.forEach(k=>{
+      let a=0;
+      if(proef===1 && duwT>0) a=F/k.m;
+      if(proef===2 && !k.remt && k.x+k.v*dt>=REMX){ k.remt=true; k.x=REMX; k.tRem=0; return; }
+      if(proef===2 && k.remt){
+        // exact remmen vanaf de streep: v = v0 − a·t, x = xstreep + v0·t − ½·a·t²
+        if(k.klaar) return;
+        const ar=F/k.m, tStop=V0/ar; k.tRem=Math.min(k.tRem+dt,tStop);
+        k.v=V0-ar*k.tRem; k.x=REMX+V0*k.tRem-0.5*ar*k.tRem*k.tRem;
+        if(k.tRem>=tStop){ k.v=0; k.klaar=true; }
+        return;
+      }
+      k.v+=a*dt;
+      k.x+=k.v*dt;
+      const max=(W-60)/PX; if(k.x>max){ k.x=max; k.v=0; }
+    });
+    if(duwT>0) duwT-=dt;
+  }
+  function draw(){
+    ctx.clearRect(0,0,W,H); ctx.fillStyle='#f7f9fb'; ctx.fillRect(0,0,W,H);
+    karren.forEach(k=>{ ctx.fillStyle='#e3e9ef'; ctx.fillRect(0,k.y,W,6); });
+    text(ctx,'gladde vloer: geen wrijving',W-16,24,{size:13,color:'#51606E',align:'right'});
+    if(proef===2){
+      // remstreep en remafstanden
+      ctx.save(); ctx.strokeStyle='#dc2626'; ctx.setLineDash([6,5]); ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(REMX*PX,40); ctx.lineTo(REMX*PX,H-34); ctx.stroke(); ctx.restore();
+      text(ctx,'remstreep: vanaf hier rem je met 60 N',REMX*PX,H-14,{size:13,weight:700,color:'#dc2626',align:'center'});
+      karren.forEach(k=>{ if(k.remt){ const y=k.y+46; ctx.strokeStyle='#dc2626'; ctx.lineWidth=2;
+        ctx.beginPath(); ctx.moveTo(REMX*PX,y); ctx.lineTo(k.x*PX,y); ctx.moveTo(REMX*PX,y-6); ctx.lineTo(REMX*PX,y+6); ctx.moveTo(k.x*PX,y-6); ctx.lineTo(k.x*PX,y+6); ctx.stroke();
+        text(ctx,'remafstand '+fmt(k.x-REMX,2)+' m',Math.max(REMX*PX+60,(REMX+k.x)/2*PX),y-8,{size:13,weight:700,color:'#dc2626',align:'center'}); } });
+    }
+    karren.forEach(k=>{
+      kar(k);
+      const duwt = (proef===1 && duwT>0) || (proef===2 && k.remt && !k.klaar);
+      if(duwt){ const s=proef===1?1:-1, x=k.x*PX;
+        // kracht tegen de kar: bij duwen van achter, bij remmen van voor
+        if(s>0) arrow(ctx,x-45,k.y-45,x+27,k.y-45,'#2563eb',5,'F = 60 N',0,-34);
+        else arrow(ctx,x+45,k.y-45,x-27,k.y-45,'#2563eb',5,'F = 60 N',0,-34); }
+    });
+    let html='';
+    if(proef===0) html='<span class="k">Kies <b>proef 1</b> of <b>proef 2</b>.</span>';
+    if(proef===1){
+      html=karren.map(k=>`<span class="k">${k.naam}:</span> <span class="v">${fmt(k.v)} m/s</span>`).join('<br>');
+      if(duwT<=0) html+=`<br><span class="ok">Dezelfde kracht, even lang: de lege kar gaat ${fmt(karren[0].v/karren[1].v,0)} keer zo snel.</span><br><span class="k">De volle kar is <b>moeilijker in beweging</b> te brengen.</span>`;
+    }
+    if(proef===2){
+      html=`<span class="k">Beide karren rijden aan <b>${V0} m/s</b> tot aan de remstreep.</span><br>`+
+        karren.map(k=>`<span class="k">${k.naam}:</span> <span class="v">${k.remt?('remtijd '+fmt(k.tRem,2)+' s · remafstand '+fmt(k.x-REMX,2)+' m'):'nog niet aan het remmen'}</span>`).join('<br>');
+      if(karren.every(k=>k.klaar)) html+=`<br><span class="ok">Dezelfde remkracht, maar de volle kar rijdt ${fmt((karren[1].x-REMX)/(karren[0].x-REMX),0)} keer zo ver door.</span><br><span class="k">De volle kar is <b>moeilijker tegen te houden</b>: ze heeft meer traagheid.</span>`;
+    }
+    read.innerHTML=html;
+  }
+  let last=performance.now();
+  function loop(now){ const dt=Math.min(0.05,(now-last)/1000); last=now; if(isActive('s2')){ step(dt); draw(); } requestAnimationFrame(loop); }
+  requestAnimationFrame(loop);
+})();
+
+//////////////////// 3 — RESULTERENDE KRACHT EN SNELHEID ////////////////////
+(function(){
+  const c=document.getElementById('c3'), ctx=hiDPI(c), W=c._w, H=c._h;
+  const f1=document.getElementById('s3-f1'), f2=document.getElementById('s3-f2'), v0=document.getElementById('s3-v0');
+  const playBtn=document.getElementById('s3-play'), read=document.getElementById('s3-read');
+  const M=20, PX=45, TMAX=10, GY=300;      // massa slee (kg), pixels per meter, duur grafiek (s)
+  let x=0, v=0, t=0, run=false, hist=[];
+  function reset(){ x=0; v=+v0.value; t=0; run=false; hist=[{t:0,v}]; playBtn.textContent='▶ Start'; }
+  reset();
+  playBtn.onclick=()=>{ if(t>=TMAX) reset(); run=!run; playBtn.textContent=run?'❚❚ Pauze':'▶ Verder'; };
+  document.getElementById('s3-reset').onclick=reset;
+  v0.oninput=()=>{ if(!run && t===0) reset(); };
+  const Fr=()=>(+f1.value)-(+f2.value);
+
+  function verdict(fr,vv){
+    const eps=0.05;
+    if(fr===0 && Math.abs(vv)<eps) return {txt:'F<sub>r</sub> = 0 en de slee staat stil → ze <b>blijft stilstaan</b>.',cls:'ok'};
+    if(fr===0) return {txt:'F<sub>r</sub> = 0 → de snelheid <b>blijft gelijk</b>: de slee gaat even snel rechtdoor (traagheidswet).',cls:'ok'};
+    if(Math.abs(vv)<eps) return {txt:'De slee staat (even) stil en F<sub>r</sub> ≠ 0 → ze <b>begint te bewegen</b> in de zin van F<sub>r</sub>.',cls:'ok'};
+    if(Math.sign(fr)===Math.sign(vv)) return {txt:'F<sub>r</sub> wijst <b>mee</b> met de beweging → de slee gaat <b>sneller</b>.',cls:'ok'};
+    return {txt:'F<sub>r</sub> wijst <b>tegen</b> de beweging in → de slee gaat <b>trager</b>. Blijft F<sub>r</sub> werken, dan stopt ze en keert ze om.',cls:'flag'};
+  }
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    // ijsbaan
+    const iceY=200;
+    ctx.fillStyle='#eef6fc'; ctx.fillRect(0,0,W,iceY+24);
+    ctx.fillStyle='#dbeaf6'; ctx.fillRect(0,iceY,W,24);
+    // meterstreepjes die meeschuiven (camera volgt de slee)
+    const camX=x*PX;
+    ctx.strokeStyle='#b9cfe2'; ctx.lineWidth=2;
+    for(let k=-20;k<40;k++){ const sx=W/2+(k*PX-camX)%(PX*40); const xx=((k*PX-camX)%W+W)%W; ctx.beginPath(); ctx.moveTo(xx,iceY+4); ctx.lineTo(xx,iceY+16); ctx.stroke(); }
+    text(ctx,'ijs: geen wrijving · m = '+M+' kg',16,22,{size:13,color:'#51606E'});
+    // slee in het midden
+    const sx=W/2, sy=iceY;
+    ctx.fillStyle='#b98a52'; roundRect(ctx,sx-55,sy-48,110,34,6); ctx.fill();
+    ctx.strokeStyle='#5b3a1a'; ctx.lineWidth=4; ctx.beginPath(); ctx.moveTo(sx-60,sy-6); ctx.lineTo(sx+52,sy-6); ctx.quadraticCurveTo(sx+70,sy-6,sx+68,sy-24); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(sx-35,sy-14); ctx.lineTo(sx-35,sy-6); ctx.moveTo(sx+30,sy-14); ctx.lineTo(sx+30,sy-6); ctx.stroke();
+    // krachten (schaal: 1 N = 1,6 px)
+    const K=1.6, fy=sy-22;
+    arrow(ctx,sx+56,fy,sx+56+(+f1.value)*K,fy,'#2563eb',5);
+    arrow(ctx,sx-56,fy,sx-56-(+f2.value)*K,fy,'#059669',5);
+    if(+f1.value) text(ctx,'F₁ = '+f1.value+' N',sx+64+(+f1.value)*K,fy+5,{size:15,weight:700,color:'#2563eb'});
+    if(+f2.value) text(ctx,'F₂ = '+f2.value+' N',sx-64-(+f2.value)*K,fy+5,{size:15,weight:700,color:'#059669',align:'right'});
+    const fr=Fr();
+    if(fr!==0) arrow(ctx,sx,sy-40,sx+fr*K,sy-40,'#dc2626',6,'Fr = '+Math.abs(fr)+' N',0,-20);
+    else text(ctx,'Fr = 0 N',sx,sy-62,{size:15,weight:700,color:'#dc2626',align:'center'});
+    // snelheid
+    if(Math.abs(v)>0.03) arrow(ctx,sx,sy+48,sx+v*22,sy+48,'#d97706',5,'v',0,-10);
+
+    // v(t)-grafiek
+    const gx=60, gw=W-90, gh=120, g0=GY+gh/2+10, vs=gh/2/8; // ±8 m/s
+    ctx.strokeStyle='#D3DCE5'; ctx.lineWidth=1;
+    for(let k=-8;k<=8;k+=2){ ctx.beginPath(); ctx.moveTo(gx,g0-k*vs); ctx.lineTo(gx+gw,g0-k*vs); ctx.stroke(); }
+    ctx.strokeStyle='#1D2A36'; ctx.lineWidth=1.6;
+    ctx.beginPath(); ctx.moveTo(gx,GY+6); ctx.lineTo(gx,GY+gh+14); ctx.moveTo(gx,g0); ctx.lineTo(gx+gw,g0); ctx.stroke();
+    text(ctx,'v (m/s)',gx-6,GY,{size:12,weight:600,align:'right'});
+    text(ctx,'t (s)',gx+gw,g0+16,{size:12,weight:600,align:'right'});
+    text(ctx,'+8',gx-6,g0-8*vs+4,{size:11,color:'#51606E',align:'right'}); text(ctx,'−8',gx-6,g0+8*vs+4,{size:11,color:'#51606E',align:'right'}); text(ctx,'0',gx-6,g0+4,{size:11,color:'#51606E',align:'right'});
+    ctx.save(); ctx.beginPath(); ctx.rect(gx,GY,gw,gh+20); ctx.clip();
+    ctx.strokeStyle='#d97706'; ctx.lineWidth=3; ctx.beginPath();
+    hist.forEach((p,i)=>{ const X=gx+p.t/TMAX*gw, Y=g0-p.v*vs; if(i) ctx.lineTo(X,Y); else ctx.moveTo(X,Y); });
+    ctx.stroke(); ctx.restore();
+
+    const vd=verdict(fr,v);
+    read.innerHTML=`<span class="k">F<sub>r</sub> = F₁ − F₂ =</span> <span class="v">${f1.value} N − ${f2.value} N = ${fr} N</span><br>`+
+      `<span class="k">zin van F<sub>r</sub>:</span> <span class="v">${fr>0?'naar rechts':fr<0?'naar links':'geen (F<sub>r</sub> = 0)'}</span><br>`+
+      `<span class="k">snelheid v:</span> <span class="v">${fmt(Math.abs(v))} m/s ${Math.abs(v)<0.05?'':(v>0?'naar rechts':'naar links')}</span><br>`+
+      `<span class="${vd.cls}">${vd.txt}</span>`;
+  }
+  function labels(){
+    document.getElementById('s3-f1-l').textContent='F₁ naar rechts: '+f1.value+' N';
+    document.getElementById('s3-f2-l').textContent='F₂ naar links: '+f2.value+' N';
+    const b=+v0.value; document.getElementById('s3-v0-l').textContent='Beginsnelheid: '+(b===0?'stilstaan':Math.abs(b)+' m/s naar '+(b>0?'rechts':'links'));
+  }
+  [f1,f2,v0].forEach(e=>e.addEventListener('input',labels)); labels();
+  let last=performance.now();
+  function loop(now){
+    const dt=Math.min(0.05,(now-last)/1000); last=now;
+    if(isActive('s3')){
+      if(run){
+        const a=Fr()/M; v+=a*dt; v=Math.max(-8,Math.min(8,v)); x+=v*dt; t+=dt; hist.push({t,v});
+        if(t>=TMAX){ run=false; playBtn.textContent='↻ Opnieuw'; }
+      }
+      draw();
+    }
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+})();
+
+//////////////////// BAL DIE JE HAND VERLAAT ////////////////////
+(function(){
+  const c=document.getElementById('c3b'), ctx=hiDPI(c), W=c._w, H=c._h;
+  const read=document.getElementById('s3b-read'), playBtn=document.getElementById('s3b-play');
+  const GROND={gras:{naam:'gras',f:1.5,kleur:'#bcd9a4',lijn:'#8ab17d'},tegels:{naam:'tegels',f:0.6,kleur:'#d9dde2',lijn:'#b7bec7'},ijs:{naam:'ijs',f:0,kleur:'#dcecf8',lijn:'#b9cfe2'}};
+  const M=1, FHAND=6, TDUW=0.8, PX=60, GY=230, TMAX=12;   // m (kg), handkracht (N), duwtijd (s)
+  let grond='gras', fase='klaar', x=0, v=0, t=0, hist=[];
+  function reset(){ fase='klaar'; x=0; v=0; t=0; hist=[{t:0,v:0,duw:true}]; playBtn.textContent='▶ Rol de bal'; }
+  reset();
+  playBtn.onclick=()=>{ if(fase==='klaar'){ fase='duwen'; playBtn.textContent='de bal rolt…'; } else { reset(); } };
+  document.getElementById('s3b-reset').onclick=reset;
+  document.querySelectorAll('[data-grond]').forEach(b=>b.onclick=()=>{
+    grond=b.dataset.grond; document.querySelectorAll('[data-grond]').forEach(o=>o.classList.toggle('on',o===b)); reset(); });
+
+  function krachten(){
+    const f=GROND[grond].f;
+    const hand = fase==='duwen' ? FHAND : 0;
+    const wrijving = (fase==='duwen' || (fase==='los' && v>0)) ? f : 0;
+    return {hand, wrijving, fr:hand-wrijving};
+  }
+  function step(dt){
+    if(fase==='duwen'||fase==='los'){
+      const k=krachten(); v+=k.fr/M*dt;
+      if(fase==='los' && v<=0){ v=0; fase='stil'; playBtn.textContent='↻ Nog eens'; }
+      x+=v*dt; t+=dt; hist.push({t,v,duw:fase==='duwen'});
+      if(fase==='duwen' && t>=TDUW){ fase='los'; }
+      if(t>=TMAX && fase==='los'){ fase='verder'; playBtn.textContent='↻ Nog eens'; }
+    } else if(fase==='verder'){ x+=v*dt; }
+  }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    const g=GROND[grond];
+    ctx.fillStyle='#f3f7fb'; ctx.fillRect(0,0,W,GY);
+    ctx.fillStyle=g.kleur; ctx.fillRect(0,GY,W,40);
+    // camera volgt de bal zodra hij voorbij het midden is
+    const camX=Math.max(0, x*PX-(W/2-120));
+    ctx.strokeStyle=g.lijn; ctx.lineWidth=2;
+    for(let m=0;m<200;m++){ const sx=120+m*PX-camX; if(sx<-10||sx>W+10) continue;
+      ctx.beginPath(); ctx.moveTo(sx,GY+4); ctx.lineTo(sx,GY+(m%5===0?20:12)); ctx.stroke();
+      if(m%5===0) text(ctx,m+' m',sx,GY+36,{size:11,color:'#51606E',align:'center'}); }
+    text(ctx,'ondergrond: '+g.naam+(g.f? ' · wrijvingskracht '+String(g.f).replace('.',',')+' N':' · geen wrijving'),16,24,{size:13,color:'#51606E'});
+    // hand
+    const r=22, bx=120+x*PX-camX, by=GY-r;
+    const handX = (fase==='klaar'||fase==='duwen') ? bx-r-1 : 120-r-1+TDUWx()*PX-camX;
+    drawHand(handX, by);
+    // bal
+    ctx.fillStyle='#e9c46a'; ctx.beginPath(); ctx.arc(bx,by,r,0,Math.PI*2); ctx.fill(); ctx.strokeStyle='#a1791f'; ctx.lineWidth=1.5; ctx.stroke();
+    ctx.save(); ctx.translate(bx,by); ctx.rotate(x/(r/PX)); ctx.strokeStyle='#fff'; ctx.lineWidth=3;
+    ctx.beginPath(); ctx.moveTo(-r+5,0); ctx.lineTo(r-5,0); ctx.stroke(); ctx.restore();
+    // krachten op de bal
+    const k=krachten(), K=14, fy=by-r-26;
+    if(k.hand) { const hx=bx-r*0.87, hy=by+r*0.5; arrow(ctx,hx,hy,hx+k.hand*K,hy,'#2563eb',5); text(ctx,'F hand = '+k.hand+' N',hx+k.hand*K+8,hy+5,{size:14,weight:700,color:'#2563eb'}); }
+    if(k.wrijving){ arrow(ctx,bx,by+r+2-6,bx-k.wrijving*K*1.6,by+r+2-6,'#059669',5); const lx=bx-k.wrijving*K*1.6-8, ly=GY+30; ctx.save(); ctx.font='700 14px Inter, sans-serif'; const tw=ctx.measureText('F wrijving').width; ctx.fillStyle='rgba(255,255,255,0.9)'; roundRect(ctx,lx-tw-6,ly-14,tw+12,20,5); ctx.fill(); ctx.restore(); text(ctx,'F wrijving',lx,ly+1,{size:14,weight:700,color:'#059669',align:'right'}); }
+    if(k.fr) { arrow(ctx,bx,by-r*0.35,bx+k.fr*K,by-r*0.35,'#dc2626',6); text(ctx,'Fr',bx+k.fr*K+(k.fr>0?8:-8),by-r*0.35+5,{size:15,weight:700,color:'#dc2626',align:k.fr>0?'left':'right'}); }
+    else if(fase!=='klaar') text(ctx,'Fr = 0',bx,fy-34,{size:15,weight:700,color:'#dc2626',align:'center'});
+    if(v>0.02) arrow(ctx,bx,GY+58,bx+v*18,GY+58,'#d97706',4,'v',-v*9-12,5);
+
+    // v(t)-grafiek
+    const gx=60, gw=W-90, gt=300, gh=100, g0=gt+gh, vs=gh/6;
+    ctx.fillStyle='rgba(37,99,235,0.08)'; ctx.fillRect(gx,gt,TDUW/TMAX*gw,gh);
+    text(ctx,'hand duwt',gx+4,gt+14,{size:11,color:'#2563eb',weight:600});
+    ctx.strokeStyle='#D3DCE5'; ctx.lineWidth=1;
+    for(let k2=1;k2<=6;k2++){ ctx.beginPath(); ctx.moveTo(gx,g0-k2*vs); ctx.lineTo(gx+gw,g0-k2*vs); ctx.stroke(); }
+    ctx.strokeStyle='#1D2A36'; ctx.lineWidth=1.6; ctx.beginPath(); ctx.moveTo(gx,gt-6); ctx.lineTo(gx,g0); ctx.lineTo(gx+gw,g0); ctx.stroke();
+    text(ctx,'v',gx-8,gt+4,{size:12,weight:700,align:'right'}); text(ctx,'t',gx+gw,g0+16,{size:12,weight:700,align:'right'});
+    ctx.save(); ctx.beginPath(); ctx.rect(gx,gt-4,gw,gh+6); ctx.clip();
+    ctx.strokeStyle='#d97706'; ctx.lineWidth=3; ctx.beginPath();
+    hist.forEach((p,i)=>{ const X=gx+p.t/TMAX*gw, Y=g0-p.v*vs; i?ctx.lineTo(X,Y):ctx.moveTo(X,Y); }); ctx.stroke(); ctx.restore();
+
+    const txt={
+      klaar:'<span class="k">Kies een ondergrond en druk op <b>Rol de bal</b>.</span>',
+      duwen:'<span class="v">Je hand duwt de bal.</span><br><span class="k">F<sub>hand</sub> is groter dan de wrijving → F<sub>r</sub> wijst <b>naar voor</b> → de bal gaat <b>sneller</b>.</span>',
+      los: GROND[grond].f
+        ? '<span class="v">De bal heeft je hand verlaten.</span><br><span class="flag">F<sub>hand</sub> bestaat niet meer!</span><br><span class="k">Alleen de <b>wrijving</b> blijft over → F<sub>r</sub> wijst <b>naar achter</b>, tegen de beweging → de bal gaat <b>trager</b>.</span>'
+        : '<span class="v">De bal heeft je hand verlaten.</span><br><span class="flag">F<sub>hand</sub> bestaat niet meer!</span><br><span class="ok">Op ijs is er geen wrijving: F<sub>r</sub> = 0 → de bal rolt <b>even snel</b> verder (traagheid).</span>',
+      stil:'<span class="v">De bal ligt stil.</span><br><span class="k">De wrijving heeft de bal afgeremd tot stilstand. Nu is F<sub>r</sub> = 0. Afgelegde weg: <b>'+fmt(x)+' m</b>.</span>',
+      verder:'<span class="ok">Zonder wrijving zou de bal <b>altijd</b> even snel blijven rollen.</span>',
+    }[fase];
+    read.innerHTML=txt+(fase==='duwen'||fase==='los'?'<br><span class="k">snelheid:</span> <span class="v">'+fmt(v)+' m/s</span>':'');
+  }
+  function TDUWx(){ // waar de hand stopt: positie van de bal op het moment van loslaten
+    let xx=0,vv=0; const f=GROND[grond].f; for(let tt=0;tt<TDUW;tt+=0.01){ vv+=(FHAND-f)/M*0.01; xx+=vv*0.01; } return xx;
+  }
+  // zijaanzicht van een duwende hand: arm met mouw, pols geknikt, handpalm rechtop tegen de bal, vingers omhoog
+  function drawHand(hx,hy){
+    // hx = rechterrand van de handpalm (raakt de bal), hy = hoogte van het midden van de bal
+    const huid='#f2c9a5', rand='#9a6b4b';
+    ctx.save(); ctx.lineJoin='round'; ctx.lineCap='round';
+    // mouw en onderarm
+    ctx.fillStyle='#3b82c4'; roundRect(ctx,hx-150,hy+2,78,24,8); ctx.fill();
+    ctx.fillStyle=huid; ctx.strokeStyle=rand; ctx.lineWidth=1.8;
+    ctx.beginPath(); ctx.moveTo(hx-74,hy+4); ctx.lineTo(hx-30,hy+4); ctx.quadraticCurveTo(hx-20,hy+5,hx-18,hy+14); ctx.lineTo(hx-18,hy+24); ctx.lineTo(hx-74,hy+24); ctx.closePath(); ctx.fill(); ctx.stroke();
+    // vingers (vier, licht uitwaaierend, naar boven)
+    const vingers=[{dx:-14,h:30,a:-0.10},{dx:-9,h:36,a:-0.03},{dx:-4,h:34,a:0.03},{dx:1,h:28,a:0.10}];
+    vingers.forEach(f=>{ ctx.save(); ctx.translate(hx+f.dx,hy-14); ctx.rotate(f.a);
+      roundRect(ctx,-3.5,-f.h,8,f.h+6,4); ctx.fill(); ctx.stroke(); ctx.restore(); });
+    // handpalm
+    ctx.beginPath(); ctx.moveTo(hx-22,hy-16); ctx.lineTo(hx+2,hy-16); ctx.quadraticCurveTo(hx+6,hy,hx+2,hy+18);
+    ctx.quadraticCurveTo(hx-8,hy+26,hx-22,hy+22); ctx.closePath(); ctx.fill(); ctx.stroke();
+    // duim, schuin naar de bal toe
+    ctx.save(); ctx.translate(hx-6,hy+4); ctx.rotate(-0.9); roundRect(ctx,-4,-22,9,24,4.5); ctx.fill(); ctx.stroke(); ctx.restore();
+    // nagellijntjes voor herkenbaarheid
+    ctx.strokeStyle='#c99a7a'; ctx.lineWidth=1.2;
+    ctx.beginPath(); ctx.moveTo(hx-20,hy-4); ctx.quadraticCurveTo(hx-12,hy-1,hx-4,hy-6); ctx.stroke();
+    ctx.restore();
+  }
+  let last=performance.now();
+  function loop(now){ const dt=Math.min(0.05,(now-last)/1000); last=now; if(isActive('s3b')){ step(dt); draw(); } requestAnimationFrame(loop); }
+  requestAnimationFrame(loop);
+})();
+
+//////////////////// 4 — KRACHT LOODRECHT OP DE BEWEGING ////////////////////
+(function(){
+  const c=document.getElementById('c4'), ctx=hiDPI(c), W=c._w, H=c._h;
+  const read=document.getElementById('s4-read');
+  const C={x:330,y:230}, R=130, OM=1.6;
+  let ang=0, los=false, p=null, vel=null, trail=[];
+  function reset(){ ang=0; los=false; p=null; vel=null; trail=[]; }
+  reset();
+  document.getElementById('s4-los').onclick=()=>{ if(los) return; los=true;
+    p={x:C.x+R*Math.cos(ang), y:C.y+R*Math.sin(ang)};
+    vel={x:-R*OM*Math.sin(ang), y:R*OM*Math.cos(ang)}; trail=[{...p}]; };
+  document.getElementById('s4-reset').onclick=reset;
+  function draw(){
+    ctx.clearRect(0,0,W,H); ctx.fillStyle='#f7f9fb'; ctx.fillRect(0,0,W,H);
+    text(ctx,'bovenaanzicht',16,24,{size:13,color:'#51606E'});
+    // cirkelbaan
+    ctx.save(); ctx.strokeStyle='#c9d4df'; ctx.setLineDash([6,6]); ctx.lineWidth=1.5; ctx.beginPath(); ctx.arc(C.x,C.y,R,0,Math.PI*2); ctx.stroke(); ctx.restore();
+    // hand
+    ctx.fillStyle='#f3d9c4'; ctx.strokeStyle='#1D2A36'; ctx.lineWidth=2; ctx.beginPath(); ctx.arc(C.x,C.y,12,0,Math.PI*2); ctx.fill(); ctx.stroke();
+    text(ctx,'hand',C.x,C.y+32,{size:12,color:'#51606E',align:'center'});
+    let bx,by,vx,vy;
+    if(!los){ bx=C.x+R*Math.cos(ang); by=C.y+R*Math.sin(ang); vx=-Math.sin(ang); vy=Math.cos(ang);
+      ctx.strokeStyle='#8a6a4a'; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(C.x,C.y); ctx.lineTo(bx,by); ctx.stroke();
+      // Fr naar het midden
+      arrow(ctx,bx,by,bx+(C.x-bx)*0.45,by+(C.y-by)*0.45,'#dc2626',5,'Fr',-14*vx,-14*vy);
+    } else {
+      bx=p.x; by=p.y; const n=Math.hypot(vel.x,vel.y); vx=vel.x/n; vy=vel.y/n;
+      ctx.save(); ctx.strokeStyle='#d97706'; ctx.globalAlpha=0.5; ctx.setLineDash([4,6]); ctx.lineWidth=2; ctx.beginPath();
+      trail.forEach((q,i)=>i?ctx.lineTo(q.x,q.y):ctx.moveTo(q.x,q.y)); ctx.stroke(); ctx.restore();
+    }
+    arrow(ctx,bx,by,bx+vx*70,by+vy*70,'#d97706',4,'v',0,-12);
+    ctx.fillStyle='#2f6fb0'; ctx.beginPath(); ctx.arc(bx,by,13,0,Math.PI*2); ctx.fill();
+    read.innerHTML = !los
+      ? '<span class="v">Het touw trekt de bal naar het midden.</span><br><span class="k">F<sub>r</sub> staat <b>loodrecht</b> op de snelheid: de bal gaat even snel, maar verandert voortdurend van <b>richting</b>.</span>'
+      : '<span class="v">Het touw is los: F<sub>r</sub> = 0.</span><br><span class="ok">De bal gaat <b>rechtdoor</b>, met dezelfde snelheid (traagheid). Hij vliegt niet naar buiten weg van het midden, maar in de richting van zijn snelheid op het moment dat je losliet.</span>';
+  }
+  let last=performance.now();
+  function loop(now){
+    const dt=Math.min(0.05,(now-last)/1000); last=now;
+    if(isActive('s4')){
+      if(!los) ang+=OM*dt;
+      else { p.x+=vel.x*dt; p.y+=vel.y*dt; trail.push({...p}); if(p.x<-40||p.x>W+40||p.y<-40||p.y>H+40) reset(); }
+      draw();
+    }
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+})();
+
+//////////////////// SCHETSEN VOOR DE KAARTEN ////////////////////
+function svgArrow(x1,y1,x2,y2,col,w=3.5,lab='',lx=0,ly=-8){
+  const a=Math.atan2(y2-y1,x2-x1), s=10;
+  const p1=[x2-s*Math.cos(a-0.42),y2-s*Math.sin(a-0.42)], p2=[x2-s*Math.cos(a+0.42),y2-s*Math.sin(a+0.42)];
+  return `<line x1="${x1}" y1="${y1}" x2="${x2-6*Math.cos(a)}" y2="${y2-6*Math.sin(a)}" stroke="${col}" stroke-width="${w}" stroke-linecap="round"/>`+
+    `<polygon points="${x2},${y2} ${p1} ${p2}" fill="${col}"/>`+
+    (lab?`<text x="${(x1+x2)/2+lx}" y="${(y1+y2)/2+ly}" fill="${col}" font-size="13" font-weight="700" text-anchor="middle" font-family="Inter, sans-serif">${lab}</text>`:'');
+}
+const blok=(x,y,w=60,h=36,fill='#e8eef6')=>`<rect x="${x-w/2}" y="${y-h}" width="${w}" height="${h}" rx="5" fill="${fill}" stroke="#1D2A36" stroke-width="2"/>`;
+const grond=(y=140)=>`<line x1="10" y1="${y}" x2="290" y2="${y}" stroke="#cfd8e2" stroke-width="3"/>`;
+const svgWrap=inner=>`<svg viewBox="0 0 300 170" xmlns="http://www.w3.org/2000/svg">${inner}</svg>`;
+const R='#dc2626', V='#d97706', B='#2563eb', G='#059669';
+
+//////////////////// 5 — OVERZICHT ////////////////////
+(function(){
+  const kaarten=[
+    {tag:'F<sub>r</sub> = 0', titel:'Stilstaan blijft stilstaan',
+     svg:svgWrap(grond()+blok(150,140)+`<text x="150" y="60" text-anchor="middle" font-size="14" font-weight="700" fill="${R}" font-family="Inter, sans-serif">Fr = 0</text>`),
+     tekst:'Er werkt geen resulterende kracht en het voorwerp staat stil. Het <b>blijft stilstaan</b>.'},
+    {tag:'F<sub>r</sub> = 0', titel:'Even snel rechtdoor (ERB)',
+     svg:svgWrap(grond()+blok(150,140)+svgArrow(150,160,215,160,V,3.5,'v',0,-4)+`<text x="150" y="60" text-anchor="middle" font-size="14" font-weight="700" fill="${R}" font-family="Inter, sans-serif">Fr = 0</text>`),
+     tekst:'Het voorwerp beweegt en F<sub>r</sub> = 0. Het blijft <b>even snel rechtdoor</b> gaan: een eenparig rechtlijnige beweging. Dit is de <b>traagheidswet</b>.'},
+    {tag:'F<sub>r</sub> mee met v', titel:'Sneller gaan',
+     svg:svgWrap(grond()+blok(150,140)+svgArrow(150,160,215,160,V,3.5,'v',0,-4)+svgArrow(182,105,255,105,R,4.5,'Fr',0,-8)),
+     tekst:'F<sub>r</sub> wijst in <b>dezelfde zin</b> als de beweging. De snelheid <b>neemt toe</b>.'},
+    {tag:'F<sub>r</sub> tegen v', titel:'Trager gaan',
+     svg:svgWrap(grond()+blok(150,140)+svgArrow(150,160,215,160,V,3.5,'v',0,-4)+svgArrow(118,105,45,105,R,4.5,'Fr',0,-8)),
+     tekst:'F<sub>r</sub> wijst <b>tegen</b> de beweging in. De snelheid <b>neemt af</b>. Blijft F<sub>r</sub> werken, dan stopt het voorwerp en keert het om.'},
+    {tag:'F<sub>r</sub> ⊥ v', titel:'Van richting veranderen',
+     svg:svgWrap(`<path d="M40 140 Q150 20 260 140" fill="none" stroke="#c9d4df" stroke-width="2" stroke-dasharray="6 6"/><circle cx="150" cy="80" r="11" fill="#2f6fb0"/>`+svgArrow(150,80,215,80,V,3.5,'v',0,-8)+svgArrow(150,80,150,140,R,4.5,'Fr',16,4)),
+     tekst:'F<sub>r</sub> staat <b>loodrecht</b> op de beweging. De <b>richting</b> van de snelheid verandert: het voorwerp gaat door een bocht.'},
+  ];
+  document.getElementById('s5-cards').innerHTML=kaarten.map(k=>`<div class="card">${k.svg}<div class="txt"><span class="tag">${k.tag}</span><h4>${k.titel}</h4><p>${k.tekst}</p></div></div>`).join('');
+})();
+
+//////////////////// 6 — DAGELIJKS LEVEN ////////////////////
+(function(){
+  const auto=(x,y)=>`<path d="M${x-70} ${y-14} h140 v-22 l-24 -4 l-18 -22 h-62 l-20 22 l-16 4 z" fill="#9ec5ea" stroke="#1D2A36" stroke-width="2"/><circle cx="${x-40}" cy="${y-12}" r="11" fill="#333"/><circle cx="${x+40}" cy="${y-12}" r="11" fill="#333"/>`;
+  const kaarten=[
+    {tag:'traagheid', titel:'Gordel en hoofdsteun',
+     svg:svgWrap(grond(140)+auto(150,140)+svgArrow(220,45,268,45,V,3.5,'v auto',0,-8)+`<text x="150" y="160" text-anchor="middle" font-size="12" fill="#51606E" font-family="Inter, sans-serif">auto remt plots</text>`),
+     tekst:'Remt de auto plots, dan wil jouw lichaam <b>even snel verder</b> bewegen. De <b>gordel</b> houdt je tegen. Wordt de auto van achter aangereden, dan schiet de auto vooruit en blijft je hoofd achter: daarvoor dient de <b>hoofdsteun</b>.'},
+    {tag:'traagheid', titel:'De tafelkleed-truc',
+     svg:svgWrap(`<rect x="60" y="92" width="180" height="10" fill="#1D2A36"/><rect x="80" y="102" width="8" height="50" fill="#1D2A36"/><rect x="212" y="102" width="8" height="50" fill="#1D2A36"/><path d="M60 88 h180 v6 h-180 z" fill="#e6b4b4"/><rect x="120" y="58" width="22" height="30" rx="3" fill="#dbeafe" stroke="#1D2A36" stroke-width="2"/><circle cx="175" cy="80" r="10" fill="#fff" stroke="#1D2A36" stroke-width="2"/>`+svgArrow(60,120,12,120,B,3.5,'trek snel',8,-8)),
+     tekst:'Trek je het tafelkleed <b>heel snel</b> weg, dan blijven glas en bord bijna op hun plaats staan. Door hun traagheid hebben ze geen tijd om mee te bewegen.'},
+    {tag:'F<sub>r</sub> = 0', titel:'Fietsen aan constante snelheid',
+     svg:svgWrap(grond(140)+`<circle cx="115" cy="118" r="20" fill="none" stroke="#1D2A36" stroke-width="3"/><circle cx="185" cy="118" r="20" fill="none" stroke="#1D2A36" stroke-width="3"/><path d="M115 118 L140 90 L180 90 L185 118 M140 90 L150 118 L185 118" fill="none" stroke="#1D2A36" stroke-width="3"/>`+svgArrow(195,70,255,70,B,4,'trapkracht',0,-8)+svgArrow(105,70,45,70,G,4,'wrijving',0,-8)),
+     tekst:'Je trapt, maar je gaat toch niet sneller? Dan is je trapkracht <b>even groot</b> als de wrijving (lucht en weg). F<sub>r</sub> = 0, dus je snelheid blijft gelijk. Stop je met trappen, dan wint de wrijving: je gaat trager.'},
+    {tag:'F<sub>r</sub> = 0', titel:'Een ruimtesonde',
+     svg:svgWrap(`<rect x="0" y="0" width="300" height="170" fill="#16243a"/><circle cx="40" cy="30" r="1.5" fill="#fff"/><circle cx="260" cy="50" r="1.5" fill="#fff"/><circle cx="210" cy="140" r="1.5" fill="#fff"/><circle cx="70" cy="130" r="1.5" fill="#fff"/><rect x="120" y="72" width="40" height="26" fill="#c9d4df"/><rect x="88" y="78" width="30" height="14" fill="#2f6fb0"/><rect x="162" y="78" width="30" height="14" fill="#2f6fb0"/>`+svgArrow(200,120,262,120,'#fbbf24',3.5,'v',0,-8)),
+     tekst:'Ver in de ruimte is er bijna geen kracht op een sonde. De motor staat uit, maar de sonde vliegt toch <b>jaren lang even snel rechtdoor</b>. Ze heeft geen kracht nodig om te blijven bewegen.'},
+    {tag:'traagheid', titel:'Ketchup uit de fles',
+     svg:svgWrap(`<g transform="translate(0,170) scale(1,-1)"><path d="M135 30 h30 v20 l14 14 v70 a8 8 0 0 1 -8 8 h-42 a8 8 0 0 1 -8 -8 v-70 l14 -14 z" fill="#d23c2c" stroke="#1D2A36" stroke-width="2"/></g><rect x="133" y="120" width="34" height="22" fill="#fff" stroke="#1D2A36" stroke-width="2"/><circle cx="150" cy="156" r="5" fill="#d23c2c"/><circle cx="143" cy="166" r="3.5" fill="#d23c2c"/>`+svgArrow(108,30,108,110,V,3.5,'',0,0)+`<text x="98" y="70" text-anchor="end" font-size="12" fill="#51606E" font-family="Inter, sans-serif">snel omlaag</text><text x="98" y="86" text-anchor="end" font-size="12" fill="#51606E" font-family="Inter, sans-serif">en plots stop</text>`),
+     tekst:'Je houdt de fles ondersteboven, beweegt ze snel naar beneden en <b>stopt plots</b>. De fles stopt, maar de ketchup wil <b>verder bewegen</b> door zijn traagheid en schiet eruit.'},
+    {tag:'F<sub>r</sub> ⊥ v', titel:'Een auto in een bocht',
+     svg:svgWrap(`<path d="M30 150 Q60 40 170 30 L280 30" fill="none" stroke="#cfd8e2" stroke-width="26"/><circle cx="92" cy="72" r="10" fill="#2f6fb0"/>`+svgArrow(92,72,128,46,V,3.5,'v',8,-6)+svgArrow(92,72,120,102,R,4,'Fr',14,6)),
+     tekst:'In een bocht verandert de auto van <b>richting</b>. Daarvoor is een kracht nodig die naar de binnenkant van de bocht wijst: de wrijving tussen banden en weg. Op ijs is die te klein: de auto gaat dan <b>rechtdoor</b>.'},
+  ];
+  document.getElementById('s6-cards').innerHTML=kaarten.map(k=>`<div class="card">${k.svg}<div class="txt"><span class="tag">${k.tag}</span><h4>${k.titel}</h4><p>${k.tekst}</p></div></div>`).join('');
+})();
+
+//////////////////// 7 — OEFENEN ////////////////////
+(function(){
+  const c=document.getElementById('c7'), ctx=hiDPI(c), W=c._w, H=c._h;
+  const box=document.getElementById('s7-q'), scoreEl=document.getElementById('s7-score');
+  let goed=0, totaal=0, opg=null, stap=0;
+  const rnd=a=>a[Math.floor(Math.random()*a.length)];
+
+  function nieuw(){
+    let F1,F2;
+    const soort=rnd(['gelijk','rechts','links','rechts','links']);
+    F1=rnd([20,30,40,50,60,80]);
+    F2= soort==='gelijk'?F1 : soort==='rechts'? rnd([10,20,30,40,50,60,70].filter(f=>f<F1)) : rnd([30,40,50,60,70,80,90,100].filter(f=>f>F1));
+    if(F2===undefined){ F1=60; F2=20; }
+    const beweging=rnd(['rust','rechts','links']);
+    opg={F1,F2,Fr:F1-F2,beweging}; stap=0; teken(); vraag();
+  }
+  function teken(){
+    ctx.clearRect(0,0,W,H); ctx.fillStyle='#f7f9fb'; ctx.fillRect(0,0,W,H);
+    const gy=170; ctx.fillStyle='#e3e9ef'; ctx.fillRect(0,gy,W,8);
+    const cx=W/2; ctx.fillStyle='#e8eef6'; ctx.strokeStyle='#1D2A36'; ctx.lineWidth=2; roundRect(ctx,cx-50,gy-60,100,60,6); ctx.fill(); ctx.stroke();
+    text(ctx,'m',cx,gy-24,{size:18,weight:700,align:'center'});
+    const K=1.8;
+    arrow(ctx,cx+50,gy-30,cx+50+opg.F1*K,gy-30,'#2563eb',5);
+    arrow(ctx,cx-50,gy-30,cx-50-opg.F2*K,gy-30,'#059669',5);
+    text(ctx,'F₁ = '+opg.F1+' N',cx+58+opg.F1*K,gy-25,{size:16,weight:700,color:'#2563eb'});
+    text(ctx,'F₂ = '+opg.F2+' N',cx-58-opg.F2*K,gy-25,{size:16,weight:700,color:'#059669',align:'right'});
+    const bw={rust:'Het voorwerp staat stil.',rechts:'Het voorwerp beweegt naar rechts.',links:'Het voorwerp beweegt naar links.'}[opg.beweging];
+    if(opg.beweging!=='rust'){ const s=opg.beweging==='rechts'?1:-1; arrow(ctx,cx-40*s,gy+40,cx+40*s,gy+40,'#d97706',4,'v',0,-8); }
+    text(ctx,bw,16,26,{size:15,weight:700});
+    text(ctx,'Er is geen wrijving.',16,48,{size:13,color:'#51606E'});
+  }
+  function knoppen(opties,juist,uitlegGoed,uitlegFout,volgende){
+    const wrap=document.createElement('div'); wrap.className='keuzes';
+    const fb=document.createElement('div'); fb.className='feedback';
+    opties.forEach(o=>{
+      const b=document.createElement('button'); b.className='btn'; b.innerHTML=o.label;
+      b.onclick=()=>{
+        if(wrap.dataset.klaar) return; wrap.dataset.klaar=1;
+        const ok=o.id===juist; totaal++; if(ok) goed++; scoreEl.textContent=goed+' / '+totaal+' juist';
+        [...wrap.children].forEach((bb,i)=>{ if(opties[i].id===juist) bb.classList.add('goed'); else if(bb===b) bb.classList.add('fout'); });
+        fb.className='feedback '+(ok?'goed':'fout');
+        fb.innerHTML=(ok?'<b>Juist!</b>':'<b>Niet juist.</b>')+'<span class="uitleg">'+(ok?uitlegGoed:uitlegFout)+'</span>';
+        if(volgende) setTimeout(volgende,300);
+      };
+      wrap.appendChild(b);
+    });
+    return [wrap,fb];
+  }
+  function vraag(){
+    box.innerHTML='';
+    const {F1,F2,Fr,beweging}=opg;
+    const frTxt = Fr===0?'F<sub>r</sub> = 0 N':`F<sub>r</sub> = ${Math.abs(Fr)} N naar ${Fr>0?'rechts':'links'}`;
+    // vraag 1: resulterende kracht
+    const q1=document.createElement('div'); q1.className='vraag'; q1.innerHTML='1. Hoe groot is de resulterende kracht F<sub>r</sub>, en in welke zin?';
+    box.appendChild(q1);
+    const juist1 = Fr===0?'0':(Fr>0?'r':'l');
+    const fout = new Set([Math.abs(Fr), F1+F2]);
+    const opties1=[
+      {id:'0',label:'F<sub>r</sub> = 0 N'},
+      {id:'r',label:`F<sub>r</sub> = ${Math.abs(Fr)||F1} N naar rechts`},
+      {id:'l',label:`F<sub>r</sub> = ${Math.abs(Fr)||F1} N naar links`},
+      {id:'som',label:`F<sub>r</sub> = ${F1+F2} N`},
+    ];
+    const [w1,fb1]=knoppen(opties1,juist1,
+      `F<sub>r</sub> = F₁ − F₂ = ${F1} N − ${F2} N → ${frTxt}.`,
+      `Krachten in tegengestelde zin trek je van elkaar af: F₁ − F₂ = ${F1} N − ${F2} N → ${frTxt}. De zin is die van de grootste kracht.`,
+      vraag2);
+    box.appendChild(w1); box.appendChild(fb1);
+  }
+  function vraag2(){
+    const {Fr,beweging}=opg;
+    const q2=document.createElement('div'); q2.className='vraag'; q2.innerHTML='2. Wat gebeurt er met de snelheid?';
+    box.appendChild(q2);
+    let juist, uitleg;
+    if(Fr===0 && beweging==='rust'){ juist='rust'; uitleg='F<sub>r</sub> = 0 en het voorwerp staat stil: het <b>blijft stilstaan</b>.'; }
+    else if(Fr===0){ juist='gelijk'; uitleg='F<sub>r</sub> = 0: de snelheid <b>blijft gelijk</b>. Het voorwerp gaat even snel rechtdoor (traagheidswet). Je hebt geen kracht nodig om te blijven bewegen!'; }
+    else if(beweging==='rust'){ juist='start'; uitleg=`Het voorwerp staat stil en F<sub>r</sub> ≠ 0: het <b>begint te bewegen naar ${Fr>0?'rechts':'links'}</b>, in de zin van F<sub>r</sub>.`; }
+    else if((Fr>0)===(beweging==='rechts')){ juist='sneller'; uitleg='F<sub>r</sub> wijst <b>mee</b> met de beweging: de snelheid <b>neemt toe</b>.'; }
+    else { juist='trager'; uitleg='F<sub>r</sub> wijst <b>tegen</b> de beweging in: de snelheid <b>neemt af</b>.'; }
+    const opties=[
+      {id:'rust',label:'blijft stilstaan'},
+      {id:'start',label:'begint te bewegen'},
+      {id:'gelijk',label:'blijft even groot'},
+      {id:'sneller',label:'neemt toe'},
+      {id:'trager',label:'neemt af'},
+    ].filter(o=> beweging==='rust' ? ['rust','start'].includes(o.id) : !['rust','start'].includes(o.id));
+    const [w2,fb2]=knoppen(opties,juist,uitleg,uitleg,null);
+    box.appendChild(w2); box.appendChild(fb2);
+  }
+  document.getElementById('s7-nieuw').onclick=nieuw;
+  nieuw();
+})();
+</script>
+</body>
+</html>
