@@ -198,6 +198,12 @@ const TOOLS = [
   { vak:"Biologie", richting:"andere", icoon:"blad", jaren:[3], titel:"Water, prikkels en reacties",
     tekst:"Waterhuishouding van planten, homeostase en feedback, receptoren en het oog, spieren als effectoren.",
     open:"biologie-prikkels.html", bestand:"biologie-prikkels.html" },
+  { vak:"Biologie", richting:"andere", icoon:"klier", jaren:[3], hfd:"Thema 3 · Hfd 3–4", titel:"Reactie door klieren",
+    tekst:"Excretie en secretie, exocriene en endocriene klieren, hormonen, en hormonen bij dieren en planten.",
+    open:"biologie-klieren.html", bestand:"biologie-klieren.html" },
+  { vak:"Biologie", richting:"andere", icoon:"neuron", jaren:[3], hfd:"Thema 4", titel:"Coördinatie van reacties op prikkels",
+    tekst:"Zenuwstelsel, hersenen, neuronen en synaps, reflexen, en de regeling van de bloedsuikerspiegel.",
+    open:"biologie-zenuwstelsel.html", bestand:"biologie-zenuwstelsel.html" },
   { vak:"Chemie", richting:"andere", icoon:"woorden", jaren:[3], titel:"Nieuwe woorden leren",
     tekst:"Leertips voor de chemiewoorden: lange woorden knippen, patronen en zinnen om mee te beginnen.",
     open:"chemie-woorden-leren.html", bestand:"chemie-woorden-leren.html" },
@@ -248,6 +254,15 @@ const ICONEN = {
   magneet: `<path d="M12 8 V26 A12 12 0 0 0 36 26 V8" stroke-width="8" fill="none"/><path d="M12 8 V14 M36 8 V14" stroke-width="9" stroke="#fff" opacity=".55"/><text x="12" y="45" text-anchor="middle" font-size="8" font-weight="700">N</text><text x="36" y="45" text-anchor="middle" font-size="8" font-weight="700">Z</text>`,
   rekenen: `<path d="M6 34 H42" stroke-width="1"/><text x="24" y="27" text-anchor="middle" font-size="13" font-weight="700">×10³</text><text x="24" y="44" text-anchor="middle" font-size="9">km → m</text>`,
   /* blad met nerven en een oog-achtige druppel */
+  /* klier: druiventrosje van klierblaasjes met afvoerbuis */
+  klier: `<path d="M24 4 C23 12 25 18 24 24" stroke-width="2.2"/><path d="M24 24 C20 28 16 30 13 33 M24 24 C25 30 25 34 25 38 M24 24 C28 28 32 30 35 33" stroke-width="1.6"/>
+    <circle cx="11" cy="35" r="6" ${Z(.25)}/><circle cx="11" cy="35" r="6"/><circle cx="25" cy="40" r="6" ${Z(.25)}/><circle cx="25" cy="40" r="6"/><circle cx="37" cy="35" r="6" ${Z(.25)}/><circle cx="37" cy="35" r="6"/>
+    <circle cx="11" cy="35" r="1.6" ${T}/><circle cx="25" cy="40" r="1.6" ${T}/><circle cx="37" cy="35" r="1.6" ${T}/>`,
+  /* neuron: cellichaam met dendrieten en axon */
+  neuron: `<path d="M13 24 C9 18 6 14 3 12 M13 24 C8 26 5 30 3 34 M13 24 C12 17 13 10 11 5 M8 15 L4 18" stroke-width="1.5"/>
+    <circle cx="14" cy="24" r="6" ${Z(.3)}/><circle cx="14" cy="24" r="6"/><circle cx="14" cy="24" r="2" ${T}/>
+    <path d="M20 24 H40" stroke-width="1.6"/><rect x="23" y="21.5" width="6" height="5" rx="2.5" ${Z(.35)}/><rect x="31" y="21.5" width="6" height="5" rx="2.5" ${Z(.35)}/>
+    <path d="M40 24 L44 19 M40 24 L45 24 M40 24 L44 29" stroke-width="1.5"/>`,
   blad: `<path d="M8 40 C8 18 24 6 42 6 C42 26 30 40 8 40Z" ${Z(.15)}/><path d="M8 40 C8 18 24 6 42 6 C42 26 30 40 8 40Z"/>
     <path d="M8 40 L36 12 M17 31 L17 22 M24 24 L24 15 M17 31 L26 31 M24 24 L33 24" stroke-width="1.3"/>`,
   /* atoom: kern met elektronen op een schil */

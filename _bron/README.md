@@ -32,3 +32,9 @@ Nodig: Python 3, Node.js met de pakketten `docx` en `playwright`.
 4. Publiceren: `git add -A && git commit && git push` in de repo.
 
 Een nieuwe sessie met Claude kan dit opnieuw opzetten: vraag om de repo te klonen en de mappen uit `_bron` naar `/home/claude/` te kopiëren.
+
+## 3de jaar, andere richtingen (leerplan II-Nat'-d)
+
+- `aso/bouw_3aso.py` maakt de fysicatools `*-3aso.html` uit de 3NW-tools. Pas altijd de 3NW-tool aan en draai daarna dit script opnieuw.
+- `chemie3/` bevat de lessites ionvorming, samenstelling en reactie: `python3 _bron/chemie3/ionvorming.py` (en `samenstelling.py`, `reactie.py`). Ze gebruiken de stijl van chemie-pse.html (`kop.html`, `helpers.js`).
+- `bio3/` bevat de lessites klieren en zenuwstelsel: `python3 _bron/bio3/klieren.py` en `zenuwstelsel.py`. De afbeeldingen in `bio3/img` komen van Wikimedia Commons, met de Engelse namen weggehaald. De bronnen en licenties staan onderaan elke lessite. `organisch.js` tekent de eigen figuren.
