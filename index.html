@@ -152,6 +152,9 @@ const TOOLS = [
   { vak:"Fysica", icoon:"schakeling", jaren:[5], hfd:"Thema 2 · Hfd 3", titel:"Gemengde schakelingen",
     tekst:"Wet van Ohm, serie en parallel, en gemengde schakelingen stap voor stap oplossen.",
     open:"schakelingen.html", bestand:"schakelingen.html" },
+  { vak:"Fysica", icoon:"magneet", jaren:[5], hfd:"Thema 3 · Hfd 1–3", titel:"Elektromagnetisme",
+    tekst:"Magneten en weissgebieden, veld rond stroom, lorentzkracht, motor, inductie, transformator en generator.",
+    open:"elektromagnetisme.html", bestand:"elektromagnetisme.html" },
   { vak:"Algemeen", icoon:"formule", jaren:[3,4,5], titel:"Formules omvormen",
     tekst:"Redeneren met formules en ze omvormen. Ook voorvoegsels en eenheden.",
     open:"formuleredeneertool.html", bestand:"formuleredeneertool.html" },
@@ -197,6 +200,7 @@ const DEFS = `<defs><marker id="PIJL" viewBox="0 0 10 10" refX="8.5" refY="5" ma
 const T = 'fill="currentColor" stroke="none"';           /* gevulde vorm */
 const Z = (o) => `fill="currentColor" stroke="none" opacity="${o}"`; /* zachte tint */
 const ICONEN = {
+  magneet: `<path d="M12 8 V26 A12 12 0 0 0 36 26 V8" stroke-width="8" fill="none"/><path d="M12 8 V14 M36 8 V14" stroke-width="9" stroke="#fff" opacity=".55"/><text x="12" y="45" text-anchor="middle" font-size="8" font-weight="700">N</text><text x="36" y="45" text-anchor="middle" font-size="8" font-weight="700">Z</text>`,
   rekenen: `<path d="M6 34 H42" stroke-width="1"/><text x="24" y="27" text-anchor="middle" font-size="13" font-weight="700">×10³</text><text x="24" y="44" text-anchor="middle" font-size="9">km → m</text>`,
   /* blad met nerven en een oog-achtige druppel */
   blad: `<path d="M8 40 C8 18 24 6 42 6 C42 26 30 40 8 40Z" ${Z(.15)}/><path d="M8 40 C8 18 24 6 42 6 C42 26 30 40 8 40Z"/>

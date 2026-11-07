@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Elektromagnetisme</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EEF2F5; --panel:#FFFFFF; --panel-2:#F5F8FB; --line:#D3DCE5;
+  --text:#1D2A36; --text-dim:#51606E;
+  --accent:#2F6FB0; --accent-dark:#245A91; --accent-soft:#E4EEF8;
+  --ok-text:#1F7A4A; --ok-bg:#E3F3E9; --flag-text:#B3362B; --flag-bg:#FBE6E3;
+  --fz:#7c3aed; --fn:#059669; --g:#d97706; --f:#2563eb; --fw:#dc2626; --fv:#0891b2;
+  --font:'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:var(--font);}
+body{-webkit-font-smoothing:antialiased;line-height:1.55;}
+.top{max-width:1180px;margin:0 auto;padding:36px 24px 0;}
+.top .eyebrow{font-size:13px;font-weight:700;color:var(--accent-dark);letter-spacing:.04em;text-transform:uppercase;margin-bottom:6px;}
+.top h1{font-size:2rem;font-weight:700;letter-spacing:-0.015em;margin:0 0 8px;}
+.top .intro{color:var(--text-dim);max-width:72ch;font-size:15px;line-height:1.6;margin:0;}
+.top .intro strong{color:var(--text);}
+nav{display:flex;flex-wrap:wrap;gap:8px;}
+.catnav{gap:4px;margin:22px 0 14px;border-bottom:1px solid var(--line);}
+.catnav button{font-family:var(--font);font-weight:500;font-size:15px;background:none;border:none;border-bottom:2px solid transparent;margin-bottom:-1px;color:var(--text-dim);padding:9px 14px;cursor:pointer;}
+.catnav button:hover{color:var(--text);}
+.catnav button.active{color:var(--text);font-weight:600;border-bottom-color:var(--accent);}
+#nav button{display:flex;align-items:center;gap:9px;font-family:var(--font);font-size:14px;font-weight:500;background:var(--panel);border:1px solid var(--line);color:var(--text-dim);padding:9px 14px 9px 10px;border-radius:10px;cursor:pointer;text-align:left;}
+#nav button .nr{flex:none;min-width:24px;height:24px;border-radius:12px;padding:0 6px;display:inline-flex;align-items:center;justify-content:center;background:var(--accent-soft);color:var(--accent-dark);font-size:12px;font-weight:700;}
+#nav button:hover{border-color:var(--accent);color:var(--text);}
+#nav button.active{background:var(--accent-soft);border-color:var(--accent);color:var(--text);font-weight:600;}
+#nav button.active .nr{background:var(--accent);color:#fff;}
+main{max-width:1180px;margin:0 auto;padding:26px 24px 70px;}
+.scene{display:none;}
+.scene.active{display:block;animation:fade .25s ease;}
+@keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+.scene-head{display:flex;align-items:center;gap:10px;margin-bottom:4px;flex-wrap:wrap;}
+.scene-head .num{min-width:28px;height:28px;border-radius:14px;padding:0 7px;display:inline-flex;align-items:center;justify-content:center;background:var(--accent);color:#fff;font-size:13px;font-weight:700;}
+.scene-head h3{font-size:1.5rem;letter-spacing:-0.01em;margin:0;font-weight:700;}
+.scene-sub{color:var(--text-dim);font-size:15px;margin:4px 0 18px;max-width:78ch;line-height:1.55;}
+.scene-sub strong{color:var(--text);}
+.grid{display:grid;grid-template-columns:1fr 330px;gap:18px;align-items:start;}
+@media(max-width:880px){.grid{grid-template-columns:1fr;}}
+.tek{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;}
+.tek svg{display:block;width:100%;height:auto;touch-action:none;}
+.controls{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 16px 18px;display:flex;flex-direction:column;gap:14px;}
+.ctrl label{display:flex;justify-content:space-between;font-size:13px;font-weight:600;margin-bottom:6px;}
+.ctrl label span{font-weight:700;color:var(--accent-dark);font-variant-numeric:tabular-nums;}
+.ctrl input[type=range]{width:100%;accent-color:var(--accent);}
+select{font-family:var(--font);font-size:15px;padding:7px 9px;border:1px solid var(--line);border-radius:8px;background:#fff;width:100%;}
+.knoppen{display:flex;flex-wrap:wrap;gap:6px;}
+.btn{background:#fff;border:1px solid var(--line);color:var(--text);border-radius:8px;padding:8px 12px;font-family:var(--font);font-weight:600;font-size:14px;cursor:pointer;}
+.btn:hover{border-color:var(--accent);}
+.btn.on{background:var(--accent-soft);border-color:var(--accent);}
+.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent);}
+.readout{background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:14.5px;line-height:1.75;font-variant-numeric:tabular-nums;}
+.readout b{color:var(--text);}
+.readout .ok{color:var(--ok-text);font-weight:700;}
+.readout .flag{color:var(--flag-text);font-weight:700;}
+.kader{border-left:4px solid var(--ok-text);background:var(--ok-bg);border-radius:0 10px 10px 0;padding:10px 14px;font-size:14.5px;}
+.kader .kop{font-weight:700;color:var(--ok-text);margin-bottom:2px;}
+.kader p{margin:0 0 4px;}.kader p:last-child{margin:0;}
+.note{background:var(--panel-2);border-left:4px solid var(--accent);border-radius:0 8px 8px 0;padding:10px 12px;font-size:14px;color:var(--text-dim);line-height:1.6;}
+.note strong{color:var(--text);}
+.formule{font-size:18px;font-weight:700;text-align:center;background:#fff;border:1px solid var(--line);border-radius:8px;padding:8px;}
+.omvorm{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;font-size:14px;text-align:center;}
+.omvorm div{background:#fff;border:1px solid var(--line);border-radius:8px;padding:6px 4px;font-weight:600;}
+.legend{display:flex;flex-direction:column;gap:5px;font-size:13px;color:var(--text-dim);}
+.legend .row{display:flex;align-items:center;gap:8px;}
+.legend .sw{width:18px;height:4px;border-radius:2px;flex:none;}
+label.chk{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:500;}
+table.t{border-collapse:collapse;width:100%;font-size:14px;margin-top:14px;background:#fff;border:1px solid var(--line);border-radius:8px;overflow:hidden;}
+table.t th,table.t td{border-bottom:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top;}
+table.t th{background:var(--panel-2);font-size:12.5px;color:var(--text-dim);}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px;}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden;}
+.card svg{display:block;width:100%;height:auto;background:#fbfcfe;border-bottom:1px solid #E6ECF2;}
+.card .txt{padding:12px 16px 14px;}
+.card h4{margin:0 0 4px;font-size:1rem;}
+.card p{margin:0;font-size:14px;color:var(--text-dim);line-height:1.55;}
+.card p b{color:var(--text);}
+.tag{display:inline-block;font-size:12px;font-weight:700;padding:2px 8px;border-radius:999px;margin-bottom:6px;background:var(--accent-soft);color:var(--accent-dark);}
+.tag.dyn{background:var(--flag-bg);color:var(--flag-text);}
+.tag.stat{background:var(--ok-bg);color:var(--ok-text);}
+.mini{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px;}
+@media(max-width:700px){.mini{grid-template-columns:1fr;}}
+.mini .tek{padding:4px;}
+.mini h5{margin:6px 8px 0;font-size:13px;}
+/* oefenen */
+.oef{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px;}
+.oef-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px;}
+.score{font-size:14px;font-weight:600;color:var(--ok-text);background:var(--ok-bg);padding:3px 10px;border-radius:999px;}
+.soort{display:flex;flex-wrap:wrap;gap:6px;}
+.soort .btn{font-weight:500;padding:6px 11px;}
+.vraag{font-weight:600;font-size:16px;margin:14px 0 10px;}
+.keuzes{display:flex;flex-direction:column;gap:8px;}
+.keuzes .btn{font-weight:500;text-align:left;}
+.keuzes .btn.goed{background:var(--ok-bg);border-color:var(--ok-text);color:var(--ok-text);font-weight:700;}
+.keuzes .btn.fout{background:var(--flag-bg);border-color:var(--flag-text);color:var(--flag-text);}
+.antw{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+.antw input{font-family:var(--font);font-size:16px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;width:9em;}
+.feedback{margin-top:12px;font-size:15px;line-height:1.6;}
+.feedback.goed{color:var(--ok-text);}
+.feedback.fout{color:var(--flag-text);}
+.feedback .uitleg{color:var(--text);display:block;margin-top:4px;}
+footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-dim);font-size:12px;}
+footer a{color:inherit;}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="eyebrow">Fysica 5de jaar · Thema 3 · Elektromagnetisme · hoofdstuk 1 tot 3</div>
+  <h1>Elektromagnetisme</h1>
+  <p class="intro"><strong>Magneten, elektromagneten, motoren en generatoren.</strong> Ontdek hoe bewegende lading een magnetisch veld maakt, hoe een magnetisch veld een kracht uitoefent op stroom, en hoe een veranderend veld een spanning opwekt.</p>
+  <nav id="catnav" class="catnav"></nav>
+  <nav id="nav"></nav>
+</header>
+<main>
+
+<section class="scene" id="m1" data-nr="1.1" data-cat="h1" data-title="Polen en veldlijnen">
+  <div class="scene-head"><span class="num"></span><h3>Magnetische polen en veldlijnen</h3></div>
+  <p class="scene-sub">Draai de rechtse magneet om. <strong>Gelijke polen stoten af, ongelijke polen trekken aan.</strong> De veldlijnen lopen buiten de magneet van <strong>noord naar zuid</strong>. Waar ze dicht bij elkaar liggen, is het veld sterk.</p>
+  <div class="grid">
+    <div class="tek"><svg id="s_m1" viewBox="0 0 640 400"></svg></div>
+    <div class="controls">
+      <div class="knoppen" id="m1k"><button class="btn on" data-v="een">Eén magneet</button><button class="btn" data-v="ns">N tegenover Z</button><button class="btn" data-v="nn">N tegenover N</button><button class="btn" data-v="aarde">Aarde</button></div>
+      <div class="readout" id="r_m1"></div>
+      <div class="kader"><div class="kop">Onthoud</div>
+        <p>Een magneet heeft altijd een <b>noordpool (N)</b> en een <b>zuidpool (Z)</b>. Je kunt ze niet scheiden.</p>
+        <p><b>Magnetische veldlijnen</b> geven in elk punt de richting van het veld: de richting waarin de noordpool van een kompasnaald wijst.</p>
+        <p>Hoe <b>dichter</b> de veldlijnen, hoe <b>groter</b> de magnetische veldsterkte.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="scene" id="m2" data-nr="1.1" data-cat="h1" data-title="Weissgebieden">
+  <div class="scene-head"><span class="num"></span><h3>Weissgebieden en magnetische influentie</h3></div>
+  <p class="scene-sub">Elk elektron gedraagt zich door zijn <strong>spin</strong> als een piepklein magneetje. In ijzer richten de spins zich per gebiedje samen: de <strong>weissgebieden</strong>. Breng een magneet dichterbij en kijk wat er gebeurt.</p>
+  <div class="grid">
+    <div class="tek"><svg id="s_m2" viewBox="0 0 640 360"></svg></div>
+    <div class="controls">
+      <div class="ctrl"><label for="m2b">Uitwendig magnetisch veld <span id="m2bv"></span></label><input type="range" id="m2b" min="0" max="100" value="0"></div>
+      <div class="knoppen" id="m2s"><button class="btn on" data-v="week">Week ijzer</button><button class="btn" data-v="staal">Staal</button></div>
+      <div class="readout" id="r_m2"></div>
+      <div class="kader"><div class="kop">Definities</div>
+        <p><b>Weissgebied:</b> een klein gebied in een ferromagnetisch materiaal waarin alle elektronenspins dezelfde richting hebben.</p>
+        <p><b>Magnetische influentie:</b> een ferromagnetisch voorwerp wordt zelf magnetisch in een uitwendig magnetisch veld, doordat de weissgebieden zich richten.</p>
+        <p><b>Ferromagnetisch materiaal:</b> ijzer, nikkel, kobalt en hun legeringen.</p></div>
+      <div class="note"><strong>Magnetisme komt van bewegende lading.</strong> In een permanente magneet: de spin van de elektronen. Bij de aarde: stromen van geïoniseerd, vloeibaar metaal in de buitenkern.</div>
+    </div>
+  </div>
+</section>
+
+<section class="scene" id="m3" data-nr="1.2" data-cat="h1" data-title="Rechte geleider">
+  <div class="scene-head"><span class="num"></span><h3>Magnetisch veld rond een rechte stroomvoerende geleider</h3></div>
+  <p class="scene-sub">Je kijkt van boven op een draad. <strong>⊙</strong>: de stroom komt naar je toe. <strong>⊗</strong>: de stroom gaat van je weg. De veldlijnen zijn <strong>cirkels</strong> rond de draad.</p>
+  <div class="grid">
+    <div class="tek"><svg id="s_m3" viewBox="0 0 640 400"></svg></div>
+    <div class="controls">
+      <div class="knoppen" id="m3z"><button class="btn on" data-v="uit">Stroom naar je toe ⊙</button><button class="btn" data-v="in">Stroom van je weg ⊗</button></div>
+      <div class="ctrl"><label for="m3i">Stroomsterkte I <span id="m3iv"></span></label><input type="range" id="m3i" min="1" max="20" value="10"></div>
+      <div class="ctrl"><label for="m3r">Afstand r tot de draad <span id="m3rv"></span></label><input type="range" id="m3r" min="1" max="10" value="4"></div>
+      <div class="formule">B = μ₀ · I / (2π · r)</div>
+      <div class="readout" id="r_m3"></div>
+      <div class="kader"><div class="kop">Rechterhandregel (rechte geleider)</div><p>Omklem de draad met je rechterhand, je <b>duim in de zin van de stroom</b>. Je <b>vingers</b> wijzen de zin van de veldlijnen aan.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="scene" id="m4" data-nr="1.2" data-cat="h1" data-title="Spoel en elektromagneet">
+  <div class="scene-head"><span class="num"></span><h3>Magnetisch veld in een stroomvoerende spoel</h3></div>
+  <p class="scene-sub">Een spoel gedraagt zich als een staafmagneet. Binnenin is het veld <strong>homogeen</strong>. Met een ijzeren kern wordt het veld veel sterker: een <strong>elektromagneet</strong>.</p>
+  <div class="grid">
+    <div class="tek"><svg id="s_m4" viewBox="0 0 640 380"></svg></div>
+    <div class="controls">
+      <div class="knoppen" id="m4z"><button class="btn on" data-v="1">Stroom ↻</button><button class="btn" data-v="-1">Stroom ↺</button><button class="btn" id="m4uit">Stroom uit</button></div>
+      <div class="ctrl"><label for="m4n">Aantal windingen N <span id="m4nv"></span></label><input type="range" id="m4n" min="50" max="1000" step="50" value="400"></div>
+      <div class="ctrl"><label for="m4i">Stroomsterkte I <span id="m4iv"></span></label><input type="range" id="m4i" min="0.1" max="5" step="0.1" value="2"></div>
+      <div class="ctrl"><label for="m4k">Kern</label><select id="m4k"><option value="1">lucht (μr = 1)</option><option value="200">week ijzer (μr ≈ 200)</option></select></div>
+      <div class="formule">B = μ₀ · μr · N · I / l</div>
+      <div class="readout" id="r_m4"></div>
+      <div class="kader"><div class="kop">Definities</div><p><b>Magnetische inductie B:</b> de grootheid die de sterkte van het magnetisch veld weergeeft (in tesla, T).</p><p><b>Magnetische permeabiliteit μ = μ₀ · μr:</b> zegt hoe goed een stof het magnetisch veld versterkt. μ₀ = 4π · 10⁻⁷ T·m/A.</p><p><b>Rechterhandregel (spoel):</b> je vingers in de zin van de stroom door de windingen, je duim wijst naar de noordpool.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="scene" id="m5" data-nr="1.2" data-cat="h1" data-title="Toepassingen van elektromagneten">
+  <div class="scene-head"><span class="num"></span><h3>Toepassingen van elektromagneten</h3></div>
+  <p class="scene-sub">Een <strong>elektromagneet</strong> kun je aan- en uitschakelen en sterker of zwakker maken. Een <strong>permanente magneet</strong> kan dat niet.</p>
+  <div class="cards" id="c_m5"></div>
+</section>
+
+<section class="scene" id="k1" data-nr="2.1" data-cat="h2" data-title="Lorentzkracht op een geleider">
+  <div class="scene-head"><span class="num"></span><h3>Lorentzkracht op een stroomvoerende geleider</h3></div>
+  <p class="scene-sub">Een draad met stroom ligt in een magnetisch veld. ⊗ = veld het scherm in, ⊙ = veld uit het scherm. Op de draad werkt een kracht <strong>loodrecht op de stroom en op het veld</strong>.</p>
+  <div class="grid">
+    <div class="tek"><svg id="s_k1" viewBox="0 0 640 380"></svg></div>
+    <div class="controls">
+      <div class="knoppen" id="k1i"><button class="btn on" data-v="1">I naar rechts</button><button class="btn" data-v="-1">I naar links</button></div>
+      <div class="knoppen" id="k1b"><button class="btn on" data-v="in">B het scherm in ⊗</button><button class="btn" data-v="uit">B uit het scherm ⊙</button></div>
+      <div class="ctrl"><label for="k1bb">B <span id="k1bbv"></span></label><input type="range" id="k1bb" min="0.05" max="1" step="0.05" value="0.5"></div>
+      <div class="ctrl"><label for="k1ii">I <span id="k1iiv"></span></label><input type="range" id="k1ii" min="0.5" max="10" step="0.5" value="4"></div>
+      <div class="ctrl"><label for="k1l">Lengte l in het veld <span id="k1lv"></span></label><input type="range" id="k1l" min="5" max="50" step="5" value="20"></div>
+      <div class="formule">F<sub>L</sub> = B · I · l · sin α</div>
+      <div class="readout" id="r_k1"></div>
+      <div class="kader"><div class="kop">Richting van de lorentzkracht</div><p>Rechterhand: <b>vingers in de zin van I</b>, buig ze naar <b>B</b>: je <b>duim</b> geeft de zin van F<sub>L</sub>. F<sub>L</sub> staat altijd loodrecht op I en op B.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="scene" id="k2" data-nr="2.1" data-cat="h2" data-title="Twee evenwijdige geleiders">
+  <div class="scene-head"><span class="num"></span><h3>Kracht tussen twee evenwijdige stroomvoerende geleiders</h3></div>
+  <p class="scene-sub">Elke draad maakt een magnetisch veld, en dat veld oefent een lorentzkracht uit op de andere draad. <strong>Stromen in dezelfde zin trekken aan, tegengestelde stromen stoten af.</strong></p>
+  <div class="grid">
+    <div class="tek"><svg id="s_k2" viewBox="0 0 640 340"></svg></div>
+    <div class="controls">
+      <div class="knoppen" id="k2z"><button class="btn on" data-v="1">Zelfde zin</button><button class="btn" data-v="-1">Tegengestelde zin</button></div>
+      <div class="ctrl"><label for="k2a">I₁ <span id="k2av"></span></label><input type="range" id="k2a" min="1" max="20" value="10"></div>
+      <div class="ctrl"><label for="k2b">I₂ <span id="k2bv"></span></label><input type="range" id="k2b" min="1" max="20" value="5"></div>
+      <div class="ctrl"><label for="k2d">Afstand d <span id="k2dv"></span></label><input type="range" id="k2d" min="1" max="10" value="2"></div>
+      <div class="formule">F = μ₀ · I₁ · I₂ · l / (2π · d)</div>
+      <div class="readout" id="r_k2"></div>
+      <div class="note"><strong>Waarom zijn beide krachten even groot?</strong> F op draad 2 = B₁ · I₂ · l = μ₀ · I₁ · I₂ · l / (2π d). F op draad 1 = B₂ · I₁ · l geeft dezelfde uitdrukking. Het is een koppel actie en reactie (3de wet van Newton).</div>
+    </div>
+  </div>
+</section>
+
+<section class="scene" id="k3" data-nr="2.2" data-cat="h2" data-title="Lorentzkracht op een lading">
+  <div class="scene-head"><span class="num"></span><h3>Lorentzkracht op een bewegende lading</h3></div>
+  <p class="scene-sub">Een geladen deeltje vliegt een homogeen magnetisch veld binnen (⊗, het scherm in). De lorentzkracht staat altijd loodrecht op de snelheid: het deeltje beschrijft een <strong>cirkelbaan</strong>.</p>
+  <div class="grid">
+    <div class="tek"><svg id="s_k3" viewBox="0 0 640 420"></svg></div>
+    <div class="controls">
+      <div class="ctrl"><label for="k3d">Deeltje</label><select id="k3d"><option value="p">proton</option><option value="e">elektron</option><option value="a">alfadeeltje</option></select></div>
+      <div class="ctrl"><label for="k3v">Snelheid v <span id="k3vv"></span></label><input type="range" id="k3v" min="1" max="10" value="4"></div>
+      <div class="ctrl"><label for="k3b">B <span id="k3bv"></span></label><input type="range" id="k3b" min="1" max="10" value="5"></div>
+      <div class="formule">F<sub>L</sub> = q · v · B · sin α</div>
+      <div class="formule">r = m · v / (q · B)</div>
+      <div class="readout" id="r_k3"></div>
+      <div class="note">De lorentzkracht doet als <strong>middelpuntzoekende kracht</strong>: q · v · B = m · v² / r. De snelheid verandert van richting, niet van grootte.</div>
+    </div>
+  </div>
+</section>
+
+<section class="scene" id="k4" data-nr="2.1–2.2" data-cat="h2" data-title="Toepassingen">
+  <div class="scene-head"><span class="num"></span><h3>Toepassingen van de lorentzkracht</h3></div>
+  <p class="scene-sub">Van je oortjes tot het noorderlicht.</p>
+  <div class="cards" id="c_k4"></div>
+</section>
+
+<section class="scene" id="k5" data-nr="2.3" data-cat="h2" data-title="Gelijkstroommotor">
+  <div class="scene-head"><span class="num"></span><h3>De gelijkstroommotor</h3></div>
+  <p class="scene-sub">Een winding met stroom zit in een magnetisch veld (van N naar Z). Op de twee zijden werken tegengestelde lorentzkrachten: samen vormen ze een <strong>krachtkoppel</strong> dat de winding doet draaien. Je kijkt van opzij op de winding.</p>
+  <div class="grid">
+    <div class="tek"><svg id="s_k5" viewBox="0 0 640 380"></svg></div>
+    <div class="controls">
+      <div class="knoppen"><button class="btn primary" id="k5go">▶ Start / pauze</button></div>
+      <label class="chk"><input type="checkbox" id="k5c" checked> met commutator</label>
+      <div class="readout" id="r_k5"></div>
+      <div class="kader"><div class="kop">Commutator</div><p>Telkens als de winding verticaal staat, keert de <b>commutator</b> (een gespleten ring met borstels) de stroomzin om. Zo blijft het koppel altijd in dezelfde draaizin werken.</p><p>Zonder commutator blijft de winding heen en weer schommelen rond de verticale stand.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="scene" id="i1" data-nr="3.1" data-cat="h3" data-title="Faraday en Lenz">
+  <div class="scene-head"><span class="num"></span><h3>Inductiewet van Faraday en wet van Lenz</h3></div>
+  <p class="scene-sub">Beweeg de magneet in en uit de spoel. Zolang de <strong>magnetische flux</strong> door de spoel verandert, ontstaat er een <strong>inductiespanning</strong>. Staat de magneet stil, dan is er geen spanning.</p>
+  <div class="grid">
+    <div class="tek"><svg id="s_i1" viewBox="0 0 640 380"></svg></div>
+    <div class="controls">
+      <div class="ctrl"><label for="i1x">Positie van de magneet (sleep heen en weer) <span id="i1xv"></span></label><input type="range" id="i1x" min="0" max="100" value="0"></div>
+      <div class="knoppen" id="i1p"><button class="btn on" data-v="N">N-pool naar de spoel</button><button class="btn" data-v="Z">Z-pool naar de spoel</button></div>
+      <div class="ctrl"><label for="i1n">Windingen N <span id="i1nv"></span></label><input type="range" id="i1n" min="100" max="1000" step="100" value="500"></div>
+      <div class="formule">U<sub>ind</sub> = − N · ΔΦ / Δt</div>
+      <div class="readout" id="r_i1"></div>
+      <div class="kader"><div class="kop">Definities</div>
+        <p><b>Magnetische flux Φ:</b> het aantal veldlijnen door een oppervlak: Φ = B · A · cos α (in weber, Wb).</p>
+        <p><b>Wet van Faraday:</b> de inductiespanning is evenredig met het aantal windingen en met de snelheid waarmee de flux verandert.</p>
+        <p><b>Wet van Lenz:</b> de inductiestroom werkt de oorzaak van zijn ontstaan <b>tegen</b>.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="scene" id="i2" data-nr="3.1" data-cat="h3" data-title="Bewegende geleider">
+  <div class="scene-head"><span class="num"></span><h3>Bewegende geleider in een homogeen magnetisch veld</h3></div>
+  <p class="scene-sub">Een staaf glijdt over twee rails in een veld het scherm in (⊗). De vrije elektronen in de staaf bewegen mee en krijgen een lorentzkracht: er ontstaat een <strong>inductiespanning</strong>. Op de inductiestroom werkt een lorentzkracht die de beweging <strong>afremt</strong>: de wet van Lenz.</p>
+  <div class="grid">
+    <div class="tek"><svg id="s_i2" viewBox="0 0 640 360"></svg></div>
+    <div class="controls">
+      <div class="ctrl"><label for="i2v">Snelheid v <span id="i2vv"></span></label><input type="range" id="i2v" min="-5" max="5" step="0.5" value="2"></div>
+      <div class="ctrl"><label for="i2b">B <span id="i2bv"></span></label><input type="range" id="i2b" min="0.1" max="1" step="0.1" value="0.5"></div>
+      <div class="ctrl"><label for="i2l">Lengte l <span id="i2lv"></span></label><input type="range" id="i2l" min="0.1" max="1" step="0.1" value="0.4"></div>
+      <div class="formule">U<sub>ind</sub> = B · l · v</div>
+      <div class="readout" id="r_i2"></div>
+    </div>
+  </div>
+</section>
+
+<section class="scene" id="i3" data-nr="3.2" data-cat="h3" data-title="Wervelstromen">
+  <div class="scene-head"><span class="num"></span><h3>Wervelstromen: de slinger van von Waltenhofen</h3></div>
+  <p class="scene-sub">Een metalen plaat slingert tussen de polen van een magneet. In de plaat ontstaan <strong>wervelstromen</strong>. Volgens de wet van Lenz remmen die de beweging af.</p>
+  <div class="grid">
+    <div class="tek"><svg id="s_i3" viewBox="0 0 640 380"></svg></div>
+    <div class="controls">
+      <div class="knoppen" id="i3m"><button class="btn" data-v="0">Zonder magneet</button><button class="btn on" data-v="1">Volle plaat</button><button class="btn" data-v="2">Plaat met spleten</button></div>
+      <div class="knoppen"><button class="btn primary" id="i3go">↺ Loslaten</button></div>
+      <div class="readout" id="r_i3"></div>
+      <div class="kader"><div class="kop">Wervelstromen</div><p>Kringvormige inductiestromen in een massief metalen voorwerp dat beweegt in een magnetisch veld, of dat in een veranderend magnetisch veld staat.</p></div>
+    </div>
+  </div>
+  <div class="cards" id="c_i3" style="margin-top:16px"></div>
+</section>
+
+<section class="scene" id="i4" data-nr="3.2" data-cat="h3" data-title="Transformator">
+  <div class="scene-head"><span class="num"></span><h3>De transformator</h3></div>
+  <p class="scene-sub">De wisselstroom in de <strong>primaire spoel</strong> maakt een veranderend magnetisch veld in de ijzeren kern. Die veranderende flux gaat ook door de <strong>secundaire spoel</strong> en induceert daar een wisselspanning.</p>
+  <div class="grid">
+    <div class="tek"><svg id="s_i4" viewBox="0 0 640 340"></svg></div>
+    <div class="controls">
+      <div class="ctrl"><label for="i4u">Primaire spanning U₁ <span id="i4uv"></span></label><input type="range" id="i4u" min="6" max="400" step="2" value="230"></div>
+      <div class="ctrl"><label for="i4a">Primaire windingen N₁ <span id="i4av"></span></label><input type="range" id="i4a" min="50" max="2000" step="50" value="1000"></div>
+      <div class="ctrl"><label for="i4b">Secundaire windingen N₂ <span id="i4bv"></span></label><input type="range" id="i4b" min="10" max="2000" step="10" value="50"></div>
+      <div class="formule">U₁ / U₂ = N₁ / N₂</div>
+      <div class="readout" id="r_i4"></div>
+      <div class="note">Een transformator werkt alleen met <strong>wisselspanning</strong>: bij gelijkspanning verandert de flux niet, dus er wordt niets geïnduceerd.</div>
+    </div>
+  </div>
+</section>
+
+<section class="scene" id="i5" data-nr="3.3" data-cat="h3" data-title="Wisselspanningsgenerator">
+  <div class="scene-head"><span class="num"></span><h3>De wisselspanningsgenerator</h3></div>
+  <p class="scene-sub">Een winding draait in een magnetisch veld. De flux door de winding verandert voortdurend: er ontstaat een <strong>wisselspanning</strong>. De spanning is het grootst als de flux het snelst verandert, dus als de winding evenwijdig met het veld staat.</p>
+  <div class="grid">
+    <div><div class="tek"><svg id="s_i5" viewBox="0 0 640 260"></svg></div><div class="tek" style="margin-top:12px"><svg id="g_i5" viewBox="0 0 640 230"></svg></div></div>
+    <div class="controls">
+      <div class="ctrl"><label for="i5w">Toerental <span id="i5wv"></span></label><input type="range" id="i5w" min="0" max="3" step="0.25" value="1"></div>
+      <div class="readout" id="r_i5"></div>
+      <div class="kader"><div class="kop">Onderdelen van een generator</div><p><b>Magneet</b> (of elektromagneet) · <b>spoel</b> met windingen die draait (rotor) · <b>sleepringen</b> en <b>koolborstels</b> om de spanning af te nemen.</p></div>
+      <div class="note"><strong>Motor en generator</strong> zijn omgekeerde toestellen. Een motor zet <strong>elektrische energie om in bewegingsenergie</strong> (lorentzkracht). Een generator zet <strong>bewegingsenergie om in elektrische energie</strong> (inductie). In een centrale draait een turbine (door stoom, wind of water) de generator.</div>
+    </div>
+  </div>
+</section>
+
+<section class="scene" id="oef" data-nr="" data-cat="oef" data-title="Oefenen">
+  <div class="scene-head"><span class="num"></span><h3>Oefenen</h3></div>
+  <p class="scene-sub">Kies een hoofdstuk of oefen alles door elkaar. μ₀ = 4π · 10⁻⁷ T·m/A, e = 1,6 · 10⁻¹⁹ C, m<sub>p</sub> = 1,67 · 10⁻²⁷ kg. Gebruik een komma voor decimalen; schrijf heel kleine getallen zoals 2,5e-5.</p>
+  <div class="oef">
+    <div class="oef-head"><div class="soort" id="soort"></div><span class="score" id="score">0 / 0</span></div>
+    <div class="vraag" id="vraag"></div>
+    <div id="invoer"></div>
+    <div class="feedback" id="fb"></div>
+    <div style="margin-top:12px"><button class="btn primary" id="volgende">Nieuwe vraag</button></div>
+  </div>
+</section>
+</main>
+<footer>Gemaakt door de vakgroep wetenschappen · Maria Assumpta Lyceum · ontwikkeld met hulp van AI · <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.nl">CC BY-NC-SA 4.0</a></footer>
+
+<script>
+//////////////////// NAVIGATIE ////////////////////
+const scenes = [...document.querySelectorAll('.scene')];
+const nav = document.getElementById('nav'), catNav = document.getElementById('catnav');
+const categories = [{id:'h1',label:'1 Magnetische verschijnselen'},{id:'h2',label:'2 Kracht op een elektrische stroom'},{id:'h3',label:'3 Elektromagnetische inductie'},{id:'oef',label:'Oefenen'}];
+let current = 0, activeCat = 'h1';
+function renderNav(){
+  catNav.innerHTML = ''; nav.innerHTML = '';
+  categories.forEach(c => { const b = document.createElement('button'); b.textContent = c.label; b.classList.toggle('active', c.id === activeCat); b.onclick = () => activate(scenes.findIndex(s => s.dataset.cat === c.id)); catNav.appendChild(b); });
+  scenes.forEach((s, i) => { if (s.dataset.cat !== activeCat || activeCat === 'oef') return; const b = document.createElement('button'); b.innerHTML = `<span class="nr">${s.dataset.nr}</span>${s.dataset.title}`; b.classList.toggle('active', i === current); b.onclick = () => activate(i); nav.appendChild(b); });
+}
+function activate(i){
+  current = i; activeCat = scenes[i].dataset.cat;
+  scenes.forEach((s, j) => s.classList.toggle('active', j === i));
+  renderNav();
+  if (location.hash !== '#' + scenes[i].id) history.replaceState(null, '', '#' + scenes[i].id);
+}
+scenes.forEach(s => { const n = s.querySelector('.num'); if (n){ if (s.dataset.nr) n.textContent = s.dataset.nr; else n.remove(); } });
+activate(Math.max(0, scenes.findIndex(s => '#' + s.id === location.hash)));
+window.addEventListener('hashchange', () => { const i = scenes.findIndex(s => '#' + s.id === location.hash); if (i >= 0 && i !== current) activate(i); });
+
+
+//////////////////// HULPFUNCTIES ////////////////////
+const $ = id => document.getElementById(id);
+const fmt = (v, d = 1) => (Math.abs(v) < 0.5 * Math.pow(10, -d) ? 0 : v).toFixed(d).replace('.', ',');
+const C = {fz:'#7c3aed', fn:'#059669', g:'#d97706', f:'#2563eb', fw:'#dc2626', fv:'#0891b2', lijn:'#94A3B8', tekst:'#1D2A36', dim:'#51606E'};
+function pijl(x1, y1, x2, y2, kleur, label, lx = 0, ly = 0, dik = 4){
+  const len = Math.hypot(x2 - x1, y2 - y1); if (len < 2) return `<circle cx="${x1}" cy="${y1}" r="4" fill="${kleur}"/>`;
+  const a = Math.atan2(y2 - y1, x2 - x1), hs = Math.min(15, len * 0.45);
+  const bx = x2 - Math.cos(a) * hs * 0.85, by = y2 - Math.sin(a) * hs * 0.85;
+  const p1 = [x2 - hs * Math.cos(a - 0.42), y2 - hs * Math.sin(a - 0.42)], p2 = [x2 - hs * Math.cos(a + 0.42), y2 - hs * Math.sin(a + 0.42)];
+  return `<g><line x1="${x1}" y1="${y1}" x2="${bx}" y2="${by}" stroke="${kleur}" stroke-width="${dik}" stroke-linecap="round"/><polygon points="${x2},${y2} ${p1} ${p2}" fill="${kleur}"/><circle cx="${x1}" cy="${y1}" r="4.5" fill="${kleur}"/>${label ? `<text x="${(x1 + x2) / 2 + lx}" y="${(y1 + y2) / 2 + ly}" fill="${kleur}" font-size="17" font-weight="700" text-anchor="middle">${label}</text>` : ''}</g>`;
+}
+const sub = (a, b) => `${a}<tspan font-size="70%" dy="4">${b}</tspan><tspan dy="-4"></tspan>`;
+const txt = (x, y, t, o = {}) => `<text x="${x}" y="${y}" font-size="${o.s || 14}" font-weight="${o.w || 500}" fill="${o.c || C.tekst}" text-anchor="${o.a || 'start'}">${t}</text>`;
+function grafiek(svg, {w, h, x0 = 40, y0, xmax, ymax, xlab, ylab, xt = [], yt = []}){
+  const X = v => x0 + v / xmax * (w - x0 - 16), Y = v => y0 - v / ymax * (y0 - 14);
+  let s = `<line x1="${x0}" y1="${y0}" x2="${w - 8}" y2="${y0}" stroke="${C.dim}"/><line x1="${x0}" y1="${y0}" x2="${x0}" y2="8" stroke="${C.dim}"/>`;
+  xt.forEach(v => s += `<line x1="${X(v)}" y1="${y0}" x2="${X(v)}" y2="${y0 + 4}" stroke="${C.dim}"/>${txt(X(v), y0 + 16, fmt(v, v % 1 ? 1 : 0), {s: 11, c: C.dim, a: 'middle'})}`);
+  yt.forEach(v => s += `<line x1="${x0 - 4}" y1="${Y(v)}" x2="${x0}" y2="${Y(v)}" stroke="${C.dim}"/><line x1="${x0}" y1="${Y(v)}" x2="${w - 8}" y2="${Y(v)}" stroke="#EEF2F5"/>${txt(x0 - 6, Y(v) + 4, fmt(v, v % 1 ? 1 : 0), {s: 11, c: C.dim, a: 'end'})}`);
+  s += txt(w - 8, y0 - 6, xlab, {s: 12, w: 700, c: C.dim, a: 'end'}) + txt(x0 + 6, 18, ylab, {s: 12, w: 700, c: C.dim});
+  return {s, X, Y};
+}
+function svgPunt(svg, e){ const p = svg.createSVGPoint(); p.x = e.clientX; p.y = e.clientY; return p.matrixTransform(svg.getScreenCTM().inverse()); }
+
+
+
+const isOn = id => $(id).classList.contains('active');
+const MU0 = 4e-7 * Math.PI;
+const draad = pts => `<polyline points="${pts.map(p => p.join(',')).join(' ')}" fill="none" stroke="#334155" stroke-width="3" stroke-linejoin="round"/>`;
+const RODE = '#dc2626', BLAUW = '#2563eb';
+function wet(x, d = 2){ if (x === 0) return '0'; const n = Math.floor(Math.log10(Math.abs(x)) + 1e-12), a = x / Math.pow(10, n); const sup = String(n).replace(/-/g, '⁻').replace(/\d/g, c => '⁰¹²³⁴⁵⁶⁷⁸⁹'[c]); return fmt(a, d) + ' · 10' + sup; }
+const kruisje = (x, y, s = 7) => `<path d="M${x - s} ${y - s} L${x + s} ${y + s} M${x + s} ${y - s} L${x - s} ${y + s}" stroke="#64748B" stroke-width="1.6"/>`;
+const puntje = (x, y, s = 7) => `<circle cx="${x}" cy="${y}" r="${s}" fill="none" stroke="#64748B" stroke-width="1.6"/><circle cx="${x}" cy="${y}" r="2" fill="#64748B"/>`;
+const draadIn = (x, y, r = 14) => `<circle cx="${x}" cy="${y}" r="${r}" fill="#FDE68A" stroke="#92400E" stroke-width="2.5"/>` + `<path d="M${x - r * .55} ${y - r * .55} L${x + r * .55} ${y + r * .55} M${x + r * .55} ${y - r * .55} L${x - r * .55} ${y + r * .55}" stroke="#92400E" stroke-width="2.5"/>`;
+const draadUit = (x, y, r = 14) => `<circle cx="${x}" cy="${y}" r="${r}" fill="#FDE68A" stroke="#92400E" stroke-width="2.5"/><circle cx="${x}" cy="${y}" r="4" fill="#92400E"/>`;
+function staafmagneet(x1, x2, y, nRechts, h = 34){ const m = (x1 + x2) / 2;
+  const L = `<rect x="${x1}" y="${y - h / 2}" width="${m - x1}" height="${h}" fill="${nRechts ? BLAUW : RODE}"/>`, R = `<rect x="${m}" y="${y - h / 2}" width="${x2 - m}" height="${h}" fill="${nRechts ? RODE : BLAUW}"/>`;
+  return L + R + txt((x1 + m) / 2, y + 6, nRechts ? 'Z' : 'N', {s: 17, w: 700, c: '#fff', a: 'middle'}) + txt((m + x2) / 2, y + 6, nRechts ? 'N' : 'Z', {s: 17, w: 700, c: '#fff', a: 'middle'}); }
+function veldlijnen(polen, W, H, aantal, bin){ // polen: [{x,y,q}] q>0 = N
+  let s = '';
+  const F = (x, y) => { let bx = 0, by = 0; polen.forEach(p => { const dx = x - p.x, dy = y - p.y, r2 = dx * dx + dy * dy + 1, r3 = r2 * Math.sqrt(r2); bx += p.q * dx / r3; by += p.q * dy / r3; }); return [bx, by]; };
+  polen.filter(p => p.q > 0).forEach(p => {
+    for (let k = 0; k < aantal; k++){
+      const a = (k + 0.5) / aantal * 2 * Math.PI; let x = p.x + 9 * Math.cos(a), y = p.y + 9 * Math.sin(a), pts = [[x, y]], ok = true;
+      for (let i = 0; i < 1400; i++){
+        const [bx, by] = F(x, y), b = Math.hypot(bx, by) || 1; x += 3 * bx / b; y += 3 * by / b; pts.push([x, y]);
+        if (x < -40 || x > W + 40 || y < -40 || y > H + 40) break;
+        if (polen.some(q => q.q < 0 && Math.hypot(x - q.x, y - q.y) < 8)) break;
+        if (bin && bin(x, y)) { ok = true; }
+      }
+      s += `<polyline points="${pts.filter((_, i) => i % 2 === 0).map(q => q[0].toFixed(1) + ',' + q[1].toFixed(1)).join(' ')}" fill="none" stroke="#64748B" stroke-width="1.4"/>`;
+      const m = pts[Math.floor(pts.length * 0.35)], n = pts[Math.floor(pts.length * 0.35) + 2];
+      if (n && m[0] > 0 && m[0] < W && m[1] > 0 && m[1] < H) s += pijl(m[0], m[1], n[0] + (n[0] - m[0]) * 3, n[1] + (n[1] - m[1]) * 3, '#64748B', '', 0, 0, 1.4).replace(/<circle[^>]*>/, '');
+    }
+  });
+  return s;
+}
+
+//////////////////// 1.1 polen ////////////////////
+(function(){
+  let v = 'een';
+  $('m1k').onclick = e => { const b = e.target.closest('button'); if (!b) return; v = b.dataset.v; $('m1k').querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b)); teken(); };
+  function teken(){
+    let o = '', r = '';
+    if (v === 'een'){ o = veldlijnen([{x: 380, y: 200, q: 1}, {x: 260, y: 200, q: -1}], 640, 400, 16) + staafmagneet(240, 400, 200, true);
+      r = 'Buiten de magneet lopen de veldlijnen van <b>N naar Z</b>, binnenin van Z naar N. Bij de polen liggen ze het dichtst: daar is het veld het sterkst.'; }
+    if (v === 'ns'){ o = veldlijnen([{x: 210, y: 200, q: 1}, {x: 60, y: 200, q: -1}, {x: 580, y: 200, q: 1}, {x: 430, y: 200, q: -1}], 640, 400, 12) + staafmagneet(40, 230, 200, true) + staafmagneet(410, 600, 200, true) + pijl(240, 260, 290, 260, '#1F7A4A', '', 0, 0, 3) + pijl(400, 260, 350, 260, '#1F7A4A', '', 0, 0, 3) + txt(320, 290, 'trekken aan', {s: 14, w: 700, a: 'middle', c: '#1F7A4A'});
+      r = 'Een N-pool tegenover een Z-pool: de veldlijnen lopen van de ene magneet naar de andere. <b>Ongelijke polen trekken aan.</b>'; }
+    if (v === 'nn'){ o = veldlijnen([{x: 210, y: 200, q: 1}, {x: 60, y: 200, q: -1}, {x: 430, y: 200, q: 1}, {x: 580, y: 200, q: -1}], 640, 400, 12) + staafmagneet(40, 230, 200, true) + staafmagneet(410, 600, 200, false) + pijl(250, 260, 200, 260, RODE, '', 0, 0, 3) + pijl(390, 260, 440, 260, RODE, '', 0, 0, 3) + txt(320, 290, 'stoten af', {s: 14, w: 700, a: 'middle', c: RODE});
+      r = 'Twee N-polen tegenover elkaar: de veldlijnen duwen elkaar weg, in het midden is er een punt zonder veld. <b>Gelijke polen stoten af.</b>'; }
+    if (v === 'aarde'){ o = veldlijnen([{x: 320, y: 235, q: 1}, {x: 320, y: 165, q: -1}], 640, 400, 18) + `<circle cx="320" cy="200" r="95" fill="#4F86C6" fill-opacity=".85"/><circle cx="320" cy="200" r="45" fill="#F59E0B" fill-opacity=".7"/>` + txt(320, 205, 'buitenkern', {s: 11, w: 700, a: 'middle', c: '#fff'}) +
+      txt(320, 92, 'geografische noordpool', {s: 12, w: 700, a: 'middle'}) + txt(320, 78, '(= magnetische zuidpool)', {s: 11, a: 'middle', c: C.dim}) + txt(320, 318, 'geografische zuidpool (= magnetische noordpool)', {s: 11, a: 'middle', c: C.dim});
+      r = 'De aarde gedraagt zich als een grote staafmagneet. Het veld ontstaat door <b>stromen van geïoniseerd, vloeibaar ijzer</b> in de buitenkern: bewegende lading. De N-pool van een kompasnaald wijst naar het noorden, dus daar ligt de <b>magnetische zuidpool</b>.'; }
+    $('s_m1').innerHTML = o; $('r_m1').innerHTML = r;
+  }
+  teken();
+})();
+
+//////////////////// 1.1 weiss ////////////////////
+(function(){
+  const D = []; for (let i = 0; i < 6; i++) for (let j = 0; j < 4; j++) D.push({x: 230 + i * 60, y: 90 + j * 60, a: Math.random() * 6.283, t: Math.random()});
+  let soort = 'week', bmax = 0;
+  $('m2s').onclick = e => { const b = e.target.closest('button'); if (!b) return; soort = b.dataset.v; bmax = +$('m2b').value / 100; $('m2s').querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b)); teken(); };
+  function teken(){
+    const b = +$('m2b').value / 100; bmax = Math.max(bmax, b); $('m2bv').textContent = b === 0 ? 'geen' : Math.round(b * 100) + ' %';
+    const eff = soort === 'staal' ? Math.max(b, bmax * 0.9) : b;
+    let o = staafmagneet(20 + (1 - b) * -120, 180 - (1 - b) * 120 + 0, 180, true).replace(/^/, '');
+    o += `<rect x="200" y="60" width="360" height="240" rx="6" fill="#E5E7EB" stroke="#475569" stroke-width="2"/>`;
+    let gericht = 0;
+    D.forEach(d => { let a = d.a; if (a > Math.PI) a -= 2 * Math.PI; const k = Math.max(0, Math.min(1, (eff - d.t * 0.6) / 0.4)); const ang = a * (1 - k); if (Math.abs(ang) < 0.3) gericht++;
+      o += `<rect x="${d.x - 28}" y="${d.y - 28}" width="56" height="56" fill="none" stroke="#CBD5E1"/>` + pijl(d.x - 20 * Math.cos(ang), d.y + 20 * Math.sin(ang), d.x + 20 * Math.cos(ang), d.y - 20 * Math.sin(ang), '#7c3aed', '', 0, 0, 3).replace(/<circle[^>]*>/, ''); });
+    const mag = gericht / D.length;
+    if (mag > 0.5) o += txt(215, 330, 'Z', {s: 18, w: 700, c: BLAUW}) + txt(545, 330, 'N', {s: 18, w: 700, c: RODE, a: 'end'}) + txt(380, 330, 'het ijzer is zelf een magneet', {s: 13, w: 700, a: 'middle', c: '#7c3aed'});
+    $('s_m2').innerHTML = o;
+    $('r_m2').innerHTML = (b === 0 && soort === 'week' ? 'Geen uitwendig veld: de weissgebieden wijzen <b>willekeurig</b>. Hun effecten heffen elkaar op: het ijzer is niet magnetisch.' :
+      b === 0 && soort === 'staal' && bmax > 0.5 ? '<span class="ok">Staal blijft gemagnetiseerd</span>: de weissgebieden blijven gericht. Zo maak je een <b>permanente magneet</b>.' :
+      `${Math.round(mag * 100)} % van de weissgebieden is gericht. Het ijzer wordt magnetisch: <b>magnetische influentie</b>. De kant bij de N-pool van de magneet wordt een Z-pool, dus het ijzer wordt <b>aangetrokken</b>.`) +
+      (soort === 'week' ? '<br><br>Week ijzer verliest zijn magnetisme zodra het veld weg is.' : '');
+  }
+  $('m2b').oninput = teken; teken();
+})();
+
+//////////////////// 1.2 rechte geleider ////////////////////
+(function(){
+  let z = 'uit';
+  $('m3z').onclick = e => { const b = e.target.closest('button'); if (!b) return; z = b.dataset.v; $('m3z').querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b)); teken(); };
+  function teken(){
+    const I = +$('m3i').value, r = +$('m3r').value, cx = 220, cy = 200, px = 16, B = MU0 * I / (2 * Math.PI * r / 100);
+    $('m3iv').textContent = I + ' A'; $('m3rv').textContent = r + ' cm';
+    const ccw = z === 'uit';
+    let o = '';
+    [40, 80, 120, 160].forEach(R => { o += `<circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="#94A3B8" stroke-width="${1 + 2 * 40 / R}"/>`;
+      [0, 1, 2, 3].forEach(k => { const a = k * Math.PI / 2 + 0.6, x = cx + R * Math.cos(a), y = cy - R * Math.sin(a), tx = -Math.sin(a) * (ccw ? 1 : -1), ty = -Math.cos(a) * (ccw ? 1 : -1);
+        o += pijl(x - tx * 6, y - ty * 6, x + tx * 6, y + ty * 6, '#64748B', '', 0, 0, 2).replace(/<circle[^>]*>/, ''); }); });
+    o += (ccw ? draadUit(cx, cy) : draadIn(cx, cy));
+    const Px = cx + r * px, Py = cy; o += `<circle cx="${Px}" cy="${Py}" r="5" fill="#7c3aed"/>` + pijl(Px, Py, Px, Py + (ccw ? -1 : 1) * (20 + Math.min(60, B * 1e5 * 0.8)), '#7c3aed', 'B', 16, 0, 3);
+    o += txt(Px + 10, Py + 22, 'r = ' + r + ' cm', {s: 12, c: C.dim});
+    o += txt(470, 60, ccw ? 'stroom naar je toe:' : 'stroom van je weg:', {s: 14, w: 700}) + txt(470, 82, ccw ? 'veldlijnen tegen de wijzerzin' : 'veldlijnen in de wijzerzin', {s: 14, c: C.dim});
+    $('s_m3').innerHTML = o;
+    $('r_m3').innerHTML = `B = μ₀ · I / (2π · r)<br>= 4π · 10⁻⁷ · ${I} / (2π · ${fmt(r / 100, 2)})<br>= <b>${wet(B)} T</b> = ${fmt(B * 1e6, 1)} μT<br><br>Dubbele afstand → halve B. Dubbele stroom → dubbele B.`;
+  }
+  ['m3i', 'm3r'].forEach(id => $(id).oninput = teken); teken();
+})();
+
+//////////////////// 1.2 spoel ////////////////////
+(function(){
+  let z = 1, aan = true;
+  $('m4z').onclick = e => { const b = e.target.closest('button'); if (!b) return; if (b.id === 'm4uit'){ aan = false; } else { aan = true; z = +b.dataset.v; } $('m4z').querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b)); teken(); };
+  function teken(){
+    const N = +$('m4n').value, I = +$('m4i').value, mr = +$('m4k').value, l = 0.1, B = aan ? MU0 * mr * N * I / l : 0;
+    $('m4nv').textContent = N; $('m4iv').textContent = fmt(I, 1) + ' A';
+    const x1 = 200, x2 = 440, y = 190, h = 90, nR = z === 1;
+    let o = '';
+    if (aan){
+      const lijnen = mr > 1 ? 7 : 4;
+      for (let k = 0; k < lijnen; k++){ const yy = y - h / 2 + 14 + k * (h - 28) / (lijnen - 1); o += `<line x1="${x1 - 20}" y1="${yy}" x2="${x2 + 20}" y2="${yy}" stroke="#64748B" stroke-width="1.5"/>` + pijl(nR ? 300 : 340, yy, nR ? 340 : 300, yy, '#64748B', '', 0, 0, 1.5).replace(/<circle[^>]*>/, ''); }
+      [1, 2].forEach(k => { const d = 40 + k * 40;
+        o += `<path d="M${x2 + 20} ${y - 20} C ${x2 + 80 + k * 30} ${y - 20 - d}, ${x1 - 80 - k * 30} ${y - 20 - d}, ${x1 - 20} ${y - 20}" fill="none" stroke="#64748B" stroke-width="1.5"/><path d="M${x2 + 20} ${y + 20} C ${x2 + 80 + k * 30} ${y + 20 + d}, ${x1 - 80 - k * 30} ${y + 20 + d}, ${x1 - 20} ${y + 20}" fill="none" stroke="#64748B" stroke-width="1.5"/>`;
+        const yt = y - 20 - d * 0.75, yb = y + 20 + d * 0.75; o += pijl(nR ? 330 : 310, yt, nR ? 310 : 330, yt, '#64748B', '', 0, 0, 1.5).replace(/<circle[^>]*>/, '') + pijl(nR ? 330 : 310, yb, nR ? 310 : 330, yb, '#64748B', '', 0, 0, 1.5).replace(/<circle[^>]*>/, ''); });
+    }
+    if (mr > 1) o += `<rect x="${x1 - 30}" y="${y - 22}" width="${x2 - x1 + 60}" height="44" fill="#9CA3AF" fill-opacity=".6"/>`;
+    for (let k = 0; k <= 12; k++){ const x = x1 + k * (x2 - x1) / 12; o += `<ellipse cx="${x}" cy="${y}" rx="9" ry="${h / 2}" fill="none" stroke="#B45309" stroke-width="3"/>`; }
+    if (aan){ o += txt(x2 + 34, y + 6, nR ? 'N' : 'Z', {s: 22, w: 700, c: nR ? RODE : BLAUW}) + txt(x1 - 34, y + 6, nR ? 'Z' : 'N', {s: 22, w: 700, c: nR ? BLAUW : RODE, a: 'end'});
+      o += pijl(x1 + 40, y + h / 2 + 4, x1 + 40, y + h / 2 + 4, '#B45309') + txt(320, y + h / 2 + 30, z === 1 ? 'stroom vooraan naar beneden' : 'stroom vooraan naar boven', {s: 12, c: '#B45309', a: 'middle', w: 600}); }
+    $('s_m4').innerHTML = o;
+    $('r_m4').innerHTML = aan ? `B = μ₀ · μr · N · I / l (l = 10 cm)<br>= 4π · 10⁻⁷ · ${mr} · ${N} · ${fmt(I, 1)} / 0,10<br>= <b>${wet(B)} T</b> = ${fmt(B * 1000, 1)} mT` + (mr > 1 ? '<br><span class="ok">Met een ijzeren kern is het veld ' + mr + ' keer sterker.</span>' : '') : 'Stroom uit: <b>geen magnetisch veld</b>. Een elektromagneet kun je uitschakelen, een permanente magneet niet.';
+  }
+  ['m4n', 'm4i', 'm4k'].forEach(id => $(id).oninput = teken); teken();
+})();
+(function(){
+  const k = [['Relais', 'Een kleine stroom door een spoel trekt een ijzeren anker aan. Dat sluit een tweede kring waarin een grote stroom loopt. Zo schakel je veilig een groot toestel met een klein signaal.'],
+    ['Deurbel', 'De elektromagneet trekt de hamer naar de bel. Daardoor wordt de kring onderbroken, de hamer veert terug, de kring sluit weer: de bel rinkelt.'],
+    ['Elektromagnetische klep', 'Een spoel trekt een ijzeren kern op en opent zo een klep, bv. in een vaatwasser of een verwarmingsketel.'],
+    ['Schroot sorteren', 'Een grote elektromagneet aan een kraan tilt ijzer op. Zet je de stroom af, dan valt het ijzer los. Andere metalen worden niet aangetrokken.'],
+    ['MRI-scanner', 'Een supergeleidende spoel maakt een zeer sterk, homogeen magnetisch veld (1,5 tot 3 T). Daarmee maakt men beelden van zachte weefsels in het lichaam.'],
+    ['Automatische zekering', 'Bij een te grote stroom wordt het veld van een spoel zo sterk dat het een pin aantrekt en de kring onderbreekt.'],
+    ['Deurontgrendeling', 'Bij een parlofoon of badgelezer trekt een elektromagneet de grendel van een deurslot terug.']];
+  $('c_m5').innerHTML = k.map(([t, p]) => `<div class="card"><div class="txt"><h4>${t}</h4><p>${p}</p></div></div>`).join('');
+})();
+
+//////////////////// 2.1 lorentz op geleider ////////////////////
+(function(){
+  let si = 1, bz = 'in';
+  $('k1i').onclick = e => { const b = e.target.closest('button'); if (!b) return; si = +b.dataset.v; $('k1i').querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b)); teken(); };
+  $('k1b').onclick = e => { const b = e.target.closest('button'); if (!b) return; bz = b.dataset.v; $('k1b').querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b)); teken(); };
+  function teken(){
+    const B = +$('k1bb').value, I = +$('k1ii').value, l = +$('k1l').value / 100, F = B * I * l;
+    $('k1bbv').textContent = fmt(B, 2) + ' T'; $('k1iiv').textContent = fmt(I, 1) + ' A'; $('k1lv').textContent = Math.round(l * 100) + ' cm';
+    const op = si * (bz === 'in' ? 1 : -1); // +1 = omhoog
+    let o = `<rect x="140" y="40" width="360" height="300" fill="#F1F5F9" stroke="#CBD5E1"/>`;
+    for (let i = 0; i < 6; i++) for (let j = 0; j < 5; j++){ const x = 170 + i * 60, y = 70 + j * 60; if (j === 2) continue; o += bz === 'in' ? kruisje(x, y) : puntje(x, y); }
+    o += `<line x1="40" y1="190" x2="600" y2="190" stroke="#B45309" stroke-width="7"/>` + pijl(si > 0 ? 60 : 580, 170, si > 0 ? 130 : 510, 170, '#B45309', 'I', 0, -8, 3);
+    o += pijl(320, 190, 320, 190 - op * (30 + F * 60), RODE, sub('F', 'L'), 22, 0, 4);
+    o += txt(510, 60, 'B ' + (bz === 'in' ? '⊗' : '⊙'), {s: 16, w: 700, c: '#64748B'});
+    $('s_k1').innerHTML = o;
+    $('r_k1').innerHTML = `F<sub>L</sub> = B · I · l · sin 90° = ${fmt(B, 2)} · ${fmt(I, 1)} · ${fmt(l, 2)}<br>= <b>${fmt(F, 3)} N</b>, ${op > 0 ? 'naar boven' : 'naar beneden'}<br><br>Draai I óf B om: de kracht keert om. Draai beide om: de kracht blijft gelijk.`;
+  }
+  ['k1bb', 'k1ii', 'k1l'].forEach(id => $(id).oninput = teken); teken();
+})();
+(function(){
+  let z = 1;
+  $('k2z').onclick = e => { const b = e.target.closest('button'); if (!b) return; z = +b.dataset.v; $('k2z').querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b)); teken(); };
+  function teken(){
+    const I1 = +$('k2a').value, I2 = +$('k2b').value, d = +$('k2d').value, F = MU0 * I1 * I2 * 1 / (2 * Math.PI * d / 100);
+    $('k2av').textContent = I1 + ' A'; $('k2bv').textContent = I2 + ' A'; $('k2dv').textContent = d + ' cm';
+    const y1 = 170 - d * 8, y2 = 170 + d * 8;
+    let o = `<line x1="60" y1="${y1}" x2="580" y2="${y1}" stroke="#B45309" stroke-width="6"/><line x1="60" y1="${y2}" x2="580" y2="${y2}" stroke="#B45309" stroke-width="6"/>`;
+    o += pijl(80, y1 - 16, 150, y1 - 16, '#B45309', 'I₁', 0, -6, 3) + pijl(z > 0 ? 80 : 150, y2 + 16, z > 0 ? 150 : 80, y2 + 16, '#B45309', 'I₂', 0, 22, 3);
+    const L = 20 + Math.min(60, F * 1e5 * 1.5);
+    if (z > 0) o += pijl(320, y1, 320, y1 + L, RODE, sub('F', '12'), 26, 0, 4) + pijl(380, y2, 380, y2 - L, RODE, sub('F', '21'), 26, 0, 4) + txt(500, 40, 'trekken aan', {s: 15, w: 700, c: RODE, a: 'middle'});
+    else o += pijl(320, y1, 320, y1 - L, RODE, sub('F', '12'), 26, 0, 4) + pijl(380, y2, 380, y2 + L, RODE, sub('F', '21'), 26, 0, 4) + txt(500, 40, 'stoten af', {s: 15, w: 700, c: RODE, a: 'middle'});
+    for (let i = 0; i < 4; i++) o += kruisje(200 + i * 80, y2 - 22 > y1 + 10 ? (y1 + y2) / 2 + (d > 2 ? 0 : 0) : (y1 + y2) / 2, 5);
+    o += txt(560, (y1 + y2) / 2 + 4, 'B₁ bij draad 2: ⊗', {s: 12, c: C.dim, a: 'end'});
+    $('s_k2').innerHTML = o;
+    $('r_k2').innerHTML = `Per meter draad:<br>F = 4π · 10⁻⁷ · ${I1} · ${I2} / (2π · ${fmt(d / 100, 2)})<br>= <b>${wet(F)} N</b><br>F<sub>12</sub> en F<sub>21</sub> zijn even groot en tegengesteld.`;
+  }
+  ['k2a', 'k2b', 'k2d'].forEach(id => $(id).oninput = teken); teken();
+})();
+
+//////////////////// 2.2 lorentz op lading ////////////////////
+(function(){
+  const DL = {p: {n: 'proton', m: 1.67e-27, q: 1.6e-19, vs: 1e5, bs: 0.01, vt: '· 10⁵', bt: 'mT', bm: 10, kl: RODE, t: '+'}, e: {n: 'elektron', m: 9.11e-31, q: -1.6e-19, vs: 1e6, bs: 1e-4, vt: '· 10⁶', bt: 'mT', bm: 0.1, kl: BLAUW, t: '−'}, a: {n: 'alfadeeltje', m: 6.64e-27, q: 3.2e-19, vs: 1e5, bs: 0.01, vt: '· 10⁵', bt: 'mT', bm: 10, kl: '#7c3aed', t: '2+'}};
+  function teken(){
+    const d = DL[$('k3d').value], v = +$('k3v').value * d.vs, B = +$('k3b').value * d.bs, r = d.m * v / (Math.abs(d.q) * B), F = Math.abs(d.q) * v * B;
+    $('k3vv').textContent = $('k3v').value + ' ' + d.vt + ' m/s'; $('k3bv').textContent = fmt(+$('k3b').value * d.bm, 1) + ' mT';
+    const x0 = 220, y0 = 230, rp = r * 1000, up = d.q > 0 ? -1 : 1; // scherm: -1 = omhoog
+    let o = `<rect x="${x0}" y="20" width="400" height="390" fill="#F1F5F9" stroke="#CBD5E1"/>`;
+    for (let i = 0; i < 7; i++) for (let j = 0; j < 7; j++) o += kruisje(x0 + 30 + i * 56, 45 + j * 56, 5);
+    o += `<line x1="30" y1="${y0}" x2="${x0}" y2="${y0}" stroke="${d.kl}" stroke-width="3"/>`;
+    const cy = y0 + up * rp, pts = [];
+    for (let a = 0; a <= Math.PI; a += 0.02){ const x = x0 + rp * Math.sin(a), y = cy - up * rp * Math.cos(a); if (x > 620 || y < 20 || y > 410) break; pts.push(x.toFixed(1) + ',' + y.toFixed(1)); }
+    o += `<polyline points="${pts.join(' ')}" fill="none" stroke="${d.kl}" stroke-width="3"/>`;
+    const a = Math.min(0.6, 160 / Math.max(rp, 1)), px = x0 + rp * Math.sin(a), py = cy - up * rp * Math.cos(a);
+    if (px < 600 && py > 30 && py < 400){ o += pijl(px, py, px + 60 * Math.cos(a), py + up * 60 * Math.sin(a), '#1D2A36', 'v', 14, -6, 3); o += pijl(px, py, px + (x0 - px) / rp * 50, py + (cy - py) / rp * 50, RODE, sub('F', 'L'), 22, 0, 3); }
+    o += `<circle cx="60" cy="${y0}" r="11" fill="${d.kl}"/>` + txt(60, y0 + 5, d.t, {s: 12, w: 700, c: '#fff', a: 'middle'}) + txt(600, 40, 'B ⊗', {s: 15, w: 700, c: '#64748B', a: 'end'});
+    $('s_k3').innerHTML = o;
+    $('r_k3').innerHTML = `F<sub>L</sub> = |q| · v · B = <b>${wet(F)} N</b><br>r = m · v / (|q| · B) = <b>${fmt(r * 100, 1)} cm</b><br>${d.q > 0 ? 'Positief: buigt <b>naar boven</b> af.' : 'Negatief: buigt <b>naar beneden</b> af.'}<br><br>Snellere deeltjes en een zwakker veld geven een grotere straal.`;
+  }
+  ['k3d', 'k3v', 'k3b'].forEach(id => $(id).oninput = teken); teken();
+})();
+(function(){
+  const k = [['Luidspreker', 'Een spoel aan een conus zit in het veld van een permanente magneet. De wisselstroom van het muzieksignaal geeft een wisselende lorentzkracht: de conus trilt en maakt geluid.'],
+    ['Noorderlicht', 'Geladen deeltjes van de zon (zonnewind) worden door het aardmagnetisch veld afgebogen en spiralen langs de veldlijnen naar de polen. Daar botsen ze met luchtmoleculen, die licht uitzenden.'],
+    ['Magnetische schermwerking van de aarde', 'Het aardmagnetisch veld buigt de meeste geladen deeltjes uit de ruimte af, zodat ze het aardoppervlak niet bereiken. Het beschermt het leven op aarde tegen schadelijke straling.'],
+    ['Deeltjesversneller', 'In een cyclotron of bij CERN houden sterke magneten de geladen deeltjes in een cirkelbaan, terwijl elektrische velden ze telkens sneller maken.'],
+    ['Hall-sensor', 'In een geleidend plaatje in een magnetisch veld duwt de lorentzkracht de ladingen naar één kant: er ontstaat een kleine spanning. Zo meet je het veld, bv. het kompas in je smartphone of de snelheidsmeter van een fiets.']];
+  $('c_k4').innerHTML = k.map(([t, p]) => `<div class="card"><div class="txt"><h4>${t}</h4><p>${p}</p></div></div>`).join('');
+})();
+
+//////////////////// 2.3 motor ////////////////////
+(function(){
+  let th = 0.3, w = 0, loopt = true;
+  $('k5go').onclick = () => { loopt = !loopt; };
+  function teken(){
+    const cx = 320, cy = 190, R = 90, com = $('k5c').checked;
+    const Ax = Math.cos(th), Ay = Math.sin(th);
+    const Auit = com ? Ax >= 0 : true;
+    const tau = (Auit ? 1 : -1) * Ax; // koppel tegen de wijzerzin
+    if (loopt){ w += 0.004 * tau - 0.02 * w; th += w; }
+    let o = `<rect x="20" y="70" width="90" height="240" fill="${RODE}"/><rect x="530" y="70" width="90" height="240" fill="${BLAUW}"/>` + txt(65, 198, 'N', {s: 24, w: 700, c: '#fff', a: 'middle'}) + txt(575, 198, 'Z', {s: 24, w: 700, c: '#fff', a: 'middle'});
+    for (let k = 0; k < 4; k++) o += pijl(130, 100 + k * 60, 180, 100 + k * 60, '#94A3B8', '', 0, 0, 1.5).replace(/<circle[^>]*>/, '') + pijl(460, 100 + k * 60, 510, 100 + k * 60, '#94A3B8', '', 0, 0, 1.5).replace(/<circle[^>]*>/, '');
+    const ax = cx + R * Ax, ay = cy - R * Ay, bx = cx - R * Ax, by = cy + R * Ay;
+    o += `<line x1="${ax}" y1="${ay}" x2="${bx}" y2="${by}" stroke="#B45309" stroke-width="4" stroke-dasharray="6 4"/><circle cx="${cx}" cy="${cy}" r="5" fill="#1D2A36"/>`;
+    o += (Auit ? draadUit(ax, ay) : draadIn(ax, ay)) + (Auit ? draadIn(bx, by) : draadUit(bx, by));
+    o += pijl(ax, ay, ax, ay + (Auit ? -60 : 60), RODE, sub('F', 'L'), 22, 0, 3) + pijl(bx, by, bx, by + (Auit ? 60 : -60), RODE, sub('F', 'L'), 22, 0, 3);
+    $('s_k5').innerHTML = o;
+    $('r_k5').innerHTML = `De lorentzkrachten op de twee zijden zijn even groot en tegengesteld: een <b>krachtkoppel</b>.<br>` + (Math.abs(Ax) < 0.15 ? '<b>Winding verticaal:</b> de krachten liggen in het vlak van de winding, het koppel is (bijna) nul.' + (com ? ' De commutator keert hier de stroom om.' : '') : 'Het koppel doet de winding <b>tegen de wijzerzin</b> draaien.'.replace('tegen de wijzerzin', tau > 0 ? 'tegen de wijzerzin' : 'in de wijzerzin'));
+  }
+  function lus(){ if (isOn('k5')) teken(); requestAnimationFrame(lus); } lus();
+})();
+
+//////////////////// 3.1 Faraday ////////////////////
+(function(){
+  let pool = 'N', vorige = 0, U = 0, laatst = performance.now(), auto = 0;
+  $('i1p').onclick = e => { const b = e.target.closest('button'); if (!b) return; pool = b.dataset.v; $('i1p').querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b)); };
+  const box = $('i1x').parentElement; const kn = document.createElement('div'); kn.className = 'knoppen'; kn.innerHTML = '<button class="btn" id="i1in">→ erin</button><button class="btn" id="i1uit">← eruit</button>'; box.after(kn);
+  $('i1in').onclick = () => auto = 1; $('i1uit').onclick = () => auto = -1;
+  const phi = x => 1 / (1 + Math.pow((100 - x) / 30, 2)); // relatieve flux
+  function teken(){
+    const nu = performance.now(), dt = Math.max(1, nu - laatst) / 1000; laatst = nu;
+    if (auto){ let x = +$('i1x').value + auto * 60 * dt; if (x >= 100 || x <= 0){ x = Math.max(0, Math.min(100, x)); auto = 0; } $('i1x').value = x; }
+    const x = +$('i1x').value, N = +$('i1n').value; $('i1xv').textContent = Math.round(x) + ' %'; $('i1nv').textContent = N;
+    const dphi = (phi(x) - phi(vorige)) / dt; vorige = x;
+    const sgnPool = pool === 'N' ? 1 : -1;
+    U = U * 0.7 + 0.3 * (-N * dphi * sgnPool * 0.004);
+    const mx2 = 140 + x * 2.6, mx1 = mx2 - 160, cy = 160;
+    let o = staafmagneet(mx1, mx2, cy, pool === 'N', 40);
+    // spoel
+    for (let k = 0; k <= 10; k++){ const xx = 380 + k * 18; o += `<ellipse cx="${xx}" cy="${cy}" rx="7" ry="52" fill="none" stroke="#B45309" stroke-width="3"/>`; }
+    o += draad([[380, cy + 52], [380, 300], [430, 300]]) + draad([[560, cy + 52], [560, 300], [510, 300]]);
+    // meter
+    const a = Math.max(-1, Math.min(1, U)) * 1.1;
+    o += `<circle cx="470" cy="300" r="40" fill="#fff" stroke="#334155" stroke-width="3"/><line x1="470" y1="300" x2="${470 + 32 * Math.sin(a)}" y2="${300 - 32 * Math.cos(a)}" stroke="${RODE}" stroke-width="3"/>` + txt(470, 330, 'V', {s: 13, w: 700, a: 'middle'});
+    const toe = Math.abs(U) > 0.03;
+    if (toe){ const naderen = dphi > 0; const geinduceerdN = naderen === (pool === 'N');
+      o += txt(370, 92, geinduceerdN ? 'N' : 'Z', {s: 22, w: 700, c: geinduceerdN ? RODE : BLAUW, a: 'end'}) + txt(470, 60, 'geïnduceerde pool links: ' + (geinduceerdN ? 'N' : 'Z'), {s: 13, w: 700, a: 'middle', c: C.dim});
+      o += txt(470, 80, naderen ? '→ stoot de magneet af' : '→ trekt de magneet terug', {s: 13, w: 700, a: 'middle', c: '#1F7A4A'}); }
+    $('s_i1').innerHTML = o;
+    $('r_i1').innerHTML = !toe ? 'De magneet staat stil: de flux verandert niet, dus <b>geen inductiespanning</b>.' :
+      (dphi > 0 ? 'De magneet komt dichter: de flux door de spoel <b>neemt toe</b>.' : 'De magneet gaat weg: de flux <b>neemt af</b>.') +
+      '<br>Wet van Lenz: de spoel wordt zelf een magneet die de beweging <b>tegenwerkt</b>.<br>Hoe sneller je beweegt en hoe meer windingen, hoe groter de spanning.';
+  }
+  function lus(){ if (isOn('i1')) teken(); else laatst = performance.now(); requestAnimationFrame(lus); } lus();
+})();
+(function(){
+  let x = 200;
+  function teken(){
+    const v = +$('i2v').value, B = +$('i2b').value, l = +$('i2l').value, U = B * l * v;
+    $('i2vv').textContent = fmt(v, 1) + ' m/s'; $('i2bv').textContent = fmt(B, 1) + ' T'; $('i2lv').textContent = fmt(l, 1) + ' m';
+    x += v * 0.8; if (x > 560) x = 140; if (x < 140) x = 560;
+    const y1 = 180 - l * 120, y2 = 180 + l * 120;
+    let o = '';
+    for (let i = 0; i < 9; i++) for (let j = 0; j < 5; j++) o += kruisje(110 + i * 60, 60 + j * 60, 5);
+    o += `<line x1="80" y1="${y1}" x2="600" y2="${y1}" stroke="#475569" stroke-width="5"/><line x1="80" y1="${y2}" x2="600" y2="${y2}" stroke="#475569" stroke-width="5"/><line x1="80" y1="${y1}" x2="80" y2="${y2}" stroke="#475569" stroke-width="5"/>`;
+    o += `<circle cx="80" cy="180" r="18" fill="#FEF9C3" stroke="#334155" stroke-width="2"/>`;
+    o += `<rect x="${x - 6}" y="${y1 - 14}" width="12" height="${y2 - y1 + 28}" fill="#B45309"/>`;
+    if (v !== 0){ o += pijl(x + 10, 180, x + 10 + Math.sign(v) * 70, 180, '#1D2A36', 'v', 0, -10, 3);
+      o += pijl(x - 24, v > 0 ? y2 - 20 : y1 + 20, x - 24, v > 0 ? y1 + 40 : y2 - 40, '#B45309', 'I', -14, 0, 3);
+      o += pijl(x, 180 + 40, x - Math.sign(v) * (30 + Math.abs(U) * 40), 180 + 40, RODE, sub('F', 'L'), 0, 24, 3); }
+    o += txt(600, 30, 'B ⊗', {s: 15, w: 700, c: '#64748B', a: 'end'});
+    $('s_i2').innerHTML = o;
+    $('r_i2').innerHTML = `U<sub>ind</sub> = B · l · v = ${fmt(B, 1)} · ${fmt(l, 1)} · ${fmt(Math.abs(v), 1)} = <b>${fmt(Math.abs(U), 2)} V</b><br>` + (v === 0 ? 'Staaf in rust: geen spanning.' : 'De lorentzkracht op de inductiestroom werkt <b>tegen de beweging</b> in (wet van Lenz). Je moet arbeid leveren om de staaf te blijven bewegen: die energie wordt elektrische energie.');
+  }
+  function lus(){ if (isOn('i2')) teken(); requestAnimationFrame(lus); } lus();
+})();
+
+//////////////////// 3.2 wervelstromen ////////////////////
+(function(){
+  let m = 1, th = 0.9, w = 0;
+  $('i3m').onclick = e => { const b = e.target.closest('button'); if (!b) return; m = +b.dataset.v; $('i3m').querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b)); th = 0.9; w = 0; };
+  $('i3go').onclick = () => { th = 0.9; w = 0; };
+  function teken(){
+    const c = [0.002, 0.25, 0.03][m], inVeld = Math.abs(th) < 0.35;
+    w += -0.012 * Math.sin(th) - (inVeld ? c : 0.001) * w; th += w;
+    const px = 320, py = 40, L = 230, x = px + L * Math.sin(th), y = py + L * Math.cos(th);
+    let o = `<line x1="200" y1="${py}" x2="440" y2="${py}" stroke="#475569" stroke-width="6"/><circle cx="${px}" cy="${py}" r="6" fill="#1D2A36"/>`;
+    if (m > 0) o += `<rect x="230" y="285" width="60" height="70" fill="${RODE}"/><rect x="350" y="285" width="60" height="70" fill="${BLAUW}"/>` + txt(260, 326, 'N', {s: 18, w: 700, c: '#fff', a: 'middle'}) + txt(380, 326, 'Z', {s: 18, w: 700, c: '#fff', a: 'middle'});
+    o += `<g transform="rotate(${-th * 180 / Math.PI} ${px} ${py})"><line x1="${px}" y1="${py}" x2="${px}" y2="${py + L - 30}" stroke="#475569" stroke-width="4"/><rect x="${px - 40}" y="${py + L - 30}" width="80" height="70" fill="#CBD5E1" stroke="#475569" stroke-width="2"/>` +
+      (m === 2 ? [0, 1, 2, 3].map(k => `<rect x="${px - 30 + k * 18}" y="${py + L - 10}" width="5" height="50" fill="#fff"/>`).join('') : '') +
+      (m === 1 && inVeld && Math.abs(w) > 0.005 ? `<ellipse cx="${px - 14}" cy="${py + L + 5}" rx="14" ry="22" fill="none" stroke="${RODE}" stroke-width="2"/><ellipse cx="${px + 14}" cy="${py + L + 5}" rx="14" ry="22" fill="none" stroke="${RODE}" stroke-width="2"/>` : '') + `</g>`;
+    $('s_i3').innerHTML = o;
+    $('r_i3').innerHTML = ['Zonder magneet slingert de plaat lang door.', '<b>Volle plaat:</b> in de plaat ontstaan grote wervelstromen. Hun lorentzkracht remt de beweging sterk af: de plaat stopt snel.', '<b>Plaat met spleten:</b> de spleten onderbreken de kringen. Er ontstaan veel kleinere wervelstromen, dus de plaat wordt weinig afgeremd.'][m];
+  }
+  function lus(){ if (isOn('i3')) teken(); requestAnimationFrame(lus); } lus();
+  const k = [['Elektromagnetische rem', 'In treinen, vrachtwagens en achtbanen. Een elektromagneet bij een draaiende metalen schijf wekt wervelstromen op die de schijf afremmen, zonder slijtage van remblokken.'],
+    ['Inductiekookplaat', 'Onder de plaat zit een spoel met wisselstroom. Het wisselend magnetisch veld wekt wervelstromen op in de bodem van de pan. Door het joule-effect warmt de pan zelf op. De plaat blijft koeler.'],
+    ['Weekijzeren kern in plaatjes', 'De kern van een transformator bestaat uit dunne, geïsoleerde plaatjes. Zo blijven de wervelstromen klein en gaat er weinig energie verloren als warmte.']];
+  $('c_i3').innerHTML = k.map(([t, p]) => `<div class="card"><div class="txt"><h4>${t}</h4><p>${p}</p></div></div>`).join('');
+})();
+(function(){
+  function teken(){
+    const U1 = +$('i4u').value, N1 = +$('i4a').value, N2 = +$('i4b').value, U2 = U1 * N2 / N1;
+    $('i4uv').textContent = U1 + ' V'; $('i4av').textContent = N1; $('i4bv').textContent = N2;
+    let o = `<rect x="200" y="60" width="240" height="220" fill="none" stroke="#9CA3AF" stroke-width="34"/>`;
+    const w1 = Math.max(3, Math.min(14, Math.round(N1 / 120))), w2 = Math.max(2, Math.min(14, Math.round(N2 / 120)));
+    for (let k = 0; k < w1; k++){ const y = 90 + k * (160 / w1); o += `<ellipse cx="200" cy="${y}" rx="28" ry="6" fill="none" stroke="#B45309" stroke-width="3"/>`; }
+    for (let k = 0; k < w2; k++){ const y = 90 + k * (160 / w2); o += `<ellipse cx="440" cy="${y}" rx="28" ry="6" fill="none" stroke="#2563eb" stroke-width="3"/>`; }
+    o += txt(140, 175, 'N₁ = ' + N1, {s: 13, w: 700, a: 'end'}) + txt(500, 175, 'N₂ = ' + N2, {s: 13, w: 700}) + txt(140, 200, 'U₁ = ' + U1 + ' V', {s: 13, w: 700, a: 'end', c: '#B45309'}) + txt(500, 200, 'U₂ = ' + fmt(U2, 1) + ' V', {s: 13, w: 700, c: '#2563eb'});
+    o += txt(320, 320, 'ijzeren kern', {s: 12, a: 'middle', c: C.dim});
+    $('s_i4').innerHTML = o;
+    $('r_i4').innerHTML = `U₂ = U₁ · N₂ / N₁ = ${U1} · ${N2} / ${N1} = <b>${fmt(U2, 1)} V</b><br>` + (N2 < N1 ? 'N₂ &lt; N₁: <b>neertransformator</b>, bv. een gsm-lader (230 V → 5 V).' : N2 > N1 ? 'N₂ &gt; N₁: <b>optransformator</b>, bv. naar het hoogspanningsnet.' : 'N₁ = N₂: de spanning blijft gelijk.');
+  }
+  ['i4u', 'i4a', 'i4b'].forEach(id => $(id).oninput = teken); teken();
+})();
+
+//////////////////// 3.3 generator ////////////////////
+(function(){
+  let th = 0; const hist = [];
+  function teken(){
+    const om = +$('i5w').value; $('i5wv').textContent = om === 0 ? 'stil' : fmt(om, 2) + ' ×';
+    th += om * 0.03; const phi = Math.cos(th), U = om * Math.sin(th);
+    hist.push([phi, U]); if (hist.length > 300) hist.shift();
+    const cx = 320, cy = 130, R = 80, Ax = Math.cos(th + Math.PI / 2), Ay = Math.sin(th + Math.PI / 2);
+    let o = `<rect x="20" y="30" width="80" height="200" fill="${RODE}"/><rect x="540" y="30" width="80" height="200" fill="${BLAUW}"/>` + txt(60, 138, 'N', {s: 22, w: 700, c: '#fff', a: 'middle'}) + txt(580, 138, 'Z', {s: 22, w: 700, c: '#fff', a: 'middle'});
+    for (let k = 0; k < 3; k++) o += pijl(120, 70 + k * 60, 170, 70 + k * 60, '#94A3B8', '', 0, 0, 1.5).replace(/<circle[^>]*>/, '');
+    o += `<line x1="${cx + R * Ax}" y1="${cy - R * Ay}" x2="${cx - R * Ax}" y2="${cy + R * Ay}" stroke="#B45309" stroke-width="5"/><circle cx="${cx}" cy="${cy}" r="5" fill="#1D2A36"/>`;
+    o += txt(cx, 250, Math.abs(Math.sin(th)) > 0.95 ? 'winding evenwijdig met B: U maximaal' : Math.abs(Math.cos(th)) > 0.95 ? 'winding loodrecht op B: Φ maximaal, U = 0' : '', {s: 13, w: 700, a: 'middle', c: C.dim});
+    $('s_i5').innerHTML = o;
+    let g = `<line x1="40" y1="115" x2="630" y2="115" stroke="${C.dim}"/><line x1="40" y1="10" x2="40" y2="220" stroke="${C.dim}"/>` + txt(625, 108, 't', {s: 12, w: 700, a: 'end', c: C.dim});
+    g += `<polyline points="${hist.map((h, i) => (40 + i * 1.95) + ',' + (115 - h[0] * 50)).join(' ')}" fill="none" stroke="#7c3aed" stroke-width="2.5"/><polyline points="${hist.map((h, i) => (40 + i * 1.95) + ',' + (115 - h[1] * 30)).join(' ')}" fill="none" stroke="#2563eb" stroke-width="2.5"/>`;
+    g += txt(50, 24, 'Φ (flux)', {s: 12, w: 700, c: '#7c3aed'}) + txt(130, 24, 'U (inductiespanning)', {s: 12, w: 700, c: '#2563eb'});
+    $('g_i5').innerHTML = g;
+    $('r_i5').innerHTML = 'Φ = B · A · cos α varieert als een <b>cosinus</b>. De spanning is maximaal waar Φ het <b>snelst verandert</b> (Φ = 0) en nul waar Φ maximaal is.<br>Sneller draaien → hogere spanning én hogere frequentie.';
+  }
+  function lus(){ if (isOn('i5')) teken(); requestAnimationFrame(lus); } lus();
+})();
+
+//////////////////// OEFENEN ////////////////////
+(function(){
+  const rnd = (a, b) => a + Math.floor(Math.random() * (b - a + 1)), kies = a => a[rnd(0, a.length - 1)];
+  const lees = s => parseFloat(String(s).trim().replace(/\s/g, '').replace(',', '.').replace('−', '-').replace(/·10\^?/, 'e').replace(/x10\^?/i, 'e'));
+  const dicht = (a, b) => isFinite(a) && Math.abs(a - b) <= 0.02 * Math.abs(b);
+  const MC = {
+    h1: [['Je breekt een staafmagneet in twee. Wat krijg je?', ['Een losse N-pool en een losse Z-pool.', 'Twee kleinere magneten, elk met een N- en een Z-pool.', 'Twee stukken zonder magnetisme.', 'Twee N-polen.'], 1, 'Je kunt de polen niet scheiden: elk stuk wordt een volledige magneet. Het magnetisme zit in de weissgebieden.'],
+      ['Waarom wordt een ijzeren spijker aangetrokken door een magneet?', ['IJzer is altijd magnetisch.', 'De weissgebieden in het ijzer richten zich: magnetische influentie.', 'De spijker is elektrisch geladen.', 'Door de zwaartekracht.'], 1, 'In het veld van de magneet richten de weissgebieden zich. Het ijzer wordt zelf een magneet, met de tegengestelde pool naar de magneet.'],
+      ['Wat is het verschil tussen een elektromagneet en een permanente magneet?', ['Er is geen verschil.', 'Een elektromagneet kun je aan- en uitzetten en regelen met de stroom.', 'Een elektromagneet heeft geen polen.', 'Een permanente magneet werkt alleen met stroom.'], 1, 'Het veld van een elektromagneet komt van de stroom door de spoel. Geen stroom, geen veld.'],
+      ['Een kompasnaald wijst naar het noorden. Welke magnetische pool ligt daar?', ['Een magnetische noordpool.', 'Een magnetische zuidpool.', 'Geen pool.', 'Dat hangt af van de seizoenen.'], 1, 'De N-pool van de naald wordt aangetrokken door een Z-pool: bij de geografische noordpool ligt een magnetische zuidpool.']],
+    h2: [['Een stroom loopt naar rechts in een veld dat het scherm in wijst (⊗). In welke zin werkt de lorentzkracht?', ['Naar boven.', 'Naar beneden.', 'Naar rechts.', 'Het scherm uit.'], 0, 'Vingers naar rechts (I), buig ze het scherm in (B): je duim wijst naar boven.'],
+      ['Twee evenwijdige draden met stroom in dezelfde zin...', ['stoten elkaar af.', 'trekken elkaar aan.', 'oefenen geen kracht uit.', 'draaien rond elkaar.'], 1, 'Stromen in dezelfde zin trekken aan, tegengestelde stromen stoten af.'],
+      ['Waarom blijft de snelheid van een geladen deeltje in een magnetisch veld even groot?', ['De lorentzkracht staat altijd loodrecht op de snelheid.', 'Er werkt geen kracht.', 'De lorentzkracht is altijd nul.', 'De massa verandert.'], 0, 'Een kracht loodrecht op de snelheid verandert alleen de richting: een cirkelbaan.'],
+      ['Wat doet de commutator in een gelijkstroommotor?', ['Hij versterkt het magneetveld.', 'Hij keert elke halve draai de stroomzin in de winding om.', 'Hij remt de motor af.', 'Hij zet gelijkspanning om in wisselspanning.'], 1, 'Zo blijft het krachtkoppel in dezelfde draaizin werken.']],
+    h3: [['Een magneet ligt stil in een spoel. Is er een inductiespanning?', ['Ja, want er is een magnetisch veld.', 'Nee, want de flux verandert niet.', 'Ja, maar alleen bij veel windingen.', 'Alleen als de N-pool binnen zit.'], 1, 'Inductie ontstaat alleen bij een verandering van flux.'],
+      ['Wat zegt de wet van Lenz?', ['De inductiestroom versterkt de oorzaak.', 'De inductiestroom werkt de oorzaak van zijn ontstaan tegen.', 'De inductiespanning is altijd nul.', 'De flux blijft altijd constant.'], 1, 'Zou de inductiestroom de oorzaak versterken, dan kreeg je energie uit het niets.'],
+      ['Waarom werkt een transformator niet met gelijkspanning?', ['Gelijkspanning is te zwak.', 'De flux in de kern verandert niet, dus er wordt niets geïnduceerd.', 'De kern smelt.', 'Het werkt wel, maar trager.'], 1, 'Alleen een veranderende flux induceert een spanning in de secundaire spoel.'],
+      ['Wat is het verschil tussen een motor en een generator?', ['Er is geen verschil.', 'Een motor zet elektrische energie om in bewegingsenergie, een generator omgekeerd.', 'Een generator werkt zonder magneet.', 'Een motor werkt alleen op wisselspanning.'], 1, 'Motor: lorentzkracht. Generator: elektromagnetische inductie.']]
+  };
+  const REK = {
+    h1: [() => { const I = rnd(2, 20), r = rnd(1, 10); const B = MU0 * I / (2 * Math.PI * r / 100); return {q: `Bereken B op ${r} cm van een rechte draad met een stroom van ${I} A. (in T)`, a: B, u: 'T', u2: `B = μ₀ · I / (2π · r) = 4π · 10⁻⁷ · ${I} / (2π · ${fmt(r / 100, 2)}) = ${wet(B)} T`}; },
+      () => { const N = kies([200, 400, 500, 1000]), I = kies([0.5, 1, 2]), l = kies([0.1, 0.2, 0.25]); const B = MU0 * N * I / l; return {q: `Een luchtspoel van ${fmt(l * 100, 0)} cm lang heeft ${N} windingen en een stroom van ${fmt(I, 1)} A. Bereken B in de spoel. (in T)`, a: B, u: 'T', u2: `B = μ₀ · N · I / l = 4π · 10⁻⁷ · ${N} · ${fmt(I, 1)} / ${fmt(l, 2)} = ${wet(B)} T`}; }],
+    h2: [() => { const B = kies([0.2, 0.5, 0.8]), I = rnd(2, 10), l = kies([0.1, 0.2, 0.3]); return {q: `Een draad van ${fmt(l * 100, 0)} cm met ${I} A staat loodrecht op een veld van ${fmt(B, 1)} T. Bereken de lorentzkracht.`, a: B * I * l, u: 'N', u2: `F<sub>L</sub> = B · I · l = ${fmt(B, 1)} · ${I} · ${fmt(l, 1)} = ${fmt(B * I * l, 2)} N`}; },
+      () => { const v = rnd(2, 9), B = kies([0.05, 0.1, 0.2]); const F = 1.6e-19 * v * 1e5 * B; return {q: `Een proton vliegt met ${v} · 10⁵ m/s loodrecht op een veld van ${fmt(B, 2)} T. Bereken de lorentzkracht. (in N)`, a: F, u: 'N', u2: `F = q · v · B = 1,6 · 10⁻¹⁹ · ${v} · 10⁵ · ${fmt(B, 2)} = ${wet(F)} N`}; },
+      () => { const v = rnd(2, 9), B = kies([0.05, 0.1, 0.2]); const r = 1.67e-27 * v * 1e5 / (1.6e-19 * B); return {q: `Een proton vliegt met ${v} · 10⁵ m/s loodrecht op een veld van ${fmt(B, 2)} T. Bereken de straal van de cirkelbaan in cm.`, a: r * 100, u: 'cm', u2: `r = m · v / (q · B) = 1,67 · 10⁻²⁷ · ${v} · 10⁵ / (1,6 · 10⁻¹⁹ · ${fmt(B, 2)}) = ${fmt(r * 100, 1)} cm`}; }],
+    h3: [() => { const B = kies([0.2, 0.4, 0.5]), A = kies([0.01, 0.02, 0.05]); return {q: `Een winding met oppervlakte ${fmt(A * 1e4, 0)} cm² staat loodrecht op een veld van ${fmt(B, 1)} T. Bereken de flux. (in Wb)`, a: B * A, u: 'Wb', u2: `Φ = B · A · cos 0° = ${fmt(B, 1)} · ${fmt(A, 2)} = ${fmt(B * A, 3)} Wb`}; },
+      () => { const N = kies([100, 200, 500]), dP = kies([0.002, 0.005, 0.01]), dt = kies([0.1, 0.2, 0.5]); return {q: `De flux door een spoel met ${N} windingen verandert ${fmt(dP * 1000, 0)} mWb in ${fmt(dt, 1)} s. Bereken de grootte van de inductiespanning.`, a: N * dP / dt, u: 'V', u2: `|U| = N · ΔΦ / Δt = ${N} · ${fmt(dP, 3)} / ${fmt(dt, 1)} = ${fmt(N * dP / dt, 2)} V`}; },
+      () => { const B = kies([0.2, 0.5, 1]), l = kies([0.2, 0.5, 1]), v = rnd(2, 10); return {q: `Een staaf van ${fmt(l, 1)} m beweegt met ${v} m/s loodrecht door een veld van ${fmt(B, 1)} T. Bereken de inductiespanning.`, a: B * l * v, u: 'V', u2: `U = B · l · v = ${fmt(B, 1)} · ${fmt(l, 1)} · ${v} = ${fmt(B * l * v, 2)} V`}; },
+      () => { const U1 = 230, N1 = kies([1000, 2000, 4600]), N2 = kies([50, 100, 200]); return {q: `Een transformator heeft N₁ = ${N1} en N₂ = ${N2}. U₁ = 230 V. Bereken U₂.`, a: U1 * N2 / N1, u: 'V', u2: `U₂ = U₁ · N₂ / N₁ = 230 · ${N2} / ${N1} = ${fmt(U1 * N2 / N1, 1)} V`}; }]
+  };
+  const SO = [['alles', 'Door elkaar'], ['h1', '1 Magnetische verschijnselen'], ['h2', '2 Kracht op een stroom'], ['h3', '3 Inductie']];
+  let soort = 'alles', goed = 0, tot = 0, klaar = false;
+  $('soort').innerHTML = SO.map(([k, n]) => `<button class="btn ${k === soort ? 'on' : ''}" data-k="${k}">${n}</button>`).join('');
+  $('soort').onclick = e => { const b = e.target.closest('button'); if (!b) return; soort = b.dataset.k; $('soort').querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b)); nieuw(); };
+  function tel(ok){ if (!klaar){ tot++; if (ok) goed++; klaar = true; } $('score').textContent = `${goed} / ${tot}`; }
+  function nieuw(){
+    klaar = false; $('fb').innerHTML = ''; $('fb').className = 'feedback';
+    const t = soort === 'alles' ? kies(['h1', 'h2', 'h3']) : soort;
+    if (Math.random() < 0.45){
+      const [q, opts, j, u] = kies(MC[t]); $('vraag').innerHTML = q;
+      $('invoer').innerHTML = `<div class="keuzes">${opts.map((o, i) => `<button class="btn" data-i="${i}">${'ABCD'[i]}. ${o}</button>`).join('')}</div>`;
+      $('invoer').querySelector('.keuzes').onclick = e => { const b = e.target.closest('button'); if (!b) return; const ok = +b.dataset.i === j;
+        $('invoer').querySelectorAll('.keuzes .btn').forEach((x, i) => { x.classList.toggle('goed', i === j); if (x === b && !ok) x.classList.add('fout'); });
+        tel(ok); $('fb').className = 'feedback ' + (ok ? 'goed' : 'fout'); $('fb').innerHTML = (ok ? '✓ Juist!' : '✗ Niet juist.') + `<span class="uitleg">${u}</span>`; };
+    } else {
+      const r = kies(REK[t])(); $('vraag').innerHTML = r.q;
+      $('invoer').innerHTML = `<div class="antw"><input type="text" id="oa" autocomplete="off"> <b>${r.u}</b> <button class="btn primary" id="oc">Controleer</button></div>`;
+      const go = () => { const w = lees($('oa').value); if (!isFinite(w)){ $('fb').className = 'feedback fout'; $('fb').innerHTML = 'Vul een getal in, bv. 2,5e-5.'; return; }
+        const ok = dicht(w, r.a); tel(ok); $('fb').className = 'feedback ' + (ok ? 'goed' : 'fout'); $('fb').innerHTML = (ok ? '✓ Juist!' : '✗ Nog niet juist.') + `<span class="uitleg">${r.u2}</span>`; };
+      $('oc').onclick = go; $('oa').onkeydown = e => { if (e.key === 'Enter') go(); };
+    }
+  }
+  $('volgende').onclick = nieuw; nieuw();
+})();
+
+</script>
+</body>
+</html>
