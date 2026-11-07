@@ -462,7 +462,7 @@ const HEMEL = [['Aarde', 9.81], ['Maan', 1.62], ['Mars', 3.71], ['Venus', 8.87],
   const SIT = [
     {n:'Op aarde', g:9.81, G:true, uitleg:'Hij staat op de weegschaal. Het gewicht is even groot als de zwaartekracht.'},
     {n:'Op de maan', g:1.62, G:true, uitleg:'Op de maan is de zwaarteveldsterkte kleiner. Zwaartekracht en gewicht zijn kleiner, de massa blijft 80 kg.'},
-    {n:'Duikplank', g:9.81, G:false, uitleg:'Tijdens de sprong wordt hij niet ondersteund: hij is gewichtloos. De zwaartekracht werkt wel, daarom valt hij.'},
+    {n:'Duikplank', g:9.81, G:false, uitleg:'Hij duikt van de duikplank. Tijdens de sprong wordt hij niet ondersteund: hij is gewichtloos. De zwaartekracht werkt wel, daarom valt hij.'},
     {n:'In het ISS', g:8.7, G:false, uitleg:'Op 400 km hoogte is g nog 8,7 N/kg. Het ISS en de astronaut vallen samen rond de aarde: hij drukt niet op een steun en is gewichtloos.'},
     {n:'Ver in de ruimte', g:0, G:false, uitleg:'Ver van elk hemellichaam is er (bijna) geen zwaarteveld. Geen zwaartekracht en geen gewicht, maar nog steeds 80 kg massa.'}
   ];
@@ -470,6 +470,7 @@ const HEMEL = [['Aarde', 9.81], ['Maan', 1.62], ['Mars', 3.71], ['Venus', 8.87],
   $('zw3k').innerHTML = SIT.map((s, i) => `<button class="btn" data-i="${i}">${s.n}</button>`).join('');
   $('zw3k').onclick = e => { const b = e.target.closest('button'); if (b){ k = +b.dataset.i; teken(); } };
   function persoon(x, y, kantel = 0){ return `<g transform="rotate(${kantel} ${x} ${y - 60})"><circle cx="${x}" cy="${y - 112}" r="15" fill="#F2B880" stroke="#9A5B00"/><rect x="${x - 17}" y="${y - 96}" width="34" height="52" rx="10" fill="#E9EEF5" stroke="${C.tekst}" stroke-width="1.5"/><rect x="${x - 15}" y="${y - 46}" width="12" height="46" rx="5" fill="#C7D2FE"/><rect x="${x + 3}" y="${y - 46}" width="12" height="46" rx="5" fill="#C7D2FE"/></g>`; }
+  const zp = (x, y) => `<circle cx="${x}" cy="${y}" r="4" fill="${C.fz}" stroke="#fff" stroke-width="1.5"/>`; // zwaartepunt
   function teken(){
     const s = SIT[k], Fz = m * s.g, G = s.G ? Fz : 0;
     $('zw3k').querySelectorAll('button').forEach((b, i) => b.classList.toggle('on', i === k));
@@ -479,16 +480,16 @@ const HEMEL = [['Aarde', 9.81], ['Maan', 1.62], ['Mars', 3.71], ['Venus', 8.87],
       o += `<rect x="0" y="300" width="640" height="80" fill="${k === 0 ? '#8BBF7A' : '#C9CDD3'}"/>`;
       o += `<rect x="250" y="288" width="100" height="14" rx="3" fill="#475569"/><rect x="278" y="291" width="44" height="8" fill="#A7F3D0"/>` + txt(300, 299, fmt(G / 9.81, 0) + ' kg', {s: 8, w: 700, a: 'middle'});
       o += persoon(300, 288);
-      o += pijl(300, 205, 300, 205 + Fz / 500 * sch, C.fz, sub('F', 'z'), -24, 0) + pijl(300, 302, 300, 302 + G / 500 * sch, C.g, sub('F', 'G'), 20, 4);
+      o += zp(300, 228) + pijl(300, 228, 300, 228 + Fz / 500 * sch, C.fz, sub('F', 'z'), -24, 0) + pijl(318, 302, 318, 302 + G / 500 * sch, C.g, sub('F', 'G'), 20, 4);
       o += txt(370, 300, 'weegschaal toont ' + fmt(G / 9.81, 0) + ' kg', {s: 13, c: C.dim});
     } else if (k === 2){
       o += `<rect x="0" y="330" width="640" height="50" fill="#7DC4E4"/><rect x="40" y="150" width="160" height="12" fill="#94A3B8"/>`;
-      o += persoon(320, 250, 15) + pijl(320, 165, 320, 165 + Fz / 500 * sch, C.fz, sub('F', 'z'), -26, 0) + txt(420, 200, `geen steunpunt: F<tspan font-size="70%" dy="4">G</tspan><tspan dy="-4"> = 0 N</tspan>`, {s: 14, w: 600, c: C.g});
+      o += persoon(330, 290, 165) + zp(330, 230) + pijl(330, 230, 330, 230 + Fz / 500 * sch, C.fz, sub('F', 'z'), -26, 0) + txt(420, 200, `geen steunpunt: F<tspan font-size="70%" dy="4">G</tspan><tspan dy="-4"> = 0 N</tspan>`, {s: 14, w: 600, c: C.g});
     } else {
       o += `<rect x="0" y="0" width="640" height="380" fill="#0F172A"/>` + [[40,40],[600,70],[120,320],[520,300],[300,30],[580,200]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="1.5" fill="#fff"/>`).join('');
       if (k === 3) o += `<rect x="150" y="110" width="340" height="190" rx="20" fill="#334155" stroke="#94A3B8"/>`;
       o += persoon(320, 280, k === 3 ? 25 : -20);
-      if (Fz > 0) o += pijl(320, 210, 320, 210 + Fz / 500 * sch, C.fz, sub('F', 'z'), -26, 0);
+      o += zp(320, 220); if (Fz > 0) o += pijl(320, 220, 320, 220 + Fz / 500 * sch, C.fz, sub('F', 'z'), -26, 0);
       o += txt(470, 90, `F<tspan font-size="70%" dy="4">G</tspan><tspan dy="-4"> = 0 N</tspan>`, {s: 15, w: 700, c: C.g, a: 'middle'});
     }
     $('s_zw3').innerHTML = o;
