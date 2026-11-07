@@ -387,6 +387,14 @@ function vecTeken(X, Y, label, kleur, fs, anker){ // vectorpijltje boven de eers
   const ax = x0 + bw * 0.52, ay = Y - fs * 0.88, aw = bw * 1.0, ah = fs * 0.14;
   return `<path d="M${ax - aw / 2},${ay} L${ax + aw / 2},${ay} M${ax + aw / 2 - ah * 1.7},${ay - ah} L${ax + aw / 2},${ay} L${ax + aw / 2 - ah * 1.7},${ay + ah}" stroke="${kleur}" stroke-width="${Math.max(1.3, fs * 0.085)}" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`;
 }
+/* mensfiguur uit vloeiende ledematen: eerst alle omtrekken, dan de kleuren, zodat de delen naadloos aansluiten */
+function lijf(delen){
+  const d = p => 'M' + p.map(q => q.join(',')).join(' L');
+  const om = delen.map(([p, w]) => `<path d="${d(p)}" fill="none" stroke="#475569" stroke-width="${w + 3}" stroke-linecap="round" stroke-linejoin="round"/>`).join('');
+  const kl = delen.map(([p, w, k]) => `<path d="${d(p)}" fill="none" stroke="${k}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round"/>`).join('');
+  return om + kl;
+}
+const HUID = '#F2B880', HEMD = '#E9EEF5', BROEK = '#8EA2E8', SCHOEN = '#334155';
 function pijl(x1, y1, x2, y2, kleur, label, lx = 0, ly = 0, dik = 4){
   const len = Math.hypot(x2 - x1, y2 - y1); if (len < 2) return `<circle cx="${x1}" cy="${y1}" r="4" fill="${kleur}"/>`;
   const a = Math.atan2(y2 - y1, x2 - x1), hs = Math.min(15, len * 0.45);
@@ -477,7 +485,11 @@ const HEMEL = [['Aarde', 9.81], ['Maan', 1.62], ['Mars', 3.71], ['Venus', 8.87],
   let k = 0;
   $('zw3k').innerHTML = SIT.map((s, i) => `<button class="btn" data-i="${i}">${s.n}</button>`).join('');
   $('zw3k').onclick = e => { const b = e.target.closest('button'); if (b){ k = +b.dataset.i; teken(); } };
-  function persoon(x, y, kantel = 0){ return `<g transform="rotate(${kantel} ${x} ${y - 60})"><circle cx="${x}" cy="${y - 112}" r="15" fill="#F2B880" stroke="#9A5B00"/><rect x="${x - 17}" y="${y - 96}" width="34" height="52" rx="10" fill="#E9EEF5" stroke="${C.tekst}" stroke-width="1.5"/><rect x="${x - 15}" y="${y - 46}" width="12" height="46" rx="5" fill="#C7D2FE"/><rect x="${x + 3}" y="${y - 46}" width="12" height="46" rx="5" fill="#C7D2FE"/></g>`; }
+  function persoon(x, y, kantel = 0){ return `<g transform="rotate(${kantel} ${x} ${y - 60})">` + lijf([
+      [[[x - 6, y - 50], [x - 8, y - 6]], 13, BROEK], [[[x + 6, y - 50], [x + 8, y - 6]], 13, BROEK],
+      [[[x - 9, y - 3], [x - 16, y - 2]], 8, SCHOEN], [[[x + 9, y - 3], [x + 16, y - 2]], 8, SCHOEN],
+      [[[x - 14, y - 86], [x - 18, y - 66], [x - 17, y - 50]], 9, HEMD], [[[x + 14, y - 86], [x + 18, y - 66], [x + 17, y - 50]], 9, HEMD],
+      [[[x, y - 84], [x, y - 56]], 30, HEMD], [[[x, y - 98], [x, y - 92]], 9, HUID], [[[x, y - 111], [x, y - 110]], 27, HUID]]) + `</g>`; }
   const zp = (x, y) => `<circle cx="${x}" cy="${y}" r="4" fill="${C.fz}" stroke="#fff" stroke-width="1.5"/>`; // zwaartepunt
   function teken(){
     const s = SIT[k], Fz = m * s.g, G = s.G ? Fz : 0;
@@ -525,23 +537,28 @@ const HEMEL = [['Aarde', 9.81], ['Maan', 1.62], ['Mars', 3.71], ['Venus', 8.87],
     if (k === 0){
       o += `<rect x="150" y="210" width="340" height="18" fill="#B08968"/><rect x="170" y="228" width="14" height="140" fill="#9C7656"/><rect x="456" y="228" width="14" height="140" fill="#9C7656"/>`;
       o += `<rect x="250" y="170" width="140" height="40" rx="3" fill="#60A5FA" stroke="#1E3A8A"/>` + txt(375, 195, 'boek', {s: 12, w: 700, a: 'end', c: '#fff'});
-      if (tz) o += pijl(320, 190, 320, 190 + L, C.fz, sub('F', 'z'), -24, 20);
-      if (tn) o += pijl(280, 210, 280, 210 - L, C.fn, sub('F', 'N'), -26, 0);
-      if (tg) o += pijl(360, 212, 360, 212 + L, C.g, sub('F', 'G'), 22, 20);
+      if (tz) o += pijl(320, 190, 320, 190 + L, C.fz, sub('F', 'z'), -18, 52);
+      if (tn) o += pijl(306, 210, 306, 210 - L, C.fn, sub('F', 'N'), -24, 0);
+      if (tg) o += pijl(334, 212, 334, 212 + L, C.g, sub('F', 'G'), 22, 20);
       rijen = [['F<sub>z</sub>', 'de aarde', 'het boek', 'zwaartepunt van het boek'], ['F<sub>N</sub>', 'de tafel', 'het boek', 'contactvlak, op het boek'], ['F<sub>G</sub>', 'het boek', 'de tafel', 'contactvlak, op de tafel (steunpunt)']];
     } else if (k === 1){
       o += `<rect x="0" y="0" width="640" height="40" fill="#CBD5E1"/><line x1="320" y1="40" x2="320" y2="180" stroke="${C.tekst}" stroke-width="2"/>`;
       o += `<path d="M285 220 L355 220 L340 180 L300 180 Z" fill="#FCD34D" stroke="#92400E"/><circle cx="320" cy="226" r="8" fill="#FEF3C7"/>`;
       if (tz) o += pijl(320, 205, 320, 205 + L, C.fz, sub('F', 'z'), 26, 6);
-      if (tg) o += pijl(332, 40, 332, 40 + L, C.g, sub('F', 'G'), 18, 0);
+      if (tg) o += pijl(320, 40, 320, 40 + L, C.g, sub('F', 'G'), 22, 0);
       if (tn) o += txt(470, 150, 'Hier is er geen normaalkracht:', {s: 13, c: C.dim, a: 'middle'}) + txt(470, 168, 'de lamp ligt niet op een steun.', {s: 13, c: C.dim, a: 'middle'});
       rijen = [['F<sub>z</sub>', 'de aarde', 'de lamp', 'zwaartepunt van de lamp'], ['F<sub>G</sub>', 'de lamp', 'het plafond (via het snoer)', 'ophangpunt aan het plafond']];
     } else {
       o += `<rect x="0" y="350" width="640" height="30" fill="#CBD5E1"/><rect x="250" y="250" width="140" height="14" fill="#64748B"/><rect x="258" y="264" width="10" height="86" fill="#64748B"/><rect x="372" y="264" width="10" height="86" fill="#64748B"/><rect x="372" y="150" width="10" height="100" fill="#64748B"/>`;
-      o += `<circle cx="330" cy="110" r="16" fill="#F2B880" stroke="#9A5B00"/><rect x="312" y="128" width="40" height="80" rx="12" fill="#E9EEF5" stroke="${C.tekst}" stroke-width="1.5"/><rect x="270" y="210" width="80" height="40" rx="10" fill="#C7D2FE"/><rect x="262" y="250" width="16" height="0"/>`;
-      if (tz) o += pijl(318, 200, 318, 200 + L, C.fz, sub('F', 'z'), -22, 30);
-      if (tn) o += pijl(280, 250, 280, 250 - L, C.fn, sub('F', 'N'), -26, 0);
-      if (tg) o += pijl(355, 252, 355, 252 + L, C.g, sub('F', 'G'), 22, 30);
+      o += lijf([
+        [[[350, 236], [282, 238]], 24, BROEK], [[[278, 240], [274, 300], [272, 336]], 17, BROEK], [[[268, 342], [250, 344]], 10, SCHOEN],
+        [[[352, 228], [350, 186], [346, 150]], 36, HEMD],
+        [[[344, 150], [338, 184], [322, 212], [298, 224]], 11, HEMD], [[[296, 225], [290, 227]], 9, HUID],
+        [[[343, 134], [342, 126]], 11, HUID], [[[340, 110], [339, 109]], 30, HUID]]);
+      o += `<circle cx="337" cy="216" r="4" fill="${C.fz}" stroke="#fff" stroke-width="1.5"/>`;
+      if (tz) o += pijl(337, 216, 337, 216 + L, C.fz, sub('F', 'z'), -20, 40);
+      if (tn) o += pijl(323, 250, 323, 250 - L, C.fn, sub('F', 'N'), -26, -10);
+      if (tg) o += pijl(351, 252, 351, 252 + L, C.g, sub('F', 'G'), 44, 30);
       rijen = [['F<sub>z</sub>', 'de aarde', 'de leerling', 'zwaartepunt van de leerling'], ['F<sub>N</sub>', 'de stoel', 'de leerling', 'contactvlak, op de leerling'], ['F<sub>G</sub>', 'de leerling', 'de stoel', 'contactvlak, op de stoel (steunpunt)']];
     }
     o += txt(16, 30 + (k === 1 ? 30 : 0), `m = ${fmt(s.m, s.m % 1 ? 1 : 0)} kg → F = ${fmt(F, 1)} N`, {s: 14, w: 600, c: C.dim});
