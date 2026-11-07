@@ -46,3 +46,8 @@ Elke lijst `.doel ul > li` (lessites) of `ul.doelen > li` (cursussen, 3ASO-fysic
 Bouwen: `cd /home/claude/cursus && python3 /home/claude/toolswetenschappen/_bron/cursus/aso_krachten.py` → `cursus-krachten-3aso.html`.
 Hergebruikt effect, vector, traagheid en beweging uit `derde_krachten.py` (3NW; die leest `oud_krachten.py`). Links wijzen naar de 3ASO-tools.
 Leerlingen krijgen een ingevulde naslag; wisbordvragen per deel (`aso_wisbord.py`, `aso_veer.py`) staan in `.edi`-blokken die enkel met `?leerkracht` zichtbaar zijn. Word: `EDI=1 node extract.js …` neemt ze mee (leerkrachtversie), zonder EDI niet.
+
+## Lesdoelen NW-tools (afvinkbaar)
+- `_bron/lesdoelen/overzicht.py` leest de leerstofoverzichten (.docx) naar `nw_overzichten.json`.
+- `_bron/lesdoelen/nw_lesdoelen.py` zet per tool een dicht paneel (`<!--ldnw-->…<!--/ldnw-->`) met de lesdoelen; de koppeling tool → paragrafen staat in `KAART`.
+- `aso/bouw_3aso.py` haalt dit blok weg, zodat de 3ASO-versies alleen hun eigen lesdoelen tonen. Volgorde: eerst `nw_lesdoelen.py`, dan `bouw_3aso.py`.

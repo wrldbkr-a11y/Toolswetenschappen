@@ -27,6 +27,7 @@ def vervang(s, paren):
 
 def bouw(bron, doel, fn):
     s = (ROOT / bron).read_text(encoding='utf-8')
+    s = re.sub(r'<!--ldnw-->.*?<!--/ldnw-->\n', '', s, flags=re.S)  # NW-lesdoelen niet in 3ASO
     s = fn(s)
     s = s.replace('<!DOCTYPE html>\n', '<!DOCTYPE html>\n' + NOOT.format(bron=bron), 1)
     (ROOT / doel).write_text(voeg_toe(s, doel), encoding='utf-8')

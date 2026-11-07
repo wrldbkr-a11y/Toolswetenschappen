@@ -117,6 +117,7 @@ footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-di
   <nav id="catnav" class="catnav"></nav>
   <nav id="nav"></nav>
 </header>
+<!--ldnw--><div class="ldnw-wrap"><details id="ldnw"><style>.ldnw-wrap{max-width:1180px;margin:14px auto 0;padding:0 24px}#ldnw{border:1px solid #c9d6e3;border-radius:10px;padding:8px 14px;background:rgba(127,160,200,.08)}#ldnw>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;font-weight:700}#ldnw>summary::-webkit-details-marker{display:none}#ldnw .pijl{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:#2F6FB0;color:#fff;font-size:13px;transition:transform .2s}#ldnw[open] .pijl{transform:rotate(90deg)}#ldnw .hint{font-weight:500;font-size:13px;opacity:.75}#ldnw[open] .hint{display:none}#ldnw .ldk{margin:10px 0 2px;font-weight:700}#ldnw ul.doelen{margin:0;font-size:14px;line-height:1.5}</style><summary><span class="pijl">▶</span>Lesdoelen · Ik kan … <span class="hint">klik om te openen en af te vinken</span></summary><p class="ldk">1.1 Energie in systemen</p><ul class="doelen"><li>Ik kan het verschil uitleggen tussen een open, gesloten en geïsoleerd systeem.</li><li>Ik kan uitleggen waarom een zwaarteveld, magnetisch veld en elektrisch veld potentiële energie bevatten.</li><li>Ik kan uit voorbeelden van het dagelijks leven de energieomzetting noteren met betrekking tot gravitationele energie, elastische energie, kinetische energie, chemische energie, thermische energie, stralingsenergie, kernenergie en elektrische energie.</li><li>Je kan uitleggen hoe via energieomzetten een waterreservoir op een heuvel energie kan opslaan.</li></ul><p class="ldk">1.2 Formules van energie</p><ul class="doelen"><li>Ik gebruik de formule voor het berekenen van de potentiële gravitationele energie, de kinetische energie en de potentiële elastische energie en vorm ze om.</li></ul><p class="ldk">2.1 Arbeid</p><ul class="doelen"><li>Ik omschrijf het begrip 'arbeid geleverd door een kracht op een voorwerp'.</li><li>Ik gebruik de formule voor het berekenen van de arbeid en vorm ze om voor het berekenen van de kracht en de verplaatsing.</li><li>Je kan de formule van het arbeid-energietheorema noteren en met een voorbeeld illustreren.</li></ul><p class="ldk">2.2 Vermogen</p><ul class="doelen"><li>Je kan het begrip vermogen omschrijven.</li><li>Je kan de formule voor het berekenen van vermogen gebruiken en omvormen om tijdsverloop en hoeveelheid energie te berekenen.</li></ul><p class="ldk">3.1 Behoud van energie</p><ul class="doelen"><li>Ik stel kwalitatief de energiebalans op bij een omzetting van verschillende energievormen.</li><li>Ik omschrijf het behoud van energie in een geïsoleerd systeem.</li><li>Ik bereken een onbekende grootheid door gebruik te maken van het behoud van energie.</li></ul><p class="ldk">3.2 Rendement</p><ul class="doelen"><li>Ik omschrijf het begrip 'energiedissipatie' als het verlies aan nuttige energie.</li><li>Ik bereken de energiedissipatie bij een omzetting tussen energievormen.</li><li>Ik omschrijf het begrip 'rendement'.</li><li>Ik gebruik de formule voor het berekenen van het rendement en vorm ze om voor het berekenen van de nuttige energie en de totale energie.</li></ul><p style="font-size:12px;opacity:.75;margin:8px 0 4px">Vink aan wat je al kan. Wat je niet kan aanvinken, oefen je nog eens.</p></details></div><!--/ldnw-->
 
 <main>
 
@@ -981,5 +982,36 @@ const TOESTELLEN=[
   ['be_m','be_h','be_p'].forEach(id=>$(id).addEventListener('input',teken)); $('be_w').addEventListener('change',teken); teken();
 })();
 </script>
+<!--vinkjes-->
+<style>
+.doel ul:has(.vk-li),ul.doelen:has(.vk-li){list-style:none;padding-left:0}
+.vk-li{display:flex;gap:10px;align-items:flex-start;cursor:pointer;margin:4px 0;list-style:none}
+.vk{flex:none;width:22px;height:22px;margin-top:1px;border:2px solid #64748b;border-radius:5px;background:#fff;display:inline-grid;place-items:center;cursor:pointer;padding:0}
+.vk:focus-visible{outline:3px solid #60a5fa;outline-offset:2px}
+.vk.aan{background:#16a34a;border-color:#16a34a}
+.vk.aan::after{content:"";width:6px;height:11px;border:solid #fff;border-width:0 3px 3px 0;transform:translateY(-1px) rotate(45deg)}
+.vk-li.aan .vk-t{color:#15803d}
+@media print{.vk{background:#fff!important;border-color:#000!important}.vk.aan::after{border-color:#000}}
+</style>
+<script>
+(function(){
+  var K='vinkjes:'+location.pathname.split('/').pop();
+  var st={}; try{st=JSON.parse(localStorage.getItem(K)||'{}')}catch(e){}
+  function bewaar(){try{localStorage.setItem(K,JSON.stringify(st))}catch(e){}}
+  var lis=document.querySelectorAll('.doel ul > li, ul.doelen > li');
+  [].forEach.call(lis,function(li,i){
+    if(li.querySelector('.vk')) return;
+    var b=document.createElement('button'); b.type='button'; b.className='vk'; b.setAttribute('role','checkbox');
+    b.setAttribute('aria-label','Ik kan dit');
+    var t=document.createElement('span'); t.className='vk-t';
+    while(li.firstChild) t.appendChild(li.firstChild);
+    li.appendChild(b); li.appendChild(t); li.classList.add('vk-li');
+    function zet(a){ st[i]=a; b.classList.toggle('aan',a); li.classList.toggle('aan',a); b.setAttribute('aria-checked',a?'true':'false'); }
+    zet(!!st[i]);
+    li.addEventListener('click',function(e){ if(e.target.closest('a')) return; zet(!st[i]); bewaar(); });
+  });
+})();
+</script>
+<!--/vinkjes-->
 </body>
 </html>

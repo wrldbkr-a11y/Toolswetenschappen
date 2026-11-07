@@ -119,6 +119,7 @@ footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-di
   <nav id="catnav" class="catnav"></nav>
   <nav id="nav"></nav>
 </header>
+<!--ldnw--><div class="ldnw-wrap"><details id="ldnw"><style>.ldnw-wrap{max-width:1180px;margin:14px auto 0;padding:0 24px}#ldnw{border:1px solid #c9d6e3;border-radius:10px;padding:8px 14px;background:rgba(127,160,200,.08)}#ldnw>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;font-weight:700}#ldnw>summary::-webkit-details-marker{display:none}#ldnw .pijl{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:#2F6FB0;color:#fff;font-size:13px;transition:transform .2s}#ldnw[open] .pijl{transform:rotate(90deg)}#ldnw .hint{font-weight:500;font-size:13px;opacity:.75}#ldnw[open] .hint{display:none}#ldnw .ldk{margin:10px 0 2px;font-weight:700}#ldnw ul.doelen{margin:0;font-size:14px;line-height:1.5}</style><summary><span class="pijl">▶</span>Lesdoelen · Ik kan … <span class="hint">klik om te openen en af te vinken</span></summary><p class="ldk">1 Druk bij vaste stoffen</p><ul class="doelen"><li>Ik kan het begrip 'druk' uitleggen.</li><li>Ik kan de formule van druk gebruiken en vorm ze om voor het berekenen van de kracht en de oppervlakte.</li><li>Ik gebruik de factoren die druk beïnvloeden om drukverlagende of drukverhogende aspecten bij dagelijkse gebruiksvoorwerpen uit te leggen. (vb. mes, rupsbanden, …)</li><li>Ik kan beredeneren wat met de druk gebeurt als de kracht en/ of oppervlakte met een bepaalde factor toenemen of afnemen.</li></ul><p class="ldk">2.1 Druk bij gassen</p><ul class="doelen"><li>Ik kan omschrijven hoe de druk in een gas wordt veroorzaakt.</li><li>Ik kan verklaren hoe een kaartje onder aan een omgekeerd glas gevuld met water blijft hangen.</li><li>Ik kan verklaren hoe zuignappen werken.</li><li>Ik kan met behulp van het deeltjesmodel verklaren waarom de luchtdruk toeneemt bij een hoger temperatuur.</li><li>Ik kan uitleggen van welke factoren de grootte van de luchtdruk of de atmosferische druk afhankelijk is.</li><li>Ik kan de grootte van de kracht die uitgeoefend wordt door een gas berekenen.</li></ul><p class="ldk">2.2 Meten van gasdruk, overdruk, onderdruk</p><ul class="doelen"><li>Ik kan noteren met welke toestellen je luchtdruk en gasdruk meet.</li><li>Ik kan uitleggen wat onderdruk en overdruk zijn en van een gegeven toepassing zeggen of het gaat om overdruk of onderdruk.</li><li>Ik kan de grootte van de normdruk noteren en gebruik ze in toepassingen.</li></ul><p class="ldk">3.1 Hydrostatische druk</p><ul class="doelen"><li>Ik kan uitleggen hoe hydrostatische druk ontstaat.</li><li>Ik kan noteren van welke factoren de grootte van de hydrostatische druk afhankelijk en niet afhankelijk is.</li><li>Ik kan van een tekening van een proefopstelling afleiden welke factor onderzocht wordt.</li><li>Ik kan beredeneren wat in wat het effect is op de grootte van één bepaalde factor als de andere factoren veranderen.</li><li>Ik gebruik de formule voor het berekenen van de hydrostatische druk en vorm ze om voor het berekenen van de massadichtheid van de vloeistof, de zwaarteveldsterkte en de diepte in de vloeistof.</li></ul><p class="ldk">3.2 Beginsel van Pascal</p><ul class="doelen"><li>Ik kan het beginsel van Pascal noteren.</li><li>Ik leg uit van welke factoren de grootte van de totale druk in een vloeistof afhankelijk is.</li><li>Ik gebruik de formule voor het berekenen van de totale druk in een vloeistof en vorm ze om voor het berekenen van de hydrostatische druk en de atmosferische druk.</li><li>Ik kan uitleggen wat de functie is van een hydraulisch systeem.</li><li>Ik kan de formule voor in een hydraulisch systeem gebruiken om krachten en oppervlakten te berekenen.</li></ul><p class="ldk">4.1 Archimedeskracht in vloeistoffen</p><ul class="doelen"><li>Ik kan noteren wat de archimedeskracht in vloeistoffen is.</li><li>Ik kan de kenmerken van de archimedeskrachtvector noteren.</li><li>Ik kan de formule voor het berekenen van de archimedeskracht gebruiken en omvormen voor het berekenen van de massadichtheid van de vloeistof, de zwaarteveldsterkte en het volume van het ondergedompelde voorwerp.</li><li>Ik kan de formule voor archimedeskracht verklaren aan de hand van een tekening. (p51)</li><li>Ik kan met behulp van de archimedeskracht en een krachtenbalans uitleggen wanneer een voorwerp in een vloeistof zal zinken, zweven, stijgen of drijven.</li><li>Ik kan uitleggen hoe een vis kan zinken, zweven of drijven (p53)</li></ul><p class="ldk">4.2 Archimedeskracht in gassen</p><ul class="doelen"><li>Ik kan uitleggen wat de wet van Archimedes bij gassen inhoudt.</li><li>Ik kan de wet van Archimedes bij gassen in formulevorm in toepassingen gebruiken.</li><li>Ik kan uitleggen wanneer een voorwerp in een gas zal dalen, zweven of opstijgen. (p57)</li></ul><p style="font-size:12px;opacity:.75;margin:8px 0 4px">Vink aan wat je al kan. Wat je niet kan aanvinken, oefen je nog eens.</p></details></div><!--/ldnw-->
 
 <main>
 
@@ -915,5 +916,36 @@ const kaart=(svg,tag,titel,tekst)=>`<div class="card">${svg}<div class="txt">${t
   document.getElementById('s12-nieuw').onclick=nieuw; nieuw();
 })();
 </script>
+<!--vinkjes-->
+<style>
+.doel ul:has(.vk-li),ul.doelen:has(.vk-li){list-style:none;padding-left:0}
+.vk-li{display:flex;gap:10px;align-items:flex-start;cursor:pointer;margin:4px 0;list-style:none}
+.vk{flex:none;width:22px;height:22px;margin-top:1px;border:2px solid #64748b;border-radius:5px;background:#fff;display:inline-grid;place-items:center;cursor:pointer;padding:0}
+.vk:focus-visible{outline:3px solid #60a5fa;outline-offset:2px}
+.vk.aan{background:#16a34a;border-color:#16a34a}
+.vk.aan::after{content:"";width:6px;height:11px;border:solid #fff;border-width:0 3px 3px 0;transform:translateY(-1px) rotate(45deg)}
+.vk-li.aan .vk-t{color:#15803d}
+@media print{.vk{background:#fff!important;border-color:#000!important}.vk.aan::after{border-color:#000}}
+</style>
+<script>
+(function(){
+  var K='vinkjes:'+location.pathname.split('/').pop();
+  var st={}; try{st=JSON.parse(localStorage.getItem(K)||'{}')}catch(e){}
+  function bewaar(){try{localStorage.setItem(K,JSON.stringify(st))}catch(e){}}
+  var lis=document.querySelectorAll('.doel ul > li, ul.doelen > li');
+  [].forEach.call(lis,function(li,i){
+    if(li.querySelector('.vk')) return;
+    var b=document.createElement('button'); b.type='button'; b.className='vk'; b.setAttribute('role','checkbox');
+    b.setAttribute('aria-label','Ik kan dit');
+    var t=document.createElement('span'); t.className='vk-t';
+    while(li.firstChild) t.appendChild(li.firstChild);
+    li.appendChild(b); li.appendChild(t); li.classList.add('vk-li');
+    function zet(a){ st[i]=a; b.classList.toggle('aan',a); li.classList.toggle('aan',a); b.setAttribute('aria-checked',a?'true':'false'); }
+    zet(!!st[i]);
+    li.addEventListener('click',function(e){ if(e.target.closest('a')) return; zet(!st[i]); bewaar(); });
+  });
+})();
+</script>
+<!--/vinkjes-->
 </body>
 </html>

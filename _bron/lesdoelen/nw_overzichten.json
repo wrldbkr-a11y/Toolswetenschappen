@@ -1,0 +1,812 @@
+{
+ "3dec": [
+  [
+   "1.1 Lichtbronnen en donkere lichamen (p12-14)",
+   [
+    "Ik kan lichtbronnen en donkere lichamen van elkaar onderscheiden."
+   ]
+  ],
+  [
+   "1.2 Voortplanting van het licht en soorten lichtbundels(p15-19)",
+   [
+    "Je kan uitleggen wat een optische middenstof is en hier 4 voorbeelden van noteren.",
+    "Ik geef weer op welke manier licht zich voortplant in een optische middenstof en kan aangeven dat de stralengang omkeerbaar is.",
+    "Ik onderscheid de drie soorten lichtbundels (divergerend, convergerend en evenwijdig ) van elkaar, kan ze herkennen op een tekening en ook zelf tekenen."
+   ]
+  ],
+  [
+   "1.3 Schaduwvorming (p20-23)",
+   [
+    "Ik kan noteren van welke eigenschap van het licht schaduwvorming het gevolg is.",
+    "Ik van een tekening waarop aarde, maan en zon afgebeeld zijn afleiden of er maans- of zonsverduistering plaatsvindt. Of een gedeeltelijke maan-of zonsverduistering.",
+    "Ik kan uitleggen waarom er (gedeeltelijke) zonsverduistering plaatsvindt"
+   ]
+  ],
+  [
+   "2.1 Lichamen zien p 24",
+   [
+    "Ik toon aan wanneer je lichtbronnen kunt zien en wanneer je donkere lichamen kunt zien door absorptie en/of weerkaatsing."
+   ]
+  ],
+  [
+   "2.2 Weerkaatsing op een vlak spiegelend oppervlak p 29",
+   [
+    "Ik omschrijf de begrippen invalshoek, weerkaatsingshoek, invalspunt en normaal en kan ze op een tekening aanduiden.",
+    "Ik kan omschrijven aan welke wetten de weerkaatsing van het licht voldoet.",
+    "Ik teken de stralengang van het licht in een figuur van de weerkaatsing."
+   ]
+  ],
+  [
+   "2.3 Regelmatige en diffuse weerkaatsing p 34",
+   [
+    "Ik noteer verschil weer tussen regelmatige en diffuse weerkaatsing in woorden en kan dit ook tekenen. (“Weerkaatste stralen” moet in je antwoord voorkomen)",
+    "Ik kan aan de hand van een gegeven voorwerp uitleggen hoe je kan zien dat een voorwerp een regelmatig of onregelmatig oppervlak heeft."
+   ]
+  ],
+  [
+   "2.4 Kenmerken van het beeld bij de vlakke spiegel p 38",
+   [
+    "Ik geef de vijf kenmerken weer van het beeld bij een vlakke spiegel.",
+    "Ik kan het beeld van een voorwerp (potlood) door een spiegel construeren."
+   ]
+  ],
+  [
+   "2.5 Gezichtveld",
+   [
+    "Ik kan het gezichtsveld van een spiegel tekenen. (Volg hiervoor het stappenplan)",
+    "Ik kan het belang van het gezichtsveld door een spiegel in het dagelijks leven met voorbeelden aangeven."
+   ]
+  ],
+  [
+   "3. Lichtbreking (p 49-59)",
+   [
+    "Ik kan uitleggen wat lichtbreking is en wanneer het optreedt.",
+    "Ik kan de stralengang van het licht in een figuur van de lichtbreking bij de overgang van een optisch ijle naar een optisch dichte middenstof en omgekeerd tekenen.",
+    "Ik kan met de correcte terminologie verwoorden wat met een lichtstraal gebeurt bij breking. Vb. Bij overgang van optisch ijl naar een optisch dichte middenstof breekt de lichtstraal naar de normaal toe. (zie ook groene kader p 52)",
+    "Ik kan bij breking van het licht het verband tussen invalshoek en brekingshoek noteren (bij overgang van het licht van ijl naar dicht is de invalshoek groter dan de brekingshoek.",
+    "Ik kan de schijnbare verhoging van een voorwerp in water verklaren aan de hand van een tekening.",
+    "Ik kan de voorwaarden voor totale weerkaatsing noteren en de uitleg hiervan toepassen op concrete situaties.",
+    "Ik kan de stralengang bij totale weerkaatsing tekenen.",
+    "Ik kan een fata morgana verklaren aan de hand van een tekening",
+    "Ik kan de werking van een glasvezelkabel (fiber)uitleggen."
+   ]
+  ],
+  [
+   "4.1 Lichtbreking bij bolle lenzen p 60",
+   [
+    "Ik kan in een figuur de drie hoofdstralen die gebroken worden door een bolle lens tekenen."
+   ]
+  ],
+  [
+   "4.2 Beeldvorming bij bolle lenzen p68",
+   [
+    "Ik kan de de stralengang van het licht voor een figuur bij een bolle lens tekenen en het gevormde beeld tekenen.",
+    "Ik kan de kenmerken van het beeld: Stand, grootte, aard en toepassing noteren die bij een constructie hoort."
+   ]
+  ],
+  [
+   "4.3 Vergrotingsfactor van een bolle lens p 76",
+   [
+    "Ik ken het principe van de gelijkvormigheid gebruiken om de vergrotingsfactor bij een bolle lens te bereken",
+    "Ik gebruik de formule voor het berekenen van de vergrotingsfactor van een lens en kan de formule omvormen om grootte van beeld, voorwerp of beeld- en voorwerpsafstand te berekenen."
+   ]
+  ],
+  [
+   "Hoofdstuk 1",
+   [
+    "Ik kan het statisch en dynamisch effect van een kracht aan in concrete situaties herkennen en noteren.",
+    "Ik kan krachten definiëren als mogelijke oorzaak van vormverandering of verandering in bewegingstoestand."
+   ]
+  ],
+  [
+   "1.2 Tekenen van een kracht als vector",
+   [
+    "Ik geef het vectoriële karakter van een kracht weer in concrete situaties en kan de 4 kenmerken van deze vector benoemen.",
+    "Ik teken krachten als vectoren met behulp van een schaal.",
+    "Ik kan aan de hand van de schaal de grootte van een vector bepalen."
+   ]
+  ],
+  [
+   "1.3 Samenstellen van krachten",
+   [
+    "Ik toon via een tekening of berekening aan hoe de vectoriële krachtensom bij krachten met hetzelfde aangrijpingspunt en met dezelfde en/of verschillende richting en zin bepaald wordt."
+   ]
+  ],
+  [
+   "1.4 Ontbinden van krachten",
+   [
+    "Ik kan een kracht ontbinden volgens zijn componenten."
+   ]
+  ]
+ ],
+ "3jun": [
+  [
+   "(zonder kop)",
+   [
+    "Ik geef meetresultaten weer in de SI-eenheid en in de afgeleide eenheid.",
+    "Ik geef meetresultaten weer met het correcte aantal beduidende cijfers.",
+    "Ik gebruik de wetenschappelijke notatie om meetresultaten te noteren."
+   ]
+  ],
+  [
+   "2.3 Ontbinden van krachten p 125 en 127",
+   [
+    "Ik toon via een tekening of berekening aan hoe een kracht wordt ontbonden in componenten."
+   ]
+  ],
+  [
+   "3.1 Verandering van bewegingstoestand p135-140",
+   [
+    "Ik teken de snelheidsvector bij verschillende bewegingstoestanden van een lichaam."
+   ]
+  ],
+  [
+   "3.2 Resulterende kracht en beweging p140-151",
+   [
+    "Ik leg het traagheidsbeginsel uit in concrete situaties.",
+    "Ik toon aan hoe de bewegingstoestand van een lichaam verandert in concrete situaties in relatie tot de resulterende kracht.",
+    "Ik kan de resulterende kracht en het gevolg ervan op de bewegingstoestand weergeven."
+   ]
+  ],
+  [
+   "3.1 Zwaartekracht is overal p 153-155",
+   [
+    "Ik toon aan dat de zwaartekracht werkzaam is in het zwaarteveld van een hemellichaam. Ik geef het verschil weer tussen het zwaarteveld en de zwaartekracht.",
+    "Ik toon de kenmerken van de zwaartekracht als vector aan in concrete situaties."
+   ]
+  ],
+  [
+   "3.2 Verband tussen de grootte van de zwaartekracht, massa en zwaarteveldsterkte p 156-161",
+   [
+    "Ik kan het begrip zwaarteveld van een willekeurig hemellichaam beschrijven.",
+    "Ik geef in woorden het verband weer tussen de grootte van de zwaartekracht en massa en het verband met de zwaarteveldsterkte.",
+    "Ik ken de formule voor het berekenen van de zwaartekracht.",
+    "Ik vorm de formule van de zwaartekracht om voor het berekenen van de massa en de zwaarteveldsterkte.",
+    "Ik weet dat op andere hemellichamen een andere zwaarteveldsterkte is.",
+    "Ik kan de correcte grafiek herkennen die het correcte verband weergeeft tussen zwaartekracht en massa, zwaartekracht en zwaarteveldsterkte, massa en zwaarteveldsterkte."
+   ]
+  ],
+  [
+   "3.3 Verschil tussen massa en gewicht p 170-174",
+   [
+    "Ik geef het verschil weer tussen massa en gewicht.",
+    "Ik kan het verschil tussen zwaartekracht, massa en gewicht aan de hand van een voorbeeld uitleggen.",
+    "Ik kan het begrip gewichtloosheid uitleggen."
+   ]
+  ],
+  [
+   "3.4 Normaalkracht, zwaartekracht en gewicht p 175-179",
+   [
+    "Ik geef in woorden en vectorieel het verschil weer tussen normaalkracht, zwaartekracht en gewicht."
+   ]
+  ],
+  [
+   "5.1 Statische en dynamische wrijvingskracht (p. 180 – 187)",
+   [
+    "Ik geef het verschil weer tussen de statische wrijvingskracht en de dynamische wrijvingskracht.",
+    "Ik kan in voorbeelden herkennen of een statische of dynamische wrijvingskracht werkzaam is.",
+    "Ik kan de werking van een ABS-systeem uitleggen of uitleggen wat aquaplaning is met betrekking tot statische en dynamische wrijvingscoëfficiënt."
+   ]
+  ],
+  [
+   "5.2 Verband tussen de maximale statische wrijvingskracht en de normaalkracht (p. 188-194)",
+   [
+    "Ik geef het verband weer tussen de maximale statische wrijvingskracht en de normaalkracht.",
+    "Ik gebruik de formule voor het berekenen van de grootte van de statische wrijvingskracht.",
+    "Ik vorm de formule van de statische wrijvingskracht om voor het berekenen van de normaalkracht en de statische wrijvingscoëfficiënt.",
+    "Ik kan de invloed van statische wrijvingscoëfficiënt bespreken op de wrijvingskracht bespreken."
+   ]
+  ],
+  [
+   "HOOFDSTUK 6: VEERKRACHT (p. 195)",
+   [
+    "Ik leg uit wat veerkracht is.",
+    "Ik teken de veerkracht in concrete situaties",
+    "Ik geef in woorden het verband weer tussen de grootte van de veerkracht, de veerconstante en de lengteverandering van een elastisch voorwerp.",
+    "Ik ken de formule voor het berekenen van de veerkracht en kan ze omvormen om de veerconstante en uitrekking van de veer te bepalen.",
+    "Ik gebruik de omgevormde formules voor de grootte van de veerkracht om vraagstukken op te lossen.",
+    "Ik kan omschrijven wat een bepaalde waarde van een veerconstante betekent.",
+    "Ik kan grafieken in verband met veerconstante interpreteren.",
+    "Ik kan het verschil tussen een elastische en plastische vervorming uitleggen en wanneer de wet van Hooke geldig is."
+   ]
+  ],
+  [
+   "7.1 Moment van een kracht (p. 204)",
+   [
+    "Ik kan het concept van een hefboom uitleggen en enkele voorbeelden van hefbomen in het dagelijk leven benoemen.",
+    "Ik kan op een tekening van deze voorbeelden de kracht en krachtarm aanduiden.",
+    "Ik leg uit wat het moment van een kracht is en wanneer een lichaam in evenwicht is.",
+    "Ik kan de krachtenbalans opstellen. Aan de hand van een schets.",
+    "Ik kan krachtarm en kracht correct aanduiden op een tekening.",
+    "Ik leg aan de hand van het resulterend krachtmoment uit welke draaibeweging een lichaam kan maken.",
+    "Ik schets de draaibeweging van een lichaam.",
+    "Ik gebruik de formules M= F.r of M= F.r.sinα, die nodig zijn voor het berekenen van het moment van een kracht.",
+    "Ik vorm de formules van het moment van een kracht om voor het berekenen van de kracht en de krachtarm.",
+    "Ik kan het begrip momentbalans toelichten aan de hand van een voorbeeld.",
+    "Ik kan vanuit een momentenbalans de grootte van de gevraagde krachtarm of kracht berekenen."
+   ]
+  ],
+  [
+   "7.2 Statisch evenwicht (p219)",
+   [
+    "Ik leg met behulp van het zwaartepunt en het steunpunt het verschil uit tussen stabiel en labiel evenwicht.",
+    "Ik teken het steunpunt of het steunvlak van een lichaam.",
+    "Ik geef de factoren weer die de stabiliteit van een lichaam vergroten.",
+    "Ik weet dat de totale voorwaarde voor evenwicht (geen translatie en geen rotatie vraagt dat zowel de vectoriële som van de krachten als de algebraïsche som van de momenten nul moet zijn."
+   ]
+  ],
+  [
+   "1. Basisbegrippen van beweging (p236)",
+   [
+    "Ik kan de definitie noteren voor puntmassa, baan, positie, verplaatsing, tijdstip, tijdsverloop, afgelegde weg.",
+    "Ik kan snelheid omzetten van m/s naar km/h en omgekeerd."
+   ]
+  ],
+  [
+   "2.1 Gemiddelde en ogenblikkelijke snelheid (p. 245)",
+   [
+    "Ik leg het begrip snelheid uit.",
+    "Ik geef het verschil weer tussen de gemiddelde snelheid en de ogenblikkelijke snelheid."
+   ]
+  ],
+  [
+   "2.2 Eenparig rechtlijnige beweging (p. 249)",
+   [
+    "Ik beschrijf en herken een eenparig rechtlijnige beweging.",
+    "Ik kende formule voor het berekenen van de gemiddelde snelheid.",
+    "Ik vorm de formule van de gemiddelde snelheid om voor het berekenen van de verplaatsing en het tijdsverloop.",
+    "Ik teken de x(t)-grafiek en de v(t)-grafiek van een eenparig rechtlijnige beweging.",
+    "Ik kan een x(t) en een v(t)-grafiek interpreteren naar bewegingstoestanden",
+    "Ik geef het verband weer tussen de helling van de grafiek en de snelheid van een lichaam.",
+    "Ik kan een x(t)-grafiek omvormen naar en v(t)-grafiek.",
+    "Ik leg het differentiequotiënt Δx/Δt uit.",
+    "Ik kan de oppervlakte onder de snelheidsgrafiek interpreteren als een verplaatsing"
+   ]
+  ]
+ ],
+ "4dec": [
+  [
+   "Hoofdstuk 1",
+   [
+    "Ik kan het begrip 'druk' uitleggen.",
+    "Ik kan de formule van druk gebruiken en vorm ze om voor het berekenen van de kracht en de oppervlakte.",
+    "Ik gebruik de factoren die druk beïnvloeden om drukverlagende of drukverhogende aspecten bij dagelijkse gebruiksvoorwerpen uit te leggen. (vb. mes, rupsbanden, …)",
+    "Ik kan beredeneren wat met de druk gebeurt als de kracht en/ of oppervlakte met een bepaalde factor toenemen of afnemen."
+   ]
+  ],
+  [
+   "2.1 Druk bij gassen (p20-21)",
+   [
+    "Ik kan omschrijven hoe de druk in een gas wordt veroorzaakt.",
+    "Ik kan verklaren hoe een kaartje onder aan een omgekeerd glas gevuld met water blijft hangen.",
+    "Ik kan verklaren hoe zuignappen werken.",
+    "Ik kan met behulp van het deeltjesmodel verklaren waarom de luchtdruk toeneemt bij een hoger temperatuur",
+    "Ik kan uitleggen van welke factoren de grootte van de luchtdruk of de atmosferische druk afhankelijk is.",
+    "Ik kan de grootte van de kracht die uitgeoefend wordt door een gas berekenen."
+   ]
+  ],
+  [
+   "2.2 Meten van gasdruk, overdruk, onderdruk (p 22-27)",
+   [
+    "Ik kan noteren met welke toestellen je luchtdruk en gasdruk meet.",
+    "Ik kan uitleggen wat onderdruk en overdruk zijn en van een gegeven toepassing zeggen of het gaat om overdruk of onderdruk.",
+    "Ik kan de grootte van de normdruk noteren en gebruik ze in toepassingen."
+   ]
+  ],
+  [
+   "3.1. hydrostatische druk (28-33)",
+   [
+    "Ik kan uitleggen hoe hydrostatische druk ontstaat.",
+    "Ik kan noteren van welke factoren de grootte van de hydrostatische druk afhankelijk en niet afhankelijk is.",
+    "Ik kan van een tekening van een proefopstelling afleiden welke factor onderzocht wordt.",
+    "Ik kan beredeneren wat in wat het effect is op de grootte van één bepaalde factor als de andere factoren veranderen",
+    "Ik gebruik de formule voor het berekenen van de hydrostatische druk en vorm ze om voor het berekenen van de massadichtheid van de vloeistof, de zwaarteveldsterkte en de diepte in de vloeistof."
+   ]
+  ],
+  [
+   "3.2 Beginsel van Pascal (34-43)",
+   [
+    "Ik kan het beginsel van Pascal noteren.",
+    "Ik leg uit van welke factoren de grootte van de totale druk in een vloeistof afhankelijk is.",
+    "Ik gebruik de formule voor het berekenen van de totale druk in een vloeistof en vorm ze om voor het berekenen van de hydrostatische druk en de atmosferische druk.",
+    "Ik kan uitleggen wat de functie is van een hydraulisch systeem.",
+    "Ik kan de formule voor in een hydraulisch systeem gebruiken om krachten en oppervlakten te berekenen."
+   ]
+  ],
+  [
+   "4.1 Archimedeskracht in vloeistoffen (49-55)",
+   [
+    "Ik kan noteren wat de archimedeskracht in vloeistoffen is.",
+    "Ik kan de kenmerken van de archimedeskrachtvector noteren.",
+    "Ik kan de formule voor het berekenen van de archimedeskracht gebruiken en omvormen voor het berekenen van de massadichtheid van de vloeistof, de zwaarteveldsterkte en het volume van het ondergedompelde voorwerp.",
+    "Ik kan de formule voor archimedeskracht verklaren aan de hand van een tekening. (p51)",
+    "Ik kan met behulp van de archimedeskracht en een krachtenbalans uitleggen wanneer een voorwerp in een vloeistof zal zinken, zweven, stijgen of drijven.",
+    "Ik kan uitleggen hoe een vis kan zinken, zweven of drijven (p53)"
+   ]
+  ],
+  [
+   "4.2 Archimedeskracht in gassen (56-59)",
+   [
+    "Ik kan uitleggen wat de wet van Archimedes bij gassen inhoudt.",
+    "Ik kan de wet van Archimedes bij gassen in formulevorm in toepassingen gebruiken.",
+    "Ik kan uitleggen wanneer een voorwerp in een gas zal dalen, zweven of opstijgen. (p57)"
+   ]
+  ],
+  [
+   "1.1 Energie in systemen",
+   [
+    "Ik kan het verschil uitleggen tussen een open, gesloten en geïsoleerd systeem.",
+    "Ik kan uitleggen waarom een zwaarteveld, magnetisch veld en elektrisch veld potentiële energie bevatten.",
+    "Ik kan uit voorbeelden van het dagelijks leven de energieomzetting noteren met betrekking tot gravitationele energie, elastische energie, kinetische energie, chemische energie, thermische energie, stralingsenergie, kernenergie en elektrische energie.",
+    "Je kan uitleggen hoe via energieomzetten een waterreservoir op een heuvel energie kan opslaan."
+   ]
+  ],
+  [
+   "1.2 Formules van energie",
+   [
+    "Ik gebruik de formule voor het berekenen van de potentiële gravitationele energie, de kinetische energie en de potentiële elastische energie en vorm ze om."
+   ]
+  ],
+  [
+   "2.1 Arbeid",
+   [
+    "Ik omschrijf het begrip 'arbeid geleverd door een kracht op een voorwerp'.",
+    "Ik gebruik de formule voor het berekenen van de arbeid en vorm ze om voor het berekenen van de kracht en de verplaatsing.",
+    "Je kan de formule van het arbeid-energietheorema noteren en met een voorbeeld illustreren."
+   ]
+  ],
+  [
+   "2.2 Vermogen",
+   [
+    "Je kan het begrip vermogen omschrijven.",
+    "Je kan de formule voor het berekenen van vermogen gebruiken en omvormen om tijdsverloop en hoeveelheid energie te berekenen."
+   ]
+  ]
+ ],
+ "4jun": [
+  [
+   "3.1 Behoud van energie p 87-88.",
+   [
+    "Ik stel kwalitatief de energiebalans op bij een omzetting van verschillende energievormen.",
+    "Ik omschrijf het behoud van energie in een geïsoleerd systeem.",
+    "Ik bereken een onbekende grootheid door gebruik te maken van het behoud van energie."
+   ]
+  ],
+  [
+   "3.2 Rendement p 89, 90",
+   [
+    "Ik omschrijf het begrip 'energiedissipatie' als het verlies aan nuttige energie.",
+    "Ik bereken de energiedissipatie bij een omzetting tussen energievormen.",
+    "Ik omschrijf het begrip 'rendement'.",
+    "Ik gebruik de formule voor het berekenen van het rendement en vorm ze om voor het berekenen van de nuttige energie en de totale energie."
+   ]
+  ],
+  [
+   "5.1 Warmte",
+   [
+    "Ik omschrijf het verschil tussen warmte, temperatuur en thermische energie.",
+    "Ik leg het ontstaan van thermisch evenwicht tussen twee stoffen uit.",
+    "Ik omschrijf de begrippen 'absolute nulpunt' en 'cohesiekracht'.",
+    "Ik kan uitleggen en berekenen wat de absolute temperatuur is en omgekeerd."
+   ]
+  ],
+  [
+   "1.2 Vormen van energietransport",
+   [
+    "Ik verklaar convectie, straling en geleiding met het deeltjesmodel en de overdracht van energie. (zie ook groene kader p 200)"
+   ]
+  ],
+  [
+   "1.3 Warmtecapaciteit",
+   [
+    "Ik interpreteer de betekenis van de waarde van de warmtecapaciteit en de specifieke warmtecapaciteit van een stof.",
+    "Ik gebruik de formule voor het berekenen van de warmtecapaciteit en de specifieke warmtecapaciteit en vorm deze om voor het berekenen van de warmte, de massa en de temperatuur.",
+    "Ik heb een besef van de grootte van de soortelijke warmtecapaciteit van water en de implicaties voor toepassingen in het dagelijks leven"
+   ]
+  ],
+  [
+   "1.4 Warmtebalans",
+   [
+    "Ik omschrijf de warmtebalans in een geïsoleerd systeem als voorbeeld van de behoudswet van energie.",
+    "Ik gebruik de formule voor het berekenen van de warmtebalans en vorm deze om voor het berekenen van de warmtecapaciteit, de specifieke warmtecapaciteit, de warmte, de massa en de temperatuur."
+   ]
+  ],
+  [
+   "5.2 faseovergangen",
+   [
+    "Ik verklaar het verschil tussen merkbare warmte en latente warmte aan de hand van een toename of afname van energie en toon dit verschil grafisch aan.",
+    "Ik heb een besef van de grootte van de hoeveelheid latente warmte van water en de implicaties voor toepassingen in het dagelijks leven",
+    "Ik benoem de faseovergangen smelten, stollen, verdampen, condenseren, sublimeren en desublimeren op een grafiek of in oefeningen.",
+    "Ik herken het smeltpunt.",
+    "Ik gebruik de formule voor het berekenen van de warmte die wordt opgenomen of afgestaan tijdens een faseovergang en vorm de formule van de warmtebalans om voor het berekenen van de warmtecapaciteit, de specifieke warmtecapaciteit, de latente warme, de massa en de temperaturen bij een faseovergang."
+   ]
+  ],
+  [
+   "3.1 Gassen bij een constante temperatuur (p. 189)",
+   [
+    "Ik gebruik de formule voor het berekenen van volume en druk van een gas bij een constante temperatuur en vorm de formule van de gaswet bij een constante temperatuur om voor de berekening van een onbekend volume of onbekende druk.",
+    "Ik kan grafieken grafisch interpreteren."
+   ]
+  ],
+  [
+   "3.2 Gassen bij een constant volume (p. 191)",
+   [
+    "Ik gebruik de formule voor het berekenen van temperatuur en druk van een gas bij een constant volume en vorm de formule van de gaswet bij een constant volume om voor de berekening van een onbekende temperatuur of onbekende druk.",
+    "Ik kan grafieken grafisch interpreteren."
+   ]
+  ],
+  [
+   "3.3 Gassen bij een constante druk (p. 192)",
+   [
+    "Ik gebruik de formule voor het berekenen van temperatuur en volume van een gas bij een constante druk en vorm de formule van de gaswet bij een constante druk om voor de berekening van een onbekende temperatuur of onbekend volume.",
+    "Ik kan grafieken grafisch interpreteren."
+   ]
+  ],
+  [
+   "3.4 De algemene en ideale gaswet (p. 193)",
+   [
+    "Ik omschrijf de toestandsgrootheden en de stofhoeveelheid van een ideaal gas.",
+    "Ik verklaar het verschil tussen een reëel gas en een ideaal gas aan de hand van condensatie.",
+    "Ik gebruik de formule van de algemene gaswet en vorm de formule om voor de berekening van de druk, het volume en de temperatuur.",
+    "Ik leid het molair volume af door de ideale gaswet toe te passen in normomstandigheden.",
+    "Ik gebruik de formule van de ideale gaswet en vorm de formule om voor de berekening van de druk, het volume, de stofhoeveelheid en de temperatuur.",
+    "Ik kan de algemene gaswet toepassen om aan de hand van een deeltjesmodel fenomenen uit het dagelijks leven te verklaren."
+   ]
+  ],
+  [
+   "1.1 Statisch geladen toestand (p. 109)",
+   [
+    "Ik herken kenmerken van positieve en negatieve ladingen.",
+    "Ik weet dat de eenheid van elektrische lading Coulomb is."
+   ]
+  ],
+  [
+   "1.2 Geleider en isolator (p. 111)",
+   [
+    "Ik licht het verschil toe tussen een geleider en een isolator en kan dit koppelen aan de lessen chemie.",
+    "Ik kan de verschillen tussen geleider en isolator in interactie met geladen voorwerpen verklaren met behulp van een tekening."
+   ]
+  ],
+  [
+   "2.1 Elektrische spanning (p. 116)",
+   [
+    "Ik licht het begrip ‘spanning’ toe als de energie per lading.",
+    "Ik beschrijf de werking van een gelijkspanningsbron."
+   ]
+  ],
+  [
+   "2.2 Elektrische stroomsterkte (p. 118)",
+   [
+    "Ik beschrijf elektrische stroom als de hoeveelheid lading die in beweging is.",
+    "Ik beschrijf het verschil tussen conventionele en werkelijke stroomzin.",
+    "Ik licht het begrip ‘stroomsterkte’ toe aan de hand van de hoeveelheid lading per tijdseenheid door een geleider.",
+    "Ik gebruik de formule van stroomsterkte voor het berekenen van de hoeveelheid lading en het tijdsverloop en vorm deze om."
+   ]
+  ],
+  [
+   "3.1 Elektrische weerstand als fysieke component (p. 121)",
+   [
+    "Ik licht het begrip ‘weerstand’ toe.",
+    "Ik hanteer een volt- en ampèremeter in een gelijkstroomkring"
+   ]
+  ],
+  [
+   "3.2 De wet van Ohm en geleidbaarheid (p. 122)",
+   [
+    "Ik omschrijf de wet van Ohm.",
+    "Ik gebruik de formule van weerstand voor het berekenen van de weerstand, de stroomsterkte en de spanning en vorm deze om.",
+    "Ik interpreteer een grafiek die het recht of omgekeerd evenredig verband tussen de grootheden spanning, stroomsterkte en weerstand aantoont.",
+    "Ik omschrijf het begrip ‘geleidbaarheid’.",
+    "Ik interpreteer de formule van geleidbaarheid."
+   ]
+  ],
+  [
+   "3.3 Risico’s en veiligheidssystemen in een elektrische installatie (p. 125)",
+   [
+    "Ik omschrijf de oorzaken van kortsluiting, overbelasting en elektrocutie en herken het gevaar.",
+    "Ik beschrijf de werking en herken het nut van een automatische zekering, een aarding en een verliesstroomschakelaar.",
+    "Ik kan uitleggen wat het joule-effect is.",
+    "Ik kan toepassingen van het joule-effect bespreken, bv. de bliksem, elektrische toestellen. Soms is het joule-effect gewenst (bv. bij verwarmingstoestellen), soms is het ongewenst (bv. bij verlichtingstoestellen, computers, elektrische leidingen in bijvoorbeeld een huisinstallatie)."
+   ]
+  ],
+  [
+   "4.1 Verschillende soorten schakelingen (p. 136)",
+   [
+    "Ik beschrijf en herken een serie- en parallelschakeling.",
+    "Ik gebruik de formule van de substitutieweerstand bij een serie- en parallelschakeling om de invloed op de totale weerstand te verklaren."
+   ]
+  ]
+ ],
+ "5dec": [
+  [
+   "1.1 Lading in materie (p13-16)",
+   [
+    "Ik kan verklaren waarom een voorwerp positief of negatief geladen is",
+    "Ik leg het principe van de tribo-elektrische reeks aan de hand van een voorbeeld uit.",
+    "Ik kan de grootte van de elementaire lading noteren en zeggen waar ze voorkomen in het atoom.",
+    "Ik leg het verschil uit tussen geleiders en isolatoren.",
+    "Ik leg uit wat aarding is en kan dit toepassen op positief en negatief geladen voorwerpen."
+   ]
+  ],
+  [
+   "1.2 Laden van voorwerpen (p 17-24)",
+   [
+    "Ik kan wat gebeurt bij een bliksemontlading uitleggen.",
+    "Ik kan uitleggen hoe je neutrale voorwerpen kunt laden door wrijving, contact en influentie.",
+    "Ik kan het begrip polarisatie uit met een tekening uitleggen."
+   ]
+  ],
+  [
+   "1.2.2 Laden door elektrische influentie",
+   [
+    "Ik illustreer de bewegingen van ladingen bij het proces van laden door wrijving, contact en influentie met een tekening.",
+    "Ik kan het principe van een fotokopieertoestel uitleggen met de correcte terminologie.",
+    "Ik kan met de correcte terminologie uitleggen hoe swifferstofdoekjes werken."
+   ]
+  ],
+  [
+   "2.1 Krachten tussen twee ladingen",
+   [
+    "Ik bepaal de richting, de zin en de grootte van de coulombkracht die twee ladingen op elkaar uitoefenen en kan de formule van de Coulombkracht omvormen om andere grootheden te berekenen",
+    "Ik kan redeneervragen met betrekking tot de coulombkracht tussen 2 ladingen oplossen."
+   ]
+  ],
+  [
+   "2.2 Krachten tussen meerdere ladingen",
+   [
+    "Ik bepaal de richting, de zin en de grootte van de coulombkracht die meerdere ladingen op één lijn op elkaar uitoefenen en kan de formule van de Coulombkracht omvormen om andere grootheden te berekenen.",
+    "Ik kan in een geometrie van 3 ladingen die niet op een lijn liggen de resulterende en eenvoudige opgaven de resulterende coulombkracht op één welbepaalde lading tekenen."
+   ]
+  ],
+  [
+   "3.1 Grootte van het elektrisch veld",
+   [
+    "Ik kan de elektrische veldvector ten gevolge van een positieve of negatieve bronlading in een bepaald punt tekenen.",
+    "Ik kan noteren hoe de zin van de coulombkracht op een bepaalde lading en de zin van het elektrisch veld zich tot elkaar verhouden.",
+    "Ik kan de grootte van een radiaal en een homogeen elektrisch veld met de formule van de elektrische veldsterkte berekenen.",
+    "Ik kan redeneervragen met betrekking tot de grootte van het elektrisch veld oplossen. (Let op voor verwarring met coulombkracht)"
+   ]
+  ],
+  [
+   "3.2 Eigenschappen van het elektrisch veld",
+   [
+    "Ik kan de kenmerken (p38) van elektrische veldlijnen toepassen bij het tekenen van elektrische veldlijnen.",
+    "Ik kan, wanneer een elektrische veldlijn gegeven is, het elektrisch veld in een punt op die veldlijn tekenen."
+   ]
+  ],
+  [
+   "3.2.2 Soorten elektrische velden",
+   [
+    "Ik kan de veldlijnen rond één of meerdere puntladingen, rond een bolvormige geleider en in een homogeen veld tekenen en berekenen.",
+    "Ik kan de grafieken van de grootte van het elektrisch veld bij een radiaal en een homogeen elektrisch veld tekenen."
+   ]
+  ],
+  [
+   "3.2.3 Gedrag van geleiders en isolatoren in een elektrisch veld",
+   [
+    "Ik kan het gedrag van geleiders en isolatoren in een elektrisch veld.(Kooi van Faraday) verklaren.",
+    "Ik kan 2 voorbeelden (coaxkabel, vliegtuig, microgolf, auto, …) van de kooi van Faraday noteren en uitleggen wat de functie in die situaties is."
+   ]
+  ],
+  [
+   "4.1 Potentiële elektrische energie in een homogeen veld",
+   [
+    "Ik kan de analogie tussen de potentiële gravitationele energie E pot,g =m.g.h en E pot,E =Q.E.d uitleggen.",
+    "Ik kan het verband tussen potentiële elektrische energie en arbeid verricht door het elektrisch veld uitleggen.",
+    "Ik kan de grootte van de potentiële elektrische energie op een bepaalde plaats in een homogeen veld voor een positieve en een negatieve lading berekenen. (Belangrijk is dat de potentiële energie van een lading op de negatieve plaat als 0 gedefinieerd wordt!)"
+   ]
+  ],
+  [
+   "4.2 Elektrische potentiaal in een homogeen veld",
+   [
+    "Ik kan verwoorden dat de elektrische potentiaal in een bepaald punt te linken is aan de potentiële energie van een testlading van +1C in dat punt of korter, de potentiële energie per lading.",
+    "Ik kan de grootte van de elektrische potentiaal op een bepaalde plaats in een homogeen veld berekenen.",
+    "Ik kan het verband uit tussen elektrisch veld, elektrische energie en elektrische potentiaal en kan de grafieken tekenen die bij deze grootheden horen en de vorm van de grafieken ook uitleggen."
+   ]
+  ],
+  [
+   "4.2.2 Equipotentiaaloppervlak",
+   [
+    "Ik kan verwoorden wat en een equipotentiaaloppervlak is en in een homogeen elektrisch veld tekenen."
+   ]
+  ],
+  [
+   "4.3 Potentiaalverschil",
+   [
+    "Ik kan de definitie voor spanning (of potentiaalverschil) noteren.",
+    "Ik kan het verband uitleggen tussen potentiaalverschil en de verandering in potentiële en kinetische energie voor een positieve en een negatieve lading in een homogeen elektrisch veld.( toename of afname van Ekin/ Epot en teken van het potentiaalverschil).",
+    "Ik kan verwoorden wat de eenheid elektronvolt (eV) betekent (p56)."
+   ]
+  ],
+  [
+   "Hoofdstuk 3",
+   [
+    "Ik ken de wet van Ohm en kan ze gebruiken in oefeningen van gemengde schakelingen",
+    "Ik gebruik de formules van substitutieweerstand om een substitutieweerstand te bepalen van een gemengde schakeling.",
+    "Ik gebruik de formules van stroom- en spanningsverdeling bij serie- en parellelschakelingen om de elektrische grootheden spanning, stroomsterkte en weerstand te bepalen van weerstanden die geplaatst zijn in een gemengde schakeling."
+   ]
+  ]
+ ],
+ "5jun": [
+  [
+   "1.1 Magnetisch veld en magnetische veldlijnen",
+   [
+    "Ik omschrijf de onderlinge krachtwerking tussen magneetpolen.",
+    "Ik leg het verband uit tussen magnetische veldlijnen en magnetische veldsterkte.",
+    "Ik teken de magnetische veldlijnen bij een permanente magneet en bij het aardmagnetisch veld.",
+    "Ik leg het ontstaan van weissgebieden uit aan de hand van het begrip spin.",
+    "Ik kan de link tussen magnetisme en beweging van lading illustreren met het magnetisch veld van de aarde (geïoniseerd magma in de buitenkern) en het magnetisme van permanente magneten als gevolg van elektronenspin.",
+    "Ik leg de magnetische werking en de magnetische influentie bij ferromagnetische materialen uit aan de hand van weissgebieden."
+   ]
+  ],
+  [
+   "1.2 Magnetisch veld door een elektrische stroom",
+   [
+    "Ik definieer de grootheden magnetische inductie en magnetische permeabiliteit.",
+    "Ik leg het verschil uit tussen een permanente magneet en een elektromagneet.",
+    "Ik teken de magnetische veldlijnen bij een rechte geleider en een spoel via twee rechterhandregels.",
+    "Ik gebruik de formules voor de magnetische inductie bij een rechte geleider en bij een spoel.",
+    "Ik kan het principe van een elektromagneet uitleggen en 2 toepassingen noteren",
+    "Ik kan voorbeelden van technische systemen met elektromagneten: een (veiligheids)relais, een elektromagnetische klep, een deurbel, scheidings- en transportsystemen voor (ferromagnetische) metalen, MRI-scanners, automatische zekering, afstandsbediende deurontgrendeling … geven."
+   ]
+  ],
+  [
+   "2.1 Lorentzkracht op een rechte stroomvoerende geleider",
+   [
+    "Ik teken de lorentzkracht op een geleider en de baan van een bewegende lading in een magnetisch veld.",
+    "Ik gebruik de formule voor de lorentzkracht op een stroomvoerende geleider.",
+    "Ik leg de krachtwerking tussen twee evenwijdige stroomvoerende geleiders uit. (+ uitleg bewijs kracht op 2 geleiders is gelijk)",
+    "Ik licht enkele toepassingen op de lorentzkracht toe. (luidspreker p 143, poollicht p 150, deeltjesversneller p 150-151)"
+   ]
+  ],
+  [
+   "2.2 Lorentzkracht op een bewegende lading",
+   [
+    "Ik teken en bereken de lorentzkracht en teken de baan van een bewegende lading in een magnetisch veld en kan de formules omvormen.",
+    "Ik kan volgende toepassingen kort uitleggen: Hall-sensor, magnetische schermwerking van de aarde, noorderlicht."
+   ]
+  ],
+  [
+   "2.3 De gelijkstroommotor",
+   [
+    "Ik leg de krachtwerking op een stroomvoerende winding in een magneetveld uit.",
+    "Ik kan de principiële werking van een elektrische gelijkstroommotor als systeem uitleggen."
+   ]
+  ],
+  [
+   "3.1 Elektromagnetisch inductieverschijnsel",
+   [
+    "Ik licht de algemene inductiewet van Faraday toe.",
+    "Ik definieer het begrip magnetische flux.",
+    "Ik licht de wet van Lenz toe",
+    "Ik pas de algemene inductiewet van Faraday en de wet van Lenz toe in concrete voorbeelden.",
+    "Ik kan de polariteit van een geïnduceerde spanning en de zin van de geïnduceerde stroom aan de hand van conceptuele oefeningen bepalen en zo de wet van Lenz inoefenen."
+   ]
+  ],
+  [
+   "3.2 Wervelstromen",
+   [
+    "Ik kan uitleggen wat wervelstromen zijn en wat de oorzaak van wervelstromen is.",
+    "Ik licht enkele toepassingen op elektromagnetische inductie en wervelstromen toe. (elektromagnetische rem + inductiekookplaat)",
+    "Ik kan aan de hand van elektromagnetische inductie de principiële werking van een transformator verklaren."
+   ]
+  ],
+  [
+   "3.3 De wisselspanningsgenerator",
+   [
+    "Ik ken de onderdelen van een generator.",
+    "Ik kan uitleggen hoe wisselspanning via een generator opgewekt wordt.",
+    "Ik leg het verschil uit tussen een elektrische motor en een generator."
+   ]
+  ],
+  [
+   "1.1 Bouw van het atoom",
+   [
+    "Ik beschrijf de bouw van een atoom en zijn atoomkern met behulp van elektronen, neutronen en protonen.",
+    "Ik beschrijf een atoomkern aan de hand van zijn protonental, neutronental en nucleonental.",
+    "Ik reken met atomaire eenheden. (1u= … kg en 1eV = … J)"
+   ]
+  ],
+  [
+   "1.2 Het standaardmodel",
+   [
+    "Ik kan de ontstaansgeschiedenis van een quantumchemische theorie omschrijven.",
+    "Ik beschrijf de elementaire deeltjes en wisselwerkingen in een kern met behulp van het standaardmodel.",
+    "Ik weet dat Georges Lemaître, Robert Brout, François Englert belangrijke Belgische bijdragen geleverd hebben voor de moderne fysica en kan omschrijven welke bijdragen dat waren."
+   ]
+  ],
+  [
+   "2.1 (In)stabiliteit van kernen",
+   [
+    "Ik verklaar de (in)stabiliteit van atoomkernen. (stochastisch proces)",
+    "Ik leg uit wat een isotoop is. ( beschouw ik als voorkennis)",
+    "Ik kan aangeven dat de kerndeeltjes in een atoomkern bij elkaar worden gehouden door de (residuele) sterke interactie die ingaat tegen de sterke elektrostatische afstotingskracht tussen de protonen.",
+    "Ik kan op een nuclidekaart, de evolutie richting de stabiliteitsvallei via radioactief verval en uitzenden van ioniserende straling duiden. - Je kan alfa verval, beta+ en beta- verval en gamma straling bespreken op niveau van kerndeeltjes."
+   ]
+  ],
+  [
+   "2.2 Equivalentie tussen massa en energie",
+   [
+    "Ik bereken het massadefect.",
+    "Ik bereken de (specifieke) rustenergie met behulp van de formule E= mc2.",
+    "Ik leg het verband tussen energieproductie en massaverlies uit.",
+    "Ik bereken de (specifieke) bindingsenergie.",
+    "Ik kan aan de hand van een grafiek aangeven dat radioactief verval een spontaan proces is waarbij een atoomkern evolueert naar een toestand met hoge specifieke bindingsenergie (kernfusie en kernfissie)",
+    "Je kan op een grafiek de specifieke rustenergie weergeven in functie van het massagetal en aangeven dat die grafiek een minimum vertoont bij Fe-56. Lichtere of zwaardere kernen hebben een hogere specifieke rustenergie: uit die kernen kan energie worden gewonnen via kernfusie of kernsplitsing."
+   ]
+  ],
+  [
+   "2.3 Soorten straling",
+   [
+    "Ik beschrijf de eigenschappen van de verschillende soorten straling. alfa-straling, beta-straling, Elektronenvangst ,y-straling"
+   ]
+  ],
+  [
+   "2.4 Vervalreeksen",
+   [
+    "Ik stel vervalreeksen op door gebruik te maken van de isotopentabel"
+   ]
+  ],
+  [
+   "2.5 Halveringstijd",
+   [
+    "Ik gebruik de halveringstijd om het kernverval grafisch en numeriek te beschrijven"
+   ]
+  ],
+  [
+   "2.6 Ioniserend vermogen en doordringend vermogen",
+   [
+    "Ik beschrijf de oorzaken en de gevaren van ioniserende straling.",
+    "Ik beschrijf het doordringend en ioniserend vermogen."
+   ]
+  ],
+  [
+   "2.7 Activiteit",
+   [
+    "Ik leg uit wat de activiteit van radioactieve atomen is."
+   ]
+  ],
+  [
+   "2.8 Waarnemen van straling",
+   [
+    "Ik leg uit hoe je ioniserende straling kan waarnemen."
+   ]
+  ],
+  [
+   "3.1 Radioactiviteit rondom ons",
+   [
+    "Ik geef voorbeelden van kunstmatige en spontane radioactiviteit.",
+    "Ik leg het verschil uit tussen bestraling en besmetting."
+   ]
+  ],
+  [
+   "3.2 Bescherming tegen straling",
+   [
+    "Ik beschrijf het verschil tussen geabsorbeerde dosis, equivalente dosis en effectieve dosis.",
+    "Ik weet hoe ik me kan beschermen tegen ioniserende straling."
+   ]
+  ],
+  [
+   "3.3 Dateringstechnieken",
+   [
+    "Ik pas de formule van de halveringstijd toe in andere STEM-disciplines"
+   ]
+  ],
+  [
+   "3.4 Energie uit atoomkernen",
+   [
+    "Ik leg het verschil uit tussen kernfusie en kernfissie.",
+    "Ik beschrijf hoe kernfissie en kernfusie op aarde kan worden toegepast.",
+    "Ik kan uitleggen wat de technische beperkingen zijn voor een fusiereactor op aarde.",
+    "Ik kan berekenen dat de totale rustenergie daalt als een zware kern splitst. Dat is de energie die vrijkomt bij de splitsing van de kern",
+    "Ik weet dat de belangrijkste operationele fusiereactor voor ons de zon is."
+   ]
+  ],
+  [
+   "3.5 Toepassingen van radioactieve materialen",
+   [
+    "Ik illustreer de link tussen kernfysica en andere STEM-disciplines aan de hand van vreedzame en oorlogstoepassingen, zoals X-stralentomografie, tracers, radiotherapie, neutronenactiveringsanalyse, doorstraling en atoomwapens."
+   ]
+  ]
+ ]
+}
