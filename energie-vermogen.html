@@ -19,6 +19,7 @@
 html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:var(--font);}
 body{-webkit-font-smoothing:antialiased;line-height:1.55;}
 .top{max-width:1180px;margin:0 auto;padding:36px 24px 0;}
+.top .eyebrow{font-size:13px;font-weight:700;color:var(--accent-dark);letter-spacing:.04em;text-transform:uppercase;margin-bottom:6px;}
 .top h1{font-size:2rem;font-weight:700;letter-spacing:-0.015em;margin:0 0 8px;}
 .top .intro{color:var(--text-dim);max-width:70ch;font-size:15px;line-height:1.6;margin:0;}
 .top .intro strong{color:var(--text);}
@@ -110,6 +111,7 @@ footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-di
 <body>
 
 <header class="top">
+  <div class="eyebrow">Fysica 4de jaar · Thema 2 · Energie</div>
   <h1>Energie, vermogen en rendement</h1>
   <p class="intro"><strong>Thema 2 · Energie en vermogen (4de jaar).</strong> Ontdek welke soorten systemen er zijn, welke vormen van energie bestaan en hoe energie wordt omgezet. Daarna leer je wat vermogen en rendement betekenen.</p>
   <nav id="catnav" class="catnav"></nav>
@@ -119,7 +121,7 @@ footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-di
 <main>
 
   <!-- ============ ENERGIE IN SYSTEMEN ============ -->
-  <section class="scene" id="s1" data-title="Open, gesloten, geïsoleerd" data-cat="systemen">
+  <section class="scene" id="s1" data-nr="1" data-title="Open, gesloten, geïsoleerd" data-cat="systemen">
     <div class="scene-head"><span class="num">1</span><h3>Open, gesloten en geïsoleerd systeem</h3></div>
     <p class="scene-sub">Een <strong>systeem</strong> is het deel van de wereld dat je bestudeert. Alles daarbuiten is de <strong>omgeving</strong>. Een systeem kan <strong>energie</strong> en/of <strong>materie</strong> uitwisselen met de omgeving. Kijk naar drie potten soep op een vuur.</p>
     <div class="grid">
@@ -140,27 +142,27 @@ footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-di
     </div>
   </section>
 
-  <section class="scene" id="s2" data-title="Welk systeem?" data-cat="systemen">
+  <section class="scene" id="s2" data-nr="1" data-title="Welk systeem?" data-cat="systemen">
     <div class="scene-head"><span class="num">2</span><h3>Welk soort systeem is het?</h3></div>
     <p class="scene-sub">Stel jezelf telkens twee vragen: <strong>kan er energie in of uit?</strong> En <strong>kan er materie in of uit?</strong></p>
     <div class="sort-lijst" id="s2-lijst"></div>
     <div class="ctrl-row" style="margin-top:12px;max-width:320px"><button class="btn" id="s2-reset">↻ Opnieuw</button></div>
   </section>
 
-  <section class="scene" id="s3" data-title="Potentiële energie in velden" data-cat="systemen">
+  <section class="scene" id="s3" data-nr="1" data-title="Potentiële energie in velden" data-cat="systemen">
     <div class="scene-head"><span class="num">3</span><h3>Potentiële energie in een veld</h3></div>
     <p class="scene-sub">In een <strong>zwaarteveld</strong>, een <strong>magnetisch veld</strong> en een <strong>elektrisch veld</strong> werkt er een kracht. Verplaats je een voorwerp <strong>tegen die kracht in</strong>, dan moet je energie leveren. Die energie zit dan opgeslagen in het veld: dat is <strong>potentiële energie</strong>. Laat je los, dan zet het veld die energie om in kinetische energie.</p>
     <div class="cards" id="s3-cards"></div>
   </section>
 
   <!-- ============ VORMEN EN OMZETTINGEN ============ -->
-  <section class="scene" id="s4" data-title="Vormen van energie" data-cat="vormen">
+  <section class="scene" id="s4" data-nr="1" data-title="Vormen van energie" data-cat="vormen">
     <div class="scene-head"><span class="num">4</span><h3>Vormen van energie</h3></div>
     <p class="scene-sub">Energie bestaat in verschillende <strong>vormen</strong>. De eenheid van energie is de <strong>joule (J)</strong>.</p>
     <div class="cards" id="s4-cards"></div>
   </section>
 
-  <section class="scene" id="s5" data-title="Energieomzettingen" data-cat="vormen">
+  <section class="scene" id="s5" data-nr="1" data-title="Energieomzettingen" data-cat="vormen">
     <div class="scene-head"><span class="num">5</span><h3>Energieomzettingen en energiebalans</h3></div>
     <p class="scene-sub">Energie kan je niet maken en niet vernietigen. Je kan ze alleen <strong>omzetten</strong> van de ene vorm in de andere: dat is de <strong>wet van behoud van energie</strong>. Kies een voorbeeld.</p>
     <div class="chips" id="s5-chips"></div>
@@ -180,7 +182,7 @@ footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-di
     </div>
   </section>
 
-  <section class="scene" id="s6" data-title="Waterreservoir op een heuvel" data-cat="vormen">
+  <section class="scene" id="s6" data-nr="1" data-title="Waterreservoir op een heuvel" data-cat="vormen">
     <div class="scene-head"><span class="num">6</span><h3>Energie opslaan in een waterreservoir op een heuvel</h3></div>
     <p class="scene-sub">Een <strong>pompcentrale</strong> slaat energie op. Is er te veel elektrische energie (bv. 's nachts, of veel wind en zon), dan pompt ze water omhoog. Is er te weinig, dan laat ze het water terug naar beneden stromen door een turbine. In België werkt de centrale van <strong>Coo-Trois-Ponts</strong> zo.</p>
     <div class="grid">
@@ -197,7 +199,7 @@ footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-di
   </section>
 
   <!-- ============ VERMOGEN ============ -->
-  <section class="scene" id="s7" data-title="Vermogen: de trap op" data-cat="vermogen">
+  <section class="scene" id="s7" data-nr="2" data-title="Vermogen: de trap op" data-cat="vermogen">
     <div class="scene-head"><span class="num">7</span><h3>Vermogen: hoe snel wordt energie omgezet?</h3></div>
     <p class="scene-sub">Twee leerlingen met dezelfde massa lopen dezelfde trap op. Ze zetten dus <strong>evenveel energie</strong> om. Toch is er een verschil: de ene doet het <strong>sneller</strong>. Het <strong>vermogen P</strong> zegt hoeveel energie er per seconde wordt omgezet.</p>
     <div class="grid">
@@ -214,7 +216,7 @@ footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-di
     </div>
   </section>
 
-  <section class="scene" id="s8" data-title="Vermogen van toestellen" data-cat="vermogen">
+  <section class="scene" id="s8" data-nr="2" data-title="Vermogen van toestellen" data-cat="vermogen">
     <div class="scene-head"><span class="num">8</span><h3>Vermogen van toestellen</h3></div>
     <p class="scene-sub">Op elk toestel staat het vermogen in <strong>watt (W)</strong>. Hoe groter het vermogen en hoe langer het toestel werkt, hoe meer energie het omzet: <strong>E = P · Δt</strong>. Let op: de tijd moet in <strong>seconden</strong>.</p>
     <div class="grid">
@@ -229,7 +231,25 @@ footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-di
   </section>
 
   <!-- ============ RENDEMENT ============ -->
-  <section class="scene" id="s9" data-title="Rendement" data-cat="rendement">
+  <section class="scene" id="s9b" data-nr="3.1" data-title="Behoud van energie" data-cat="rendement">
+    <div class="scene-head"><span class="num">3.1</span><h3>Behoud van energie</h3></div>
+    <p class="scene-sub">Een skater rijdt van een helling. Bovenaan heeft hij <strong>gravitationele energie</strong>, onderweg wordt die <strong>kinetische energie</strong>. In een <strong>geïsoleerd systeem</strong> blijft de totale energie gelijk. Zet wrijving aan: een deel wordt <strong>thermische energie</strong>.</p>
+    <div class="grid">
+      <div class="canvas-wrap"><svg id="be_svg" viewBox="0 0 800 420" style="display:block;width:100%;height:auto"></svg></div>
+      <div class="controls">
+        <div class="ctrl-group"><label>Massa m: <b id="be_mv"></b></label><input type="range" id="be_m" min="30" max="90" step="5" value="60"></div>
+        <div class="ctrl-group"><label>Starthoogte h<sub>1</sub>: <b id="be_hv"></b></label><input type="range" id="be_h" min="1" max="6" step="0.5" value="4"></div>
+        <div class="ctrl-group"><label>Positie op de helling: <b id="be_pv"></b></label><input type="range" id="be_p" min="0" max="100" value="60"></div>
+        <label style="display:flex;gap:8px;align-items:center;font-size:14px"><input type="checkbox" id="be_w"> Met wrijving (20 % van de energie gaat verloren)</label>
+        <div class="formule">E<sub>grav</sub> = m · g · h &nbsp; · &nbsp; E<sub>kin</sub> = ½ · m · v²</div>
+        <div class="readout" id="be_read"></div>
+        <div class="note"><strong>Wet van behoud van energie:</strong> energie gaat nooit verloren en ontstaat nooit uit het niets. Ze wordt alleen omgezet van de ene vorm in de andere. In een geïsoleerd systeem blijft de totale energie constant.</div>
+        <div class="note"><strong>Energiedissipatie:</strong> het verlies aan nuttige energie. Die energie verdwijnt niet, maar wordt omgezet in een vorm die je niet kunt gebruiken, meestal thermische energie.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene" id="s9" data-nr="3.2" data-title="Rendement" data-cat="rendement">
     <div class="scene-head"><span class="num">9</span><h3>Rendement: hoeveel energie is nuttig?</h3></div>
     <p class="scene-sub">Geen enkel toestel zet alle toegevoerde energie om in <strong>nuttige</strong> energie. Een deel wordt altijd <strong>thermische energie</strong> die je niet wil gebruiken. Het <strong>rendement η</strong> (eta) zegt welk deel nuttig is.</p>
     <div class="grid">
@@ -245,7 +265,7 @@ footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-di
   </section>
 
   <!-- ============ OEFENEN ============ -->
-  <section class="scene" id="s10" data-title="Oefenen" data-cat="oefenen">
+  <section class="scene" id="s10" data-nr="✎" data-title="Oefenen" data-cat="oefenen">
     <div class="scene-head"><span class="num">10</span><h3>Oefenen</h3></div>
     <p class="scene-sub">Gemengde opgaven over systemen, energieomzettingen, vermogen en rendement. Gebruik g = 9,81 N/kg. Je mag een komma of een punt gebruiken.</p>
     <div class="oef">
@@ -259,17 +279,17 @@ footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-di
 
 </main>
 
-<footer>gemaakt voor klasgebruik — fysica 4de jaar: energie en vermogen</footer>
+<footer>Fysica 4de jaar: energie en vermogen · Gemaakt door de vakgroep wetenschappen · Maria Assumpta Lyceum · ontwikkeld met hulp van AI · <a style="color:inherit" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.nl">CC BY-NC-SA 4.0</a></footer>
 
 <script>
 //////////////////// NAVIGATIE ////////////////////
 const scenes=[...document.querySelectorAll('.scene')];
 const nav=document.getElementById('nav'), catNav=document.getElementById('catnav');
 const categories=[
-  {id:'systemen',label:'Energie in systemen'},
-  {id:'vormen',label:'Vormen en omzettingen'},
-  {id:'vermogen',label:'Vermogen'},
-  {id:'rendement',label:'Rendement'},
+  {id:'systemen',label:'1 Energie in systemen'},
+  {id:'vormen',label:'1 Vormen en omzettingen'},
+  {id:'vermogen',label:'2 Vermogen'},
+  {id:'rendement',label:'3 Behoud van energie en rendement'},
   {id:'oefenen',label:'Oefenen'},
 ];
 let currentIndex=0, activeCat=scenes[0].dataset.cat;
@@ -283,11 +303,13 @@ function renderCatNav(){
 function renderSectionNav(){
   nav.innerHTML='';
   scenes.forEach((sc,i)=>{ if(sc.dataset.cat!==activeCat) return;
-    const b=document.createElement('button'); b.innerHTML='<span class="nr">'+(i+1)+'</span>'+sc.dataset.title;
+    const b=document.createElement('button'); b.innerHTML='<span class="nr">'+(sc.dataset.nr||i+1)+'</span>'+sc.dataset.title;
     b.classList.toggle('active',i===currentIndex); b.addEventListener('click',()=>activate(i)); nav.appendChild(b); });
 }
 function activate(i){ currentIndex=i; scenes.forEach((sc,j)=>sc.classList.toggle('active',j===i)); activeCat=scenes[i].dataset.cat; renderCatNav(); renderSectionNav(); }
-activate(0);
+scenes.forEach(sc=>{ const n=sc.querySelector('.scene-head .num'); if(n&&sc.dataset.nr) n.textContent=sc.dataset.nr; });
+activate(Math.max(0,scenes.findIndex(sc=>'#'+sc.id===location.hash)));
+window.addEventListener('hashchange',()=>{ const i=scenes.findIndex(sc=>'#'+sc.id===location.hash); if(i>=0) activate(i); });
 const isActive=id=>document.getElementById(id).classList.contains('active');
 
 //////////////////// HULPFUNCTIES ////////////////////
@@ -792,6 +814,36 @@ const TOESTELLEN=[
   function nieuw(){ let i; do{ i=Math.floor(Math.random()*types.length); }while(i===vorige); vorige=i; types[i](); }
   document.getElementById('s10-nieuw').onclick=nieuw;
   nieuw();
+})();
+</script>
+<script>
+(function(){
+  const $=id=>document.getElementById(id), f=(v,d=0)=>v.toFixed(d).replace('.',',');
+  const T=(x,y,t,o={})=>`<text x="${x}" y="${y}" font-size="${o.s||14}" font-weight="${o.w||600}" fill="${o.c||'#1D2A36'}" text-anchor="${o.a||'start'}">${t}</text>`;
+  function teken(){
+    const m=+$('be_m').value, h1=+$('be_h').value, p=+$('be_p').value/100, wr=$('be_w').checked, g=9.81;
+    $('be_mv').textContent=m+' kg'; $('be_hv').textContent=f(h1,1)+' m'; $('be_pv').textContent=Math.round(p*100)+' %';
+    const sm=p*p*(3-2*p), h=h1*(1-sm), Etot=m*g*h1, Eg=m*g*h, Ed=wr?0.2*Etot*p:0, Ek=Math.max(0,Etot-Eg-Ed), v=Math.sqrt(2*Ek/m);
+    // helling
+    const x0=40,y0=380,sx=70,sy=50, X=q=>x0+q*sx*6, Y=hh=>y0-hh*sy;
+    let o=`<rect x="0" y="${y0}" width="800" height="40" fill="#D6D3D1"/>`;
+    let pts=[]; for(let q=0;q<=1.0001;q+=0.02){ const sq=q*q*(3-2*q); pts.push((x0+q*(X(1)-x0))+','+Y(h1*(1-sq))); }
+    o+=`<polygon points="${x0},${y0} ${pts.join(' ')} ${X(1)},${y0}" fill="#E5E7EB" stroke="#64748B" stroke-width="2"/>`;
+    // positie op de curve benaderen: x lineair, hoogte h
+    const px=x0+p*(X(1)-x0);
+    o+=`<line x1="${px}" y1="${Y(h)}" x2="${px}" y2="${y0}" stroke="#94A3B8" stroke-dasharray="4 4"/>`+T(px+8,(Y(h)+y0)/2,'h = '+f(h,2)+' m',{s:12,c:'#51606E'});
+    o+=`<circle cx="${px}" cy="${Y(h)-16}" r="14" fill="#F2B880" stroke="#9A5B00"/><rect x="${px-18}" y="${Y(h)-4}" width="36" height="6" rx="3" fill="#1D2A36"/>`;
+    // energiebalken
+    const bx=560, bw=50, bh=280, by=60, sc=bh/Etot;
+    const bar=(i,val,kl,nm)=>{ const x=bx+i*(bw+14), hh=val*sc; return `<rect x="${x}" y="${by+bh-hh}" width="${bw}" height="${hh}" fill="${kl}"/><rect x="${x}" y="${by}" width="${bw}" height="${bh}" fill="none" stroke="#CBD5E1"/>`+T(x+bw/2,by+bh+18,nm,{s:12,a:'middle'})+T(x+bw/2,by+bh-hh-6,f(val),{s:11,a:'middle',c:'#51606E'}); };
+    o+=T(bx,40,'Energie (J)',{s:13})+bar(0,Eg,'#7c3aed','E grav')+bar(1,Ek,'#2563eb','E kin')+bar(2,Ed,'#dc2626','E therm');
+    $('be_svg').innerHTML=o;
+    $('be_read').innerHTML=`E<sub>tot</sub> = m · g · h<sub>1</sub> = ${m} · 9,81 · ${f(h1,1)} = <b>${f(Etot)} J</b><br>E<sub>grav</sub> = m · g · h = <b>${f(Eg)} J</b><br>`+
+      (wr?`E<sub>therm</sub> (dissipatie) = <b>${f(Ed)} J</b><br>`:'')+
+      `E<sub>kin</sub> = E<sub>tot</sub> − E<sub>grav</sub>${wr?' − E<sub>therm</sub>':''} = <b>${f(Ek)} J</b><br>v = √(2 · E<sub>kin</sub> / m) = <b>${f(v,1)} m/s</b>`+
+      (p===1&&!wr?`<br><span style="color:#1F7A4A;font-weight:700">Onderaan: m · g · h<sub>1</sub> = ½ · m · v² → v = √(2 · g · h<sub>1</sub>). De massa valt weg!</span>`:'');
+  }
+  ['be_m','be_h','be_p'].forEach(id=>$(id).addEventListener('input',teken)); $('be_w').addEventListener('change',teken); teken();
 })();
 </script>
 </body>
