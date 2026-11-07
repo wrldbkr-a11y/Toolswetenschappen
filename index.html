@@ -195,9 +195,18 @@ const TOOLS = [
     tekst:"Redeneren met formules en ze omvormen. Ook voorvoegsels en eenheden.",
     open:"formuleredeneertool.html", bestand:"formuleredeneertool.html" },
 
-  { vak:"Biologie", richting:"andere", icoon:"blad", jaren:[3], titel:"Water, prikkels en reacties",
-    tekst:"Waterhuishouding van planten, homeostase en feedback, receptoren en het oog, spieren als effectoren.",
-    open:"biologie-prikkels.html", bestand:"biologie-prikkels.html" },
+  { vak:"Biologie", richting:"andere", icoon:"blad", jaren:[3], hfd:"Thema 1 · Hfd 1", titel:"Waterhuishouding van planten",
+    tekst:"Plantenorganen en weefsels, huidmondjes, stengel en wortel, transport van water en assimilaten.",
+    open:"biologie-prikkels.html#p1", bestand:"biologie-prikkels.html" },
+  { vak:"Biologie", richting:"andere", icoon:"feedback", jaren:[3], hfd:"Thema 1 · Hfd 2", titel:"Homeostase en feedback",
+    tekst:"Prikkel en reactie, homeostase, negatieve en positieve feedback bij planten en dieren.",
+    open:"biologie-prikkels.html#f1", bestand:"biologie-prikkels.html" },
+  { vak:"Biologie", richting:"andere", icoon:"oog", jaren:[3], hfd:"Thema 2 · Hfd 1–4", titel:"Receptoren en het oog",
+    tekst:"Soorten receptoren, prikkeldrempel en gewenning, bouw en werking van het oog, netvlies, receptoren bij dieren en planten.",
+    open:"biologie-prikkels.html#r1", bestand:"biologie-prikkels.html" },
+  { vak:"Biologie", richting:"andere", icoon:"spier", jaren:[3], hfd:"Thema 3 · Hfd 1–2", titel:"Reageren met spieren",
+    tekst:"Prikkel, receptor, verwerking, effector, effect. Spieren, pezen en gewrichten, soorten spieren, antagonisten.",
+    open:"biologie-prikkels.html#e1", bestand:"biologie-prikkels.html" },
   { vak:"Biologie", richting:"andere", icoon:"klier", jaren:[3], hfd:"Thema 3 · Hfd 3–4", titel:"Reactie door klieren",
     tekst:"Excretie en secretie, exocriene en endocriene klieren, hormonen, en hormonen bij dieren en planten.",
     open:"biologie-klieren.html", bestand:"biologie-klieren.html" },
@@ -216,7 +225,7 @@ const TOOLS = [
   { vak:"Chemie", richting:"andere", icoon:"trechter", jaren:[3], hfd:"Thema 1 · Hfd 3", titel:"Scheidings\u00ADtechnieken",
     tekst:"Acht scheidingstechnieken met bewegende tekeningen, onderdelen en voorbeelden.",
     open:"chemie-scheidingstechnieken.html", bestand:"chemie-scheidingstechnieken.html" },
-  { vak:"Chemie", richting:"andere", icoon:"slot", jaren:[3], hfd:"Thema 1", titel:"Scheidingsmissie",
+  { vak:"Chemie", richting:"andere", icoon:"slot", jaren:[3], hfd:"Thema 1 · Hfd 3", titel:"Scheidingsmissie",
     tekst:"Een teamopdracht over mengsels, stofeigenschappen en scheidingstechnieken. Je hebt het wachtwoord van je leerkracht nodig.",
     open:"chemie-missie-drinkwater.html", bestand:"chemie-missie-drinkwater.html" },
   { vak:"Chemie", richting:"andere", icoon:"modellen", jaren:[3], hfd:"Thema 2 · Hfd 1", titel:"Atomen en elementen",
@@ -225,6 +234,9 @@ const TOOLS = [
   { vak:"Chemie", richting:"andere", icoon:"kern", jaren:[3], hfd:"Thema 2 · Hfd 2", titel:"Bouw van het atoom",
     tekst:"Bouw zelf atomen: protonen, neutronen, elektronen, atoomnummer, massagetal en atoommassa.",
     open:"chemie-atoombouw.html", bestand:"chemie-atoombouw.html" },
+  { vak:"Chemie", richting:"andere", icoon:"atoom", jaren:[3], hfd:"Thema 2 · Hfd 2", titel:"Elektronen\u00ADconfiguratie",
+    tekst:"Elektronenconfiguratie, ionvorming en ionbinding van de eerste 18 elementen.",
+    open:"elektronenconfiguratie.html", bestand:"elektronenconfiguratie.html" },
   { vak:"Chemie", richting:"andere", icoon:"pse", jaren:[3], hfd:"Thema 2 · Hfd 3", titel:"Periodiek systeem",
     tekst:"Een interactief PSE: categorie\u00EBn, groep en periode, elektronegativiteit en edelgasconfiguratie.",
     open:"chemie-pse.html", bestand:"chemie-pse.html" },
@@ -239,10 +251,7 @@ const TOOLS = [
     open:"chemie-reactie.html", bestand:"chemie-reactie.html" },
   { vak:"Chemie", richting:"wet", icoon:"zigzag", jaren:[5], titel:"Organische stofklassen",
     tekst:"Formules lezen, stofklassen herkennen, namen geven en formules bouwen. Eerst per stofklasse, daarna door elkaar.",
-    open:"chemie-organische-stofklassen.html", bestand:"chemie-organische-stofklassen.html" },
-  { vak:"Chemie", richting:"andere", icoon:"atoom", jaren:[3], titel:"Elektronen\u00ADconfiguratie",
-    tekst:"Elektronenconfiguratie, ionvorming en ionbinding van de eerste 18 elementen.",
-    open:"elektronenconfiguratie.html", bestand:"elektronenconfiguratie.html" }
+    open:"chemie-organische-stofklassen.html", bestand:"chemie-organische-stofklassen.html" }
 ];
 
 
@@ -267,6 +276,19 @@ const ICONEN = {
     <circle cx="16" cy="22.5" r="2.2" ${T}/>
     <path d="M26 24 C30 24 34 24 40 24" stroke-width="1.6"/><path d="M28 21.8 C30 21.6 32 21.6 33.5 21.8 C34.5 22.4 34.5 25.6 33.5 26.2 C32 26.4 30 26.4 28 26.2 C27 25.6 27 22.4 28 21.8Z" ${Z(.35)}/>
     <path d="M40 24 C42 22 43 20 44 19 M40 24 H45 M40 24 C42 26 43 28 44 29" stroke-width="1.4" stroke-linecap="round"/><circle cx="44.5" cy="18.5" r="1.4" ${T}/><circle cx="45.5" cy="24" r="1.4" ${T}/><circle cx="44.5" cy="29.5" r="1.4" ${T}/>`,
+  /* feedback: waarde schommelt rond de norm binnen een band */
+  feedback: `<rect x="4" y="17" width="40" height="14" rx="3" ${Z(.14)}/><path d="M4 24 H44" stroke-width="1" stroke-dasharray="3 3" opacity=".7"/>
+    <path d="M4 24 C8 11 12 11 15 24 C18 35 22 35 25 24 C28 15 31 15 34 24 C36 30 39 30 41 26" stroke-width="2.3" stroke-linecap="round"/>
+    <path d="M38 8 C44 10 46 16 43 20 M43 20 L44.5 15.5 M43 20 L38.6 18.6" stroke-width="1.5" stroke-linecap="round"/>`,
+  /* oog: oogbol met hoornvlies, lens en oogzenuw; lichtstralen naar het netvlies */
+  oog: `<path d="M10 24 C10 13 17 7 26 7 C36 7 43 15 43 24 C43 33 36 41 26 41 C17 41 10 35 10 24Z" ${Z(.13)}/><path d="M10 24 C10 13 17 7 26 7 C36 7 43 15 43 24 C43 33 36 41 26 41 C17 41 10 35 10 24Z"/>
+    <path d="M11 16 C6 19 6 29 11 32" stroke-width="1.4"/><path d="M15 17.5 C19 20 19 28 15 30.5 C12 28 12 20 15 17.5Z" ${Z(.45)}/><path d="M15 17.5 C19 20 19 28 15 30.5 C12 28 12 20 15 17.5Z" stroke-width="1.2"/>
+    <path d="M1 19 L15 21 L42 24 M1 29 L15 27 L42 24" stroke-width="1" stroke-dasharray="2.5 2" opacity=".8"/>
+    <path d="M42.5 27 C44.5 28 46 29.5 47 32" stroke-width="3" stroke-linecap="round"/>`,
+  /* spier: spoelvormige spierbuik met vezels, aan beide kanten een pees */
+  spier: `<path d="M8 31 C12 22 19 16 27 15 C34 14 39 16 42 18 C39 23 33 29 26 32 C19 35 12 34 8 31Z" ${Z(.3)}/><path d="M8 31 C12 22 19 16 27 15 C34 14 39 16 42 18 C39 23 33 29 26 32 C19 35 12 34 8 31Z" stroke-width="1.5" stroke-linejoin="round"/>
+    <path d="M12 29 C19 24 28 20 38 18 M14 31.5 C21 28 29 24 37 20.5 M13 26 C19 21 26 18 34 16.5" stroke-width="1" opacity=".7"/>
+    <path d="M8 31 C6 32.5 4 34 2.5 36.5 M42 18 C44 16.5 45.5 15 46.5 12.5" stroke-width="2.6" stroke-linecap="round"/>`,
   blad: `<path d="M8 40 C8 18 24 6 42 6 C42 26 30 40 8 40Z" ${Z(.15)}/><path d="M8 40 C8 18 24 6 42 6 C42 26 30 40 8 40Z"/>
     <path d="M8 40 L36 12 M17 31 L17 22 M24 24 L24 15 M17 31 L26 31 M24 24 L33 24" stroke-width="1.3"/>`,
   /* atoom: kern met elektronen op een schil */

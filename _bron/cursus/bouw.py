@@ -37,7 +37,8 @@ def bouw(bestand, eyebrow, titel, intro, blokken, vrijgave, cornell):
     s = (SJABLOON.replace('{{TITEL}}', titel).replace('{{EYEBROW}}', eyebrow).replace('{{INTRO}}', intro)
          .replace('{{INHOUD}}', ''.join(blokken)).replace('{{VRIJGAVE}}', vr)
          .replace('{{CORNELL}}', json.dumps(cornell, ensure_ascii=False)).replace('{{BESTAND}}', bestand).replace('{{FOOTER}}', FOOTER))
-    open('/home/claude/toolswetenschappen/' + bestand, 'w', encoding='utf-8').write(s)
+    import sys; sys.path.insert(0, '/home/claude/toolswetenschappen/_bron'); from vinkjes import voeg_toe
+    open('/home/claude/toolswetenschappen/' + bestand, 'w', encoding='utf-8').write(voeg_toe(s))
 
 FOOTER = 'Cursus fysica — gemaakt voor klasgebruik, bij de tools op Oefentools wetenschappen.'
 STAP = '<div class="stappenplan"><span>1 · gegeven</span><span>2 · gevraagd</span><span>3 · formule</span><span>4 · oplossing</span><span>5 · antwoord met eenheid</span></div>'

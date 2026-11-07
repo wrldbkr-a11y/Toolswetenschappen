@@ -38,3 +38,6 @@ Een nieuwe sessie met Claude kan dit opnieuw opzetten: vraag om de repo te klone
 - `aso/bouw_3aso.py` maakt de fysicatools `*-3aso.html` uit de 3NW-tools. Pas altijd de 3NW-tool aan en draai daarna dit script opnieuw.
 - `chemie3/` bevat de lessites ionvorming, samenstelling en reactie: `python3 _bron/chemie3/ionvorming.py` (en `samenstelling.py`, `reactie.py`). Ze gebruiken de stijl van chemie-pse.html (`kop.html`, `helpers.js`).
 - `bio3/` bevat de lessites klieren en zenuwstelsel: `python3 _bron/bio3/klieren.py` en `zenuwstelsel.py`. De afbeeldingen in `bio3/img` komen van Wikimedia Commons, met de Engelse namen weggehaald. De bronnen en licenties staan onderaan elke lessite. `organisch.js` tekent de eigen figuren.
+
+## Afvinkbare lesdoelen (`_bron/vinkjes.py`)
+Elke lijst `.doel ul > li` (lessites) of `ul.doelen > li` (cursussen, 3ASO-fysica) krijgt een vierkantje met een klikbaar vinkje. De vinkjes worden per pagina in de browser bewaard. De bouwscripts (`chemie3/bouw.py`, `cursus/bouw.py`, `aso/bouw_3aso.py`) voegen dit zelf toe. Pagina's die je met de hand aanpast: draai `python3 _bron/vinkjes.py`.

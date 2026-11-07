@@ -459,5 +459,36 @@ const CORNELL = [["Wat is waterhuishouding?", 20], ["Welke vier plantenorganen k
 function druk(soort){ vulPrint(); document.body.classList.add('print-'+soort); setTimeout(()=>{ window.print(); document.body.classList.remove('print-'+soort); },50); }
 document.querySelectorAll('[data-print]').forEach(b=>b.onclick=()=>druk(b.dataset.print));
 </script>
+<!--vinkjes-->
+<style>
+.doel ul:has(.vk-li),ul.doelen:has(.vk-li){list-style:none;padding-left:0}
+.vk-li{display:flex;gap:10px;align-items:flex-start;cursor:pointer;margin:4px 0;list-style:none}
+.vk{flex:none;width:22px;height:22px;margin-top:1px;border:2px solid #64748b;border-radius:5px;background:#fff;display:inline-grid;place-items:center;cursor:pointer;padding:0}
+.vk:focus-visible{outline:3px solid #60a5fa;outline-offset:2px}
+.vk.aan{background:#16a34a;border-color:#16a34a}
+.vk.aan::after{content:"";width:6px;height:11px;border:solid #fff;border-width:0 3px 3px 0;transform:translateY(-1px) rotate(45deg)}
+.vk-li.aan .vk-t{color:#15803d}
+@media print{.vk{background:#fff!important;border-color:#000!important}.vk.aan::after{border-color:#000}}
+</style>
+<script>
+(function(){
+  var K='vinkjes:'+location.pathname.split('/').pop();
+  var st={}; try{st=JSON.parse(localStorage.getItem(K)||'{}')}catch(e){}
+  function bewaar(){try{localStorage.setItem(K,JSON.stringify(st))}catch(e){}}
+  var lis=document.querySelectorAll('.doel ul > li, ul.doelen > li');
+  [].forEach.call(lis,function(li,i){
+    if(li.querySelector('.vk')) return;
+    var b=document.createElement('button'); b.type='button'; b.className='vk'; b.setAttribute('role','checkbox');
+    b.setAttribute('aria-label','Ik kan dit');
+    var t=document.createElement('span'); t.className='vk-t';
+    while(li.firstChild) t.appendChild(li.firstChild);
+    li.appendChild(b); li.appendChild(t); li.classList.add('vk-li');
+    function zet(a){ st[i]=a; b.classList.toggle('aan',a); li.classList.toggle('aan',a); b.setAttribute('aria-checked',a?'true':'false'); }
+    zet(!!st[i]);
+    li.addEventListener('click',function(e){ if(e.target.closest('a')) return; zet(!st[i]); bewaar(); });
+  });
+})();
+</script>
+<!--/vinkjes-->
 </body>
 </html>

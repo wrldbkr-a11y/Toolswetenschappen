@@ -104,8 +104,7 @@ footer a{color:inherit;}
   <p class="intro"><strong>Een meetresultaat is een getal mét een eenheid.</strong> Hier leer je eenheden omzetten, grote en kleine getallen noteren in de wetenschappelijke notatie, en een resultaat geven met het juiste aantal beduidende cijfers.</p>
   <nav class="catnav" id="nav"></nav>
 </header>
-<div style="max-width:1180px;margin:14px auto 0;padding:0 24px"><details id="ld3" style="border:1px solid #c9d6e3;border-radius:10px;padding:8px 14px;background:rgba(127,160,200,.08)"><summary style="cursor:pointer;font-weight:700">Lesdoelen · Ik kan …</summary><ul style="padding:0;margin:4px 0 6px;font-size:14px;line-height:1.5"><li style="list-style:none;margin:8px 0 2px;font-weight:700">1 Rekenen in de fysica</li><li style="list-style:none;margin:2px 0"><label style="display:flex;gap:8px;align-items:flex-start;cursor:pointer"><input type="checkbox" style="margin-top:4px;flex:none">Ik geef meetresultaten weer in de SI-eenheid en in de afgeleide eenheid.</label></li><li style="list-style:none;margin:2px 0"><label style="display:flex;gap:8px;align-items:flex-start;cursor:pointer"><input type="checkbox" style="margin-top:4px;flex:none">Ik geef meetresultaten weer met het correcte aantal beduidende cijfers.</label></li><li style="list-style:none;margin:2px 0"><label style="display:flex;gap:8px;align-items:flex-start;cursor:pointer"><input type="checkbox" style="margin-top:4px;flex:none">Ik gebruik de wetenschappelijke notatie om meetresultaten te noteren.</label></li></ul><p style="font-size:12px;opacity:.75;margin:4px 0">Vink aan wat je al kan. Wat je niet kan aanvinken, oefen je nog eens.</p></details></div>
-<script>(function(){var K="ld3-rekenen",b=document.querySelectorAll("#ld3 input");var st={};try{st=JSON.parse(localStorage.getItem(K)||"{}")}catch(e){}b.forEach(function(x,i){x.checked=!!st[i];x.onchange=function(){st[i]=x.checked;try{localStorage.setItem(K,JSON.stringify(st))}catch(e){}}})})();</script>
+<div style="max-width:1180px;margin:14px auto 0;padding:0 24px"><details id="ld3" style="border:1px solid #c9d6e3;border-radius:10px;padding:8px 14px;background:rgba(127,160,200,.08)"><summary style="cursor:pointer;font-weight:700">Lesdoelen · Ik kan …</summary><p style="margin:10px 0 2px;font-weight:700">1 Rekenen in de fysica</p><ul class="doelen" style="margin:0;font-size:14px;line-height:1.5"><li>Ik geef meetresultaten weer in de SI-eenheid en in de afgeleide eenheid.</li><li>Ik geef meetresultaten weer met het correcte aantal beduidende cijfers.</li><li>Ik gebruik de wetenschappelijke notatie om meetresultaten te noteren.</li></ul><p style="font-size:12px;opacity:.75;margin:8px 0 4px">Vink aan wat je al kan. Wat je niet kan aanvinken, oefen je nog eens.</p></details></div>
 <main>
 
 <!-- 1 EENHEDEN -->
@@ -478,5 +477,36 @@ document.getElementById('check').onclick = controleer;
 document.getElementById('volgende').onclick = nieuw;
 nieuw();
 </script>
+<!--vinkjes-->
+<style>
+.doel ul:has(.vk-li),ul.doelen:has(.vk-li){list-style:none;padding-left:0}
+.vk-li{display:flex;gap:10px;align-items:flex-start;cursor:pointer;margin:4px 0;list-style:none}
+.vk{flex:none;width:22px;height:22px;margin-top:1px;border:2px solid #64748b;border-radius:5px;background:#fff;display:inline-grid;place-items:center;cursor:pointer;padding:0}
+.vk:focus-visible{outline:3px solid #60a5fa;outline-offset:2px}
+.vk.aan{background:#16a34a;border-color:#16a34a}
+.vk.aan::after{content:"";width:6px;height:11px;border:solid #fff;border-width:0 3px 3px 0;transform:translateY(-1px) rotate(45deg)}
+.vk-li.aan .vk-t{color:#15803d}
+@media print{.vk{background:#fff!important;border-color:#000!important}.vk.aan::after{border-color:#000}}
+</style>
+<script>
+(function(){
+  var K='vinkjes:'+location.pathname.split('/').pop();
+  var st={}; try{st=JSON.parse(localStorage.getItem(K)||'{}')}catch(e){}
+  function bewaar(){try{localStorage.setItem(K,JSON.stringify(st))}catch(e){}}
+  var lis=document.querySelectorAll('.doel ul > li, ul.doelen > li');
+  [].forEach.call(lis,function(li,i){
+    if(li.querySelector('.vk')) return;
+    var b=document.createElement('button'); b.type='button'; b.className='vk'; b.setAttribute('role','checkbox');
+    b.setAttribute('aria-label','Ik kan dit');
+    var t=document.createElement('span'); t.className='vk-t';
+    while(li.firstChild) t.appendChild(li.firstChild);
+    li.appendChild(b); li.appendChild(t); li.classList.add('vk-li');
+    function zet(a){ st[i]=a; b.classList.toggle('aan',a); li.classList.toggle('aan',a); b.setAttribute('aria-checked',a?'true':'false'); }
+    zet(!!st[i]);
+    li.addEventListener('click',function(e){ if(e.target.closest('a')) return; zet(!st[i]); bewaar(); });
+  });
+})();
+</script>
+<!--/vinkjes-->
 </body>
 </html>

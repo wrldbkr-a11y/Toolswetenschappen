@@ -9,6 +9,8 @@ zodat de scripts van de tool blijven werken). Thema- en hoofdstuknummers volgen 
 """
 import re, sys, pathlib
 ROOT = pathlib.Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / '_bron'))
+from vinkjes import voeg_toe
 NOOT = '<!-- GEGENEREERD door _bron/aso/bouw_3aso.py uit {bron}. Pas de bron aan, niet dit bestand. -->\n'
 
 def verberg(s, ids):
@@ -27,22 +29,18 @@ def bouw(bron, doel, fn):
     s = (ROOT / bron).read_text(encoding='utf-8')
     s = fn(s)
     s = s.replace('<!DOCTYPE html>\n', '<!DOCTYPE html>\n' + NOOT.format(bron=bron), 1)
-    (ROOT / doel).write_text(s, encoding='utf-8')
+    (ROOT / doel).write_text(voeg_toe(s), encoding='utf-8')
     print('gemaakt:', doel)
 
 
 def lesdoelen(sleutel, groepen, breed='1180px', pad='0 24px'):
-    """Inklapbaar paneel 'Lesdoelen' met 'Ik kan dit'-vinkjes (bewaard per browser)."""
+    """Inklapbaar paneel 'Lesdoelen'. De vinkjes komen uit _bron/vinkjes.py."""
     li = ''
     for kop, doelen in groepen:
-        li += '<li style="list-style:none;margin:8px 0 2px;font-weight:700">%s</li>' % kop
-        for d in doelen:
-            li += '<li style="list-style:none;margin:2px 0"><label style="display:flex;gap:8px;align-items:flex-start;cursor:pointer"><input type="checkbox" style="margin-top:4px;flex:none">%s</label></li>' % d
+        li += '<p style="margin:10px 0 2px;font-weight:700">%s</p><ul class="doelen" style="margin:0;font-size:14px;line-height:1.5">%s</ul>' % (kop, ''.join('<li>%s</li>' % d for d in doelen))
     return ('<div style="max-width:%s;margin:14px auto 0;padding:%s"><details id="ld3" style="border:1px solid #c9d6e3;border-radius:10px;padding:8px 14px;background:rgba(127,160,200,.08)">'
-            '<summary style="cursor:pointer;font-weight:700">Lesdoelen · Ik kan …</summary><ul style="padding:0;margin:4px 0 6px;font-size:14px;line-height:1.5">%s</ul>'
-            '<p style="font-size:12px;opacity:.75;margin:4px 0">Vink aan wat je al kan. Wat je niet kan aanvinken, oefen je nog eens.</p></details></div>\n'
-            '<script>(function(){var K="ld3-%s",b=document.querySelectorAll("#ld3 input");var st={};try{st=JSON.parse(localStorage.getItem(K)||"{}")}catch(e){}'
-            'b.forEach(function(x,i){x.checked=!!st[i];x.onchange=function(){st[i]=x.checked;try{localStorage.setItem(K,JSON.stringify(st))}catch(e){}}})})();</script>\n') % (breed, pad, li, sleutel)
+            '<summary style="cursor:pointer;font-weight:700">Lesdoelen · Ik kan …</summary>%s'
+            '<p style="font-size:12px;opacity:.75;margin:8px 0 4px">Vink aan wat je al kan. Wat je niet kan aanvinken, oefen je nog eens.</p></details></div>\n') % (breed, pad, li)
 
 def bijvoeg(naam):
     return (ROOT / '_bron' / 'aso' / naam).read_text(encoding='utf-8')
