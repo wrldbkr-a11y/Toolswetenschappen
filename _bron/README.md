@@ -103,3 +103,5 @@ Leerlingen krijgen een ingevulde naslag; wisbordvragen per deel (`aso_wisbord.py
 - `_bron/organizer/organizer_inhoud.py`: per vak en jaar de thema's (grote vraag, idee, je kent al) en hoofdstukken (examen dec/jun, link naar de cursus). Bron: leerstofoverzichten.
 - `_bron/organizer/bouw_organizer.py` maakt `overzicht-<vak>-<klas>.html` (iconen uit index.html). Tegels op de startpagina; elke cursuspagina linkt bovenaan naar haar overzicht (bouw.py, overzicht_link).
 - Een nieuwe cursuspagina? Zet de link bij het hoofdstuk in organizer_inhoud.py en bouw opnieuw.
+
+- Word-versie van de overzichten: `_bron/word/maak_org.js` (leest org.json + iconen-PNG uit /home/claude/word/org).
