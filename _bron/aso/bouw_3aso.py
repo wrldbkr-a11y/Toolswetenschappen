@@ -93,4 +93,13 @@ bouw('snelheid-afgelegde-weg.html', 'snelheid-3aso.html', lambda s: vervang(s, [
     ('De x(t)-grafiek van een tramrit, met optrekken, remmen en een halte.', 'De x(t)-grafiek van een tramrit: stukken met een andere constante snelheid en een halte.'),
     ("var TORDER = ['erb', 'stil', 'vers', 'vert'];", "var TORDER = ['erb', 'stil'];"),
     ('  <!-- 2.2 GRAFIEKEN OEFENEN', bijvoeg('grafiektekenen.html') + '\n  <!-- 2.2 GRAFIEKEN OEFENEN'),
+    # 3ASO: afgelegde weg staat niet in de lesdoelen
+    ('kijk hoe <b>positie</b>, <b>verplaatsing</b> en <b>afgelegde weg</b> veranderen.', 'kijk hoe <b>positie</b> en <b>verplaatsing</b> veranderen.'),
+    ('id="b_t" min="0" max="110"', 'id="b_t" min="0" max="80"'),
+    ('    // afgelegde weg: heen en terug\n    var heen = Math.min(x, 800), ytrack = 120;\n    o += \'<line x1="\' + X(200) + \'" y1="\' + ytrack + \'" x2="\' + X(tt <= 60 ? x : 800) + \'" y2="\' + ytrack + \'" stroke="\' + GRN + \'" stroke-width="5" stroke-linecap="round"/>\';\n    if (tt > 80) o += \'<line x1="\' + X(800) + \'" y1="\' + (ytrack + 12) + \'" x2="\' + X(x) + \'" y2="\' + (ytrack + 12) + \'" stroke="\' + GRN + \'" stroke-width="5" stroke-linecap="round"/>\';\n    o += t(X(200) - 6, ytrack + 5, \'afgelegde weg\', {s: 12, w: 700, c: GRN, a: \'end\'});\n', ''),
+    ('<br>afgelegde weg = <b style="color:\' + GRN + \'">\' + fm(s, 0) + \' m</b>\' +\n      (tt > 80 ? \'<br>De tram rijdt terug: de afgelegde weg blijft groeien, de verplaatsing wordt kleiner.\' : tt > 60 ? \'<br>De tram staat stil aan halte B: positie, verplaatsing en afgelegde weg veranderen niet.\' : \'<br>Zolang de tram in één richting rijdt, zijn verplaatsing en afgelegde weg even groot.\');\n', "' +\n      (tt > 60 ? '<br>De tram staat stil aan halte B: de positie en de verplaatsing veranderen niet.' : '<br>De tram rijdt in één richting: de verplaatsing wordt groter.');\n"),
+    ('\n          <p><b>Afgelegde weg:</b> de lengte van de weg die echt afgelegd is. Ze is nooit negatief.</p></div>', '</div>'),
+    ('Snelheid omzetten, v, Δx of Δt berekenen, en verplaatsing tegenover afgelegde weg.', 'Snelheid omzetten, en v, Δx of Δt berekenen.'),
+    (", ['weg', 'Verplaatsing en afgelegde weg']];", '];'),
+    ("kies(['kmh', 'v', 'dx', 'dt', 'weg'])", "kies(['kmh', 'v', 'dx', 'dt'])"),
 ]))

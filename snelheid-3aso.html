@@ -202,11 +202,11 @@
   <!-- 1 BASISBEGRIPPEN -->
   <section class="scene" id="s1" data-nr="1" data-title="Basisbegrippen">
     <div class="shead"><span class="num">1</span><h2>Basisbegrippen van een beweging</h2></div>
-    <p class="lead">Een tram rijdt langs een rechte lijn van halte naar halte. Schuif de tijd verder en kijk hoe <b>positie</b>, <b>verplaatsing</b> en <b>afgelegde weg</b> veranderen.</p>
+    <p class="lead">Een tram rijdt langs een rechte lijn van halte naar halte. Schuif de tijd verder en kijk hoe <b>positie</b> en <b>verplaatsing</b> veranderen.</p>
     <div class="grid2">
       <div class="side">
         <div class="graph"><svg id="b_svg" viewBox="0 0 760 250"></svg></div>
-        <div class="ctrl panel"><label for="b_t">Tijdstip t <b id="b_tv"></b></label><input type="range" id="b_t" min="0" max="110" value="40"></div>
+        <div class="ctrl panel"><label for="b_t">Tijdstip t <b id="b_tv"></b></label><input type="range" id="b_t" min="0" max="80" value="40"></div>
       </div>
       <div class="side">
         <div class="out" id="b_out"></div>
@@ -216,8 +216,7 @@
           <p><b>Positie x:</b> de plaats op de baan, gemeten vanaf de oorsprong (in m).</p>
           <p><b>Verplaatsing Δx:</b> het verschil tussen eindpositie en beginpositie: Δx = x<sub>2</sub> − x<sub>1</sub>.</p>
           <p><b>Tijdstip t:</b> het moment waarop iets gebeurt (in s).</p>
-          <p><b>Tijdsverloop Δt:</b> de tijd tussen twee tijdstippen: Δt = t<sub>2</sub> − t<sub>1</sub>.</p>
-          <p><b>Afgelegde weg:</b> de lengte van de weg die echt afgelegd is. Ze is nooit negatief.</p></div>
+          <p><b>Tijdsverloop Δt:</b> de tijd tussen twee tijdstippen: Δt = t<sub>2</sub> − t<sub>1</sub>.</p></div>
         <div class="panel"><h2>Snelheid omzetten</h2>
           <p class="task">1 km/h = 1000 m / 3600 s, dus <b>1 m/s = 3,6 km/h</b>.</p>
           <div class="line" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><input class="inl" id="o_in" value="36" inputmode="decimal"><select class="inl" id="o_eh" style="width:auto"><option value="kmh">km/h → m/s</option><option value="ms">m/s → km/h</option></select></div>
@@ -405,7 +404,7 @@
   <!-- OEFENEN REKENEN -->
   <section class="scene" id="s5" data-nr="✎" data-title="Rekenen oefenen">
     <div class="shead"><span class="num">✎</span><h2>Rekenen oefenen</h2></div>
-    <p class="lead">Snelheid omzetten, v, Δx of Δt berekenen, en verplaatsing tegenover afgelegde weg. Gebruik een komma voor decimalen.</p>
+    <p class="lead">Snelheid omzetten, en v, Δx of Δt berekenen. Gebruik een komma voor decimalen.</p>
     <div class="panel">
       <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px"><div class="soort" id="r_soort"></div><span class="score" id="r_score">0 / 0</span></div>
       <div class="vraag" id="r_vraag"></div>
@@ -792,18 +791,13 @@
     for (var m = 0; m <= 1000; m += 100) o += '<line x1="' + X(m) + '" y1="' + (y - 6) + '" x2="' + X(m) + '" y2="' + (y + 6) + '" stroke="var(--ink)"/>' + t(X(m), y + 24, m, {s: 12, c: MUT, a: 'middle'});
     o += t(X(1000), y + 44, 'x (m)', {s: 13, w: 700, a: 'end'}) + t(X(0), y - 14, 'oorsprong', {s: 12, c: MUT, a: 'middle'});
     o += t(X(200), 30, 'halte A', {s: 12, w: 700, c: MUT, a: 'middle'}) + t(X(800), 30, 'halte B', {s: 12, w: 700, c: MUT, a: 'middle'}) + t(X(500), 30, 'halte C', {s: 12, w: 700, c: MUT, a: 'middle'});
-    // afgelegde weg: heen en terug
-    var heen = Math.min(x, 800), ytrack = 120;
-    o += '<line x1="' + X(200) + '" y1="' + ytrack + '" x2="' + X(tt <= 60 ? x : 800) + '" y2="' + ytrack + '" stroke="' + GRN + '" stroke-width="5" stroke-linecap="round"/>';
-    if (tt > 80) o += '<line x1="' + X(800) + '" y1="' + (ytrack + 12) + '" x2="' + X(x) + '" y2="' + (ytrack + 12) + '" stroke="' + GRN + '" stroke-width="5" stroke-linecap="round"/>';
-    o += t(X(200) - 6, ytrack + 5, 'afgelegde weg', {s: 12, w: 700, c: GRN, a: 'end'});
     if (Math.abs(x - 200) > 1) o += pijl(X(200), 155, X(x), 155, PUR) + t(X(200) - 6, 160, 'Δx', {s: 13, w: 700, c: PUR, a: 'end'});
     // tram
     o += '<rect x="' + (X(x) - 26) + '" y="' + (y - 40) + '" width="52" height="26" rx="6" fill="#2f7de1"/><rect x="' + (X(x) - 20) + '" y="' + (y - 35) + '" width="12" height="9" fill="#fff"/><rect x="' + (X(x) - 4) + '" y="' + (y - 35) + '" width="12" height="9" fill="#fff"/><circle cx="' + X(x) + '" cy="' + y + '" r="5" fill="' + RED + '"/>';
     o += t(X(x), y - 48, 'x = ' + fm(x, 0) + ' m', {s: 13, w: 700, c: RED, a: 'middle'});
     $('b_svg').innerHTML = o;
-    $('b_out').innerHTML = 'tijdstip t = <b>' + tt + ' s</b> · tijdsverloop sinds vertrek Δt = <b>' + tt + ' s</b><br>beginpositie x<sub>1</sub> = <b>200 m</b> · positie nu x<sub>2</sub> = <b>' + fm(x, 0) + ' m</b><br>verplaatsing Δx = x<sub>2</sub> − x<sub>1</sub> = <b style="color:' + PUR + '">' + fm(x - 200, 0) + ' m</b><br>afgelegde weg = <b style="color:' + GRN + '">' + fm(s, 0) + ' m</b>' +
-      (tt > 80 ? '<br>De tram rijdt terug: de afgelegde weg blijft groeien, de verplaatsing wordt kleiner.' : tt > 60 ? '<br>De tram staat stil aan halte B: positie, verplaatsing en afgelegde weg veranderen niet.' : '<br>Zolang de tram in één richting rijdt, zijn verplaatsing en afgelegde weg even groot.');
+    $('b_out').innerHTML = 'tijdstip t = <b>' + tt + ' s</b> · tijdsverloop sinds vertrek Δt = <b>' + tt + ' s</b><br>beginpositie x<sub>1</sub> = <b>200 m</b> · positie nu x<sub>2</sub> = <b>' + fm(x, 0) + ' m</b><br>verplaatsing Δx = x<sub>2</sub> − x<sub>1</sub> = <b style="color:' + PUR + '">' + fm(x - 200, 0) + ' m</b>' +
+      (tt > 60 ? '<br>De tram staat stil aan halte B: de positie en de verplaatsing veranderen niet.' : '<br>De tram rijdt in één richting: de verplaatsing wordt groter.');
   }
   $('b_t').addEventListener('input', basis); basis();
   function omzet() { var v = parseFloat(String($('o_in').value).replace(',', '.')), o = $('o_out');
@@ -869,11 +863,11 @@
     weg: function () { var a = kies([200, 300, 450, 600]), b = kies([100, 150, 200, 250]); if (Math.random() < .5) return {q: 'Je wandelt ' + a + ' m naar de bakker en daarna ' + b + ' m terug naar huis, langs dezelfde straat. Hoe groot is je afgelegde weg?', a: a + b, e: 'm', u: 'Afgelegde weg = ' + a + ' m + ' + b + ' m = ' + (a + b) + ' m'};
       return {q: 'Je wandelt ' + a + ' m naar de bakker en daarna ' + b + ' m terug naar huis, langs dezelfde straat. Hoe groot is je verplaatsing?', a: a - b, e: 'm', u: 'Δx = eindpositie − beginpositie = ' + a + ' m − ' + b + ' m = ' + (a - b) + ' m (afgelegde weg: ' + (a + b) + ' m)'}; }
   };
-  var SO = [['alles', 'Door elkaar'], ['kmh', 'km/h en m/s'], ['v', 'v berekenen'], ['dx', 'Δx berekenen'], ['dt', 'Δt berekenen'], ['weg', 'Verplaatsing en afgelegde weg']];
+  var SO = [['alles', 'Door elkaar'], ['kmh', 'km/h en m/s'], ['v', 'v berekenen'], ['dx', 'Δx berekenen'], ['dt', 'Δt berekenen']];
   var soort = 'alles', vr = null, goed = 0, tot = 0, klaar = false;
   $('r_soort').innerHTML = SO.map(function (s) { return '<button type="button" class="btn' + (s[0] === soort ? ' on' : '') + '" data-k="' + s[0] + '">' + s[1] + '</button>'; }).join('');
   $('r_soort').addEventListener('click', function (e) { var b = e.target.closest('button'); if (!b) return; soort = b.dataset.k; [].forEach.call($('r_soort').children, function (x) { x.classList.toggle('on', x === b); }); nieuw(); });
-  function nieuw() { klaar = false; vr = GEN[soort === 'alles' ? kies(['kmh', 'v', 'dx', 'dt', 'weg']) : soort](); $('r_vraag').textContent = vr.q; $('r_eh').textContent = vr.e; $('r_in').value = ''; $('r_fb').innerHTML = ''; $('r_fb').className = 'fb'; }
+  function nieuw() { klaar = false; vr = GEN[soort === 'alles' ? kies(['kmh', 'v', 'dx', 'dt']) : soort](); $('r_vraag').textContent = vr.q; $('r_eh').textContent = vr.e; $('r_in').value = ''; $('r_fb').innerHTML = ''; $('r_fb').className = 'fb'; }
   function check() { var w = parseFloat(String($('r_in').value).trim().replace(',', '.').replace('−', '-')), fb = $('r_fb');
     if (isNaN(w)) { fb.className = 'fb fout'; fb.textContent = 'Vul een getal in.'; return; }
     var ok = Math.abs(w - vr.a) <= Math.max(0.01 * Math.abs(vr.a), 0.051);
