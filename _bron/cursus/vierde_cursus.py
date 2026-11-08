@@ -302,8 +302,10 @@ def paneel(x0, titel, regel, yc, LA, LZ, drijft=False):
     if drijft:
         s += f'<rect x="{x0+45}" y="50" width="50" height="50" fill="#e7c9a9" stroke="#7c2d12" stroke-width="2"/>'
         s += f'<line x1="{x0+45}" y1="70" x2="{x0+95}" y2="70" stroke="#3b82c4" stroke-width="1.5" stroke-dasharray="4,3"/>'
-        xz, yz, ya = x0 + 63, 75, 85
-        s += pijl(xz, yz, xz, yz + LZ, POS) + punt(xz, yz) + pijl(x0 + 77, ya, x0 + 77, ya - LA, GROEN) + punt(x0 + 77, ya, GROEN)
+        # zelfde werklijn: F_z in het zwaartepunt van het blok, F_A in het midden van het ondergedompelde deel (lager);
+        # 2 px uit elkaar zodat beide pijlen zichtbaar blijven waar ze overlappen
+        yz, ya = 75, 85
+        s += pijl(x0 + 68, yz, x0 + 68, yz + LZ, POS) + punt(x0 + 68, yz) + pijl(x0 + 72, ya, x0 + 72, ya - LA, GROEN) + punt(x0 + 72, ya, GROEN)
     else:
         s += f'<rect x="{x0+45}" y="{yc-25}" width="50" height="50" fill="#e7c9a9" stroke="#7c2d12" stroke-width="2"/>'
         s += pijl(x0 + 70, yc, x0 + 70, yc + LZ, POS) + pijl(x0 + 70, yc, x0 + 70, yc - LA, GROEN) + punt(x0 + 70, yc)
@@ -357,7 +359,7 @@ a2 = f"""<p>Op een voorwerp in een vloeistof werken twee krachten: de <b>zwaarte
 <p>Is het voorwerp <b>helemaal ondergedompeld</b>, dan is V<sub>ond</sub> = V. Schrijf beide krachten met de massadichtheid:</p>
 <p>F<sub>z</sub> = m · g = <b>ρ<sub>v</sub></b> · V · g &nbsp;&nbsp;en&nbsp;&nbsp; F<sub>A</sub> = <b>ρ<sub>vl</sub></b> · V · g</p>
 <p>V en g zijn in beide formules gelijk. Welke kracht het grootst is, hangt dus enkel af van de <b>massadichtheid van het voorwerp ρ<sub>v</sub></b> en die van de <b>vloeistof ρ<sub>vl</sub></b>.</p>
-{figuur(fig_vier, 'Krachten op een blok in een vloeistof. De zwaartekracht grijpt aan in het midden van het blok, de archimedeskracht in het midden van het ondergedompelde deel. Bij een drijvend blok zijn dat twee verschillende punten.')}
+{figuur(fig_vier, 'Krachten op een blok in een vloeistof. De zwaartekracht grijpt aan in het midden van het blok, de archimedeskracht in het midden van het ondergedompelde deel. Bij een drijvend blok ligt dat punt lager, maar op dezelfde verticale lijn: de twee krachten hebben dezelfde werklijn.')}
 <table class="vb"><tr><td>ρ<sub>v</sub> &gt; ρ<sub>vl</sub></td><td>F<sub>A</sub> &lt; F<sub>z</sub></td><td>het voorwerp <b>zinkt</b></td></tr>
 <tr><td>ρ<sub>v</sub> = ρ<sub>vl</sub></td><td>F<sub>A</sub> = F<sub>z</sub></td><td>het voorwerp <b>zweeft</b></td></tr>
 <tr><td>ρ<sub>v</sub> &lt; ρ<sub>vl</sub></td><td>F<sub>A</sub> &gt; F<sub>z</sub></td><td>het voorwerp <b>stijgt</b></td></tr></table>

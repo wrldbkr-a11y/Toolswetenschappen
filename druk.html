@@ -742,10 +742,12 @@ const kaart=(svg,tag,titel,tekst)=>`<div class="card">${svg}<div class="txt">${t
     ctx.strokeStyle='#334155'; ctx.lineWidth=4; ctx.beginPath(); ctx.moveTo(150,40); ctx.lineTo(150,BODEM); ctx.lineTo(650,BODEM); ctx.lineTo(650,40); ctx.stroke();
     const x=400;
     ctx.fillStyle=kl; ctx.strokeStyle='#334155'; ctx.lineWidth=2; ctx.fillRect(x-hpx/2,y-hpx/2,hpx,hpx); ctx.strokeRect(x-hpx/2,y-hpx/2,hpx,hpx);
-    const K=6, cap=170;
+    const K=Math.min(40,90/Fz), cap=170;   // schaal per voorwerp: Fz ongeveer 90 px, FA op dezelfde schaal
     const LZ=Math.min(cap,Fz*K,H-12-y);
-    arrow(ctx,x,y,x,y+LZ,'#2563eb',5); text(ctx,'Fz = '+nl(Fz,2)+' N'+(LZ<Fz*K-1?' (pijl ingekort)':''),x-12,y+LZ-4,{size:14,weight:700,color:'#2563eb',align:'right'});
-    if(FA>0.01){ arrow(ctx,x,y,x,y-Math.min(cap,FA*K),'#7c3aed',5); text(ctx,'FA = '+nl(FA,2)+' N',x+12,y-Math.min(cap,FA*K)+14,{size:14,weight:700,color:'#7c3aed'}); }
+    arrow(ctx,x-3,y,x-3,y+LZ,'#2563eb',3); text(ctx,'Fz = '+nl(Fz,2)+' N'+(LZ<Fz*K-1?' (pijl ingekort)':''),x-12,y+LZ-4,{size:14,weight:700,color:'#2563eb',align:'right'});
+    // F_A grijpt aan in het midden van het ondergedompelde deel: bij drijven lager dan het zwaartepunt, op dezelfde verticale lijn
+    const yB=(Math.max(SURF,y-hpx/2)+y+hpx/2)/2;
+    if(FA>0.01){ arrow(ctx,x+3,yB,x+3,yB-Math.min(cap,FA*K),'#7c3aed',3); text(ctx,'FA = '+nl(FA,2)+' N',x+15,yB-Math.min(cap,FA*K)+14,{size:14,weight:700,color:'#7c3aed'}); }
     const op=y+hpx/2>=BODEM-0.5;
     if(op && Fz>FA) { const FN=Fz-FA, LN=Math.min(cap,FN*K,y+hpx/2-40); arrow(ctx,x+hpx/2-8,y+hpx/2,x+hpx/2-8,y+hpx/2-LN,'#16a34a',4); text(ctx,'FN = '+nl(FN,2)+' N',x+hpx/2,y+hpx/2-LN+14,{size:13,weight:700,color:'#16a34a'}); }
     let toestand;
