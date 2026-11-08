@@ -11,7 +11,7 @@ main{max-width:56rem;margin:0 auto;padding:2rem 1.1rem 4rem}
 .eyebrow{margin-top:1rem;font-weight:700;color:var(--c);letter-spacing:.02em}
 h1{font-size:clamp(1.8rem,5vw,2.4rem);line-height:1.1;margin:.2rem 0 1rem}
 .grote{background:var(--paper);border-left:6px solid var(--c);border-radius:0 12px 12px 0;padding:14px 18px;margin:0 0 14px}
-.grote b{display:block;font-size:.85rem;text-transform:uppercase;letter-spacing:.06em;color:var(--c)}
+.grote b{display:block;font-size:.85rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
 .grote span{font-size:1.25rem;font-weight:700}
 .legende{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:.92rem;color:var(--muted);margin:0 0 22px}
 .badge{display:inline-block;font-size:.78rem;font-weight:700;border-radius:999px;padding:1px 9px;white-space:nowrap}
@@ -23,25 +23,25 @@ h1{font-size:clamp(1.8rem,5vw,2.4rem);line-height:1.1;margin:.2rem 0 1rem}
 .ico svg{width:56px;height:56px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 .ico .nr{display:block;text-align:center;font-weight:700;font-size:.8rem;color:var(--c);margin-top:2px}
 .thema h2{margin:0;font-size:1.35rem;line-height:1.2}
-.vraag{margin:2px 0 0;color:var(--c);font-weight:700}
+.vraag{margin:2px 0 0;color:#334155;font-weight:700;font-style:italic}
 .idee{margin:6px 0 0}
 .kent{margin:6px 0 0;font-size:.92rem;color:var(--muted)}
 .kent b{color:var(--ink)}
 ol.hfd{grid-column:1/3;list-style:none;margin:12px 0 0;padding:0;border-top:1px solid var(--line)}
 ol.hfd li{display:grid;grid-template-columns:2.4rem 1fr auto;gap:2px 10px;align-items:baseline;padding:8px 0;border-bottom:1px dashed var(--line)}
 ol.hfd li:last-child{border-bottom:0}
-.hnr{font-weight:700;color:var(--c)}
-.ht{font-weight:700}.ht a{color:inherit;text-decoration:underline;text-decoration-color:var(--c);text-underline-offset:3px}
+.hnr{font-weight:700;color:var(--muted)}
+.ht{font-weight:700}.ht a{color:inherit;text-decoration:underline;text-decoration-color:#94a3b8;text-underline-offset:3px}
 .wat{grid-column:2/3;font-size:.92rem;color:var(--muted)}
 .rechts{grid-row:1/3;grid-column:3;display:flex;flex-direction:column;align-items:flex-end;gap:4px}
-.lees{font-size:.85rem;font-weight:700;color:var(--c);text-decoration:none;white-space:nowrap}
+.lees{font-size:.85rem;font-weight:700;color:var(--muted);text-decoration:none;white-space:nowrap}
 .volgt{font-size:.8rem;color:var(--muted);white-space:nowrap}
 .gebruik{margin-top:28px;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px 18px}
 .gebruik h2{margin:0 0 6px;font-size:1.1rem}.gebruik ul{margin:0;padding-left:1.2rem}
 .kaart{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin:0 0 26px}
-.tegel{display:block;background:var(--paper);border:1px solid var(--line);border-top:5px solid var(--c);border-radius:12px;padding:10px 12px;text-decoration:none;color:var(--ink)}
+.tegel{display:block;background:var(--paper);border:1px solid var(--line);border-top:3px solid var(--c);border-radius:12px;padding:10px 12px;text-decoration:none;color:var(--ink)}
 .tegel svg{width:34px;height:34px;fill:none;stroke:var(--c);color:var(--c);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;float:right}
-.tegel .tn{font-size:.8rem;font-weight:700;color:var(--c)}.tegel .tt{display:block;font-weight:700;line-height:1.2;margin:2px 0 6px}
+.tegel .tn{font-size:.8rem;font-weight:700;color:var(--muted)}.tegel .tt{display:block;font-weight:700;line-height:1.2;margin:2px 0 6px}
 .tegel ul{list-style:none;margin:0;padding:0;font-size:.85rem;color:var(--muted)}.tegel li{line-height:1.35}
 @media (max-width:560px){.thema{grid-template-columns:44px 1fr}.ico svg{width:40px;height:40px}ol.hfd li{grid-template-columns:2rem 1fr}.rechts{grid-row:auto;grid-column:2;flex-direction:row;align-items:center;justify-content:flex-start}}
 @media print{@page{size:A4;margin:12mm}body{background:#fff;font-size:10.5pt}main{padding:0;max-width:none}.terug,.gebruik,.lees{display:none}

@@ -28,13 +28,13 @@ function themaTabel(o, th, i) {
   const kleur = o.kleur.replace('#', '');
   const ico = path.join(DIR, `${o.id}_${i}.png`);
   const kol = [1150, 3300, 3238, 1950];         // icoon/nummer · hoofdstuk · wat je leert · examen
-  const rand = { top: lijn(kleur, 18), bottom: lijn('CBD5DE'), left: geen, right: geen };
+  const rand = { top: lijn(kleur, 10), bottom: lijn('CBD5DE'), left: geen, right: geen };
   HOUD = true;
   const kop = new TableRow({ cantSplit: true, children: [
     cel([fs.existsSync(ico) ? alinea([new ImageRun({ type: 'png', data: fs.readFileSync(ico), transformation: { width: 44, height: 44 } })], { align: AlignmentType.CENTER, after: 0 }) : alinea([]),
          alinea([tekst(th.nr, { bold: true, size: 17, color: kleur })], { align: AlignmentType.CENTER, after: 0 })], kol[0], { borders: { ...rand, bottom: geen }, v: VerticalAlign.TOP }),
     cel([alinea([tekst(th.titel, { bold: true, size: 28 })], { after: 20 }),
-         alinea([tekst(th.vraag, { bold: true, size: 21, color: kleur })], { after: 60 }),
+         alinea([tekst(th.vraag, { bold: true, italics: true, size: 21, color: '334155' })], { after: 60 }),
          alinea([tekst(th.idee, { size: 20 })], { after: 40 }),
          alinea([tekst('Je kent al: ', { bold: true, size: 18 }), tekst(th.kent, { size: 18, color: DIM })], { after: 20 })], kol[1] + kol[2] + kol[3], { span: 3, borders: { ...rand, bottom: geen } })] });
   const rijen = th.hfd.map(([nr, titel, wat, ex, link], k) => {
@@ -42,7 +42,7 @@ function themaTabel(o, th, i) {
     const randRij = { top: lijn('E2E8F0'), bottom: k === th.hfd.length - 1 ? lijn('CBD5DE') : geen, left: geen, right: geen };
     const titelRuns = link ? [new ExternalHyperlink({ link: SITE + link, children: [new TextRun({ text: titel, font: FONT, size: 20, bold: true, color: INK, underline: {} })] })] : [tekst(titel, { bold: true })];
     return new TableRow({ cantSplit: true, children: [
-      cel([alinea([tekst('H' + nr, { bold: true, color: kleur })], { align: AlignmentType.CENTER, after: 0 })], kol[0], { borders: randRij }),
+      cel([alinea([tekst('H' + nr, { bold: true, color: DIM })], { align: AlignmentType.CENTER, after: 0 })], kol[0], { borders: randRij }),
       cel([alinea(titelRuns, { after: 0 })], kol[1], { borders: randRij }),
       cel([alinea([tekst(wat, { size: 18, color: DIM })], { after: 0 })], kol[2], { borders: randRij }),
       cel([alinea([tekst(ex === 'dec' ? ' december ' : ' juni ', { bold: true, size: 17, color: ex === 'dec' ? 'FFFFFF' : JUN })], { align: AlignmentType.CENTER, after: 0 })], kol[3],
@@ -57,8 +57,8 @@ function document(o) {
   const kids = [
     alinea([tekst(`${o.vak} · ${o.jaar} · ${o.richting}`, { bold: true, size: 20, color: kleur })], { after: 40 }),
     alinea([tekst('Overzicht van het jaar', { bold: true, size: 44 })], { after: 160 }),
-    new Paragraph({ spacing: { after: 160 }, indent: { left: 200 }, border: { left: { style: BorderStyle.SINGLE, size: 36, color: kleur, space: 10 } },
-      children: [tekst('DE GROTE VRAAG', { bold: true, size: 16, color: kleur }), new TextRun({ break: 1 }), tekst(o.vraag, { bold: true, size: 26 })] }),
+    new Paragraph({ spacing: { after: 160 }, indent: { left: 200 }, border: { left: { style: BorderStyle.SINGLE, size: 24, color: kleur, space: 10 } },
+      children: [tekst('DE GROTE VRAAG', { bold: true, size: 16, color: DIM }), new TextRun({ break: 1 }), tekst(o.vraag, { bold: true, size: 26 })] }),
     alinea([tekst(' december ', { bold: true, size: 17, color: 'FFFFFF' }), tekst('  leerstof voor het examen van december      ', { size: 17, color: DIM }),
             tekst(' juni ', { bold: true, size: 17, color: JUN }), tekst('  leerstof voor het examen van juni', { size: 17, color: DIM })], { after: 200 }),
   ];
