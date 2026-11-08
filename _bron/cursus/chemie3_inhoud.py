@@ -278,7 +278,7 @@ C['bouw'] = dict(delen=[
          ('Notatie', '³²₁₆S')],
         'Van schillen naar Z, van Z naar het element.',
         'Begin met de configuratie: hoeveel elektronen zijn er in totaal? Wat zegt dat over de protonen? Zoek dan het element en reken pas daarna de neutronen uit.'),
-       ('Uitdaging · Twee soorten chlooratomen', 'In de natuur bestaan chlooratomen met A = 35 en met A = 37. Zijn het allebei chlooratomen? Wat is het verschil? Waarom staat in het PSE Ar = 35,5 en geen geheel getal?',
+       ('Uitdaging · Twee soorten chlooratomen', 'In de natuur bestaan chlooratomen met A = 35 en met A = 37. Zijn het allebei chlooratomen? Wat is het verschil? Waarom staat in het PSE een relatieve atoommassa van 35,5 en geen geheel getal?',
         [('Zelfde element?', 'ja: allebei Z = 17, dus 17 protonen → chloor.'),
          ('Verschil', 'het aantal neutronen: 18 en 20.'),
          ('Ar = 35,5', 'het PSE geeft een gemiddelde van alle chlooratomen in de natuur; er zijn meer atomen met A = 35.')],

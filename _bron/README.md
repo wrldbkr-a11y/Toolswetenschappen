@@ -77,3 +77,8 @@ Leerlingen krijgen een ingevulde naslag; wisbordvragen per deel (`aso_wisbord.py
 - `cd /home/claude/cursus && python3 /home/claude/toolswetenschappen/_bron/cursus/nw3_krachten2.py` → `cursus-zwaartekracht-wrijving-veer.html`
 - Hergebruikt figuren en oefeningen uit de 3ASO-cursus (aso_krachten.py tot aso_extra), links naar de NW-tools; wrijving is nieuw.
 - Word: `Cursus_Fysica_3NW_deel2.docx` en `..._leerkracht.docx`.
+
+## Afspraken in vragen en tekeningen (automatisch)
+- `_bron/cursus/namen.py`: in vragen (opgaven, denkvragen, Test jezelf, wisbordvragen) staan volledige namen, geen symbolen ("Bereken de veerconstante", niet "Bereken k"). bouw.py past dit toe bij het bouwen. Per soort pagina een eigen woordenlijst (bv. g = grenshoek in optica, zwaarteveldsterkte bij krachten).
+- Vectorpijlen hebben een dunne lijn (pijl() in derde_krachten.py en vierde_cursus.py: lijndikte b × 0,5; ac_help/ladingen: 1,8).
+- Krachten in tekenoefeningen zijn minstens 3 hokjes lang (kies de schaal zo).

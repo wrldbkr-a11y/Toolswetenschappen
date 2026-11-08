@@ -168,10 +168,10 @@ def sc_lamp(opl, n=3):
 def sc_slee(opl):
     w, h = 600, 220
     o = rooster(w, h) + f'<rect x="0" y="160" width="{w}" height="60" fill="#e0f2fe"/>' + doos(260, 120, 80, 34, '#c08457', '#7c2d12') + '<path d="M250 160 H350 Q362 160 362 148" fill="none" stroke="#5b3a1e" stroke-width="3"/>' + punt(300, 137, INK, 4)
-    o += pijl(300, 137, 300 + 4 * HK, 137, B) + label(386, 124, 'F', '1', B)
-    o += pijl(300, 137, 300 - 2 * HK, 137, R) + label(256, 124, 'F', '2', R, 'end')
+    o += pijl(300, 137, 300 + 8 * HK, 137, B) + label(466, 124, 'F', '1', B)
+    o += pijl(300, 137, 300 - 4 * HK, 137, R) + label(216, 124, 'F', '2', R, 'end')
     if opl:
-        o += punt(300, 80, INK, 4) + pijl(300, 80, 300 + 2 * HK, 80, '#111827') + label(346, 68, 'F', 'r', '#111827')
+        o += punt(300, 80, INK, 4) + pijl(300, 80, 300 + 4 * HK, 80, '#111827') + label(386, 68, 'F', 'r', '#111827')
     return svg(o, w, h)
 def sc_veer(opl):
     w, h = 600, 280
@@ -203,8 +203,8 @@ t_lees = oef_fig('opl_x', 0, 'Een kracht aflezen', 'Schaal: 1 hokje ≙ 25 N. No
     [('Aangrijpingspunt', 'de stip op de linkerkant van de doos'), ('Richting', 'horizontaal'), ('Zin', 'naar links'), ('Grootte', '5 hokjes · 25 N = 125 N')], 'F = 125 N, horizontaal naar links.', sc_lees())
 t_doos = oef_fig('opl_x', 0, 'Zwaartekracht tekenen', 'Een doos van 3,0 kg staat op de vloer. Bereken F<sub>z</sub> (neem g ≈ 10 N/kg) en teken F<sub>z</sub>. Schaal: 1 hokje ≙ 10 N. ' + TEKEN, sc_doos(False),
     [('Berekening', 'F<sub>z</sub> = m · g = 3,0 kg · 10 N/kg = 30 N'), ('Lengte', '30 N : 10 N = 3 hokjes'), ('Tekening', 'vanuit het zwaartepunt (midden), verticaal naar beneden')], 'Een pijl van 3 hokjes vanuit het midden naar beneden.', sc_doos(True))
-t_slee = oef_fig('opl_x', 0, 'De resulterende kracht op een slee', 'Sara trekt de slee met F<sub>1</sub> = 40 N naar rechts, haar broer met F<sub>2</sub> = 20 N naar links (schaal: 1 hokje ≙ 10 N). Teken de resulterende kracht F<sub>r</sub> boven de slee. Gaat de slee sneller naar rechts of naar links?', sc_slee(False),
-    [('Zelfde richting, tegengestelde zin', 'F<sub>r</sub> = 40 N − 20 N = 20 N'), ('Zin', 'die van de grootste kracht: naar rechts'), ('Tekening', '20 N : 10 N = 2 hokjes naar rechts')], 'F<sub>r</sub> = 20 N naar rechts: de slee gaat sneller naar rechts.', sc_slee(True))
+t_slee = oef_fig('opl_x', 0, 'De resulterende kracht op een slee', 'Sara trekt de slee met F<sub>1</sub> = 40 N naar rechts, haar broer met F<sub>2</sub> = 20 N naar links (schaal: 1 hokje ≙ 5 N). Teken de resulterende kracht F<sub>r</sub> boven de slee. Gaat de slee sneller naar rechts of naar links?', sc_slee(False),
+    [('Zelfde richting, tegengestelde zin', 'F<sub>r</sub> = 40 N − 20 N = 20 N'), ('Zin', 'die van de grootste kracht: naar rechts'), ('Tekening', '20 N : 5 N = 4 hokjes naar rechts')], 'F<sub>r</sub> = 20 N naar rechts: de slee gaat sneller naar rechts.', sc_slee(True))
 t_bal = oef_fig('opl_x', 0, 'De snelheidsvector van een bal', 'Je gooit een bal recht omhoog. Teken de snelheidsvector op de drie tijdstippen. Op t<sub>1</sub> gaat de bal snel, op t<sub>2</sub> al trager.', sc_bal(False),
     [('t₁', 'een lange pijl naar boven'), ('t₂', 'een kortere pijl naar boven'), ('t₃', 'de bal staat even stil: v = 0, geen pijl')], 'De pijl wordt korter en verdwijnt op het hoogste punt.', sc_bal(True))
 t_boek = oef_fig('opl_x', 0, 'Boek op tafel: drie krachten', 'Een boek van 2,0 kg ligt op een tafel (g ≈ 10 N/kg). Teken F<sub>z</sub>, F<sub>N</sub> en F<sub>G</sub>. Schaal: 1 hokje ≙ 5 N. ' + TEKEN, sc_boek(False),

@@ -2,8 +2,8 @@
 #  HOOFDSTUK: KRACHTEN, TRAAGHEID EN BEWEGING (3de jaar)
 # =====================================================================
 def svg_vec(inner, w=560, h=170):
-    return f'<svg viewBox="0 0 {w} {h}" width="{w}" xmlns="http://www.w3.org/2000/svg"><defs><marker id="pk" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="context-stroke"/></marker></defs>{inner}</svg>'
-def pl(x1, y1, x2, y2, kleur, w=4, dash=''):
+    return f'<svg viewBox="0 0 {w} {h}" width="{w}" xmlns="http://www.w3.org/2000/svg"><defs><marker id="pk" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path d="M0 0L10 5L0 10z" fill="context-stroke"/></marker></defs>{inner}</svg>'
+def pl(x1, y1, x2, y2, kleur, w=2, dash=''):
     d = f' stroke-dasharray="{dash}"' if dash else ''
     m = '' if dash else ' marker-end="url(#pk)"'
     return f'<line x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}" stroke="{kleur}" stroke-width="{w}"{d}{m} stroke-linecap="round"/>'

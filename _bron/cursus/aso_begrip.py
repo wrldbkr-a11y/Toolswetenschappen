@@ -104,8 +104,8 @@ def sc_boekhand(opl):
          + doos(240, 140, 120, 40, '#60a5fa', '#1e3a8a') + punt(300, 160, INK, 4) + punt(330, 140, INK, 4) + t(380, 120, 'hier duwt je hand', INK, 'start', 12, 500))
     if opl:
         o += pijl(300, 160, 300, 160 + 4 * HK, PAARS) + label(306, 236, 'F', 'z', PAARS)
-        o += pijl(330, 140, 330, 140 + 2 * HK, B) + label(372, 172, 'F', 'hand', B)
-        o += pijl(270, 180, 270, 180 - 6 * HK, G) + label(260, 72, 'F', 'N', G, 'end')
+        o += pijl(330, 140, 330, 140 + 4 * HK, B) + label(372, 200, 'F', 'hand', B)
+        o += pijl(270, 180, 270, 180 - 8 * HK, G) + label(260, 32, 'F', 'N', G, 'end')
     return svg(o, w, h)
 
 u1 = oef('opl_x', 0, 'Uitdaging · Een veer op planeet X', 'Een rover van 900 kg ondervindt op planeet X een zwaartekracht van 3,3 kN. Op aarde rekt een veer 4,0 cm uit als je er 500 g aan hangt (g = 9,81 N/kg). Hoeveel rekt dezelfde veer uit met dezelfde 500 g op planeet X?'
@@ -119,12 +119,12 @@ u2 = oef('opl_x', 0, 'Uitdaging · Te zware koffer?', 'Op de luchthaven mag een 
     [('Analyse', 'gevraagd: de massa. Uit Δl en k haal je F<sub>v</sub>; de koffer hangt stil, dus F<sub>v</sub> = F<sub>z</sub>.'),
      ('Veerkracht', 'Δl = 9,6 cm = 0,096 m; F<sub>v</sub> = 2500 N/m · 0,096 m = 240 N'), ('Massa', 'm = F<sub>z</sub> / g = 240 N / 10 N/kg = 24 kg'),
      ('Besluit', '24 kg is meer dan 23 kg')], 'De koffer is 1 kg te zwaar.')
-u3 = oef_fig('opl_x', 0, 'Uitdaging · Duwen op een boek', 'Een boek van 1,0 kg ligt op een tafel. Je duwt met je hand verticaal naar beneden op het boek met 5,0 N (g ≈ 10 N/kg). Teken alle krachten op het boek (schaal: 1 hokje ≙ 2,5 N). Hoe groot is de normaalkracht nu?'
+u3 = oef_fig('opl_x', 0, 'Uitdaging · Duwen op een boek', 'Een boek van 1,0 kg ligt op een tafel. Je duwt met je hand verticaal naar beneden op het boek met 10 N (g ≈ 10 N/kg). Teken alle krachten op het boek (schaal: 1 hokje ≙ 2,5 N). Hoe groot is de normaalkracht nu?'
     + aanpak('het boek blijft liggen.'), sc_boekhand(False),
     [('Analyse', 'op het boek werken drie krachten: F<sub>z</sub> (aarde), F<sub>hand</sub> (je hand) en F<sub>N</sub> (tafel).'),
-     ('Rust', 'het boek blijft liggen → F<sub>r</sub> = 0: naar boven = naar beneden'), ('Normaalkracht', 'F<sub>N</sub> = F<sub>z</sub> + F<sub>hand</sub> = 10 N + 5,0 N = 15 N'),
-     ('Tekenen', 'F<sub>z</sub>: 4 hokjes vanuit het midden naar beneden · F<sub>hand</sub>: 2 hokjes vanuit de stip bovenaan (daar raakt je hand het boek), naar beneden · F<sub>N</sub>: 6 hokjes vanuit het contactvlak naar boven')],
-    'F<sub>N</sub> = 15 N: de tafel duwt harder terug omdat jij mee duwt.', sc_boekhand(True))
+     ('Rust', 'het boek blijft liggen → F<sub>r</sub> = 0: naar boven = naar beneden'), ('Normaalkracht', 'F<sub>N</sub> = F<sub>z</sub> + F<sub>hand</sub> = 10 N + 10 N = 20 N'),
+     ('Tekenen', 'F<sub>z</sub>: 4 hokjes vanuit het midden naar beneden · F<sub>hand</sub>: 4 hokjes vanuit de stip bovenaan (daar raakt je hand het boek), naar beneden · F<sub>N</sub>: 8 hokjes vanuit het contactvlak naar boven')],
+    'F<sub>N</sub> = 20 N: de tafel duwt harder terug omdat jij mee duwt.', sc_boekhand(True))
 u4 = oef('opl_x', 0, 'Uitdaging · Klopt de redenering?', 'Yasmine zegt: "Een astronaut in het ISS is gewichtloos. Dus werkt er geen zwaartekracht op hem." Het ISS vliegt op 400 km hoogte; daar is g ongeveer 8,7 N/kg. Beoordeel haar redenering en verbeter ze.',
     [('Analyse', 'Yasmine haalt gewicht en zwaartekracht door elkaar.'), ('Zwaartekracht', 'g = 8,7 N/kg is niet 0, dus er werkt wel zwaartekracht: bijna 90 % van die op aarde.'),
      ('Gewichtloos', 'hij drukt op geen steun (alles valt samen rond de aarde), dus zijn gewicht is 0.')], 'Gewichtloos betekent: geen gewicht, niet: geen zwaartekracht.')

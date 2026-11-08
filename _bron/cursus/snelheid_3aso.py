@@ -20,7 +20,7 @@ INK, GRIJS, ROOD, BLAUW, GROEN = '#1D2A36', '#cbd5e1', '#dc2626', '#2563eb', '#1
 F = 'font-family="Inter,sans-serif"'
 def tx(x, y, s, k=INK, a='middle', size=14, w=600): return f'<text x="{x:.1f}" y="{y:.1f}" fill="{k}" font-size="{size}" font-weight="{w}" text-anchor="{a}" {F}>{s}</text>'
 def lijn(x1, y1, x2, y2, k=INK, d=2, dash=None): return f'<line x1="{x1:.1f}" y1="{y1:.1f}" x2="{x2:.1f}" y2="{y2:.1f}" stroke="{k}" stroke-width="{d}"' + (f' stroke-dasharray="{dash}"' if dash else '') + '/>'
-def pijl(x1, y1, x2, y2, k=INK, d=2.5):
+def pijl(x1, y1, x2, y2, k=INK, d=2):
     import math
     a = math.atan2(y2 - y1, x2 - x1); L = 10
     p1 = (x2 - L * math.cos(a - .4), y2 - L * math.sin(a - .4)); p2 = (x2 - L * math.cos(a + .4), y2 - L * math.sin(a + .4))
@@ -155,7 +155,7 @@ C = dict(delen=[
      ('Oplossing', 'Δt = 40 m ÷ 0,50 m/s = 80 s.'),
      ('Antwoord', 'Je staat 80 s (1 min 20 s) op de roltrap.')]),
    [('Waarom is een tram die vertrekt aan een halte geen ERB?', 'Zijn snelheid verandert: hij versnelt. Bij een ERB blijft de snelheid gelijk.'),
-    ('Hoe vorm je v = Δx / Δt om naar Δx?', 'Vermenigvuldig beide kanten met Δt: Δx = v · Δt.')],
+    ('Hoe vorm je de formule van de snelheid om, als je de verplaatsing zoekt?', 'Vermenigvuldig beide kanten met Δt: Δx = v · Δt.')],
    ([('a = b ÷ c. Hoe vind je b?', 'b = a · c')],
     [('v = 15 m/s, Δt = 4 s: Δx?', '60 m', '3,75 m'), ('ERB: wat blijft constant?', 'de snelheid', 'de positie')],
     [('Geef de drie vormen van de formule.', 'v = Δx/Δt, Δx = v·Δt, Δt = Δx/v')]),
@@ -210,7 +210,7 @@ oefs = ''.join([
      [('a', 'Δt = 120 s; Δx = v · Δt = 30 m/s · 120 s = 3600 m = 3,6 km.'), ('b', 'Δx = 9000 m; Δt = Δx / v = 9000 m ÷ 30 m/s = 300 s = 5,0 min.')], 'Reken eerst om naar m en s.'),
  oef('opl_4', 4, 'Een grafiek lezen', 'Bekijk de x(t)-grafiek van een wandelaar.' + figuur(O3, '') + 'a) Wat doet de wandelaar tussen 0 s en 10 s?<br>b) Bereken zijn snelheid tussen 10 s en 30 s.<br>c) Hoe groot is zijn verplaatsing in de hele beweging?',
      [('a', 'de positie blijft 100 m: hij staat stil.'), ('b', 'Δx/Δt = (300 m − 100 m) ÷ (30 s − 10 s) = 10 m/s.'), ('c', 'Δx = 300 m − 100 m = 200 m.')], 'Horizontaal = stilstand; schuin = ERB.'),
- oef('opl_5', 5, 'Tekenen: x(t)-grafiek', 'Een skater vertrekt op x = 50 m en rijdt 4 m/s, 50 s lang. Teken de x(t)-grafiek. Bereken eerst twee punten.' + figuur(LEEG, 'Teken op deze grafiek of op ruitjespapier.'),
+ oef('opl_5', 5, 'Tekenen: x(t)-grafiek', 'Een skater vertrekt op de positie 50 m en rijdt 4 m/s, 50 s lang. Teken de x(t)-grafiek. Bereken eerst twee punten.' + figuur(LEEG, 'Teken op deze grafiek of op ruitjespapier.'),
      [('Punt 1', 't = 0 s: x = 50 m.'), ('Punt 2', 'na 50 s: Δx = 4 m/s · 50 s = 200 m, dus x = 250 m.'), ('Tekenen', 'verbind (0 s; 50 m) en (50 s; 250 m) met een lat.')], 'Een schuine rechte van 50 m naar 250 m.'),
  oef('opl_6', 6, 'Tekenen: v(t)-grafiek', 'Teken de v(t)-grafiek van de wandelaar uit oefening 4.' + figuur(LEEG_V, ''),
      [('0–10 s', 'v = 0 m/s: een lijn op de tijdas.'), ('10–30 s', 'v = 10 m/s: een horizontale lijn op 10 m/s.'), ('30–50 s', 'v = 0 m/s.')],

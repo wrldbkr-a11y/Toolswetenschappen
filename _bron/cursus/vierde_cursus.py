@@ -15,7 +15,7 @@ def pijl(x1, y1, x2, y2, kleur, b=4):
     a = math.atan2(y2 - y1, x2 - x1); s = 12
     xa, ya = x2 - s * 0.8 * math.cos(a), y2 - s * 0.8 * math.sin(a)
     kop = f'M{x2:.1f},{y2:.1f} L{x2 - s*math.cos(a-0.45):.1f},{y2 - s*math.sin(a-0.45):.1f} L{x2 - s*math.cos(a+0.45):.1f},{y2 - s*math.sin(a+0.45):.1f}Z'
-    return f'<line x1="{x1}" y1="{y1}" x2="{xa:.1f}" y2="{ya:.1f}" stroke="{kleur}" stroke-width="{b}" stroke-linecap="round"/><path d="{kop}" fill="{kleur}"/>'
+    return f'<line x1="{x1}" y1="{y1}" x2="{xa:.1f}" y2="{ya:.1f}" stroke="{kleur}" stroke-width="{b * 0.5}" stroke-linecap="round"/><path d="{kop}" fill="{kleur}"/>'
 def punt(x, y, kleur=INK):
     return f'<circle cx="{x}" cy="{y}" r="4" fill="{kleur}"/>'
 

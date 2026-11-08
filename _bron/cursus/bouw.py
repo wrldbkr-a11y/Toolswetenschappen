@@ -38,6 +38,8 @@ def bouw(bestand, eyebrow, titel, intro, blokken, vrijgave, cornell):
          .replace('{{INHOUD}}', ''.join(blokken)).replace('{{VRIJGAVE}}', vr)
          .replace('{{CORNELL}}', json.dumps(cornell, ensure_ascii=False)).replace('{{BESTAND}}', bestand).replace('{{FOOTER}}', FOOTER))
     import sys; sys.path.insert(0, '/home/claude/toolswetenschappen/_bron'); from vinkjes import voeg_toe
+    sys.path.insert(0, '/home/claude/toolswetenschappen/_bron/cursus'); from namen import namen_in_vragen
+    s = namen_in_vragen(s, bestand)   # in vragen: volledige namen, geen symbolen
     open('/home/claude/toolswetenschappen/' + bestand, 'w', encoding='utf-8').write(voeg_toe(s))
 
 FOOTER = 'Cursus fysica — gemaakt voor klasgebruik, bij de tools op Oefentools wetenschappen.'

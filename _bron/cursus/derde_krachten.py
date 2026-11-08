@@ -21,7 +21,7 @@ def pijl(x1, y1, x2, y2, kleur, b=4, dash=''):
     xa, ya = x2 - s * 0.8 * math.cos(a), y2 - s * 0.8 * math.sin(a)
     d = f' stroke-dasharray="{dash}"' if dash else ''
     kop = f'<path d="M{x2:.1f},{y2:.1f} L{x2 - s*math.cos(a-0.42):.1f},{y2 - s*math.sin(a-0.42):.1f} L{x2 - s*math.cos(a+0.42):.1f},{y2 - s*math.sin(a+0.42):.1f}Z" fill="{kleur}"/>'
-    return f'<line x1="{x1}" y1="{y1}" x2="{xa:.1f}" y2="{ya:.1f}" stroke="{kleur}" stroke-width="{b}" stroke-linecap="round"{d}/>' + kop
+    return f'<line x1="{x1}" y1="{y1}" x2="{xa:.1f}" y2="{ya:.1f}" stroke="{kleur}" stroke-width="{b * 0.5}" stroke-linecap="round"{d}/>' + kop
 def lijn(x1, y1, x2, y2, kleur='#94a3b8', b=1.6, dash='6 5'):
     return f'<line x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}" stroke="{kleur}" stroke-width="{b}" stroke-dasharray="{dash}"/>'
 def punt(x, y, kleur=INK, r=5):

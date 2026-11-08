@@ -33,8 +33,8 @@ fig_graf = svg(mini('F<tspan dy="4" font-size="10">z</tspan><tspan dy="-4"> en m
 
 def kist(opl=False, schuift=False, duw=3, wr=None, m_hok=4):
     """kist op de vloer, je duwt naar rechts met duw hokjes; opl: F_w (links, op het contactvlak), F_z, F_N"""
-    w, h = 600, 260
-    o = rooster(w, h) + f'<rect x="0" y="180" width="{w}" height="80" fill="#d6d3d1" opacity=".55"/>' + doos(250, 110, 100, 70, '#e7c9a9', '#7c2d12')
+    w, h = 600, 340
+    o = rooster(w, h) + f'<rect x="0" y="180" width="{w}" height="160" fill="#d6d3d1" opacity=".55"/>' + doos(250, 110, 100, 70, '#e7c9a9', '#7c2d12')
     o += punt(300, 145, INK, 4) + punt(250, 128, INK, 4) + punt(300, 180, INK, 4)
     o += pijl(250, 128, 250 + duw * HK, 128, B) + label(240, 124, 'F', 'duw', B, 'end')   # je duwt op de linkerkant van de kist
     if opl:
@@ -201,12 +201,12 @@ o_w1 = oef('opl_x', 0, 'Statisch of dynamisch?', 'Welke wrijvingskracht werkt er
     [('a', 'statisch'), ('b', 'dynamisch'), ('c', 'statisch: de band schuift niet'), ('d', 'dynamisch: de banden schuiven')], 'Schuift het contactvlak? Dan is het dynamisch.')
 o_w2 = oef('opl_x', 0, 'Rekenen met μ<sub>s</sub>', 'a) Een doos van 25 kg staat op een vloer met μ<sub>s</sub> = 0,35. Bereken F<sub>w,s,max</sub>. b) Je moet minstens 90 N duwen om een kist met F<sub>N</sub> = 300 N te verschuiven. Bereken μ<sub>s</sub>. c) Bij μ<sub>s</sub> = 0,50 is F<sub>w,s,max</sub> = 40 N. Hoe groot is F<sub>N</sub>?',
     [('a', 'F<sub>N</sub> = 25 · 9,81 = 245 N; F<sub>w,s,max</sub> = 0,35 · 245 N = 86 N'), ('b', 'μ<sub>s</sub> = 90 N / 300 N = 0,30'), ('c', 'F<sub>N</sub> = 40 N / 0,50 = 80 N')], 'a) 86 N · b) 0,30 · c) 80 N')
-o_w3 = oef_fig('opl_x', 0, 'Tekenen: een kist die niet beweegt', 'Je duwt een kist van 4,0 kg met 20 N naar rechts, maar ze blijft staan (g ≈ 10 N/kg). Teken F<sub>w,s</sub>, F<sub>z</sub> en F<sub>N</sub> op de kist. Schaal: 1 hokje ≙ 10 N. ' + TEKEN,
-    kist(duw=2), [('Wrijving', 'de kist staat stil: F<sub>w,s</sub> = 20 N → 2 hokjes naar links, in het contactvlak'), ('F<sub>z</sub>', '4,0 kg · 10 N/kg = 40 N → 4 hokjes, vanuit het midden naar beneden'),
-     ('F<sub>N</sub>', '40 N → 4 hokjes, vanuit het contactvlak naar boven')], 'F<sub>w,s</sub> is tegengesteld aan je duw; F<sub>N</sub> en F<sub>z</sub> zijn even groot.', kist(True, duw=2, m_hok=4))
-o_w4 = oef_fig('opl_x', 0, 'Tekenen: een kist die schuift', 'Dezelfde kist schuift nu met constante snelheid naar rechts. Je duwt met 10 N. Teken F<sub>w,d</sub>. Schaal: 1 hokje ≙ 10 N. Is F<sub>w,d</sub> groter of kleiner dan bij de vorige oefening? Waarom?',
-    kist(duw=1), [('Constante snelheid', 'F<sub>r</sub> = 0, dus F<sub>w,d</sub> = 10 N → 1 hokje naar links'), ('Vergelijking', 'kleiner dan F<sub>w,s,max</sub>: de dynamische wrijving is kleiner dan de maximale statische')],
-    'F<sub>w,d</sub> = 10 N naar links.', kist(True, True, duw=1, m_hok=4))
+o_w3 = oef_fig('opl_x', 0, 'Tekenen: een kist die niet beweegt', 'Je duwt een kist van 4,0 kg met 20 N naar rechts, maar ze blijft staan (g ≈ 10 N/kg). Teken F<sub>w,s</sub>, F<sub>z</sub> en F<sub>N</sub> op de kist. Schaal: 1 hokje ≙ 5 N. ' + TEKEN,
+    kist(duw=4), [('Wrijving', 'de kist staat stil: F<sub>w,s</sub> = 20 N → 4 hokjes naar links, in het contactvlak'), ('F<sub>z</sub>', '4,0 kg · 10 N/kg = 40 N → 8 hokjes, vanuit het midden naar beneden'),
+     ('F<sub>N</sub>', '40 N → 8 hokjes, vanuit het contactvlak naar boven')], 'F<sub>w,s</sub> is tegengesteld aan je duw; F<sub>N</sub> en F<sub>z</sub> zijn even groot.', kist(True, duw=4, m_hok=8))
+o_w4 = oef_fig('opl_x', 0, 'Tekenen: een kist die schuift', 'Dezelfde kist schuift nu met constante snelheid naar rechts. Je duwt met 15 N. Teken F<sub>w,d</sub>. Schaal: 1 hokje ≙ 5 N. Is F<sub>w,d</sub> groter of kleiner dan F<sub>w,s,max</sub>? Waarom?',
+    kist(duw=3), [('Constante snelheid', 'F<sub>r</sub> = 0, dus F<sub>w,d</sub> = 15 N → 3 hokjes naar links'), ('Vergelijking', 'kleiner dan F<sub>w,s,max</sub>: de dynamische wrijving is kleiner dan de maximale statische')],
+    'F<sub>w,d</sub> = 15 N naar links.', kist(True, True, duw=3, m_hok=8))
 groepen = [('Hoofdstuk 1 · Rekenen in de fysica', [zoek('Eenheden omzetten'), zoek('Wetenschappelijke notatie'), zoek('Beduidende cijfers')]),
            ('Hoofdstuk 3 · Zwaartekracht, massa en gewicht', [zoek('Zwaartekracht berekenen'), zoek('Omvormen'), o_graf, zoek('Massa, zwaartekracht of gewicht?'), zoek('Drie krachten'),
                                                          zoek('Zwaartekracht tekenen'), zoek('Boek op tafel: drie krachten'), zoek('Een lamp aan het plafond')]),

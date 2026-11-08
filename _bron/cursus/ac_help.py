@@ -20,14 +20,14 @@ def vb(kop, tekst):
 def verd(kop, tekst):
     return f'<div class="verdieping"><div class="kop">Verdieping · {kop}</div>{tekst}</div>'
 def svg(inner, w, h):
-    return f'<svg viewBox="0 0 {w} {h}" width="{w}" xmlns="http://www.w3.org/2000/svg" {F}><defs><marker id="pijl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="context-stroke"/></marker></defs>{inner}</svg>'
+    return f'<svg viewBox="0 0 {w} {h}" width="{w}" xmlns="http://www.w3.org/2000/svg" {F}><defs><marker id="pijl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10z" fill="context-stroke"/></marker></defs>{inner}</svg>'
 def q(x, y, s, r=9):
     k = POS if s > 0 else NEG
     t = f'<path d="M{x-5},{y} H{x+5}" stroke="#fff" stroke-width="2.4"/>' + (f'<path d="M{x},{y-5} V{y+5}" stroke="#fff" stroke-width="2.4"/>' if s > 0 else '')
     return f'<circle cx="{x}" cy="{y}" r="{r}" fill="{k}"/>{t}'
 def tx(x, y, t, size=14, kleur=INK, anker='middle', w=600):
     return f'<text x="{x}" y="{y}" font-size="{size}" fill="{kleur}" text-anchor="{anker}" font-weight="{w}">{t}</text>'
-def pijl(x1, y1, x2, y2, k=INK, w=2.5, dash=''):
+def pijl(x1, y1, x2, y2, k=INK, w=1.8, dash=''):
     d = f' stroke-dasharray="{dash}"' if dash else ''
     return f'<line x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}" stroke="{k}" stroke-width="{w}" marker-end="url(#pijl)"{d}/>'
 def aarde(x, y):

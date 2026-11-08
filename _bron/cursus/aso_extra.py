@@ -40,10 +40,10 @@ h1 = voor_tool(h1,
         ('Afronden', 'de uitkomst krijgt het kleinste aantal: 2 BC → A = 0,42 m²')]))
 
 h3c = voor_tool(h3c,
-    vb('De resulterende kracht tekenen', 'Amir duwt een winkelkar met F<sub>1</sub> = 60 N naar rechts. De wrijving is F<sub>2</sub> = 20 N naar links (schaal: 1 hokje ≙ 10 N).',
+    vb('De resulterende kracht tekenen', 'Amir duwt een winkelkar met F<sub>1</sub> = 60 N naar rechts. De wrijving is F<sub>2</sub> = 20 N naar links (schaal: 1 hokje ≙ 5 N).',
        [('Zelfde richting, tegengestelde zin', 'F<sub>r</sub> = 60 N − 20 N = 40 N'), ('Zin', 'die van de grootste kracht: naar rechts'),
-        ('Tekening', '40 N : 10 N = 4 hokjes naar rechts'), ('Besluit', 'F<sub>r</sub> wijst mee met de beweging: de kar gaat sneller')],
-       figuur(sc_twee(6, 2, True), 'F<sub>1</sub> en F<sub>2</sub> werken op de kar. F<sub>r</sub> is apart erboven getekend.')))
+        ('Tekening', '40 N : 5 N = 8 hokjes naar rechts'), ('Besluit', 'F<sub>r</sub> wijst mee met de beweging: de kar gaat sneller')],
+       figuur(sc_twee(12, 4, True), 'F<sub>1</sub> en F<sub>2</sub> werken op de kar. F<sub>r</sub> is apart erboven getekend.')))
 
 h4b = voor_tool(h4b,
     vb('Omvormen', 'Op de maan werkt op een astronaut met zijn pak een zwaartekracht van 194 N. Bereken zijn massa (g<sub>maan</sub> = 1,62 N/kg).',
@@ -62,14 +62,14 @@ h4c = voor_tool(h4c,
 # ---------- extra oefeningen ----------
 n1a = oef('opl_x', 0, 'Omzetten met voorvoegsels', 'Zet om naar de SI-eenheid.<ol class="deelvragen" type="a"><li>0,45 km</li><li>2500 mg</li><li>1,5 h</li></ol>',
     [('a', '0,45 · 1000 m = 450 m'), ('b', '2500 mg = 2,500 g = 0,002500 kg = 2,500 · 10<sup>−3</sup> kg'), ('c', '1,5 · 3600 s = 5400 s')], 'm, kg, s')
-n1b = oef('opl_x', 0, 'Rekenen met beduidende cijfers', 'Een fietser legt 120 m af in 15,0 s. Bereken v = s / t met het juiste aantal BC.',
+n1b = oef('opl_x', 0, 'Rekenen met beduidende cijfers', 'Een fietser legt 120 m af in 15,0 s. Bereken de snelheid met het juiste aantal BC.',
     [('Rekenen', '120 m / 15,0 s = 8 m/s'), ('BC', '120 (3 BC) en 15,0 (3 BC) → 3 BC')], 'v = 8,00 m/s')
 n2 = oef_fig('opl_x', 0, 'Een duwkracht tekenen', 'Een kind duwt een kist met 80 N horizontaal naar rechts. Noteer de vier kenmerken en teken de kracht (schaal: 1 hokje ≙ 20 N).', sc_duw(False),
     [('Kenmerken', 'aangrijpingspunt: de stip · richting: horizontaal · zin: naar rechts · grootte: 80 N'), ('Lengte', '80 N : 20 N = 4 hokjes')], 'Een pijl van 4 hokjes naar rechts, vanuit de stip.', sc_duw(True))
 n3 = oef('opl_x', 0, 'Wat doet de resulterende kracht?', 'Wat gebeurt er met de beweging?<ol class="deelvragen" type="a"><li>Een fietser trapt harder: F<sub>r</sub> wijst mee met de beweging.</li><li>Een auto remt: F<sub>r</sub> wijst tegen de beweging in.</li><li>Een bal aan een touw: F<sub>r</sub> staat loodrecht op de beweging.</li><li>Een hockeypuck glijdt op glad ijs: F<sub>r</sub> = 0.</li></ol>',
     [('a', 'sneller'), ('b', 'trager'), ('c', 'de richting verandert: een bocht'), ('d', 'blijft even snel rechtdoor glijden (ERB)')], 'Mee: sneller · tegen: trager · loodrecht: bocht · nul: niets verandert.')
-n3b = oef_fig('opl_x', 0, 'Twee krachten op een kar', 'Twee kinderen trekken aan een kar: F<sub>1</sub> = 30 N naar rechts en F<sub>2</sub> = 50 N naar links (schaal: 1 hokje ≙ 10 N). Teken F<sub>r</sub> boven de kar. Wat gebeurt er als de kar stilstond?', sc_twee(3, 5, False),
-    [('Grootte', 'F<sub>r</sub> = 50 N − 30 N = 20 N'), ('Zin', 'naar links, de zin van de grootste kracht'), ('Tekening', '2 hokjes naar links')], 'F<sub>r</sub> = 20 N naar links: de kar vertrekt naar links.', sc_twee(3, 5, True))
+n3b = oef_fig('opl_x', 0, 'Twee krachten op een kar', 'Twee kinderen trekken aan een kar: F<sub>1</sub> = 30 N naar rechts en F<sub>2</sub> = 50 N naar links (schaal: 1 hokje ≙ 5 N). Teken F<sub>r</sub> boven de kar. Wat gebeurt er als de kar stilstond?', sc_twee(6, 10, False),
+    [('Grootte', 'F<sub>r</sub> = 50 N − 30 N = 20 N'), ('Zin', 'naar links, de zin van de grootste kracht'), ('Tekening', '20 N : 5 N = 4 hokjes naar links')], 'F<sub>r</sub> = 20 N naar links: de kar vertrekt naar links.', sc_twee(6, 10, True))
 g1 = oef('opl_x', 0, 'Gemengd · Een appel aan een veer', 'Een appel van 200 g hangt stil aan een veer met k = 40 N/m (g ≈ 10 N/kg). a) Bereken F<sub>z</sub>. b) Hoe groot is F<sub>v</sub>? c) Bereken de uitrekking in cm.',
     [('a', 'F<sub>z</sub> = 0,200 kg · 10 N/kg = 2,0 N'), ('b', 'de appel hangt stil: F<sub>v</sub> = F<sub>z</sub> = 2,0 N'), ('c', 'Δl = 2,0 N / 40 N/m = 0,050 m = 5,0 cm')], 'Δl = 5,0 cm')
 g2 = oef('opl_x', 0, 'Gemengd · Een rugzak op de maan', 'Een rugzak heeft een massa van 7500 g. a) Zet om naar kg. b) Bereken F<sub>z</sub> op de maan (g = 1,62 N/kg). c) Is de massa op de maan kleiner, gelijk of groter?',
