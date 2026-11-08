@@ -177,11 +177,18 @@ const ICONEN = {
     <path d="M9 17 H39" stroke-width="1" opacity=".6"/>
     <circle cx="24" cy="30" r="2" ${T}/>
     <path d="M24 21 V26.5 M24 39 V33.5 M15 30 H20.5 M33 30 H27.5" stroke-width="1.6"/>`,
-  /* bliksemschicht in een batterij: energie */
-  energie: `<rect x="6" y="14" width="32" height="22" rx="3" ${Z(.12)}/>
-    <rect x="6" y="14" width="32" height="22" rx="3"/>
-    <path d="M38 21 H42 V29 H38" />
-    <path d="M24 16 L16 26 H22 L19 34 L29 23 H23 Z" ${T}/>`,
+  /* bal rolt van een helling: hoogte wordt snelheid (energie omzetten) */
+  energie: `<path d="M3 42 H45" stroke-width="1.2"/>
+    <path d="M4 12 C14 12 18 42 30 42 L4 42Z" ${Z(.12)}/><path d="M4 12 C14 12 18 42 30 42 H44" stroke-width="1.6"/>
+    <circle cx="8" cy="8.6" r="3.4" ${T}/><circle cx="36" cy="38.6" r="3.4" ${T}/>
+    <path d="M39.5 33 H46 M43.3 30.4 L46 33 L43.3 35.6" stroke-width="1.5"/>
+    <path d="M25 8 V27 M23 8 H27 M23 27 H27" stroke-width="1" opacity=".8"/>
+    <text x="28.5" y="20" font-size="8" font-style="italic" font-family="Georgia,serif" ${T}>h</text>`,
+  /* thermometer naast gas in een cilinder met zuiger: deeltjes bewegen */
+  warmte: `<path d="M8 8 A3 3 0 0 1 14 8 V30 A5.5 5.5 0 1 1 8 30 Z"/><path d="M11 14 V33" stroke-width="2.4"/><circle cx="11" cy="35" r="3.2" ${T}/>
+    <path d="M14 12 H16 M14 18 H16 M14 24 H16" stroke-width="1"/>
+    <path d="M21 8 V42 H45 V8"/><rect x="21.8" y="14" width="22.4" height="27.2" ${Z(.12)}/><rect x="21.8" y="11" width="22.4" height="3" ${Z(.6)}/><path d="M33 11 V4" stroke-width="1.6"/>
+    <circle cx="27" cy="20" r="1.8" ${T}/><circle cx="38.5" cy="19" r="1.8" ${T}/><circle cx="32.5" cy="27.5" r="1.8" ${T}/><circle cx="26.5" cy="35" r="1.8" ${T}/><circle cx="39.5" cy="34.5" r="1.8" ${T}/><circle cx="36" cy="38.5" r="1.8" ${T}/>`,
   /* parallellogram van krachten met resultante */
   krachten: `<path d="M8 40 L36 33 L42 12 L14 19 Z" ${Z(.08)}/>
     <path d="M36 33 L42 12 M14 19 L42 12" stroke-width="1" stroke-dasharray="2 2.5" opacity=".6"/>
