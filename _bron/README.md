@@ -56,3 +56,8 @@ Leerlingen krijgen een ingevulde naslag; wisbordvragen per deel (`aso_wisbord.py
 - `cd /home/claude/cursus && python3 /home/claude/toolswetenschappen/_bron/cursus/bio3_nieuw.py`
 - Bestaande inhoud en figuren uit `bio_cursus.py` en `bio2_cursus.py`; nieuwe inhoud (idee, uitgewerkt voorbeeld, Let op, Test jezelf, wisbordvragen, uitdagingen, begrippen) in `bio3_inhoud.py`.
 - Word: `Cursus_Biologie_3.docx` (leerling, zonder bijlage) en `Cursus_Biologie_3_leerkracht.docx` (EDI=1), zie `_bron/word/bouw_word.sh`.
+
+## Cursus chemie 3de jaar (thema 1–2) in het nieuwe formaat
+- `cd /home/claude/cursus && python3 /home/claude/toolswetenschappen/_bron/cursus/chemie3_nieuw.py`
+- Gedeelde bouwstenen voor bio en chemie: `_bron/cursus/nieuw_formaat.py`. Nieuwe inhoud: `chemie3_inhoud.py`.
+- Word: `Cursus_Chemie_3.docx` (leerling, zonder bijlage) en `Cursus_Chemie_3_leerkracht.docx`.
