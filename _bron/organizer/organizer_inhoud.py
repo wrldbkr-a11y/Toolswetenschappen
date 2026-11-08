@@ -127,7 +127,7 @@ ORG.append(dict(id='biologie-3aso', vak='Biologie', kleur='#3E8E41', jaar='3de j
              H(2, 'Bouw van het oog', 'delen van het oog en hun functie', 'dec', 'cursus-oog.html'),
              H(3, 'Werking van het oog', 'staafjes en kegeltjes, beeldverwerking', 'dec', 'cursus-oog.html#deel2'),
              H(4, 'Receptoren bij andere organismen', 'dieren en planten', 'dec', 'cursus-receptoren-organismen.html')]),
-   dict(nr='Thema 3', titel='Effectoren reageren op prikkels', icoon='spier', vraag='Hoe reageert je lichaam op een prikkel?',
+   dict(nr='Thema 3', titel='Effectoren reageren op prikkels', icoon='effector', vraag='Hoe reageert je lichaam op een prikkel?',
         idee='Na een prikkel reageren effectoren: spieren bewegen, klieren maken stoffen.',
         kent='receptoren (thema 2)',
         hfd=[H(1, 'De mens reageert op prikkels', 'prikkel, receptor, verwerking, effector', 'dec', 'cursus-reageren.html'),
