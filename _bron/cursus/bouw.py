@@ -48,7 +48,17 @@ def bouw(bestand, eyebrow, titel, intro, blokken, vrijgave, cornell):
     s = breuken(s)   # horizontale breukstreep en brede ruimte tussen formules
     from vectoren import vectortekens
     s = vectortekens(s, bestand)   # vectorteken boven elk krachtsymbool in figuren
+    s = overzicht_link(s, bestand)   # link naar de advance organizer van het jaar
     open('/home/claude/toolswetenschappen/' + bestand, 'w', encoding='utf-8').write(voeg_toe(s))
+
+def overzicht_link(s, bestand):
+    ns = {}
+    exec(open('/home/claude/toolswetenschappen/_bron/organizer/organizer_inhoud.py', encoding='utf-8').read(), ns)
+    for o in ns['ORG']:
+        if any(h[4] and h[4].split('#')[0] == bestand for th in o['themas'] for h in th['hfd']):
+            link = f'<a href="overzicht-{o["id"]}.html">Overzicht van het jaar</a>'
+            return s.replace('<p class="intro">', f'<p class="intro" style="margin-bottom:4px">🧭 {link}: waar past dit hoofdstuk in de cursus?</p><p class="intro">', 1)
+    return s
 
 FOOTER = 'Cursus fysica — gemaakt voor klasgebruik, bij de tools op Oefentools wetenschappen.'
 STAP = '<div class="stappenplan"><span>1 · gegeven</span><span>2 · gevraagd</span><span>3 · formule</span><span>4 · oplossing</span><span>5 · antwoord met eenheid</span></div>'

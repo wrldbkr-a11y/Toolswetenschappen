@@ -98,3 +98,8 @@ Leerlingen krijgen een ingevulde naslag; wisbordvragen per deel (`aso_wisbord.py
 - `formules.py`: "·" is alleen een scheiding tussen formules bij &nbsp;, een breuk erna of een getal ervoor (niet in een rekenketen).
 - `vectoren.py`: vectorteken boven F…/E…-labels in figuren (niet in grafieken en optica); pijlen met marker dunner.
 - Word: extract.js geeft breuken door als {frac}; maak_docx.js maakt er OMML-breuken van (recht, via toc_bijwerken.py). Brede spaties blijven bewaard.
+
+## Advance organizers (overzicht van het jaar)
+- `_bron/organizer/organizer_inhoud.py`: per vak en jaar de thema's (grote vraag, idee, je kent al) en hoofdstukken (examen dec/jun, link naar de cursus). Bron: leerstofoverzichten.
+- `_bron/organizer/bouw_organizer.py` maakt `overzicht-<vak>-<klas>.html` (iconen uit index.html). Tegels op de startpagina; elke cursuspagina linkt bovenaan naar haar overzicht (bouw.py, overzicht_link).
+- Een nieuwe cursuspagina? Zet de link bij het hoofdstuk in organizer_inhoud.py en bouw opnieuw.

@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="nl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fysica 3de jaar · overzicht van het jaar</title>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#EEF2F5;--paper:#fff;--ink:#1D2A36;--muted:#51606E;--line:#CBD5DE;--dec:#1F7A4D;--jun:#7C3AED}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font-size:1.0625rem;line-height:1.5}
+main{max-width:56rem;margin:0 auto;padding:2rem 1.1rem 4rem}
+.terug{font-size:.95rem;color:var(--muted);text-decoration:none}
+.eyebrow{margin-top:1rem;font-weight:700;color:var(--c);letter-spacing:.02em}
+h1{font-size:clamp(1.8rem,5vw,2.4rem);line-height:1.1;margin:.2rem 0 1rem}
+.grote{background:var(--paper);border-left:6px solid var(--c);border-radius:0 12px 12px 0;padding:14px 18px;margin:0 0 14px}
+.grote b{display:block;font-size:.85rem;text-transform:uppercase;letter-spacing:.06em;color:var(--c)}
+.grote span{font-size:1.25rem;font-weight:700}
+.legende{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:.92rem;color:var(--muted);margin:0 0 22px}
+.badge{display:inline-block;font-size:.78rem;font-weight:700;border-radius:999px;padding:1px 9px;white-space:nowrap}
+.badge.dec{background:var(--dec);color:#fff}.badge.jun{background:#fff;color:var(--jun);border:1.5px solid var(--jun)}
+.thema{position:relative;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:16px 18px 12px;display:grid;grid-template-columns:64px 1fr;gap:4px 16px}
+.thema + .pijl{height:26px;display:flex;justify-content:center}
+.thema + .pijl::before{content:"";width:2px;background:var(--c);opacity:.5}
+.ico{grid-row:1/3;color:var(--c)}
+.ico svg{width:56px;height:56px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.ico .nr{display:block;text-align:center;font-weight:700;font-size:.8rem;color:var(--c);margin-top:2px}
+.thema h2{margin:0;font-size:1.35rem;line-height:1.2}
+.vraag{margin:2px 0 0;color:var(--c);font-weight:700}
+.idee{margin:6px 0 0}
+.kent{margin:6px 0 0;font-size:.92rem;color:var(--muted)}
+.kent b{color:var(--ink)}
+ol.hfd{grid-column:1/3;list-style:none;margin:12px 0 0;padding:0;border-top:1px solid var(--line)}
+ol.hfd li{display:grid;grid-template-columns:2.4rem 1fr auto;gap:2px 10px;align-items:baseline;padding:8px 0;border-bottom:1px dashed var(--line)}
+ol.hfd li:last-child{border-bottom:0}
+.hnr{font-weight:700;color:var(--c)}
+.ht{font-weight:700}.ht a{color:inherit;text-decoration:underline;text-decoration-color:var(--c);text-underline-offset:3px}
+.wat{grid-column:2/3;font-size:.92rem;color:var(--muted)}
+.rechts{grid-row:1/3;grid-column:3;display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.lees{font-size:.85rem;font-weight:700;color:var(--c);text-decoration:none;white-space:nowrap}
+.volgt{font-size:.8rem;color:var(--muted);white-space:nowrap}
+.gebruik{margin-top:28px;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px 18px}
+.gebruik h2{margin:0 0 6px;font-size:1.1rem}.gebruik ul{margin:0;padding-left:1.2rem}
+.kaart{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin:0 0 26px}
+.tegel{display:block;background:var(--paper);border:1px solid var(--line);border-top:5px solid var(--c);border-radius:12px;padding:10px 12px;text-decoration:none;color:var(--ink)}
+.tegel svg{width:34px;height:34px;fill:none;stroke:var(--c);color:var(--c);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;float:right}
+.tegel .tn{font-size:.8rem;font-weight:700;color:var(--c)}.tegel .tt{display:block;font-weight:700;line-height:1.2;margin:2px 0 6px}
+.tegel ul{list-style:none;margin:0;padding:0;font-size:.85rem;color:var(--muted)}.tegel li{line-height:1.35}
+@media (max-width:560px){.thema{grid-template-columns:44px 1fr}.ico svg{width:40px;height:40px}ol.hfd li{grid-template-columns:2rem 1fr}.rechts{grid-row:auto;grid-column:2;flex-direction:row;align-items:center;justify-content:flex-start}}
+@media print{@page{size:A4;margin:12mm}body{background:#fff;font-size:10.5pt}main{padding:0;max-width:none}.terug,.gebruik,.lees{display:none}
+ .thema{break-inside:avoid;padding:8px 12px 6px;border-color:#999}.thema + .pijl{height:10px}ol.hfd li{padding:3px 0}h1{margin-bottom:6px}.grote{padding:8px 12px}}
+</style></head>
+<body style="--c:#2F6FB0"><main>
+<a class="terug" href="index.html">‹ Alle tools</a>
+<div class="eyebrow">Fysica · 3de jaar · Natuurwetenschappen (3NW)</div>
+<h1>Overzicht van het jaar</h1>
+<div class="grote"><b>De grote vraag</b><span>Hoe gedragen licht en krachten zich, en hoe beschrijf je een beweging?</span></div>
+<div class="kaart"><a class="tegel" href="#t1"><span data-icoon="optica"></span><span class="tn">Thema 1</span><span class="tt">Optische fenomenen</span><ul><li>H1 Zien door licht</li><li>H2 Zien door weerkaatsing</li><li>H3 Lichtbreking</li><li>H4 Lenzen</li></ul></a><a class="tegel" href="#t2"><span data-icoon="krachten"></span><span class="tn">Thema 2</span><span class="tt">Krachten</span><ul><li>H1 Rekenen in de fysica</li><li>H2 Krachten</li><li>H3 Kracht en beweging</li><li>H4 Zwaartekracht</li><li>H5 Wrijvingskracht</li><li>H6 Veerkracht</li><li>H7 Krachtmoment</li></ul></a><a class="tegel" href="#t3"><span data-icoon="grafiek"></span><span class="tn">Thema 4</span><span class="tt">Snelheid</span><ul><li>H1 Basisbegrippen van een beweging</li><li>H2 Snelheid</li></ul></a></div>
+<div class="legende"><span><span class="badge dec">december</span> leerstof voor het examen van december</span><span><span class="badge jun">juni</span> leerstof voor het examen van juni</span></div>
+<section class="thema" id="t1">
+  <div class="ico"><span data-icoon="optica"></span><span class="nr">Thema 1</span></div>
+  <div><h2>Optische fenomenen</h2><p class="vraag">Hoe komt licht in je oog?</p></div>
+  <div><p class="idee">Licht gaat rechtdoor. Het kan weerkaatsen op een spiegel en breken in water of glas. Een lens maakt zo een beeld.</p><p class="kent"><b>Je kent al:</b> licht en schaduw uit het dagelijks leven</p></div>
+  <ol class="hfd"><li><span class="hnr">H1</span><span class="ht"><a href="cursus-zien-door-licht.html">Zien door licht</a></span><span class="rechts"><span class="badge dec">december</span><a class="lees" href="cursus-zien-door-licht.html">Lees in de cursus ›</a></span><span class="wat">lichtbronnen, lichtbundels, schaduw</span></li><li><span class="hnr">H2</span><span class="ht"><a href="cursus-weerkaatsing.html">Zien door weerkaatsing</a></span><span class="rechts"><span class="badge dec">december</span><a class="lees" href="cursus-weerkaatsing.html">Lees in de cursus ›</a></span><span class="wat">wetten van de weerkaatsing, beeld in een spiegel</span></li><li><span class="hnr">H3</span><span class="ht"><a href="cursus-lichtbreking.html">Lichtbreking</a></span><span class="rechts"><span class="badge dec">december</span><a class="lees" href="cursus-lichtbreking.html">Lees in de cursus ›</a></span><span class="wat">breking, totale weerkaatsing, glasvezel</span></li><li><span class="hnr">H4</span><span class="ht"><a href="cursus-lenzen.html">Lenzen</a></span><span class="rechts"><span class="badge dec">december</span><a class="lees" href="cursus-lenzen.html">Lees in de cursus ›</a></span><span class="wat">hoofdstralen, beeldvorming, vergrotingsfactor</span></li></ol>
+</section><div class="pijl"></div><section class="thema" id="t2">
+  <div class="ico"><span data-icoon="krachten"></span><span class="nr">Thema 2</span></div>
+  <div><h2>Krachten</h2><p class="vraag">Wat doet een kracht met een voorwerp?</p></div>
+  <div><p class="idee">Een kracht verandert de vorm of de beweging van een voorwerp. Je tekent een kracht als een pijl: een vector.</p><p class="kent"><b>Je kent al:</b> duwen en trekken, massa in kg</p></div>
+  <ol class="hfd"><li><span class="hnr">H1</span><span class="ht"><a href="cursus-zwaartekracht-wrijving-veer.html#deel1">Rekenen in de fysica</a></span><span class="rechts"><span class="badge dec">december</span><a class="lees" href="cursus-zwaartekracht-wrijving-veer.html#deel1">Lees in de cursus ›</a></span><span class="wat">SI-eenheden, wetenschappelijke notatie, beduidende cijfers</span></li><li><span class="hnr">H2</span><span class="ht"><a href="cursus-krachten-beweging.html">Krachten</a></span><span class="rechts"><span class="badge dec">december</span><a class="lees" href="cursus-krachten-beweging.html">Lees in de cursus ›</a></span><span class="wat">effect van een kracht, vectoren, samenstellen en ontbinden</span></li><li><span class="hnr">H3</span><span class="ht"><a href="cursus-krachten-beweging.html#deel5">Kracht en beweging</a></span><span class="rechts"><span class="badge jun">juni</span><a class="lees" href="cursus-krachten-beweging.html#deel5">Lees in de cursus ›</a></span><span class="wat">traagheid, resulterende kracht en beweging</span></li><li><span class="hnr">H4</span><span class="ht"><a href="cursus-zwaartekracht-wrijving-veer.html#deel2">Zwaartekracht</a></span><span class="rechts"><span class="badge jun">juni</span><a class="lees" href="cursus-zwaartekracht-wrijving-veer.html#deel2">Lees in de cursus ›</a></span><span class="wat">zwaarteveld, massa, gewicht, normaalkracht</span></li><li><span class="hnr">H5</span><span class="ht"><a href="cursus-zwaartekracht-wrijving-veer.html#deel6">Wrijvingskracht</a></span><span class="rechts"><span class="badge jun">juni</span><a class="lees" href="cursus-zwaartekracht-wrijving-veer.html#deel6">Lees in de cursus ›</a></span><span class="wat">statische en dynamische wrijving</span></li><li><span class="hnr">H6</span><span class="ht"><a href="cursus-zwaartekracht-wrijving-veer.html#deel8">Veerkracht</a></span><span class="rechts"><span class="badge jun">juni</span><a class="lees" href="cursus-zwaartekracht-wrijving-veer.html#deel8">Lees in de cursus ›</a></span><span class="wat">veerconstante, wet van Hooke</span></li><li><span class="hnr">H7</span><span class="ht">Krachtmoment</span><span class="rechts"><span class="badge jun">juni</span><span class="volgt">cursus volgt</span></span><span class="wat">hefbomen, momentenbalans, evenwicht</span></li></ol>
+</section><div class="pijl"></div><section class="thema" id="t3">
+  <div class="ico"><span data-icoon="grafiek"></span><span class="nr">Thema 4</span></div>
+  <div><h2>Snelheid</h2><p class="vraag">Hoe beschrijf je hoe snel iets beweegt?</p></div>
+  <div><p class="idee">Een beweging beschrijf je met positie, tijd en snelheid. Een grafiek toont de hele beweging in één beeld.</p><p class="kent"><b>Je kent al:</b> km/h, afstand en tijd; krachten en beweging (thema 2)</p></div>
+  <ol class="hfd"><li><span class="hnr">H1</span><span class="ht">Basisbegrippen van een beweging</span><span class="rechts"><span class="badge jun">juni</span><span class="volgt">cursus volgt</span></span><span class="wat">positie, verplaatsing, tijdsverloop</span></li><li><span class="hnr">H2</span><span class="ht">Snelheid</span><span class="rechts"><span class="badge jun">juni</span><span class="volgt">cursus volgt</span></span><span class="wat">gemiddelde snelheid, ERB, x(t)- en v(t)-grafiek</span></li></ol>
+</section>
+<section class="gebruik"><h2>Zo gebruik je dit overzicht</h2><ul>
+<li>Begin je aan een nieuw hoofdstuk? Kijk hier eerst: bij welk thema hoort het, en wat ken je al?</li>
+<li>Lees de grote vraag van het thema. Na het thema kan je ze beantwoorden.</li>
+<li>Voor een examen: kijk welke hoofdstukken bij december of juni horen.</li></ul></section>
+</main>
+<script>
+const A = 'marker-end="url(#PIJL)"';
+const DEFS = `<defs><marker id="PIJL" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="4.5" markerHeight="4.5" orient="auto-start-reverse"><path d="M0 1L9 5L0 9z" fill="currentColor" stroke="none"/></marker></defs>`;
+const T = 'fill="currentColor" stroke="none"';           /* gevulde vorm */
+const Z = (o) => `fill="currentColor" stroke="none" opacity="${o}"`; /* zachte tint */
+const ICONEN = {
+  magneet: `<path d="M12 8 V26 A12 12 0 0 0 36 26 V8" stroke-width="8" fill="none"/><path d="M12 8 V14 M36 8 V14" stroke-width="9" stroke="#fff" opacity=".55"/><text x="12" y="45" text-anchor="middle" font-size="8" font-weight="700">N</text><text x="36" y="45" text-anchor="middle" font-size="8" font-weight="700">Z</text>`,
+  rekenen: `<path d="M6 34 H42" stroke-width="1"/><text x="24" y="27" text-anchor="middle" font-size="13" font-weight="700">×10³</text><text x="24" y="44" text-anchor="middle" font-size="9">km → m</text>`,
+  /* blad met nerven en een oog-achtige druppel */
+  /* klier: trosje klierblaasjes aan een vertakte afvoerbuis (vloeiende vormen) */
+  klier: `<path d="M23 3 C22 9 26 13 24 19 C23 22 22 24 22 26" stroke-width="2.4" stroke-linecap="round"/>
+    <path d="M22 26 C18 28 15 29 13 31 M22 26 C23 31 24 34 24 36 M22 26 C27 28 31 29 34 31" stroke-width="1.8" stroke-linecap="round"/>
+    <path d="M6 33 C6 28 11 26 14 28 C18 29 19 34 16 38 C13 42 6 39 6 33Z" ${Z(.28)}/><path d="M6 33 C6 28 11 26 14 28 C18 29 19 34 16 38 C13 42 6 39 6 33Z"/>
+    <path d="M18 40 C18 35 23 33 27 35 C31 37 31 42 28 45 C24 47 18 45 18 40Z" ${Z(.28)}/><path d="M18 40 C18 35 23 33 27 35 C31 37 31 42 28 45 C24 47 18 45 18 40Z"/>
+    <path d="M31 32 C32 28 37 27 40 29 C43 32 42 37 38 39 C34 40 30 37 31 32Z" ${Z(.28)}/><path d="M31 32 C32 28 37 27 40 29 C43 32 42 37 38 39 C34 40 30 37 31 32Z"/>
+    <circle cx="11.5" cy="33.5" r="1.4" ${T}/><circle cx="24" cy="40" r="1.4" ${T}/><circle cx="36.5" cy="33.5" r="1.4" ${T}/>`,
+  /* neuron: cellichaam dat taps uitloopt in dendrieten, axon met myeline en eindknopjes */
+  neuron: `<path d="M14 18 C10 14 7 12 3 11 C7 13 10 16 11 19 C7 19 4 21 2 25 C6 23 9 23 11 24 C9 27 8 31 8 35 C10 31 12 28 14 27 C15 30 17 31 20 31 C19 29 19 27 20 25 C22 24 24 24 26 24 C24 22 22 21 20 20 C20 16 19 12 17 8 C17 12 16 15 14 18Z" ${Z(.3)}/>
+    <path d="M14 18 C10 14 7 12 3 11 C7 13 10 16 11 19 C7 19 4 21 2 25 C6 23 9 23 11 24 C9 27 8 31 8 35 C10 31 12 28 14 27 C15 30 17 31 20 31 C19 29 19 27 20 25 C22 24 24 24 26 24 C24 22 22 21 20 20 C20 16 19 12 17 8 C17 12 16 15 14 18Z" stroke-width="1.4" stroke-linejoin="round"/>
+    <circle cx="16" cy="22.5" r="2.2" ${T}/>
+    <path d="M26 24 C30 24 34 24 40 24" stroke-width="1.6"/><path d="M28 21.8 C30 21.6 32 21.6 33.5 21.8 C34.5 22.4 34.5 25.6 33.5 26.2 C32 26.4 30 26.4 28 26.2 C27 25.6 27 22.4 28 21.8Z" ${Z(.35)}/>
+    <path d="M40 24 C42 22 43 20 44 19 M40 24 H45 M40 24 C42 26 43 28 44 29" stroke-width="1.4" stroke-linecap="round"/><circle cx="44.5" cy="18.5" r="1.4" ${T}/><circle cx="45.5" cy="24" r="1.4" ${T}/><circle cx="44.5" cy="29.5" r="1.4" ${T}/>`,
+  /* feedback: waarde schommelt rond de norm binnen een band */
+  feedback: `<rect x="4" y="17" width="40" height="14" rx="3" ${Z(.14)}/><path d="M4 24 H44" stroke-width="1" stroke-dasharray="3 3" opacity=".7"/>
+    <path d="M4 24 C8 11 12 11 15 24 C18 35 22 35 25 24 C28 15 31 15 34 24 C36 30 39 30 41 26" stroke-width="2.3" stroke-linecap="round"/>
+    <path d="M38 8 C44 10 46 16 43 20 M43 20 L44.5 15.5 M43 20 L38.6 18.6" stroke-width="1.5" stroke-linecap="round"/>`,
+  /* oog: oogbol met hoornvlies, lens en oogzenuw; lichtstralen naar het netvlies */
+  oog: `<path d="M10 24 C10 13 17 7 26 7 C36 7 43 15 43 24 C43 33 36 41 26 41 C17 41 10 35 10 24Z" ${Z(.13)}/><path d="M10 24 C10 13 17 7 26 7 C36 7 43 15 43 24 C43 33 36 41 26 41 C17 41 10 35 10 24Z"/>
+    <path d="M11 16 C6 19 6 29 11 32" stroke-width="1.4"/><path d="M15 17.5 C19 20 19 28 15 30.5 C12 28 12 20 15 17.5Z" ${Z(.45)}/><path d="M15 17.5 C19 20 19 28 15 30.5 C12 28 12 20 15 17.5Z" stroke-width="1.2"/>
+    <path d="M1 19 L15 21 L42 24 M1 29 L15 27 L42 24" stroke-width="1" stroke-dasharray="2.5 2" opacity=".8"/>
+    <path d="M42.5 27 C44.5 28 46 29.5 47 32" stroke-width="3" stroke-linecap="round"/>`,
+  /* spier: spoelvormige spierbuik met vezels, aan beide kanten een pees */
+  spier: `<path d="M8 31 C12 22 19 16 27 15 C34 14 39 16 42 18 C39 23 33 29 26 32 C19 35 12 34 8 31Z" ${Z(.3)}/><path d="M8 31 C12 22 19 16 27 15 C34 14 39 16 42 18 C39 23 33 29 26 32 C19 35 12 34 8 31Z" stroke-width="1.5" stroke-linejoin="round"/>
+    <path d="M12 29 C19 24 28 20 38 18 M14 31.5 C21 28 29 24 37 20.5 M13 26 C19 21 26 18 34 16.5" stroke-width="1" opacity=".7"/>
+    <path d="M8 31 C6 32.5 4 34 2.5 36.5 M42 18 C44 16.5 45.5 15 46.5 12.5" stroke-width="2.6" stroke-linecap="round"/>`,
+  blad: `<path d="M8 40 C8 18 24 6 42 6 C42 26 30 40 8 40Z" ${Z(.15)}/><path d="M8 40 C8 18 24 6 42 6 C42 26 30 40 8 40Z"/>
+    <path d="M8 40 L36 12 M17 31 L17 22 M24 24 L24 15 M17 31 L26 31 M24 24 L33 24" stroke-width="1.3"/>`,
+  /* atoom: kern met elektronen op een schil */
+  atoomlading: `<circle cx="24" cy="24" r="17" stroke-dasharray="3 3" opacity=".6"/>
+    <circle cx="24" cy="24" r="6" ${Z(.25)}/><circle cx="24" cy="24" r="6"/>
+    <path d="M21.5 24 H26.5 M24 21.5 V26.5" stroke-width="1.6"/>
+    <circle cx="24" cy="7" r="3" ${T}/><circle cx="38.7" cy="32.5" r="3" ${T}/>`,
+  /* schakeling: bron en weerstanden in serie en parallel */
+  schakeling: `<path d="M6 14 H14 M24 14 H28 M28 8 V20 M28 8 H31 M41 8 H44 V20 M28 20 H31 M41 20 H44 M44 14 V40 H27 M21 40 H6 V14"/>
+    <rect x="14" y="11" width="10" height="6" ${Z(.15)}/><rect x="14" y="11" width="10" height="6"/>
+    <rect x="31" y="5" width="10" height="6" ${Z(.15)}/><rect x="31" y="5" width="10" height="6"/>
+    <rect x="31" y="17" width="10" height="6" ${Z(.15)}/><rect x="31" y="17" width="10" height="6"/>
+    <path d="M21 35 V45" stroke-width="2"/><path d="M27 37 V43" stroke-width="3.2"/>`,
+  /* open boek: tekstregels links, vinkje rechts */
+  boek: `<path d="M24 13 C19 9.5 11 9 5 10.5 V38.5 C11 37 19 37.5 24 41 C29 37.5 37 37 43 38.5 V10.5 C37 9 29 9.5 24 13 Z" ${Z(.08)}/>
+    <path d="M24 13 C19 9.5 11 9 5 10.5 V38.5 C11 37 19 37.5 24 41 C29 37.5 37 37 43 38.5 V10.5 C37 9 29 9.5 24 13 Z M24 13 V41"/>
+    <path d="M9 17 H19.5 M9 21.5 H19.5 M9 26 H17" stroke-width="1" opacity=".6"/>
+    <path d="M29 23 L32.5 26.5 L39 18.5" stroke-width="2"/>`,
+  /* kalender met ringen en ingeplande blokjes */
+  kalender: `<rect x="6" y="10" width="36" height="32" rx="3"/>
+    <path d="M6 13 A3 3 0 0 1 9 10 H39 A3 3 0 0 1 42 13 V18 H6 Z" ${Z(.15)}/>
+    <path d="M6 18 H42"/>
+    <path d="M15 6.5 V13 M33 6.5 V13" stroke-width="2"/>
+    <g ${Z(.2)}><circle cx="12" cy="24.5" r="1"/><circle cx="36" cy="24.5" r="1"/><circle cx="12" cy="31.5" r="1"/><circle cx="36" cy="31.5" r="1"/><circle cx="12" cy="38" r="1"/><circle cx="24" cy="38" r="1"/><circle cx="30" cy="38" r="1"/><circle cx="36" cy="38" r="1"/></g>
+    <rect x="16" y="22" width="11" height="5" rx="1" ${T}/>
+    <rect x="21" y="29" width="11" height="5" rx="1" ${Z(.45)}/>
+    <rect x="15" y="35.5" width="6" height="4" rx="1" ${Z(.3)}/>`,
+  /* straal op een scheidingsoppervlak: invallend, teruggekaatst, gebroken */
+  optica: `<rect x="2" y="25" width="44" height="21" ${Z(.1)}/>
+    <path d="M2 25 H46"/>
+    <path d="M24 4 V46" stroke-width="1" stroke-dasharray="2 2.5" opacity=".6"/>
+    <path d="M9 7 L23.4 24.3" ${A}/>
+    <path d="M24.6 24.3 L39 7" opacity=".45" stroke-width="1.2" ${A}/>
+    <path d="M24 25 L31 44" ${A}/>
+    <path d="M24 17 A8 8 0 0 0 18.9 18.8" stroke-width="1" opacity=".7"/>`,
+  /* v(t)-grafiek op ruitjespapier met oppervlakte eronder */
+  grafiek: `<path d="M14 6 V41 M20 6 V41 M26 6 V41 M32 6 V41 M38 6 V41 M8 11 H43 M8 17 H43 M8 23 H43 M8 29 H43 M8 35 H43" stroke-width=".6" opacity=".35"/>
+    <path d="M8 41 V29 L26 17 L38 17 V41 Z" ${Z(.18)}/>
+    <path d="M8 44 V5 M5 41 H45"/>
+    <path d="M8 29 L26 17 L38 17" stroke-width="2.2"/>
+    <text x="10.5" y="9" font-size="7" font-style="italic" font-family="Georgia,serif">v</text>
+    <text x="41" y="47.5" font-size="7" font-style="italic" font-family="Georgia,serif">t</text>`,
+  /* blok op de grond met resulterende kracht en snelheidsstreepjes */
+  beweging: `<path d="M3 39 H45"/>
+    <rect x="13" y="22" width="17" height="17" rx="2" ${Z(.15)}/>
+    <rect x="13" y="22" width="17" height="17" rx="2"/>
+    <path d="M30 30.5 L44 30.5" stroke-width="2.4" ${A}/>
+    <path d="M3 26 H9 M5 32 H10" stroke-width="1.2" opacity=".55"/>`,
+  /* vat met vloeistof en drukpijlen op een punt */
+  druk: `<path d="M8 10 V42 H40 V10"/>
+    <rect x="9" y="17" width="30" height="24" ${Z(.15)}/>
+    <path d="M9 17 H39" stroke-width="1" opacity=".6"/>
+    <circle cx="24" cy="30" r="2" ${T}/>
+    <path d="M24 21 V26.5 M24 39 V33.5 M15 30 H20.5 M33 30 H27.5" stroke-width="1.6"/>`,
+  /* bliksemschicht in een batterij: energie */
+  energie: `<rect x="6" y="14" width="32" height="22" rx="3" ${Z(.12)}/>
+    <rect x="6" y="14" width="32" height="22" rx="3"/>
+    <path d="M38 21 H42 V29 H38" />
+    <path d="M24 16 L16 26 H22 L19 34 L29 23 H23 Z" ${T}/>`,
+  /* parallellogram van krachten met resultante */
+  krachten: `<path d="M8 40 L36 33 L42 12 L14 19 Z" ${Z(.08)}/>
+    <path d="M36 33 L42 12 M14 19 L42 12" stroke-width="1" stroke-dasharray="2 2.5" opacity=".6"/>
+    <path d="M8 40 L35 33.2" ${A}/>
+    <path d="M8 40 L13.7 20" ${A}/>
+    <path d="M8 40 L41 12.8" stroke-width="2.4" ${A}/>
+    <circle cx="8" cy="40" r="2" ${T}/>`,
+  /* twee ladingen die elkaar aantrekken, pijlen vanuit de lading */
+  ladingen: `<circle cx="10" cy="22" r="6.5" ${Z(.12)}/><circle cx="10" cy="22" r="6.5"/>
+    <path d="M7.2 22 H12.8 M10 19.2 V24.8" stroke-width="1.4"/>
+    <circle cx="38" cy="22" r="6.5" ${Z(.12)}/><circle cx="38" cy="22" r="6.5"/>
+    <path d="M35.2 22 H40.8" stroke-width="1.4"/>
+    <path d="M16.5 22 H21.5" stroke-width="1.8" ${A}/>
+    <path d="M31.5 22 H26.5" stroke-width="1.8" ${A}/>
+    <text x="7" y="38" font-size="6.5" font-style="italic" font-family="Georgia,serif">q₁</text>
+    <text x="35" y="38" font-size="6.5" font-style="italic" font-family="Georgia,serif">q₂</text>`,
+  /* formule omvormen */
+  formule: `<g font-family="Georgia,serif" font-style="italic" font-size="10">
+      <text x="24" y="13" text-anchor="middle">F = m · a</text>
+      <text x="7" y="39.5">a =</text>
+      <text x="32" y="34" text-anchor="middle">F</text>
+      <text x="32" y="46" text-anchor="middle">m</text></g>
+    <path d="M27 37 H37" stroke-width="1.2"/>
+    <path d="M24 17 V24.5" stroke-width="1.2" ${A}/>`,
+  /* homogeen veld tussen twee geladen platen */
+  veld: `<rect x="6" y="6" width="5" height="36" rx="1" ${Z(.2)}/><rect x="6" y="6" width="5" height="36" rx="1"/>
+    <rect x="37" y="6" width="5" height="36" rx="1" ${Z(.2)}/><rect x="37" y="6" width="5" height="36" rx="1"/>
+    <path d="M13 12 H34" stroke-width="1.2" ${A}/><path d="M13 20 H34" stroke-width="1.2" ${A}/><path d="M13 28 H34" stroke-width="1.2" ${A}/><path d="M13 36 H34" stroke-width="1.2" ${A}/>
+    <g font-size="6.5" font-family="inherit" font-weight="700"><text x="6.6" y="47.5">+</text><text x="38.2" y="47.5">−</text></g>`,
+  /* atoommodel natrium (2-8-1), elektronen op de vier hoekpunten per schil */
+  /* ion: atoom met een elektron dat vertrekt en een plusteken */
+  ion: `<circle cx="20" cy="26" r="4" ${Z(.9)}/><circle cx="20" cy="26" r="10" stroke-width="1" opacity=".55"/><circle cx="20" cy="26" r="16" stroke-width="1" opacity=".55"/>
+    <circle cx="20" cy="16" r="1.5" ${T}/><circle cx="30" cy="26" r="1.5" ${T}/>
+    <path d="M34 15 L41 8" stroke-width="1.6" marker-end="url(#PIJL)"/><circle cx="42.5" cy="6.5" r="1.8" ${T}/>
+    <text x="35" y="42" font-size="11" font-weight="700" font-family="inherit">+</text>`,
+  /* binding: twee atomen die een elektronenpaar delen */
+  binding: `<circle cx="16" cy="24" r="12" ${Z(.1)}/><circle cx="32" cy="24" r="12" ${Z(.1)}/><circle cx="16" cy="24" r="12"/><circle cx="32" cy="24" r="12"/>
+    <circle cx="16" cy="24" r="3.5" ${Z(.9)}/><circle cx="32" cy="24" r="3.5" ${Z(.9)}/>
+    <circle cx="24" cy="20.5" r="1.8" ${T}/><circle cx="24" cy="27.5" r="1.8" ${T}/>`,
+  /* reactie: twee bolletjes, pijl, samengevoegd deeltje */
+  reactie: `<circle cx="7" cy="18" r="4.5" ${Z(.35)}/><circle cx="7" cy="18" r="4.5"/><circle cx="7" cy="31" r="4.5" ${Z(.8)}/>
+    <path d="M15 24.5 H27" stroke-width="1.8" marker-end="url(#PIJL)"/>
+    <circle cx="35" cy="24.5" r="5.5" ${Z(.8)}/><circle cx="42" cy="24.5" r="4.5" ${Z(.35)}/><circle cx="42" cy="24.5" r="4.5"/>`,
+  atoom: `<circle cx="24" cy="24" r="3.6" ${Z(.9)}/>
+    <circle cx="24" cy="24" r="8" stroke-width="1" opacity=".55"/>
+    <circle cx="24" cy="24" r="14" stroke-width="1" opacity=".55"/>
+    <circle cx="24" cy="24" r="20" stroke-width="1" opacity=".55"/>
+    <g ${T}>
+      <circle cx="24" cy="16" r="1.5"/><circle cx="32" cy="24" r="1.5"/>
+      <circle cx="22.2" cy="10" r="1.5"/><circle cx="25.8" cy="10" r="1.5"/>
+      <circle cx="38" cy="22.2" r="1.5"/><circle cx="38" cy="25.8" r="1.5"/>
+      <circle cx="22.2" cy="38" r="1.5"/><circle cx="25.8" cy="38" r="1.5"/>
+      <circle cx="10" cy="22.2" r="1.5"/><circle cx="10" cy="25.8" r="1.5"/>
+      <circle cx="24" cy="4" r="1.5"/>
+    </g>`,
+  /* gevarensymbool: ruit met vlam */
+  ruit: `<path d="M24 4 L44 24 L24 44 L4 24 Z" ${Z(.08)}/><path d="M24 4 L44 24 L24 44 L4 24 Z"/>
+    <path d="M24 12 C29 18 31 22 29.5 28 C28.5 31.5 26.5 33 24 33 C20.5 33 18 30.5 18 27.5 C18 23.5 21 21.5 22 17.5 C23 20.5 24 21.5 25.5 20.5 C26 17.5 25 15 24 12 Z" ${T}/>
+    <path d="M19.5 36.5 H28.5" stroke-width="2"/>`,
+  /* deeltjesmodel van een mengsel: twee soorten deeltjes */
+  mengsel: `<rect x="5" y="5" width="38" height="38" rx="3" ${Z(.06)}/><rect x="5" y="5" width="38" height="38" rx="3"/>
+    <g ${T}><circle cx="13" cy="13" r="3.2"/><circle cx="30" cy="12" r="3.2"/><circle cx="21" cy="24" r="3.2"/><circle cx="35" cy="30" r="3.2"/><circle cx="12" cy="35" r="3.2"/></g>
+    <circle cx="22" cy="13" r="3.2"/><circle cx="12" cy="24" r="3.2"/><circle cx="32" cy="21" r="3.2"/><circle cx="24" cy="35" r="3.2"/><circle cx="35" cy="38" r="2.6"/>`,
+  /* trechter met filtreerpapier boven een erlenmeyer */
+  trechter: `<path d="M9 6 H39 L27.5 22 V29 H20.5 V22 Z" ${Z(.08)}/><path d="M9 6 H39 L27.5 22 V29 H20.5 V22 Z"/>
+    <path d="M13.5 8.5 H34.5 L24 20 Z" stroke-width="1" stroke-dasharray="2 2"/>
+    <circle cx="24" cy="33" r="1.4" ${T}/>
+    <path d="M20 36 V39 L13 46 H35 L28 39 V36"/><path d="M15.5 43.5 H32.5 L35 46 H13 Z" ${Z(.3)}/>`,
+  /* tekstballon met woorden */
+  woorden: `<path d="M5 8 H43 V33 H20 L12 41 V33 H5 Z" ${Z(.08)}/><path d="M5 8 H43 V33 H20 L12 41 V33 H5 Z"/>
+    <text x="24" y="25.5" text-anchor="middle" font-size="12" font-weight="700" font-family="inherit">Aa</text>`,
+  /* drie atoommodellen naast elkaar: bolletje, krentenbol, schillen */
+  modellen: `<circle cx="9" cy="24" r="6" ${Z(.35)}/><circle cx="9" cy="24" r="6"/>
+    <circle cx="24" cy="24" r="7" ${Z(.1)}/><circle cx="24" cy="24" r="7"/><g ${T}><circle cx="21.5" cy="21.5" r="1.2"/><circle cx="26.5" cy="23" r="1.2"/><circle cx="23" cy="27" r="1.2"/></g>
+    <circle cx="40" cy="24" r="2" ${T}/><circle cx="40" cy="24" r="5" stroke-width="1" opacity=".6"/><circle cx="40" cy="24" r="7.5" stroke-width="1" opacity=".6"/><circle cx="40" cy="16.5" r="1.3" ${T}/><circle cx="45" cy="24" r="1.3" ${T}/>
+    <path d="M4 38 H44" stroke-width="1" opacity=".5" ${A}/>`,
+  /* kern met protonen en neutronen, een schil met elektronen */
+  kern: `<circle cx="24" cy="24" r="17" stroke-width="1" opacity=".55"/>
+    <circle cx="21" cy="22" r="3.2" ${T}/><circle cx="27" cy="22.5" r="3.2" ${Z(.35)}/><circle cx="23" cy="27.5" r="3.2" ${Z(.35)}/><circle cx="28" cy="27.8" r="3.2" ${T}/>
+    <circle cx="21" cy="22" r="3.2" stroke-width="1"/><circle cx="27" cy="22.5" r="3.2" stroke-width="1"/><circle cx="23" cy="27.5" r="3.2" stroke-width="1"/><circle cx="28" cy="27.8" r="3.2" stroke-width="1"/>
+    <circle cx="24" cy="7" r="2" ${T}/><circle cx="41" cy="24" r="2" ${T}/><circle cx="12" cy="36" r="2" ${T}/>`,
+  /* mini-PSE: hoge zijkolommen en een lage middenblok */
+  pse: `<g stroke-width="1">
+    <rect x="3" y="8" width="5" height="5"/><rect x="40" y="8" width="5" height="5" ${Z(.35)}/>
+    <rect x="3" y="14" width="5" height="5"/><rect x="9" y="14" width="5" height="5"/>${[22,28,34,40].map(x=>`<rect x="${x}" y="14" width="5" height="5"/>`).join('')}<rect x="40" y="14" width="5" height="5" ${Z(.35)}/>
+    <rect x="3" y="20" width="5" height="5" ${Z(.35)}/><rect x="9" y="20" width="5" height="5"/>${[22,28,34,40].map(x=>`<rect x="${x}" y="20" width="5" height="5"/>`).join('')}
+    ${[26,32,38].map(y=>`<rect x="3" y="${y}" width="5" height="5"/><rect x="9" y="${y}" width="5" height="5"/><rect x="15" y="${y}" width="18" height="5" ${Z(.15)}/><rect x="34" y="${y}" width="5" height="5"/><rect x="40" y="${y}" width="5" height="5"/>`).join('')}
+    </g>`,
+  /* hangslot met een waterdruppel */
+  slot: `<path d="M15 21 V15 A9 9 0 0 1 33 15 V21" stroke-width="2.4"/>
+    <rect x="9" y="21" width="30" height="22" rx="4" ${Z(.12)}/><rect x="9" y="21" width="30" height="22" rx="4"/>
+    <path d="M24 26 C27.5 30.5 29 33 29 35.5 A5 5 0 0 1 19 35.5 C19 33 20.5 30.5 24 26 Z" ${T}/>`,
+  /* skeletformule: zigzagketen met een OH-groep */
+  zigzag: `<path d="M4 32 L13 24 L22 32 L31 24 L40 32" stroke-width="2.2"/>
+    <path d="M31 24 V13" stroke-width="2.2"/>
+    <text x="31" y="10.5" text-anchor="middle" font-size="8" font-weight="700" font-family="inherit">OH</text>
+    <path d="M13 24 L13 24" stroke-width="2"/>`,
+  /* elektroscoop: knop, staaf door isolator, uitgeweken blaadjes in een behuizing */
+  elektroscoop: `<path d="M9 20 H39 V43 A2 2 0 0 1 37 45 H11 A2 2 0 0 1 9 43 Z" ${Z(.07)}/>
+    <path d="M9 20 H39 V43 A2 2 0 0 1 37 45 H11 A2 2 0 0 1 9 43 Z" stroke-width="1" opacity=".6"/>
+    <rect x="21" y="17.5" width="6" height="5" rx="1" ${Z(.35)}/>
+    <circle cx="24" cy="8" r="4.5" ${Z(.15)}/><circle cx="24" cy="8" r="4.5"/>
+    <path d="M24 12.5 V31"/>
+    <path d="M24 31 L17 40.5 M24 31 L31 40.5" stroke-width="1.8"/>
+    <g font-size="6" font-family="inherit" font-weight="700"><text x="13" y="34">+</text><text x="32" y="34">+</text><text x="21.8" y="8.2" font-size="5.5">+</text></g>`
+};
+document.querySelectorAll('[data-icoon]').forEach(el => {
+  const n = el.dataset.icoon;
+  el.innerHTML = `<svg viewBox="0 0 48 48" aria-hidden="true">${(DEFS + (ICONEN[n] || '')).replaceAll('PIJL', 'pijl-' + n)}</svg>`;
+});
+</script>
+</body></html>
