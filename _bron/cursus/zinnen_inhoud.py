@@ -150,4 +150,30 @@ Z = {
    'Als de kracht loodrecht op de verplaatsing staat, is cos 90° gelijk aan nul. Daardoor levert de kracht geen arbeid.'),
   ('groter vermogen → meer joule per seconde → sneller klaar',
    'Een toestel met een groter vermogen zet meer joule per seconde om. Daardoor is het sneller klaar met dezelfde hoeveelheid energie.')],
+ # ---------------- fysica 5Wet
+ 'cursus-ladingen.html': [
+  ('ballon over haar wrijven → elektronen gaan naar de ballon → ballon negatief, haar positief',
+   'Als je een ballon over je haar wrijft, gaan er elektronen van je haar naar de ballon. Daardoor wordt de ballon negatief en je haar positief.'),
+  ('negatieve staaf bij metalen bol → vrije elektronen weggeduwd → kant bij de staaf positief → aantrekking',
+   'De negatieve staaf duwt de vrije elektronen van de bol naar de verre kant. Daardoor wordt de kant bij de staaf positief, zodat de bol aangetrokken wordt.')],
+ 'cursus-coulomb.html': [
+  ('afstand × 2 → r² × 4 → kracht ÷ 4',
+   'Als de afstand 2 keer zo groot wordt, wordt r² 4 keer zo groot. Daarom wordt de coulombkracht 4 keer zo klein.'),
+  ('tegengestelde ladingen → aantrekking → kracht naar de andere lading toe',
+   'Omdat de ladingen een tegengesteld teken hebben, trekken ze elkaar aan. De kracht op elke lading wijst dus naar de andere lading.')],
+ 'cursus-elektrisch-veld.html': [
+  ('negatieve lading → kracht tegen het veld in',
+   'Omdat het een negatieve lading is, werkt de kracht tegen de zin van het veld in.'),
+  ('auto is een kooi van Faraday → veld binnenin nul → veilig bij onweer',
+   'Een auto is een kooi van Faraday, dus binnenin is het elektrisch veld nul. Daardoor zit je veilig tijdens een onweer.')],
+ 'cursus-potentiaal.html': [
+  ('elektron beweegt naar + plaat → veld verricht positieve arbeid → potentiële energie daalt → kinetische energie stijgt',
+   'Het elektron beweegt naar de positieve plaat. Daarbij verricht het veld positieve arbeid, zodat de potentiële energie daalt en de kinetische energie stijgt.'),
+  ('langs equipotentiaalvlak → potentiaal gelijk → geen arbeid',
+   'Als je een lading langs een equipotentiaalvlak verplaatst, blijft de potentiaal gelijk. Daarom kost dat geen arbeid.')],
+ 'cursus-schakelingen.html': [
+  ('extra tak parallel → substitutieweerstand kleiner → totale stroom groter',
+   'Als je een extra tak parallel schakelt, wordt de substitutieweerstand kleiner. Daardoor wordt de totale stroom groter.'),
+  ('één lampje in serie kapot → kring onderbroken → alle lampjes uit',
+   'Als in een serieschakeling één lampje kapotgaat, is de stroomkring onderbroken. Dan gaan alle lampjes uit.')],
 }

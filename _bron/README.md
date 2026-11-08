@@ -86,3 +86,9 @@ Leerlingen krijgen een ingevulde naslag; wisbordvragen per deel (`aso_wisbord.py
 ## Oefening "Van pijlen naar zinnen"
 - `_bron/cursus/zinnen_inhoud.py`: per cursuspagina twee redeneringen met pijlen + modelantwoord, en het kader met verbindingswoorden (VERBIND).
 - nieuw_formaat.pagina() voegt de oefening toe vóór de uitdagingen (kader alleen op de eerste pagina van een reeks; anders een korte geheugensteun). aso_krachten.py en snelheid_3aso.py doen het zelf.
+
+## 4NW en 5Wet in het nieuwe formaat
+- `nw4_nieuw.py` + `nw4_inhoud.py`: druk (H1-H4) en energie/vermogen. Vangt de oude inhoud op uit `druk_vast.py` (vroeger in bouw.py) en `vierde_cursus.py`.
+- `nw5_nieuw.py` + `nw5_inhoud.py`: ladingen, coulomb, elektrisch veld, potentiaal (sjabloon_ac, met nummering) en gemengde schakelingen.
+- Tekenoefeningen op ruitjes (2 per hoofdstuk) staan in de builders. `pagina(..., nrs=[...])` zet eigen deelnummers (bv. 1.1).
+- bouw.py is nu een pure bibliotheek: importeren bouwt geen pagina meer.

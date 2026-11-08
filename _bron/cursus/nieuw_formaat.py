@@ -92,13 +92,13 @@ def vrijgave(blokken, delen):
         else: uit.append((x, False, x))
     return uit
 
-def pagina(bestand, eyebrow, titel, intro, lesdoelen, voorkennis, delen, oefeningen, samenv, c, eerste=False, cornell=None):
+def pagina(bestand, eyebrow, titel, intro, lesdoelen, voorkennis, delen, oefeningen, samenv, c, eerste=False, cornell=None, nrs=None):
     assert len(delen) == len(c['delen']), bestand
     blokken = [blok('lesdoelen', '', 'Lesdoelen', lesdoelen), blok('voorkennis', '', 'Voorkennis', voorkennis)]
     for i, (k, inh) in enumerate(delen, start=1):
         inh = deel(inh, c['delen'][i - 1], i)
         if i == 1: inh = EDI_CSS + inh
-        blokken.append(blok(f'deel{i}', i, k, inh, f'deel{i}'))
+        blokken.append(blok(f'deel{i}', nrs[i - 1] if nrs else i, k, inh, f'deel{i}'))
     oefeningen += zinnen_oef(bestand, eerste, oefeningen.count('class="oef"') + 1)
     blokken += [blok('oefeningen', '', 'Oefeningen op papier', oefeningen + uitdagingen(c['uitd'], eerste), 'oefeningen'),
                 blok('begrippen', '', 'Begrippenlijst', begrippen(c['begrip'])),
