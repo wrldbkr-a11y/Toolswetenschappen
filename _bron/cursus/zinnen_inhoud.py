@@ -119,4 +119,35 @@ Z = {
    'Hoe steiler de x(t)-grafiek, hoe meer meter het voorwerp per seconde aflegt. Daarom betekent een steilere grafiek een grotere snelheid.'),
   ('tram staat stil → positie verandert niet → horizontaal stuk in de x(t)-grafiek',
    'Als de tram stilstaat, verandert zijn positie niet. Daardoor is de x(t)-grafiek daar een horizontaal stuk.')],
+ # ---------------- fysica 4NW
+ 'cursus-druk-vaste-stoffen.html': [
+  ('scherp mes → kleine oppervlakte → grote druk → snijdt makkelijk',
+   'Een scherp mes heeft een kleine oppervlakte. Daardoor is de druk groot bij dezelfde kracht, zodat het mes makkelijk snijdt.'),
+  ('sneeuwschoenen → grote oppervlakte → kleine druk → je zakt niet weg',
+   'Omdat sneeuwschoenen een grote oppervlakte hebben, is de druk op de sneeuw klein. Daarom zak je niet weg.')],
+ 'cursus-druk-gassen.html': [
+  ('temperatuur stijgt → deeltjes sneller → vaker en harder botsen → druk stijgt',
+   'Als de temperatuur stijgt, bewegen de deeltjes sneller. Daardoor botsen ze vaker en harder tegen de wand, zodat de druk stijgt.'),
+  ('lucht onder zuignap weg → onderdruk → buitenlucht drukt zuignap vast',
+   'Onder de zuignap is de lucht weggeduwd, dus daar is er onderdruk. De lucht buiten oefent daardoor een grotere kracht uit en drukt de zuignap vast.')],
+ 'cursus-druk-vloeistoffen.html': [
+  ('dieper → meer water erboven → grotere hydrostatische druk',
+   'Hoe dieper je komt, hoe meer water er boven je is. Daardoor is de hydrostatische druk groter.'),
+  ('kleine kracht op kleine zuiger → druk overal gelijk (Pascal) → grote kracht op grote zuiger',
+   'Je oefent een kleine kracht uit op de kleine zuiger. Omdat de druk volgens Pascal overal even groot is, ontstaat er een grote kracht op de grote zuiger.')],
+ 'cursus-archimedes.html': [
+  ('ondervlak dieper → grotere druk onder dan boven → kracht naar boven',
+   'Het ondervlak ligt dieper dan het bovenvlak. Daardoor is de druk onderaan groter, zodat er een kracht naar boven overblijft: de archimedeskracht.'),
+  ('zwemblaas groter → volume groter → archimedeskracht groter → vis stijgt',
+   'Als de vis zijn zwemblaas groter maakt, wordt zijn volume groter. Daardoor wordt de archimedeskracht groter dan de zwaartekracht, dus de vis stijgt.')],
+ 'cursus-energie-systemen.html': [
+  ('overschot stroom → water omhoog pompen → elektrische energie wordt potentiële energie',
+   'Als er een overschot aan stroom is, pompt de centrale water omhoog. Zo wordt de elektrische energie opgeslagen als gravitationele potentiële energie.'),
+  ('snelheid × 2 → kinetische energie × 4 → langere remweg',
+   'Als de snelheid 2 keer zo groot wordt, wordt de kinetische energie 4 keer zo groot. Daarom is de remweg veel langer.')],
+ 'cursus-arbeid-vermogen.html': [
+  ('kracht loodrecht op verplaatsing → cos 90° = 0 → geen arbeid',
+   'Als de kracht loodrecht op de verplaatsing staat, is cos 90° gelijk aan nul. Daardoor levert de kracht geen arbeid.'),
+  ('groter vermogen → meer joule per seconde → sneller klaar',
+   'Een toestel met een groter vermogen zet meer joule per seconde om. Daardoor is het sneller klaar met dezelfde hoeveelheid energie.')],
 }
