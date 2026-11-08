@@ -66,3 +66,9 @@ Leerlingen krijgen een ingevulde naslag; wisbordvragen per deel (`aso_wisbord.py
 - `cd /home/claude/cursus && python3 /home/claude/toolswetenschappen/_bron/cursus/snelheid_3aso.py` → `cursus-snelheid-3aso.html`
 - Volledig nieuw geschreven (figuren, inhoud en oefeningen in één bestand); gebruikt `nieuw_formaat.py`.
 - Word: `Cursus_Snelheid_3ASO.docx` en `Cursus_Snelheid_3ASO_leerkracht.docx`.
+
+## Cursussen 3NW (optica + krachten) in het nieuwe formaat
+- `cd /home/claude/cursus && python3 /home/claude/toolswetenschappen/_bron/cursus/nw3_nieuw.py`
+- Leest `optica_cursus.py` (de oude maak()-aanroepen worden opgevangen) en `derde_krachten.py` (tot `delen = [`); nieuwe inhoud in `nw3_inhoud.py`.
+- Stappenplannen (`<h3>Stappenplan: …</h3><ol>`) worden automatisch kaders "Denkstappen · …"; nieuwe denkstappen en geheugensteunen via `stappen=` en `steun=` in `D(...)`.
+- Word: `Cursus_Fysica_3NW.docx` (zonder bijlage) en `Cursus_Fysica_3NW_leerkracht.docx`.

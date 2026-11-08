@@ -24,11 +24,18 @@ AANPAK = kader('Zo pak je een uitdaging aan', f'''<p>Deze oefeningen combineren 
 <li><b>Controleer:</b> beantwoord je echt de vraag? Is je uitleg logisch?</li></ol>''')
 STEUN = '<p style="font-size:.93em;color:#475569;margin:10px 0 4px">🧭 <i>Zo pak je een uitdaging aan: lees · analyseer · plan · leg uit met vaktermen · controleer.</i></p>'
 
+def denkstappen(titel, stappen):
+    return kader('Denkstappen · ' + titel, '<ol>' + ''.join(f'<li><b>{v}</b> {u}</li>' for v, u in stappen) + '</ol>')
+def geheugensteun(t_): return f'<p style="font-size:.93em;color:#475569;margin:10px 0">🧭 <i>{t_}</i></p>'
+def stappenplannen(s):
+    """<h3>Stappenplan: X</h3><ol>…</ol> → kader Denkstappen · X"""
+    return re.sub(r'<h3>Stappenplan: ([^<]*)</h3>\s*(<ol>.*?</ol>)', lambda m: kader('Denkstappen · ' + m.group(1)[0].upper() + m.group(1)[1:], m.group(2)), s, flags=re.S)
+
 def ken(s):
     """kaders als vaste soort: Ken dit (leerstof) of Voorbeeld (leefwereld)"""
     def f(m):
         k = m.group(1)
-        if k.startswith(('Ken dit', 'Samenvatting', 'Voorbeeld', 'Let op', 'Zo pak')): return m.group(0)
+        if k.startswith(('Ken dit', 'Samenvatting', 'Voorbeeld', 'Let op', 'Zo pak', 'Denkstappen')): return m.group(0)
         k2 = 'Voorbeeld · ' + k if k.startswith('Brussel') else ('Ken dit' if k == 'Onthoud' else 'Ken dit · ' + k)
         return f'<div class="kader"><div class="kop">{k2}</div>'
     return re.sub(r'<div class="kader"><div class="kop">([^<]*)</div>', f, s)
@@ -38,14 +45,15 @@ def voor_tool(s, extra):
     return s[:i] + extra + s[i:] if i >= 0 else s + extra
 
 def deel(inh, d, nr):
-    inh = ken(inh)
+    inh = ken(stappenplannen(inh))
     if d is None: return inh
     inh = re.sub(r'<div class="schrijflijnen">(?:<div></div>)*</div>', '', inh)   # geen invulboek
     inh = inh.replace('<p>Let op het verschil: ', '<p>Het verschil: ')
     m = re.match(r'\s*<div class="voorkennis">.*?</ul></div>', inh, re.S)
     kop = m.group(0) if m else ''
     rest = inh[len(kop):]
-    extra = (vb(*d['vb']) if d.get('vb') else '') + (letop(d['letop']) if d.get('letop') else '')
+    extra = ((denkstappen(*d['stappen']) if d.get('stappen') else '') + (geheugensteun(d['steun']) if d.get('steun') else '')
+             + (vb(*d['vb']) if d.get('vb') else '')) + (letop(d['letop']) if d.get('letop') else '')
     return drie(*d['wb']) + kop + idee(d['idee']) + voor_tool(rest, extra) + test(nr, d['test'])
 
 def uitdagingen(lijst, eerste):

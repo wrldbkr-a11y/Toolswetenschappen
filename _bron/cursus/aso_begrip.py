@@ -12,7 +12,7 @@ def denkstappen(titel, stappen):
 
 def test(nr, vragen):
     """Test jezelf: vragen die je niet beantwoordt door naar een figuur te kijken; antwoorden online (vrijgave)"""
-    q = '<b>Test jezelf.</b> Kan je dit uitleggen zonder in je cursus te kijken?<ol>' + ''.join(f'<li>{v}</li>' for v, _ in vragen) + '</ol>'
+    q = '<b>Test jezelf.</b> Kan je dit uitleggen zonder in je cursus te kijken?' + ''.join(f'<br>{i}. {v}' for i, (v, _) in enumerate(vragen, start=1))
     return denk(f'denk_{100 + nr}', q, [(str(i + 1), a) for i, (_, a) in enumerate(vragen)], 'Lukt het niet? Lees het idee en het uitgewerkte voorbeeld opnieuw.')
 
 IDEE = {
