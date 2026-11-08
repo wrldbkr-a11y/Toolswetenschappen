@@ -12,10 +12,17 @@ def defs():
             f'<clipPath id="endoclip"><ellipse cx="560" cy="215" rx="118" ry="150"/></clipPath></defs>')
 
 def pijl(d, w=7):
+    if not MODUS['pijlen']: return ''
     return (f'<path d="{d}" fill="none" stroke="#fff" stroke-width="{w + 3}" stroke-linecap="round"/>'
             f'<path d="{d}" fill="none" stroke="{PIJL}" stroke-width="{w}" stroke-linecap="round" marker-end="url(#kp)"/>')
 
+MODUS = {'labels': True, 'pijlen': True, 'nr': 0}
 def label(x, y, tekst, x2, y2, anker='start'):
+    if not MODUS['labels']:   # oefenversie: een nummer in plaats van de naam
+        if tekst == 'geen afvoerbuis': return ''
+        MODUS['nr'] += 1; n = MODUS['nr']; x = min(max(x, 16), 744)
+        return (f'<line x1="{x2}" y1="{y2}" x2="{x}" y2="{y - 6}" stroke="{INK}" stroke-width="1.2"/><circle cx="{x2}" cy="{y2}" r="2.5" fill="{INK}"/>'
+                f'<circle cx="{x}" cy="{y - 6}" r="12" fill="#fff" stroke="{INK}" stroke-width="1.5"/><text x="{x}" y="{y - 1}" text-anchor="middle" font-size="14" font-weight="700" fill="{INK}">{n}</text>')
     w = len(tekst) * 8.6                        # geschatte breedte van de tekst
     links, rechts = (x - w, x) if anker == 'end' else (x, x + w)
     xa = rechts + 4 if x2 > rechts else (links - 4 if x2 < links else x2)
@@ -83,10 +90,14 @@ def legende():
             f'<text x="70" y="475">exocrien: de klierafscheiding gaat via de afvoerbuis naar buiten of naar een holte</text>'
             f'<text x="70" y="495">endocrien: de klier geeft hormonen af aan het bloed</text></g>')
 
-def figuur():
-    return (f'<svg viewBox="0 0 760 510" width="760" xmlns="http://www.w3.org/2000/svg" font-family="Inter,Atkinson Hyperlegible,sans-serif" role="img" '
-            f'aria-label="schema van een exocriene klier met afvoerbuis en een endocriene klier zonder afvoerbuis">'
-            f'<rect width="760" height="510" fill="#fff"/>{defs()}{exo()}{endo()}{legende()}</svg>')
+def figuur(labels=True, pijlen=True):
+    MODUS.update(labels=labels, pijlen=pijlen, nr=0)
+    leg = legende() if pijlen else ''
+    s = (f'<svg viewBox="0 0 760 510" width="760" xmlns="http://www.w3.org/2000/svg" font-family="Inter,Atkinson Hyperlegible,sans-serif" role="img" '
+         f'aria-label="schema van een exocriene klier met afvoerbuis en een endocriene klier zonder afvoerbuis">'
+         f'<rect width="760" height="510" fill="#fff"/>{defs()}{exo()}{endo()}{leg}</svg>')
+    MODUS.update(labels=True, pijlen=True, nr=0)
+    return s if pijlen else s.replace('viewBox="0 0 760 510"', 'viewBox="0 0 760 470"')
 
 if __name__ == '__main__':
     open('/tmp/klieren_schema.svg', 'w').write(figuur())

@@ -56,3 +56,6 @@ pagina('cursus-reageren.html', T3 + '1', 'De mens reageert op prikkels', I('#e1'
        [('Effectoren: spieren en klieren', g['b5_1'])], OEF(g['b5_oef'], (TOOL + '#e1', 'Oefen verder in de tool')), SAM(g['b5_sam']), C['reag'])
 pagina('cursus-spieren.html', T3 + '2', 'Reactie door spieren', I('#e2'), LD(g['b6_doelen']), g['b6_vk'],
        [('Spieren, pezen en gewrichten', g['b6_1']), ('Soorten spierweefsel', g['b6_2']), ('Samentrekken en ontspannen', g['b6_3'])], OEF(g['b6_oef'], (TOOL + '#e4', 'Oefen verder in de tool')), SAM(g['b6_sam']), C['spier'])
+
+# ---- T3 H3-H4 klieren en andere organismen
+exec(open(B + 'bio3_klieren.py', encoding='utf-8').read())

@@ -176,4 +176,9 @@ Z = {
    'Als je een extra tak parallel schakelt, wordt de substitutieweerstand kleiner. Daardoor wordt de totale stroom groter.'),
   ('één lampje in serie kapot → kring onderbroken → alle lampjes uit',
    'Als in een serieschakeling één lampje kapotgaat, is de stroomkring onderbroken. Dan gaan alle lampjes uit.')],
+ 'cursus-klieren.html': [
+  ('schrik → bijnier maakt adrenaline → in het bloed → hart klopt sneller',
+   'Als je schrikt, maakt de bijnier adrenaline. Dat hormoon gaat in het bloed, zodat je hart sneller klopt.'),
+  ('warm → zweetklieren maken zweet → zweet verdampt → je koelt af',
+   'Als het warm is, maken de zweetklieren meer zweet. Het zweet verdampt op je huid. Daardoor koel je af.')],
 }
