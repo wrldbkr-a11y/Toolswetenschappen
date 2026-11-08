@@ -61,3 +61,8 @@ Leerlingen krijgen een ingevulde naslag; wisbordvragen per deel (`aso_wisbord.py
 - `cd /home/claude/cursus && python3 /home/claude/toolswetenschappen/_bron/cursus/chemie3_nieuw.py`
 - Gedeelde bouwstenen voor bio en chemie: `_bron/cursus/nieuw_formaat.py`. Nieuwe inhoud: `chemie3_inhoud.py`.
 - Word: `Cursus_Chemie_3.docx` (leerling, zonder bijlage) en `Cursus_Chemie_3_leerkracht.docx`.
+
+## Cursus snelheid 3ASO (thema 2, hoofdstuk 1–2)
+- `cd /home/claude/cursus && python3 /home/claude/toolswetenschappen/_bron/cursus/snelheid_3aso.py` → `cursus-snelheid-3aso.html`
+- Volledig nieuw geschreven (figuren, inhoud en oefeningen in één bestand); gebruikt `nieuw_formaat.py`.
+- Word: `Cursus_Snelheid_3ASO.docx` en `Cursus_Snelheid_3ASO_leerkracht.docx`.
