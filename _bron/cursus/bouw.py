@@ -44,6 +44,10 @@ def bouw(bestand, eyebrow, titel, intro, blokken, vrijgave, cornell):
     s = koppen_toevoegen(s, bestand)   # elke tabel een titel per kolom
     from formules import ruimte_tussen_formules
     s = ruimte_tussen_formules(s)   # geen punt tussen twee formules (lijkt op een maalteken)
+    from breuken import breuken
+    s = breuken(s)   # horizontale breukstreep en brede ruimte tussen formules
+    from vectoren import vectortekens
+    s = vectortekens(s, bestand)   # vectorteken boven elk krachtsymbool in figuren
     open('/home/claude/toolswetenschappen/' + bestand, 'w', encoding='utf-8').write(voeg_toe(s))
 
 FOOTER = 'Cursus fysica — gemaakt voor klasgebruik, bij de tools op Oefentools wetenschappen.'

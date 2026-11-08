@@ -1,5 +1,5 @@
 const fs = require('fs');
-const { Document, Packer, Paragraph, TextRun, HeadingLevel, Table, TableRow, TableCell, WidthType, ShadingType, BorderStyle,
+const { Math: OMath, MathRun, MathFraction, MathSubScript, MathSuperScript, Document, Packer, Paragraph, TextRun, HeadingLevel, Table, TableRow, TableCell, WidthType, ShadingType, BorderStyle,
   AlignmentType, LevelFormat, TabStopType, ImageRun, ExternalHyperlink, Footer, Header, PageNumber, TableOfContents, PageBreak, PageOrientation } = require('docx');
 
 const D = JSON.parse(fs.readFileSync('/home/claude/word/data/cursus.json'));
@@ -11,9 +11,17 @@ const SERIF = 'Cambria', SANS = 'Calibri';
 const NAVY = '1F3A5F', DIM = '51606E', W = 9026;
 
 let lijstInstantie = 0;
-const runs = (rs, extra = {}) => (rs || []).map(r => r.br ? new TextRun({ break: 1 }) :
+const mathKids = rs => { const out = []; let buf = '';
+  const flush = () => { if (buf) { out.push(new MathRun(buf)); buf = ''; } };
+  (rs || []).forEach(r => { if (!r.t) return;
+    if (r.sub || r.sup) { const base = buf.slice(-1) || ' '; buf = buf.slice(0, -1); flush();
+      out.push(r.sub ? new MathSubScript({ children: [new MathRun(base)], subScript: [new MathRun(r.t)] }) : new MathSuperScript({ children: [new MathRun(base)], superScript: [new MathRun(r.t)] })); }
+    else buf += r.t; });
+  flush(); return out; };
+const runs = (rs, extra = {}) => (rs || []).map(r => r.frac ? new OMath({ children: [new MathFraction({ numerator: mathKids(r.frac.t), denominator: mathKids(r.frac.n) })] }) : r.br ? new TextRun({ break: 1 }) :
   new TextRun({ text: r.t, bold: r.b || extra.bold, italics: r.i || extra.italics, subScript: r.sub, superScript: r.sup, font: extra.font || SERIF, size: extra.size, color: extra.color }));
-const par = (rs, o = {}) => new Paragraph({ spacing: { after: 100, line: 300 }, ...o, children: Array.isArray(rs) && rs[0] instanceof TextRun ? rs : runs(rs, o.run || {}) });
+const metBreuk = rs => Array.isArray(rs) && rs.some(r => r && r.frac);
+const par = (rs, o = {}) => new Paragraph({ spacing: metBreuk(rs) ? { before: 60, after: 140 } : { after: 100, line: 300 }, ...o, children: Array.isArray(rs) && (rs[0] instanceof TextRun || rs[0] instanceof OMath) ? rs : runs(rs, o.run || {}) });
 
 function doos(kinderen, { fill = 'FFFFFF', rand = NAVY, links = 24, stijl = BorderStyle.SINGLE, alle = 'D9D6CC' } = {}) {
   const b = { style: stijl, size: 4, color: alle };
@@ -33,11 +41,11 @@ function blokken(items, ctx) {
       case 'h4': out.push(new Paragraph({ heading: HeadingLevel.HEADING_4, keepNext: true, children: [new TextRun({ text: it.t })] })); break;
       case 'ul': {
         const ref = ctx.doelen ? 'vink' : 'bol';
-        it.items.forEach(li => out.push(new Paragraph({ numbering: { reference: ref, level: 0 }, spacing: { after: 60, line: 290 }, children: runs(li) })));
+        it.items.forEach(li => out.push(new Paragraph({ numbering: { reference: ref, level: 0 }, spacing: metBreuk(li) ? { before: 40, after: 100 } : { after: 60, line: 290 }, children: runs(li) })));
         break; }
       case 'ol': {
         const inst = ++lijstInstantie;
-        it.items.forEach(li => out.push(new Paragraph({ numbering: { reference: it.letters ? 'letter' : 'cijfer', level: 0, instance: inst }, spacing: { after: 60, line: 290 }, children: runs(li) })));
+        it.items.forEach(li => out.push(new Paragraph({ numbering: { reference: it.letters ? 'letter' : 'cijfer', level: 0, instance: inst }, spacing: metBreuk(li) ? { before: 40, after: 100 } : { after: 60, line: 290 }, children: runs(li) })));
         break; }
       case 'table': {
         const nk = Math.max(...it.rows.map(r => r.length));

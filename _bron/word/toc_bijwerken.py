@@ -36,6 +36,7 @@ def invullen(pad, entries):
                 sep_end = sep + len('<w:fldChar w:fldCharType="separate"/></w:r></w:p>')
                 end = s.find('<w:p><w:r><w:fldChar w:fldCharType="end"/></w:r></w:p>', sep_end); assert end > 0
                 s = s[:sep_end] + par + s[end:]
+                s = s.replace('<m:r><m:t', '<m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t')   # formules recht, zoals de tekst
                 data = s.encode('utf-8')
             zuit.writestr(item, data)
     os.replace(tmp, pad)

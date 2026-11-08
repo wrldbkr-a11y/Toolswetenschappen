@@ -140,7 +140,8 @@ def rooster(w, h):
     r += ''.join(f'<line x1="0" y1="{y}" x2="{w}" y2="{y}" stroke="#dbe4ee" stroke-width="1"/>' for y in range(0, h + 1, HK))
     return f'<rect width="{w}" height="{h}" fill="#fff"/>' + r
 def label(x, y, letter, s_, kleur, anker='start'):
-    dx = {'start': 6, 'end': -10, 'middle': -len(s_) * 3.3}[anker]
+    w_ = 8.7 + len(s_) * 5   # breedte van F + subscript
+    dx = {'start': 6, 'end': -w_ + 4.5, 'middle': -w_ / 2 + 4.5}[anker]
     return t(x, y, letter + sub(s_), kleur, anker) + vec(x + dx, y, kleur)
 def doos(x, y, w, h, kleur='#e7c9a9', rand='#7c2d12'):
     return f'<rect x="{x}" y="{y}" width="{w}" height="{h}" fill="{kleur}" stroke="{rand}" stroke-width="2"/>'

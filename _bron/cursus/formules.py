@@ -19,7 +19,10 @@ def _blok(inner):
     uit = delen[0]; heeft_is = '=' in _plat(delen[0])
     for sep, deel in zip(seps, delen[1:]):
         p = _plat(deel)
-        if heeft_is and BEGIN.match(p):
+        sinds = _plat(uit).rsplit('=', 1)[-1]
+        # in een rekenketen (… = ρ · g · h · A = …) is · een maalteken; een scheiding herken je aan &nbsp;, aan een breuk erna of aan een getal ervoor
+        echt = '&nbsp;' in sep or '/' in p or re.search(r'\d', sinds)
+        if heeft_is and BEGIN.match(p) and echt and not re.search(r'[−+-]', sinds):
             uit += SEP + deel           # nieuwe formule of nieuw gegeven
         else:
             uit += sep + deel

@@ -44,11 +44,12 @@ fs.mkdirSync(UIT + '/fig', { recursive: true });
       const runsVan = (node, fl = {}) => {
         const out = [];
         node.childNodes.forEach(n => {
-          if (n.nodeType === 3) { const t = n.textContent.replace(/\s+/g, ' '); if (t) out.push({ t, ...fl }); return; }
+          if (n.nodeType === 3) { const t = n.textContent.replace(/[ \t\n\r\f]+/g, ' '); if (t) out.push({ t, ...fl }); return; }
           if (n.nodeType !== 1) return;
           const tag = n.tagName;
           if (tag === 'BR') { out.push({ br: true }); return; }
           if (['BUTTON', 'SCRIPT', 'OL', 'UL', 'TABLE', 'FIGURE', 'svg'].includes(tag)) return;
+          if (n.classList && n.classList.contains('fr')) { const k = n.children; out.push({ frac: { t: trim(runsVan(k[0])), n: trim(runsVan(k[1])) }, ...fl }); return; }
           const f2 = { ...fl };
           if (tag === 'B' || tag === 'STRONG') f2.b = true;
           if (tag === 'I' || tag === 'EM') f2.i = true;
@@ -59,13 +60,13 @@ fs.mkdirSync(UIT + '/fig', { recursive: true });
         });
         return out;
       };
-      const trim = r => { if (r.length && r[0].t) r[0].t = r[0].t.replace(/^\s+/, ''); const l = r[r.length - 1]; if (l && l.t) l.t = l.t.replace(/\s+$/, ''); return r.filter(x => x.br || x.t); };
+      const trim = r => { if (r.length && r[0].t) r[0].t = r[0].t.replace(/^\s+/, ''); const l = r[r.length - 1]; if (l && l.t) l.t = l.t.replace(/\s+$/, ''); return r.filter(x => x.br || x.t || x.frac); };
       let figNr = 0;
       const items = el => {
         const out = []; let inline = [];
         const flush = () => { const r = trim(inline); if (r.length) out.push({ type: 'p', runs: r }); inline = []; };
         el.childNodes.forEach(n => {
-          if (n.nodeType === 3) { if (n.textContent.trim()) inline.push({ t: n.textContent.replace(/\s+/g, ' ') }); return; }
+          if (n.nodeType === 3) { if (n.textContent.trim()) inline.push({ t: n.textContent.replace(/[ \t\n\r\f]+/g, ' ') }); return; }
           if (n.nodeType !== 1) return;
           const tag = n.tagName, c = n.classList;
           if (['B', 'I', 'STRONG', 'EM', 'SUB', 'SUP', 'SPAN', 'BR'].includes(tag) && !c.contains('stap')) {

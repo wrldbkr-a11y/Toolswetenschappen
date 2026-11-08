@@ -92,3 +92,9 @@ Leerlingen krijgen een ingevulde naslag; wisbordvragen per deel (`aso_wisbord.py
 - `nw5_nieuw.py` + `nw5_inhoud.py`: ladingen, coulomb, elektrisch veld, potentiaal (sjabloon_ac, met nummering) en gemengde schakelingen.
 - Tekenoefeningen op ruitjes (2 per hoofdstuk) staan in de builders. `pagina(..., nrs=[...])` zet eigen deelnummers (bv. 1.1).
 - bouw.py is nu een pure bibliotheek: importeren bouwt geen pagina meer.
+
+## Formules en vectortekens (nabewerking in bouw.py)
+- `breuken.py`: symbolische formules met / krijgen een horizontale breukstreep (span.fr); formules naast elkaar een brede tussenruimte. Rekenwerk met getallen blijft gewoon.
+- `formules.py`: "·" is alleen een scheiding tussen formules bij &nbsp;, een breuk erna of een getal ervoor (niet in een rekenketen).
+- `vectoren.py`: vectorteken boven F…/E…-labels in figuren (niet in grafieken en optica); pijlen met marker dunner.
+- Word: extract.js geeft breuken door als {frac}; maak_docx.js maakt er OMML-breuken van (recht, via toc_bijwerken.py). Brede spaties blijven bewaard.
