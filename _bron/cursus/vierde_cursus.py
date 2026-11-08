@@ -516,12 +516,12 @@ e3 = f'''<h3>Vormen van energie</h3>
 
 e4 = f'''<table class="vb"><tr><td>Gravitationele potentiële energie</td><td><b>E<sub>pot,g</sub> = m · g · h</b></td><td>m in kg · g in N/kg · h in m</td></tr>
 <tr><td>Kinetische energie</td><td><b>E<sub>k</sub> = ½ · m · v²</b></td><td>m in kg · v in m/s</td></tr>
-<tr><td>Elastische potentiële energie</td><td><b>E<sub>pot,el</sub> = ½ · k · x²</b></td><td>k: veerconstante in N/m · x: uitrekking of indrukking in m</td></tr></table>
-<p>Energie druk je uit in <b>joule</b> (J). Let op: v en x staan in het <b>kwadraat</b>. Een 2 keer zo grote snelheid geeft een 4 keer zo grote kinetische energie.</p>
+<tr><td>Elastische potentiële energie</td><td><b>E<sub>pot,el</sub> = ½ · k · Δl²</b></td><td>k: veerconstante in N/m · Δl: uitrekking of indrukking in m</td></tr></table>
+<p>Energie druk je uit in <b>joule</b> (J). Let op: v en Δl staan in het <b>kwadraat</b>. Een 2 keer zo grote snelheid geeft een 4 keer zo grote kinetische energie.</p>
 <h3>Omvormen</h3>
 <p>m = E<sub>pot,g</sub> / (g · h) &nbsp;·&nbsp; h = E<sub>pot,g</sub> / (m · g)<br>
 m = 2 · E<sub>k</sub> / v² &nbsp;·&nbsp; v = √(2 · E<sub>k</sub> / m)<br>
-k = 2 · E<sub>pot,el</sub> / x² &nbsp;·&nbsp; x = √(2 · E<sub>pot,el</sub> / k)</p>
+k = 2 · E<sub>pot,el</sub> / Δl² &nbsp;·&nbsp; Δl = √(2 · E<sub>pot,el</sub> / k)</p>
 <p>Zet snelheden in km/h eerst om naar m/s: delen door 3,6. Bv. 36 km/h = 10 m/s.</p>
 {denk('denk_4', 'Een auto rijdt eerst 30 km/h in een zone 30 in Elsene, daarna 60 km/h op een invalsweg. Hoeveel keer zo groot is zijn kinetische energie bij 60 km/h? Wat betekent dat voor het remmen?', [
   ('Factor van v', 'v wordt × 2.'),
@@ -540,7 +540,7 @@ e_oef = f'''{oef('opl_1', 1, 'Welk systeem?', 'Open, gesloten of geïsoleerd? Le
 {oef('opl_4', 4, 'Tram', 'Een tram van 40 ton rijdt 36 km/h. Bereken zijn kinetische energie.', [
   ('Gegeven', 'm = 40 ton = 40 000 kg · v = 36 km/h = 10 m/s'), ('Formule', 'E<sub>k</sub> = ½ · m · v²'), ('Oplossing', 'E<sub>k</sub> = ½ · 40 000 · 10² = 2 000 000 J')], 'E<sub>k</sub> = 2,0 · 10⁶ J')}
 {oef('opl_5', 5, 'Veer', 'Een veer met een veerconstante van 200 N/m wordt 5,0 cm ingedrukt. Bereken de elastische potentiële energie.', [
-  ('Gegeven', 'k = 200 N/m · x = 5,0 cm = 0,050 m'), ('Formule', 'E<sub>pot,el</sub> = ½ · k · x²'), ('Oplossing', 'E<sub>pot,el</sub> = ½ · 200 · 0,050² = 0,25 J')], 'E<sub>pot,el</sub> = 0,25 J')}
+  ('Gegeven', 'k = 200 N/m · Δl = 5,0 cm = 0,050 m'), ('Formule', 'E<sub>pot,el</sub> = ½ · k · Δl²'), ('Oplossing', 'E<sub>pot,el</sub> = ½ · 200 · 0,050² = 0,25 J')], 'E<sub>pot,el</sub> = 0,25 J')}
 {oef('opl_6', 6, 'Snelheid berekenen', 'Een voetbal van 0,45 kg heeft na een trap een kinetische energie van 20 J. Bereken zijn snelheid.', [
   ('Formule', 'v = √(2 · E<sub>k</sub> / m)'), ('Oplossing', 'v = √(2 · 20 / 0,45) = √88,9 = 9,4 m/s')], 'v = 9,4 m/s')}
 {oef('opl_7', 7, 'Hoogte berekenen', 'Een boek van 2,0 kg ligt op een kast. Zijn gravitationele potentiële energie ten opzichte van de vloer is 30 J. Hoe hoog is de kast?', [
@@ -549,7 +549,7 @@ e_oef = f'''{oef('opl_1', 1, 'Welk systeem?', 'Open, gesloten of geïsoleerd? Le
   ('a', 'm = 1 000 000 kg → E<sub>pot,g</sub> = 1 000 000 · 9,81 · 250 = 2,45 · 10⁹ J'),
   ('b', '’s Nachts: elektrische → gravitationele potentiële energie. Bij een tekort: gravitationele potentiële → kinetische → elektrische energie (+ thermische).')], 'E<sub>pot,g</sub> = 2,5 · 10⁹ J')}
 {oef('opl_9', 9, 'Redeneren', 'Wat gebeurt er met de energie?<ol class="deelvragen" type="a"><li>Een fietser rijdt 3 keer zo snel: wat gebeurt er met E<sub>k</sub>?</li><li>Je tilt een doos 2 keer zo hoog: wat gebeurt er met E<sub>pot,g</sub>?</li><li>Je drukt een veer 2 keer zo ver in: wat gebeurt er met E<sub>pot,el</sub>?</li></ol>', [
-  ('a', 'v × 3 → E<sub>k</sub> × 3² = × 9'), ('b', 'h × 2 → E<sub>pot,g</sub> × 2'), ('c', 'x × 2 → E<sub>pot,el</sub> × 2² = × 4')], 'Let op de kwadraten bij v en x.')}
+  ('a', 'v × 3 → E<sub>k</sub> × 3² = × 9'), ('b', 'h × 2 → E<sub>pot,g</sub> × 2'), ('c', 'Δl × 2 → E<sub>pot,el</sub> × 2² = × 4')], 'Let op de kwadraten bij v en Δl.')}
 {oef('opl_10', 10, 'Energie in een veld', 'Leg telkens uit waar de potentiële energie zit en wanneer ze vrijkomt.<ol class="deelvragen" type="a"><li>een boek op de bovenste plank van de kast</li><li>twee magneten die je uit elkaar houdt</li><li>een ballon die je tegen je trui wreef en die je van de muur wegtrekt</li></ol>', [
   ('a', 'zwaarteveld: het boek heeft gravitationele potentiële energie; die komt vrij als het valt'), ('b', 'magnetisch veld: de magneten trekken elkaar aan; laat je los, dan wordt de energie kinetische energie'), ('c', 'elektrisch veld: geladen ballon en muur trekken elkaar aan; laat je los, dan beweegt de ballon terug')],
   'In elk veld kan een kracht arbeid verrichten: daarom zit er potentiële energie in.')}'''
@@ -558,7 +558,7 @@ e_samenv = '''<p><b>Open</b> systeem: energie en materie uitwisselen · <b>geslo
 <p>In een zwaarteveld, magnetisch veld en elektrisch veld werkt een kracht op afstand: verplaats je tegen die kracht in, dan sla je <b>potentiële energie</b> op.</p>
 <p><b>Behoud van energie</b>: energie wordt enkel omgezet of overgedragen. Er ontstaat bijna altijd ook thermische energie.</p>
 <p><b>Pompcentrale</b>: overschot → water omhoog pompen (elektrisch → gravitationeel); tekort → water door turbine (gravitationeel → elektrisch).</p>
-<p><b>E<sub>pot,g</sub> = m · g · h</b> · <b>E<sub>k</sub> = ½ · m · v²</b> · <b>E<sub>pot,el</sub> = ½ · k · x²</b></p>'''
+<p><b>E<sub>pot,g</sub> = m · g · h</b> · <b>E<sub>k</sub> = ½ · m · v²</b> · <b>E<sub>pot,el</sub> = ½ · k · Δl²</b></p>'''
 
 maak('cursus-energie-systemen.html', 'Fysica 4de jaar · Thema 2 Energie en vermogen · Hoofdstuk 1', 'Energie in systemen',
      'Werk dit hoofdstuk samen met de tool <a href="energie-vermogen.html">Energie en vermogen</a>. Oefeningen maak je op papier.',

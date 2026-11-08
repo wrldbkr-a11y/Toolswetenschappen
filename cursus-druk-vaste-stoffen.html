@@ -98,7 +98,7 @@ footer{max-width:900px;margin:0 auto;padding:0 24px 40px;color:var(--text-dim);f
 .schrijflijnen{display:none;}
 .schrijflijnen div{border-bottom:1px solid #999;height:9mm;}
 </style>
-</head>
+<style>.vb th{text-align:left;font-weight:700;padding:4px 12px 4px 0;border-bottom:2px solid var(--line,#cbd5e1);color:var(--text,#1D2A36)}</style></head>
 <body>
 <div id="banner"></div>
 <header class="top">
@@ -134,7 +134,7 @@ footer{max-width:900px;margin:0 auto;padding:0 24px 40px;color:var(--text-dim);f
 <div class="kader"><div class="kop">Definitie</div><p><b>Druk</b> is de kracht per oppervlakte-eenheid. Druk vertelt hoe sterk een kracht verdeeld is over een oppervlak.</p></div>
 <p>Om de druk te berekenen, deel je de kracht door de oppervlakte waarop ze werkt:</p>
 <div class="formule">p = F / A</div>
-<table class="vb"><tr><td>p</td><td>druk, in pascal (Pa)</td></tr><tr><td>F</td><td>kracht loodrecht op het oppervlak, in newton (N)</td></tr><tr><td>A</td><td>oppervlakte, in vierkante meter (m²)</td></tr></table>
+<table class="vb"><tr><th>Symbool</th><th>Betekenis en eenheid</th></tr><tr><td>p</td><td>druk, in pascal (Pa)</td></tr><tr><td>F</td><td>kracht loodrecht op het oppervlak, in newton (N)</td></tr><tr><td>A</td><td>oppervlakte, in vierkante meter (m²)</td></tr></table>
 <p>1 Pa = 1 N/m². Dat is een kleine druk: een blad papier dat plat op tafel ligt, geeft ongeveer 1 Pa. Daarom gebruik je vaak <b>kPa</b> (1 kPa = 1000 Pa) of <b>hPa</b> (1 hPa = 100 Pa).</p>
 <a class="toolknop" href="druk.html#s1" target="_blank" rel="noopener">▶ Probeer het in de tool: bakstenen op zand</a>
 <div class="denk" data-vrij="denk_1">
@@ -153,7 +153,7 @@ footer{max-width:900px;margin:0 auto;padding:0 24px 40px;color:var(--text-dim);f
 <p>Een kist van 24 kg staat op de grond. Het contactoppervlak is 400 cm². Bereken de druk op de grond.</p>
 <div class="stappenplan"><span>1 · gegeven</span><span>2 · gevraagd</span><span>3 · formule</span><span>4 · oplossing</span><span>5 · antwoord met eenheid</span></div>
 <table class="vb">
-<tr><td>Gegeven</td><td>m = 24 kg &nbsp;·&nbsp; A = 400 cm² = 0,0400 m² &nbsp;·&nbsp; g = 9,81 N/kg</td></tr>
+<tr><th>Stap</th><th>Uitwerking</th></tr><tr><td>Gegeven</td><td>m = 24 kg&emsp;&emsp;A = 400 cm² = 0,0400 m²&emsp;&emsp;g = 9,81 N/kg</td></tr>
 <tr><td>Gevraagd</td><td>p = ?</td></tr>
 <tr><td>Formule</td><td>F = m · g en p = F / A</td></tr>
 <tr><td>Oplossing</td><td>F = 24 kg · 9,81 N/kg = 235,4 N<br>p = 235,4 N / 0,0400 m² = 5886 Pa</td></tr>
@@ -200,25 +200,25 @@ footer{max-width:900px;margin:0 auto;padding:0 24px 40px;color:var(--text-dim);f
   <div class="titel"><span class="nr">2</span>Druk van een kist</div>
   <div class="tekst">Een kist van 30 kg staat op een vloer. Het contactoppervlak is 0,25 m². Bereken de druk op de vloer.</div>
   <div class="onder" style="margin-top:8px"></div>
-  <div class="redenering"><ol><li><span class="stap">Gegeven</span> m = 30 kg · A = 0,25 m² · g = 9,81 N/kg</li><li><span class="stap">Gevraagd</span> p</li><li><span class="stap">Formule</span> F = m · g en p = F / A</li><li><span class="stap">Oplossing</span> F = 30 · 9,81 = 294,3 N &nbsp;→&nbsp; p = 294,3 N / 0,25 m² = 1177 Pa</li></ol><div class="besluit">p = 1,18 · 10³ Pa</div></div>
+  <div class="redenering"><ol><li><span class="stap">Gegeven</span> m = 30 kg&emsp;&emsp;A = 0,25 m²&emsp;&emsp;g = 9,81 N/kg</li><li><span class="stap">Gevraagd</span> p</li><li><span class="stap">Formule</span> F = m · g en p = F / A</li><li><span class="stap">Oplossing</span> F = 30 · 9,81 = 294,3 N &nbsp;→&nbsp; p = 294,3 N / 0,25 m² = 1177 Pa</li></ol><div class="besluit">p = 1,18 · 10³ Pa</div></div>
 </div>
 <div class="oef" data-vrij="opl_3">
   <div class="titel"><span class="nr">3</span>Naaldhak of olifant?</div>
   <div class="tekst">Een vrouw van 60 kg staat even op één naaldhak met een oppervlakte van 1,0 cm². Een olifant van 4000 kg staat op 4 poten van elk 700 cm².<ol class="deelvragen" type="a"><li>Bereken de druk onder de naaldhak.</li><li>Bereken de druk onder de olifant.</li><li>Wie veroorzaakt de grootste druk? Hoeveel keer zo groot?</li></ol></div>
   <div class="onder" style="margin-top:8px"></div>
-  <div class="redenering"><ol><li><span class="stap">a</span> F = 60 · 9,81 = 588,6 N · A = 1,0 cm² = 1,0 · 10⁻⁴ m² · p = 588,6 / 1,0 · 10⁻⁴ = 5,9 · 10⁶ Pa</li><li><span class="stap">b</span> F = 4000 · 9,81 = 39 240 N · A = 4 · 700 cm² = 2800 cm² = 0,28 m² · p = 39 240 / 0,28 = 1,4 · 10⁵ Pa</li><li><span class="stap">c</span> 5,9 · 10⁶ / 1,4 · 10⁵ ≈ 42</li></ol><div class="besluit">De naaldhak geeft een ongeveer 42 keer zo grote druk als de olifant!</div></div>
+  <div class="redenering"><ol><li><span class="stap">a</span> F = 60 · 9,81 = 588,6 N&emsp;&emsp;A = 1,0 cm² = 1,0 · 10⁻⁴ m²&emsp;&emsp;p = 588,6 / 1,0 · 10⁻⁴ = 5,9 · 10⁶ Pa</li><li><span class="stap">b</span> F = 4000 · 9,81 = 39 240 N&emsp;&emsp;A = 4 · 700 cm² = 2800 cm² = 0,28 m²&emsp;&emsp;p = 39 240 / 0,28 = 1,4 · 10⁵ Pa</li><li><span class="stap">c</span> 5,9 · 10⁶ / 1,4 · 10⁵ ≈ 42</li></ol><div class="besluit">De naaldhak geeft een ongeveer 42 keer zo grote druk als de olifant!</div></div>
 </div>
 <div class="oef" data-vrij="opl_4">
   <div class="titel"><span class="nr">4</span>Kracht berekenen</div>
   <div class="tekst">De band van een tractor oefent een druk van 80 kPa uit op de grond. Het contactoppervlak van de band is 0,15 m². Hoe groot is de kracht van die band op de grond?</div>
   <div class="onder" style="margin-top:8px"></div>
-  <div class="redenering"><ol><li><span class="stap">Gegeven</span> p = 80 kPa = 80 000 Pa · A = 0,15 m²</li><li><span class="stap">Gevraagd</span> F</li><li><span class="stap">Formule</span> F = p · A</li><li><span class="stap">Oplossing</span> F = 80 000 Pa · 0,15 m² = 12 000 N</li></ol><div class="besluit">F = 1,2 · 10⁴ N</div></div>
+  <div class="redenering"><ol><li><span class="stap">Gegeven</span> p = 80 kPa = 80 000 Pa&emsp;&emsp;A = 0,15 m²</li><li><span class="stap">Gevraagd</span> F</li><li><span class="stap">Formule</span> F = p · A</li><li><span class="stap">Oplossing</span> F = 80 000 Pa · 0,15 m² = 12 000 N</li></ol><div class="besluit">F = 1,2 · 10⁴ N</div></div>
 </div>
 <div class="oef" data-vrij="opl_5">
   <div class="titel"><span class="nr">5</span>Oppervlakte berekenen</div>
   <div class="tekst">Een kast oefent een kracht van 900 N uit op een houten vloer. De vloer kan een druk van ten hoogste 30 kPa verdragen. Hoe groot moet het contactoppervlak minstens zijn? Geef je antwoord in cm².</div>
   <div class="onder" style="margin-top:8px"></div>
-  <div class="redenering"><ol><li><span class="stap">Gegeven</span> F = 900 N · p = 30 kPa = 30 000 Pa</li><li><span class="stap">Gevraagd</span> A (in cm²)</li><li><span class="stap">Formule</span> A = F / p</li><li><span class="stap">Oplossing</span> A = 900 N / 30 000 Pa = 0,030 m² = 0,030 · 10 000 cm² = 300 cm²</li></ol><div class="besluit">Het contactoppervlak moet minstens 300 cm² zijn.</div></div>
+  <div class="redenering"><ol><li><span class="stap">Gegeven</span> F = 900 N&emsp;&emsp;p = 30 kPa = 30 000 Pa</li><li><span class="stap">Gevraagd</span> A (in cm²)</li><li><span class="stap">Formule</span> A = F / p</li><li><span class="stap">Oplossing</span> A = 900 N / 30 000 Pa = 0,030 m² = 0,030 · 10 000 cm² = 300 cm²</li></ol><div class="besluit">Het contactoppervlak moet minstens 300 cm² zijn.</div></div>
 </div>
 <div class="oef" data-vrij="opl_6">
   <div class="titel"><span class="nr">6</span>Redeneren</div>

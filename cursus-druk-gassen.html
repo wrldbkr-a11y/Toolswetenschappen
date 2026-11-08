@@ -98,7 +98,7 @@ footer{max-width:900px;margin:0 auto;padding:0 24px 40px;color:var(--text-dim);f
 .schrijflijnen{display:none;}
 .schrijflijnen div{border-bottom:1px solid #999;height:9mm;}
 </style>
-</head>
+<style>.vb th{text-align:left;font-weight:700;padding:4px 12px 4px 0;border-bottom:2px solid var(--line,#cbd5e1);color:var(--text,#1D2A36)}</style></head>
 <body>
 <div id="banner"></div>
 <header class="top">
@@ -157,7 +157,7 @@ footer{max-width:900px;margin:0 auto;padding:0 24px 40px;color:var(--text-dim);f
 <section class="blok" id="deel3" data-vrij="deel3">
 <h2><span class="nr">3</span>Gasdruk meten: overdruk en onderdruk</h2>
 <h3>Toestellen</h3>
-<table class="vb"><tr><td>Barometer</td><td>meet de <b>luchtdruk</b> (de druk van de atmosfeer)</td></tr>
+<table class="vb"><tr><th>Toestel</th><th>Wat meet het?</th></tr><tr><td>Barometer</td><td>meet de <b>luchtdruk</b> (de druk van de atmosfeer)</td></tr>
 <tr><td>Manometer</td><td>meet de <b>druk van een gas in een vat</b>, bv. in een band, een gasfles of een snelkookpan</td></tr></table>
 <p>Naast pascal (Pa) en hectopascal (hPa) zie je bij een manometer vaak de eenheid <b>bar</b>: 1 bar = 100 000 Pa = 1000 hPa.</p>
 <div class="kader"><div class="kop">Normdruk</div><p>De gemiddelde luchtdruk op zeeniveau noem je de <b>normdruk</b>:</p><p><b>p₀ = 1013 hPa = 101 300 Pa ≈ 1 bar</b></p></div>
@@ -187,13 +187,13 @@ footer{max-width:900px;margin:0 auto;padding:0 24px 40px;color:var(--text-dim);f
   <div class="titel"><span class="nr">2</span>Kracht op een raam</div>
   <div class="tekst">Een raam van een klaslokaal is 1,2 m breed en 0,80 m hoog. De luchtdruk is 101 300 Pa.<ol class="deelvragen" type="a"><li>Bereken de kracht die de buitenlucht op het raam uitoefent.</li><li>Waarom breekt het raam niet?</li></ol></div>
   <div class="onder" style="margin-top:8px"></div>
-  <div class="redenering"><ol><li><span class="stap">Gegeven</span> p = 101 300 Pa · A = 1,2 m · 0,80 m = 0,96 m²</li><li><span class="stap">Formule</span> F = p · A</li><li><span class="stap">a</span> F = 101 300 Pa · 0,96 m² = 97 248 N ≈ 9,7 · 10⁴ N</li><li><span class="stap">b</span> De lucht binnen oefent een even grote kracht uit in de andere zin. De twee krachten heffen elkaar op.</li></ol><div class="besluit">F ≈ 9,7 · 10⁴ N, maar de lucht aan beide kanten oefent een even grote kracht uit.</div></div>
+  <div class="redenering"><ol><li><span class="stap">Gegeven</span> p = 101 300 Pa&emsp;&emsp;A = 1,2 m · 0,80 m = 0,96 m²</li><li><span class="stap">Formule</span> F = p · A</li><li><span class="stap">a</span> F = 101 300 Pa · 0,96 m² = 97 248 N ≈ 9,7 · 10⁴ N</li><li><span class="stap">b</span> De lucht binnen oefent een even grote kracht uit in de andere zin. De twee krachten heffen elkaar op.</li></ol><div class="besluit">F ≈ 9,7 · 10⁴ N, maar de lucht aan beide kanten oefent een even grote kracht uit.</div></div>
 </div>
 <div class="oef" data-vrij="opl_3">
   <div class="titel"><span class="nr">3</span>De zuignap</div>
   <div class="tekst">Een zuignap heeft een oppervlakte van 12 cm². Neem aan dat er onder de zuignap geen lucht meer zit. De luchtdruk is 100 000 Pa.<ol class="deelvragen" type="a"><li>Hoe groot is de kracht van de buitenlucht op de zuignap?</li><li>Hoeveel kilogram zou je er in theorie aan kunnen hangen?</li></ol></div>
   <div class="onder" style="margin-top:8px"></div>
-  <div class="redenering"><ol><li><span class="stap">Gegeven</span> p = 100 000 Pa · A = 12 cm² = 0,0012 m²</li><li><span class="stap">a</span> F = p · A = 100 000 Pa · 0,0012 m² = 120 N</li><li><span class="stap">b</span> m = F / g = 120 N / 9,81 N/kg = 12 kg</li></ol><div class="besluit">F = 120 N; in theorie 12 kg. In werkelijkheid minder, want er sluipt altijd wat lucht onder de zuignap.</div></div>
+  <div class="redenering"><ol><li><span class="stap">Gegeven</span> p = 100 000 Pa&emsp;&emsp;A = 12 cm² = 0,0012 m²</li><li><span class="stap">a</span> F = p&emsp;&emsp;A = 100 000 Pa · 0,0012 m² = 120 N</li><li><span class="stap">b</span> m = F / g = 120 N / 9,81 N/kg = 12 kg</li></ol><div class="besluit">F = 120 N; in theorie 12 kg. In werkelijkheid minder, want er sluipt altijd wat lucht onder de zuignap.</div></div>
 </div>
 <div class="oef" data-vrij="opl_4">
   <div class="titel"><span class="nr">4</span>Overdruk of onderdruk?</div>
@@ -223,7 +223,7 @@ footer{max-width:900px;margin:0 auto;padding:0 24px 40px;color:var(--text-dim);f
   <div class="titel"><span class="nr">8</span>Snelkookpan</div>
   <div class="tekst">In een snelkookpan is er een overdruk van 80 kPa. Het deksel heeft een oppervlakte van 0,050 m². Hoe groot is de extra kracht van het gas in de pan op het deksel, bovenop de kracht van de buitenlucht?</div>
   <div class="onder" style="margin-top:8px"></div>
-  <div class="redenering"><ol><li><span class="stap">Gegeven</span> p (overdruk) = 80 kPa = 80 000 Pa · A = 0,050 m²</li><li><span class="stap">Gevraagd</span> F</li><li><span class="stap">Formule</span> F = p · A</li><li><span class="stap">Oplossing</span> F = 80 000 Pa · 0,050 m² = 4000 N</li></ol><div class="besluit">F = 4,0 · 10³ N. Daarom moet het deksel goed vergrendeld zijn.</div></div>
+  <div class="redenering"><ol><li><span class="stap">Gegeven</span> p (overdruk) = 80 kPa = 80 000 Pa&emsp;&emsp;A = 0,050 m²</li><li><span class="stap">Gevraagd</span> F</li><li><span class="stap">Formule</span> F = p · A</li><li><span class="stap">Oplossing</span> F = 80 000 Pa · 0,050 m² = 4000 N</li></ol><div class="besluit">F = 4,0 · 10³ N. Daarom moet het deksel goed vergrendeld zijn.</div></div>
 </div>
 <div class="oef" data-vrij="opl_9">
   <div class="titel"><span class="nr">9</span>Het kaartje onder het glas</div>

@@ -98,7 +98,7 @@ footer{max-width:900px;margin:0 auto;padding:0 24px 40px;color:var(--text-dim);f
 .schrijflijnen{display:none;}
 .schrijflijnen div{border-bottom:1px solid #999;height:9mm;}
 </style>
-</head>
+<style>.vb th{text-align:left;font-weight:700;padding:4px 12px 4px 0;border-bottom:2px solid var(--line,#cbd5e1);color:var(--text,#1D2A36)}</style></head>
 <body>
 <div id="banner"></div>
 <header class="top">
@@ -123,11 +123,11 @@ footer{max-width:900px;margin:0 auto;padding:0 24px 40px;color:var(--text-dim);f
 <div class="kader"><div class="kop">Definitie</div><p>De <b>hydrostatische druk</b> is de druk in een vloeistof die ontstaat door het gewicht van de vloeistof boven dat punt.</p></div>
 <figure class="figuur"><svg viewBox="0 0 600 230" width="600" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="600" height="230" fill="#fff"/><rect x="0" y="196" width="600" height="34" fill="#eef2f7"/><rect x="120" y="40" width="90" height="156" fill="#cfe5f7" stroke="#475569" stroke-width="3"/><circle cx="210" cy="80" r="3.5" fill="#1e5a8a"/><path d="M212,80 Q234.0,74 252,196" fill="none" stroke="#3b82c4" stroke-width="3"/><circle cx="210" cy="125" r="3.5" fill="#1e5a8a"/><path d="M212,125 Q258.75,119 297,196" fill="none" stroke="#3b82c4" stroke-width="3"/><circle cx="210" cy="170" r="3.5" fill="#1e5a8a"/><path d="M212,170 Q289.0,164 352,196" fill="none" stroke="#3b82c4" stroke-width="3"/><text x="165" y="30" text-anchor="middle" font-size="13" font-weight="400" font-family="Inter,sans-serif" fill="#1e5a8a">water</text><text x="400" y="70" text-anchor="middle" font-size="14" font-weight="400" font-family="Inter,sans-serif" fill="#1D2A36">Hoe dieper het gaatje,</text><text x="400" y="90" text-anchor="middle" font-size="14" font-weight="400" font-family="Inter,sans-serif" fill="#1D2A36">hoe verder het water spuit:</text><text x="400" y="110" text-anchor="middle" font-size="14" font-weight="400" font-family="Inter,sans-serif" fill="#1D2A36">de hydrostatische druk</text><text x="400" y="130" text-anchor="middle" font-size="14" font-weight="400" font-family="Inter,sans-serif" fill="#1D2A36">neemt toe met de diepte.</text></svg><figcaption>Een vat met drie gaatjes: uit het onderste gaatje spuit het water het verst.</figcaption></figure>
 <h3>Waarvan hangt de hydrostatische druk af?</h3>
-<table class="vb"><tr><td>wel</td><td>de <b>diepte h</b> onder het vloeistofoppervlak · de <b>massadichtheid ρ</b> van de vloeistof · de <b>zwaarteveldsterkte g</b></td></tr>
+<table class="vb"><tr><th>Hangt af van?</th><th>Factor</th></tr><tr><td>wel</td><td>de <b>diepte h</b> onder het vloeistofoppervlak · de <b>massadichtheid ρ</b> van de vloeistof · de <b>zwaarteveldsterkte g</b></td></tr>
 <tr><td>niet</td><td>de <b>vorm</b> van het vat · de <b>hoeveelheid</b> vloeistof · de <b>richting</b> waarin je meet (op dezelfde diepte is de druk in alle richtingen even groot)</td></tr></table>
 <div class="formule">p<sub>h</sub> = ρ · g · h</div>
-<table class="vb"><tr><td>p<sub>h</sub></td><td>hydrostatische druk, in pascal (Pa)</td></tr><tr><td>ρ</td><td>massadichtheid van de vloeistof, in kg/m³ (water: 1000 kg/m³)</td></tr><tr><td>g</td><td>zwaarteveldsterkte, in N/kg (op aarde 9,81 N/kg)</td></tr><tr><td>h</td><td>diepte onder het vloeistofoppervlak, in m</td></tr></table>
-<p>Omvormen: <b>ρ = p<sub>h</sub> / (g · h)</b> &nbsp;·&nbsp; <b>g = p<sub>h</sub> / (ρ · h)</b> &nbsp;·&nbsp; <b>h = p<sub>h</sub> / (ρ · g)</b></p>
+<table class="vb"><tr><th>Symbool</th><th>Betekenis en eenheid</th></tr><tr><td>p<sub>h</sub></td><td>hydrostatische druk, in pascal (Pa)</td></tr><tr><td>ρ</td><td>massadichtheid van de vloeistof, in kg/m³ (water: 1000 kg/m³)</td></tr><tr><td>g</td><td>zwaarteveldsterkte, in N/kg (op aarde 9,81 N/kg)</td></tr><tr><td>h</td><td>diepte onder het vloeistofoppervlak, in m</td></tr></table>
+<p>Omvormen: <b>ρ = p<sub>h</sub> / (g · h)</b>&emsp;&emsp;<b>g = p<sub>h</sub> / (ρ · h)</b>&emsp;&emsp;<b>h = p<sub>h</sub> / (ρ · g)</b></p>
 <h3>Proefopstelling lezen</h3>
 <p>Met een drukdoosje en een U-buis meet je de druk in een vloeistof. Wil je één factor onderzoeken, dan verander je enkel die factor en hou je de rest gelijk. Kijk dus wat er tussen de tekeningen <b>verschilt</b>: de diepte, de vloeistof of de richting van het drukdoosje.</p>
 <p>Vivaqua bewaart het Brusselse drinkwater in reservoirs die hoger liggen dan de huizen. Hoe groter het hoogteverschil tussen het water in het reservoir en jouw kraan, hoe groter de hydrostatische druk aan de kraan.</p>
@@ -164,7 +164,7 @@ footer{max-width:900px;margin:0 auto;padding:0 24px 40px;color:var(--text-dim);f
   <div class="titel"><span class="nr">1</span>Zwembad</div>
   <div class="tekst">Bereken de hydrostatische druk op de bodem van een zwembad van 4,0 m diep.</div>
   <div class="onder" style="margin-top:8px"></div>
-  <div class="redenering"><ol><li><span class="stap">Gegeven</span> ρ = 1000 kg/m³ · g = 9,81 N/kg · h = 4,0 m</li><li><span class="stap">Gevraagd</span> p<sub>h</sub></li><li><span class="stap">Formule</span> p<sub>h</sub> = ρ · g · h</li><li><span class="stap">Oplossing</span> p<sub>h</sub> = 1000 · 9,81 · 4,0 = 39 240 Pa</li></ol><div class="besluit">p<sub>h</sub> = 3,9 · 10⁴ Pa</div></div>
+  <div class="redenering"><ol><li><span class="stap">Gegeven</span> ρ = 1000 kg/m³&emsp;&emsp;g = 9,81 N/kg&emsp;&emsp;h = 4,0 m</li><li><span class="stap">Gevraagd</span> p<sub>h</sub></li><li><span class="stap">Formule</span> p<sub>h</sub> = ρ · g · h</li><li><span class="stap">Oplossing</span> p<sub>h</sub> = 1000 · 9,81 · 4,0 = 39 240 Pa</li></ol><div class="besluit">p<sub>h</sub> = 3,9 · 10⁴ Pa</div></div>
 </div>
 <div class="oef" data-vrij="opl_2">
   <div class="titel"><span class="nr">2</span>Duiken in zee</div>
@@ -176,19 +176,19 @@ footer{max-width:900px;margin:0 auto;padding:0 24px 40px;color:var(--text-dim);f
   <div class="titel"><span class="nr">3</span>Hoe diep?</div>
   <div class="tekst">Op welke diepte in water is de hydrostatische druk 50 kPa?</div>
   <div class="onder" style="margin-top:8px"></div>
-  <div class="redenering"><ol><li><span class="stap">Gegeven</span> p<sub>h</sub> = 50 kPa = 50 000 Pa · ρ = 1000 kg/m³ · g = 9,81 N/kg</li><li><span class="stap">Formule</span> h = p<sub>h</sub> / (ρ · g)</li><li><span class="stap">Oplossing</span> h = 50 000 / (1000 · 9,81) = 5,10 m</li></ol><div class="besluit">h = 5,1 m</div></div>
+  <div class="redenering"><ol><li><span class="stap">Gegeven</span> p<sub>h</sub> = 50 kPa = 50 000 Pa&emsp;&emsp;ρ = 1000 kg/m³&emsp;&emsp;g = 9,81 N/kg</li><li><span class="stap">Formule</span> h = p<sub>h</sub> / (ρ · g)</li><li><span class="stap">Oplossing</span> h = 50 000 / (1000 · 9,81) = 5,10 m</li></ol><div class="besluit">h = 5,1 m</div></div>
 </div>
 <div class="oef" data-vrij="opl_4">
   <div class="titel"><span class="nr">4</span>Welke vloeistof?</div>
   <div class="tekst">Op 20 cm diepte in een onbekende vloeistof meet je een hydrostatische druk van 1570 Pa. Bereken de massadichtheid van de vloeistof.</div>
   <div class="onder" style="margin-top:8px"></div>
-  <div class="redenering"><ol><li><span class="stap">Gegeven</span> p<sub>h</sub> = 1570 Pa · h = 20 cm = 0,20 m · g = 9,81 N/kg</li><li><span class="stap">Formule</span> ρ = p<sub>h</sub> / (g · h)</li><li><span class="stap">Oplossing</span> ρ = 1570 / (9,81 · 0,20) = 800 kg/m³</li></ol><div class="besluit">ρ = 8,0 · 10² kg/m³ (bv. alcohol)</div></div>
+  <div class="redenering"><ol><li><span class="stap">Gegeven</span> p<sub>h</sub> = 1570 Pa&emsp;&emsp;h = 20 cm = 0,20 m&emsp;&emsp;g = 9,81 N/kg</li><li><span class="stap">Formule</span> ρ = p<sub>h</sub> / (g · h)</li><li><span class="stap">Oplossing</span> ρ = 1570 / (9,81 · 0,20) = 800 kg/m³</li></ol><div class="besluit">ρ = 8,0 · 10² kg/m³ (bv. alcohol)</div></div>
 </div>
 <div class="oef" data-vrij="opl_5">
   <div class="titel"><span class="nr">5</span>Op de maan</div>
   <div class="tekst">Een astronaut meet op de maan in een vat water op 1,0 m diepte een hydrostatische druk van 1620 Pa. Bereken de zwaarteveldsterkte op de maan.</div>
   <div class="onder" style="margin-top:8px"></div>
-  <div class="redenering"><ol><li><span class="stap">Gegeven</span> p<sub>h</sub> = 1620 Pa · ρ = 1000 kg/m³ · h = 1,0 m</li><li><span class="stap">Formule</span> g = p<sub>h</sub> / (ρ · h)</li><li><span class="stap">Oplossing</span> g = 1620 / (1000 · 1,0) = 1,62 N/kg</li></ol><div class="besluit">g<sub>maan</sub> = 1,62 N/kg</div></div>
+  <div class="redenering"><ol><li><span class="stap">Gegeven</span> p<sub>h</sub> = 1620 Pa&emsp;&emsp;ρ = 1000 kg/m³&emsp;&emsp;h = 1,0 m</li><li><span class="stap">Formule</span> g = p<sub>h</sub> / (ρ · h)</li><li><span class="stap">Oplossing</span> g = 1620 / (1000 · 1,0) = 1,62 N/kg</li></ol><div class="besluit">g<sub>maan</sub> = 1,62 N/kg</div></div>
 </div>
 <div class="oef" data-vrij="opl_6">
   <div class="titel"><span class="nr">6</span>Proefopstelling</div>
@@ -206,13 +206,13 @@ footer{max-width:900px;margin:0 auto;padding:0 24px 40px;color:var(--text-dim);f
   <div class="titel"><span class="nr">8</span>Garagekrik</div>
   <div class="tekst">In een garage in Anderlecht tilt een hydraulische krik een auto van 1200 kg op. De grote zuiger heeft een oppervlakte van 200 cm², de kleine zuiger 4,0 cm².<ol class="deelvragen" type="a"><li>Hoe groot moet de kracht van de grote zuiger zijn?</li><li>Welke kracht moet de garagist op de kleine zuiger uitoefenen?</li></ol></div>
   <div class="onder" style="margin-top:8px"></div>
-  <div class="redenering"><ol><li><span class="stap">a</span> F₂ = m · g = 1200 · 9,81 = 11 772 N</li><li><span class="stap">b</span> F₁ / A₁ = F₂ / A₂ → F₁ = F₂ · A₁ / A₂ = 11 772 · 4,0 / 200 = 235 N</li></ol><div class="besluit">F₂ = 1,18 · 10⁴ N en F₁ = 2,4 · 10² N: 50 keer kleiner.</div></div>
+  <div class="redenering"><ol><li><span class="stap">a</span> F₂ = m&emsp;&emsp;g = 1200 · 9,81 = 11 772 N</li><li><span class="stap">b</span> F₁ / A₁ = F₂ / A₂ → F₁ = F₂ · A₁ / A₂ = 11 772 · 4,0 / 200 = 235 N</li></ol><div class="besluit">F₂ = 1,18 · 10⁴ N en F₁ = 2,4 · 10² N: 50 keer kleiner.</div></div>
 </div>
 <div class="oef" data-vrij="opl_9">
   <div class="titel"><span class="nr">9</span>Reservoir</div>
   <div class="tekst">Het wateroppervlak in een drinkwaterreservoir ligt 40 m hoger dan een kraan op het gelijkvloers. Hoe groot is de hydrostatische druk aan die kraan als de kraan dicht is?</div>
   <div class="onder" style="margin-top:8px"></div>
-  <div class="redenering"><ol><li><span class="stap">Gegeven</span> ρ = 1000 kg/m³ · g = 9,81 N/kg · h = 40 m</li><li><span class="stap">Formule</span> p<sub>h</sub> = ρ · g · h</li><li><span class="stap">Oplossing</span> p<sub>h</sub> = 1000 · 9,81 · 40 = 392 400 Pa</li></ol><div class="besluit">p<sub>h</sub> = 3,9 · 10⁵ Pa, bijna 4 keer de luchtdruk.</div></div>
+  <div class="redenering"><ol><li><span class="stap">Gegeven</span> ρ = 1000 kg/m³&emsp;&emsp;g = 9,81 N/kg&emsp;&emsp;h = 40 m</li><li><span class="stap">Formule</span> p<sub>h</sub> = ρ · g · h</li><li><span class="stap">Oplossing</span> p<sub>h</sub> = 1000 · 9,81 · 40 = 392 400 Pa</li></ol><div class="besluit">p<sub>h</sub> = 3,9 · 10⁵ Pa, bijna 4 keer de luchtdruk.</div></div>
 </div><a class="toolknop" href="druk.html#s12" target="_blank" rel="noopener">▶ Extra oefenen in de tool (kies: vloeistoffen)</a>
 </section>
 <section class="blok" id="samenvatting" data-vrij="samenvatting">
