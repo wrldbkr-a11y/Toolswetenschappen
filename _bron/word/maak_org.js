@@ -45,8 +45,8 @@ function themaTabel(o, th, i) {
       cel([alinea([tekst('H' + nr, { bold: true, color: DIM })], { align: AlignmentType.CENTER, after: 0 })], kol[0], { borders: randRij }),
       cel([alinea(titelRuns, { after: 0 })], kol[1], { borders: randRij }),
       cel([alinea([tekst(wat, { size: 18, color: DIM })], { after: 0 })], kol[2], { borders: randRij }),
-      cel([alinea([tekst(ex === 'dec' ? ' december ' : ' juni ', { bold: true, size: 17, color: ex === 'dec' ? 'FFFFFF' : JUN })], { align: AlignmentType.CENTER, after: 0 })], kol[3],
-          { borders: randRij, fill: ex === 'dec' ? DEC : 'F3EEFF', v: VerticalAlign.CENTER })] });
+      cel([alinea([tekst(ex === 'dec' ? ' december ' : ' juni ', { bold: true, size: 17, color: ex === 'dec' ? DEC : JUN })], { align: AlignmentType.CENTER, after: 0 })], kol[3],
+          { borders: randRij, fill: ex === 'dec' ? 'EAF5EE' : 'F3EEFF', v: VerticalAlign.CENTER })] });
   });
   HOUD = false;
   return new Table({ width: { size: W, type: WidthType.DXA }, columnWidths: kol, rows: [kop, ...rijen] });
@@ -64,7 +64,7 @@ function document(o) {
   ];
   // markering van de legende: achtergrondkleur via shading op de run
   kids[3] = new Paragraph({ spacing: { after: 200 }, children: [
-    new TextRun({ text: ' december ', font: FONT, size: 17, bold: true, color: 'FFFFFF', shading: { type: ShadingType.CLEAR, color: 'auto', fill: DEC } }),
+    new TextRun({ text: ' december ', font: FONT, size: 17, bold: true, color: DEC, shading: { type: ShadingType.CLEAR, color: 'auto', fill: 'EAF5EE' } }),
     tekst('  leerstof voor het examen van december      ', { size: 17, color: DIM }),
     new TextRun({ text: ' juni ', font: FONT, size: 17, bold: true, color: JUN, shading: { type: ShadingType.CLEAR, color: 'auto', fill: 'F3EEFF' } }),
     tekst('  leerstof voor het examen van juni', { size: 17, color: DIM })] });

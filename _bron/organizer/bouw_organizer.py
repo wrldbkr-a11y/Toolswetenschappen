@@ -22,7 +22,7 @@ h1{font-size:clamp(1.8rem,5vw,2.4rem);line-height:1.1;margin:.2rem 0 1rem}
 .grote span{font-size:1.25rem;font-weight:700}
 .legende{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:.92rem;color:var(--muted);margin:0 0 22px}
 .badge{display:inline-block;font-size:.78rem;font-weight:700;border-radius:999px;padding:1px 9px;white-space:nowrap}
-.badge.dec{background:var(--dec);color:#fff}.badge.jun{background:#fff;color:var(--jun);border:1.5px solid var(--jun)}
+.badge.dec{background:#fff;color:var(--dec);border:1.5px solid var(--dec)}.badge.jun{background:#fff;color:var(--jun);border:1.5px solid var(--jun)}
 .thema{position:relative;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:16px 18px 12px;display:grid;grid-template-columns:64px 1fr;gap:4px 16px}
 .thema + .pijl{height:26px;display:flex;justify-content:center}
 .thema + .pijl::before{content:"";width:2px;background:var(--c);opacity:.5}
