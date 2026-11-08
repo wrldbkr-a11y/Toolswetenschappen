@@ -72,3 +72,8 @@ Leerlingen krijgen een ingevulde naslag; wisbordvragen per deel (`aso_wisbord.py
 - Leest `optica_cursus.py` (de oude maak()-aanroepen worden opgevangen) en `derde_krachten.py` (tot `delen = [`); nieuwe inhoud in `nw3_inhoud.py`.
 - Stappenplannen (`<h3>Stappenplan: …</h3><ol>`) worden automatisch kaders "Denkstappen · …"; nieuwe denkstappen en geheugensteunen via `stappen=` en `steun=` in `D(...)`.
 - Word: `Cursus_Fysica_3NW.docx` (zonder bijlage) en `Cursus_Fysica_3NW_leerkracht.docx`.
+
+## Cursus 3NW deel 2: zwaartekracht, wrijving en veerkracht (thema 2, hoofdstuk 1, 3, 5, 6)
+- `cd /home/claude/cursus && python3 /home/claude/toolswetenschappen/_bron/cursus/nw3_krachten2.py` → `cursus-zwaartekracht-wrijving-veer.html`
+- Hergebruikt figuren en oefeningen uit de 3ASO-cursus (aso_krachten.py tot aso_extra), links naar de NW-tools; wrijving is nieuw.
+- Word: `Cursus_Fysica_3NW_deel2.docx` en `..._leerkracht.docx`.

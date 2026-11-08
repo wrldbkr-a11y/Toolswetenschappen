@@ -505,9 +505,9 @@ def twee_breking():
     return svg(a + b + t(155, 258, 'naar de normaal toe: r &lt; i', INK, 'middle', 13) + t(485, 258, 'van de normaal weg: r &gt; i', INK, 'middle', 13), 640, 268)
 fig_breking = twee_breking()
 
-def verhoging_fig(depth=120, xe=200, stap=4, ruitjes=False, W=640, H=360):
+def verhoging_fig(depth=120, xe=200, stap=4, ruitjes=False, W=640, H=385, pupil=44, oog=3.2):
     """tekening zoals in de tool: voorwerp met punt V, twee stralen, normalen, gebroken stralen, verlengden, V'"""
-    n, waterY, ox, eyeH, pupil, BW, BH = 1.33, 170, 140, 150, 150, 110, 22
+    n, waterY, ox, eyeH, BW, BH = 1.33, 192, 140, 150, 110, 22   # pupil klein: beide stralen gaan echt het oog in
     C1, C2 = '#2233dd', '#dd1a1a'
     crit = math.asin(1 / n)
     def solve(xe_):
@@ -538,7 +538,7 @@ def verhoging_fig(depth=120, xe=200, stap=4, ruitjes=False, W=640, H=360):
     o += straal(Vx, Vy, *X1, C1, 2.3) + straal(Vx, Vy, *X2, C2, 2.3)
     if stap >= 1:
         for X in (X1, X2): o += lijn(X[0], waterY - 60, X[0], waterY + 60, GRIJS, 1.3, '6 5')
-    L = eyeH * 1.05
+    L = eyeH - 6   # de gebroken stralen eindigen in het oog
     o1 = (X1[0] + math.tan(r1) * L, waterY - L); o2 = (X2[0] + math.tan(r2) * L, waterY - L)
     if stap >= 2: o += straal(*X1, *o1, C1, 2.3) + straal(*X2, *o2, C2, 2.3)
     if stap >= 3: o += lijn(*X1, ax, ay, C1, 1.8, '6 5') + lijn(*X2, ax, ay, C2, 1.8, '6 5')
@@ -546,7 +546,7 @@ def verhoging_fig(depth=120, xe=200, stap=4, ruitjes=False, W=640, H=360):
     elif stap == 3: o += punt(ax, ay, '#1a2430', 3.6) + t(ax - 7, ay + 5, "V'", '#1a2430', 'end', 15)
     Ex, Ey = ox + xe, waterY - eyeH
     hoekoog = math.degrees(math.atan2(Ey - (o1[1] + o2[1]) / 2, Ex - (o1[0] + o2[0]) / 2)) + 180
-    o += f'<g transform="translate({Ex:.1f},{Ey:.1f}) scale(1.6) rotate({hoekoog:.1f})"><path d="M-14,0 Q0,-10 14,0 Q0,10 -14,0Z" fill="#0c1119" stroke="#e9eef5" stroke-width="1.5"/><circle cx="4" cy="0" r="4" fill="#00d9b0"/></g>' + t(Ex, Ey + 30, 'oog', GRIJS, 'middle', 11)
+    o += f'<g transform="translate({Ex:.1f},{Ey:.1f}) scale({oog}) rotate({hoekoog:.1f})"><path d="M-14,0 Q0,-10 14,0 Q0,10 -14,0Z" fill="#0c1119" stroke="#e9eef5" stroke-width="1.5"/><circle cx="4" cy="0" r="4" fill="#00d9b0"/></g>' + t(Ex + 46, Ey + 8, 'oog', GRIJS, 'middle', 11)
     return svg(o, W, H)
 fig_munt = verhoging_fig()
 
@@ -642,8 +642,8 @@ op_b1, opl_b1 = breking_fig(45, 'lucht', 'glas', 1.0, N_GLAS, opl=False), brekin
 op_b2, opl_b2 = breking_fig(30, 'water', 'lucht', N_WATER, 1.0, opl=False), breking_fig(30, 'water', 'lucht', N_WATER, 1.0)
 op_b3, opl_b3 = breking_fig(60, 'glas', 'lucht', N_GLAS, 1.0, opl=False), breking_fig(60, 'glas', 'lucht', N_GLAS, 1.0)
 VH = [(120, 200), (80, 260), (150, 150)]
-op_vh = [verhoging_fig(d, x, stap=0, ruitjes=True) for d, x in VH]
-opl_vh = [verhoging_fig(d, x, stap=4, ruitjes=True) for d, x in VH]
+op_vh = [verhoging_fig(d, x, stap=0, ruitjes=True, pupil=150, oog=1.6) for d, x in VH]
+opl_vh = [verhoging_fig(d, x, stap=4, ruitjes=True, pupil=150, oog=1.6) for d, x in VH]
 
 h3_oef = f'''{oef('opl_1', 1, 'Ijl of dicht?', 'Welke middenstof is optisch het dichtst? Breekt de straal naar de normaal toe of van de normaal weg?<ol class="deelvragen" type="a"><li>van lucht naar water</li><li>van glas naar lucht</li><li>van water naar glas</li><li>van water naar lucht</li></ol>', [
   ('a', 'water is dichter: naar de normaal toe'), ('b', 'glas is dichter: van de normaal weg'), ('c', 'glas is dichter: naar de normaal toe'), ('d', 'water is dichter: van de normaal weg')], 'Naar dichter: naar de normaal toe. Naar ijler: van de normaal weg.')}
