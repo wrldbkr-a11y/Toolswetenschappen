@@ -578,7 +578,7 @@ fig_valies = svg(
     + pijl(240, 110, 240 + 130 * math.cos(_a), 110 - 130 * math.sin(_a), POS) + punt(240, 110, POS) + t(360, 50, 'F', 16, POS, 'start', 700) +
     f'<line x1="240" y1="110" x2="400" y2="110" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="5,4"/>'
     f'<path d="M290,110 A50,50 0 0,0 {240 + 50*math.cos(_a):.1f},{110 - 50*math.sin(_a):.1f}" fill="none" stroke="{INK}" stroke-width="1.5"/>' + t(300, 102, 'α', 15, INK, 'start', 700) +
-    pijl(150, 190, 450, 190, BLAUW, 3) + t(300, 212, 'verplaatsing s', 14, BLAUW) +
+    pijl(150, 190, 450, 190, BLAUW, 3) + t(300, 212, 'verplaatsing Δx', 14, BLAUW) +
     t(300, 24, 'Je trekt een valies over de grond', 14, INK, 'middle', 700), 600, 220)
 
 w_doelen = lesdoelen(
@@ -590,14 +590,14 @@ w_doelen = lesdoelen(
 
 w1 = f'''<p>Duw je een kar vooruit, dan geef je energie aan de kar: ze gaat sneller rijden. Een kracht die een voorwerp verplaatst, draagt energie over. Die overgedragen energie noem je <b>arbeid</b>.</p>
 {kader('Definitie', '<p>De <b>arbeid W</b> geleverd door een kracht op een voorwerp is de energie die die kracht overdraagt terwijl het voorwerp zich verplaatst.</p>')}
-{figuur(fig_valies, 'De kracht F maakt een hoek α met de verplaatsing s. Enkel het deel van F in de richting van s levert arbeid.')}
-<div class="formule">W = F · s · cos α</div>
-<table class="vb"><tr><td>W</td><td>arbeid, in joule (J) &nbsp;·&nbsp; 1 J = 1 N · m</td></tr><tr><td>F</td><td>kracht, in N</td></tr><tr><td>s</td><td>verplaatsing, in m</td></tr><tr><td>α</td><td>hoek tussen de kracht en de verplaatsing</td></tr></table>
+{figuur(fig_valies, 'De kracht F maakt een hoek α met de verplaatsing Δx. Enkel het deel van F in de richting van Δx levert arbeid.')}
+<div class="formule">W = F · Δx · cos α</div>
+<table class="vb"><tr><td>W</td><td>arbeid, in joule (J) &nbsp;·&nbsp; 1 J = 1 N · m</td></tr><tr><td>F</td><td>kracht, in N</td></tr><tr><td>Δx</td><td>verplaatsing, in m</td></tr><tr><td>α</td><td>hoek tussen de kracht en de verplaatsing</td></tr></table>
 <h3>Drie gevallen</h3>
-<ul><li><b>α = 0°</b> (kracht in de zin van de beweging): cos 0° = 1, dus <b>W = F · s</b>. De kracht geeft energie aan het voorwerp.</li>
+<ul><li><b>α = 0°</b> (kracht in de zin van de beweging): cos 0° = 1, dus <b>W = F · Δx</b>. De kracht geeft energie aan het voorwerp.</li>
 <li><b>α = 90°</b> (kracht loodrecht op de beweging): cos 90° = 0, dus <b>W = 0</b>. Draag je een rugzak horizontaal over de speelplaats, dan levert de kracht van je schouders op de rugzak geen arbeid.</li>
-<li><b>α = 180°</b> (kracht tegen de beweging in, bv. wrijving of remmen): cos 180° = −1, dus <b>W = −F · s</b>. De kracht neemt energie weg.</li></ul>
-<p>Omvormen: <b>F = W / (s · cos α)</b> &nbsp;·&nbsp; <b>s = W / (F · cos α)</b></p>
+<li><b>α = 180°</b> (kracht tegen de beweging in, bv. wrijving of remmen): cos 180° = −1, dus <b>W = −F · Δx</b>. De kracht neemt energie weg.</li></ul>
+<p>Omvormen: <b>F = W / (Δx · cos α)</b> &nbsp;·&nbsp; <b>Δx = W / (F · cos α)</b></p>
 <h3>Arbeid-energietheorema</h3>
 <p>Werken er meerdere krachten op een voorwerp, dan bepaalt de <b>resulterende kracht</b> hoe de snelheid verandert. De arbeid van de resulterende kracht is gelijk aan de verandering van de kinetische energie:</p>
 <div class="formule">W<sub>res</sub> = ΔE<sub>k</sub> = E<sub>k,eind</sub> − E<sub>k,begin</sub></div>
@@ -623,16 +623,16 @@ w2 = f'''<p>Twee leerlingen van 60 kg lopen dezelfde trap op. De ene loopt in 10
 ], 'Ze zetten (ongeveer) evenveel energie om, maar de waterkoker van 2000 W is 2 keer zo snel klaar.')}'''
 
 w_oef = f'''{oef('opl_1', 1, 'Kar duwen', 'Je duwt een winkelkar met een horizontale kracht van 150 N over 20 m. Bereken de arbeid.', [
-  ('Gegeven', 'F = 150 N · s = 20 m · α = 0°'), ('Formule', 'W = F · s · cos α'), ('Oplossing', 'W = 150 · 20 · 1 = 3000 J')], 'W = 3,0 · 10³ J')}
+  ('Gegeven', 'F = 150 N · Δx = 20 m · α = 0°'), ('Formule', 'W = F · Δx · cos α'), ('Oplossing', 'W = 150 · 20 · 1 = 3000 J')], 'W = 3,0 · 10³ J')}
 {oef('opl_2', 2, 'Valies onder een hoek', 'In het Zuidstation trek je een valies met een kracht van 50 N onder een hoek van 30° met de grond. Je wandelt 40 m. Bereken de arbeid van je kracht.', [
-  ('Gegeven', 'F = 50 N · s = 40 m · α = 30°'), ('Formule', 'W = F · s · cos α'), ('Oplossing', 'W = 50 · 40 · cos 30° = 2000 · 0,866 = 1732 J')], 'W = 1,7 · 10³ J')}
+  ('Gegeven', 'F = 50 N · Δx = 40 m · α = 30°'), ('Formule', 'W = F · Δx · cos α'), ('Oplossing', 'W = 50 · 40 · cos 30° = 2000 · 0,866 = 1732 J')], 'W = 1,7 · 10³ J')}
 {oef('opl_3', 3, 'Geen arbeid?', 'Leg uit of de kracht arbeid levert.<ol class="deelvragen" type="a"><li>Je houdt een zware boekentas 5 minuten stil vast.</li><li>Je draagt een rugzak horizontaal over de speelplaats: de kracht van je schouders op de rugzak.</li><li>De wrijvingskracht op een fietser die uitbolt.</li><li>Je tilt een doos van de grond op een tafel.</li></ol>', [
-  ('a', 'Geen arbeid: er is geen verplaatsing (s = 0).'), ('b', 'Geen arbeid: de kracht staat loodrecht op de verplaatsing (cos 90° = 0).'),
+  ('a', 'Geen arbeid: er is geen verplaatsing (Δx = 0).'), ('b', 'Geen arbeid: de kracht staat loodrecht op de verplaatsing (cos 90° = 0).'),
   ('c', 'Negatieve arbeid: de kracht staat tegen de beweging in (cos 180° = −1).'), ('d', 'Positieve arbeid: kracht en verplaatsing zijn naar boven gericht.')], 'Arbeid vraagt een verplaatsing en een kracht die (deels) in de richting van die verplaatsing werkt.')}
 {oef('opl_4', 4, 'Kracht berekenen', 'Een kraan levert een arbeid van 600 J om een balk 4,0 m verticaal omhoog te hijsen. Bereken de kracht van de kraan op de balk.', [
-  ('Gegeven', 'W = 600 J · s = 4,0 m · α = 0°'), ('Formule', 'F = W / (s · cos α)'), ('Oplossing', 'F = 600 / (4,0 · 1) = 150 N')], 'F = 1,5 · 10² N')}
+  ('Gegeven', 'W = 600 J · Δx = 4,0 m · α = 0°'), ('Formule', 'F = W / (Δx · cos α)'), ('Oplossing', 'F = 600 / (4,0 · 1) = 150 N')], 'F = 1,5 · 10² N')}
 {oef('opl_5', 5, 'Arbeid-energietheorema', 'Een fietser en zijn fiets hebben samen een massa van 70 kg. Ze vertrekken uit stilstand en halen na 30 m een snelheid van 6,0 m/s.<ol class="deelvragen" type="a"><li>Bereken de arbeid van de resulterende kracht.</li><li>Bereken de grootte van de resulterende kracht.</li></ol>', [
-  ('a', 'W<sub>res</sub> = ΔE<sub>k</sub> = ½ · 70 · 6,0² − 0 = 1260 J'), ('b', 'F<sub>res</sub> = W<sub>res</sub> / s = 1260 / 30 = 42 N')], 'W<sub>res</sub> = 1,26 · 10³ J en F<sub>res</sub> = 42 N')}
+  ('a', 'W<sub>res</sub> = ΔE<sub>k</sub> = ½ · 70 · 6,0² − 0 = 1260 J'), ('b', 'F<sub>res</sub> = W<sub>res</sub> / Δx = 1260 / 30 = 42 N')], 'W<sub>res</sub> = 1,26 · 10³ J en F<sub>res</sub> = 42 N')}
 {oef('opl_6', 6, 'De trap op', 'Lina (60 kg) loopt de trap op naar de derde verdieping, 9,0 m hoger, in 12 s.<ol class="deelvragen" type="a"><li>Hoeveel energie zet ze om in gravitationele potentiële energie?</li><li>Bereken haar vermogen.</li></ol>', [
   ('a', 'E = m · g · h = 60 · 9,81 · 9,0 = 5297 J'), ('b', 'P = E / Δt = 5297 / 12 = 441 W')], 'E = 5,3 · 10³ J en P = 4,4 · 10² W')}
 {oef('opl_7', 7, 'Waterkoker', 'Een waterkoker van 2000 W heeft 330 kJ nodig om water aan de kook te brengen. Hoe lang duurt dat?', [
@@ -642,8 +642,8 @@ w_oef = f'''{oef('opl_1', 1, 'Kar duwen', 'Je duwt een winkelkar met een horizon
 {oef('opl_9', 9, 'De lift', 'Een lift tilt een cabine met mensen, samen 3000 kg, in 25 s naar een uitkijkplatform 90 m hoger. Bereken het vermogen van de liftmotor (zonder verliezen).', [
   ('Energie', 'E = m · g · h = 3000 · 9,81 · 90 = 2 648 700 J'), ('Vermogen', 'P = E / Δt = 2 648 700 / 25 = 105 948 W')], 'P = 1,1 · 10⁵ W (ongeveer 106 kW)')}'''
 
-w_samenv = '''<p><b>Arbeid</b> is de energie die een kracht overdraagt bij een verplaatsing: <b>W = F · s · cos α</b>, in joule.</p>
-<p>α = 0°: W = F · s · α = 90°: W = 0 · α = 180°: W negatief.</p>
+w_samenv = '''<p><b>Arbeid</b> is de energie die een kracht overdraagt bij een verplaatsing: <b>W = F · Δx · cos α</b>, in joule.</p>
+<p>α = 0°: W = F · Δx · α = 90°: W = 0 · α = 180°: W negatief.</p>
 <p><b>Arbeid-energietheorema</b>: W<sub>res</sub> = ΔE<sub>k</sub>.</p>
 <p><b>Vermogen</b> is de energie die per seconde wordt omgezet: <b>P = E / Δt</b>, in watt (1 W = 1 J/s). Omvormen: E = P · Δt en Δt = E / P.</p>'''
 

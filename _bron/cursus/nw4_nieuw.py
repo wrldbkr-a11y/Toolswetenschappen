@@ -180,11 +180,11 @@ T['energie'] = [
 T['arbeid'] = [
  oef_fig('opl_x', 0, 'Tekenen: kracht ontbinden bij een valies', 'Je trekt een valies schuin omhoog met een kracht F van 50 N (getekend, schaal: 1 hokje ≙ 10 N). Je wandelt 20 m.<ol class="deelvragen" type="a"><li>Ontbind F in een component evenwijdig met de verplaatsing en een component loodrecht erop.</li><li>Lees de grootte van beide componenten af.</li><li>Bereken de arbeid van F. Welke component levert arbeid?</li></ol>', f_valies(False),
    [('a', 'Teken vanuit het aangrijpingspunt een horizontale en een verticale component; de kop van F is de overstaande hoek van de rechthoek.'), ('b', 'evenwijdig: 4 hokjes = 40 N · loodrecht: 3 hokjes = 30 N'),
-    ('c', 'Alleen de component evenwijdig met de verplaatsing levert arbeid: W = 40 N · 20 m = 800 J. (Controle: W = F · s · cos α = 50 · 20 · 0,80 = 800 J.)')],
+    ('c', 'Alleen de component evenwijdig met de verplaatsing levert arbeid: W = 40 N · 20 m = 800 J. (Controle: W = F · Δx · cos α = 50 · 20 · 0,80 = 800 J.)')],
    'W = 8,0 · 10² J: alleen het deel van F in de richting van de verplaatsing telt.', f_valies(True)),
  oef_fig('opl_x', 0, 'Tekenen: een doos optillen en dragen', 'Je tilt een doos van 2,0 kg met constante snelheid 1,5 m op (g ≈ 10 N/kg). Daarna draag je ze 5,0 m horizontaal.<ol class="deelvragen" type="a"><li>Teken de kracht van je handen op de doos. Schaal: 1 hokje ≙ 5 N. Begin in de stip.</li><li>Bereken de arbeid van je kracht bij het optillen.</li><li>Hoeveel arbeid levert dezelfde kracht bij het horizontaal dragen? Waarom?</li></ol>', f_doos(False),
    [('a', 'Constante snelheid: F<sub>hand</sub> = F<sub>z</sub> = 2,0 · 10 = 20 N → 4 hokjes naar boven, vanuit het contactvlak onder de doos'),
-    ('b', 'W = F · s · cos 0° = 20 N · 1,5 m = 30 J'), ('c', 'W = 0 J: de kracht staat loodrecht op de verplaatsing (cos 90° = 0).')],
+    ('b', 'W = F · Δx · cos 0° = 20 N · 1,5 m = 30 J'), ('c', 'W = 0 J: de kracht staat loodrecht op de verplaatsing (cos 90° = 0).')],
    'Optillen: 30 J. Horizontaal dragen: 0 J.', f_doos(True))]
 
 # ------------------------------------------------------------------ pagina's

@@ -223,12 +223,12 @@ footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-di
     <div class="grid">
       <div class="canvas-wrap"><canvas id="c7a" width="800" height="400"></canvas></div>
       <div class="controls">
-        <div class="formule">W = F · s · cos α &nbsp;&nbsp; [W] = N · m = J</div>
+        <div class="formule">W = F · Δx · cos α &nbsp;&nbsp; [W] = N · m = J</div>
         <div class="ctrl-group"><label id="s7a-f-l"></label><input type="range" id="s7a-f" min="10" max="100" step="5" value="50"></div>
         <div class="ctrl-group"><label id="s7a-a-l"></label><input type="range" id="s7a-a" min="0" max="90" step="5" value="30"></div>
         <div class="ctrl-group"><label id="s7a-s-l"></label><input type="range" id="s7a-s" min="1" max="10" step="1" value="5"></div>
         <div class="readout" id="s7a-read"></div>
-        <div class="note"><strong>α = 0°:</strong> W = F · s (alle kracht helpt). <strong>α = 90°:</strong> W = 0, bv. je rugzak horizontaal dragen. <strong>α = 180°:</strong> W = −F · s, bv. wrijving of remmen neemt energie weg.<br>Omvormen: F = W / (s · cos α) &nbsp;·&nbsp; s = W / (F · cos α)</div>
+        <div class="note"><strong>α = 0°:</strong> W = F · Δx (alle kracht helpt). <strong>α = 90°:</strong> W = 0, bv. je rugzak horizontaal dragen. <strong>α = 180°:</strong> W = −F · Δx, bv. wrijving of remmen neemt energie weg.<br>Omvormen: F = W / (Δx · cos α) &nbsp;·&nbsp; Δx = W / (F · cos α)</div>
         <div class="note"><strong>Arbeid-energietheorema.</strong> De arbeid van de <b>resulterende kracht</b> is gelijk aan de verandering van de kinetische energie: <b>W<sub>res</sub> = ΔE<sub>kin</sub> = E<sub>kin,eind</sub> − E<sub>kin,begin</sub></b>.<br>Een tram trekt op aan de halte: W<sub>res</sub> &gt; 0, de tram gaat sneller. De tram remt: W<sub>res</sub> &lt; 0, de tram vertraagt.</div>
       </div>
     </div>
@@ -794,7 +794,7 @@ const TOESTELLEN=[
     const F=+Fr.value, a=+Ar.value, s=+Sr.value, r=a*Math.PI/180, Fx=F*Math.cos(r), Wa=F*s*Math.cos(r);
     document.getElementById('s7a-f-l').textContent='Kracht F: '+F+' N';
     document.getElementById('s7a-a-l').textContent='Hoek α met de verplaatsing: '+a+'°';
-    document.getElementById('s7a-s-l').textContent='Verplaatsing s: '+s+' m';
+    document.getElementById('s7a-s-l').textContent='Verplaatsing Δx: '+s+' m';
     ctx.clearRect(0,0,W,H); ctx.fillStyle='#fbfcfe'; ctx.fillRect(0,0,W,H);
     const gy=320, x1=60, sc=60, x2=x1+s*sc, bw=90, bh=60;
     ctx.fillStyle='#E2E8F0'; ctx.fillRect(0,gy,W,H-gy); ctx.strokeStyle='#1D2A36'; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(0,gy); ctx.lineTo(W,gy); ctx.stroke();
@@ -805,7 +805,7 @@ const TOESTELLEN=[
     ctx.fillStyle='#B45309'; roundRect(ctx,cx-bw/2,gy-bh,bw,bh,8); ctx.fill(); ctx.strokeStyle='#7C2D12'; ctx.lineWidth=3; ctx.beginPath(); ctx.moveTo(cx-18,gy-bh); ctx.lineTo(cx-18,gy-bh-12); ctx.lineTo(cx+18,gy-bh-12); ctx.lineTo(cx+18,gy-bh); ctx.stroke();
     ctx.fillStyle='#1D2A36'; [cx-28,cx+28].forEach(x=>{ ctx.beginPath(); ctx.arc(x,gy-4,5,0,7); ctx.fill(); });
     // verplaatsing
-    arrow(ctx,x1,gy+34,cx,gy+34,'#51606E',2.5); text(ctx,'verplaatsing s = '+s+' m',(x1+cx)/2,gy+60,{size:14,weight:700,align:'center'});
+    arrow(ctx,x1,gy+34,cx,gy+34,'#51606E',2.5); text(ctx,'verplaatsing Δx = '+s+' m',(x1+cx)/2,gy+60,{size:14,weight:700,align:'center'});
     // kracht: aangrijpingspunt rechtsboven op de valies
     const px=cx+bw/2, py=gy-bh/2, L=F*1.6, ex=px+L*Math.cos(r), ey=py-L*Math.sin(r);
     if(a>0){ ctx.setLineDash([5,4]); ctx.strokeStyle='#94A3B8'; ctx.lineWidth=1.5; ctx.beginPath(); ctx.moveTo(ex,ey); ctx.lineTo(ex,py); ctx.stroke(); ctx.beginPath(); ctx.moveTo(px,py); ctx.lineTo(px+L+30,py); ctx.stroke(); ctx.setLineDash([]);
@@ -815,7 +815,7 @@ const TOESTELLEN=[
     text(ctx,'F = '+F+' N',ex+6,ey-6,{size:14,weight:700,color:'#dc2626'});
     if(a<90) text(ctx,'F · cos α = '+nl(Fx,1)+' N',px+Fx*1.6+10,py+22,{size:13,weight:700,color:'#16a34a'});
     text(ctx,'groen = het deel van F dat arbeid levert',20,30,{size:13,color:'#16a34a',weight:600});
-    read.innerHTML=`W = F · s · cos α<br>W = ${F} N · ${s} m · cos ${a}°<br>W = ${F} · ${s} · ${nl(Math.cos(r),3)} = <b>${nl(Wa,a%90===0?0:1)} J</b>`+(a===90?'<br><span class="k">De kracht staat loodrecht op de verplaatsing: geen arbeid.</span>':'');
+    read.innerHTML=`W = F · Δx · cos α<br>W = ${F} N · ${s} m · cos ${a}°<br>W = ${F} · ${s} · ${nl(Math.cos(r),3)} = <b>${nl(Wa,a%90===0?0:1)} J</b>`+(a===90?'<br><span class="k">De kracht staat loodrecht op de verplaatsing: geen arbeid.</span>':'');
   }
   Fr.oninput=Ar.oninput=Sr.oninput=draw; draw();
 })();
@@ -945,7 +945,7 @@ const TOESTELLEN=[
     // 10. arbeid
     ()=>{ const F=ri(4,20)*5, sm=ri(2,12), a=rnd([0,0,30,60,90]); const W=F*sm*Math.cos(a*Math.PI/180);
       rekenen(`Je trekt een valies ${sm} m ver over de grond met een kracht van ${F} N. De kracht maakt een hoek van ${a}° met de verplaatsing. Bereken de arbeid.`, W,'J',
-        `W = F · s · cos α = ${F} N · ${sm} m · cos ${a}° = ${F} · ${sm} · ${nl(Math.cos(a*Math.PI/180),3)} = ${nl(W,a%90?1:0)} J.`+(a===90?'<br>De kracht staat loodrecht op de verplaatsing: geen arbeid.':'')); },
+        `W = F · Δx · cos α = ${F} N · ${sm} m · cos ${a}° = ${F} · ${sm} · ${nl(Math.cos(a*Math.PI/180),3)} = ${nl(W,a%90?1:0)} J.`+(a===90?'<br>De kracht staat loodrecht op de verplaatsing: geen arbeid.':'')); },
   ];
   function nieuw(){ let i; do{ i=Math.floor(Math.random()*types.length); }while(i===vorige); vorige=i; types[i](); }
   document.getElementById('s10-nieuw').onclick=nieuw;

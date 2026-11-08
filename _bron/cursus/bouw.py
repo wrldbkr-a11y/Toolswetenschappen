@@ -33,6 +33,11 @@ def figuur(svg, onderschrift=''):
     return f'<figure class="figuur">{svg}<figcaption>{onderschrift}</figcaption></figure>'
 
 def bouw(bestand, eyebrow, titel, intro, blokken, vrijgave, cornell):
+    # voorkennis komt vóór de lesdoelen
+    il = next((i for i, b in enumerate(blokken) if 'id="lesdoelen"' in b[:60]), None)
+    iv = next((i for i, b in enumerate(blokken) if 'id="voorkennis"' in b[:60]), None)
+    if il is not None and iv is not None and iv > il:
+        blokken = list(blokken); blokken.insert(il, blokken.pop(iv))
     vr = '\n'.join(f'  {k}: {"true" if v else "false"},' + ' '*(24-len(k)-len(str(v))) + f'// {uitleg}' for k, v, uitleg in vrijgave)
     s = (SJABLOON.replace('{{TITEL}}', titel).replace('{{EYEBROW}}', eyebrow).replace('{{INTRO}}', intro)
          .replace('{{INHOUD}}', ''.join(blokken)).replace('{{VRIJGAVE}}', vr)
