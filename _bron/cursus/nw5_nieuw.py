@@ -80,12 +80,15 @@ def f_aarding(opl):
 def f_influentie(opl):
     o = '<rect width="600" height="240" fill="#fff"/>' + '<rect x="40" y="90" width="150" height="40" rx="10" fill="#cbd5e1" stroke="#475569" stroke-width="2"/>'
     o += ''.join(lad(62 + i * 21, 110, -1, 7) for i in range(6)) + t(115, 78, 'negatieve staaf', INK, 'middle', 12) + metaalbol(380, 110)
-    plus = [(-40, -18), (-40, 18), (-8, -36), (-8, -12), (-8, 12), (-8, 36)]
+    # + ladingen (vaste ionen) gelijkmatig over de bol; elke + heeft links zijn eigen elektron,
+    # behalve de twee + aan de kant van de staaf: hun elektronen zijn naar de verre kant geduwd
+    plus = [(28, -16), (0, -34), (-28, -16), (-28, 16), (0, 34), (28, 16)]
     for dx, dy in plus: o += lad(380 + dx, 110 + dy, 1)
     if opl:
-        for dx, dy in plus[2:]: o += lad(380 + dx + 18, 110 + dy, -1)
-        o += lad(426, 92, -1) + lad(426, 128, -1)
-        o += f'<ellipse cx="426" cy="110" rx="17" ry="34" fill="none" stroke="{B}" stroke-width="1.5" stroke-dasharray="5 4"/>'
+        for dx, dy in plus:
+            if dx >= 0: o += lad(380 + dx - 17, 110 + dy, -1)
+        o += lad(431, 98, -1) + lad(431, 122, -1)
+        o += f'<ellipse cx="431" cy="110" rx="14" ry="27" fill="none" stroke="{B}" stroke-width="1.5" stroke-dasharray="5 4"/>'
         o += pijl(310, 200, 250, 200, R, 3) + t(320, 205, 'de bol wordt aangetrokken', R, 'start', 12)
     return svg(o, 600, 240)
 def lijnQ(opl):
