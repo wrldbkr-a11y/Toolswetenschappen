@@ -82,3 +82,7 @@ Leerlingen krijgen een ingevulde naslag; wisbordvragen per deel (`aso_wisbord.py
 - `_bron/cursus/namen.py`: in vragen (opgaven, denkvragen, Test jezelf, wisbordvragen) staan volledige namen, geen symbolen ("Bereken de veerconstante", niet "Bereken k"). bouw.py past dit toe bij het bouwen. Per soort pagina een eigen woordenlijst (bv. g = grenshoek in optica, zwaarteveldsterkte bij krachten).
 - Vectorpijlen hebben een dunne lijn (pijl() in derde_krachten.py en vierde_cursus.py: lijndikte b × 0,5; ac_help/ladingen: 1,8).
 - Krachten in tekenoefeningen zijn minstens 3 hokjes lang (kies de schaal zo).
+
+## Oefening "Van pijlen naar zinnen"
+- `_bron/cursus/zinnen_inhoud.py`: per cursuspagina twee redeneringen met pijlen + modelantwoord, en het kader met verbindingswoorden (VERBIND).
+- nieuw_formaat.pagina() voegt de oefening toe vóór de uitdagingen (kader alleen op de eerste pagina van een reeks; anders een korte geheugensteun). aso_krachten.py en snelheid_3aso.py doen het zelf.

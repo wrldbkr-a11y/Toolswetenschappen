@@ -228,6 +228,7 @@ for i, (k, inh) in enumerate(delen, start=1):
     inh = deel(inh, C['delen'][i - 1], i)
     if i == 1: inh = EDI_CSS + inh
     blokken.append(blok(f'deel{i}', NRS[i - 1], k, inh, f'deel{i}'))
+oefs += zinnen_oef('cursus-snelheid-3aso.html', False, oefs.count('class="oef"') + 1)
 blokken += [blok('oefeningen', '', 'Oefeningen op papier', oefs + uitdagingen(C['uitd'], False), 'oefeningen'),
             blok('begrippen', '', 'Begrippenlijst', begrippen(C['begrip'])),
             blok('samenvatting', '', 'Samenvatting', samenv, 'samenvatting')]

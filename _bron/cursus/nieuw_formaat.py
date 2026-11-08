@@ -62,6 +62,18 @@ def uitdagingen(lijst, eerste):
         s += oef(f'opl_u{i}', f'U{i}', titel.replace('Uitdaging · ', ''), tekst + (aanpak(tip) if tip else ''), stappen, besluit)
     return s
 
+exec(open('/home/claude/toolswetenschappen/_bron/cursus/zinnen_inhoud.py', encoding='utf-8').read())
+def zinnen_oef(bestand, eerste, nr):
+    """oefening: een redenering met pijlen in correcte zinnen met verbindingswoorden schrijven"""
+    lijst = Z.get(bestand)
+    if not lijst: return ''
+    kop = (kader('Ken dit · Van pijlen naar zinnen', VERBIND) if eerste else
+           '<p style="font-size:.93em;color:#475569;margin:10px 0 4px">✍️ <i>Van pijlen naar zinnen: gebruik omdat, doordat, want, dus, daardoor, daarom, zodat, als … dan.</i></p>')
+    tekst = ('Schrijf de redenering in correcte Nederlandse zinnen. Gebruik verbindingswoorden.<ol class="deelvragen" type="a">'
+             + ''.join(f'<li>{keten}</li>' for keten, _ in lijst) + '</ol>')
+    return kop + oef(f'opl_{nr}', nr, 'Van pijlen naar zinnen', tekst, [(chr(97 + i), m) for i, (_, m) in enumerate(lijst)],
+                     'Andere zinnen kunnen ook juist zijn, als de verbindingswoorden kloppen.')
+
 def begrippen(lijst):
     return ('<p>Weet je niet meer wat een woord betekent? Zoek het hier op.</p><table class="vb grid">'
             + ''.join(f'<tr><th style="text-align:left;white-space:nowrap">{a}</th><td>{b}</td></tr>' for a, b in lijst) + '</table>')
@@ -87,6 +99,7 @@ def pagina(bestand, eyebrow, titel, intro, lesdoelen, voorkennis, delen, oefenin
         inh = deel(inh, c['delen'][i - 1], i)
         if i == 1: inh = EDI_CSS + inh
         blokken.append(blok(f'deel{i}', i, k, inh, f'deel{i}'))
+    oefeningen += zinnen_oef(bestand, eerste, oefeningen.count('class="oef"') + 1)
     blokken += [blok('oefeningen', '', 'Oefeningen op papier', oefeningen + uitdagingen(c['uitd'], eerste), 'oefeningen'),
                 blok('begrippen', '', 'Begrippenlijst', begrippen(c['begrip'])),
                 blok('samenvatting', '', 'Samenvatting', samenv, 'samenvatting')]

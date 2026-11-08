@@ -247,13 +247,18 @@ exec(open('/home/claude/toolswetenschappen/_bron/cursus/aso_extra.py', encoding=
 exec(open('/home/claude/toolswetenschappen/_bron/cursus/aso_begrip.py', encoding='utf-8').read())
 def _groep(kop, items):
     return f'<h3>{kop}</h3>' + ''.join(items)
+exec(open('/home/claude/toolswetenschappen/_bron/cursus/zinnen_inhoud.py', encoding='utf-8').read())
+_ZIN = (kader('Ken dit · Van pijlen naar zinnen', VERBIND)
+        + oef('opl_x', 0, 'Van pijlen naar zinnen', 'Schrijf de redenering in correcte Nederlandse zinnen. Gebruik verbindingswoorden.<ol class="deelvragen" type="a">'
+              + ''.join(f'<li>{k}</li>' for k, _ in Z['cursus-krachten-3aso.html']) + '</ol>',
+              [(chr(97 + i), m) for i, (_, m) in enumerate(Z['cursus-krachten-3aso.html'])], 'Andere zinnen kunnen ook juist zijn, als de verbindingswoorden kloppen.'))
 oefs = STAP + ''.join([
     _groep('Hoofdstuk 1 · Rekenen in de fysica', [_O[0], _O[1], n1a, _O[2], n1b]),
     _groep('Hoofdstuk 2 · Krachten', [_O[3], _O[5], _O[4], n2]),
     _groep('Hoofdstuk 3 · Kracht en beweging', [_O[8], _O[9], _O[10], n3, _O[7], n3b]),
     _groep('Hoofdstuk 4 · Zwaartekracht, massa en gewicht', [_O[11], _O[12], _O[13], _O[6], _O[14], _O[15], _O[16]]),
     _groep('Hoofdstuk 5 · Veerkracht', [_O[17], _O[18], _O[19], _O[20]]),
-    _groep('Gemengd', [g1, g2, g3]),
+    _groep('Gemengd', [g1, g2, g3, _ZIN]),
     _groep('Uitdaging', [AANPAK, u1, u2, u3, u4, u5]),
 ]) + tool('krachten-3aso.html#oef', 'Extra oefenen in de tool')
 # hernummeren in volgorde
