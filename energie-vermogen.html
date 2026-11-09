@@ -253,7 +253,7 @@ footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-di
 
   <section class="scene" id="s7k" data-nr="2.1" data-title="Positieve en negatieve arbeid" data-cat="vermogen">
     <div class="scene-head"><span class="num">2.1</span><h3>Positieve en negatieve arbeid: een kast duwen</h3></div>
-    <p class="scene-sub">Je duwt een kast van 50 kg over de vloer. Ze schuift al met 2,0 m/s. Twee krachten leveren arbeid: jouw <strong>spierkracht</strong> stopt energie <strong>in</strong> de kast, de <strong>wrijvingskracht</strong> haalt energie <strong>uit</strong> de kast. Kies hoe hard je duwt en kijk wat er met de kast gebeurt.</p>
+    <p class="scene-sub">Je duwt een kast van 50 kg over de vloer. Ze schuift al met 2,0 m/s. Twee krachten leveren arbeid: jouw <strong>spierkracht</strong> stopt energie <strong>in</strong> de kast, de <strong>wrijvingskracht</strong> haalt energie <strong>uit</strong> de kast. Kies hoe hard je duwt en kijk wat er met de kast gebeurt. Zolang de kast schuift, is de wrijvingskracht altijd 200 N, hoe hard je ook duwt.</p>
     <div class="grid">
       <div class="canvas-wrap"><canvas id="c7k" width="800" height="400"></canvas></div>
       <div class="controls">
@@ -850,7 +850,7 @@ const TOESTELLEN=[
     // krachten: spierkracht links op de kast, wrijving in het contactvlak
     if(F>0){ arrow(ctx,kx-60,gy-100,kx-60+F*0.42,gy-100,GROEN,2.5); ctx.fillStyle=GROEN; ctx.beginPath(); ctx.arc(kx-60,gy-100,3.5,0,7); ctx.fill(); ctx.fillStyle='rgba(255,255,255,.85)'; ctx.fillRect(kx-128,gy-128,62,26); vlabel(kx-124,gy-108,'spier',GROEN); }
     const Fwd = st.v>0.001 ? FW : Math.min(F,FW);
-    if(Fwd>0){ arrow(ctx,kx+20,gy,kx+20-Fwd*0.42,gy,ROOD,2.5); ctx.fillStyle=ROOD; ctx.beginPath(); ctx.arc(kx+20,gy,3.5,0,7); ctx.fill(); vlabel(kx+20-Fwd*0.42-6,gy+30,'w',ROOD); }
+    if(Fwd>0){ arrow(ctx,kx+20,gy,kx+20-Fwd*0.42,gy,ROOD,2.5); ctx.fillStyle=ROOD; ctx.beginPath(); ctx.arc(kx+20,gy,3.5,0,7); ctx.fill(); vlabel(kx+20-Fwd*0.42-6,gy+30,'w',ROOD); text(ctx,Fwd+' N'+(st.v>0.001?' (schuift)':' (statisch)'),kx+30,gy+30,{size:13,weight:700,color:ROOD}); }
     // snelheid en verplaatsing
     if(st.v>0.001) arrow(ctx,kx-40,gy-212,kx-40+st.v*50,gy-212,BLAUW,2.5);
     text(ctx,'v = '+nl(st.v,2)+' m/s',kx-40,gy-226,{size:14,weight:700,color:BLAUW});
@@ -879,7 +879,11 @@ const TOESTELLEN=[
     if(st.x===0) besluit='Klik op "Duw de kast 3,0 m ver".';
     else if(Math.abs(Wres)<0.5) besluit='Erin = eruit: E<sub>k</sub> blijft gelijk. De kast schuift met <b>constante snelheid</b>. Je spieren leveren energie, maar die wordt allemaal warmte.';
     else if(Wres>0) besluit='Erin &gt; eruit: E<sub>k</sub> neemt toe. De kast gaat <b>sneller</b>.';
-    else besluit='Erin &lt; eruit: E<sub>k</sub> neemt af. De kast gaat <b>trager</b>'+(st.v<0.001?' en <b>stopt</b>.':'.');
+    else {
+      besluit='Erin &lt; eruit: E<sub>k</sub> neemt af. De kast gaat <b>trager</b>.';
+      if(st.v>0.001) besluit+=' Ze schuift nog vooruit door haar <b>traagheid</b>, maar de wrijving (200 N) is groter dan jouw duwkracht.';
+      else besluit+=' Nu <b>staat ze stil</b>.'+(F>0?' De wrijving is nu statisch: even groot als jouw duwkracht ('+F+' N). Geen verplaatsing meer, dus geen arbeid meer.':'');
+    }
     read.innerHTML=`W<sub>spier</sub> = ${nlJ(st.Ws)} &nbsp;(kracht mee met Δx)<br>W<sub>wrijving</sub> = ${nlJ(st.Ww)} &nbsp;(kracht tegen Δx in)<br>W<sub>res</sub> = ΔE<sub>k</sub> = <b>${nlJ(Wres)}</b><br><span class="k">${besluit}</span>`;
   }
   function stap(now){
