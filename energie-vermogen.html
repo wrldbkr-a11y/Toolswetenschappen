@@ -242,6 +242,7 @@ footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-di
       <div class="controls">
         <div class="formule">W<sub>z</sub> = F<sub>z</sub> · Δx · cos α</div>
         <div class="ctrl-row"><button class="btn" data-z="op">↑ optillen</button><button class="btn" data-z="hor">→ horizontaal</button><button class="btn" data-z="neer">↓ laten vallen</button></div>
+        <button class="btn primary" id="s7z-play">▶ Opnieuw bewegen</button>
         <div class="ctrl-group"><label id="s7z-m-l"></label><input type="range" id="s7z-m" min="1" max="10" step="0.5" value="5"></div>
         <div class="ctrl-group"><label id="s7z-d-l"></label><input type="range" id="s7z-d" min="0.5" max="3" step="0.1" value="1.5"></div>
         <div class="readout" id="s7z-read"></div>
@@ -807,7 +808,7 @@ const TOESTELLEN=[
   const c=document.getElementById('c7z'), ctx=hiDPI(c), W=c._w, H=c._h, g=9.81;
   const Mr=document.getElementById('s7z-m'), Dr=document.getElementById('s7z-d'), read=document.getElementById('s7z-read');
   const knoppen=[...document.querySelectorAll('#s7z [data-z]')];
-  let zin='op';
+  let zin='op', p=1, t0=null;
   function vlabel(x,y,sub,kleur){ // vectorsymbool F met pijltje erboven
     ctx.save(); ctx.font='700 16px Inter, sans-serif'; ctx.fillStyle=kleur; ctx.strokeStyle=kleur; ctx.fillText('F',x,y);
     const w=ctx.measureText('F').width; ctx.lineWidth=1.5; ctx.beginPath(); ctx.moveTo(x,y-17); ctx.lineTo(x+w+2,y-17); ctx.moveTo(x+w-1,y-20); ctx.lineTo(x+w+2,y-17); ctx.lineTo(x+w-1,y-14); ctx.stroke();
@@ -818,7 +819,7 @@ const TOESTELLEN=[
     ctx.fillStyle='#E4EEF8'; ctx.fillRect(x-20,y-34,40,4); ctx.restore(); }
   function draw(){
     knoppen.forEach(b=>b.classList.toggle('on',b.dataset.z===zin));
-    const m=+Mr.value, d=+Dr.value, Fz=m*g, sc=80, gy=360;
+    const m=+Mr.value, d=+Dr.value, Fz=m*g, sc=80, gy=360, dp=d*p; // dp: verplaatsing tot nu toe
     document.getElementById('s7z-m-l').textContent='Massa van de boekentas m: '+nl(m,1)+' kg';
     document.getElementById('s7z-d-l').textContent=(zin==='hor'?'Verplaatsing Δx: ':'Hoogteverschil h = Δx: ')+nl(d,1)+' m';
     ctx.clearRect(0,0,W,H); ctx.fillStyle='#fbfcfe'; ctx.fillRect(0,0,W,H);
@@ -828,11 +829,16 @@ const TOESTELLEN=[
     else if(zin==='neer'){ x0=x1=260; y0=gy-d*sc; y1=gy; a=0; }
     else { x0=150; x1=150+d*sc*1.6; y0=y1=gy; a=90; }
     // hoogte-/plankje voor de bovenste stand
+    // de tas beweegt van de startpositie (gestippeld) naar de eindpositie
+    const xe=x1, ye=y1; x1=x0+(xe-x0)*p; y1=y0+(ye-y0)*p;
+    if(p<1){ ctx.save(); ctx.globalAlpha=.35; ctx.setLineDash([3,5]); ctx.strokeStyle='#94A3B8'; ctx.lineWidth=1.5; roundRect(ctx,xe-34,ye-52,68,52,9); ctx.stroke(); ctx.restore(); }
     tas(x0,y0,true); tas(x1,y1,false);
-    // verplaatsing: van midden begin naar midden eind
+    // verplaatsing: groeit mee met de tas
     const cy0=y0-26, cy1=y1-26;
-    if(zin==='hor') { arrow(ctx,x0,gy-90,x1,gy-90,'#2563eb',2.5); text(ctx,'Δx = '+nl(d,1)+' m',(x0+x1)/2,gy-102,{size:14,weight:700,color:'#2563eb',align:'center'}); }
-    else { arrow(ctx,420,cy0,420,cy1,'#2563eb',2.5); text(ctx,'Δx = '+nl(d,1)+' m',432,(cy0+cy1)/2+5,{size:14,weight:700,color:'#2563eb'}); }
+    if(p>0.04){
+      if(zin==='hor') { arrow(ctx,x0,gy-90,x1,gy-90,'#2563eb',2.5); text(ctx,'Δx = '+nl(dp,1)+' m',(x0+x1)/2,gy-102,{size:14,weight:700,color:'#2563eb',align:'center'}); }
+      else { arrow(ctx,420,cy0,420,cy1,'#2563eb',2.5); text(ctx,'Δx = '+nl(dp,1)+' m',432,(cy0+cy1)/2+5,{size:14,weight:700,color:'#2563eb'}); }
+    }
     // zwaartekracht in het zwaartepunt van de tas (eindstand)
     const L=Math.max(30,Fz*1.1);
     arrow(ctx,x1,cy1,x1,cy1+L,'#d64550',2.5); ctx.fillStyle='#d64550'; ctx.beginPath(); ctx.arc(x1,cy1,3.5,0,7); ctx.fill();
@@ -841,7 +847,7 @@ const TOESTELLEN=[
     const kleur=a===180?'#d64550':(a===0?'#16a34a':'#51606E');
     text(ctx,'α = '+a+'°',530,70,{size:18,weight:700});
     text(ctx,a===180?'zwaartekracht ↓, verplaatsing ↑':a===0?'zwaartekracht ↓, verplaatsing ↓':'zwaartekracht ↓, verplaatsing →',530,96,{size:13,color:'#51606E'});
-    const Wz=Fz*d*Math.cos(a*Math.PI/180), Wr=Math.round(Wz*10)/10;
+    const Wz=Fz*dp*Math.cos(a*Math.PI/180), Wr=Math.round(Wz*10)/10, Wtot=Math.round(Fz*d*Math.cos(a*Math.PI/180)*10)/10;
     text(ctx,'W',530,140,{size:22,weight:800,color:kleur}); text(ctx,'z',551,146,{size:14,weight:800,color:kleur});
     text(ctx,'= '+(Wr>0?'+':'')+(Wr===0?'0':nl(Wr,1))+' J',562,140,{size:22,weight:800,color:kleur});
     text(ctx,a===180?'negatieve arbeid':a===0?'positieve arbeid':'geen arbeid',530,166,{size:14,weight:700,color:kleur});
@@ -849,11 +855,16 @@ const TOESTELLEN=[
                   neer:['De zwaartekracht werkt mee met de','verplaatsing. Ze geeft energie: de','potentiële energie wordt kinetische.'],
                   hor:['De zwaartekracht staat loodrecht op','de verplaatsing. De hoogte blijft','gelijk: geen arbeid.']}[zin];
     uitleg.forEach((r,i)=>text(ctx,r,530,198+i*20,{size:13,color:'#51606E'}));
-    read.innerHTML=`F<sub>z</sub> = m · g = ${nl(m,1)} kg · 9,81 N/kg = ${nl(Fz,1)} N<br>W<sub>z</sub> = F<sub>z</sub> · Δx · cos ${a}°<br>W<sub>z</sub> = ${nl(Fz,1)} · ${nl(d,1)} · ${a===180?'(−1)':a===0?'1':'0'} = <b>${Wr>0?'+':''}${Wr===0?'0':nl(Wr,1)} J</b>`
+    read.innerHTML=`F<sub>z</sub> = m · g = ${nl(m,1)} kg · 9,81 N/kg = ${nl(Fz,1)} N<br>W<sub>z</sub> = F<sub>z</sub> · Δx · cos ${a}°<br>W<sub>z</sub> = ${nl(Fz,1)} · ${nl(d,1)} · ${a===180?'(−1)':a===0?'1':'0'} = <b>${Wtot>0?'+':''}${Wtot===0?'0':nl(Wtot,1)} J</b>`
       +(zin==='op'?`<br><span class="k">Jij tilt met constante snelheid: jouw handen leveren +${nl(Fz*d,1)} J. Samen 0 J, dus de snelheid verandert niet.</span>`:'');
   }
-  knoppen.forEach(b=>b.onclick=()=>{ zin=b.dataset.z; draw(); });
-  Mr.oninput=Dr.oninput=draw; draw();
+  let raf=0;
+  function speel(){ cancelAnimationFrame(raf); p=0; t0=null; raf=requestAnimationFrame(stap); }
+  function stap(now){ if(t0===null) t0=now; const u=Math.min(1,(now-t0)/1800);
+    p=u<.5?2*u*u:1-2*(1-u)*(1-u); draw(); if(u<1) raf=requestAnimationFrame(stap); }
+  knoppen.forEach(b=>b.onclick=()=>{ zin=b.dataset.z; speel(); });
+  document.getElementById('s7z-play').onclick=speel;
+  Mr.oninput=Dr.oninput=()=>{ cancelAnimationFrame(raf); p=1; draw(); }; draw();
 })();
 
 //////////////////// 2.1 ARBEID ////////////////////
