@@ -234,6 +234,22 @@ footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-di
     </div>
   </section>
 
+  <section class="scene" id="s7z" data-nr="2.1" data-title="Arbeid van de zwaartekracht" data-cat="vermogen">
+    <div class="scene-head"><span class="num">2.1</span><h3>Arbeid van de zwaartekracht: omhoog of omlaag?</h3></div>
+    <p class="scene-sub">De zwaartekracht wijst <strong>altijd naar beneden</strong>. Of ze positieve of negatieve arbeid levert, hangt af van de <strong>zin van de verplaatsing</strong>. Kies hoe de boekentas beweegt.</p>
+    <div class="grid">
+      <div class="canvas-wrap"><canvas id="c7z" width="800" height="400"></canvas></div>
+      <div class="controls">
+        <div class="formule">W<sub>z</sub> = F<sub>z</sub> · Δx · cos α</div>
+        <div class="ctrl-row"><button class="btn" data-z="op">↑ optillen</button><button class="btn" data-z="hor">→ horizontaal</button><button class="btn" data-z="neer">↓ laten vallen</button></div>
+        <div class="ctrl-group"><label id="s7z-m-l"></label><input type="range" id="s7z-m" min="1" max="10" step="0.5" value="5"></div>
+        <div class="ctrl-group"><label id="s7z-d-l"></label><input type="range" id="s7z-d" min="0.5" max="3" step="0.1" value="1.5"></div>
+        <div class="readout" id="s7z-read"></div>
+        <div class="note"><strong>Let op:</strong> de zwaartekracht verandert niet, de verplaatsing wel. Omhoog: W<sub>z</sub> = −m · g · h. Omlaag: W<sub>z</sub> = +m · g · h. Horizontaal: W<sub>z</sub> = 0.</div>
+      </div>
+    </div>
+  </section>
+
   <section class="scene" id="s7" data-nr="2.2" data-title="Vermogen: de trap op" data-cat="vermogen">
     <div class="scene-head"><span class="num">7</span><h3>Vermogen: hoe snel wordt energie omgezet?</h3></div>
     <p class="scene-sub">Twee leerlingen met dezelfde massa lopen dezelfde trap op. Ze zetten dus <strong>evenveel energie</strong> om. Toch is er een verschil: de ene doet het <strong>sneller</strong>. Het <strong>vermogen P</strong> zegt hoeveel energie er per seconde wordt omgezet.</p>
@@ -786,6 +802,60 @@ const TOESTELLEN=[
   A.oninput=B.oninput=draw; zet();
 })();
 
+//////////////////// 2.1 ARBEID VAN DE ZWAARTEKRACHT ////////////////////
+(function(){
+  const c=document.getElementById('c7z'), ctx=hiDPI(c), W=c._w, H=c._h, g=9.81;
+  const Mr=document.getElementById('s7z-m'), Dr=document.getElementById('s7z-d'), read=document.getElementById('s7z-read');
+  const knoppen=[...document.querySelectorAll('#s7z [data-z]')];
+  let zin='op';
+  function vlabel(x,y,sub,kleur){ // vectorsymbool F met pijltje erboven
+    ctx.save(); ctx.font='700 16px Inter, sans-serif'; ctx.fillStyle=kleur; ctx.strokeStyle=kleur; ctx.fillText('F',x,y);
+    const w=ctx.measureText('F').width; ctx.lineWidth=1.5; ctx.beginPath(); ctx.moveTo(x,y-17); ctx.lineTo(x+w+2,y-17); ctx.moveTo(x+w-1,y-20); ctx.lineTo(x+w+2,y-17); ctx.lineTo(x+w-1,y-14); ctx.stroke();
+    ctx.font='700 12px Inter, sans-serif'; ctx.fillText(sub,x+w+1,y+5); ctx.restore(); }
+  function tas(x,y,vaag){ // y = onderkant
+    ctx.save(); if(vaag){ ctx.setLineDash([5,4]); ctx.strokeStyle='#94A3B8'; ctx.lineWidth=1.5; roundRect(ctx,x-34,y-52,68,52,9); ctx.stroke(); ctx.restore(); return; }
+    ctx.fillStyle='#2F6FB0'; roundRect(ctx,x-34,y-52,68,52,9); ctx.fill(); ctx.strokeStyle='#245A91'; ctx.lineWidth=4; ctx.beginPath(); ctx.moveTo(x-14,y-52); ctx.lineTo(x-14,y-62); ctx.lineTo(x+14,y-62); ctx.lineTo(x+14,y-52); ctx.stroke();
+    ctx.fillStyle='#E4EEF8'; ctx.fillRect(x-20,y-34,40,4); ctx.restore(); }
+  function draw(){
+    knoppen.forEach(b=>b.classList.toggle('on',b.dataset.z===zin));
+    const m=+Mr.value, d=+Dr.value, Fz=m*g, sc=80, gy=360;
+    document.getElementById('s7z-m-l').textContent='Massa van de boekentas m: '+nl(m,1)+' kg';
+    document.getElementById('s7z-d-l').textContent=(zin==='hor'?'Verplaatsing Δx: ':'Hoogteverschil h = Δx: ')+nl(d,1)+' m';
+    ctx.clearRect(0,0,W,H); ctx.fillStyle='#fbfcfe'; ctx.fillRect(0,0,W,H);
+    ctx.fillStyle='#E2E8F0'; ctx.fillRect(0,gy,W,H-gy); ctx.strokeStyle='#1D2A36'; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(0,gy); ctx.lineTo(W,gy); ctx.stroke();
+    let x0,y0,x1,y1,a;
+    if(zin==='op'){ x0=x1=260; y0=gy; y1=gy-d*sc; a=180; }
+    else if(zin==='neer'){ x0=x1=260; y0=gy-d*sc; y1=gy; a=0; }
+    else { x0=150; x1=150+d*sc*1.6; y0=y1=gy; a=90; }
+    // hoogte-/plankje voor de bovenste stand
+    tas(x0,y0,true); tas(x1,y1,false);
+    // verplaatsing: van midden begin naar midden eind
+    const cy0=y0-26, cy1=y1-26;
+    if(zin==='hor') { arrow(ctx,x0,gy-90,x1,gy-90,'#2563eb',2.5); text(ctx,'Δx = '+nl(d,1)+' m',(x0+x1)/2,gy-102,{size:14,weight:700,color:'#2563eb',align:'center'}); }
+    else { arrow(ctx,420,cy0,420,cy1,'#2563eb',2.5); text(ctx,'Δx = '+nl(d,1)+' m',432,(cy0+cy1)/2+5,{size:14,weight:700,color:'#2563eb'}); }
+    // zwaartekracht in het zwaartepunt van de tas (eindstand)
+    const L=Math.max(30,Fz*1.1);
+    arrow(ctx,x1,cy1,x1,cy1+L,'#d64550',2.5); ctx.fillStyle='#d64550'; ctx.beginPath(); ctx.arc(x1,cy1,3.5,0,7); ctx.fill();
+    vlabel(x1-44,cy1+L-4,'z','#d64550');
+    // hoek
+    const kleur=a===180?'#d64550':(a===0?'#16a34a':'#51606E');
+    text(ctx,'α = '+a+'°',530,70,{size:18,weight:700});
+    text(ctx,a===180?'zwaartekracht ↓, verplaatsing ↑':a===0?'zwaartekracht ↓, verplaatsing ↓':'zwaartekracht ↓, verplaatsing →',530,96,{size:13,color:'#51606E'});
+    const Wz=Fz*d*Math.cos(a*Math.PI/180), Wr=Math.round(Wz*10)/10;
+    text(ctx,'W',530,140,{size:22,weight:800,color:kleur}); text(ctx,'z',551,146,{size:14,weight:800,color:kleur});
+    text(ctx,'= '+(Wr>0?'+':'')+(Wr===0?'0':nl(Wr,1))+' J',562,140,{size:22,weight:800,color:kleur});
+    text(ctx,a===180?'negatieve arbeid':a===0?'positieve arbeid':'geen arbeid',530,166,{size:14,weight:700,color:kleur});
+    const uitleg={op:['De zwaartekracht werkt tegen de','verplaatsing in. Ze neemt energie weg:','die wordt potentiële energie.'],
+                  neer:['De zwaartekracht werkt mee met de','verplaatsing. Ze geeft energie: de','potentiële energie wordt kinetische.'],
+                  hor:['De zwaartekracht staat loodrecht op','de verplaatsing. De hoogte blijft','gelijk: geen arbeid.']}[zin];
+    uitleg.forEach((r,i)=>text(ctx,r,530,198+i*20,{size:13,color:'#51606E'}));
+    read.innerHTML=`F<sub>z</sub> = m · g = ${nl(m,1)} kg · 9,81 N/kg = ${nl(Fz,1)} N<br>W<sub>z</sub> = F<sub>z</sub> · Δx · cos ${a}°<br>W<sub>z</sub> = ${nl(Fz,1)} · ${nl(d,1)} · ${a===180?'(−1)':a===0?'1':'0'} = <b>${Wr>0?'+':''}${Wr===0?'0':nl(Wr,1)} J</b>`
+      +(zin==='op'?`<br><span class="k">Jij tilt met constante snelheid: jouw handen leveren +${nl(Fz*d,1)} J. Samen 0 J, dus de snelheid verandert niet.</span>`:'');
+  }
+  knoppen.forEach(b=>b.onclick=()=>{ zin=b.dataset.z; draw(); });
+  Mr.oninput=Dr.oninput=draw; draw();
+})();
+
 //////////////////// 2.1 ARBEID ////////////////////
 (function(){
   const c=document.getElementById('c7a'), ctx=hiDPI(c), W=c._w, H=c._h;
@@ -859,7 +929,7 @@ const TOESTELLEN=[
   const rnd=a=>a[Math.floor(Math.random()*a.length)];
   const ri=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
   function telScore(ok){ totaal++; if(ok) goed++; scoreEl.textContent=goed+' / '+totaal+' juist'; }
-  function parse(s){ s=String(s).trim().replace(/\s/g,'').replace(',','.'); return s===''?NaN:+s; }
+  function parse(s){ s=String(s).trim().replace(/\s/g,'').replace(',','.').replace(/[−–]/g,'-'); return s===''?NaN:+s; }
 
   function keuze(opgave, opties, juist, uitleg){
     box.innerHTML=`<div class="opgave">${opgave}</div>`;
@@ -946,6 +1016,13 @@ const TOESTELLEN=[
     ()=>{ const F=ri(4,20)*5, sm=ri(2,12), a=rnd([0,0,30,60,90]); const W=F*sm*Math.cos(a*Math.PI/180);
       rekenen(`Je trekt een valies ${sm} m ver over de grond met een kracht van ${F} N. De kracht maakt een hoek van ${a}° met de verplaatsing. Bereken de arbeid.`, W,'J',
         `W = F · Δx · cos α = ${F} N · ${sm} m · cos ${a}° = ${F} · ${sm} · ${nl(Math.cos(a*Math.PI/180),3)} = ${nl(W,a%90?1:0)} J.`+(a===90?'<br>De kracht staat loodrecht op de verplaatsing: geen arbeid.':'')); },
+    // 11. arbeid van de zwaartekracht: omhoog of omlaag
+    ()=>{ const op=Math.random()<0.5, m=rnd([2,5,8,10,20,50]), h=ri(2,12)/2, Fz=m*9.81, W=(op?-1:1)*Fz*h;
+      const zin=op?rnd([`Een kraan hijst een balk van ${m} kg ${nl(h,1)} m omhoog.`,`Je tilt een doos van ${m} kg ${nl(h,1)} m op.`])
+                 :rnd([`Een doos van ${m} kg valt ${nl(h,1)} m naar beneden.`,`Een kraan laat een balk van ${m} kg ${nl(h,1)} m zakken.`]);
+      rekenen(zin+' Bereken de arbeid van de zwaartekracht. Let op het teken.', W,'J',
+        `F<sub>z</sub> = m · g = ${m} · 9,81 = ${nl(Fz,1)} N, naar beneden.<br>`+(op?`De verplaatsing is naar boven: α = 180°, cos 180° = −1.<br>W<sub>z</sub> = ${nl(Fz,1)} · ${nl(h,1)} · (−1) = ${nl(W,1)} J: negatieve arbeid.`
+          :`De verplaatsing is naar beneden: α = 0°, cos 0° = 1.<br>W<sub>z</sub> = ${nl(Fz,1)} · ${nl(h,1)} · 1 = ${nl(W,1)} J: positieve arbeid.`)); },
   ];
   function nieuw(){ let i; do{ i=Math.floor(Math.random()*types.length); }while(i===vorige); vorige=i; types[i](); }
   document.getElementById('s10-nieuw').onclick=nieuw;

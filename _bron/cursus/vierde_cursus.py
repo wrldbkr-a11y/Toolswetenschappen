@@ -581,6 +581,30 @@ fig_valies = svg(
     pijl(150, 190, 450, 190, BLAUW, 3) + t(300, 212, 'verplaatsing Δx', 14, BLAUW) +
     t(300, 24, 'Je trekt een valies over de grond', 14, INK, 'middle', 700), 600, 220)
 
+def _fz(x, y):  # label F_z met subscript
+    return t(x, y, 'F<tspan font-size="12" dy="4">z</tspan>', 16, POS, 'start', 700)
+fig_zwaarte = svg(
+    '<rect x="0" y="0" width="600" height="250" fill="#fff"/>'
+    '<line x1="300" y1="20" x2="300" y2="236" stroke="#e2e8f0" stroke-width="1.5"/>'
+    # links: boekentas optillen
+    + t(150, 24, 'Omhoog: je tilt een boekentas op', 14, INK, 'middle', 700)
+    + '<line x1="20" y1="216" x2="280" y2="216" stroke="#94a3b8" stroke-width="2"/>'
+    '<rect x="70" y="170" width="60" height="46" rx="8" fill="none" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="5,4"/>'
+    '<rect x="70" y="58" width="60" height="46" rx="8" fill="#334155"/>'
+    '<path d="M86,58 v-8 h28 v8" fill="none" stroke="#334155" stroke-width="3"/>'
+    + pijl(100, 81, 100, 141, POS) + punt(100, 81, POS) + _fz(108, 136)
+    + pijl(170, 193, 170, 81, BLAUW, 3) + t(180, 140, 'Δx', 15, BLAUW, 'start', 700)
+    + t(205, 82, 'α = 180°', 14, INK, 'start', 700) + t(205, 104, 'W', 14, INK, 'start', 700) + t(219, 108, 'z', 11, INK, 'start', 700) + t(228, 104, '< 0', 14, INK, 'start', 700)
+    # rechts: appel valt
+    + t(450, 24, 'Omlaag: een appel valt', 14, INK, 'middle', 700)
+    + '<line x1="320" y1="216" x2="580" y2="216" stroke="#94a3b8" stroke-width="2"/>'
+    '<circle cx="400" cy="72" r="18" fill="none" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="5,4"/>'
+    '<circle cx="400" cy="160" r="18" fill="#c0392b"/><path d="M400,142 q2,-8 8,-11" fill="none" stroke="#5b3a1a" stroke-width="2.5"/>'
+    + pijl(400, 160, 400, 210, POS) + punt(400, 160, POS) + _fz(408, 206)
+    + pijl(460, 72, 460, 160, BLAUW, 3) + t(470, 120, 'Δx', 15, BLAUW, 'start', 700)
+    + t(500, 82, 'α = 0°', 14, INK, 'start', 700) + t(500, 104, 'W', 14, INK, 'start', 700) + t(514, 108, 'z', 11, INK, 'start', 700) + t(523, 104, '> 0', 14, INK, 'start', 700),
+    600, 250)
+
 w_doelen = lesdoelen(
     'het begrip <b>arbeid geleverd door een kracht op een voorwerp</b> omschrijven;',
     'de formule voor <b>arbeid</b> gebruiken en omvormen om de kracht en de verplaatsing te berekenen;',
@@ -597,6 +621,11 @@ w1 = f'''<p>Duw je een kar vooruit, dan geef je energie aan de kar: ze gaat snel
 <ul><li><b>α = 0°</b> (kracht in de zin van de beweging): cos 0° = 1, dus <b>W = F · Δx</b>. De kracht geeft energie aan het voorwerp.</li>
 <li><b>α = 90°</b> (kracht loodrecht op de beweging): cos 90° = 0, dus <b>W = 0</b>. Draag je een rugzak horizontaal over de speelplaats, dan levert de kracht van je schouders op de rugzak geen arbeid.</li>
 <li><b>α = 180°</b> (kracht tegen de beweging in, bv. wrijving of remmen): cos 180° = −1, dus <b>W = −F · Δx</b>. De kracht neemt energie weg.</li></ul>
+<h3>Arbeid van de zwaartekracht: omhoog of omlaag?</h3>
+<p>De zwaartekracht wijst altijd naar beneden. Of haar arbeid positief of negatief is, hangt dus af van de <b>zin van de verplaatsing</b>.</p>
+{figuur(fig_zwaarte, 'Zelfde kracht, andere verplaatsing. Omhoog werkt de zwaartekracht tegen de verplaatsing in, omlaag werkt ze mee.')}
+{kader('Arbeid van de zwaartekracht', '<p><b>Omhoog</b> (optillen, de trap op): α = 180°, dus <b>W<sub>z</sub> = −m · g · h</b>. De zwaartekracht neemt energie weg: die wordt E<sub>pot</sub>.<br><b>Omlaag</b> (vallen, de trap af): α = 0°, dus <b>W<sub>z</sub> = +m · g · h</b>. De zwaartekracht geeft energie: E<sub>pot</sub> wordt E<sub>k</sub>.<br><b>Horizontaal</b>: α = 90°, dus W<sub>z</sub> = 0.</p>')}
+<p>Til je een doos met constante snelheid op, dan lever jij +m · g · h en de zwaartekracht −m · g · h. Samen is dat 0: W<sub>res</sub> = 0, dus de snelheid verandert niet.</p>
 <p>Omvormen: <b>F = W / (Δx · cos α)</b> &nbsp;·&nbsp; <b>Δx = W / (F · cos α)</b></p>
 <h3>Arbeid-energietheorema</h3>
 <p>Werken er meerdere krachten op een voorwerp, dan bepaalt de <b>resulterende kracht</b> hoe de snelheid verandert. De arbeid van de resulterende kracht is gelijk aan de verandering van de kinetische energie:</p>
@@ -626,11 +655,17 @@ w_oef = f'''{oef('opl_1', 1, 'Kar duwen', 'Je duwt een winkelkar met een horizon
   ('Gegeven', 'F = 150 N · Δx = 20 m · α = 0°'), ('Formule', 'W = F · Δx · cos α'), ('Oplossing', 'W = 150 · 20 · 1 = 3000 J')], 'W = 3,0 · 10³ J')}
 {oef('opl_2', 2, 'Valies onder een hoek', 'In het Zuidstation trek je een valies met een kracht van 50 N onder een hoek van 30° met de grond. Je wandelt 40 m. Bereken de arbeid van je kracht.', [
   ('Gegeven', 'F = 50 N · Δx = 40 m · α = 30°'), ('Formule', 'W = F · Δx · cos α'), ('Oplossing', 'W = 50 · 40 · cos 30° = 2000 · 0,866 = 1732 J')], 'W = 1,7 · 10³ J')}
-{oef('opl_3', 3, 'Geen arbeid?', 'Leg uit of de kracht arbeid levert.<ol class="deelvragen" type="a"><li>Je houdt een zware boekentas 5 minuten stil vast.</li><li>Je draagt een rugzak horizontaal over de speelplaats: de kracht van je schouders op de rugzak.</li><li>De wrijvingskracht op een fietser die uitbolt.</li><li>Je tilt een doos van de grond op een tafel.</li></ol>', [
+{oef('opl_3', 3, 'Geen arbeid?', 'Leg uit of de kracht arbeid levert.<ol class="deelvragen" type="a"><li>Je houdt een zware boekentas 5 minuten stil vast.</li><li>Je draagt een rugzak horizontaal over de speelplaats: de kracht van je schouders op de rugzak.</li><li>De wrijvingskracht op een fietser die uitbolt.</li><li>Je tilt een doos van de grond op een tafel: de kracht van je handen op de doos.</li><li>De zwaartekracht op diezelfde doos, terwijl je ze optilt.</li><li>De zwaartekracht op een appel die van de boom valt.</li></ol>', [
   ('a', 'Geen arbeid: er is geen verplaatsing (Δx = 0).'), ('b', 'Geen arbeid: de kracht staat loodrecht op de verplaatsing (cos 90° = 0).'),
-  ('c', 'Negatieve arbeid: de kracht staat tegen de beweging in (cos 180° = −1).'), ('d', 'Positieve arbeid: kracht en verplaatsing zijn naar boven gericht.')], 'Arbeid vraagt een verplaatsing en een kracht die (deels) in de richting van die verplaatsing werkt.')}
+  ('c', 'Negatieve arbeid: de kracht staat tegen de beweging in (cos 180° = −1).'), ('d', 'Positieve arbeid: kracht en verplaatsing zijn naar boven gericht (cos 0° = 1).'),
+  ('e', 'Negatieve arbeid: de zwaartekracht wijst omlaag, de verplaatsing omhoog (cos 180° = −1).'), ('f', 'Positieve arbeid: zwaartekracht en verplaatsing wijzen allebei omlaag (cos 0° = 1).')], 'Kijk telkens naar de hoek tussen de kracht en de verplaatsing. Dezelfde zwaartekracht levert omhoog negatieve en omlaag positieve arbeid.')}
 {oef('opl_4', 4, 'Kracht berekenen', 'Een kraan levert een arbeid van 600 J om een balk 4,0 m verticaal omhoog te hijsen. Bereken de kracht van de kraan op de balk.', [
   ('Gegeven', 'W = 600 J · Δx = 4,0 m · α = 0°'), ('Formule', 'F = W / (Δx · cos α)'), ('Oplossing', 'F = 600 / (4,0 · 1) = 150 N')], 'F = 1,5 · 10² N')}
+{oef('opl_4b', 4, 'Hijsen en laten zakken', 'Een kraan hijst een balk van 50 kg 4,0 m omhoog. Daarna laat ze de balk weer 4,0 m zakken.<ol class="deelvragen" type="a"><li>Bereken de arbeid van de zwaartekracht bij het hijsen.</li><li>Bereken de arbeid van de zwaartekracht bij het zakken.</li><li>Hoeveel arbeid levert de zwaartekracht over de hele beweging?</li></ol>', [
+  ('Zwaartekracht', 'F<sub>z</sub> = m · g = 50 · 9,81 = 490,5 N, altijd naar beneden'),
+  ('a', 'Verplaatsing omhoog: α = 180°. W<sub>z</sub> = 490,5 · 4,0 · cos 180° = −1962 J'),
+  ('b', 'Verplaatsing omlaag: α = 0°. W<sub>z</sub> = 490,5 · 4,0 · cos 0° = +1962 J'),
+  ('c', 'W = −1962 J + 1962 J = 0 J: de balk is terug op dezelfde hoogte.')], 'a: −2,0 · 10³ J · b: +2,0 · 10³ J · c: 0 J')}
 {oef('opl_5', 5, 'Arbeid-energietheorema', 'Een fietser en zijn fiets hebben samen een massa van 70 kg. Ze vertrekken uit stilstand en halen na 30 m een snelheid van 6,0 m/s.<ol class="deelvragen" type="a"><li>Bereken de arbeid van de resulterende kracht.</li><li>Bereken de grootte van de resulterende kracht.</li></ol>', [
   ('a', 'W<sub>res</sub> = ΔE<sub>k</sub> = ½ · 70 · 6,0² − 0 = 1260 J'), ('b', 'F<sub>res</sub> = W<sub>res</sub> / Δx = 1260 / 30 = 42 N')], 'W<sub>res</sub> = 1,26 · 10³ J en F<sub>res</sub> = 42 N')}
 {oef('opl_6', 6, 'De trap op', 'Lina (60 kg) loopt de trap op naar de derde verdieping, 9,0 m hoger, in 12 s.<ol class="deelvragen" type="a"><li>Hoeveel energie zet ze om in gravitationele potentiële energie?</li><li>Bereken haar vermogen.</li></ol>', [
@@ -644,6 +679,7 @@ w_oef = f'''{oef('opl_1', 1, 'Kar duwen', 'Je duwt een winkelkar met een horizon
 
 w_samenv = '''<p><b>Arbeid</b> is de energie die een kracht overdraagt bij een verplaatsing: <b>W = F · Δx · cos α</b>, in joule.</p>
 <p>α = 0°: W = F · Δx · α = 90°: W = 0 · α = 180°: W negatief.</p>
+<p>Zwaartekracht: <b>omhoog</b> W<sub>z</sub> = −m · g · h, <b>omlaag</b> W<sub>z</sub> = +m · g · h.</p>
 <p><b>Arbeid-energietheorema</b>: W<sub>res</sub> = ΔE<sub>k</sub>.</p>
 <p><b>Vermogen</b> is de energie die per seconde wordt omgezet: <b>P = E / Δt</b>, in watt (1 W = 1 J/s). Omvormen: E = P · Δt en Δt = E / P.</p>'''
 
