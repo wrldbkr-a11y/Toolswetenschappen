@@ -251,6 +251,22 @@ footer{max-width:1180px;margin:0 auto;padding:10px 24px 40px;color:var(--text-di
     </div>
   </section>
 
+  <section class="scene" id="s7k" data-nr="2.1" data-title="Positieve en negatieve arbeid" data-cat="vermogen">
+    <div class="scene-head"><span class="num">2.1</span><h3>Positieve en negatieve arbeid: een kast duwen</h3></div>
+    <p class="scene-sub">Je duwt een kast van 50 kg over de vloer. Ze schuift al met 2,0 m/s. Twee krachten leveren arbeid: jouw <strong>spierkracht</strong> stopt energie <strong>in</strong> de kast, de <strong>wrijvingskracht</strong> haalt energie <strong>uit</strong> de kast. Kies hoe hard je duwt en kijk wat er met de kast gebeurt.</p>
+    <div class="grid">
+      <div class="canvas-wrap"><canvas id="c7k" width="800" height="400"></canvas></div>
+      <div class="controls">
+        <div class="formule">W<sub>spier</sub> + W<sub>wrijving</sub> = W<sub>res</sub> = ΔE<sub>k</sub></div>
+        <div class="ctrl-group"><label id="s7k-F-l"></label><input type="range" id="s7k-F" min="0" max="300" step="10" value="200"></div>
+        <div class="ctrl-row"><button class="btn" data-f="0">loslaten</button><button class="btn" data-f="200">200 N</button><button class="btn" data-f="250">250 N</button></div>
+        <button class="btn primary" id="s7k-play">▶ Duw de kast 3,0 m ver</button>
+        <div class="readout" id="s7k-read"></div>
+        <div class="note"><strong>Ken dit:</strong> het teken van de arbeid zegt of een kracht energie <strong>in</strong> het voorwerp stopt (+) of eruit haalt (−). De <strong>som</strong> bepaalt wat er met de snelheid gebeurt. De energie die de wrijving weghaalt, verdwijnt niet: ze wordt warmte.</div>
+      </div>
+    </div>
+  </section>
+
   <section class="scene" id="s7" data-nr="2.2" data-title="Vermogen: de trap op" data-cat="vermogen">
     <div class="scene-head"><span class="num">7</span><h3>Vermogen: hoe snel wordt energie omgezet?</h3></div>
     <p class="scene-sub">Twee leerlingen met dezelfde massa lopen dezelfde trap op. Ze zetten dus <strong>evenveel energie</strong> om. Toch is er een verschil: de ene doet het <strong>sneller</strong>. Het <strong>vermogen P</strong> zegt hoeveel energie er per seconde wordt omgezet.</p>
@@ -801,6 +817,87 @@ const TOESTELLEN=[
   }
   document.querySelectorAll('#s6b-soort .btn').forEach(b=>b.onclick=()=>{ soort=b.dataset.s; zet(); });
   A.oninput=B.oninput=draw; zet();
+})();
+
+//////////////////// 2.1 POSITIEVE EN NEGATIEVE ARBEID: KAST ////////////////////
+(function(){
+  const c=document.getElementById('c7k'), ctx=hiDPI(c), W=c._w, H=c._h;
+  const Fr=document.getElementById('s7k-F'), read=document.getElementById('s7k-read');
+  const M=50, FW=200, V0=2.0, D=3.0, EK0=0.5*M*V0*V0;
+  let st={x:0,v:V0,Ws:0,Ww:0,klaar:true}, raf=0, tPrev=null;
+  const GROEN='#16a34a', ROOD='#d64550', BLAUW='#2563eb';
+  function vlabel(x,y,sub,kleur){
+    ctx.save(); ctx.font='700 16px Inter, sans-serif'; ctx.fillStyle=kleur; ctx.strokeStyle=kleur; ctx.fillText('F',x,y);
+    const w=ctx.measureText('F').width; ctx.lineWidth=1.5; ctx.beginPath(); ctx.moveTo(x,y-17); ctx.lineTo(x+w+2,y-17); ctx.moveTo(x+w-1,y-20); ctx.lineTo(x+w+2,y-17); ctx.lineTo(x+w-1,y-14); ctx.stroke();
+    ctx.font='700 12px Inter, sans-serif'; ctx.fillText(sub,x+w+1,y+5); ctx.restore(); }
+  function nlJ(v){ const r=Math.round(v); return (r>0?'+':'')+(r===0?'0':nl(r,0))+' J'; }
+  function draw(){
+    const F=+Fr.value;
+    document.getElementById('s7k-F-l').textContent='Jouw duwkracht: '+F+' N  (wrijvingskracht: 200 N)';
+    document.querySelectorAll('#s7k [data-f]').forEach(b=>b.classList.toggle('on',+b.dataset.f===F));
+    ctx.clearRect(0,0,W,H); ctx.fillStyle='#fbfcfe'; ctx.fillRect(0,0,W,H);
+    // ---- links: de kast op de vloer (de vloer schuift onder de kast door) ----
+    const gy=300, sc=90, kx=230;
+    ctx.fillStyle='#E7DCCB'; ctx.fillRect(0,gy,470,H-gy); ctx.strokeStyle='#1D2A36'; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(0,gy); ctx.lineTo(470,gy); ctx.stroke();
+    ctx.strokeStyle='#C9B79C'; ctx.lineWidth=2; const off=(st.x*sc)%60;
+    for(let x=-60;x<520;x+=60){ const xx=x-off; ctx.beginPath(); ctx.moveTo(xx,gy+2); ctx.lineTo(xx-14,H); ctx.stroke(); }
+    // kast
+    ctx.fillStyle='#8B5E3C'; roundRect(ctx,kx-60,gy-190,120,190,6); ctx.fill();
+    ctx.strokeStyle='#6E4729'; ctx.lineWidth=2; ctx.strokeRect(kx-52,gy-182,50,170); ctx.strokeRect(kx+2,gy-182,50,170);
+    ctx.fillStyle='#E8C27A'; ctx.fillRect(kx-10,gy-105,4,18); ctx.fillRect(kx+6,gy-105,4,18);
+    // warmte aan de onderkant als de kast schuift
+    if(st.v>0.01 && st.x>0){ const a=Math.min(.55,(-st.Ww)/1200+.1); const gr=ctx.createLinearGradient(0,gy-14,0,gy+10); gr.addColorStop(0,'rgba(255,140,40,0)'); gr.addColorStop(.6,`rgba(255,120,30,${a})`); gr.addColorStop(1,'rgba(255,120,30,0)'); ctx.fillStyle=gr; ctx.fillRect(kx-64,gy-14,128,24); }
+    // krachten: spierkracht links op de kast, wrijving in het contactvlak
+    if(F>0){ arrow(ctx,kx-60,gy-100,kx-60+F*0.42,gy-100,GROEN,2.5); ctx.fillStyle=GROEN; ctx.beginPath(); ctx.arc(kx-60,gy-100,3.5,0,7); ctx.fill(); ctx.fillStyle='rgba(255,255,255,.85)'; ctx.fillRect(kx-128,gy-128,62,26); vlabel(kx-124,gy-108,'spier',GROEN); }
+    const Fwd = st.v>0.001 ? FW : Math.min(F,FW);
+    if(Fwd>0){ arrow(ctx,kx+20,gy,kx+20-Fwd*0.42,gy,ROOD,2.5); ctx.fillStyle=ROOD; ctx.beginPath(); ctx.arc(kx+20,gy,3.5,0,7); ctx.fill(); vlabel(kx+20-Fwd*0.42-6,gy+30,'w',ROOD); }
+    // snelheid en verplaatsing
+    if(st.v>0.001) arrow(ctx,kx-40,gy-212,kx-40+st.v*50,gy-212,BLAUW,2.5);
+    text(ctx,'v = '+nl(st.v,2)+' m/s',kx-40,gy-226,{size:14,weight:700,color:BLAUW});
+    text(ctx,'Δx = '+nl(st.x,2)+' m',20,30,{size:15,weight:700,color:BLAUW});
+    // ---- rechts: energiestromen ----
+    const bx=600, by=150, bw=110, bh=150;
+    text(ctx,'Energie van de kast',bx+bw/2,30,{size:15,weight:700,align:'center'});
+    const Ek=0.5*M*st.v*st.v, maxE=300;
+    ctx.strokeStyle='#1D2A36'; ctx.lineWidth=1.5; roundRect(ctx,bx,by,bw,bh,10); ctx.stroke();
+    const hEk=Math.min(bh-6,Ek/maxE*bh); ctx.fillStyle='#60a5fa'; ctx.fillRect(bx+6,by+bh-3-hEk,bw-12,hEk);
+    ctx.strokeStyle='#94A3B8'; ctx.setLineDash([4,4]); const h0=EK0/maxE*bh; ctx.beginPath(); ctx.moveTo(bx-6,by+bh-3-h0); ctx.lineTo(bx+bw+6,by+bh-3-h0); ctx.stroke(); ctx.setLineDash([]);
+    text(ctx,'start',bx+bw+10,by+bh-h0+1,{size:11,color:'#64748b'});
+    text(ctx,'E',bx+bw/2-22,by+bh+24,{size:15,weight:700,color:'#2563eb'}); text(ctx,'k',bx+bw/2-12,by+bh+29,{size:11,weight:700,color:'#2563eb'});
+    text(ctx,'= '+nl(Ek,0)+' J',bx+bw/2-2,by+bh+24,{size:15,weight:700,color:'#2563eb'});
+    // pijl erin: spierkracht
+    const dikIn=2+Math.min(14,st.Ws/80), dikUit=2+Math.min(14,-st.Ww/80);
+    arrow(ctx,500,by+45,bx-4,by+45,GROEN,dikIn); text(ctx,'W',482,by+28,{size:14,weight:700,color:GROEN}); text(ctx,'spier',496,by+32,{size:10,weight:700,color:GROEN});
+    text(ctx,'= '+nlJ(st.Ws),525,by+28,{size:14,weight:700,color:GROEN}); text(ctx,'erin',500,by+70,{size:12,color:GROEN});
+    // pijl eruit: wrijving -> warmte
+    arrow(ctx,bx+bw/2,by-4,bx+bw/2,62,ROOD,dikUit); text(ctx,'warmte',bx+bw/2+12,70,{size:12,weight:700,color:ROOD});
+    text(ctx,'W',bx+bw/2+12,by-36,{size:14,weight:700,color:ROOD}); text(ctx,'wrijving',bx+bw/2+26,by-32,{size:10,weight:700,color:ROOD});
+    text(ctx,'= '+nlJ(st.Ww),bx+bw/2+12,by-16,{size:14,weight:700,color:ROOD}); text(ctx,'eruit',bx+bw/2-50,by-16,{size:12,color:ROOD});
+    // ---- uitleg ----
+    const Wres=st.Ws+st.Ww;
+    let besluit;
+    if(st.x===0) besluit='Klik op "Duw de kast 3,0 m ver".';
+    else if(Math.abs(Wres)<0.5) besluit='Erin = eruit: E<sub>k</sub> blijft gelijk. De kast schuift met <b>constante snelheid</b>. Je spieren leveren energie, maar die wordt allemaal warmte.';
+    else if(Wres>0) besluit='Erin &gt; eruit: E<sub>k</sub> neemt toe. De kast gaat <b>sneller</b>.';
+    else besluit='Erin &lt; eruit: E<sub>k</sub> neemt af. De kast gaat <b>trager</b>'+(st.v<0.001?' en <b>stopt</b>.':'.');
+    read.innerHTML=`W<sub>spier</sub> = ${nlJ(st.Ws)} &nbsp;(kracht mee met Δx)<br>W<sub>wrijving</sub> = ${nlJ(st.Ww)} &nbsp;(kracht tegen Δx in)<br>W<sub>res</sub> = ΔE<sub>k</sub> = <b>${nlJ(Wres)}</b><br><span class="k">${besluit}</span>`;
+  }
+  function stap(now){
+    const F=+Fr.value; const dt=tPrev===null?0:Math.min(0.05,(now-tPrev)/1000)*0.8; tPrev=now; // iets vertraagd
+    if(st.v>0.0001){
+      let dx=st.v*dt; if(st.x+dx>D) dx=D-st.x;
+      const a=(F-FW)/M, v2=st.v*st.v+2*a*dx;
+      if(v2<=0){ dx=st.v*st.v/(-2*a); if(st.x+dx>D) dx=D-st.x; st.v=0; } else st.v=Math.sqrt(v2);
+      st.x+=dx; st.Ws+=F*dx; st.Ww-=FW*dx;
+    }
+    draw();
+    if(st.x<D-1e-6 && st.v>0.0001) raf=requestAnimationFrame(stap);
+  }
+  function speel(){ cancelAnimationFrame(raf); st={x:0,v:V0,Ws:0,Ww:0}; tPrev=null; raf=requestAnimationFrame(stap); }
+  document.getElementById('s7k-play').onclick=speel;
+  document.querySelectorAll('#s7k [data-f]').forEach(b=>b.onclick=()=>{ Fr.value=b.dataset.f; speel(); });
+  Fr.oninput=()=>{ cancelAnimationFrame(raf); st={x:0,v:V0,Ws:0,Ww:0}; draw(); };
+  draw();
 })();
 
 //////////////////// 2.1 ARBEID VAN DE ZWAARTEKRACHT ////////////////////
