@@ -81,7 +81,7 @@ K = [
   ('elektrisch-veld.html', 'Elektrisch veld'), [1, 3, 4, 5], ('elektrisch-veld.html', 'Oefen in de tool Elektrisch veld')),
  ('potentiaal', 'Fysica 5de jaar', 'Potentiaal', 'cursus-potentiaal.html', 'redenering',
   'Leg de vergelijking uit tussen een massa in het zwaarteveld en een lading in een homogeen elektrisch veld. Wat is potentiële energie, wat is potentiaal, wat is spanning? Gebruik een tabel met twee kolommen.',
-  ('elektrisch-veld.html', 'Elektrisch veld (homogeen veld)'), [1, 2, 4, 5], ('formuleredeneertool.html', 'Oefen de formules omvormen')),
+  ('potentiaal.html', 'Potentiaal'), [1, 2, 4, 5], ('formuleredeneertool.html', 'Oefen de formules omvormen')),
  ('schakelingen', 'Fysica 5de jaar', 'Gemengde schakelingen', 'cursus-schakelingen.html', 'elkaar',
   'Teken de schakeling R1 + (R2 // R3) met U = 12 V, R1 = 4 Ω, R2 = 6 Ω en R3 = 12 Ω. Los ze stap voor stap op met het stappenplan: eerst van binnen naar buiten, dan van buiten naar binnen. Controleer aan het einde of de stromen en spanningen kloppen.',
   ('schakelingen.html#gemengd', 'Gemengde schakelingen · stap voor stap'), [2, 3, 4, 7], ('schakelingen.html#oefenen', 'Nieuwe opgaven in de tool')),

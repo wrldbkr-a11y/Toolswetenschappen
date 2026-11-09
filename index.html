@@ -187,8 +187,11 @@ const TOOLS = [
     tekst:"Oefenen met de elektrische kracht tussen ladingen.",
     open:"krachten-op-ladingen.html", bestand:"krachten-op-ladingen.html" },
   { vak:"Fysica", richting:"wet", icoon:"veld", jaren:[5], hfd:"Thema 1 · Hfd 3", titel:"Elektrisch veld",
-    tekst:"Veldlijnen (ook in 3D), meerdere ladingen, kooi van Faraday, potentiaal en energie in een homogeen veld.",
+    tekst:"Grootte van het veld, veldlijnen (ook in 3D), meerdere ladingen, homogeen veld en kooi van Faraday.",
     open:"elektrisch-veld.html", bestand:"elektrisch-veld.html" },
+  { vak:"Fysica", richting:"wet", icoon:"potentiaal", jaren:[5], hfd:"Thema 1 · Hfd 4", titel:"Potentiaal",
+    tekst:"Zwaarteveld en elektrisch veld vergeleken. E, V en potentiële energie in een homogeen veld, spanning en elektronvolt.",
+    open:"potentiaal.html", bestand:"potentiaal.html" },
   { vak:"Fysica", richting:"wet", icoon:"schakeling", jaren:[5], hfd:"Thema 2 · Hfd 3", titel:"Gemengde schakelingen",
     tekst:"Wet van Ohm, serie en parallel, en gemengde schakelingen stap voor stap oplossen.",
     open:"schakelingen.html", bestand:"schakelingen.html" },
@@ -416,6 +419,12 @@ const ICONEN = {
     <rect x="37" y="6" width="5" height="36" rx="1" ${Z(.2)}/><rect x="37" y="6" width="5" height="36" rx="1"/>
     <path d="M13 12 H34" stroke-width="1.2" ${A}/><path d="M13 20 H34" stroke-width="1.2" ${A}/><path d="M13 28 H34" stroke-width="1.2" ${A}/><path d="M13 36 H34" stroke-width="1.2" ${A}/>
     <g font-size="6.5" font-family="inherit" font-weight="700"><text x="6.6" y="47.5">+</text><text x="38.2" y="47.5">−</text></g>`,
+  /* potentiaal: twee platen boven en onder, equipotentiaalvlakken en een lading */
+  potentiaal: `<rect x="5" y="5" width="38" height="5" rx="1" ${Z(.2)}/><rect x="5" y="5" width="38" height="5" rx="1"/>
+    <rect x="5" y="38" width="38" height="5" rx="1" ${Z(.2)}/><rect x="5" y="38" width="38" height="5" rx="1"/>
+    <path d="M7 17 H41 M7 24 H41 M7 31 H41" stroke-width="1" stroke-dasharray="3 2.2" opacity=".7"/>
+    <circle cx="16" cy="24" r="3.2" ${Z(.9)}/><path d="M16 27.5 V35" stroke-width="1.3" ${A}/>
+    <g font-size="6.5" font-family="inherit" font-weight="700"><text x="44.5" y="10">+</text><text x="44.5" y="43">−</text></g>`,
   /* atoommodel natrium (2-8-1), elektronen op de vier hoekpunten per schil */
   /* ion: atoom met een elektron dat vertrekt en een plusteken */
   ion: `<circle cx="20" cy="26" r="4" ${Z(.9)}/><circle cx="20" cy="26" r="10" stroke-width="1" opacity=".55"/><circle cx="20" cy="26" r="16" stroke-width="1" opacity=".55"/>

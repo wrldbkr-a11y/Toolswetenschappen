@@ -229,23 +229,61 @@
   #veld3d .canvas-hint{max-width:760px;margin-left:auto;margin-right:auto;}
   .ctrl3d .btn-reset{margin-top:0;}
   @media (max-width:820px){ .tab{padding:8px 10px;font-size:0.86rem;} }
+
+  /* homogeen veld: veld en grafieken onder elkaar, met dezelfde x-as */
+  .hom-grid{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:18px;align-items:start;}
+  @media (max-width:900px){ .hom-grid{grid-template-columns:1fr;} }
+  .hom-links canvas{margin:0 auto;}
+  .hom-links #graphCanvas2{margin-top:6px;border-top:none;}
+  .hom-links .canvas-hint{margin:4px 0 0;text-align:center;}
+  .hom-rechts .field-row{margin-bottom:10px;}
+  .hom-rechts .divider{margin:10px 0;}
+
+  /* bordweergave */
+  .tab-bord{margin-left:auto;align-self:center;appearance:none;border:1px solid var(--border);background:#fff;border-radius:8px;
+    padding:6px 12px;font-family:var(--font);font-size:14px;font-weight:600;color:var(--ink);cursor:pointer;}
+  .tab-bord:hover{border-color:var(--accent);}
+  body.bord .wrap{max-width:none;padding:8px 18px 12px;}
+  body.bord h1, body.bord .wrap > .sub, body.bord .ldnw-wrap{display:none;}
+  body.bord .tabs{margin:0 0 10px;}
+  body.bord .tab{font-size:16px;}
+  body.bord .hom-grid{grid-template-columns:minmax(0,1fr) 320px;}
+  body.bord .hom-rechts{max-height:calc(100vh - 80px);overflow:auto;}
+  body.bord .hom-links h2, body.bord .hom-links .canvas-hint{display:none;}
+  body.bord .hom-links{padding:10px 16px;}
+
+  /* analogie zwaarteveld - elektrisch veld */
+  #an_cv{max-width:900px;margin:0 auto}
+  .an-knoppen{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;margin-top:10px;font-size:0.9rem;font-weight:600}
+  .an-knoppen .sign-btn{flex:0 0 120px}.an-knoppen .btn-reset{width:auto;margin:0;padding:6px 16px}.an-knoppen .tussen{width:24px}
+  table.ana{width:100%;border-collapse:collapse;font-size:0.92rem;line-height:1.5}
+  table.ana th, table.ana td{padding:6px 8px;border-bottom:1px solid var(--border);text-align:left;vertical-align:top}
+  table.ana th{background:var(--accent-soft);}
+  table.ana td:first-child{color:var(--ink-soft);}
+  table.ana .w{font-variant-numeric:tabular-nums;color:var(--accent-dark);font-weight:600;white-space:nowrap}
+  .vak{border-radius:0 10px 10px 0;padding:10px 14px;font-size:0.9rem;line-height:1.55;margin-top:12px}
+  .vak .kop{display:block;font-size:11.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;margin-bottom:2px}
+  .vak.ken{background:#E8F5EC;border-left:4px solid #1F7A4A}.vak.ken .kop{color:#1F7A4A}
+  .vak.let{background:#FFF7ED;border-left:4px solid #D97706}.vak.let .kop{color:#B45309}
 </style>
 </head>
-<body>
+<body data-hfd="3">
 <div class="wrap">
   <h1>Elektrisch veld en gravitatieveld</h1>
   <p class="sub">Veldlijnen, veldgrootheden en krachten bij ladingen, geleiders, een homogeen veld en de Aarde</p>
-<!--ldnw--><div class="ldnw-wrap"><details id="ldnw"><style>.ldnw-wrap{max-width:1180px;margin:14px auto 0;padding:0 24px}#ldnw{border:1px solid #c9d6e3;border-radius:10px;padding:8px 14px;background:rgba(127,160,200,.08)}#ldnw>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;font-weight:700}#ldnw>summary::-webkit-details-marker{display:none}#ldnw .pijl{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:#2F6FB0;color:#fff;font-size:13px;transition:transform .2s}#ldnw[open] .pijl{transform:rotate(90deg)}#ldnw .hint{font-weight:500;font-size:13px;opacity:.75}#ldnw[open] .hint{display:none}#ldnw .ldk{margin:10px 0 2px;font-weight:700}#ldnw ul.doelen{margin:0;font-size:14px;line-height:1.5}</style><summary><span class="pijl">▶</span>Lesdoelen · Ik kan … <span class="hint">klik om te openen en af te vinken</span></summary><p class="ldk">3.1 Grootte van het elektrisch veld</p><ul class="doelen"><li>Ik kan de elektrische veldvector ten gevolge van een positieve of negatieve bronlading in een bepaald punt tekenen.</li><li>Ik kan noteren hoe de zin van de coulombkracht op een bepaalde lading en de zin van het elektrisch veld zich tot elkaar verhouden.</li><li>Ik kan de grootte van een radiaal en een homogeen elektrisch veld met de formule van de elektrische veldsterkte berekenen.</li><li>Ik kan redeneervragen met betrekking tot de grootte van het elektrisch veld oplossen. (Let op voor verwarring met coulombkracht)</li></ul><p class="ldk">3.2 Eigenschappen van het elektrisch veld</p><ul class="doelen"><li>Ik kan de kenmerken (p38) van elektrische veldlijnen toepassen bij het tekenen van elektrische veldlijnen.</li><li>Ik kan, wanneer een elektrische veldlijn gegeven is, het elektrisch veld in een punt op die veldlijn tekenen.</li></ul><p class="ldk">3.2.2 Soorten elektrische velden</p><ul class="doelen"><li>Ik kan de veldlijnen rond één of meerdere puntladingen, rond een bolvormige geleider en in een homogeen veld tekenen en berekenen.</li><li>Ik kan de grafieken van de grootte van het elektrisch veld bij een radiaal en een homogeen elektrisch veld tekenen.</li></ul><p class="ldk">3.2.3 Gedrag van geleiders en isolatoren in een elektrisch veld</p><ul class="doelen"><li>Ik kan het gedrag van geleiders en isolatoren in een elektrisch veld.(Kooi van Faraday) verklaren.</li><li>Ik kan 2 voorbeelden (coaxkabel, vliegtuig, microgolf, auto, …) van de kooi van Faraday noteren en uitleggen wat de functie in die situaties is.</li></ul><p class="ldk">4.1 Potentiële elektrische energie in een homogeen veld</p><ul class="doelen"><li>Ik kan de analogie tussen de potentiële gravitationele energie E pot,g =m.g.h en E pot,E =Q.E.d uitleggen.</li><li>Ik kan het verband tussen potentiële elektrische energie en arbeid verricht door het elektrisch veld uitleggen.</li><li>Ik kan de grootte van de potentiële elektrische energie op een bepaalde plaats in een homogeen veld voor een positieve en een negatieve lading berekenen. (Belangrijk is dat de potentiële energie van een lading op de negatieve plaat als 0 gedefinieerd wordt!)</li></ul><p class="ldk">4.2 Elektrische potentiaal in een homogeen veld</p><ul class="doelen"><li>Ik kan verwoorden dat de elektrische potentiaal in een bepaald punt te linken is aan de potentiële energie van een testlading van +1C in dat punt of korter, de potentiële energie per lading.</li><li>Ik kan de grootte van de elektrische potentiaal op een bepaalde plaats in een homogeen veld berekenen.</li><li>Ik kan het verband uit tussen elektrisch veld, elektrische energie en elektrische potentiaal en kan de grafieken tekenen die bij deze grootheden horen en de vorm van de grafieken ook uitleggen.</li></ul><p class="ldk">4.2.2 Equipotentiaaloppervlak</p><ul class="doelen"><li>Ik kan verwoorden wat en een equipotentiaaloppervlak is en in een homogeen elektrisch veld tekenen.</li></ul><p class="ldk">4.3 Potentiaalverschil</p><ul class="doelen"><li>Ik kan de definitie voor spanning (of potentiaalverschil) noteren.</li><li>Ik kan het verband uitleggen tussen potentiaalverschil en de verandering in potentiële en kinetische energie voor een positieve en een negatieve lading in een homogeen elektrisch veld.( toename of afname van Ekin/ Epot en teken van het potentiaalverschil).</li><li>Ik kan verwoorden wat de eenheid elektronvolt (eV) betekent (p56).</li></ul><p style="font-size:12px;opacity:.75;margin:8px 0 4px">Vink aan wat je al kan. Wat je niet kan aanvinken, oefen je nog eens.</p></details></div><!--/ldnw-->
+<!--ldnw--><div class="ldnw-wrap"><details id="ldnw"><style>.ldnw-wrap{max-width:1180px;margin:14px auto 0;padding:0 24px}#ldnw{border:1px solid #c9d6e3;border-radius:10px;padding:8px 14px;background:rgba(127,160,200,.08)}#ldnw>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;font-weight:700}#ldnw>summary::-webkit-details-marker{display:none}#ldnw .pijl{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:#2F6FB0;color:#fff;font-size:13px;transition:transform .2s}#ldnw[open] .pijl{transform:rotate(90deg)}#ldnw .hint{font-weight:500;font-size:13px;opacity:.75}#ldnw[open] .hint{display:none}#ldnw .ldk{margin:10px 0 2px;font-weight:700}#ldnw ul.doelen{margin:0;font-size:14px;line-height:1.5}</style><summary><span class="pijl">▶</span>Lesdoelen · Ik kan … <span class="hint">klik om te openen en af te vinken</span></summary><p class="ldk">3.1 Grootte van het elektrisch veld</p><ul class="doelen"><li>Ik kan de elektrische veldvector ten gevolge van een positieve of negatieve bronlading in een bepaald punt tekenen.</li><li>Ik kan noteren hoe de zin van de coulombkracht op een bepaalde lading en de zin van het elektrisch veld zich tot elkaar verhouden.</li><li>Ik kan de grootte van een radiaal en een homogeen elektrisch veld met de formule van de elektrische veldsterkte berekenen.</li><li>Ik kan redeneervragen met betrekking tot de grootte van het elektrisch veld oplossen. (Let op voor verwarring met coulombkracht)</li></ul><p class="ldk">3.2 Eigenschappen van het elektrisch veld</p><ul class="doelen"><li>Ik kan de kenmerken (p38) van elektrische veldlijnen toepassen bij het tekenen van elektrische veldlijnen.</li><li>Ik kan, wanneer een elektrische veldlijn gegeven is, het elektrisch veld in een punt op die veldlijn tekenen.</li></ul><p class="ldk">3.2.2 Soorten elektrische velden</p><ul class="doelen"><li>Ik kan de veldlijnen rond één of meerdere puntladingen, rond een bolvormige geleider en in een homogeen veld tekenen en berekenen.</li><li>Ik kan de grafieken van de grootte van het elektrisch veld bij een radiaal en een homogeen elektrisch veld tekenen.</li></ul><p class="ldk">3.2.3 Gedrag van geleiders en isolatoren in een elektrisch veld</p><ul class="doelen"><li>Ik kan het gedrag van geleiders en isolatoren in een elektrisch veld.(Kooi van Faraday) verklaren.</li><li>Ik kan 2 voorbeelden (coaxkabel, vliegtuig, microgolf, auto, …) van de kooi van Faraday noteren en uitleggen wat de functie in die situaties is.</li></ul><p style="font-size:12px;opacity:.75;margin:8px 0 4px">Vink aan wat je al kan. Wat je niet kan aanvinken, oefen je nog eens.</p></details></div><!--/ldnw-->
 
   <div class="tabs">
-    <button class="tab" data-mode="zwaarte">Zwaartekracht</button>
-    <button class="tab" data-mode="coulomb">Bron- en proeflading</button>
-    <button class="tab" data-mode="punt">Puntlading</button>
-    <button class="tab" data-mode="meer">Meerdere ladingen</button>
-    <button class="tab" data-mode="bol">Geleidende bol</button>
-    <button class="tab" data-mode="homogeen">Homogeen veld</button>
-    <button class="tab" data-mode="faraday">Geleiders en isolatoren</button>
-    <button class="tab" data-mode="energie">Energie en potentiaal</button>
+    <button class="tab" data-mode="zwaarte" data-hfd="3">Zwaartekracht</button>
+    <button class="tab" data-mode="coulomb" data-hfd="3">Bron- en proeflading</button>
+    <button class="tab" data-mode="punt" data-hfd="3">Puntlading</button>
+    <button class="tab" data-mode="meer" data-hfd="3">Meerdere ladingen</button>
+    <button class="tab" data-mode="bol" data-hfd="3">Geleidende bol</button>
+    <button class="tab" data-mode="analogie" data-hfd="4">Zwaarteveld en elektrisch veld</button>
+    <button class="tab" data-mode="homogeen" data-hfd="3 4">Homogeen veld</button>
+    <button class="tab" data-mode="faraday" data-hfd="3">Geleiders en isolatoren</button>
+    <button class="tab" data-mode="energie" data-hfd="4">Energie en potentiaal</button>
+    <button class="tab-bord" id="bordKnop" title="Volledig scherm, zonder titel en lesdoelen">⛶ Bordweergave</button>
   </div>
 
   <div class="seg weergave" id="weergave">
@@ -320,14 +358,20 @@
   </div>
 
   <div id="viewHomogeen" style="display:none;">
-    <div class="grid">
-      <div class="panel">
-        <h2>Veldlijnen — homogeen veld tussen twee platen</h2>
-        <canvas id="fieldCanvas2" width="600" height="320"></canvas>
-        <p class="canvas-hint">Klik/tik in het veld om de puntlading te plaatsen. Gebruik de knoppen bij "Punt A" / "Punt B" om die te kiezen.</p>
+    <div class="hom-grid">
+      <div class="panel hom-links">
+        <h2>Homogeen veld tussen twee platen, met E, V en E<sub>p</sub> eronder</h2>
+        <canvas id="fieldCanvas2" width="760" height="200"></canvas>
+        <p class="canvas-hint">Beweeg over het veld: de grijze lijn loopt door de drie grafieken. Klik om de puntlading te plaatsen.</p>
+        <canvas id="graphCanvas2" width="760" height="470"></canvas>
+        <div class="legend">
+          <span><span class="swatch" style="background:var(--test);"></span>geplaatste puntlading</span>
+          <span><span class="swatch" style="background:#98a2b3;"></span>cursorpositie in het veld</span>
+          <span><span class="swatch" style="background:#1d3557;"></span>punten A en B</span>
+        </div>
       </div>
 
-      <div class="panel">
+      <div class="panel hom-rechts">
         <h2>Instellingen</h2>
 
         <div class="field-row">
@@ -383,16 +427,6 @@
         <div class="readout" id="readoutHom">
           <span class="empty">Klik in het veld om een puntlading te plaatsen, of kies punt A en B voor het potentiaalverschil.</span>
         </div>
-      </div>
-    </div>
-
-    <div class="panel graph-panel">
-      <h2>E, V en E<sub>p</sub> in functie van de positie x tussen de platen</h2>
-      <canvas id="graphCanvas2" width="1140" height="520"></canvas>
-      <div class="legend">
-        <span><span class="swatch" style="background:var(--ink);"></span>grafiek</span>
-        <span><span class="swatch" style="background:var(--test);"></span>geplaatste puntlading</span>
-        <span><span class="swatch" style="background:#98a2b3;"></span>cursorpositie in het veld</span>
       </div>
     </div>
   </div>
@@ -561,6 +595,46 @@
   </div>
   </div>
 
+  <div id="viewAnalogie" style="display:none;">
+  <p class="sub">Een bal boven de grond en een lading tussen twee platen gedragen zich op dezelfde manier. Het zwaarteveld wordt het elektrisch veld, massa wordt lading, hoogte h wordt afstand d.</p>
+  <div class="panel">
+    <h2>Zwaarteveld en homogeen elektrisch veld naast elkaar</h2>
+    <canvas id="an_cv" width="760" height="400"></canvas>
+    <div class="an-knoppen">
+      <span>Lading Q:</span>
+      <button class="sign-btn" id="an_pos">+ positief</button>
+      <button class="sign-btn" id="an_neg">− negatief</button>
+      <span class="tussen"></span>
+      <button class="btn-reset" id="an_los">▶ Loslaten</button>
+      <button class="btn-reset" id="an_terug">↻ Terug</button>
+    </div>
+    <p class="canvas-hint" style="text-align:center">Sleep de bal of de lading omhoog of omlaag: ze staan altijd op dezelfde hoogte.</p>
+  </div>
+  <div class="grid-eq">
+      <div class="vak ken" style="margin-top:0"><span class="kop">Ken dit</span>
+        E<sub>pot,g</sub> = m · g · h &nbsp;↔&nbsp; E<sub>pot,E</sub> = Q · E · d<br>
+        h meet je vanaf de grond, d vanaf de <b>negatieve plaat</b>. Daar is E<sub>pot</sub> = 0.<br>
+        Het veld doet arbeid: W = −ΔE<sub>pot</sub>. Wat aan E<sub>pot</sub> verdwijnt, komt erbij als E<sub>kin</sub>.
+      </div>
+      <div class="vak let" style="margin-top:0"><span class="kop">Let op</span>
+        Een massa valt altijd naar de grond. Een <b>negatieve</b> lading beweegt <b>tegen</b> de veldlijnen in, weg van de negatieve plaat. Haar E<sub>pot</sub> is negatief.
+      </div>
+  </div>
+  <div class="panel" style="margin-top:18px">
+    <h2>Vergelijk</h2>
+    <table class="ana">
+      <tr><th></th><th>zwaarteveld (bij de grond)</th><th>homogeen elektrisch veld</th></tr>
+      <tr><td>veld</td><td>g = <span class="w">9,81 N/kg</span></td><td>E = U / d<sub>platen</sub> = <span class="w" id="an_E"></span></td></tr>
+      <tr><td>wat voelt het veld?</td><td>massa m = <span class="w">0,50 kg</span></td><td>lading Q = <span class="w" id="an_Q"></span></td></tr>
+      <tr><td>kracht</td><td>F<sub>z</sub> = m · g = <span class="w" id="an_Fz"></span></td><td>F<sub>E</sub> = Q · E = <span class="w" id="an_FE"></span></td></tr>
+      <tr><td>hoogte</td><td>h = <span class="w" id="an_h"></span> (vanaf de grond)</td><td>d = <span class="w" id="an_d"></span> (vanaf de negatieve plaat)</td></tr>
+      <tr><td>potentiële energie</td><td>E<sub>pot,g</sub> = m · g · h = <span class="w" id="an_Epg"></span></td><td>E<sub>pot,E</sub> = Q · E · d = <span class="w" id="an_Epe"></span></td></tr>
+      <tr><td>energie per kg of per coulomb</td><td>E<sub>pot,g</sub> / m = g · h = <span class="w" id="an_gh"></span></td><td><b>potentiaal</b> V = E<sub>pot,E</sub> / Q = E · d = <span class="w" id="an_V"></span></td></tr>
+      <tr><td>nulniveau</td><td>de grond</td><td>de negatieve plaat</td></tr>
+    </table>
+  </div>
+  </div>
+
   <div id="viewEnergie" style="display:none;">
   <p class="sub">Een geladen deeltje tussen twee platen. Laat het los en volg de energie. We kiezen de potentiële energie <b>nul op de negatieve plaat</b>, zoals bij zwaartekracht nul op de grond.</p>
   <div class="grid">
@@ -590,20 +664,7 @@
       <div class="readout" id="en_readout"></div>
     </div>
   </div>
-  <div class="grid-eq">
-    <div class="panel">
-      <h2>Analogie met het zwaarteveld</h2>
-      <table style="width:100%;border-collapse:collapse;font-size:0.88rem;line-height:1.5">
-        <tr style="text-align:left;border-bottom:1px solid var(--border)"><th></th><th>zwaarteveld</th><th>elektrisch veld</th></tr>
-        <tr><td>veld</td><td>g (N/kg)</td><td>E (N/C)</td></tr>
-        <tr><td>wat voelt het veld?</td><td>massa m</td><td>lading Q</td></tr>
-        <tr><td>kracht</td><td>F<sub>z</sub> = m · g</td><td>F<sub>E</sub> = Q · E</td></tr>
-        <tr><td>potentiële energie</td><td>E<sub>pot,g</sub> = m · g · h</td><td>E<sub>pot,E</sub> = Q · E · d</td></tr>
-        <tr><td>nulniveau</td><td>de grond</td><td>de negatieve plaat</td></tr>
-        <tr><td>arbeid van het veld</td><td colspan="2">W = −ΔE<sub>pot</sub>: wat het veld aan potentiële energie afneemt, komt erbij als kinetische energie.</td></tr>
-      </table>
-      <p class="canvas-hint">Verschil: massa's trekken elkaar altijd aan. Een negatieve lading beweegt in het elektrisch veld <b>tegen</b> de veldlijnen in.</p>
-    </div>
+  <div style="margin-top:18px">
     <div class="panel">
       <h2>Samengevat</h2>
       <ul class="points">
@@ -1031,9 +1092,10 @@ function homEp(x_cm){ return pcCoulomb() * homV(x_cm); }      // J
 // ---- canvas: platen + veldlijnen ----
 const fc2 = document.getElementById('fieldCanvas2');
 const fctx2 = fc2.getContext('2d');
-const FW2 = fc2.width, FH2 = fc2.height;
-const PLATE_L = 90, PLATE_R = 90; // marge links/rechts tot de platen
-const PLATE_TOP = 40, PLATE_BOT = FH2-40;
+// logische tekenmaten (de canvas wordt geschaald naar de schermgrootte)
+const FW2 = 760, FH2 = 200;
+const PLATE_L = 100, PLATE_R = 40; // zelfde marges als de grafiek: de platen staan recht boven de x-as
+const PLATE_TOP = 36, PLATE_BOT = FH2-36;
 function plateSpanPx(){ return FW2 - PLATE_L - PLATE_R; }
 function xCmToPx(x_cm){
   const t = x_cm/hom.d; // 0 bij de positieve plaat, 1 bij de negatieve plaat
@@ -1084,7 +1146,7 @@ function drawHomField(){
   fctx2.fillStyle = '#2a6f97';
   fctx2.fillRect(negX, PLATE_TOP-10, 8, (PLATE_BOT-PLATE_TOP)+20);
   fctx2.fillStyle = '#1d3557';
-  fctx2.font = '600 12px -apple-system, sans-serif';
+  fctx2.font = '600 14px -apple-system, sans-serif';
   fctx2.textAlign = 'center';
   fctx2.fillText('+', posX+4, PLATE_TOP-16);
   fctx2.fillText('\u2212', negX+4, PLATE_TOP-16);
@@ -1103,11 +1165,11 @@ function drawHomField(){
   }
 
   // cursor (hover) marker
-  if(hom.hoverX !== null && hom.pcX === null){
+  if(hom.hoverX !== null){
     const x = xCmToPx(hom.hoverX);
     fctx2.strokeStyle = '#98a2b3';
     fctx2.setLineDash([3,3]);
-    fctx2.beginPath(); fctx2.moveTo(x,PLATE_TOP); fctx2.lineTo(x,PLATE_BOT); fctx2.stroke();
+    fctx2.beginPath(); fctx2.moveTo(x,PLATE_TOP); fctx2.lineTo(x,FH2); fctx2.stroke();
     fctx2.setLineDash([]);
   }
 
@@ -1121,7 +1183,7 @@ function drawHomField(){
     fctx2.lineWidth = 2.5;
     fctx2.beginPath(); fctx2.arc(x,y,12,0,Math.PI*2); fctx2.stroke();
     fctx2.fillStyle = '#fff';
-    fctx2.font = 'bold 11px -apple-system, sans-serif';
+    fctx2.font = 'bold 13px -apple-system, sans-serif';
     fctx2.textBaseline = 'middle';
     fctx2.fillText(hom.pcSign>0 ? '+' : '\u2212', x, y+1);
     fctx2.textBaseline = 'alphabetic';
@@ -1137,7 +1199,7 @@ function drawHomMarker(x_cm, label, color){
   fctx2.beginPath(); fctx2.moveTo(x,PLATE_TOP-6); fctx2.lineTo(x,PLATE_BOT+6); fctx2.stroke();
   fctx2.setLineDash([]);
   fctx2.fillStyle = color;
-  fctx2.font = 'bold 12px -apple-system, sans-serif';
+  fctx2.font = 'bold 14px -apple-system, sans-serif';
   fctx2.textAlign = 'center';
   fctx2.fillText(label, x, PLATE_TOP-12);
 }
@@ -1145,9 +1207,34 @@ function drawHomMarker(x_cm, label, color){
 // ---- grafiek: E(x), V(x), Ep(x) gestapeld ----
 const gc2 = document.getElementById('graphCanvas2');
 const gctx2 = gc2.getContext('2d');
-const GW2 = gc2.width, GH2 = gc2.height;
-const GPAD_L = 78, GPAD_R = 24;
-const ROW_H = 116, ROW_GAP = 40, ROW_TOP0 = 30;
+const GW2 = 760, GH2 = 470;
+const GPAD_L = 100, GPAD_R = 40;
+const ROW_TOP0 = 30, ROW_GAP = 40, ROW_H = Math.floor((GH2 - ROW_TOP0 - 2*ROW_GAP - 52)/3);
+
+// ---- schaal: veld en grafieken passen samen op één scherm ----
+let homMaat = '';
+function layoutHom(){
+  const ouder = fc2.parentElement;
+  if(!ouder || !ouder.clientWidth) return;
+  const st = getComputedStyle(ouder);
+  const breed = ouder.clientWidth - parseFloat(st.paddingLeft) - parseFloat(st.paddingRight);
+  // ruimte voor titel, hint en legende (ongeveer 110 px) en de tabbladen bovenaan
+  // in bordweergave: alles wat onder het veld komt moet op het scherm; anders: past als je naar de tabbladen scrolt
+  const bord = document.body.classList.contains('bord');
+  const boven = bord ? ouder.getBoundingClientRect().top + window.scrollY : 120;
+  const hoog = Math.max(300, window.innerHeight - boven - (bord ? 70 : 125));
+  const w = Math.floor(Math.min(breed, hoog * GW2 / (FH2 + GH2)));
+  const dpr = window.devicePixelRatio || 1;
+  const sleutel = w + '/' + dpr;
+  if(sleutel === homMaat) return;
+  homMaat = sleutel;
+  [[fc2, fctx2, FW2, FH2], [gc2, gctx2, GW2, GH2]].forEach(([cv, ctx, LW, LH])=>{
+    const h = Math.round(w * LH / LW);
+    cv.style.width = w + 'px'; cv.style.height = h + 'px';
+    cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr);
+    ctx.setTransform(cv.width / LW, 0, 0, cv.height / LH, 0, 0);
+  });
+}
 
 const rows2 = [
   { key:'E', label:'E (V/m)', color:'#1d3557', bg:'#eef1f5', unit:'V/m', fn:(x)=>homE(), symmetric:false },
@@ -1172,6 +1259,14 @@ function pxToXG(px, PW2){
 function drawHomGraph(){
   gctx2.clearRect(0,0,GW2,GH2);
   const PW2 = GW2 - GPAD_L - GPAD_R;
+
+  // grijze lijn door de drie grafieken, recht onder de cursor in het veld
+  if(hom.hoverX !== null){
+    const px = xPixG(hom.hoverX, PW2);
+    gctx2.strokeStyle = '#98a2b3'; gctx2.lineWidth = 1; gctx2.setLineDash([3,3]);
+    gctx2.beginPath(); gctx2.moveTo(px, 0); gctx2.lineTo(px, rowTop(rows2.length-1)+ROW_H); gctx2.stroke();
+    gctx2.setLineDash([]);
+  }
 
   rows2.forEach((row,i)=>{
     const top = rowTop(i);
@@ -1208,14 +1303,14 @@ function drawHomGraph(){
 
     // gridlines + y labels (top, mid, bottom)
     gctx2.fillStyle = '#4a5a76';
-    gctx2.font = '11px -apple-system, sans-serif';
+    gctx2.font = '13px -apple-system, sans-serif';
     gctx2.textAlign = 'right';
     [0,0.5,1].forEach(f=>{
       const v = vMin + f*range;
       const y = bot - f*ROW_H;
       gctx2.strokeStyle = '#ffffff';
       gctx2.beginPath(); gctx2.moveTo(GPAD_L,y); gctx2.lineTo(GPAD_L+PW2,y); gctx2.stroke();
-      gctx2.fillText(formatUnit(v, row.unit), GPAD_L-8, y+4);
+      gctx2.fillText(formatUnit(v, row.unit), GPAD_L-22, y+4);
     });
 
     // nadrukkelijke nullijn wanneer 0 binnen het bereik ligt (bv. Eₚ: positief boven, negatief onder)
@@ -1228,7 +1323,7 @@ function drawHomGraph(){
 
     // rij-label
     gctx2.textAlign = 'left';
-    gctx2.font = '650 12.5px -apple-system, sans-serif';
+    gctx2.font = '650 14px -apple-system, sans-serif';
     gctx2.fillStyle = row.color;
     gctx2.fillText(row.label, GPAD_L, top-3);
 
@@ -1272,7 +1367,7 @@ function drawHomGraph(){
       const px = xPix(xv), py = yPix(v);
       gctx2.fillStyle = '#1d3557';
       gctx2.beginPath(); gctx2.arc(px,py,4,0,Math.PI*2); gctx2.fill();
-      gctx2.font = 'bold 11px -apple-system, sans-serif';
+      gctx2.font = 'bold 13px -apple-system, sans-serif';
       gctx2.textAlign = 'center';
       gctx2.fillText(lab, px, py-9);
     });
@@ -1280,23 +1375,26 @@ function drawHomGraph(){
 
   // gedeelde x-as, in dezelfde oriëntatie als het veld hierboven
   gctx2.fillStyle = '#4a5a76';
-  gctx2.font = '11px -apple-system, sans-serif';
+  gctx2.font = '13px -apple-system, sans-serif';
   gctx2.textAlign = 'center';
   const lastBot = rowTop(rows2.length-1)+ROW_H;
   for(let x=0; x<=hom.d+1e-9; x+=Math.max(1,Math.round(hom.d/6*2)/2)){
     gctx2.fillText(nlNum(x,1), xPixG(x,PW2), lastBot+16);
   }
-  gctx2.font = '650 11px -apple-system, sans-serif';
-  gctx2.fillStyle = '#d64550';
-  gctx2.fillText('+ plaat (V = U)', xPixG(0,PW2), lastBot+46);
-  gctx2.fillStyle = '#2a6f97';
-  gctx2.fillText('\u2212 plaat (V = 0)', xPixG(hom.d,PW2), lastBot+46);
+  gctx2.font = '650 13px -apple-system, sans-serif';
+  [[0,'#d64550','+ plaat (V = U)'],[hom.d,'#2a6f97','\u2212 plaat (V = 0)']].forEach(([xv,kl,t])=>{
+    const px = xPixG(xv,PW2), links = px < GPAD_L + PW2/2;
+    gctx2.fillStyle = kl; gctx2.textAlign = links ? 'left' : 'right';
+    gctx2.fillText(t, links ? px-6 : px+6, lastBot+46);
+  });
+  gctx2.textAlign = 'center';
   gctx2.fillStyle = '#4a5a76';
-  gctx2.font = '11px -apple-system, sans-serif';
+  gctx2.font = '13px -apple-system, sans-serif';
   gctx2.fillText('positie x vanaf de positieve plaat (cm)', GPAD_L+PW2/2, lastBot+32);
 }
 
 function renderHom(){
+  layoutHom();
   drawHomField();
   drawHomGraph();
   updateHomReadout();
@@ -2262,19 +2360,141 @@ document.querySelectorAll('#en_deeltje button').forEach(b=>b.onclick=()=>{ en.d=
 document.getElementById('en_los').onclick=()=>{ en.h=en.h0; en.t0=performance.now(); };
 document.getElementById('en_reset').onclick=()=>{ en.h=en.h0; en.t0=null; };
 
+/* ---------------- ZWAARTEVELD EN ELEKTRISCH VELD (analogie) ---------------- */
+const acv=document.getElementById('an_cv'), actx=hd(acv), AW=acv._w, AH=acv._h;
+const AN={m:0.5, g:9.81, H:2.0, D:0.05, U:500, Qmag:2e-6};
+const an={s:1, r0:0.6, rb:0.6, rq:0.6, t0:null, vuil:true};
+const AY0=330, AYT=80;
+const anY=r=>AY0-r*(AY0-AYT);
+const anYv=r=>(AY0-16)-r*((AY0-16)-(AYT+16)); // middelpunt van bal of lading: rust op de grond of plaat
+function vtxt(ctx,b,sub,x,y,kleur,s=15){ // vectorsymbool met pijltje erboven
+  ctx.save(); ctx.font='700 '+s+'px Inter, sans-serif'; ctx.fillStyle=kleur; ctx.strokeStyle=kleur; ctx.textAlign='left';
+  const w=ctx.measureText(b).width; ctx.fillText(b,x,y);
+  ctx.lineWidth=1.3; ctx.beginPath(); ctx.moveTo(x,y-s-2); ctx.lineTo(x+w+1,y-s-2); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(x+w+3,y-s-2); ctx.lineTo(x+w-2,y-s-5); ctx.lineTo(x+w-2,y-s+1); ctx.closePath(); ctx.fill();
+  if(sub){ ctx.font='700 '+Math.round(s*0.72)+'px Inter, sans-serif'; ctx.fillText(sub,x+w+1,y+4); }
+  ctx.restore(); }
+function stxt(ctx,delen,x,y){ // tekst met subscript-stukjes
+  ctx.save(); ctx.fillStyle='#51606E'; ctx.textAlign='left';
+  delen.forEach(([t,sub])=>{ ctx.font='600 '+(sub?9:12)+'px Inter, sans-serif'; ctx.fillText(t,x,y+(sub?4:0)); x+=ctx.measureText(t).width; });
+  ctx.restore(); }
+function anBalken(ctx,x,Ep,Ek,max){
+  const nul=205, sc=95/max;
+  ctx.strokeStyle='#1D2A36'; ctx.lineWidth=1.3; ctx.beginPath(); ctx.moveTo(x-6,nul); ctx.lineTo(x+86,nul); ctx.stroke();
+  [[Ep,'#2f8f6b','pot',x],[Ek,'#d97706','kin',x+44]].forEach(([v,k,l,xx])=>{
+    const h=v*sc; ctx.fillStyle=k; ctx.fillRect(xx,nul-Math.max(0,h),34,Math.abs(h)); txt(ctx,'E',xx+10,322,{a:'center',w:700,s:13,c:k}); txt(ctx,l,xx+16,326,{w:700,s:9,c:k}); });
+  txt(ctx,'energie',x+40,96,{a:'center',w:700,s:12,c:'#51606E'});
+}
+function anTeken(now){
+  if(an.t0!=null){ const tt=Math.min(1,(now-an.t0)/1600), e=tt*tt;
+    an.rb=an.r0*(1-e); an.rq=an.s>0? an.r0*(1-e) : an.r0+(1-an.r0)*e; if(tt>=1) an.t0=null; an.vuil=true; }
+  if(!an.vuil) return; an.vuil=false;
+  const ctx=actx; ctx.clearRect(0,0,AW,AH); ctx.fillStyle='#fbfcfd'; ctx.fillRect(0,0,AW,AH);
+  ctx.strokeStyle='#D3DCE5'; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(AW/2,10); ctx.lineTo(AW/2,AH-10); ctx.stroke();
+  const E=AN.U/AN.D, Q=an.s*AN.Qmag;
+  // ---- links: zwaarteveld ----
+  txt(ctx,'Zwaarteveld',150,22,{a:'center',w:700,s:15});
+  ctx.fillStyle='#e9f1e4'; ctx.fillRect(16,AY0,250,22); ctx.fillStyle='#7aa35c'; ctx.fillRect(16,AY0,250,4);
+  stxt(ctx,[['grond: E'],['pot',1],[' = 0']],128,AY0+40);
+  for(const x of [36,150,255]){ ctx.strokeStyle='#c3cad6'; ctx.lineWidth=1.2; ctx.beginPath(); ctx.moveTo(x,AYT-20); ctx.lineTo(x,AY0-4); ctx.stroke(); kop(ctx,x,AY0-30,Math.PI/2,'#c3cad6'); }
+  vtxt(ctx,'g','',22,AYT-2,'#8a96a8');
+  const yb=anYv(an.rb), xb=95;
+  const gb=ctx.createRadialGradient(xb-5,yb-5,2,xb,yb,15); gb.addColorStop(0,'#fff'); gb.addColorStop(0.35,'#64748b'); gb.addColorStop(1,'#334155');
+  pijl(ctx,xb,yb,xb,yb+56,'#d64550',2); vtxt(ctx,'F','z',xb-36,yb+45,'#d64550');
+  ctx.fillStyle=gb; ctx.beginPath(); ctx.arc(xb,yb,15,0,7); ctx.fill(); txt(ctx,'m',xb+20,yb-12,{w:700,s:14});
+  if(an.rb>0.06){ ctx.strokeStyle='#1D2A36'; ctx.lineWidth=1.1; ctx.beginPath(); ctx.moveTo(205,AY0); ctx.lineTo(205,yb); ctx.moveTo(199,yb); ctx.lineTo(211,yb); ctx.moveTo(199,AY0); ctx.lineTo(211,AY0); ctx.stroke(); ctx.fillStyle='#fbfcfd'; ctx.fillRect(208,(AY0+yb)/2-11,64,16); txt(ctx,'h = '+nl(an.rb*AN.H,2)+' m',210,(AY0+yb)/2+2,{s:12,w:700}); }
+  const Epg=AN.m*AN.g*an.rb*AN.H, Ekg=AN.m*AN.g*(an.r0-an.rb)*AN.H;
+  anBalken(ctx,280,Epg,Ekg,AN.m*AN.g*AN.H);
+  // ---- rechts: homogeen elektrisch veld ----
+  const X=AW/2;
+  txt(ctx,'Homogeen elektrisch veld',X+150,22,{a:'center',w:700,s:15});
+  ctx.fillStyle='#fde2e4'; ctx.fillRect(X+16,AYT-18,250,14); ctx.fillStyle='#dbeafe'; ctx.fillRect(X+16,AY0+4,250,14);
+  for(let i=0;i<8;i++){ txt(ctx,'+',X+30+i*32,AYT-7,{c:POS,w:700,a:'center'}); txt(ctx,'−',X+30+i*32,AY0+16,{c:NEG,w:700,a:'center'}); }
+  stxt(ctx,[['negatieve plaat: E'],['pot',1],[' = 0']],X+128,AY0+40);
+  for(const x0 of [36,150,255]){ const x=X+x0; ctx.strokeStyle='#c3cad6'; ctx.lineWidth=1.2; ctx.beginPath(); ctx.moveTo(x,AYT-2); ctx.lineTo(x,AY0); ctx.stroke(); kop(ctx,x,AY0-30,Math.PI/2,'#c3cad6'); }
+  vtxt(ctx,'E','',X+22,AYT+18,'#8a96a8');
+  const yq=anYv(an.rq), xq=X+95;
+  pijl(ctx,xq,yq,xq,yq+an.s*56,'#d64550',2); vtxt(ctx,'F','E',xq-38,yq+an.s*40+5,'#d64550');
+  bolLading(ctx,xq,yq,an.s*2,15); txt(ctx,'Q',xq+20,yq-12,{w:700,s:14});
+  if(an.rq>0.06){ ctx.strokeStyle='#1D2A36'; ctx.lineWidth=1.1; ctx.beginPath(); ctx.moveTo(X+205,AY0+4); ctx.lineTo(X+205,yq); ctx.moveTo(X+199,yq); ctx.lineTo(X+211,yq); ctx.moveTo(X+199,AY0+4); ctx.lineTo(X+211,AY0+4); ctx.stroke(); ctx.fillStyle='#fbfcfd'; ctx.fillRect(X+208,(AY0+yq)/2-11,70,16); txt(ctx,'d = '+nl(an.rq*AN.D*100,1)+' cm',X+210,(AY0+yq)/2+2,{s:12,w:700}); }
+  const Epe=Q*E*an.rq*AN.D, Eke=Q*E*(an.r0*AN.D)-Epe;
+  anBalken(ctx,X+280,Epe,Eke,AN.Qmag*E*AN.D);
+  // ---- tabel ----
+  const zet=(id,v)=>document.getElementById(id).textContent=v;
+  zet('an_E',nl(E,0)+' N/C'); zet('an_Q',(an.s>0?'+':'−')+'2,0 µC');
+  zet('an_Fz',nl(AN.m*AN.g,1)+' N'); zet('an_FE',(an.s>0?'':'−')+'0,020 N'+(an.s>0?' (omlaag)':' (omhoog)'));
+  zet('an_h',nl(an.rb*AN.H,2)+' m'); zet('an_d',nl(an.rq*AN.D*100,1)+' cm');
+  zet('an_Epg',nl(Epg,2)+' J'); zet('an_Epe',sci(Epe,'J'));
+  zet('an_gh',nl(AN.g*an.rb*AN.H,1)+' J/kg'); zet('an_V',nl(E*an.rq*AN.D,0)+' V');
+  document.getElementById('an_pos').className='sign-btn'+(an.s>0?' active-pos':'');
+  document.getElementById('an_neg').className='sign-btn'+(an.s<0?' active-neg':'');
+}
+let anSleep=false;
+function anZet(e){ const r=acv.getBoundingClientRect(), y=(e.clientY-r.top)*AH/r.height; an.r0=an.rb=an.rq=Math.max(0,Math.min(1,((AY0-16)-y)/((AY0-16)-(AYT+16)))); an.t0=null; an.vuil=true; }
+acv.addEventListener('pointerdown',e=>{ anSleep=true; acv.setPointerCapture(e.pointerId); anZet(e); });
+acv.addEventListener('pointermove',e=>{ if(anSleep) anZet(e); });
+acv.addEventListener('pointerup',()=>anSleep=false);
+const anTerug=()=>{ an.rb=an.rq=an.r0; an.t0=null; an.vuil=true; };
+document.getElementById('an_pos').onclick=()=>{ an.s=1; anTerug(); };
+document.getElementById('an_neg').onclick=()=>{ an.s=-1; anTerug(); };
+document.getElementById('an_los').onclick=()=>{ anTerug(); an.t0=performance.now(); };
+document.getElementById('an_terug').onclick=anTerug;
+
 /* ---------------- tabbladen ---------------- */
-const VIEWS={meer:'viewMeer',faraday:'viewFaraday',energie:'viewEnergie'};
+const VIEWS={meer:'viewMeer',faraday:'viewFaraday',energie:'viewEnergie',analogie:'viewAnalogie'};
 document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
   const m=t.dataset.mode; Object.entries(VIEWS).forEach(([k,id])=>document.getElementById(id).style.display=k===m?'block':'none');
-  document.getElementById('weergave').style.display=(m==='faraday'||m==='energie')?'none':'';
+  document.getElementById('weergave').style.display=(m==='faraday'||m==='energie'||m==='analogie')?'none':'';
+  if(m==='analogie') an.vuil=true;
   if(m==='meer') tekenMl(); if(m==='faraday') fdTeken();
 }));
-(function lus(now){ if(state.mode==='energie') enTeken(now); requestAnimationFrame(lus); })(performance.now());
+(function lus(now){ if(state.mode==='energie') enTeken(now); if(state.mode==='analogie') anTeken(now); requestAnimationFrame(lus); })(performance.now());
 window.mlVeld=veld; window.mlTeken=()=>tekenMl();
 })();
 </script>
 
-<script>document.querySelector('.tab').click();</script>
+<script>
+/* ---- hoofdstuk: elektrisch-veld.html toont H3, potentiaal.html toont H4 ---- */
+(function(){
+  const hfd=document.body.dataset.hfd||'3';
+  const tabs=[...document.querySelectorAll('.tab')];
+  tabs.forEach(t=>{ if(!(t.dataset.hfd||'').split(' ').includes(hfd)) t.style.display='none'; });
+  const zichtbaar=tabs.filter(t=>t.style.display!=='none');
+  const gevraagd=zichtbaar.find(t=>'#'+t.dataset.mode===location.hash);
+  (gevraagd||zichtbaar[0]).click();
+})();
+
+/* ---- bordweergave: volledig scherm, zonder titel en lesdoelen ---- */
+(function(){
+  const knop=document.getElementById('bordKnop');
+  function pas(){
+    const bord=document.body.classList.contains('bord');
+    knop.textContent=bord?'✕ Gewone weergave':'⛶ Bordweergave';
+    // gewone canvassen: zo groot dat ze in de hoogte op het scherm passen
+    document.querySelectorAll('.wrap canvas').forEach(cv=>{
+      if(cv.id==='fieldCanvas2'||cv.id==='graphCanvas2') return;
+      const r=cv.width/cv.height;
+      if(!bord || !cv.offsetParent){ cv.style.maxWidth=''; return; }
+      // wat onder de tekening staat (knoppen, hint) moet ook nog op het scherm
+      const top=cv.getBoundingClientRect().top+window.scrollY;
+      cv.style.maxWidth=Math.floor(Math.max(240,window.innerHeight-top-95)*r)+'px';
+      cv.style.marginLeft='auto'; cv.style.marginRight='auto';
+    });
+    if(state.mode==='homogeen') renderHom();
+  }
+  knop.addEventListener('click',()=>{
+    const aan=!document.body.classList.contains('bord');
+    document.body.classList.toggle('bord',aan);
+    if(aan && document.documentElement.requestFullscreen && !document.fullscreenElement) document.documentElement.requestFullscreen().catch(()=>{});
+    if(!aan && document.fullscreenElement) document.exitFullscreen().catch(()=>{});
+    setTimeout(pas,60);
+  });
+  document.addEventListener('fullscreenchange',()=>{ if(!document.fullscreenElement && document.body.classList.contains('bord')){ document.body.classList.remove('bord'); } setTimeout(pas,60); });
+  let wacht; window.addEventListener('resize',()=>{ clearTimeout(wacht); wacht=setTimeout(pas,80); });
+  document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>setTimeout(pas,0)));
+  pas();
+})();
+</script>
 <!--vinkjes-->
 <style>
 .doel ul:has(.vk-li),ul.doelen:has(.vk-li){list-style:none;padding-left:0}

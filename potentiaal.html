@@ -1,0 +1,2530 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Potentiaal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1D2A36;
+    --ink-soft:#51606E;
+    --bg:#EEF2F5;
+    --panel:#ffffff;
+    --border:#D3DCE5;
+    --accent:#2F6FB0;
+    --accent-dark:#245A91;
+    --accent-soft:#E4EEF8;
+    --font:'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+    --pos:#d64550;
+    --neg:#2a6f97;
+    --line:#98a2b3;
+    --test:#e0983b;
+    --zero:#c8cdd6;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--font);
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  .num{font-family:var(--font); font-variant-numeric: tabular-nums;}
+
+  .wrap{max-width:1180px;margin:0 auto;padding:36px 24px 70px;}
+
+  h1{
+    font-size:2rem;
+    font-weight:700;
+    margin:0 0 8px 0;
+    letter-spacing:-0.015em;
+  }
+  .sub{
+    color:var(--ink-soft);
+    font-size:15px;
+    line-height:1.6;
+    max-width:75ch;
+    margin:0 0 16px 0;
+  }
+
+  .tabs{
+    display:flex;
+    gap:4px;
+    margin:22px 0 14px;
+    border-bottom:1px solid var(--border);
+  }
+  .tab{
+    appearance:none;
+    border:none;
+    background:none;
+    padding:9px 14px;
+    font-family:var(--font);
+    font-size:15px;
+    font-weight:500;
+    color:var(--ink-soft);
+    cursor:pointer;
+    border-bottom:2px solid transparent;
+    margin-bottom:-1px;
+  }
+  .tab.active{
+    color:var(--ink);
+    font-weight:600;
+    border-bottom:2px solid var(--accent);
+  }
+
+  .grid{
+    display:grid;
+    grid-template-columns: 1.35fr 1fr;
+    gap:18px;
+  }
+  @media (max-width:820px){
+    .grid{grid-template-columns:1fr;}
+  }
+
+  .panel{
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:16px;
+  }
+  .panel h2{
+    font-size:0.95rem;
+    text-transform:none;
+    font-weight:700;
+    color:var(--ink);
+    margin:0 0 12px 0;
+  }
+
+  canvas{
+    display:block;
+    width:100%;
+    height:auto;
+    background:#fbfcfd;
+    border:1px solid var(--border);
+    border-radius:8px;
+    touch-action:none;
+  }
+  .canvas-hint{
+    font-size:0.8rem;
+    color:var(--ink-soft);
+    margin-top:8px;
+  }
+
+  .field-row{margin-bottom:16px;}
+  .field-row:last-child{margin-bottom:0;}
+  .field-label{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    font-size:0.88rem;
+    margin-bottom:6px;
+  }
+  .field-label .val{
+    font-weight:650;
+  }
+  input[type=range]{
+    width:100%;
+    accent-color:var(--accent);
+  }
+
+  .sign-toggle{
+    display:flex;
+    gap:6px;
+    margin-top:6px;
+  }
+  .sign-btn{
+    flex:1;
+    padding:6px 0;
+    border:1px solid var(--border);
+    background:#fff;
+    border-radius:6px;
+    font-size:0.85rem;
+    font-weight:600;
+    cursor:pointer;
+    color:var(--ink-soft);
+  }
+  .sign-btn.active-pos{background:var(--pos);border-color:var(--pos);color:#fff;}
+  .sign-btn.active-neg{background:var(--neg);border-color:var(--neg);color:#fff;}
+
+  .divider{
+    height:1px;
+    background:var(--border);
+    margin:16px 0;
+  }
+
+  .readout{
+    background:#f6f7f9;
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:12px 14px;
+    font-size:0.88rem;
+    line-height:1.65;
+  }
+  .readout .empty{color:var(--ink-soft);}
+  .readout-row{display:flex;justify-content:space-between;gap:12px;}
+  .readout-row .k{color:var(--ink-soft);}
+
+  .btn-reset{
+    margin-top:10px;
+    width:100%;
+    padding:8px 0;
+    border:1px solid var(--border);
+    background:#fff;
+    border-radius:8px;
+    font-family:var(--font);
+    font-size:14px;
+    font-weight:600;
+    color:var(--ink);
+    cursor:pointer;
+  }
+  .btn-reset:hover{border-color:var(--accent);}
+
+  .graph-panel{margin-top:18px;}
+  .legend{
+    display:flex;
+    gap:18px;
+    font-size:0.8rem;
+    color:var(--ink-soft);
+    margin-top:8px;
+  }
+  .legend span{display:inline-flex;align-items:center;gap:6px;}
+  .swatch{width:14px;height:3px;display:inline-block;border-radius:2px;}
+
+  .grid-eq{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px;}
+  @media (max-width:820px){ .grid-eq{grid-template-columns:1fr;} }
+  .seg{display:flex;gap:6px;margin-bottom:16px;}
+  .seg button{
+    flex:1;padding:9px 0;border:1px solid var(--border);background:#fff;border-radius:6px;
+    font-size:0.88rem;font-weight:600;color:var(--ink-soft);cursor:pointer;
+  }
+  .seg button.active{background:var(--accent);border-color:var(--accent);color:#fff;}
+  .field-row.disabled{opacity:0.4;pointer-events:none;}
+  .readout-row .v{text-align:right;}
+  .explain{margin-top:10px;padding-top:10px;border-top:1px solid var(--border);color:var(--ink-soft);font-size:0.84rem;line-height:1.55;}
+  table.cases{width:100%;border-collapse:separate;border-spacing:6px;font-size:0.8rem;}
+  table.cases th{font-weight:650;color:var(--ink);padding:4px;}
+  table.cases td{padding:0;}
+  .case{
+    width:100%;text-align:left;border:1px solid var(--border);background:#fff;border-radius:6px;
+    padding:8px 9px;cursor:pointer;color:var(--ink-soft);font-size:0.78rem;line-height:1.4;
+  }
+  .case b{display:block;color:var(--ink);font-size:0.82rem;margin-bottom:2px;}
+  .case.row-active{background:var(--accent-soft);}
+  .case.active{background:var(--accent);border-color:var(--accent);color:#e6ebf4;}
+  .case.active b{color:#fff;}
+  .case-note{font-size:0.78rem;color:var(--ink-soft);margin:8px 0 0 0;}
+  .points{margin:0;padding:0;list-style:none;font-size:0.88rem;line-height:1.6;color:var(--ink-soft);}
+  .points li{margin-bottom:12px;padding-left:14px;border-left:3px solid var(--border);}
+  .points b{color:var(--ink);}
+  .vec{position:relative;display:inline-block;line-height:1;}
+  .vec::before{content:"\2192";position:absolute;left:50%;top:-0.7em;transform:translateX(-50%);font-size:0.75em;font-weight:700;font-style:normal;}
+  .tabs{flex-wrap:wrap;}
+  .sign-btn,.seg button,.case{font-family:var(--font);}
+  .seg.weergave{max-width:420px;margin:0 0 16px;}
+  .ctrl3d{display:flex;gap:8px;margin-top:8px;max-width:760px;margin-left:auto;margin-right:auto;}
+  #veld3d canvas{max-width:760px;margin:0 auto;}
+  #veld3d .canvas-hint{max-width:760px;margin-left:auto;margin-right:auto;}
+  .ctrl3d .btn-reset{margin-top:0;}
+  @media (max-width:820px){ .tab{padding:8px 10px;font-size:0.86rem;} }
+
+  /* homogeen veld: veld en grafieken onder elkaar, met dezelfde x-as */
+  .hom-grid{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:18px;align-items:start;}
+  @media (max-width:900px){ .hom-grid{grid-template-columns:1fr;} }
+  .hom-links canvas{margin:0 auto;}
+  .hom-links #graphCanvas2{margin-top:6px;border-top:none;}
+  .hom-links .canvas-hint{margin:4px 0 0;text-align:center;}
+  .hom-rechts .field-row{margin-bottom:10px;}
+  .hom-rechts .divider{margin:10px 0;}
+
+  /* bordweergave */
+  .tab-bord{margin-left:auto;align-self:center;appearance:none;border:1px solid var(--border);background:#fff;border-radius:8px;
+    padding:6px 12px;font-family:var(--font);font-size:14px;font-weight:600;color:var(--ink);cursor:pointer;}
+  .tab-bord:hover{border-color:var(--accent);}
+  body.bord .wrap{max-width:none;padding:8px 18px 12px;}
+  body.bord h1, body.bord .wrap > .sub, body.bord .ldnw-wrap{display:none;}
+  body.bord .tabs{margin:0 0 10px;}
+  body.bord .tab{font-size:16px;}
+  body.bord .hom-grid{grid-template-columns:minmax(0,1fr) 320px;}
+  body.bord .hom-rechts{max-height:calc(100vh - 80px);overflow:auto;}
+  body.bord .hom-links h2, body.bord .hom-links .canvas-hint{display:none;}
+  body.bord .hom-links{padding:10px 16px;}
+
+  /* analogie zwaarteveld - elektrisch veld */
+  #an_cv{max-width:900px;margin:0 auto}
+  .an-knoppen{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;margin-top:10px;font-size:0.9rem;font-weight:600}
+  .an-knoppen .sign-btn{flex:0 0 120px}.an-knoppen .btn-reset{width:auto;margin:0;padding:6px 16px}.an-knoppen .tussen{width:24px}
+  table.ana{width:100%;border-collapse:collapse;font-size:0.92rem;line-height:1.5}
+  table.ana th, table.ana td{padding:6px 8px;border-bottom:1px solid var(--border);text-align:left;vertical-align:top}
+  table.ana th{background:var(--accent-soft);}
+  table.ana td:first-child{color:var(--ink-soft);}
+  table.ana .w{font-variant-numeric:tabular-nums;color:var(--accent-dark);font-weight:600;white-space:nowrap}
+  .vak{border-radius:0 10px 10px 0;padding:10px 14px;font-size:0.9rem;line-height:1.55;margin-top:12px}
+  .vak .kop{display:block;font-size:11.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;margin-bottom:2px}
+  .vak.ken{background:#E8F5EC;border-left:4px solid #1F7A4A}.vak.ken .kop{color:#1F7A4A}
+  .vak.let{background:#FFF7ED;border-left:4px solid #D97706}.vak.let .kop{color:#B45309}
+</style>
+</head>
+<body data-hfd="4">
+<div class="wrap">
+  <h1>Potentiaal</h1>
+  <p class="sub">Van zwaarteveld naar elektrisch veld: veldsterkte, potentiële energie en potentiaal in een homogeen veld</p>
+<!--ldnw--><div class="ldnw-wrap"><details id="ldnw"><style>.ldnw-wrap{max-width:1180px;margin:14px auto 0;padding:0 24px}#ldnw{border:1px solid #c9d6e3;border-radius:10px;padding:8px 14px;background:rgba(127,160,200,.08)}#ldnw>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;font-weight:700}#ldnw>summary::-webkit-details-marker{display:none}#ldnw .pijl{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:#2F6FB0;color:#fff;font-size:13px;transition:transform .2s}#ldnw[open] .pijl{transform:rotate(90deg)}#ldnw .hint{font-weight:500;font-size:13px;opacity:.75}#ldnw[open] .hint{display:none}#ldnw .ldk{margin:10px 0 2px;font-weight:700}#ldnw ul.doelen{margin:0;font-size:14px;line-height:1.5}</style><summary><span class="pijl">▶</span>Lesdoelen · Ik kan … <span class="hint">klik om te openen en af te vinken</span></summary><p class="ldk">4.1 Potentiële elektrische energie in een homogeen veld</p><ul class="doelen"><li>Ik kan de analogie tussen de potentiële gravitationele energie E pot,g =m.g.h en E pot,E =Q.E.d uitleggen.</li><li>Ik kan het verband tussen potentiële elektrische energie en arbeid verricht door het elektrisch veld uitleggen.</li><li>Ik kan de grootte van de potentiële elektrische energie op een bepaalde plaats in een homogeen veld voor een positieve en een negatieve lading berekenen. (Belangrijk is dat de potentiële energie van een lading op de negatieve plaat als 0 gedefinieerd wordt!)</li></ul><p class="ldk">4.2 Elektrische potentiaal in een homogeen veld</p><ul class="doelen"><li>Ik kan verwoorden dat de elektrische potentiaal in een bepaald punt te linken is aan de potentiële energie van een testlading van +1C in dat punt of korter, de potentiële energie per lading.</li><li>Ik kan de grootte van de elektrische potentiaal op een bepaalde plaats in een homogeen veld berekenen.</li><li>Ik kan het verband uit tussen elektrisch veld, elektrische energie en elektrische potentiaal en kan de grafieken tekenen die bij deze grootheden horen en de vorm van de grafieken ook uitleggen.</li></ul><p class="ldk">4.2.2 Equipotentiaaloppervlak</p><ul class="doelen"><li>Ik kan verwoorden wat en een equipotentiaaloppervlak is en in een homogeen elektrisch veld tekenen.</li></ul><p class="ldk">4.3 Potentiaalverschil</p><ul class="doelen"><li>Ik kan de definitie voor spanning (of potentiaalverschil) noteren.</li><li>Ik kan het verband uitleggen tussen potentiaalverschil en de verandering in potentiële en kinetische energie voor een positieve en een negatieve lading in een homogeen elektrisch veld.( toename of afname van Ekin/ Epot en teken van het potentiaalverschil).</li><li>Ik kan verwoorden wat de eenheid elektronvolt (eV) betekent (p56).</li></ul><p style="font-size:12px;opacity:.75;margin:8px 0 4px">Vink aan wat je al kan. Wat je niet kan aanvinken, oefen je nog eens.</p></details></div><!--/ldnw-->
+
+  <div class="tabs">
+    <button class="tab" data-mode="zwaarte" data-hfd="3">Zwaartekracht</button>
+    <button class="tab" data-mode="coulomb" data-hfd="3">Bron- en proeflading</button>
+    <button class="tab" data-mode="punt" data-hfd="3">Puntlading</button>
+    <button class="tab" data-mode="meer" data-hfd="3">Meerdere ladingen</button>
+    <button class="tab" data-mode="bol" data-hfd="3">Geleidende bol</button>
+    <button class="tab" data-mode="analogie" data-hfd="4">Zwaarteveld en elektrisch veld</button>
+    <button class="tab" data-mode="homogeen" data-hfd="3 4">Homogeen veld</button>
+    <button class="tab" data-mode="faraday" data-hfd="3">Geleiders en isolatoren</button>
+    <button class="tab" data-mode="energie" data-hfd="4">Energie en potentiaal</button>
+    <button class="tab-bord" id="bordKnop" title="Volledig scherm, zonder titel en lesdoelen">⛶ Bordweergave</button>
+  </div>
+
+  <div class="seg weergave" id="weergave">
+    <button data-w="2d" class="active">2D-tekening</button>
+    <button data-w="3d">3D-veldlijnen</button>
+  </div>
+
+  <div id="viewRadial">
+  <div class="grid">
+    <div class="panel">
+      <h2 id="canvasTitle">Veldlijnen — puntlading</h2>
+      <canvas id="fieldCanvas" width="600" height="440"></canvas>
+      <p class="canvas-hint">Klik in het veld om een testlading te plaatsen. Sleep om te verplaatsen.</p>
+    </div>
+
+    <div class="panel">
+      <h2>Instellingen</h2>
+
+      <div class="field-row">
+        <div class="field-label">
+          <span>Ladingsgrootte |Q|</span>
+          <span class="val num" id="qVal">5,0 µC</span>
+        </div>
+        <input type="range" id="qSlider" min="0.5" max="10" step="0.5" value="5">
+        <div class="sign-toggle">
+          <button class="sign-btn" id="qPos" data-sign="1">+ positief</button>
+          <button class="sign-btn" id="qNeg" data-sign="-1">− negatief</button>
+        </div>
+      </div>
+
+      <div class="field-row" id="radiusRow" style="display:none;">
+        <div class="field-label">
+          <span>Straal van de bol R</span>
+          <span class="val num" id="rVal">4,0 cm</span>
+        </div>
+        <input type="range" id="rSlider" min="2" max="8" step="0.5" value="4">
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="field-row">
+        <div class="field-label">
+          <span>Testlading |q|</span>
+          <span class="val num" id="qtVal">1,0 µC</span>
+        </div>
+        <input type="range" id="qtSlider" min="0.5" max="5" step="0.5" value="1">
+        <div class="sign-toggle">
+          <button class="sign-btn" id="qtPos" data-sign="1">+ positief</button>
+          <button class="sign-btn" id="qtNeg" data-sign="-1">− negatief</button>
+        </div>
+      </div>
+
+      <button class="btn-reset" id="clearTest">Testlading verwijderen</button>
+
+      <div class="divider"></div>
+
+      <h2>Uitlezing</h2>
+      <div class="readout" id="readout">
+        <span class="empty">Nog geen testlading geplaatst.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel graph-panel">
+    <h2 id="graphTitle">Veldsterkte E in functie van de afstand r — puntlading</h2>
+    <canvas id="graphCanvas" width="1140" height="260"></canvas>
+    <div class="legend">
+      <span><span class="swatch" style="background:var(--ink);"></span>E(r)</span>
+      <span><span class="swatch" style="background:var(--test);"></span>positie van de testlading</span>
+    </div>
+  </div>
+  </div>
+
+  <div id="viewHomogeen" style="display:none;">
+    <div class="hom-grid">
+      <div class="panel hom-links">
+        <h2>Homogeen veld tussen twee platen, met E, V en E<sub>p</sub> eronder</h2>
+        <canvas id="fieldCanvas2" width="760" height="200"></canvas>
+        <p class="canvas-hint">Beweeg over het veld: de grijze lijn loopt door de drie grafieken. Klik om de puntlading te plaatsen.</p>
+        <canvas id="graphCanvas2" width="760" height="470"></canvas>
+        <div class="legend">
+          <span><span class="swatch" style="background:var(--test);"></span>geplaatste puntlading</span>
+          <span><span class="swatch" style="background:#98a2b3;"></span>cursorpositie in het veld</span>
+          <span><span class="swatch" style="background:#1d3557;"></span>punten A en B</span>
+        </div>
+      </div>
+
+      <div class="panel hom-rechts">
+        <h2>Instellingen</h2>
+
+        <div class="field-row">
+          <div class="field-label">
+            <span>Spanning U tussen de platen</span>
+            <span class="val num" id="uVal">100 V</span>
+          </div>
+          <input type="range" id="uSlider" min="10" max="500" step="10" value="100">
+        </div>
+
+        <div class="field-row">
+          <div class="field-label">
+            <span>Afstand tussen de platen d</span>
+            <span class="val num" id="dVal">8,0 cm</span>
+          </div>
+          <input type="range" id="dSlider" min="2" max="15" step="0.5" value="8">
+        </div>
+
+        <button class="btn-reset" id="swapPlates">Platen verwisselen</button>
+
+        <div class="divider"></div>
+
+        <div class="field-row">
+          <div class="field-label">
+            <span>Puntlading |q|</span>
+            <span class="val num" id="pcVal">1,0 µC</span>
+          </div>
+          <input type="range" id="pcSlider" min="0.5" max="5" step="0.5" value="1">
+          <div class="sign-toggle">
+            <button class="sign-btn" id="pcPos" data-sign="1">+ positief</button>
+            <button class="sign-btn" id="pcNeg" data-sign="-1">− negatief</button>
+          </div>
+        </div>
+
+        <button class="btn-reset" id="clearPc">Puntlading verwijderen</button>
+
+        <div class="divider"></div>
+
+        <div class="field-row">
+          <div class="field-label">
+            <span>Potentiaalverschil tussen 2 punten</span>
+          </div>
+          <div style="display:flex; gap:6px;">
+            <button class="btn-reset" id="selA" style="margin-top:0; width:auto; flex:1;">Punt A kiezen</button>
+            <button class="btn-reset" id="selB" style="margin-top:0; width:auto; flex:1;">Punt B kiezen</button>
+          </div>
+        </div>
+        <button class="btn-reset" id="clearAB">Punten A en B wissen</button>
+
+        <div class="divider"></div>
+
+        <h2>Uitlezing</h2>
+        <div class="readout" id="readoutHom">
+          <span class="empty">Klik in het veld om een puntlading te plaatsen, of kies punt A en B voor het potentiaalverschil.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="viewCoulomb" style="display:none;">
+  <p class="sub">Het elektrisch veld <span class="vec">E</span> in een punt P wordt bepaald door de bronlading Q<sub>b</sub>. Een proeflading Q<sub>p</sub> in P voelt dan de kracht <span class="vec">F</span><sub>c</sub> = Q<sub>p</sub> · <span class="vec">E</span>.</p>
+
+  <div class="panel">
+    <h2 id="cb_canvasTitle">Zonder proeflading — het veld in P</h2>
+    <canvas id="cb_cv" width="760" height="300"></canvas>
+    <p class="canvas-hint">Klik of sleep in de tekening om punt P te verplaatsen.</p>
+  </div>
+
+  <div class="grid-eq">
+    <div class="panel">
+      <h2>Instellingen</h2>
+
+      <div class="seg">
+        <button id="cb_modeZonder" class="active">Zonder proeflading</button>
+        <button id="cb_modeMet">Met proeflading</button>
+      </div>
+
+      <div class="field-row">
+        <div class="field-label"><span>Bronlading Q<sub>b</sub></span><span class="val num" id="cb_qbVal"></span></div>
+        <input type="range" id="cb_qbSlider" min="-10" max="10" step="0.5" value="5">
+      </div>
+
+      <div class="field-row">
+        <div class="field-label"><span>Afstand r van Q<sub>b</sub> tot P</span><span class="val num" id="cb_rVal"></span></div>
+        <input type="range" id="cb_rSlider" min="8" max="24" step="0.5" value="14">
+      </div>
+
+      <div class="field-row disabled" id="cb_qpRow">
+        <div class="field-label"><span>Proeflading Q<sub>p</sub></span><span class="val num" id="cb_qpVal"></span></div>
+        <input type="range" id="cb_qpSlider" min="-5" max="5" step="0.5" value="1">
+      </div>
+
+      <h2 style="margin-top:20px;">Uitlezing</h2>
+      <div class="readout" id="cb_readout"></div>
+    </div>
+
+    <div class="panel">
+      <h2>Vier gevallen (klik om in te stellen)</h2>
+      <table class="cases">
+        <tr><th></th><th>Q<sub>p</sub> negatief</th><th>Q<sub>p</sub> positief</th></tr>
+        <tr>
+          <th>Q<sub>b</sub> negatief</th>
+          <td><button class="case" data-b="-1" data-p="-1"><b>afstoting</b><span class="vec">E</span> naar Q<sub>b</sub> toe<br><span class="vec">F</span><sub>c</sub> weg van Q<sub>b</sub></button></td>
+          <td><button class="case" data-b="-1" data-p="1"><b>aantrekking</b><span class="vec">E</span> naar Q<sub>b</sub> toe<br><span class="vec">F</span><sub>c</sub> naar Q<sub>b</sub> toe</button></td>
+        </tr>
+        <tr>
+          <th>Q<sub>b</sub> positief</th>
+          <td><button class="case" data-b="1" data-p="-1"><b>aantrekking</b><span class="vec">E</span> weg van Q<sub>b</sub><br><span class="vec">F</span><sub>c</sub> naar Q<sub>b</sub> toe</button></td>
+          <td><button class="case" data-b="1" data-p="1"><b>afstoting</b><span class="vec">E</span> weg van Q<sub>b</sub><br><span class="vec">F</span><sub>c</sub> weg van Q<sub>b</sub></button></td>
+        </tr>
+      </table>
+      <p class="case-note"><span class="vec">E</span> hangt alleen af van Q<sub>b</sub> (de rij). Het teken van Q<sub>p</sub> (de kolom) bepaalt alleen of <span class="vec">F</span><sub>c</sub> met of tegen <span class="vec">E</span> in wijst.</p>
+    </div>
+  </div>
+</div>
+  <div id="viewZwaarte" style="display:none;">
+  <p class="sub">Het gravitatieveld <span class="vec">g</span> in een punt P wordt bepaald door de bronmassa (hier de Aarde). Een proefmassa m in P voelt dan de zwaartekracht <span class="vec">F</span><sub>z</sub> = m · <span class="vec">g</span>.</p>
+
+  <div class="panel">
+    <h2 id="gv_canvasTitle"></h2>
+    <canvas id="gv_cv" width="760" height="350"></canvas>
+    <p class="canvas-hint">Klik of sleep in de tekening om punt P te verplaatsen. De Aarde is op schaal getekend (de afstand r wordt gemeten vanaf het middelpunt).</p>
+  </div>
+
+  <div class="grid-eq">
+    <div class="panel">
+      <h2>Instellingen</h2>
+
+      <div class="seg">
+        <button id="gv_modeZonder" class="active">Zonder proefmassa</button>
+        <button id="gv_modeMet">Met proefmassa</button>
+      </div>
+
+      <div class="field-row">
+        <div class="field-label"><span>Hoogte h boven het aardoppervlak</span><span class="val num" id="gv_hVal"></span></div>
+        <input type="range" id="gv_hSlider" min="0" max="36000" step="100" value="6400">
+      </div>
+
+      <div class="field-row disabled" id="gv_mRow">
+        <div class="field-label"><span>Proefmassa m</span><span class="val num" id="gv_mVal"></span></div>
+        <input type="range" id="gv_mSlider" min="1" max="100" step="1" value="10">
+      </div>
+
+      <h2 style="margin-top:20px;">Uitlezing</h2>
+      <div class="readout" id="gv_readout"></div>
+    </div>
+
+    <div class="panel">
+      <h2>Samengevat</h2>
+      <ul class="points">
+        <li><b>Het veld hangt af van de bronmassa en de afstand.</b><br><span class="vec">g</span> in P is er ook zonder proefmassa: g = G · M / r², met M de massa van de Aarde en r de afstand tot haar middelpunt.</li>
+        <li><b>De kracht hangt af van de proefmassa.</b><br><span class="vec">F</span><sub>z</sub> = m · <span class="vec">g</span>. Een grotere massa geeft een grotere kracht, maar g in P blijft hetzelfde.</li>
+        <li><b>Er is maar één geval.</b><br>Massa's trekken elkaar altijd aan: <span class="vec">g</span> en <span class="vec">F</span><sub>z</sub> wijzen altijd naar het middelpunt van de Aarde. Bij ladingen kan het teken wisselen, bij massa's niet.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+  <div id="viewMeer" style="display:none;">
+  <p class="sub">Het veld van meerdere ladingen is de <b>vectorsom</b> van de velden van elke lading apart. Sleep de ladingen. Klik ergens in het veld om punt P te kiezen: je ziet de veldlijn door P en de veldvector <span class="vec">E</span>, die aan die veldlijn <b>raakt</b>.</p>
+  <div class="grid">
+    <div class="panel">
+      <h2>Veldlijnen — meerdere ladingen</h2>
+      <canvas id="ml_cv" width="600" height="440"></canvas>
+      <p class="canvas-hint">Sleep een lading om ze te verplaatsen. Klik op een lading om ze te kiezen, klik in het veld om P te plaatsen.</p>
+    </div>
+    <div class="panel">
+      <h2>Instellingen</h2>
+      <div class="seg" id="ml_preset" style="flex-wrap:wrap">
+        <button data-p="gelijk" class="active">twee positieve</button>
+        <button data-p="dipool">+ en −</button>
+        <button data-p="ongelijk">+6 en −2</button>
+        <button data-p="drie">drie ladingen</button>
+      </div>
+      <div class="field-row">
+        <div class="field-label"><span id="ml_selNaam">Gekozen lading</span><span class="val num" id="ml_qVal"></span></div>
+        <input type="range" id="ml_q" min="-8" max="8" step="1" value="4">
+      </div>
+      <label style="display:flex;gap:8px;align-items:center;font-size:0.88rem;margin-bottom:6px"><input type="checkbox" id="ml_bijdr"> toon de bijdragen van elke lading in P</label>
+      <button class="btn-reset" id="ml_clearP">P wissen</button>
+      <h2 style="margin-top:20px;">Uitlezing</h2>
+      <div class="readout" id="ml_readout"></div>
+    </div>
+  </div>
+  <div class="panel" style="margin-top:18px">
+    <h2>Kenmerken van elektrische veldlijnen</h2>
+    <ul class="points">
+      <li><b>Begin en einde.</b> Veldlijnen vertrekken bij een positieve lading en eindigen bij een negatieve lading (of lopen naar het oneindige).</li>
+      <li><b>Nooit snijden.</b> Twee veldlijnen snijden elkaar nooit: in elk punt heeft het veld maar één richting.</li>
+      <li><b>Dichtheid = sterkte.</b> Waar de veldlijnen dicht bij elkaar liggen, is het veld sterk. Meer lading geeft meer veldlijnen.</li>
+      <li><b>Veldvector.</b> <span class="vec">E</span> in een punt <b>raakt</b> aan de veldlijn door dat punt en wijst in de zin van de pijltjes.</li>
+      <li><b>Geleiders.</b> Veldlijnen staan loodrecht op het oppervlak van een geleider (zie tabblad Geleiders en isolatoren).</li>
+    </ul>
+  </div>
+  </div>
+
+  <div id="viewFaraday" style="display:none;">
+  <p class="sub">Een voorwerp tussen twee geladen platen. Wat gebeurt er met het veld in en rond het voorwerp?</p>
+  <div class="grid">
+    <div class="panel">
+      <h2 id="fd_title">Geleider in een homogeen veld</h2>
+      <canvas id="fd_cv" width="600" height="440"></canvas>
+    </div>
+    <div class="panel">
+      <h2>Voorwerp</h2>
+      <div class="seg" id="fd_keuze" style="flex-wrap:wrap">
+        <button data-v="geen">geen</button>
+        <button data-v="hol" class="active">holle geleider</button>
+        <button data-v="vol">volle geleider</button>
+        <button data-v="iso">isolator</button>
+      </div>
+      <div class="readout" id="fd_readout"></div>
+      <h2 style="margin-top:20px;">Kooi van Faraday in het dagelijks leven</h2>
+      <div class="seg" id="fd_vb" style="flex-wrap:wrap">
+        <button data-vb="auto">auto</button>
+        <button data-vb="vliegtuig">vliegtuig</button>
+        <button data-vb="micro">microgolfoven</button>
+        <button data-vb="coax">coaxkabel</button>
+      </div>
+      <div class="readout" id="fd_vbTekst"><span class="empty">Kies een voorbeeld.</span></div>
+    </div>
+  </div>
+  </div>
+
+  <div id="viewAnalogie" style="display:none;">
+  <p class="sub">Een bal boven de grond en een lading tussen twee platen gedragen zich op dezelfde manier. Het zwaarteveld wordt het elektrisch veld, massa wordt lading, hoogte h wordt afstand d.</p>
+  <div class="panel">
+    <h2>Zwaarteveld en homogeen elektrisch veld naast elkaar</h2>
+    <canvas id="an_cv" width="760" height="400"></canvas>
+    <div class="an-knoppen">
+      <span>Lading Q:</span>
+      <button class="sign-btn" id="an_pos">+ positief</button>
+      <button class="sign-btn" id="an_neg">− negatief</button>
+      <span class="tussen"></span>
+      <button class="btn-reset" id="an_los">▶ Loslaten</button>
+      <button class="btn-reset" id="an_terug">↻ Terug</button>
+    </div>
+    <p class="canvas-hint" style="text-align:center">Sleep de bal of de lading omhoog of omlaag: ze staan altijd op dezelfde hoogte.</p>
+  </div>
+  <div class="grid-eq">
+      <div class="vak ken" style="margin-top:0"><span class="kop">Ken dit</span>
+        E<sub>pot,g</sub> = m · g · h &nbsp;↔&nbsp; E<sub>pot,E</sub> = Q · E · d<br>
+        h meet je vanaf de grond, d vanaf de <b>negatieve plaat</b>. Daar is E<sub>pot</sub> = 0.<br>
+        Het veld doet arbeid: W = −ΔE<sub>pot</sub>. Wat aan E<sub>pot</sub> verdwijnt, komt erbij als E<sub>kin</sub>.
+      </div>
+      <div class="vak let" style="margin-top:0"><span class="kop">Let op</span>
+        Een massa valt altijd naar de grond. Een <b>negatieve</b> lading beweegt <b>tegen</b> de veldlijnen in, weg van de negatieve plaat. Haar E<sub>pot</sub> is negatief.
+      </div>
+  </div>
+  <div class="panel" style="margin-top:18px">
+    <h2>Vergelijk</h2>
+    <table class="ana">
+      <tr><th></th><th>zwaarteveld (bij de grond)</th><th>homogeen elektrisch veld</th></tr>
+      <tr><td>veld</td><td>g = <span class="w">9,81 N/kg</span></td><td>E = U / d<sub>platen</sub> = <span class="w" id="an_E"></span></td></tr>
+      <tr><td>wat voelt het veld?</td><td>massa m = <span class="w">0,50 kg</span></td><td>lading Q = <span class="w" id="an_Q"></span></td></tr>
+      <tr><td>kracht</td><td>F<sub>z</sub> = m · g = <span class="w" id="an_Fz"></span></td><td>F<sub>E</sub> = Q · E = <span class="w" id="an_FE"></span></td></tr>
+      <tr><td>hoogte</td><td>h = <span class="w" id="an_h"></span> (vanaf de grond)</td><td>d = <span class="w" id="an_d"></span> (vanaf de negatieve plaat)</td></tr>
+      <tr><td>potentiële energie</td><td>E<sub>pot,g</sub> = m · g · h = <span class="w" id="an_Epg"></span></td><td>E<sub>pot,E</sub> = Q · E · d = <span class="w" id="an_Epe"></span></td></tr>
+      <tr><td>energie per kg of per coulomb</td><td>E<sub>pot,g</sub> / m = g · h = <span class="w" id="an_gh"></span></td><td><b>potentiaal</b> V = E<sub>pot,E</sub> / Q = E · d = <span class="w" id="an_V"></span></td></tr>
+      <tr><td>nulniveau</td><td>de grond</td><td>de negatieve plaat</td></tr>
+    </table>
+  </div>
+  </div>
+
+  <div id="viewEnergie" style="display:none;">
+  <p class="sub">Een geladen deeltje tussen twee platen. Laat het los en volg de energie. We kiezen de potentiële energie <b>nul op de negatieve plaat</b>, zoals bij zwaartekracht nul op de grond.</p>
+  <div class="grid">
+    <div class="panel">
+      <h2>Homogeen veld: energie en potentiaal</h2>
+      <canvas id="en_cv" width="600" height="440"></canvas>
+      <p class="canvas-hint">Sleep het deeltje verticaal om de startplaats te kiezen.</p>
+    </div>
+    <div class="panel">
+      <h2>Instellingen</h2>
+      <div class="seg" id="en_deeltje">
+        <button data-d="p" class="active">proton (+e)</button>
+        <button data-d="e">elektron (−e)</button>
+        <button data-d="a">α-deeltje (+2e)</button>
+      </div>
+      <div class="field-row">
+        <div class="field-label"><span>Spanning U tussen de platen</span><span class="val num" id="en_UVal"></span></div>
+        <input type="range" id="en_U" min="100" max="1000" step="50" value="500">
+      </div>
+      <div class="field-row">
+        <div class="field-label"><span>Afstand tussen de platen</span><span class="val num" id="en_dVal"></span></div>
+        <input type="range" id="en_d" min="2" max="10" step="1" value="5">
+      </div>
+      <label style="display:flex;gap:8px;align-items:center;font-size:0.88rem;margin-bottom:6px"><input type="checkbox" id="en_eq" checked> toon equipotentiaalvlakken</label>
+      <div class="seg" style="margin-top:10px"><button id="en_los">▶ Loslaten</button><button id="en_reset">↻ Terug naar start</button></div>
+      <h2 style="margin-top:10px;">Uitlezing</h2>
+      <div class="readout" id="en_readout"></div>
+    </div>
+  </div>
+  <div style="margin-top:18px">
+    <div class="panel">
+      <h2>Samengevat</h2>
+      <ul class="points">
+        <li><b>Potentiaal</b> V in een punt = de potentiële energie per coulomb: V = E<sub>pot</sub> / Q. In een homogeen veld: V = E · d, met d de afstand tot de negatieve plaat.</li>
+        <li><b>Equipotentiaalvlak:</b> alle punten met dezelfde potentiaal. In een homogeen veld zijn dat vlakken evenwijdig met de platen, loodrecht op de veldlijnen.</li>
+        <li><b>Spanning</b> (potentiaalverschil): U<sub>AB</sub> = V<sub>A</sub> − V<sub>B</sub>. Doorloopt een lading Q het potentiaalverschil U<sub>AB</sub>, dan geldt ΔE<sub>kin</sub> = Q · U<sub>AB</sub>.</li>
+        <li><b>Elektronvolt:</b> 1 eV is de energie die een deeltje met lading e wint als het een spanning van 1 V doorloopt. 1 eV = 1,6 · 10<sup>−19</sup> J.</li>
+      </ul>
+    </div>
+  </div>
+  </div>
+</div>
+
+<script>
+const k = 8.99e9; // N m^2 / C^2
+
+const state = {
+  mode: 'punt',      // 'punt' | 'bol'
+  Qmag: 5,           // µC, magnitude
+  Qsign: 1,
+  R: 4,              // cm, only used in 'bol' mode
+  qtMag: 1,           // µC, magnitude
+  qtSign: 1,
+  test: null          // {xcm, ycm} relative to center, or null
+};
+
+// ---------- helpers ----------
+function nlNum(x, maxDec=2){
+  return x.toLocaleString('nl-BE', {maximumFractionDigits:maxDec, minimumFractionDigits:0});
+}
+
+function formatUnit(value, unit){
+  if(value === 0) return '0 ' + unit;
+  const abs = Math.abs(value);
+  const table = [[1e9,'G'],[1e6,'M'],[1e3,'k'],[1,''],[1e-3,'m'],[1e-6,'µ']];
+  for(const [factor, prefix] of table){
+    if(abs >= factor){
+      return nlNum(value/factor, abs/factor >= 100 ? 0 : 1) + ' ' + prefix + unit;
+    }
+  }
+  return nlNum(value/1e-6, 2) + ' µ' + unit;
+}
+
+function Qcoulomb(){ return state.Qsign * state.Qmag * 1e-6; }
+function qtCoulomb(){ return state.qtSign * state.qtMag * 1e-6; }
+
+// E field magnitude with sign baked in (positive = points away from center)
+function EsignedAt(r_cm){
+  if(state.mode === 'bol' && r_cm < state.R) return 0;
+  const r_m = Math.max(r_cm, 0.15) / 100;
+  return k * Qcoulomb() / (r_m*r_m);
+}
+
+// ---------- canvas A: field lines ----------
+const fc = document.getElementById('fieldCanvas');
+const fctx = fc.getContext('2d');
+const FW = fc.width, FH = fc.height;
+const CX = FW/2, CY = FH/2;
+const SCALE = 9; // px per cm
+
+function chargeRadiusPx(){
+  return state.mode === 'bol' ? state.R * SCALE : 14;
+}
+
+function drawFieldLines(){
+  const nRaw = 8 + (state.Qmag/10)*18; // meer lijnen bij een grotere lading
+  const n = Math.max(8, Math.round(nRaw/2)*2); // even aantal, symmetrisch
+  const r0 = chargeRadiusPx() + 4;
+  const outward = state.Qsign > 0;
+  fctx.strokeStyle = 'var(--line)';
+  fctx.strokeStyle = '#98a2b3';
+  fctx.lineWidth = 1.4;
+  for(let i=0;i<n;i++){
+    const angle = (i/n) * Math.PI * 2;
+    const dx = Math.cos(angle), dy = Math.sin(angle);
+    // find length to canvas edge
+    let tMax = 1e9;
+    if(dx !== 0) tMax = Math.min(tMax, dx>0 ? (FW-10-CX)/dx : (10-CX)/dx);
+    if(dy !== 0) tMax = Math.min(tMax, dy>0 ? (FH-10-CY)/dy : (10-CY)/dy);
+    const r1 = Math.min(tMax, r0+230);
+    const x0 = CX + dx*r0, y0 = CY + dy*r0;
+    const x1 = CX + dx*r1, y1 = CY + dy*r1;
+    fctx.beginPath();
+    fctx.moveTo(x0,y0);
+    fctx.lineTo(x1,y1);
+    fctx.stroke();
+    // arrowhead at midpoint
+    const rm = (r0+r1)/2;
+    const xm = CX + dx*rm, ym = CY + dy*rm;
+    const dir = outward ? angle : angle + Math.PI;
+    drawArrowhead(xm, ym, dir, 7, '#98a2b3');
+  }
+}
+
+function drawArrowhead(x, y, angle, size, color){
+  fctx.save();
+  fctx.translate(x,y);
+  fctx.rotate(angle);
+  fctx.fillStyle = color;
+  fctx.beginPath();
+  fctx.moveTo(size,0);
+  fctx.lineTo(-size*0.7, size*0.55);
+  fctx.lineTo(-size*0.7, -size*0.55);
+  fctx.closePath();
+  fctx.fill();
+  fctx.restore();
+}
+
+function drawCharge(){
+  const col = state.Qsign > 0 ? '#d64550' : '#2a6f97';
+  if(state.mode === 'bol'){
+    const rad = state.R * SCALE;
+    fctx.fillStyle = col + '26';
+    fctx.strokeStyle = col;
+    fctx.lineWidth = 2;
+    fctx.beginPath();
+    fctx.arc(CX, CY, rad, 0, Math.PI*2);
+    fctx.fill();
+    fctx.stroke();
+    fctx.fillStyle = '#8a94a6';
+    fctx.font = '12px -apple-system, sans-serif';
+    fctx.textAlign = 'center';
+    fctx.fillText('E = 0 binnenin', CX, CY+4);
+  } else {
+    fctx.fillStyle = col;
+    fctx.beginPath();
+    fctx.arc(CX, CY, 14, 0, Math.PI*2);
+    fctx.fill();
+    fctx.fillStyle = '#fff';
+    fctx.font = 'bold 16px -apple-system, sans-serif';
+    fctx.textAlign = 'center';
+    fctx.textBaseline = 'middle';
+    fctx.fillText(state.Qsign>0 ? '+' : '\u2212', CX, CY+1);
+    fctx.textBaseline = 'alphabetic';
+  }
+  fctx.fillStyle = '#1d3557';
+  fctx.font = '600 12px -apple-system, sans-serif';
+  fctx.textAlign = 'center';
+  const label = 'Q = ' + (state.Qsign>0 ? '+' : '\u2212') + nlNum(state.Qmag,1) + ' µC' + (state.mode==='bol' ? '   R = '+nlNum(state.R,1)+' cm' : '');
+  fctx.fillText(label, CX, CY + chargeRadiusPx() + 20);
+}
+
+function drawTestCharge(){
+  if(!state.test) return;
+  const px = CX + state.test.xcm*SCALE, py = CY + state.test.ycm*SCALE;
+  const col = state.qtSign > 0 ? '#d64550' : '#2a6f97';
+  fctx.fillStyle = col;
+  fctx.beginPath();
+  fctx.arc(px, py, 9, 0, Math.PI*2);
+  fctx.fill();
+  fctx.strokeStyle = '#e0983b';
+  fctx.lineWidth = 2.5;
+  fctx.beginPath();
+  fctx.arc(px, py, 12, 0, Math.PI*2);
+  fctx.stroke();
+  fctx.fillStyle = '#fff';
+  fctx.font = 'bold 11px -apple-system, sans-serif';
+  fctx.textAlign = 'center';
+  fctx.textBaseline = 'middle';
+  fctx.fillText(state.qtSign>0 ? '+' : '\u2212', px, py+1);
+  fctx.textBaseline = 'alphabetic';
+
+  // force arrow
+  const r_cm = Math.hypot(state.test.xcm, state.test.ycm);
+  const Es = EsignedAt(r_cm); // signed E magnitude along outward direction
+  const F = qtCoulomb() * Es; // signed, along outward direction (positive = points away from center)
+  if(r_cm > 0.01 && F !== 0){
+    const ux = state.test.xcm / r_cm, uy = state.test.ycm / r_cm;
+    const sign = F > 0 ? 1 : -1;
+    // grootte groeit kwadratisch versneld bij het naderen (klein van ver, snel groter dichtbij),
+    // maar verzadigt naar een maximum zodat de pijl op het scherm blijft
+    // lengte evenredig met de kracht (8 px per newton), begrensd door de rand van de tekening
+    let len = Math.max(6, 8*Math.abs(F));
+    len = Math.min(len, maxLenToEdge(px, py, ux*sign, uy*sign));
+    const ex = px + ux*sign*len, ey = py + uy*sign*len;
+    fctx.strokeStyle = '#e0983b';
+    fctx.lineWidth = 2.5;
+    fctx.beginPath();
+    fctx.moveTo(px,py);
+    fctx.lineTo(ex,ey);
+    fctx.stroke();
+    const ang = Math.atan2(ey-py, ex-px);
+    drawArrowhead(ex, ey, ang, 8, '#e0983b');
+
+    // label bij de pijl
+    const lx = ex + ux*sign*14, ly = ey + uy*sign*14;
+    fctx.fillStyle = '#e0983b';
+    fctx.font = 'bold 13px -apple-system, sans-serif';
+    fctx.textAlign = 'center';
+    fctx.textBaseline = 'middle';
+    fctx.fillText('F\u20D7', lx, ly);
+    fctx.textBaseline = 'alphabetic';
+  }
+}
+
+function maxLenToEdge(px, py, dx, dy){
+  const margin = 8;
+  let t = 1e9;
+  if(dx > 0) t = Math.min(t, (FW-margin-px)/dx);
+  else if(dx < 0) t = Math.min(t, (margin-px)/dx);
+  if(dy > 0) t = Math.min(t, (FH-margin-py)/dy);
+  else if(dy < 0) t = Math.min(t, (margin-py)/dy);
+  return Math.max(0, t);
+}
+
+function drawFieldCanvas(){
+  fctx.clearRect(0,0,FW,FH);
+  drawFieldLines();
+  drawCharge();
+  drawTestCharge();
+}
+
+// ---------- canvas B: E(r) graph ----------
+const gc = document.getElementById('graphCanvas');
+const gctx = gc.getContext('2d');
+const GW = gc.width, GH = gc.height;
+const PAD_L = 78, PAD_R = 24, PAD_T = 16, PAD_B = 36;
+const PW = GW - PAD_L - PAD_R, PH = GH - PAD_T - PAD_B;
+
+function drawGraph(){
+  gctx.clearRect(0,0,GW,GH);
+
+  const rMax = 30; // cm
+  const rMinCurve = state.mode === 'bol' ? state.R : 1;
+  const Etop = EsignedAt(rMinCurve) || EsignedAt(1);
+  const Emax = Math.abs(Etop) * 1.08;
+
+  function xPix(r){ return PAD_L + (r/rMax)*PW; }
+  function yPix(E){ return PAD_T + PH - (Math.abs(E)/Emax)*PH; }
+
+  // axes
+  gctx.strokeStyle = '#d7dce3';
+  gctx.lineWidth = 1;
+  gctx.beginPath();
+  gctx.moveTo(PAD_L, PAD_T); gctx.lineTo(PAD_L, PAD_T+PH); gctx.lineTo(PAD_L+PW, PAD_T+PH);
+  gctx.stroke();
+
+  // y gridlines + labels
+  gctx.fillStyle = '#4a5a76';
+  gctx.font = '11px -apple-system, sans-serif';
+  gctx.textAlign = 'right';
+  for(let i=0;i<=4;i++){
+    const frac = i/4;
+    const E = Emax*frac;
+    const y = PAD_T + PH - frac*PH;
+    gctx.strokeStyle = '#eef1f5';
+    gctx.beginPath(); gctx.moveTo(PAD_L,y); gctx.lineTo(PAD_L+PW,y); gctx.stroke();
+    gctx.fillText(formatUnit(E, 'N/C'), PAD_L-8, y+4);
+  }
+
+  // x ticks
+  gctx.textAlign = 'center';
+  for(let r=0; r<=rMax; r+=5){
+    const x = xPix(r);
+    gctx.fillText(String(r), x, PAD_T+PH+16);
+  }
+  gctx.fillText('afstand r (cm)', PAD_L+PW/2, PAD_T+PH+32);
+  gctx.save();
+  gctx.translate(16, PAD_T+PH/2);
+  gctx.rotate(-Math.PI/2);
+  gctx.textAlign = 'center';
+  gctx.fillText('|E| (N/C)', 0, 0);
+  gctx.restore();
+
+  // zero-field shaded region for bol
+  if(state.mode === 'bol'){
+    gctx.fillStyle = '#f0f2f5';
+    gctx.fillRect(xPix(0), PAD_T, xPix(state.R)-xPix(0), PH);
+    gctx.strokeStyle = '#b8c0cc';
+    gctx.setLineDash([4,3]);
+    gctx.beginPath();
+    gctx.moveTo(xPix(state.R), PAD_T);
+    gctx.lineTo(xPix(state.R), PAD_T+PH);
+    gctx.stroke();
+    gctx.setLineDash([]);
+    gctx.fillStyle = '#4a5a76';
+    gctx.textAlign = 'center';
+    gctx.fillText('R', xPix(state.R), PAD_T+PH+16);
+  }
+
+  // curve
+  gctx.strokeStyle = '#1d3557';
+  gctx.lineWidth = 2;
+  gctx.beginPath();
+  let first = true;
+  const rStart = state.mode === 'bol' ? state.R : rMinCurve;
+  for(let r=rStart; r<=rMax; r += 0.1){
+    const E = Math.abs(EsignedAt(r));
+    const x = xPix(r), y = yPix(E);
+    if(first){ gctx.moveTo(x,y); first=false; } else gctx.lineTo(x,y);
+  }
+  gctx.stroke();
+
+  // test charge marker
+  if(state.test){
+    const r_cm = Math.hypot(state.test.xcm, state.test.ycm);
+    if(r_cm <= rMax){
+      const E = Math.abs(EsignedAt(r_cm));
+      const x = xPix(r_cm), y = yPix(Math.min(E,Emax));
+      gctx.strokeStyle = '#e0983b';
+      gctx.setLineDash([3,3]);
+      gctx.lineWidth = 1.2;
+      gctx.beginPath(); gctx.moveTo(x,PAD_T+PH); gctx.lineTo(x,y); gctx.stroke();
+      gctx.setLineDash([]);
+      gctx.fillStyle = '#e0983b';
+      gctx.beginPath(); gctx.arc(x,y,5,0,Math.PI*2); gctx.fill();
+    }
+  }
+}
+
+// ---------- readout ----------
+function updateReadout(){
+  const box = document.getElementById('readout');
+  if(!state.test){
+    box.innerHTML = '<span class="empty">Nog geen testlading geplaatst.</span>';
+    return;
+  }
+  const r_cm = Math.hypot(state.test.xcm, state.test.ycm);
+  const inside = state.mode === 'bol' && r_cm < state.R;
+  const Es = EsignedAt(r_cm);
+  const F = qtCoulomb() * Es;
+  const attractief = F < 0; // force points toward center
+  let dirText;
+  if(inside || F === 0) dirText = 'geen (E = 0)';
+  else dirText = attractief ? 'naar de lading toe (aantrekkend)' : 'van de lading weg (afstotend)';
+
+  box.innerHTML = `
+    <div class="readout-row"><span class="k">Afstand r</span><span class="num">${nlNum(r_cm,1)} cm</span></div>
+    <div class="readout-row"><span class="k">Veldsterkte E</span><span class="num">${formatUnit(Math.abs(Es),'N/C')}</span></div>
+    <div class="readout-row"><span class="k">Kracht F op q</span><span class="num">${formatUnit(Math.abs(F),'N')}</span></div>
+    <div class="readout-row"><span class="k">Richting kracht</span><span>${dirText}</span></div>
+  `;
+}
+
+function render(){
+  drawFieldCanvas();
+  drawGraph();
+  updateReadout();
+}
+
+// ---------- interaction ----------
+function canvasPosToCm(clientX, clientY){
+  const rect = fc.getBoundingClientRect();
+  const scaleX = FW/rect.width, scaleY = FH/rect.height;
+  const px = (clientX-rect.left)*scaleX, py = (clientY-rect.top)*scaleY;
+  return { xcm: (px-CX)/SCALE, ycm: (py-CY)/SCALE };
+}
+
+let dragging = false;
+function pointerDown(clientX, clientY){
+  const pos = canvasPosToCm(clientX, clientY);
+  const r = Math.hypot(pos.xcm, pos.ycm);
+  const minR = chargeRadiusPx()/SCALE + 0.5;
+  if(r < minR) return; // don't place inside charge symbol
+  state.test = pos;
+  dragging = true;
+  render();
+}
+function pointerMove(clientX, clientY){
+  if(!dragging) return;
+  const pos = canvasPosToCm(clientX, clientY);
+  const r = Math.hypot(pos.xcm, pos.ycm);
+  const minR = chargeRadiusPx()/SCALE + 0.5;
+  if(r < minR && r > 0.0001){
+    const f = minR/r;
+    pos.xcm *= f; pos.ycm *= f;
+  }
+  state.test = pos;
+  render();
+}
+function pointerUp(){ dragging = false; }
+
+fc.addEventListener('pointerdown', e => { fc.setPointerCapture(e.pointerId); pointerDown(e.clientX, e.clientY); });
+fc.addEventListener('pointermove', e => pointerMove(e.clientX, e.clientY));
+fc.addEventListener('pointerup', pointerUp);
+fc.addEventListener('pointercancel', pointerUp);
+
+document.getElementById('clearTest').addEventListener('click', ()=>{ state.test=null; render(); });
+
+// ---------- controls ----------
+const qSlider = document.getElementById('qSlider');
+const rSlider = document.getElementById('rSlider');
+const qtSlider = document.getElementById('qtSlider');
+
+qSlider.addEventListener('input', ()=>{ state.Qmag = parseFloat(qSlider.value); syncLabels(); render(); });
+rSlider.addEventListener('input', ()=>{ state.R = parseFloat(rSlider.value); syncLabels(); render(); });
+qtSlider.addEventListener('input', ()=>{ state.qtMag = parseFloat(qtSlider.value); syncLabels(); render(); });
+
+function wireSign(posBtn, negBtn, setter){
+  posBtn.addEventListener('click', ()=>{ setter(1); syncLabels(); render(); });
+  negBtn.addEventListener('click', ()=>{ setter(-1); syncLabels(); render(); });
+}
+wireSign(document.getElementById('qPos'), document.getElementById('qNeg'), s=>state.Qsign=s);
+wireSign(document.getElementById('qtPos'), document.getElementById('qtNeg'), s=>state.qtSign=s);
+
+function syncLabels(){
+  document.getElementById('qVal').textContent = nlNum(state.Qmag,1) + ' µC';
+  document.getElementById('rVal').textContent = nlNum(state.R,1) + ' cm';
+  document.getElementById('qtVal').textContent = nlNum(state.qtMag,1) + ' µC';
+
+  document.getElementById('qPos').className = 'sign-btn' + (state.Qsign>0 ? ' active-pos':'');
+  document.getElementById('qNeg').className = 'sign-btn' + (state.Qsign<0 ? ' active-neg':'');
+  document.getElementById('qtPos').className = 'sign-btn' + (state.qtSign>0 ? ' active-pos':'');
+  document.getElementById('qtNeg').className = 'sign-btn' + (state.qtSign<0 ? ' active-neg':'');
+}
+
+// ================= Homogeen veld (twee platen) =================
+const hom = {
+  U: 100,        // V, spanning tussen de platen
+  d: 8,          // cm, afstand tussen de platen
+  pcMag: 1,      // µC, grootte puntlading
+  pcSign: 1,
+  pcX: null,     // cm vanaf de positieve plaat, of null als niet geplaatst
+  hoverX: null,  // cm, live cursorpositie in het veld (niet gepersisteerd)
+  A: null, B: null, // cm, gekozen punten voor het potentiaalverschil
+  selectMode: null, // 'A' | 'B' | null — welke klik in het veld nu gewapend is
+  swap: false    // true: positieve plaat rechts, negatieve plaat links
+};
+
+function pcCoulomb(){ return hom.pcSign * hom.pcMag * 1e-6; }
+function homE(){ return hom.U / (hom.d/100); }               // V/m, richting: + plaat -> - plaat
+function homV(x_cm){ return hom.U * (1 - x_cm/hom.d); }       // V
+function homEp(x_cm){ return pcCoulomb() * homV(x_cm); }      // J
+
+// ---- canvas: platen + veldlijnen ----
+const fc2 = document.getElementById('fieldCanvas2');
+const fctx2 = fc2.getContext('2d');
+// logische tekenmaten (de canvas wordt geschaald naar de schermgrootte)
+const FW2 = 760, FH2 = 200;
+const PLATE_L = 100, PLATE_R = 40; // zelfde marges als de grafiek: de platen staan recht boven de x-as
+const PLATE_TOP = 36, PLATE_BOT = FH2-36;
+function plateSpanPx(){ return FW2 - PLATE_L - PLATE_R; }
+function xCmToPx(x_cm){
+  const t = x_cm/hom.d; // 0 bij de positieve plaat, 1 bij de negatieve plaat
+  return hom.swap ? (FW2-PLATE_R) - t*plateSpanPx() : PLATE_L + t*plateSpanPx();
+}
+function xPxToCm(px){
+  const t = hom.swap ? ((FW2-PLATE_R)-px)/plateSpanPx() : (px-PLATE_L)/plateSpanPx();
+  return t*hom.d;
+}
+
+function drawHomArrow(x,y,angle,size,color){
+  fctx2.save();
+  fctx2.translate(x,y);
+  fctx2.rotate(angle);
+  fctx2.fillStyle = color;
+  fctx2.beginPath();
+  fctx2.moveTo(size,0);
+  fctx2.lineTo(-size*0.7, size*0.55);
+  fctx2.lineTo(-size*0.7, -size*0.55);
+  fctx2.closePath();
+  fctx2.fill();
+  fctx2.restore();
+}
+
+function drawHomField(){
+  fctx2.clearRect(0,0,FW2,FH2);
+
+  // veldlijnen: aantal rijen groeit met de veldsterkte
+  const nRaw = 5 + (homE()/25000)*10;
+  const rows = Math.max(5, Math.min(16, Math.round(nRaw)));
+  const arrowAngle = hom.swap ? Math.PI : 0;
+  fctx2.strokeStyle = '#98a2b3';
+  fctx2.lineWidth = 1.4;
+  for(let i=0;i<rows;i++){
+    const y = PLATE_TOP + ((i+0.5)/rows)*(PLATE_BOT-PLATE_TOP);
+    fctx2.beginPath();
+    fctx2.moveTo(PLATE_L, y);
+    fctx2.lineTo(FW2-PLATE_R, y);
+    fctx2.stroke();
+    drawHomArrow(PLATE_L + plateSpanPx()*0.5, y, arrowAngle, 7, '#98a2b3');
+  }
+
+  // platen
+  const posX = hom.swap ? FW2-PLATE_R : PLATE_L-8;
+  const negX = hom.swap ? PLATE_L-8 : FW2-PLATE_R;
+  fctx2.fillStyle = '#d64550';
+  fctx2.fillRect(posX, PLATE_TOP-10, 8, (PLATE_BOT-PLATE_TOP)+20);
+  fctx2.fillStyle = '#2a6f97';
+  fctx2.fillRect(negX, PLATE_TOP-10, 8, (PLATE_BOT-PLATE_TOP)+20);
+  fctx2.fillStyle = '#1d3557';
+  fctx2.font = '600 14px -apple-system, sans-serif';
+  fctx2.textAlign = 'center';
+  fctx2.fillText('+', posX+4, PLATE_TOP-16);
+  fctx2.fillText('\u2212', negX+4, PLATE_TOP-16);
+  fctx2.fillText('U = ' + nlNum(hom.U,0) + ' V', FW2/2, 20);
+  fctx2.fillText('d = ' + nlNum(hom.d,1) + ' cm', FW2/2, PLATE_BOT+28);
+
+  // punten A en B
+  drawHomMarker(hom.A, 'A', '#1d3557');
+  drawHomMarker(hom.B, 'B', '#1d3557');
+  if(hom.A !== null && hom.B !== null){
+    const xA = xCmToPx(hom.A), xB = xCmToPx(hom.B);
+    fctx2.strokeStyle = '#1d3557';
+    fctx2.setLineDash([2,3]);
+    fctx2.beginPath(); fctx2.moveTo(xA, PLATE_BOT+14); fctx2.lineTo(xB, PLATE_BOT+14); fctx2.stroke();
+    fctx2.setLineDash([]);
+  }
+
+  // cursor (hover) marker
+  if(hom.hoverX !== null){
+    const x = xCmToPx(hom.hoverX);
+    fctx2.strokeStyle = '#98a2b3';
+    fctx2.setLineDash([3,3]);
+    fctx2.beginPath(); fctx2.moveTo(x,PLATE_TOP); fctx2.lineTo(x,FH2); fctx2.stroke();
+    fctx2.setLineDash([]);
+  }
+
+  // geplaatste puntlading
+  if(hom.pcX !== null){
+    const x = xCmToPx(hom.pcX), y = (PLATE_TOP+PLATE_BOT)/2;
+    const col = hom.pcSign>0 ? '#d64550' : '#2a6f97';
+    fctx2.fillStyle = col;
+    fctx2.beginPath(); fctx2.arc(x,y,9,0,Math.PI*2); fctx2.fill();
+    fctx2.strokeStyle = '#e0983b';
+    fctx2.lineWidth = 2.5;
+    fctx2.beginPath(); fctx2.arc(x,y,12,0,Math.PI*2); fctx2.stroke();
+    fctx2.fillStyle = '#fff';
+    fctx2.font = 'bold 13px -apple-system, sans-serif';
+    fctx2.textBaseline = 'middle';
+    fctx2.fillText(hom.pcSign>0 ? '+' : '\u2212', x, y+1);
+    fctx2.textBaseline = 'alphabetic';
+  }
+}
+
+function drawHomMarker(x_cm, label, color){
+  if(x_cm === null) return;
+  const x = xCmToPx(x_cm);
+  fctx2.strokeStyle = color;
+  fctx2.setLineDash([4,3]);
+  fctx2.lineWidth = 1.2;
+  fctx2.beginPath(); fctx2.moveTo(x,PLATE_TOP-6); fctx2.lineTo(x,PLATE_BOT+6); fctx2.stroke();
+  fctx2.setLineDash([]);
+  fctx2.fillStyle = color;
+  fctx2.font = 'bold 14px -apple-system, sans-serif';
+  fctx2.textAlign = 'center';
+  fctx2.fillText(label, x, PLATE_TOP-12);
+}
+
+// ---- grafiek: E(x), V(x), Ep(x) gestapeld ----
+const gc2 = document.getElementById('graphCanvas2');
+const gctx2 = gc2.getContext('2d');
+const GW2 = 760, GH2 = 470;
+const GPAD_L = 100, GPAD_R = 40;
+const ROW_TOP0 = 30, ROW_GAP = 40, ROW_H = Math.floor((GH2 - ROW_TOP0 - 2*ROW_GAP - 52)/3);
+
+// ---- schaal: veld en grafieken passen samen op één scherm ----
+let homMaat = '';
+function layoutHom(){
+  const ouder = fc2.parentElement;
+  if(!ouder || !ouder.clientWidth) return;
+  const st = getComputedStyle(ouder);
+  const breed = ouder.clientWidth - parseFloat(st.paddingLeft) - parseFloat(st.paddingRight);
+  // ruimte voor titel, hint en legende (ongeveer 110 px) en de tabbladen bovenaan
+  // in bordweergave: alles wat onder het veld komt moet op het scherm; anders: past als je naar de tabbladen scrolt
+  const bord = document.body.classList.contains('bord');
+  const boven = bord ? ouder.getBoundingClientRect().top + window.scrollY : 120;
+  const hoog = Math.max(300, window.innerHeight - boven - (bord ? 70 : 125));
+  const w = Math.floor(Math.min(breed, hoog * GW2 / (FH2 + GH2)));
+  const dpr = window.devicePixelRatio || 1;
+  const sleutel = w + '/' + dpr;
+  if(sleutel === homMaat) return;
+  homMaat = sleutel;
+  [[fc2, fctx2, FW2, FH2], [gc2, gctx2, GW2, GH2]].forEach(([cv, ctx, LW, LH])=>{
+    const h = Math.round(w * LH / LW);
+    cv.style.width = w + 'px'; cv.style.height = h + 'px';
+    cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr);
+    ctx.setTransform(cv.width / LW, 0, 0, cv.height / LH, 0, 0);
+  });
+}
+
+const rows2 = [
+  { key:'E', label:'E (V/m)', color:'#1d3557', bg:'#eef1f5', unit:'V/m', fn:(x)=>homE(), symmetric:false },
+  { key:'V', label:'V (V)',   color:'#2f8f6b', bg:'#eef6f2', unit:'V',   fn:(x)=>homV(x), symmetric:false },
+  { key:'Ep',label:'Eₚ (J)',  color:'#8a5cb0', bg:'#f3eef7', unit:'J',   fn:(x)=>homEp(x), symmetric:true }
+];
+
+function rowTop(i){ return ROW_TOP0 + i*(ROW_H+ROW_GAP); }
+
+// x-as van de grafiek volgt dezelfde links/rechts-oriëntatie als het veld hierboven
+function xPixG(x, PW2){
+  const t = x/hom.d;
+  const tt = hom.swap ? 1-t : t;
+  return GPAD_L + tt*PW2;
+}
+function pxToXG(px, PW2){
+  const tt = (px-GPAD_L)/PW2;
+  const t = hom.swap ? 1-tt : tt;
+  return t*hom.d;
+}
+
+function drawHomGraph(){
+  gctx2.clearRect(0,0,GW2,GH2);
+  const PW2 = GW2 - GPAD_L - GPAD_R;
+
+  // grijze lijn door de drie grafieken, recht onder de cursor in het veld
+  if(hom.hoverX !== null){
+    const px = xPixG(hom.hoverX, PW2);
+    gctx2.strokeStyle = '#98a2b3'; gctx2.lineWidth = 1; gctx2.setLineDash([3,3]);
+    gctx2.beginPath(); gctx2.moveTo(px, 0); gctx2.lineTo(px, rowTop(rows2.length-1)+ROW_H); gctx2.stroke();
+    gctx2.setLineDash([]);
+  }
+
+  rows2.forEach((row,i)=>{
+    const top = rowTop(i);
+    const bot = top + ROW_H;
+    const values = [];
+    for(let x=0; x<=hom.d; x+=hom.d/40) values.push(row.fn(x));
+    values.push(row.fn(hom.d));
+    let vMax = Math.max(...values, 0);
+    let vMin = Math.min(...values, 0);
+    if(row.symmetric){
+      const m = Math.max(Math.abs(vMax), Math.abs(vMin)) || 1e-30;
+      vMax = m; vMin = -m;
+    }
+    const range = (vMax - vMin) || 1;
+
+    function xPix(x){ return xPixG(x, PW2); }
+    function yPix(v){ return bot - ((v - vMin)/range)*ROW_H; }
+
+    // achtergrondkader per rij, zodat de drie grafieken duidelijk gescheiden zijn
+    gctx2.fillStyle = row.bg;
+    gctx2.fillRect(GPAD_L-16, top-22, PW2+GPAD_R+24, ROW_H+30);
+    gctx2.strokeStyle = '#dde1e7';
+    gctx2.lineWidth = 1;
+    gctx2.strokeRect(GPAD_L-16, top-22, PW2+GPAD_R+24, ROW_H+30);
+    gctx2.fillStyle = row.color;
+    gctx2.fillRect(GPAD_L-16, top-22, 4, ROW_H+30);
+
+    // axes
+    gctx2.strokeStyle = '#d7dce3';
+    gctx2.lineWidth = 1;
+    gctx2.beginPath();
+    gctx2.moveTo(GPAD_L, top); gctx2.lineTo(GPAD_L, bot); gctx2.lineTo(GPAD_L+PW2, bot);
+    gctx2.stroke();
+
+    // gridlines + y labels (top, mid, bottom)
+    gctx2.fillStyle = '#4a5a76';
+    gctx2.font = '13px -apple-system, sans-serif';
+    gctx2.textAlign = 'right';
+    [0,0.5,1].forEach(f=>{
+      const v = vMin + f*range;
+      const y = bot - f*ROW_H;
+      gctx2.strokeStyle = '#ffffff';
+      gctx2.beginPath(); gctx2.moveTo(GPAD_L,y); gctx2.lineTo(GPAD_L+PW2,y); gctx2.stroke();
+      gctx2.fillText(formatUnit(v, row.unit), GPAD_L-22, y+4);
+    });
+
+    // nadrukkelijke nullijn wanneer 0 binnen het bereik ligt (bv. Eₚ: positief boven, negatief onder)
+    if(vMin < 0 && vMax > 0){
+      const y0 = yPix(0);
+      gctx2.strokeStyle = '#9aa4b5';
+      gctx2.lineWidth = 1.4;
+      gctx2.beginPath(); gctx2.moveTo(GPAD_L,y0); gctx2.lineTo(GPAD_L+PW2,y0); gctx2.stroke();
+    }
+
+    // rij-label
+    gctx2.textAlign = 'left';
+    gctx2.font = '650 14px -apple-system, sans-serif';
+    gctx2.fillStyle = row.color;
+    gctx2.fillText(row.label, GPAD_L, top-3);
+
+    // curve
+    gctx2.strokeStyle = row.color;
+    gctx2.lineWidth = 2;
+    gctx2.beginPath();
+    let first = true;
+    for(let x=0; x<=hom.d+1e-9; x+=hom.d/80){
+      const v = row.fn(x);
+      const px = xPix(x), py = yPix(v);
+      if(first){ gctx2.moveTo(px,py); first=false; } else gctx2.lineTo(px,py);
+    }
+    gctx2.stroke();
+
+    // hover marker (grijs)
+    if(hom.hoverX !== null){
+      const v = row.fn(hom.hoverX);
+      const px = xPix(hom.hoverX), py = yPix(v);
+      gctx2.fillStyle = '#98a2b3';
+      gctx2.beginPath(); gctx2.arc(px,py,4,0,Math.PI*2); gctx2.fill();
+    }
+
+    // geplaatste puntlading marker (amber)
+    if(hom.pcX !== null){
+      const v = row.fn(hom.pcX);
+      const px = xPix(hom.pcX), py = yPix(v);
+      gctx2.strokeStyle = '#e0983b';
+      gctx2.setLineDash([3,3]);
+      gctx2.lineWidth = 1.2;
+      gctx2.beginPath(); gctx2.moveTo(px,bot); gctx2.lineTo(px,py); gctx2.stroke();
+      gctx2.setLineDash([]);
+      gctx2.fillStyle = '#e0983b';
+      gctx2.beginPath(); gctx2.arc(px,py,5,0,Math.PI*2); gctx2.fill();
+    }
+
+    // A/B markers
+    [['A',hom.A],['B',hom.B]].forEach(([lab,xv])=>{
+      if(xv===null) return;
+      const v = row.fn(xv);
+      const px = xPix(xv), py = yPix(v);
+      gctx2.fillStyle = '#1d3557';
+      gctx2.beginPath(); gctx2.arc(px,py,4,0,Math.PI*2); gctx2.fill();
+      gctx2.font = 'bold 13px -apple-system, sans-serif';
+      gctx2.textAlign = 'center';
+      gctx2.fillText(lab, px, py-9);
+    });
+  });
+
+  // gedeelde x-as, in dezelfde oriëntatie als het veld hierboven
+  gctx2.fillStyle = '#4a5a76';
+  gctx2.font = '13px -apple-system, sans-serif';
+  gctx2.textAlign = 'center';
+  const lastBot = rowTop(rows2.length-1)+ROW_H;
+  for(let x=0; x<=hom.d+1e-9; x+=Math.max(1,Math.round(hom.d/6*2)/2)){
+    gctx2.fillText(nlNum(x,1), xPixG(x,PW2), lastBot+16);
+  }
+  gctx2.font = '650 13px -apple-system, sans-serif';
+  [[0,'#d64550','+ plaat (V = U)'],[hom.d,'#2a6f97','\u2212 plaat (V = 0)']].forEach(([xv,kl,t])=>{
+    const px = xPixG(xv,PW2), links = px < GPAD_L + PW2/2;
+    gctx2.fillStyle = kl; gctx2.textAlign = links ? 'left' : 'right';
+    gctx2.fillText(t, links ? px-6 : px+6, lastBot+46);
+  });
+  gctx2.textAlign = 'center';
+  gctx2.fillStyle = '#4a5a76';
+  gctx2.font = '13px -apple-system, sans-serif';
+  gctx2.fillText('positie x vanaf de positieve plaat (cm)', GPAD_L+PW2/2, lastBot+32);
+}
+
+function renderHom(){
+  layoutHom();
+  drawHomField();
+  drawHomGraph();
+  updateHomReadout();
+}
+
+function updateHomReadout(){
+  const box = document.getElementById('readoutHom');
+  const parts = [];
+
+  if(hom.pcX !== null){
+    const E = homE(), V = homV(hom.pcX), Ep = homEp(hom.pcX);
+    parts.push(`
+      <div class="readout-row"><span class="k">Positie x</span><span class="num">${nlNum(hom.pcX,1)} cm</span></div>
+      <div class="readout-row"><span class="k">Veldsterkte E</span><span class="num">${formatUnit(E,'V/m')}</span></div>
+      <div class="readout-row"><span class="k">Potentiaal V</span><span class="num">${formatUnit(V,'V')}</span></div>
+      <div class="readout-row"><span class="k">Potentiële energie E<sub>p</sub></span><span class="num">${formatUnit(Ep,'J')}</span></div>
+    `);
+  }
+
+  if(hom.A !== null && hom.B !== null){
+    const VA = homV(hom.A), VB = homV(hom.B);
+    const Uab = VA - VB;
+    parts.push(`
+      <div class="readout-row"><span class="k">V<sub>A</sub> (x = ${nlNum(hom.A,1)} cm)</span><span class="num">${formatUnit(VA,'V')}</span></div>
+      <div class="readout-row"><span class="k">V<sub>B</sub> (x = ${nlNum(hom.B,1)} cm)</span><span class="num">${formatUnit(VB,'V')}</span></div>
+      <div class="readout-row"><span class="k">U<sub>AB</sub> = V<sub>A</sub> − V<sub>B</sub></span><span class="num">${formatUnit(Uab,'V')}</span></div>
+    `);
+  }
+
+  box.innerHTML = parts.length ? parts.join('<div class="divider"></div>') :
+    '<span class="empty">Klik in het veld om een puntlading te plaatsen, of kies punt A en B voor het potentiaalverschil.</span>';
+}
+
+// ---- interactie: canvas (hover -> grafiekpunt, klik -> A/B kiezen) ----
+function fc2PosToCm(clientX, clientY){
+  const rect = fc2.getBoundingClientRect();
+  const scaleX = FW2/rect.width, scaleY = FH2/rect.height;
+  const px = (clientX-rect.left)*scaleX;
+  const x_cm = xPxToCm(px);
+  return Math.max(0, Math.min(hom.d, x_cm));
+}
+
+fc2.addEventListener('pointermove', e=>{
+  hom.hoverX = fc2PosToCm(e.clientX, e.clientY);
+  renderHom();
+});
+fc2.addEventListener('pointerleave', ()=>{ hom.hoverX = null; renderHom(); });
+
+fc2.addEventListener('pointerdown', e=>{
+  const x_cm = fc2PosToCm(e.clientX, e.clientY);
+  if(hom.selectMode === 'A'){
+    hom.A = x_cm; hom.selectMode = null;
+  } else if(hom.selectMode === 'B'){
+    hom.B = x_cm; hom.selectMode = null;
+  } else {
+    hom.pcX = x_cm;
+  }
+  hom.hoverX = x_cm;
+  updateSelButtons();
+  renderHom();
+});
+
+// ---- interactie: grafiek (klik -> puntlading plaatsen) ----
+function gc2ClickToCm(clientX, clientY){
+  const rect = gc2.getBoundingClientRect();
+  const scaleX = GW2/rect.width;
+  const px = (clientX-rect.left)*scaleX;
+  const PW2 = GW2 - GPAD_L - GPAD_R;
+  const x_cm = pxToXG(px, PW2);
+  return Math.max(0, Math.min(hom.d, x_cm));
+}
+gc2.addEventListener('pointerdown', e=>{
+  hom.pcX = gc2ClickToCm(e.clientX, e.clientY);
+  renderHom();
+});
+
+// ---- controls ----
+document.getElementById('uSlider').addEventListener('input', e=>{ hom.U = parseFloat(e.target.value); syncHomLabels(); renderHom(); });
+document.getElementById('dSlider').addEventListener('input', e=>{ hom.d = parseFloat(e.target.value); if(hom.pcX>hom.d) hom.pcX=hom.d; if(hom.A>hom.d) hom.A=hom.d; if(hom.B>hom.d) hom.B=hom.d; syncHomLabels(); renderHom(); });
+document.getElementById('swapPlates').addEventListener('click', ()=>{ hom.swap = !hom.swap; renderHom(); });
+document.getElementById('pcSlider').addEventListener('input', e=>{ hom.pcMag = parseFloat(e.target.value); syncHomLabels(); renderHom(); });
+document.getElementById('pcPos').addEventListener('click', ()=>{ hom.pcSign=1; syncHomLabels(); renderHom(); });
+document.getElementById('pcNeg').addEventListener('click', ()=>{ hom.pcSign=-1; syncHomLabels(); renderHom(); });
+document.getElementById('clearPc').addEventListener('click', ()=>{ hom.pcX=null; renderHom(); });
+document.getElementById('clearAB').addEventListener('click', ()=>{ hom.A=null; hom.B=null; hom.selectMode=null; updateSelButtons(); renderHom(); });
+document.getElementById('selA').addEventListener('click', ()=>{ hom.selectMode = (hom.selectMode==='A') ? null : 'A'; updateSelButtons(); });
+document.getElementById('selB').addEventListener('click', ()=>{ hom.selectMode = (hom.selectMode==='B') ? null : 'B'; updateSelButtons(); });
+function updateSelButtons(){
+  document.getElementById('selA').style.cssText = 'margin-top:0; width:auto; flex:1;' + (hom.selectMode==='A' ? 'background:#1d3557;color:#fff;border-color:#1d3557;' : '');
+  document.getElementById('selB').style.cssText = 'margin-top:0; width:auto; flex:1;' + (hom.selectMode==='B' ? 'background:#1d3557;color:#fff;border-color:#1d3557;' : '');
+}
+
+function syncHomLabels(){
+  document.getElementById('uVal').textContent = nlNum(hom.U,0) + ' V';
+  document.getElementById('dVal').textContent = nlNum(hom.d,1) + ' cm';
+  document.getElementById('pcVal').textContent = nlNum(hom.pcMag,1) + ' µC';
+  document.getElementById('pcPos').className = 'sign-btn' + (hom.pcSign>0 ? ' active-pos':'');
+  document.getElementById('pcNeg').className = 'sign-btn' + (hom.pcSign<0 ? ' active-neg':'');
+}
+syncHomLabels();
+updateSelButtons();
+
+// ================= Tabs =================
+document.querySelectorAll('.tab').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    state.mode = btn.dataset.mode;
+
+    const isHom = state.mode === 'homogeen';
+    const isRadial = state.mode === 'punt' || state.mode === 'bol';
+    document.getElementById('viewRadial').style.display = isRadial ? 'block' : 'none';
+    document.getElementById('viewHomogeen').style.display = isHom ? 'block' : 'none';
+    document.getElementById('viewCoulomb').style.display = state.mode === 'coulomb' ? 'block' : 'none';
+    document.getElementById('viewZwaarte').style.display = state.mode === 'zwaarte' ? 'block' : 'none';
+
+    if(isHom){
+      renderHom();
+    } else if(!isRadial){
+      // bron- en proeflading / zwaartekracht beheren hun eigen tekening
+    } else {
+      document.getElementById('radiusRow').style.display = state.mode==='bol' ? 'block':'none';
+      document.getElementById('canvasTitle').textContent = 'Veldlijnen — ' + (state.mode==='bol' ? 'geleidende bol' : 'puntlading');
+      document.getElementById('graphTitle').textContent = 'Veldsterkte E in functie van de afstand r — ' + (state.mode==='bol' ? 'geleidende bol' : 'puntlading');
+      render();
+    }
+  });
+});
+
+syncLabels();
+render();
+</script>
+<script>
+(function(){
+
+const k = 8.99e9;
+const st = { Qb: 5, Qp: 1, r: 14, mode: 'zonder' }; // µC, µC, cm
+window.cbState = st;
+
+const cv = document.getElementById('cb_cv');
+const ctx = cv.getContext('2d');
+const W = cv.width, H = cv.height;
+const XB = 170, Y_LINE = 195, Y_F = 162, SCALE = 18; // px per cm
+const POS = '#d64550', NEG = '#2a6f97', EC = '#4f6fd0', FC = '#d64550';
+const FONT = '-apple-system, "Segoe UI", sans-serif';
+
+function sgn(v){ return v>0 ? 1 : v<0 ? -1 : 0; }
+function nl(x, d=1){ return x.toLocaleString('nl-BE',{maximumFractionDigits:d, minimumFractionDigits:0}); }
+function signed(v){ return (v>0?'+':v<0?'\u2212':'') + nl(Math.abs(v),1); }
+function formatUnit(value, unit){
+  if(value === 0) return '0 ' + unit;
+  const abs = Math.abs(value);
+  const table = [[1e9,'G'],[1e6,'M'],[1e3,'k'],[1,''],[1e-3,'m'],[1e-6,'µ']];
+  for(const [f,p] of table){ if(abs >= f) return nl(value/f, abs/f>=100?0:1) + ' ' + p + unit; }
+  return nl(value/1e-6,2) + ' µ' + unit;
+}
+function xP(){ return XB + st.r*SCALE; }
+// pijllengte evenredig met de grootte: 60 px bij Q_b = 5 µC op 14 cm (E ≈ 2,3 · 10^6 N/C)
+const PX_PER_E = 60 / (k*5e-6/0.14/0.14);
+
+// lengte van een pijl: klein bij zwakke grootheid, versneld groeiend, begrensd
+function arrowLen(v, vk){
+  const frac = v/(v+vk);
+  return 20 + 120*frac*frac;
+}
+
+function drawArrow(x0, x1, y, color, width){
+  const d = sgn(x1-x0); if(!d) return;
+  ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = width;
+  ctx.beginPath(); ctx.moveTo(x0,y); ctx.lineTo(x1 - d*6, y); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(x1,y); ctx.lineTo(x1-d*11, y-6); ctx.lineTo(x1-d*11, y+6); ctx.closePath(); ctx.fill();
+}
+
+// tekst met optionele subscript en superscript, gecentreerd rond x
+function label(x, y, main, sub, sup, color, size, vec){
+  size = size || 15;
+  ctx.textBaseline = 'alphabetic'; ctx.textAlign = 'left'; ctx.fillStyle = color;
+  ctx.font = `600 ${size}px ${FONT}`;
+  const wM = ctx.measureText(main).width;
+  ctx.font = `600 ${size*0.7}px ${FONT}`;
+  const wS = sub ? ctx.measureText(sub).width : 0, wU = sup ? ctx.measureText(sup).width : 0;
+  const sx = x - (wM + Math.max(wS,wU))/2;
+  ctx.font = `600 ${size}px ${FONT}`; ctx.fillText(main, sx, y);
+  if(vec){
+    const ya = y - size*0.95, xa0 = sx+1, xa1 = sx + wM - 1;
+    ctx.strokeStyle = color; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(xa0, ya); ctx.lineTo(xa1, ya); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(xa1+1, ya); ctx.lineTo(xa1-4, ya-3); ctx.lineTo(xa1-4, ya+3); ctx.closePath(); ctx.fillStyle = color; ctx.fill();
+  }
+  ctx.fillStyle = color;
+  ctx.font = `600 ${size*0.7}px ${FONT}`;
+  if(sub) ctx.fillText(sub, sx+wM, y+size*0.3);
+  if(sup) ctx.fillText(sup, sx+wM+(sub?wS+1:0), y-size*0.4);
+}
+
+function chargeCircle(x, y, Q, color){
+  const s = sgn(Q);
+  ctx.lineWidth = 2;
+  if(s === 0){
+    ctx.fillStyle = '#f3f4f6'; ctx.strokeStyle = '#a3abb8';
+    ctx.beginPath(); ctx.arc(x,y,16,0,Math.PI*2); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = '#8a94a6'; ctx.font = `600 13px ${FONT}`; ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillText('0', x, y+1); ctx.textBaseline='alphabetic';
+    return;
+  }
+  const c = s>0 ? POS : NEG;
+  ctx.fillStyle = c; ctx.strokeStyle = c;
+  ctx.beginPath(); ctx.arc(x,y,16,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle = '#fff'; ctx.font = `bold 20px ${FONT}`; ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillText(s>0 ? '+' : '\u2212', x, y+1); ctx.textBaseline='alphabetic';
+}
+
+function draw(){
+  ctx.clearRect(0,0,W,H);
+  const xp = xP();
+  const sB = sgn(st.Qb), sP = sgn(st.Qp);
+  const met = st.mode === 'met';
+  const dirE = sB; // P ligt rechts van Q_b
+
+  // basislijn + afstand
+  ctx.strokeStyle = '#d0d5dd'; ctx.lineWidth = 1.2; ctx.setLineDash([4,4]);
+  ctx.beginPath(); ctx.moveTo(XB,Y_LINE); ctx.lineTo(xp,Y_LINE); ctx.stroke(); ctx.setLineDash([]);
+  ctx.strokeStyle = '#98a2b3'; ctx.lineWidth = 1.2;
+  ctx.beginPath(); ctx.moveTo(XB,252); ctx.lineTo(xp,252);
+  ctx.moveTo(XB,246); ctx.lineTo(XB,258); ctx.moveTo(xp,246); ctx.lineTo(xp,258); ctx.stroke();
+  ctx.fillStyle = '#4a5a76'; ctx.font = `600 13px ${FONT}`; ctx.textAlign='center';
+  ctx.fillText('r = ' + nl(st.r,1) + ' cm', (XB+xp)/2, 274);
+
+  // veld E in P: pijl begint in P zelf (op de lijn), met of zonder proeflading
+  if(sB !== 0){
+    const E = k*Math.abs(st.Qb)*1e-6/Math.pow(st.r/100,2);
+    let L = Math.max(6, E*PX_PER_E);
+    L = dirE>0 ? Math.min(L, W-12-xp) : Math.min(L, xp-XB-24);
+    const x1 = xp + dirE*L;
+    drawArrow(xp, x1, Y_LINE, EC, 3.5);
+    const xl = (xp+x1)/2 + dirE*16;
+    label(xl, Y_LINE+30, 'E', '', '', EC, 16, true);
+    ctx.fillStyle = EC; ctx.font = `12px ${FONT}`; ctx.textAlign='center';
+    ctx.fillText('in P', xl + 22, Y_LINE+30);
+  } else {
+    ctx.fillStyle = '#8a94a6'; ctx.font = `13px ${FONT}`; ctx.textAlign='center';
+    ctx.fillText('geen bronlading: E = 0', xp, Y_LINE+30);
+  }
+
+  // krachten (alleen met proeflading): op een rij boven de ladingen
+  if(met && sB !== 0 && sP !== 0){
+    const F = k*Math.abs(st.Qb)*Math.abs(st.Qp)*1e-12/Math.pow(st.r/100,2);
+    const Lraw = Math.max(6, F*PX_PER_E*1e6);
+    const gapHalf = Math.max(10, (xp - XB)/2 - 4);
+    const dirP = sP*dirE;      // kracht op Q_p
+    const dirB = -dirP;        // reactiekracht op Q_b
+    ctx.strokeStyle = '#e3b0b4'; ctx.lineWidth = 1.2; ctx.setLineDash([2,3]);
+    [XB, xp].forEach(x=>{ ctx.beginPath(); ctx.moveTo(x, Y_F); ctx.lineTo(x, Y_LINE-18); ctx.stroke(); });
+    ctx.setLineDash([]);
+    [[xp,dirP],[XB,dirB]].forEach(([x0,d])=>{
+      let L = Lraw;
+      L = (x0===xp ? d<0 : d>0) ? Math.min(L, gapHalf) : Math.min(L, d>0 ? W-10-x0 : x0-10);
+      ctx.fillStyle = FC; ctx.beginPath(); ctx.arc(x0, Y_F, 3.5, 0, Math.PI*2); ctx.fill();
+      drawArrow(x0, x0 + d*L, Y_F, FC, 3.5);
+      label(x0 + d*L/2, Y_F-14, 'F', 'c', '', FC, 15, true);
+    });
+  }
+
+  // Q_b
+  chargeCircle(XB, Y_LINE, st.Qb, null);
+  label(XB, Y_LINE+40, 'Q', 'b', sB>0?'+':sB<0?'\u2212':'', sB>0?POS:sB<0?NEG:'#8a94a6', 15);
+
+  // P of Q_p
+  if(met){
+    chargeCircle(xp, Y_LINE, st.Qp, null);
+    label(xp, Y_LINE+40, 'Q', 'p', sP>0?'+':sP<0?'\u2212':'', sP>0?POS:sP<0?NEG:'#8a94a6', 15);
+  } else {
+    ctx.fillStyle = '#1d3557'; ctx.beginPath(); ctx.arc(xp, Y_LINE, 5, 0, Math.PI*2); ctx.fill();
+    ctx.font = `600 15px ${FONT}`; ctx.textAlign='center';
+    ctx.fillText('P', xp, Y_LINE+30);
+  }
+}
+
+function updateUI(){
+  const sB = sgn(st.Qb), sP = sgn(st.Qp), met = st.mode==='met';
+  document.getElementById('cb_qbVal').textContent = signed(st.Qb) + ' µC';
+  document.getElementById('cb_rVal').textContent = nl(st.r,1) + ' cm';
+  document.getElementById('cb_qpVal').textContent = signed(st.Qp) + ' µC';
+  document.getElementById('cb_modeZonder').classList.toggle('active', !met);
+  document.getElementById('cb_modeMet').classList.toggle('active', met);
+  document.getElementById('cb_qpRow').classList.toggle('disabled', !met);
+  document.getElementById('cb_canvasTitle').innerHTML = met
+    ? 'Met proeflading — kracht <span class="vec">F</span><sub>c</sub> op Q<sub>p</sub> (en de reactiekracht op Q<sub>b</sub>)'
+    : 'Zonder proeflading — het veld <span class="vec">E</span> in P';
+
+  // uitlezing
+  const E = sB ? k*Math.abs(st.Qb)*1e-6/Math.pow(st.r/100,2) : 0;
+  const rows = [];
+  rows.push(`<div class="readout-row"><span class="k">Afstand r</span><span class="v num">${nl(st.r,1)} cm</span></div>`);
+  rows.push(`<div class="readout-row"><span class="k">Veldsterkte E in P</span><span class="v num">${formatUnit(E,'N/C')}</span></div>`);
+  rows.push(`<div class="readout-row"><span class="k">Richting van <span class="vec">E</span></span><span class="v">${sB>0?'weg van Q<sub>b</sub>':sB<0?'naar Q<sub>b</sub> toe':'—'}</span></div>`);
+  let explain;
+  if(!met){
+    explain = '<span class="vec">E</span> bestaat in P ook als er géén lading staat. Q<sub>b</sub> positief: <span class="vec">E</span> wijst weg van Q<sub>b</sub>. Q<sub>b</sub> negatief: <span class="vec">E</span> wijst naar Q<sub>b</sub> toe.';
+  } else {
+    const F = E*Math.abs(st.Qp)*1e-6;
+    rows.push(`<div class="readout-row"><span class="k">Kracht F<sub>c</sub> op Q<sub>p</sub></span><span class="v num">${formatUnit(F,'N')}</span></div>`);
+    let type = '—', dirF = '—';
+    if(sB && sP){
+      type = sB*sP>0 ? 'afstoting' : 'aantrekking';
+      dirF = (sP*sB>0) ? 'weg van Q<sub>b</sub>' : 'naar Q<sub>b</sub> toe';
+    }
+    rows.push(`<div class="readout-row"><span class="k">Soort kracht</span><span class="v">${type}</span></div>`);
+    rows.push(`<div class="readout-row"><span class="k">Richting van <span class="vec">F</span><sub>c</sub> op Q<sub>p</sub></span><span class="v">${dirF}</span></div>`);
+    explain = sP===0
+      ? 'Een neutrale proeflading voelt geen kracht: <span class="vec">F</span><sub>c</sub> = Q<sub>p</sub> · <span class="vec">E</span> = 0.'
+      : (sP>0
+        ? 'Q<sub>p</sub> positief: <span class="vec">F</span><sub>c</sub> heeft dezelfde richting als <span class="vec">E</span>.'
+        : 'Q<sub>p</sub> negatief: <span class="vec">F</span><sub>c</sub> heeft de tegengestelde richting van <span class="vec">E</span>.')
+        + ' Grootte: F<sub>c</sub> = |Q<sub>p</sub>| · E. De reactiekracht op Q<sub>b</sub> is even groot en tegengesteld.';
+  }
+  document.getElementById('cb_readout').innerHTML = rows.join('') + `<div class="explain">${explain}</div>`;
+
+  // vier gevallen: actief
+  document.querySelectorAll('.case').forEach(btn=>{
+    const b = +btn.dataset.b, p = +btn.dataset.p;
+    btn.classList.toggle('active', met && b===sB && p===sP);
+    btn.classList.toggle('row-active', !(met && b===sB && p===sP) && b===sB);
+  });
+}
+
+function render(){ draw(); updateUI(); }
+
+// bediening
+const qb = document.getElementById('cb_qbSlider'), rs = document.getElementById('cb_rSlider'), qp = document.getElementById('cb_qpSlider');
+qb.addEventListener('input', ()=>{ st.Qb = parseFloat(qb.value); render(); });
+rs.addEventListener('input', ()=>{ st.r = parseFloat(rs.value); render(); });
+qp.addEventListener('input', ()=>{ st.Qp = parseFloat(qp.value); render(); });
+document.getElementById('cb_modeZonder').addEventListener('click', ()=>{ st.mode='zonder'; render(); });
+document.getElementById('cb_modeMet').addEventListener('click', ()=>{ st.mode='met'; render(); });
+
+document.querySelectorAll('.case').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    const b = +btn.dataset.b, p = +btn.dataset.p;
+    st.Qb = b * (Math.abs(st.Qb) || 5);
+    st.Qp = p * (Math.abs(st.Qp) || 1);
+    st.mode = 'met';
+    qb.value = st.Qb; qp.value = st.Qp;
+    render();
+  });
+});
+
+// P verslepen
+let dragging = false;
+function setRFromPointer(e){
+  const rect = cv.getBoundingClientRect();
+  const x = (e.clientX - rect.left) * (W/rect.width);
+  st.r = Math.max(8, Math.min(24, Math.round((x - XB)/SCALE*2)/2));
+  rs.value = st.r;
+  render();
+}
+cv.addEventListener('pointerdown', e=>{ dragging = true; cv.setPointerCapture(e.pointerId); setRFromPointer(e); });
+cv.addEventListener('pointermove', e=>{ if(dragging) setRFromPointer(e); });
+cv.addEventListener('pointerup', ()=>{ dragging = false; });
+cv.addEventListener('pointercancel', ()=>{ dragging = false; });
+
+render();
+
+})();
+</script>
+<script>
+(function(){
+
+const G = 6.674e-11, M = 5.972e24, R_KM = 6371;     // SI, kg, km
+const st = { h: 6400, m: 10, mode: 'zonder' };       // km, kg
+window.gvState = st;
+
+const cv = document.getElementById('gv_cv');
+const ctx = cv.getContext('2d');
+const W = cv.width, H = cv.height;
+const XE = 120, Y_LINE = 170, Y_F = 136;
+const RPX = 90, PX_PER_KM = RPX / R_KM;
+const EC = '#4f6fd0', FC = '#d64550', MASS = '#4a5a76';
+const FONT = '-apple-system, "Segoe UI", sans-serif';
+
+function nl(x, d=1){ return x.toLocaleString('nl-BE',{maximumFractionDigits:d, minimumFractionDigits:0}); }
+function formatUnit(value, unit){
+  if(value === 0) return '0 ' + unit;
+  const abs = Math.abs(value);
+  const table = [[1e9,'G'],[1e6,'M'],[1e3,'k'],[1,''],[1e-3,'m'],[1e-6,'µ']];
+  for(const [f,p] of table){ if(abs >= f) return nl(value/f, abs/f>=100?0:2) + ' ' + p + unit; }
+  return nl(value/1e-6,2) + ' µ' + unit;
+}
+function rKm(){ return R_KM + st.h; }
+function xP(){ return XE + rKm()*PX_PER_KM; }
+function gField(){ const r = rKm()*1000; return G*M/(r*r); }
+
+function arrowLen(v, vk){ const frac = v/(v+vk); return 20 + 120*frac*frac; }
+
+function drawArrow(x0, x1, y, color, width){
+  const d = Math.sign(x1-x0); if(!d) return;
+  ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = width;
+  ctx.beginPath(); ctx.moveTo(x0,y); ctx.lineTo(x1 - d*6, y); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(x1,y); ctx.lineTo(x1-d*11, y-6); ctx.lineTo(x1-d*11, y+6); ctx.closePath(); ctx.fill();
+}
+
+// tekst met optioneel subscript en een zelfgetekend vectorpijltje boven de letter
+function label(x, y, main, sub, color, size, vec){
+  size = size || 15;
+  ctx.textBaseline = 'alphabetic'; ctx.textAlign = 'left'; ctx.fillStyle = color;
+  ctx.font = `600 ${size}px ${FONT}`;
+  const wM = ctx.measureText(main).width;
+  ctx.font = `600 ${size*0.7}px ${FONT}`;
+  const wS = sub ? ctx.measureText(sub).width : 0;
+  const sx = x - (wM + wS)/2;
+  ctx.font = `600 ${size}px ${FONT}`; ctx.fillText(main, sx, y);
+  if(vec){
+    const ya = y - size*0.95, xa0 = sx+1, xa1 = sx + wM - 1;
+    ctx.strokeStyle = color; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(xa0, ya); ctx.lineTo(xa1, ya); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(xa1+1, ya); ctx.lineTo(xa1-4, ya-3); ctx.lineTo(xa1-4, ya+3); ctx.closePath(); ctx.fillStyle = color; ctx.fill();
+  }
+  ctx.fillStyle = color;
+  ctx.font = `600 ${size*0.7}px ${FONT}`;
+  if(sub) ctx.fillText(sub, sx+wM, y+size*0.3);
+}
+
+function drawEarth(){
+  ctx.save();
+  ctx.beginPath(); ctx.arc(XE, Y_LINE, RPX, 0, Math.PI*2);
+  ctx.fillStyle = '#d6eaf8'; ctx.fill();
+  ctx.save(); ctx.clip();
+  ctx.fillStyle = '#9ccb8f';
+  const blobs = [[-32,-34,36,21,-0.4],[26,-12,28,36,0.3],[-42,26,22,17,0.5],[8,52,30,14,-0.2]];
+  blobs.forEach(([dx,dy,rx,ry,rot])=>{ ctx.beginPath(); ctx.ellipse(XE+dx, Y_LINE+dy, rx, ry, rot, 0, Math.PI*2); ctx.fill(); });
+  ctx.restore();
+  ctx.beginPath(); ctx.arc(XE, Y_LINE, RPX, 0, Math.PI*2);
+  ctx.strokeStyle = '#4a90c2'; ctx.lineWidth = 2.5; ctx.stroke();
+  ctx.restore();
+  // middelpunt
+  ctx.fillStyle = '#1d3557'; ctx.beginPath(); ctx.arc(XE, Y_LINE, 3, 0, Math.PI*2); ctx.fill();
+  ctx.fillStyle = '#1d3557'; ctx.font = `600 14px ${FONT}`; ctx.textAlign = 'center';
+  ctx.fillText('Aarde', XE, Y_LINE + RPX + 18);
+}
+
+function draw(){
+  ctx.clearRect(0,0,W,H);
+  const xp = xP();
+  const met = st.mode === 'met';
+
+  // basislijn middelpunt -> P
+  ctx.strokeStyle = '#c3cad6'; ctx.lineWidth = 1.2; ctx.setLineDash([4,4]);
+  ctx.beginPath(); ctx.moveTo(XE,Y_LINE); ctx.lineTo(xp,Y_LINE); ctx.stroke(); ctx.setLineDash([]);
+
+  drawEarth();
+
+  // afstand r (vanaf middelpunt) + hoogte h
+  const yb = Y_LINE + RPX + 40;
+  ctx.strokeStyle = '#98a2b3'; ctx.lineWidth = 1.2;
+  ctx.beginPath(); ctx.moveTo(XE,yb); ctx.lineTo(xp,yb);
+  ctx.moveTo(XE,yb-6); ctx.lineTo(XE,yb+6); ctx.moveTo(xp,yb-6); ctx.lineTo(xp,yb+6); ctx.stroke();
+  ctx.fillStyle = '#4a5a76'; ctx.font = `600 13px ${FONT}`; ctx.textAlign = 'center';
+  ctx.fillText('r = ' + nl(rKm(),0) + ' km', (XE+xp)/2, yb+20);
+
+  // veld g in P: pijl begint in P, wijst naar de Aarde
+  const g = gField();
+  const L = Math.max(10, 85*g/9.82);   // evenredig met g: 85 px aan het aardoppervlak
+  const x1 = Math.max(12, xp - L);
+  drawArrow(xp, x1, Y_LINE, EC, 3.5);
+  const xl = (xp + x1)/2 - 30;
+  label(xl, Y_LINE+30, 'g', '', EC, 16, true);
+  ctx.fillStyle = EC; ctx.font = `12px ${FONT}`; ctx.textAlign = 'center';
+  ctx.fillText('in P', xl + 20, Y_LINE+30);
+
+  // krachten (alleen met proefmassa), op een rij boven
+  if(met){
+    const F = st.m * g;
+    const Lraw = Math.max(6, 0.4*F);   // evenredig met F
+    const gapHalf = Math.max(10, (xp - XE)/2 - 4);
+    ctx.strokeStyle = '#e3b0b4'; ctx.lineWidth = 1.2; ctx.setLineDash([2,3]);
+    ctx.beginPath(); ctx.moveTo(xp, Y_F); ctx.lineTo(xp, Y_LINE-14); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(XE, Y_F); ctx.lineTo(XE, Y_LINE); ctx.stroke();
+    ctx.setLineDash([]);
+    // zwaartekracht op m: naar de Aarde
+    let Lm = Math.min(Lraw, gapHalf);
+    ctx.fillStyle = FC; ctx.beginPath(); ctx.arc(xp, Y_F, 3.5, 0, Math.PI*2); ctx.fill();
+    drawArrow(xp, xp - Lm, Y_F, FC, 3.5);
+    label(xp - Lm/2, Y_F-14, 'F', 'z', FC, 15, true);
+    // reactiekracht op de Aarde: naar m toe
+    ctx.beginPath(); ctx.arc(XE, Y_F, 3.5, 0, Math.PI*2); ctx.fill();
+    drawArrow(XE, XE + Lm, Y_F, FC, 3.5);
+    label(XE + Lm/2, Y_F-14, 'F', 'z', FC, 15, true);
+  }
+
+  // P of proefmassa
+  if(met){
+    ctx.fillStyle = MASS; ctx.strokeStyle = MASS;
+    ctx.beginPath(); ctx.roundRect(xp-12, Y_LINE-12, 24, 24, 4); ctx.fill();
+    ctx.fillStyle = '#fff'; ctx.font = `bold 14px ${FONT}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText('m', xp, Y_LINE+1); ctx.textBaseline = 'alphabetic';
+  } else {
+    ctx.fillStyle = '#1d3557'; ctx.beginPath(); ctx.arc(xp, Y_LINE, 5, 0, Math.PI*2); ctx.fill();
+    ctx.font = `600 15px ${FONT}`; ctx.textAlign = 'center';
+    ctx.fillText('P', xp, Y_LINE+30);
+  }
+}
+
+function updateUI(){
+  const met = st.mode === 'met';
+  const g = gField();
+  document.getElementById('gv_hVal').textContent = nl(st.h,0) + ' km';
+  document.getElementById('gv_mVal').textContent = nl(st.m,0) + ' kg';
+  document.getElementById('gv_modeZonder').classList.toggle('active', !met);
+  document.getElementById('gv_modeMet').classList.toggle('active', met);
+  document.getElementById('gv_mRow').classList.toggle('disabled', !met);
+  document.getElementById('gv_canvasTitle').innerHTML = met
+    ? 'Met proefmassa — zwaartekracht <span class="vec">F</span><sub>z</sub> op m (en de reactiekracht op de Aarde)'
+    : 'Zonder proefmassa — het gravitatieveld <span class="vec">g</span> in P';
+
+  const rows = [];
+  rows.push(`<div class="readout-row"><span class="k">Afstand r tot het middelpunt</span><span class="v num">${nl(rKm(),0)} km</span></div>`);
+  rows.push(`<div class="readout-row"><span class="k">Gravitatieveldsterkte g in P</span><span class="v num">${nl(g,2)} N/kg</span></div>`);
+  rows.push(`<div class="readout-row"><span class="k">Richting van <span class="vec">g</span></span><span class="v">naar het middelpunt van de Aarde</span></div>`);
+  let explain;
+  if(!met){
+    explain = '<span class="vec">g</span> bestaat in P ook als er géén massa staat. Hoe verder van de Aarde, hoe kleiner g: g = G · M / r².';
+  } else {
+    const F = st.m*g;
+    rows.push(`<div class="readout-row"><span class="k">Zwaartekracht F<sub>z</sub> op m</span><span class="v num">${formatUnit(F,'N')}</span></div>`);
+    rows.push(`<div class="readout-row"><span class="k">Richting van <span class="vec">F</span><sub>z</sub></span><span class="v">naar het middelpunt van de Aarde</span></div>`);
+    explain = '<span class="vec">F</span><sub>z</sub> = m · <span class="vec">g</span>: dezelfde richting als <span class="vec">g</span>, grootte F<sub>z</sub> = m · g. De reactiekracht op de Aarde is even groot en tegengesteld (naar m toe).';
+  }
+  document.getElementById('gv_readout').innerHTML = rows.join('') + `<div class="explain">${explain}</div>`;
+}
+
+function render(){ draw(); updateUI(); }
+
+const hs = document.getElementById('gv_hSlider'), ms = document.getElementById('gv_mSlider');
+hs.addEventListener('input', ()=>{ st.h = parseFloat(hs.value); render(); });
+ms.addEventListener('input', ()=>{ st.m = parseFloat(ms.value); render(); });
+document.getElementById('gv_modeZonder').addEventListener('click', ()=>{ st.mode='zonder'; render(); });
+document.getElementById('gv_modeMet').addEventListener('click', ()=>{ st.mode='met'; render(); });
+
+// P verslepen
+let dragging = false;
+function setHFromPointer(e){
+  const rect = cv.getBoundingClientRect();
+  const x = (e.clientX - rect.left) * (W/rect.width);
+  const r = (x - XE)/PX_PER_KM;
+  st.h = Math.max(0, Math.min(36000, Math.round((r - R_KM)/100)*100));
+  hs.value = st.h;
+  render();
+}
+cv.addEventListener('pointerdown', e=>{ dragging = true; cv.setPointerCapture(e.pointerId); setHFromPointer(e); });
+cv.addEventListener('pointermove', e=>{ if(dragging) setHFromPointer(e); });
+cv.addEventListener('pointerup', ()=>{ dragging = false; });
+cv.addEventListener('pointercancel', ()=>{ dragging = false; });
+
+render();
+
+})();
+</script>
+<script>
+/* =====================================================================
+   3D-WEERGAVE VAN DE VELDLIJNEN
+   Eigen kleine 3D-tekenaar op een 2D-canvas (geen externe bibliotheek):
+   alle veldlijnen in deze situaties zijn rechte lijnen (radiaal of evenwijdig).
+   ===================================================================== */
+(function(){
+  const POS='#d64550', NEG='#2a6f97', LIJN='#5b6b85', EVEC='#4f6fd0', FVEC='#d64550';
+  let weergave='2d';
+  const blok=document.createElement('div');
+  blok.id='veld3d';
+  blok.innerHTML=`<canvas id="c3d" width="760" height="500" style="cursor:grab"></canvas>
+    <div class="ctrl3d">
+      <button class="btn-reset" id="d3-auto">⏸ Stop met draaien</button>
+      <button class="btn-reset" id="d3-zicht">↺ Beginzicht</button>
+    </div>
+    <p class="canvas-hint">Sleep om het veld te draaien, scroll of knijp om in of uit te zoomen. Neem een lading of punt vast om het te verschuiven (in het vlak van de 2D-tekening); de instellingen rechts werken ook hier.</p>`;
+  const c=blok.querySelector('canvas'), ctx=c.getContext('2d');
+  const dpr=window.devicePixelRatio||1, CW=c.width, CH=c.height;
+  c.width=CW*dpr; c.height=CH*dpr; ctx.scale(dpr,dpr);
+
+  let yaw=-0.6, pitch=0.35, zoom=1, auto=true;
+  const autoBtn=blok.querySelector('#d3-auto');
+  autoBtn.onclick=()=>{ auto=!auto; autoBtn.textContent=auto?'⏸ Stop met draaien':'⟳ Automatisch draaien'; };
+  blok.querySelector('#d3-zicht').onclick=()=>{ yaw=-0.6; pitch=0.35; zoom=1; };
+
+  // slepen en zoomen (muis en touch)
+  let drag=null, pinch=null;
+  // ---------- ladingen en punten vastnemen in 3D (in het vlak z = 0) ----------
+  let greep=null;
+  function schermPos(e){ const r=c.getBoundingClientRect(); return [(e.clientX-r.left)*CW/r.width, (e.clientY-r.top)*CH/r.height]; }
+  function terugVlak(sx,sy){ // schermpunt -> punt [px,py,0] in het vlak z = 0
+    const A=camAfst, X=(sx-CW/2)/(schaal*zoom), Y=-(sy-CH/2)/(schaal*zoom);
+    const cy=Math.cos(yaw), sy_=Math.sin(yaw), cp=Math.cos(pitch), sp=Math.sin(pitch);
+    const a1=X*sy_*cp-A*cy, b1=X*sp, c1=-X*A, a2=Y*sy_*cp+A*sy_*sp, b2=Y*sp-A*cp, c2=-Y*A, det=a1*b2-a2*b1;
+    if(Math.abs(det)<1e-6*A*A) return null;
+    return [(c1*b2-c2*b1)/det, (a1*c2-a2*c1)/det];
+  }
+  function zetSlider(id,v){ const el=document.getElementById(id); if(!el) return; el.value=v; el.dispatchEvent(new Event('input')); }
+  function grepen(){ // per situatie: welke punten kan je vastnemen en wat gebeurt er als je ze verschuift
+    const m=state.mode, h=[];
+    if((m==='punt'||m==='bol') && state.test) h.push({p:[state.test.xcm,-state.test.ycm,0], zet:(x,y)=>{ const r=Math.hypot(x,y), minR=(m==='bol'?0.5:chargeRadiusPx()/SCALE+0.5); if(r<minR) return; state.test={xcm:Math.max(-32,Math.min(32,x)), ycm:Math.max(-24,Math.min(24,-y))}; render(); }});
+    if(m==='coulomb' && window.cbState) h.push({p:[window.cbState.r*0.6,0,0], zet:x=>zetSlider('cb_rSlider', Math.round(Math.max(8,Math.min(24,x/0.6))*2)/2)});
+    if(m==='zwaarte' && window.gvState) h.push({p:[6.371+window.gvState.h/1000,0,0], zet:x=>zetSlider('gv_hSlider', Math.round(Math.max(0,Math.min(36000,(x-6.371)*1000))/100)*100)});
+    if(m==='meer' && window.mlState){ const ml=window.mlState;
+      ml.q.forEach(q=>h.push({p:[q.x,-q.y,0], zet:(x,y)=>{ q.x=Math.max(-14,Math.min(14,x)); q.y=Math.max(-10,Math.min(10,-y)); window.mlTeken&&window.mlTeken(); }}));
+      if(ml.P) h.push({p:[ml.P.x,-ml.P.y,0], zet:(x,y)=>{ ml.P={x:Math.max(-15,Math.min(15,x)), y:Math.max(-11,Math.min(11,-y))}; window.mlTeken&&window.mlTeken(); }});
+    }
+    return h;
+  }
+  c.addEventListener('pointerdown',e=>{
+    c.setPointerCapture(e.pointerId); if(auto){ auto=false; autoBtn.textContent='⟳ Automatisch draaien'; }
+    const [sx,sy]=schermPos(e);
+    let best=null, bd=22; grepen().forEach((g,i)=>{ const q=proj(g.p), d=Math.hypot(q.x-sx,q.y-sy); if(d<bd){ bd=d; best=i; } });
+    if(best!==null){ greep=best; c.style.cursor='move'; return; }
+    drag={x:e.clientX,y:e.clientY}; c.style.cursor='grabbing'; });
+  c.addEventListener('pointermove',e=>{
+    if(greep!==null){ const g=grepen()[greep]; const pt=terugVlak(...schermPos(e)); if(g&&pt) g.zet(pt[0],pt[1]); return; }
+    if(!drag) return; yaw+=(e.clientX-drag.x)*0.008; pitch=Math.max(-1.4,Math.min(1.4,pitch+(e.clientY-drag.y)*0.008)); drag={x:e.clientX,y:e.clientY}; });
+  c.addEventListener('pointerup',()=>{ drag=null; greep=null; c.style.cursor='grab'; });
+  c.addEventListener('wheel',e=>{ e.preventDefault(); zoom=Math.max(0.5,Math.min(2.5,zoom*(e.deltaY<0?1.1:0.9))); },{passive:false});
+  c.addEventListener('touchmove',e=>{ if(e.touches.length===2){ e.preventDefault(); const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY); if(pinch) zoom=Math.max(0.5,Math.min(2.5,zoom*d/pinch)); pinch=d; drag=null; } },{passive:false});
+  c.addEventListener('touchend',()=>{ pinch=null; });
+
+  // ---------- projectie ----------
+  let schaal=1, camAfst=40;
+  function proj(p){
+    const cy=Math.cos(yaw), sy=Math.sin(yaw), cp=Math.cos(pitch), sp=Math.sin(pitch);
+    let x=p[0]*cy - p[2]*sy, z=p[0]*sy + p[2]*cy, y=p[1];
+    const y2=y*cp - z*sp, z2=y*sp + z*cp;
+    const f=camAfst/(camAfst+z2);
+    return {x:CW/2 + x*f*schaal*zoom, y:CH/2 - y2*f*schaal*zoom, z:z2, f};
+  }
+  // ---------- scène-elementen ----------
+  let items=[];
+  const lijn=(a,b,kleur,breedte=1.6,alpha=0.85)=>items.push({t:'l',a,b,kleur,breedte,alpha});
+  const bol=(m,r,kleur,alpha=1,teken='')=>items.push({t:'s',m,r,kleur,alpha,teken});
+  const vlak=(pts,kleur,alpha)=>items.push({t:'p',pts,kleur,alpha});
+  const label=(p,tekst,kleur='#1D2A36')=>items.push({t:'txt',p,tekst,kleur});
+  // pijl: lijn + pijlpunt; 'rond' = pijlpunt op de helft
+  function pijl(a,b,kleur,breedte=2,punt=1){ lijn(a,b,kleur,breedte,0.95); items.push({t:'a',a,b,kleur,punt}); }
+  function veldlijn(a,b,kleur,naarBuiten){ // lijn in stukken (juiste overlap) met pijlpunt in het midden
+    const n=8; for(let i=0;i<n;i++){ const t0=i/n, t1=(i+1)/n; lijn(mix(a,b,t0),mix(a,b,t1),kleur,1.6,0.8); }
+    const m0=mix(a,b,0.52), m1=mix(a,b,0.58);
+    items.push({t:'a',a:naarBuiten?m0:m1,b:naarBuiten?m1:m0,kleur,punt:1,klein:true});
+  }
+  const mix=(a,b,t)=>[a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t,a[2]+(b[2]-a[2])*t];
+  const norm=v=>{ const l=Math.hypot(...v)||1; return [v[0]/l,v[1]/l,v[2]/l]; };
+  function fibonacci(n){ const out=[], g=Math.PI*(3-Math.sqrt(5)); for(let i=0;i<n;i++){ const y=1-(i+0.5)/n*2, r=Math.sqrt(1-y*y), th=g*i; out.push([Math.cos(th)*r,y,Math.sin(th)*r]); } return out; }
+  function assen(L){ [[L,0,0],[0,L,0],[0,0,L]].forEach(p=>lijn([-p[0],-p[1],-p[2]],p,'#c8d1dc',1,0.6)); }
+
+  // ---------- scènes per situatie ----------
+  function radiaal(Qteken,rIn,rUit,n,kleur){ fibonacci(n).forEach(u=>veldlijn([u[0]*rIn,u[1]*rIn,u[2]*rIn],[u[0]*rUit,u[1]*rUit,u[2]*rUit],kleur,Qteken>0)); }
+
+  function scenePunt(isBol){
+    const Q=state.Qsign, n=Math.round(10+3.2*state.Qmag), kleur=Q>0?POS:NEG;
+    assen(16);
+    if(isBol){
+      const R=state.R;
+      bol([0,0,0],R,kleur,0.28);
+      fibonacci(40).forEach(u=>items.push({t:'txt',p:[u[0]*R,u[1]*R,u[2]*R],tekst:Q>0?'+':'−',kleur,klein:true}));
+      radiaal(Q,R,R+11,n,LIJN);
+      label([0,-R-1.6,0],'binnenin: E = 0','#51606E');
+    } else {
+      bol([0,0,0],1.3,kleur,1,Q>0?'+':'−');
+      radiaal(Q,1.5,13,n,LIJN);
+    }
+    if(state.test){ // testlading in het vlak van de 2D-tekening (z = 0)
+      const p=[state.test.xcm,-state.test.ycm,0], r=Math.hypot(p[0],p[1]);
+      const binnen=isBol && r<state.R;
+      bol(p,0.55,state.qtSign>0?POS:NEG,1,state.qtSign>0?'+':'−');
+      if(!binnen && r>0.5){ const u=norm(p), s=Q>0?1:-1, E=Math.abs(EsignedAt(r)), LE=Math.max(0.4,Math.min(10,3*E/1e7)), LF=Math.max(0.4,Math.min(10,3*E*state.qtMag/1e7)); // evenredig: 3 eenheden per 10^7 N/C
+        pijl(p,[p[0]+u[0]*LE*s,p[1]+u[1]*LE*s,0],EVEC,3); label([p[0]+u[0]*(LE+0.6)*s,p[1]+u[1]*(LE+0.6)*s+0.6,0],'E',EVEC);
+        const sf=s*(state.qtSign>0?1:-1); pijl(p,[p[0]+u[0]*LF*sf,p[1]+u[1]*LF*sf+0.0001,0],FVEC,3); label([p[0]+u[0]*(LF+0.6)*sf,p[1]+u[1]*(LF+0.6)*sf-0.8,0],'F',FVEC); }
+    }
+    return 15;
+  }
+
+  function sceneHom(){
+    const d=hom.d, h=Math.max(1.5,d/2), S=4.5, pos=hom.swap?1:-1; // x van de positieve plaat
+    const plaat=(x,kleur)=>vlak([[x,-S,-S],[x,S,-S],[x,S,S],[x,-S,S]],kleur,0.2);
+    plaat(pos*h,POS); plaat(-pos*h,NEG);
+    for(let i=-1;i<=1;i++) for(let j=-1;j<=1;j++){
+      const y=i*2.8, z=j*2.8;
+      veldlijn([pos*h,y,z],[-pos*h,y,z],'#334155',true);
+      items.push({t:'txt',p:[pos*h,y+1.15,z+1.15],tekst:'+',kleur:POS,klein:true});
+      items.push({t:'txt',p:[-pos*h,y+1.15,z+1.15],tekst:'−',kleur:NEG,klein:true});
+    }
+    label([pos*h,S+1.4,0],'+ plaat',POS); label([-pos*h,S+1.4,0],'− plaat',NEG);
+    if(hom.pcX!=null){
+      const x=pos*h - pos*hom.pcX; // pcX in cm vanaf de positieve plaat
+      bol([x,0,0],0.5,hom.pcSign>0?POS:NEG,1,hom.pcSign>0?'+':'−');
+      const s=-pos*(hom.pcSign>0?1:-1); pijl([x,0,0],[x+s*2.4,0,0],FVEC,3); label([x+s*3,0.9,0],'F',FVEC);
+    }
+    return Math.max(8,h+4);
+  }
+
+  function sceneCoulomb(){
+    const st=window.cbState; if(!st) return 15;
+    const Qb=st.Qb, kleur=Qb>0?POS:Qb<0?NEG:'#98a2b3', n=Math.round(10+3*Math.abs(Qb)), r=st.r*0.6;
+    assen(17);
+    bol([0,0,0],1.2,kleur,1,Qb>0?'+':Qb<0?'−':'0');
+    if(Qb!==0) radiaal(Qb,1.4,16,n,LIJN);
+    label([0,-1.9,0],'Qb',kleur);
+    const P=[r,0,0], s=Qb>0?1:-1;
+    if(st.mode==='met'){ bol(P,0.55,st.Qp>0?POS:st.Qp<0?NEG:'#98a2b3',1,st.Qp>0?'+':st.Qp<0?'−':''); label([r,-1.5,0],'Qp',st.Qp>0?POS:NEG); }
+    else { bol(P,0.28,'#1D2A36',1); label([r,-1.2,0],'P'); }
+    if(Qb!==0){ const E=8.99e9*Math.abs(Qb)*1e-6/Math.pow(st.r/100,2), Eref=8.99e9*5e-6/0.0196; // evenredig, 3 eenheden bij Qb = 5 µC op 14 cm
+      const LE=Math.max(0.4,Math.min(12,3*E/Eref)); pijl(P,[r+LE*s,0,0],EVEC,3); label([r+(LE+0.6)*s,0.7,0],'E',EVEC);
+      if(st.mode==='met' && st.Qp!==0){ const sf=s*(st.Qp>0?1:-1), LF=Math.max(0.4,Math.min(12,3*E*Math.abs(st.Qp)/Eref)); pijl([r,0.25,0],[r+LF*sf,0.25,0],FVEC,3); label([r+(LF+0.6)*sf,-0.9,0],'Fc',FVEC); } }
+    return 17;
+  }
+
+  function sceneZwaarte(){
+    const st=window.gvState; if(!st) return 15;
+    const RE=6.371, r=RE+st.h/1000; // eenheid: 1000 km
+    bol([0,0,0],RE,'#3b82c4',1,'');
+    const n=40, rUit=RE+36+4; // vaste schaal: de Aarde verandert niet van grootte als P verschuift
+    fibonacci(n).forEach(u=>veldlijn([u[0]*rUit,u[1]*rUit,u[2]*rUit],[u[0]*RE*1.02,u[1]*RE*1.02,u[2]*RE*1.02],LIJN,true));
+    label([0,-RE-1.4,0],'Aarde','#1d4ed8');
+    const P=[r,0,0];
+    if(st.mode==='met'){ bol(P,0.5,'#4a5a76',1); label([r,-1.4,0],'m'); } else { bol(P,0.25,'#1D2A36',1); label([r,-1.2,0],'P'); }
+    const L=Math.max(0.4,6*Math.pow(RE/r,2)); // evenredig met g = g0·(R/r)²
+    pijl(P,[r-L,0,0],EVEC,3); label([r-L-0.6,0.8,0],'g',EVEC);
+    if(st.mode==='met'){ const LF=Math.max(0.4,L*st.m/10); pijl([r,0.3,0],[r-LF,0.3,0],FVEC,3); label([r-LF-0.6,-0.8,0],'Fz',FVEC); }
+    return rUit;
+  }
+
+
+  let meerKey='', meerLijnen=[];
+  function sceneMeer(){
+    const st=window.mlState; if(!st) return 15;
+    const Q3=st.q.map(c=>({p:[c.x,-c.y,0],Q:c.Q})), key=JSON.stringify(st.q);
+    if(key!==meerKey){
+      const f=p=>{ let e=[0,0,0]; Q3.forEach(c=>{ const d=[p[0]-c.p[0],p[1]-c.p[1],p[2]-c.p[2]], r=Math.hypot(...d); if(r<1e-6) return; const k=c.Q/(r*r*r); e=[e[0]+k*d[0],e[1]+k*d[1],e[2]+k*d[2]]; }); return e; };
+      meerLijnen=[];
+      Q3.forEach(c=>{ const dir=c.Q>0?1:-1; fibonacci(2*Math.abs(c.Q)+6).forEach(u=>{
+        let p=[c.p[0]+u[0]*0.5,c.p[1]+u[1]*0.5,c.p[2]+u[2]*0.5]; const pts=[p.slice()]; let op=null;
+        for(let i=0;i<900;i++){ const e=norm(f(p)); p=[p[0]+dir*e[0]*0.1,p[1]+dir*e[1]*0.1,p[2]+dir*e[2]*0.1]; if(i%7===6) pts.push(p.slice());
+          if(Math.hypot(...p)>17) break; op=Q3.find(q=>q!==c&&Math.hypot(q.p[0]-p[0],q.p[1]-p[1],q.p[2]-p[2])<0.6); if(op) break; }
+        if(dir<0 && op && op.Q>0) return; // die lijn is al getekend vanuit de positieve lading
+        pts.push(p.slice()); meerLijnen.push({pts,dir}); }); });
+      meerKey=key;
+    }
+    meerLijnen.forEach(l=>{ for(let i=1;i<l.pts.length;i++) lijn(l.pts[i-1],l.pts[i],LIJN,1.4,0.8); const m=Math.floor(l.pts.length/2); if(l.pts.length>3){ const a=l.pts[m], b=l.pts[m+1]; items.push({t:'a',a:l.dir>0?a:b,b:l.dir>0?b:a,kleur:LIJN,punt:1,klein:true}); } });
+    Q3.forEach(c=>bol(c.p,1.1,c.Q>0?POS:NEG,1,c.Q>0?'+':'−'));
+    if(st.P&&window.mlVeld){ const P=[st.P.x,-st.P.y,0], e=window.mlVeld(st.P.x,st.P.y), u=norm([e[0],-e[1],0]), LE=Math.max(0.4,Math.min(9,3*Math.hypot(e[0],e[1])/1e7)); bol(P,0.3,'#1D2A36',1); pijl(P,[P[0]+u[0]*LE,P[1]+u[1]*LE,0],EVEC,3); label([P[0]+u[0]*(LE+0.7),P[1]+u[1]*(LE+0.7)+0.5,0],'E',EVEC); label([P[0]-0.8,P[1]+0.9,0],'P'); }
+    return 16;
+  }
+  // ---------- tekenen ----------
+  function teken(){
+    items=[];
+    const m=state.mode;
+    const straal = m==='punt'?scenePunt(false) : m==='bol'?scenePunt(true) : m==='homogeen'?sceneHom() : m==='coulomb'?sceneCoulomb() : m==='meer'?sceneMeer() : sceneZwaarte();
+    camAfst=straal*4; schaal=Math.min(CW,CH)*0.42/straal;
+    // diepte bepalen en sorteren (ver eerst)
+    items.forEach(it=>{
+      if(it.t==='l'||it.t==='a') it.z=(proj(it.a).z+proj(it.b).z)/2;
+      else if(it.t==='s') it.z=proj(it.m).z+ (it.alpha<1?it.r*0.0:0);
+      else if(it.t==='p') it.z=it.pts.reduce((s,p)=>s+proj(p).z,0)/it.pts.length;
+      else it.z=proj(it.p).z-0.01;
+    });
+    items.sort((a,b)=>b.z-a.z);
+    ctx.clearRect(0,0,CW,CH);
+    const bg=ctx.createRadialGradient(CW/2,CH/2,40,CW/2,CH/2,CW*0.7); bg.addColorStop(0,'#ffffff'); bg.addColorStop(1,'#eef2f6'); ctx.fillStyle=bg; ctx.fillRect(0,0,CW,CH);
+    items.forEach(it=>{
+      if(it.t==='l'){ const a=proj(it.a), b=proj(it.b); ctx.globalAlpha=it.alpha*diepteAlpha(it.z); ctx.strokeStyle=it.kleur; ctx.lineWidth=it.breedte*Math.max(0.6,(a.f+b.f)/2); ctx.lineCap='round'; ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke(); ctx.globalAlpha=1; }
+      else if(it.t==='a'){ const a=proj(it.a), b=proj(it.b); const ang=Math.atan2(b.y-a.y,b.x-a.x), s=(it.klein?7:11)*Math.max(0.6,b.f);
+        if(Math.hypot(b.x-a.x,b.y-a.y)<0.5) return;
+        ctx.globalAlpha=diepteAlpha(it.z); ctx.fillStyle=it.kleur; ctx.beginPath(); ctx.moveTo(b.x+Math.cos(ang)*s*0.3,b.y+Math.sin(ang)*s*0.3); ctx.lineTo(b.x-s*Math.cos(ang-0.45),b.y-s*Math.sin(ang-0.45)); ctx.lineTo(b.x-s*Math.cos(ang+0.45),b.y-s*Math.sin(ang+0.45)); ctx.closePath(); ctx.fill(); ctx.globalAlpha=1; }
+      else if(it.t==='s'){ const p=proj(it.m), r=it.r*p.f*schaal*zoom;
+        const g=ctx.createRadialGradient(p.x-r*0.35,p.y-r*0.35,r*0.1,p.x,p.y,r); g.addColorStop(0,'#ffffff'); g.addColorStop(0.25,it.kleur); g.addColorStop(1,shade(it.kleur));
+        ctx.globalAlpha=it.alpha; ctx.fillStyle=g; ctx.beginPath(); ctx.arc(p.x,p.y,r,0,Math.PI*2); ctx.fill(); ctx.globalAlpha=1;
+        if(it.teken){ ctx.fillStyle='#fff'; ctx.font=`700 ${Math.max(10,r*1.1)}px Inter, sans-serif`; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(it.teken,p.x,p.y+1); ctx.textBaseline='alphabetic'; } }
+      else if(it.t==='p'){ ctx.globalAlpha=it.alpha; ctx.fillStyle=it.kleur; ctx.strokeStyle=shade(it.kleur); ctx.lineWidth=1.5; ctx.beginPath(); it.pts.forEach((q,i)=>{ const p=proj(q); i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y); }); ctx.closePath(); ctx.fill(); ctx.globalAlpha=1; ctx.stroke(); }
+      else if(it.t==='txt'){ const p=proj(it.p); ctx.fillStyle=it.kleur; ctx.font=it.klein?`700 ${Math.round(11*p.f)}px Inter, sans-serif`:'700 14px Inter, sans-serif'; ctx.textAlign='center'; ctx.globalAlpha=it.klein?0.8:1; ctx.fillText(it.tekst,p.x,p.y+(it.klein?4:0)); ctx.globalAlpha=1; }
+    });
+  }
+  const diepteAlpha=z=>Math.max(0.35,Math.min(1,1-z/(camAfst*0.9)));
+  function shade(hex){ const n=parseInt(hex.slice(1),16); const r=(n>>16)*0.6|0, g=((n>>8)&255)*0.6|0, b=(n&255)*0.6|0; return `rgb(${r},${g},${b})`; }
+
+  // ---------- inpassen in de pagina ----------
+  const CANVAS2D={punt:'fieldCanvas',bol:'fieldCanvas',homogeen:'fieldCanvas2',coulomb:'cb_cv',zwaarte:'gv_cv',meer:'ml_cv'};
+  function plaats(){
+    // eerst alles terug naar 2D
+    Object.values(CANVAS2D).forEach(id=>{ const cv=document.getElementById(id); cv.style.display=''; const h=cv.nextElementSibling; if(h && h.classList.contains('canvas-hint')) h.style.display=''; });
+    if(weergave!=='3d' || !CANVAS2D[state.mode]){ blok.remove(); return; }
+    const cv=document.getElementById(CANVAS2D[state.mode]);
+    cv.style.display='none'; const h=cv.nextElementSibling; if(h && h.classList.contains('canvas-hint')) h.style.display='none';
+    cv.insertAdjacentElement('afterend',blok);
+  }
+  const knoppen=document.querySelectorAll('#weergave button');
+  knoppen.forEach(b=>b.onclick=()=>{ weergave=b.dataset.w; knoppen.forEach(o=>o.classList.toggle('active',o===b)); plaats(); });
+  document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>setTimeout(plaats,0)));
+
+  let last=performance.now();
+  (function lus(now){ const dt=Math.min(0.05,(now-last)/1000); last=now; if(weergave==='3d' && blok.isConnected){ if(auto && !drag) yaw+=dt*0.35; teken(); } requestAnimationFrame(lus); })(last);
+})();
+</script>
+
+<script>
+/* =====================================================================
+   NIEUWE TABBLADEN: meerdere ladingen, geleiders/isolatoren, energie
+   ===================================================================== */
+(function(){
+const POS='#d64550', NEG='#2a6f97', EC='#4f6fd0', LIJN='#5b6b85', ACC='#2F6FB0';
+const nl=(x,d=2)=>x.toLocaleString('nl-BE',{maximumFractionDigits:d}).replace('-','−');
+function sci(x,u){ if(x===0) return '0 '+u; const e=Math.floor(Math.log10(Math.abs(x))); if(e>=-2&&e<5) return nl(x,2)+' '+u; const m=x/10**e; return nl(m,2)+' · 10'+String(e).replace(/-/g,'⁻').replace(/\d/g,d=>'⁰¹²³⁴⁵⁶⁷⁸⁹'[d])+' '+u; }
+function hd(cv){ const dpr=window.devicePixelRatio||1, w=cv.width, h=cv.height; cv.width=w*dpr; cv.height=h*dpr; const ctx=cv.getContext('2d'); ctx.scale(dpr,dpr); cv._w=w; cv._h=h; return ctx; }
+function pijl(ctx,x1,y1,x2,y2,kleur,b=2.5){ const a=Math.atan2(y2-y1,x2-x1), L=Math.hypot(x2-x1,y2-y1); if(L<2) return; const s=Math.min(11,4+b*2.4); ctx.save(); ctx.strokeStyle=kleur; ctx.fillStyle=kleur; ctx.lineWidth=b; ctx.lineCap='round'; ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2-Math.cos(a)*s*0.7,y2-Math.sin(a)*s*0.7); ctx.stroke(); ctx.beginPath(); ctx.moveTo(x2,y2); ctx.lineTo(x2-s*Math.cos(a-0.45),y2-s*Math.sin(a-0.45)); ctx.lineTo(x2-s*Math.cos(a+0.45),y2-s*Math.sin(a+0.45)); ctx.closePath(); ctx.fill(); ctx.restore(); }
+function kop(ctx,x,y,a,kleur,s=7){ ctx.save(); ctx.fillStyle=kleur; ctx.beginPath(); ctx.moveTo(x+Math.cos(a)*s*0.6,y+Math.sin(a)*s*0.6); ctx.lineTo(x-s*Math.cos(a-0.5),y-s*Math.sin(a-0.5)); ctx.lineTo(x-s*Math.cos(a+0.5),y-s*Math.sin(a+0.5)); ctx.closePath(); ctx.fill(); ctx.restore(); }
+function txt(ctx,t,x,y,o={}){ ctx.save(); ctx.font=(o.w||600)+' '+(o.s||13)+'px Inter, sans-serif'; ctx.fillStyle=o.c||'#1D2A36'; ctx.textAlign=o.a||'left'; ctx.fillText(t,x,y); ctx.restore(); }
+function bolLading(ctx,x,y,Q,r=14,sel=false){ const g=ctx.createRadialGradient(x-r*0.35,y-r*0.35,2,x,y,r); g.addColorStop(0,'#fff'); g.addColorStop(0.3,Q>0?POS:NEG); g.addColorStop(1,Q>0?'#8f2430':'#173f57'); ctx.fillStyle=g; ctx.beginPath(); ctx.arc(x,y,r,0,7); ctx.fill(); if(sel){ ctx.strokeStyle='#f59e0b'; ctx.lineWidth=3; ctx.stroke(); } txt(ctx,(Q>0?'+':'−')+Math.abs(Q),x,y+4.5,{c:'#fff',w:700,s:12,a:'center'}); }
+
+/* ---------------- MEERDERE LADINGEN ---------------- */
+const SC=20; // px per cm
+const ml={q:[],P:null,sel:0,bijdr:false}; window.mlState=ml;
+const PRE={gelijk:[[-5,0,4],[5,0,4]],dipool:[[-5,0,4],[5,0,-4]],ongelijk:[[-5,0,6],[5,0,-2]],drie:[[-6,-3,4],[6,-3,4],[0,5,-4]]};
+function zet(p){ ml.q=PRE[p].map(([x,y,Q])=>({x,y,Q})); ml.sel=0; ml.P=null; }
+zet('gelijk');
+function veld(x,y){ let ex=0,ey=0; for(const c of ml.q){ const dx=(x-c.x)*0.01, dy=(y-c.y)*0.01, r2=dx*dx+dy*dy; if(r2<1e-8) continue; const f=8.99e9*c.Q*1e-6/(r2*Math.sqrt(r2)); ex+=f*dx; ey+=f*dy; } return [ex,ey]; }
+function lijn(x,y,dir,maxN=1600){ const pts=[[x,y]]; for(let i=0;i<maxN;i++){ let [ex,ey]=veld(x,y); const L=Math.hypot(ex,ey); if(!L) break; x+=dir*ex/L*0.07; y+=dir*ey/L*0.07; pts.push([x,y]);
+    if(Math.abs(x)>17||Math.abs(y)>13) break; if(ml.q.some(c=>Math.hypot(c.x-x,c.y-y)<0.35)) break; } return pts; }
+let cacheKey='', cacheLijnen=[];
+function alleLijnen(){
+  const key=JSON.stringify(ml.q); if(key===cacheKey) return cacheLijnen;
+  const out=[];
+  // lijnen vertrekken uit elke positieve lading; uit elke negatieve lading volgen we de lijn achteruit
+  // en houden we enkel de lijnen die niet op een positieve lading uitkomen (die van buitenaf binnenkomen)
+  ml.q.forEach(c=>{ const n=3*Math.abs(c.Q)+2, dir=c.Q>0?1:-1;
+    for(let i=0;i<n;i++){ const a=(i+0.5)*2*Math.PI/n, pts=lijn(c.x+0.4*Math.cos(a),c.y+0.4*Math.sin(a),dir);
+      if(dir<0){ const [x,y]=pts[pts.length-1]; if(ml.q.some(d=>d.Q>0&&Math.hypot(d.x-x,d.y-y)<0.5)) continue; }
+      out.push({pts,dir}); } });
+  cacheKey=key; cacheLijnen=out; return out;
+}
+const mcv=document.getElementById('ml_cv'), mctx=hd(mcv), MW=mcv._w, MH=mcv._h;
+const toPx=(x,y)=>[MW/2+x*SC,MH/2+y*SC], toCm=(px,py)=>[(px-MW/2)/SC,(py-MH/2)/SC];
+function tekenPad(ctx,pts,kleur,b,dir,pijlen=true){ ctx.strokeStyle=kleur; ctx.lineWidth=b; ctx.beginPath(); pts.forEach((p,i)=>{ const [X,Y]=toPx(p[0],p[1]); i?ctx.lineTo(X,Y):ctx.moveTo(X,Y); }); ctx.stroke();
+  if(!pijlen) return; let s=0; for(let i=1;i<pts.length;i++){ s+=Math.hypot(pts[i][0]-pts[i-1][0],pts[i][1]-pts[i-1][1]); if(s>5.5&&i<pts.length-8){ s=0; const [X,Y]=toPx(pts[i][0],pts[i][1]), [X0,Y0]=toPx(pts[i-1][0],pts[i-1][1]); kop(ctx,X,Y,Math.atan2(Y-Y0,X-X0)+(dir<0?Math.PI:0),kleur); } } }
+function tekenMl(){
+  const ctx=mctx; ctx.clearRect(0,0,MW,MH); ctx.fillStyle='#fbfcfd'; ctx.fillRect(0,0,MW,MH);
+  alleLijnen().forEach(l=>tekenPad(ctx,l.pts,LIJN,1.4,l.dir));
+  if(ml.P){ const [px,py]=[ml.P.x,ml.P.y];
+    const voor=lijn(px,py,1,900), achter=lijn(px,py,-1,900);
+    tekenPad(ctx,achter.slice().reverse().concat(voor),ACC,3,1,false);
+    const [ex,ey]=veld(px,py), E=Math.hypot(ex,ey), [X,Y]=toPx(px,py);
+    if(E>0){ const ux=ex/E, uy=ey/E, L=Math.max(6,Math.min(170,E*4e-6)); // evenredig: 40 px per 10^7 N/C
+      ctx.setLineDash([5,5]); ctx.strokeStyle='#94a3b8'; ctx.lineWidth=1.2; ctx.beginPath(); ctx.moveTo(X-ux*110,Y-uy*110); ctx.lineTo(X+ux*110,Y+uy*110); ctx.stroke(); ctx.setLineDash([]);
+      if(ml.bijdr) ml.q.forEach((c,i)=>{ const dx=(px-c.x)*0.01, dy=(py-c.y)*0.01, r2=dx*dx+dy*dy, f=8.99e9*c.Q*1e-6/(r2*Math.sqrt(r2)), e=[f*dx,f*dy], Ei=Math.hypot(...e), Li=L*Ei/E;
+        pijl(ctx,X,Y,X+e[0]/Ei*Li,Y+e[1]/Ei*Li,c.Q>0?'#e88a93':'#7fb0cf',2); txt(ctx,'E'+'₁₂₃'[i],X+e[0]/Ei*(Li+12),Y+e[1]/Ei*(Li+12)+4,{c:c.Q>0?POS:NEG,s:12,a:'center'}); });
+      pijl(ctx,X,Y,X+ux*L,Y+uy*L,EC,3.5); txt(ctx,'E',X+ux*(L+14),Y+uy*(L+14)+5,{c:EC,w:700,s:15,a:'center'}); }
+    ctx.fillStyle='#1D2A36'; ctx.beginPath(); ctx.arc(X,Y,4.5,0,7); ctx.fill(); txt(ctx,'P',X+8,Y-8,{w:700});
+  }
+  ml.q.forEach((c,i)=>{ const [X,Y]=toPx(c.x,c.y); bolLading(ctx,X,Y,c.Q,14,i===ml.sel); txt(ctx,'Q'+'₁₂₃'[i],X,Y+30,{a:'center',s:12,c:c.Q>0?POS:NEG}); });
+  // uitlezing
+  const c=ml.q[ml.sel]; document.getElementById('ml_selNaam').textContent='Gekozen lading Q'+'₁₂₃'[ml.sel]; document.getElementById('ml_qVal').textContent=(c.Q>0?'+':'−')+Math.abs(c.Q)+' µC'; document.getElementById('ml_q').value=c.Q;
+  const box=document.getElementById('ml_readout');
+  if(!ml.P){ box.innerHTML='<span class="empty">Klik in het veld om punt P te plaatsen.</span>'; return; }
+  const [ex,ey]=veld(ml.P.x,ml.P.y);
+  box.innerHTML=ml.q.map((c,i)=>{ const r=Math.hypot(ml.P.x-c.x,ml.P.y-c.y)*0.01; return `<div class="readout-row"><span class="k">E${'₁₂₃'[i]} = k·|Q${'₁₂₃'[i]}|/r² (r = ${nl(r*100,1)} cm)</span><span class="num">${sci(8.99e9*Math.abs(c.Q)*1e-6/(r*r),'N/C')}</span></div>`; }).join('')+
+    `<div class="divider" style="margin:8px 0"></div><div class="readout-row"><span class="k"><b>resulterend E</b> (vectorsom)</span><span class="num"><b>${sci(Math.hypot(ex,ey),'N/C')}</b></span></div><div class="k" style="margin-top:6px">E raakt aan de blauwe veldlijn door P.</div>`;
+}
+let sleep=null, verplaatst=false;
+function pos(e){ const r=mcv.getBoundingClientRect(); return toCm((e.clientX-r.left)*MW/r.width,(e.clientY-r.top)*MH/r.height); }
+mcv.addEventListener('pointerdown',e=>{ const [x,y]=pos(e); const i=ml.q.findIndex(c=>Math.hypot(c.x-x,c.y-y)<1); verplaatst=false; if(i>=0){ sleep=i; ml.sel=i; mcv.setPointerCapture(e.pointerId); } else { ml.P={x,y}; } tekenMl(); });
+mcv.addEventListener('pointermove',e=>{ if(sleep==null) return; const [x,y]=pos(e); ml.q[sleep].x=Math.max(-14,Math.min(14,x)); ml.q[sleep].y=Math.max(-10,Math.min(10,y)); verplaatst=true; tekenMl(); });
+mcv.addEventListener('pointerup',()=>{ sleep=null; });
+document.querySelectorAll('#ml_preset button').forEach(b=>b.onclick=()=>{ document.querySelectorAll('#ml_preset button').forEach(o=>o.classList.toggle('active',o===b)); zet(b.dataset.p); tekenMl(); });
+document.getElementById('ml_q').oninput=e=>{ let v=+e.target.value; if(v===0) v=ml.q[ml.sel].Q>0?-1:1; ml.q[ml.sel].Q=v; tekenMl(); };
+document.getElementById('ml_bijdr').onchange=e=>{ ml.bijdr=e.target.checked; tekenMl(); };
+document.getElementById('ml_clearP').onclick=()=>{ ml.P=null; tekenMl(); };
+window.mlLijnen3D=null;
+
+/* ---------------- GELEIDERS EN ISOLATOREN ---------------- */
+const fcv=document.getElementById('fd_cv'), fctx=hd(fcv), FW=fcv._w, FH=fcv._h; let fdV='hol';
+const FT={geen:'Zonder voorwerp: een homogeen veld. De veldlijnen zijn evenwijdige rechten.',
+  hol:'<b>Holle geleider (kooi van Faraday).</b> De vrije elektronen verschuiven tot het veld <b>binnenin nul</b> is: links komt er negatieve lading, rechts blijft positieve lading over. Die ladingen maken samen een veld dat het buitenveld binnenin precies opheft. Wat binnenin zit, is <b>afgeschermd</b>. De veldlijnen staan <b>loodrecht</b> op het oppervlak.',
+  vol:'<b>Volle geleider.</b> Ook in een volle geleider is het veld <b>nul</b>. De lading zit alleen aan het oppervlak. Of de geleider hol of vol is, maakt voor het veld binnenin niets uit.',
+  iso:'<b>Isolator.</b> Er zijn geen vrije elektronen. De moleculen worden <b>gepolariseerd</b> (kleine dipolen). Daardoor wordt het veld binnenin <b>zwakker</b>, maar niet nul. Een isolator schermt niet af.'};
+const VB={auto:'<b>Auto:</b> de metalen carrosserie werkt als kooi van Faraday. Slaat de bliksem in, dan loopt de lading over de buitenkant naar de grond. De inzittenden zijn veilig (zolang ze de carrosserie niet aanraken).',
+  vliegtuig:'<b>Vliegtuig:</b> de metalen romp leidt de lading van een blikseminslag over de buitenkant weg. Passagiers en elektronica binnenin worden afgeschermd.',
+  micro:'<b>Microgolfoven:</b> de metalen wanden en het metalen rooster in het deurtje vormen een kooi van Faraday. De elektromagnetische golven blijven <b>binnen</b> de oven, zodat ze jou niet bereiken.',
+  coax:'<b>Coaxkabel:</b> rond de middelste draad zit een omhulsel van metaalvlechtwerk. Dat schermt het signaal af van storende velden van buitenaf (en omgekeerd).'};
+function fdTeken(){
+  const ctx=fctx; ctx.clearRect(0,0,FW,FH); ctx.fillStyle='#fbfcfd'; ctx.fillRect(0,0,FW,FH);
+  const cx=300, cy=220, R=78, K=fdV==='geen'?0:fdV==='iso'?0.6:1, geleider=fdV==='hol'||fdV==='vol', X0=48, X1=552;
+  const psi=(x,y)=>{ const r2=x*x+y*y; return r2<R*R? (geleider?NaN:y*(1-K)) : y*(1-K*R*R/r2); };
+  function yVoor(x,c){ let lo=0, hi=260; if(geleider&&Math.abs(x)<R) lo=Math.sqrt(R*R-x*x)+0.01; const f=y=>{ const v=psi(x,y); return v-c; };
+    if(f(lo)>0) return null; for(let k=0;k<40;k++){ const m=(lo+hi)/2; if(f(m)>0) hi=m; else lo=m; } return (lo+hi)/2; }
+  ctx.strokeStyle=LIJN; ctx.lineWidth=1.5;
+  for(let c=-195;c<=195;c+=26){
+    const s=c<0?-1:1, ca=Math.abs(c);
+    if(c===0||Math.abs(c)<1){ if(geleider){ ctx.beginPath(); ctx.moveTo(X0,cy); ctx.lineTo(cx-R,cy); ctx.moveTo(cx+R,cy); ctx.lineTo(X1,cy); ctx.stroke(); kop(ctx,140,cy,0,LIJN); kop(ctx,470,cy,0,LIJN); } else { ctx.beginPath(); ctx.moveTo(X0,cy); ctx.lineTo(X1,cy); ctx.stroke(); kop(ctx,140,cy,0,LIJN); kop(ctx,470,cy,0,LIJN); } continue; }
+    ctx.beginPath(); let eerste=true, prev=null;
+    for(let X=X0;X<=X1;X+=3){ const y=yVoor(X-cx,ca); if(y==null||y>250){ eerste=true; continue; } const Y=cy-s*y; if(eerste) ctx.moveTo(X,Y); else ctx.lineTo(X,Y); eerste=false; prev=[X,Y]; }
+    ctx.stroke();
+    [140,470].forEach(X=>{ const y=yVoor(X-cx,ca); if(y!=null&&y<215) kop(ctx,X,cy-s*y,0,LIJN); });
+  }
+  // platen
+  ctx.fillStyle='#fde2e4'; ctx.fillRect(20,20,24,400); ctx.fillStyle='#dbeafe'; ctx.fillRect(556,20,24,400);
+  for(let i=0;i<9;i++){ txt(ctx,'+',32,48+i*45,{c:POS,w:700,s:18,a:'center'}); txt(ctx,'−',568,48+i*45,{c:NEG,w:700,s:18,a:'center'}); }
+  if(geleider){
+    ctx.fillStyle=fdV==='vol'?'#cbd5e1':'#cbd5e1'; ctx.beginPath(); ctx.arc(cx,cy,R,0,7); ctx.fill(); ctx.strokeStyle='#475569'; ctx.lineWidth=2; ctx.stroke();
+    if(fdV==='hol'){ ctx.fillStyle='#fbfcfd'; ctx.beginPath(); ctx.arc(cx,cy,R-12,0,7); ctx.fill(); ctx.stroke(); }
+    for(let i=0;i<16;i++){ const a=i*Math.PI/8+Math.PI/16, co=Math.cos(a); if(Math.abs(co)<0.3) continue; txt(ctx,co>0?'+':'−',cx+(R+11)*co,cy+(R+11)*Math.sin(a)+5,{c:co>0?POS:NEG,w:700,s:16,a:'center'}); }
+    txt(ctx,'E = 0',cx,cy+6,{w:700,s:18,a:'center'}); txt(ctx,fdV==='hol'?'holle geleider':'volle geleider',cx,cy+R+38,{w:700,a:'center',c:'#51606E'});
+  } else if(fdV==='iso'){
+    ctx.fillStyle='rgba(253,230,138,0.45)'; ctx.beginPath(); ctx.arc(cx,cy,R,0,7); ctx.fill(); ctx.strokeStyle='#b45309'; ctx.lineWidth=2; ctx.stroke();
+    for(let i=-2;i<=2;i++) for(let j=-2;j<=2;j++){ const x=cx+i*26, y=cy+j*26+13; if(Math.hypot(x-cx,y-cy)>R-14) continue; ctx.fillStyle='rgba(255,255,255,0.8)'; ctx.strokeStyle='#b45309'; ctx.lineWidth=1; ctx.beginPath(); ctx.ellipse(x,y,10,6,0,0,7); ctx.fill(); ctx.stroke(); txt(ctx,'−',x-5,y+4,{c:NEG,w:700,s:10,a:'center'}); txt(ctx,'+',x+5,y+4,{c:POS,w:700,s:10,a:'center'}); }
+    txt(ctx,'isolator',cx,cy+R+38,{w:700,a:'center',c:'#51606E'});
+  }
+  document.getElementById('fd_title').textContent=fdV==='geen'?'Homogeen veld zonder voorwerp':fdV==='iso'?'Isolator in een homogeen veld':'Geleider in een homogeen veld';
+  document.getElementById('fd_readout').innerHTML=FT[fdV];
+}
+document.querySelectorAll('#fd_keuze button').forEach(b=>b.onclick=()=>{ fdV=b.dataset.v; document.querySelectorAll('#fd_keuze button').forEach(o=>o.classList.toggle('active',o===b)); fdTeken(); });
+document.querySelectorAll('#fd_vb button').forEach(b=>b.onclick=()=>{ document.querySelectorAll('#fd_vb button').forEach(o=>o.classList.toggle('active',o===b)); document.getElementById('fd_vbTekst').innerHTML=VB[b.dataset.vb]; });
+
+/* ---------------- ENERGIE EN POTENTIAAL ---------------- */
+const ecv=document.getElementById('en_cv'), ectx=hd(ecv), EW=ecv._w, EH=ecv._h;
+const DL={p:{q:1,m:1.673e-27,n:'proton'},e:{q:-1,m:9.109e-31,n:'elektron'},a:{q:2,m:6.645e-27,n:'α-deeltje'}};
+const en={d:'p',h0:0.5,h:0.5,t0:null};
+const YT=60, YB=380, XP=150; // + plaat boven, − plaat onder
+function U(){ return +document.getElementById('en_U').value; } function D(){ return +document.getElementById('en_d').value; }
+function enTeken(now){
+  const u=U(), d=D(), p=DL[en.d];
+  if(en.t0!=null){ const doel=p.q>0?0:1, tt=Math.min(1,(now-en.t0)/1800); en.h=en.h0+(doel-en.h0)*tt*tt; if(tt>=1) en.t0=null; }
+  const ctx=ectx; ctx.clearRect(0,0,EW,EH); ctx.fillStyle='#fbfcfd'; ctx.fillRect(0,0,EW,EH);
+  const yOf=h=>YB-h*(YB-YT);
+  // equipotentiaal
+  if(document.getElementById('en_eq').checked){ for(let i=1;i<5;i++){ const y=yOf(i/5); ctx.setLineDash([6,5]); ctx.strokeStyle='#2f8f6b'; ctx.lineWidth=1.3; ctx.beginPath(); ctx.moveTo(40,y); ctx.lineTo(300,y); ctx.stroke(); ctx.setLineDash([]); txt(ctx,'V = '+nl(u*i/5,0)+' V',302,y+4,{c:'#2f8f6b',s:11}); } }
+  // veldlijnen
+  for(let i=0;i<5;i++){ const x=55+i*42; ctx.strokeStyle=LIJN; ctx.lineWidth=1.3; ctx.beginPath(); ctx.moveTo(x,YT+6); ctx.lineTo(x,YB-6); ctx.stroke(); kop(ctx,x,(YT+YB)/2+20,Math.PI/2,LIJN); }
+  ctx.fillStyle='#fde2e4'; ctx.fillRect(30,YT-16,280,14); ctx.fillStyle='#dbeafe'; ctx.fillRect(30,YB+2,280,14);
+  for(let i=0;i<9;i++){ txt(ctx,'+',45+i*32,YT-4,{c:POS,w:700,a:'center'}); txt(ctx,'−',45+i*32,YB+14,{c:NEG,w:700,a:'center'}); }
+  txt(ctx,'V = '+u+' V',312,YT-4,{c:POS,w:700,s:12}); txt(ctx,'V = 0 V',312,YB+14,{c:NEG,w:700,s:12});
+  txt(ctx,'E',22,(YT+YB)/2,{c:LIJN,w:700,s:14,a:'center'});
+  // deeltje
+  const y=yOf(en.h), y0=yOf(en.h0);
+  if(Math.abs(en.h-en.h0)>0.01){ ctx.setLineDash([3,4]); ctx.strokeStyle='#94a3b8'; ctx.beginPath(); ctx.arc(XP,y0,9,0,7); ctx.stroke(); ctx.setLineDash([]); txt(ctx,'A',XP-22,y0+4,{w:700}); txt(ctx,'B',XP-22,y+4,{w:700}); }
+  bolLading(ctx,XP,y,p.q,11); pijl(ctx,XP+22,y,XP+22,y+(p.q>0?1:-1)*(16+10*Math.abs(p.q)),'#d64550',3); txt(ctx,'F',XP+36,y+(p.q>0?18:-12),{c:'#d64550',w:700});
+  // hoogte d
+  ctx.strokeStyle='#1D2A36'; ctx.lineWidth=1.2; ctx.beginPath(); ctx.moveTo(262,YB); ctx.lineTo(262,y); ctx.moveTo(256,y); ctx.lineTo(268,y); ctx.stroke(); if(en.h>0.04){ ctx.fillStyle='#fbfcfd'; ctx.fillRect(266,(YB+y)/2-11,64,16); txt(ctx,'d = '+nl(en.h*d,1)+' cm',268,(YB+y)/2+2,{s:12,w:700}); }
+  // energiebalken (in eV)
+  const V=u*en.h, V0=u*en.h0, Ep=p.q*V, Ep0=p.q*V0, Ek=Ep0-Ep, Etot=Ep0;
+  const bx=400, zero=230, sc=150/(2*u), bar=(x,v,k,l)=>{ ctx.fillStyle=k; const hpx=v*sc; ctx.fillRect(x,zero-Math.max(0,hpx),40,Math.abs(hpx)); txt(ctx,l,x+20,EH-48,{a:'center',w:700,s:12}); txt(ctx,nl(v,0)+' eV',x+20,(hpx>=0?zero-hpx-6:zero-hpx+16),{a:'center',s:11}); };
+  ctx.strokeStyle='#1D2A36'; ctx.lineWidth=1.5; ctx.beginPath(); ctx.moveTo(bx-10,zero); ctx.lineTo(bx+170,zero); ctx.stroke();
+  bar(bx,Ep,'#2f8f6b','Epot'); bar(bx+60,Ek,'#d97706','Ekin'); bar(bx+120,Etot,'#64748b','Etot');
+  txt(ctx,'energie (eV)',bx+80,32,{a:'center',w:700});
+  // uitlezing
+  const E=u/(d*0.01), v=Math.sqrt(Math.max(0,2*Ek*1.602e-19/p.m));
+  document.getElementById('en_UVal').textContent=u+' V'; document.getElementById('en_dVal').textContent=d+' cm · E = '+nl(E,0)+' N/C';
+  document.getElementById('en_readout').innerHTML=
+   `<div class="readout-row"><span class="k">potentiaal in B: V = E · d</span><span class="num">${nl(V,0)} V</span></div>`+
+   `<div class="readout-row"><span class="k">E<sub>pot</sub> = Q · V</span><span class="num">${nl(Ep,0)} eV = ${sci(Ep*1.602e-19,'J')}</span></div>`+
+   `<div class="readout-row"><span class="k">U<sub>AB</sub> = V<sub>A</sub> − V<sub>B</sub></span><span class="num">${nl(V0-V,0)} V</span></div>`+
+   `<div class="readout-row"><span class="k">W<sub>veld</sub> = −ΔE<sub>pot</sub> = ΔE<sub>kin</sub></span><span class="num">${nl(Ek,0)} eV</span></div>`+
+   `<div class="readout-row"><span class="k">snelheid in B</span><span class="num">${sci(v,'m/s')}</span></div>`+
+   `<div class="k" style="margin-top:6px">${p.q>0?'Een positieve lading beweegt <b>met</b> de veldlijnen mee, naar lagere potentiaal.':'Een negatieve lading beweegt <b>tegen</b> de veldlijnen in, naar hogere potentiaal.'} E<sub>pot</sub> neemt af, E<sub>kin</sub> neemt evenveel toe.</div>`;
+}
+let enSleep=false;
+ecv.addEventListener('pointerdown',e=>{ en.t0=null; enSleep=true; ecv.setPointerCapture(e.pointerId); zetH(e); });
+ecv.addEventListener('pointermove',e=>{ if(enSleep) zetH(e); });
+ecv.addEventListener('pointerup',()=>enSleep=false);
+function zetH(e){ const r=ecv.getBoundingClientRect(), y=(e.clientY-r.top)*EH/r.height; en.h0=en.h=Math.max(0,Math.min(1,(YB-y)/(YB-YT))); }
+document.querySelectorAll('#en_deeltje button').forEach(b=>b.onclick=()=>{ en.d=b.dataset.d; en.h=en.h0; en.t0=null; document.querySelectorAll('#en_deeltje button').forEach(o=>o.classList.toggle('active',o===b)); });
+document.getElementById('en_los').onclick=()=>{ en.h=en.h0; en.t0=performance.now(); };
+document.getElementById('en_reset').onclick=()=>{ en.h=en.h0; en.t0=null; };
+
+/* ---------------- ZWAARTEVELD EN ELEKTRISCH VELD (analogie) ---------------- */
+const acv=document.getElementById('an_cv'), actx=hd(acv), AW=acv._w, AH=acv._h;
+const AN={m:0.5, g:9.81, H:2.0, D:0.05, U:500, Qmag:2e-6};
+const an={s:1, r0:0.6, rb:0.6, rq:0.6, t0:null, vuil:true};
+const AY0=330, AYT=80;
+const anY=r=>AY0-r*(AY0-AYT);
+const anYv=r=>(AY0-16)-r*((AY0-16)-(AYT+16)); // middelpunt van bal of lading: rust op de grond of plaat
+function vtxt(ctx,b,sub,x,y,kleur,s=15){ // vectorsymbool met pijltje erboven
+  ctx.save(); ctx.font='700 '+s+'px Inter, sans-serif'; ctx.fillStyle=kleur; ctx.strokeStyle=kleur; ctx.textAlign='left';
+  const w=ctx.measureText(b).width; ctx.fillText(b,x,y);
+  ctx.lineWidth=1.3; ctx.beginPath(); ctx.moveTo(x,y-s-2); ctx.lineTo(x+w+1,y-s-2); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(x+w+3,y-s-2); ctx.lineTo(x+w-2,y-s-5); ctx.lineTo(x+w-2,y-s+1); ctx.closePath(); ctx.fill();
+  if(sub){ ctx.font='700 '+Math.round(s*0.72)+'px Inter, sans-serif'; ctx.fillText(sub,x+w+1,y+4); }
+  ctx.restore(); }
+function stxt(ctx,delen,x,y){ // tekst met subscript-stukjes
+  ctx.save(); ctx.fillStyle='#51606E'; ctx.textAlign='left';
+  delen.forEach(([t,sub])=>{ ctx.font='600 '+(sub?9:12)+'px Inter, sans-serif'; ctx.fillText(t,x,y+(sub?4:0)); x+=ctx.measureText(t).width; });
+  ctx.restore(); }
+function anBalken(ctx,x,Ep,Ek,max){
+  const nul=205, sc=95/max;
+  ctx.strokeStyle='#1D2A36'; ctx.lineWidth=1.3; ctx.beginPath(); ctx.moveTo(x-6,nul); ctx.lineTo(x+86,nul); ctx.stroke();
+  [[Ep,'#2f8f6b','pot',x],[Ek,'#d97706','kin',x+44]].forEach(([v,k,l,xx])=>{
+    const h=v*sc; ctx.fillStyle=k; ctx.fillRect(xx,nul-Math.max(0,h),34,Math.abs(h)); txt(ctx,'E',xx+10,322,{a:'center',w:700,s:13,c:k}); txt(ctx,l,xx+16,326,{w:700,s:9,c:k}); });
+  txt(ctx,'energie',x+40,96,{a:'center',w:700,s:12,c:'#51606E'});
+}
+function anTeken(now){
+  if(an.t0!=null){ const tt=Math.min(1,(now-an.t0)/1600), e=tt*tt;
+    an.rb=an.r0*(1-e); an.rq=an.s>0? an.r0*(1-e) : an.r0+(1-an.r0)*e; if(tt>=1) an.t0=null; an.vuil=true; }
+  if(!an.vuil) return; an.vuil=false;
+  const ctx=actx; ctx.clearRect(0,0,AW,AH); ctx.fillStyle='#fbfcfd'; ctx.fillRect(0,0,AW,AH);
+  ctx.strokeStyle='#D3DCE5'; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(AW/2,10); ctx.lineTo(AW/2,AH-10); ctx.stroke();
+  const E=AN.U/AN.D, Q=an.s*AN.Qmag;
+  // ---- links: zwaarteveld ----
+  txt(ctx,'Zwaarteveld',150,22,{a:'center',w:700,s:15});
+  ctx.fillStyle='#e9f1e4'; ctx.fillRect(16,AY0,250,22); ctx.fillStyle='#7aa35c'; ctx.fillRect(16,AY0,250,4);
+  stxt(ctx,[['grond: E'],['pot',1],[' = 0']],128,AY0+40);
+  for(const x of [36,150,255]){ ctx.strokeStyle='#c3cad6'; ctx.lineWidth=1.2; ctx.beginPath(); ctx.moveTo(x,AYT-20); ctx.lineTo(x,AY0-4); ctx.stroke(); kop(ctx,x,AY0-30,Math.PI/2,'#c3cad6'); }
+  vtxt(ctx,'g','',22,AYT-2,'#8a96a8');
+  const yb=anYv(an.rb), xb=95;
+  const gb=ctx.createRadialGradient(xb-5,yb-5,2,xb,yb,15); gb.addColorStop(0,'#fff'); gb.addColorStop(0.35,'#64748b'); gb.addColorStop(1,'#334155');
+  pijl(ctx,xb,yb,xb,yb+56,'#d64550',2); vtxt(ctx,'F','z',xb-36,yb+45,'#d64550');
+  ctx.fillStyle=gb; ctx.beginPath(); ctx.arc(xb,yb,15,0,7); ctx.fill(); txt(ctx,'m',xb+20,yb-12,{w:700,s:14});
+  if(an.rb>0.06){ ctx.strokeStyle='#1D2A36'; ctx.lineWidth=1.1; ctx.beginPath(); ctx.moveTo(205,AY0); ctx.lineTo(205,yb); ctx.moveTo(199,yb); ctx.lineTo(211,yb); ctx.moveTo(199,AY0); ctx.lineTo(211,AY0); ctx.stroke(); ctx.fillStyle='#fbfcfd'; ctx.fillRect(208,(AY0+yb)/2-11,64,16); txt(ctx,'h = '+nl(an.rb*AN.H,2)+' m',210,(AY0+yb)/2+2,{s:12,w:700}); }
+  const Epg=AN.m*AN.g*an.rb*AN.H, Ekg=AN.m*AN.g*(an.r0-an.rb)*AN.H;
+  anBalken(ctx,280,Epg,Ekg,AN.m*AN.g*AN.H);
+  // ---- rechts: homogeen elektrisch veld ----
+  const X=AW/2;
+  txt(ctx,'Homogeen elektrisch veld',X+150,22,{a:'center',w:700,s:15});
+  ctx.fillStyle='#fde2e4'; ctx.fillRect(X+16,AYT-18,250,14); ctx.fillStyle='#dbeafe'; ctx.fillRect(X+16,AY0+4,250,14);
+  for(let i=0;i<8;i++){ txt(ctx,'+',X+30+i*32,AYT-7,{c:POS,w:700,a:'center'}); txt(ctx,'−',X+30+i*32,AY0+16,{c:NEG,w:700,a:'center'}); }
+  stxt(ctx,[['negatieve plaat: E'],['pot',1],[' = 0']],X+128,AY0+40);
+  for(const x0 of [36,150,255]){ const x=X+x0; ctx.strokeStyle='#c3cad6'; ctx.lineWidth=1.2; ctx.beginPath(); ctx.moveTo(x,AYT-2); ctx.lineTo(x,AY0); ctx.stroke(); kop(ctx,x,AY0-30,Math.PI/2,'#c3cad6'); }
+  vtxt(ctx,'E','',X+22,AYT+18,'#8a96a8');
+  const yq=anYv(an.rq), xq=X+95;
+  pijl(ctx,xq,yq,xq,yq+an.s*56,'#d64550',2); vtxt(ctx,'F','E',xq-38,yq+an.s*40+5,'#d64550');
+  bolLading(ctx,xq,yq,an.s*2,15); txt(ctx,'Q',xq+20,yq-12,{w:700,s:14});
+  if(an.rq>0.06){ ctx.strokeStyle='#1D2A36'; ctx.lineWidth=1.1; ctx.beginPath(); ctx.moveTo(X+205,AY0+4); ctx.lineTo(X+205,yq); ctx.moveTo(X+199,yq); ctx.lineTo(X+211,yq); ctx.moveTo(X+199,AY0+4); ctx.lineTo(X+211,AY0+4); ctx.stroke(); ctx.fillStyle='#fbfcfd'; ctx.fillRect(X+208,(AY0+yq)/2-11,70,16); txt(ctx,'d = '+nl(an.rq*AN.D*100,1)+' cm',X+210,(AY0+yq)/2+2,{s:12,w:700}); }
+  const Epe=Q*E*an.rq*AN.D, Eke=Q*E*(an.r0*AN.D)-Epe;
+  anBalken(ctx,X+280,Epe,Eke,AN.Qmag*E*AN.D);
+  // ---- tabel ----
+  const zet=(id,v)=>document.getElementById(id).textContent=v;
+  zet('an_E',nl(E,0)+' N/C'); zet('an_Q',(an.s>0?'+':'−')+'2,0 µC');
+  zet('an_Fz',nl(AN.m*AN.g,1)+' N'); zet('an_FE',(an.s>0?'':'−')+'0,020 N'+(an.s>0?' (omlaag)':' (omhoog)'));
+  zet('an_h',nl(an.rb*AN.H,2)+' m'); zet('an_d',nl(an.rq*AN.D*100,1)+' cm');
+  zet('an_Epg',nl(Epg,2)+' J'); zet('an_Epe',sci(Epe,'J'));
+  zet('an_gh',nl(AN.g*an.rb*AN.H,1)+' J/kg'); zet('an_V',nl(E*an.rq*AN.D,0)+' V');
+  document.getElementById('an_pos').className='sign-btn'+(an.s>0?' active-pos':'');
+  document.getElementById('an_neg').className='sign-btn'+(an.s<0?' active-neg':'');
+}
+let anSleep=false;
+function anZet(e){ const r=acv.getBoundingClientRect(), y=(e.clientY-r.top)*AH/r.height; an.r0=an.rb=an.rq=Math.max(0,Math.min(1,((AY0-16)-y)/((AY0-16)-(AYT+16)))); an.t0=null; an.vuil=true; }
+acv.addEventListener('pointerdown',e=>{ anSleep=true; acv.setPointerCapture(e.pointerId); anZet(e); });
+acv.addEventListener('pointermove',e=>{ if(anSleep) anZet(e); });
+acv.addEventListener('pointerup',()=>anSleep=false);
+const anTerug=()=>{ an.rb=an.rq=an.r0; an.t0=null; an.vuil=true; };
+document.getElementById('an_pos').onclick=()=>{ an.s=1; anTerug(); };
+document.getElementById('an_neg').onclick=()=>{ an.s=-1; anTerug(); };
+document.getElementById('an_los').onclick=()=>{ anTerug(); an.t0=performance.now(); };
+document.getElementById('an_terug').onclick=anTerug;
+
+/* ---------------- tabbladen ---------------- */
+const VIEWS={meer:'viewMeer',faraday:'viewFaraday',energie:'viewEnergie',analogie:'viewAnalogie'};
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+  const m=t.dataset.mode; Object.entries(VIEWS).forEach(([k,id])=>document.getElementById(id).style.display=k===m?'block':'none');
+  document.getElementById('weergave').style.display=(m==='faraday'||m==='energie'||m==='analogie')?'none':'';
+  if(m==='analogie') an.vuil=true;
+  if(m==='meer') tekenMl(); if(m==='faraday') fdTeken();
+}));
+(function lus(now){ if(state.mode==='energie') enTeken(now); if(state.mode==='analogie') anTeken(now); requestAnimationFrame(lus); })(performance.now());
+window.mlVeld=veld; window.mlTeken=()=>tekenMl();
+})();
+</script>
+
+<script>
+/* ---- hoofdstuk: elektrisch-veld.html toont H3, potentiaal.html toont H4 ---- */
+(function(){
+  const hfd=document.body.dataset.hfd||'3';
+  const tabs=[...document.querySelectorAll('.tab')];
+  tabs.forEach(t=>{ if(!(t.dataset.hfd||'').split(' ').includes(hfd)) t.style.display='none'; });
+  const zichtbaar=tabs.filter(t=>t.style.display!=='none');
+  const gevraagd=zichtbaar.find(t=>'#'+t.dataset.mode===location.hash);
+  (gevraagd||zichtbaar[0]).click();
+})();
+
+/* ---- bordweergave: volledig scherm, zonder titel en lesdoelen ---- */
+(function(){
+  const knop=document.getElementById('bordKnop');
+  function pas(){
+    const bord=document.body.classList.contains('bord');
+    knop.textContent=bord?'✕ Gewone weergave':'⛶ Bordweergave';
+    // gewone canvassen: zo groot dat ze in de hoogte op het scherm passen
+    document.querySelectorAll('.wrap canvas').forEach(cv=>{
+      if(cv.id==='fieldCanvas2'||cv.id==='graphCanvas2') return;
+      const r=cv.width/cv.height;
+      if(!bord || !cv.offsetParent){ cv.style.maxWidth=''; return; }
+      // wat onder de tekening staat (knoppen, hint) moet ook nog op het scherm
+      const top=cv.getBoundingClientRect().top+window.scrollY;
+      cv.style.maxWidth=Math.floor(Math.max(240,window.innerHeight-top-95)*r)+'px';
+      cv.style.marginLeft='auto'; cv.style.marginRight='auto';
+    });
+    if(state.mode==='homogeen') renderHom();
+  }
+  knop.addEventListener('click',()=>{
+    const aan=!document.body.classList.contains('bord');
+    document.body.classList.toggle('bord',aan);
+    if(aan && document.documentElement.requestFullscreen && !document.fullscreenElement) document.documentElement.requestFullscreen().catch(()=>{});
+    if(!aan && document.fullscreenElement) document.exitFullscreen().catch(()=>{});
+    setTimeout(pas,60);
+  });
+  document.addEventListener('fullscreenchange',()=>{ if(!document.fullscreenElement && document.body.classList.contains('bord')){ document.body.classList.remove('bord'); } setTimeout(pas,60); });
+  let wacht; window.addEventListener('resize',()=>{ clearTimeout(wacht); wacht=setTimeout(pas,80); });
+  document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>setTimeout(pas,0)));
+  pas();
+})();
+</script>
+<!--vinkjes-->
+<style>
+.doel ul:has(.vk-li),ul.doelen:has(.vk-li){list-style:none;padding-left:0}
+.vk-li{display:flex;gap:10px;align-items:flex-start;cursor:pointer;margin:4px 0;list-style:none}
+.vk{flex:none;width:22px;height:22px;margin-top:1px;border:2px solid #64748b;border-radius:5px;background:#fff;display:inline-grid;place-items:center;cursor:pointer;padding:0}
+.vk:focus-visible{outline:3px solid #60a5fa;outline-offset:2px}
+.vk.aan{background:#16a34a;border-color:#16a34a}
+.vk.aan::after{content:"";width:6px;height:11px;border:solid #fff;border-width:0 3px 3px 0;transform:translateY(-1px) rotate(45deg)}
+.vk-li.aan .vk-t{color:#15803d}
+@media print{.vk{background:#fff!important;border-color:#000!important}.vk.aan::after{border-color:#000}}
+</style>
+<script>
+(function(){
+  var K='vinkjes:'+location.pathname.split('/').pop();
+  var st={}; try{st=JSON.parse(localStorage.getItem(K)||'{}')}catch(e){}
+  function bewaar(){try{localStorage.setItem(K,JSON.stringify(st))}catch(e){}}
+  var lis=document.querySelectorAll('.doel ul > li, ul.doelen > li');
+  [].forEach.call(lis,function(li,i){
+    if(li.querySelector('.vk')) return;
+    var b=document.createElement('button'); b.type='button'; b.className='vk'; b.setAttribute('role','checkbox');
+    b.setAttribute('aria-label','Ik kan dit');
+    var t=document.createElement('span'); t.className='vk-t';
+    while(li.firstChild) t.appendChild(li.firstChild);
+    li.appendChild(b); li.appendChild(t); li.classList.add('vk-li');
+    function zet(a){ st[i]=a; b.classList.toggle('aan',a); li.classList.toggle('aan',a); b.setAttribute('aria-checked',a?'true':'false'); }
+    zet(!!st[i]);
+    li.addEventListener('click',function(e){ if(e.target.closest('a')) return; zet(!st[i]); bewaar(); });
+  });
+})();
+</script>
+<!--/vinkjes-->
+</body>
+</html>

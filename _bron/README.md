@@ -105,3 +105,9 @@ Leerlingen krijgen een ingevulde naslag; wisbordvragen per deel (`aso_wisbord.py
 - Een nieuwe cursuspagina? Zet de link bij het hoofdstuk in organizer_inhoud.py en bouw opnieuw.
 
 - Word-versie van de overzichten: `_bron/word/maak_org.js` (leest org.json + iconen-PNG uit /home/claude/word/org).
+
+## Elektrisch veld (H3) en Potentiaal (H4), 5Wet
+- `elektrisch-veld.html` is de bron voor beide tools. Elke tab-knop heeft `data-hfd` ("3", "4" of "3 4"); de pagina toont alleen de tabs van haar hoofdstuk (`<body data-hfd>`).
+- `potentiaal.html` maak je met `python3 _bron/ev/potentiaal.py`, daarna `python3 _bron/lesdoelen/nw_lesdoelen.py` (lesdoelen 3.x en 4.x).
+- Een tab rechtstreeks openen: `potentiaal.html#energie`, `#homogeen`, `#analogie`.
+- Knop "Bordweergave": volledig scherm zonder titel en lesdoelen. In het tabblad Homogeen veld staan het veld en de grafieken van E, V en E_p onder elkaar, met dezelfde x-as, en alles past op één scherm.

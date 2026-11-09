@@ -1,6 +1,6 @@
 exec(open('/home/claude/cursus/ac_help.py', encoding='utf-8').read())
 zet_hfst(4)
-TOOL = 'elektrisch-veld.html'
+TOOL = 'potentiaal.html'
 BL, LIJN = '#1D4ED8', '#64748B'
 
 def platen(x_neg, x_pos, y0, h, n=7):
@@ -162,6 +162,6 @@ vrij = [('deel41', True, '4.1 Potentiële elektrische energie'), ('deel42', Fals
 cvr = [['Analogie tussen m·g·h en Q·E·d?', 28], ['Verband tussen arbeid en potentiële energie?', 22], ['E_pot van een positieve en een negatieve lading?', 26],
        ['Wat is potentiaal? Formule in een homogeen veld?', 26], ['Grafieken van E, V en E_pot?', 32], ['Wat is een equipotentiaaloppervlak?', 20], ['Wat is spanning? Verband met E_kin?', 30], ['Wat is een elektronvolt?', 16]]
 bouw('cursus-potentiaal.html', 'Fysica 5de jaar · Thema 1 Elektrostatica · Hoofdstuk 4', 'Potentiaal',
-     'Deze cursus hoort bij de tool <a href="elektrisch-veld.html">Elektrisch veld</a> (tabblad Energie en potentiaal). Oefeningen maak je op papier.',
+     'Deze cursus hoort bij de tool <a href="potentiaal.html">Potentiaal</a>. Oefeningen maak je op papier.',
      blokken, vrij, cvr)
 print('ok')
