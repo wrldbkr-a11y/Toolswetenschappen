@@ -283,6 +283,7 @@
     <button class="tab" data-mode="homogeen" data-hfd="3 4">Homogeen veld</button>
     <button class="tab" data-mode="faraday" data-hfd="3">Geleiders en isolatoren</button>
     <button class="tab" data-mode="energie" data-hfd="4">Energie en potentiaal</button>
+    <button class="tab" data-mode="oefen" data-hfd="4">Oefenen</button>
     <button class="tab-bord" id="bordKnop" title="Volledig scherm, zonder titel en lesdoelen">⛶ Bordweergave</button>
   </div>
 
@@ -632,6 +633,34 @@
       <tr><td>energie per kg of per coulomb</td><td>E<sub>pot,g</sub> / m = g · h = <span class="w" id="an_gh"></span></td><td><b>potentiaal</b> V = E<sub>pot,E</sub> / Q = E · d = <span class="w" id="an_V"></span></td></tr>
       <tr><td>nulniveau</td><td>de grond</td><td>de negatieve plaat</td></tr>
     </table>
+  </div>
+  </div>
+
+  <div id="viewOefen" style="display:none;">
+  <p class="sub">Een lading beweegt van A naar B. Redeneer: wat doet het veld, en wat gebeurt er met de energie en de potentiaal? Gebruik de denkstappen. Op papier oefenen? <a href="werkblad-potentiaal.html" target="_blank" rel="noopener">Werkblad om af te drukken</a>.</p>
+  <div class="grid">
+    <div class="panel">
+      <h2 id="oe_titel">Situatie</h2>
+      <canvas id="oe_cv" width="520" height="330"></canvas>
+      <p class="canvas-hint">Denk eerst: in welke richting werkt de elektrische kracht op de lading in A? Na het controleren zie je de kracht.</p>
+      <div class="panel" style="margin-top:10px;box-shadow:none;border:1px solid var(--border)">
+        <h2>Denkstappen</h2>
+        <ol style="margin:0;padding-left:1.2rem;font-size:0.9rem;line-height:1.5">
+          <li><b>Kracht:</b> een positieve lading wordt naar de − plaat geduwd, een negatieve lading naar de + plaat.</li>
+          <li><b>Arbeid:</b> mee met de kracht = positief, ertegenin = negatief, evenwijdig met de platen = nul.</li>
+          <li><b>Energie:</b> positieve arbeid: E<sub>kin</sub> neemt toe, E<sub>pot</sub> neemt evenveel af.</li>
+          <li><b>Potentiaal:</b> dichter bij de + plaat = hogere potentiaal. Kijk alleen naar de plaats.</li>
+          <li><b>Potentiaalverschil:</b> U<sub>AB</sub> = V<sub>A</sub> − V<sub>B</sub>.</li>
+        </ol>
+      </div>
+    </div>
+    <div class="panel">
+      <h2>Jouw antwoord</h2>
+      <div id="oe_vragen"></div>
+      <div class="seg" style="margin-top:12px"><button id="oe_check">✓ Controleer</button><button id="oe_nieuw">↻ Nieuwe situatie</button></div>
+      <div class="readout" id="oe_uitleg"><span class="empty">Kies bij elke vraag een antwoord en klik op Controleer.</span></div>
+      <p class="canvas-hint" id="oe_score"></p>
+    </div>
   </div>
   </div>
 
@@ -2487,11 +2516,103 @@ document.getElementById('an_neg').onclick=()=>{ an.s=-1; anTerug(); };
 document.getElementById('an_los').onclick=()=>{ anTerug(); an.t0=performance.now(); };
 document.getElementById('an_terug').onclick=anTerug;
 
+
+/* ---------------- OEFENEN: arbeid, energie en potentiaal ---------------- */
+const ocv=document.getElementById('oe_cv'), octx=hd(ocv), OW=ocv._w, OH=ocv._h;
+const OX0=70, OX1=450, OY0=50, OY1=280;
+const OV=[
+  ['arbeid','De arbeid van het elektrisch veld is',['positief','negatief','nul']],
+  ['ekin','De kinetische energie',['neemt toe','neemt af','blijft gelijk']],
+  ['epot','De potentiële elektrische energie',['neemt toe','neemt af','blijft gelijk']],
+  ['pot','De potentiaal van A naar B',['neemt toe','neemt af','blijft gelijk']],
+  ['u','Het potentiaalverschil tussen A en B is',['positief','negatief','nul']]];
+const oe={sit:null,keuze:{},klaar:false,juist:0,totaal:0,nr:0};
+const rnd=(a,b)=>a+Math.random()*(b-a), kies=a=>a[Math.floor(Math.random()*a.length)];
+function oeNieuw(){
+  const q=kies([1,1,-1,-1,2]), orient=kies(['v','h']), plus=orient==='v'?kies(['links','rechts']):kies(['boven','onder']);
+  const soort=Math.random()<0.2?'nul':kies(['mee','tegen']);
+  let sA,sB,tA,tB;
+  if(soort==='nul'){ sA=sB=rnd(0.25,0.75); tA=rnd(0.12,0.35); tB=rnd(0.65,0.88); if(Math.random()<.5)[tA,tB]=[tB,tA]; }
+  else { let lo=rnd(0.12,0.35), hi=rnd(0.65,0.88); const naarMin=(soort==='mee')===(q>0); // naar de − plaat?
+    [sA,sB]=naarMin?[hi,lo]:[lo,hi]; tA=rnd(0.15,0.85); tB=Math.random()<0.5?tA:rnd(0.15,0.85); }
+  oe.sit={q,orient,plus,sA,sB,tA,tB}; oe.keuze={}; oe.klaar=false; oe.nr++;
+  oeVragen(); oeTeken();
+  document.getElementById('oe_uitleg').innerHTML='<span class="empty">Kies bij elke vraag een antwoord en klik op Controleer.</span>';
+}
+function oeNaam(q){ return q===2?'α-deeltje':q>0?'proton':'elektron'; }
+function oeAntw(){
+  const {q,sA,sB}=oe.sit, dV=Math.abs(sB-sA)<1e-6?0:sB-sA, w=Math.sign(-q*dV);
+  return {arbeid:['negatief','nul','positief'][w+1], ekin:['neemt af','blijft gelijk','neemt toe'][w+1],
+          epot:['neemt toe','blijft gelijk','neemt af'][w+1], pot:['neemt af','blijft gelijk','neemt toe'][Math.sign(dV)+1],
+          u:['negatief','nul','positief'][Math.sign(-dV)+1], w};
+}
+function oePunt(s,t){ const {orient,plus}=oe.sit;
+  if(orient==='v') return [plus==='links'?OX1-s*(OX1-OX0):OX0+s*(OX1-OX0), OY0+t*(OY1-OY0)];
+  return [OX0+t*(OX1-OX0), plus==='boven'?OY1-s*(OY1-OY0):OY0+s*(OY1-OY0)]; }
+function oeTeken(){
+  const ctx=octx, S=oe.sit; ctx.clearRect(0,0,OW,OH); ctx.fillStyle='#fbfcfd'; ctx.fillRect(0,0,OW,OH);
+  if(S.orient==='v'){
+    const xp=S.plus==='links'?OX0-22:OX1+6, xm=S.plus==='links'?OX1+6:OX0-22;
+    ctx.fillStyle='#fde2e4'; ctx.fillRect(xp,OY0-14,16,OY1-OY0+28); ctx.fillStyle='#dbeafe'; ctx.fillRect(xm,OY0-14,16,OY1-OY0+28);
+    for(let i=0;i<7;i++){ const y=OY0+i*(OY1-OY0)/6+4; txt(ctx,'+',xp+8,y,{c:POS,w:700,a:'center'}); txt(ctx,'−',xm+8,y,{c:NEG,w:700,a:'center'}); }
+    const d=S.plus==='links'?1:-1;
+    for(let i=0;i<5;i++){ const y=OY0+12+i*(OY1-OY0-24)/4; ctx.strokeStyle=LIJN; ctx.lineWidth=1.1; ctx.beginPath(); ctx.moveTo(OX0+4,y); ctx.lineTo(OX1-4,y); ctx.stroke(); kop(ctx,(OX0+OX1)/2+40*d,y,d>0?0:Math.PI,LIJN); }
+  } else {
+    const yp=S.plus==='boven'?OY0-22:OY1+6, ym=S.plus==='boven'?OY1+6:OY0-22;
+    ctx.fillStyle='#fde2e4'; ctx.fillRect(OX0-14,yp,OX1-OX0+28,16); ctx.fillStyle='#dbeafe'; ctx.fillRect(OX0-14,ym,OX1-OX0+28,16);
+    for(let i=0;i<11;i++){ const x=OX0+i*(OX1-OX0)/10; txt(ctx,'+',x,yp+13,{c:POS,w:700,a:'center'}); txt(ctx,'−',x,ym+13,{c:NEG,w:700,a:'center'}); }
+    const d=S.plus==='boven'?1:-1;
+    for(let i=0;i<7;i++){ const x=OX0+14+i*(OX1-OX0-28)/6; ctx.strokeStyle=LIJN; ctx.lineWidth=1.1; ctx.beginPath(); ctx.moveTo(x,OY0+4); ctx.lineTo(x,OY1-4); ctx.stroke(); kop(ctx,x,(OY0+OY1)/2+30*d,d>0?Math.PI/2:-Math.PI/2,LIJN); }
+  }
+  const [ax,ay]=oePunt(S.sA,S.tA), [bx,by]=oePunt(S.sB,S.tB), L=Math.hypot(bx-ax,by-ay), ux=(bx-ax)/L, uy=(by-ay)/L;
+  ctx.setLineDash([6,5]); pijl(ctx,ax+ux*16,ay+uy*16,bx-ux*6,by-uy*6,'#1D2A36',1.6); ctx.setLineDash([]);
+  ctx.fillStyle='#1D2A36'; ctx.beginPath(); ctx.arc(bx,by,4.5,0,7); ctx.fill();
+  bolLading(ctx,ax,ay,S.q,13);
+  const lab=(t,x,y)=>{ ctx.fillStyle='rgba(251,252,253,.9)'; ctx.fillRect(x-9,y-14,18,18); txt(ctx,t,x,y,{w:700,s:16,a:'center'}); };
+  lab('A',ax-ux*28+uy*0,ay-uy*28+5); lab('B',bx+ux*20,by+uy*20+5);
+  if(oe.klaar){ // kracht in A
+    let fx=0,fy=0; if(S.orient==='v') fx=(S.plus==='links'?1:-1)*(S.q>0?1:-1); else fy=(S.plus==='boven'?1:-1)*(S.q>0?1:-1);
+    const Lf=S.q===2?62:44, sx=ax+fx*15, sy=ay+fy*15; pijl(ctx,sx,sy,sx+fx*Lf,sy+fy*Lf,'#d64550',2);
+    const tx=sx+fx*Lf+(fx?fx*12:14), ty=sy+fy*Lf+(fy?fy*14:4); txt(ctx,'F',tx,ty+5,{c:'#d64550',w:700,s:15,a:'center'});
+    ctx.strokeStyle='#d64550'; ctx.lineWidth=1.2; ctx.beginPath(); ctx.moveTo(tx-5,ty-10); ctx.lineTo(tx+6,ty-10); ctx.stroke(); kop(ctx,tx+7,ty-10,0,'#d64550',5);
+  }
+  document.getElementById('oe_titel').textContent='Situatie '+oe.nr+' · Een '+oeNaam(S.q)+' beweegt van A naar B';
+}
+function oeVragen(){
+  const a=oe.klaar?oeAntw():null;
+  document.getElementById('oe_vragen').innerHTML=OV.map(([k,t,opts])=>
+    `<div style="margin-bottom:8px"><div style="font-size:0.9rem;font-weight:600;margin-bottom:4px">${t}</div><div class="seg" style="margin-bottom:0;flex-wrap:wrap">`+
+    opts.map(o=>{ let st=''; if(a){ if(o===a[k]) st='background:#DCFCE7;border-color:#16a34a;color:#14532d'; else if(oe.keuze[k]===o) st='background:#FEE2E2;border-color:#dc2626;color:#7f1d1d'; }
+      return `<button data-k="${k}" data-o="${o}" class="${!a&&oe.keuze[k]===o?'active':''}" style="${st}">${o}</button>`; }).join('')+`</div></div>`).join('');
+  document.querySelectorAll('#oe_vragen button').forEach(b=>b.onclick=()=>{ if(oe.klaar) return; oe.keuze[b.dataset.k]=b.dataset.o; oeVragen(); });
+}
+function oeUitleg(a){
+  const S=oe.sit, n=oeNaam(S.q), naar=S.q>0?'de − plaat':'de + plaat', geduwd=S.q>0?'geduwd':'getrokken';
+  let z;
+  if(a.w>0) z=`Het ${n} wordt naar ${naar} ${geduwd} en beweegt ook in die zin: <b>mee met de kracht</b>, dus positieve arbeid. Potentiële energie wordt kinetische energie.`;
+  else if(a.w<0) z=`Het ${n} wordt naar ${naar} ${geduwd}, maar beweegt de andere kant op: <b>tegen de kracht in</b>, dus negatieve arbeid. Dat kan alleen als het al snelheid had. Kinetische energie wordt potentiële energie.`;
+  else z=`Het ${n} beweegt evenwijdig met de platen, <b>loodrecht op de kracht</b>. A en B liggen op hetzelfde equipotentiaalvlak: geen arbeid, de energie verandert niet.`;
+  if(S.q<0 && a.w!==0) z+=` Let op: de lading is negatief. De potentiaal ${a.pot}, maar de potentiële energie ${a.epot} (E<sub>pot</sub> = Q · V).`;
+  z+=` U<sub>AB</sub> = V<sub>A</sub> − V<sub>B</sub> is ${a.u}: ${a.u==='positief'?'A ligt dichter bij de + plaat dan B':a.u==='negatief'?'B ligt dichter bij de + plaat dan A':'A en B liggen even ver van de platen'}.`;
+  return z;
+}
+document.getElementById('oe_check').onclick=()=>{
+  if(oe.klaar) return;
+  if(OV.some(([k])=>!oe.keuze[k])){ document.getElementById('oe_uitleg').innerHTML='<span class="empty">Beantwoord eerst alle vijf de vragen.</span>'; return; }
+  oe.klaar=true; const a=oeAntw(), goed=OV.filter(([k])=>oe.keuze[k]===a[k]).length;
+  oe.juist+=goed; oe.totaal+=OV.length; oeVragen(); oeTeken();
+  document.getElementById('oe_uitleg').innerHTML=`<div style="font-weight:700;margin-bottom:4px">${goed} van de 5 juist${goed===5?' — goed zo!':''}</div><div class="k">${oeUitleg(a)}</div>`;
+  document.getElementById('oe_score').textContent='Totaal: '+oe.juist+' van '+oe.totaal+' juist.';
+};
+document.getElementById('oe_nieuw').onclick=oeNieuw;
+oeNieuw();
+window.oeTest={antw:()=>oeAntw(),sit:()=>oe.sit};
+
 /* ---------------- tabbladen ---------------- */
-const VIEWS={meer:'viewMeer',faraday:'viewFaraday',energie:'viewEnergie',analogie:'viewAnalogie'};
+const VIEWS={meer:'viewMeer',faraday:'viewFaraday',energie:'viewEnergie',analogie:'viewAnalogie',oefen:'viewOefen'};
 document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
   const m=t.dataset.mode; Object.entries(VIEWS).forEach(([k,id])=>document.getElementById(id).style.display=k===m?'block':'none');
-  document.getElementById('weergave').style.display=(m==='faraday'||m==='energie'||m==='analogie')?'none':'';
+  document.getElementById('weergave').style.display=(m==='faraday'||m==='energie'||m==='analogie'||m==='oefen')?'none':'';
   if(m==='analogie') an.vuil=true;
   if(m==='meer') tekenMl(); if(m==='faraday') fdTeken();
 }));

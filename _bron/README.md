@@ -117,3 +117,8 @@ Leerlingen krijgen een ingevulde naslag; wisbordvragen per deel (`aso_wisbord.py
 - Bouwen: `python3 _bron/leerstofoverzichten/bouw.py`.
 - Nieuw overzicht: `pandoc bestand.docx -t gfm -o _bron/leerstofoverzichten/<id>.md`, voeg een regel toe in `OVERZICHTEN` in `bouw.py` en bouw opnieuw.
 - Rechtstreeks openen: `leerstofoverzichten.html#4nw-dec` (de laatste keuze wordt onthouden).
+
+## Werkblad potentiaal (`werkblad-potentiaal.html`)
+- `python3 _bron/werkblad/potentiaal_werkblad.py`. Vier situaties (redeneren over arbeid, energie, potentiaal) + drie rekenopgaven. Past op 3 blz. A4.
+- Oplossingen: `werkblad-potentiaal.html?leerkracht`, of voor iedereen met `OPLOSSINGEN_VRIJ = true` (VRIJGAVE in de pagina).
+- In de tool Potentiaal staat dezelfde oefening als tab "Oefenen" (willekeurige situaties met controle), bron in `elektrisch-veld.html` (OEFENEN).
