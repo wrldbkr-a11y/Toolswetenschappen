@@ -636,7 +636,7 @@
   </div>
 
   <div id="viewEnergie" style="display:none;">
-  <p class="sub">Een geladen deeltje tussen twee platen. Laat het los en volg de energie. We kiezen de potentiële energie <b>nul op de negatieve plaat</b>, zoals bij zwaartekracht nul op de grond.</p>
+  <p class="sub">Een geladen deeltje tussen twee platen. Laat het los of schiet het weg tegen de kracht in, en volg de energie. We kiezen de potentiële energie <b>nul op de negatieve plaat</b>, zoals bij zwaartekracht nul op de grond.</p>
   <div class="grid">
     <div class="panel">
       <h2>Homogeen veld: energie en potentiaal</h2>
@@ -659,7 +659,11 @@
         <input type="range" id="en_d" min="2" max="10" step="1" value="5">
       </div>
       <label style="display:flex;gap:8px;align-items:center;font-size:0.88rem;margin-bottom:6px"><input type="checkbox" id="en_eq" checked> toon equipotentiaalvlakken</label>
-      <div class="seg" style="margin-top:10px"><button id="en_los">▶ Loslaten</button><button id="en_reset">↻ Terug naar start</button></div>
+      <div class="field-row">
+        <div class="field-label"><span>Beginenergie bij wegschieten</span><span class="val num" id="en_E0Val"></span></div>
+        <input type="range" id="en_E0" min="50" max="1500" step="50" value="300">
+      </div>
+      <div class="seg" style="margin-top:10px"><button id="en_los">▶ Loslaten</button><button id="en_schiet">➚ Wegschieten</button><button id="en_reset">↻ Terug naar start</button></div>
       <h2 style="margin-top:10px;">Uitlezing</h2>
       <div class="readout" id="en_readout"></div>
     </div>
@@ -2312,13 +2316,23 @@ document.querySelectorAll('#fd_vb button').forEach(b=>b.onclick=()=>{ document.q
 /* ---------------- ENERGIE EN POTENTIAAL ---------------- */
 const ecv=document.getElementById('en_cv'), ectx=hd(ecv), EW=ecv._w, EH=ecv._h;
 const DL={p:{q:1,m:1.673e-27,n:'proton'},e:{q:-1,m:9.109e-31,n:'elektron'},a:{q:2,m:6.645e-27,n:'α-deeltje'}};
-const en={d:'p',h0:0.5,h:0.5,t0:null};
+const en={d:'p',h0:0.5,h:0.5,t0:null,Ek0:0,schiet:false,eind:''};
+function E0(){ return +document.getElementById('en_E0').value; }
 const XL=70, XR=330, PT=50, PB=262, YP=150; // + plaat links, − plaat rechts
 const GT=330, GB=470;                        // V(x)-grafiek onder de platen, zelfde x-as
 function U(){ return +document.getElementById('en_U').value; } function D(){ return +document.getElementById('en_d').value; }
 function enTeken(now){
   const u=U(), d=D(), p=DL[en.d];
-  if(en.t0!=null){ const doel=p.q>0?0:1, tt=Math.min(1,(now-en.t0)/1800); en.h=en.h0+(doel-en.h0)*tt*tt; if(tt>=1) en.t0=null; }
+  if(en.t0!=null && !en.schiet){ const doel=p.q>0?0:1, tt=Math.min(1,(now-en.t0)/1800); en.h=en.h0+(doel-en.h0)*tt*tt; if(tt>=1){ en.t0=null; en.eind=''; } }
+  if(en.t0!=null && en.schiet){
+    // tegen de kracht in: proton naar de + plaat (h stijgt), elektron naar de − plaat (h daalt)
+    const zin=p.q>0?1:-1, L=en.Ek0/(Math.abs(p.q)*u);          // afstand tot het keerpunt (deel van de plaatafstand)
+    const voor=zin>0?1-en.h0:en.h0, achter=zin>0?en.h0:1-en.h0;   // afstand tot de plaat voor en achter
+    const tau=(now-en.t0)/1400, x=L*(2*tau-tau*tau);              // eenparig vertraagd, daarna terug
+    if(L>=voor && x>=voor){ en.h=en.h0+zin*voor; en.t0=null; en.eind='plaat'; }
+    else if(x<=-achter){ en.h=en.h0-zin*achter; en.t0=null; en.eind='terug'; }
+    else { en.h=en.h0+zin*x; en.eind=tau>=1?'terug':''; }
+  }
   const ctx=ectx; ctx.clearRect(0,0,EW,EH); ctx.fillStyle='#fbfcfd'; ctx.fillRect(0,0,EW,EH);
   const xOf=h=>XR-h*(XR-XL);           // h = afstand tot de − plaat, als deel van de plaatafstand
   const yV=v=>GB-(v/u)*(GB-GT);
@@ -2334,7 +2348,8 @@ function enTeken(now){
   // A (start) en B (nu)
   const xA=xOf(en.h0), xB=xOf(en.h), bewogen=Math.abs(en.h-en.h0)>0.01;
   if(bewogen){ ctx.setLineDash([3,4]); ctx.strokeStyle='#94a3b8'; ctx.lineWidth=1.3; ctx.beginPath(); ctx.arc(xA,YP,10,0,7); ctx.stroke(); ctx.setLineDash([]); }
-  txt(ctx,'A',xA,YP-18,{w:700,a:'center'}); if(bewogen) txt(ctx,'B',xB,YP+30,{w:700,a:'center'});
+  txt(ctx,'A',xA,YP-18,{w:700,a:'center'});
+  if(en.schiet){ const z=p.q>0?-1:1; pijl(ctx,xA+z*12,YP+22,xA+z*40,YP+22,'#64748b',2); txt(ctx,'v',xA+z*50,YP+26,{c:'#64748b',w:700,a:'center'}); txt(ctx,'0',xA+z*50+6,YP+30,{c:'#64748b',w:700,s:9}); } if(bewogen) txt(ctx,'B',xB,YP+30,{w:700,a:'center'});
   bolLading(ctx,xB,YP,p.q,11);
   const dir=p.q>0?1:-1; pijl(ctx,xB+dir*14,YP,xB+dir*(30+10*Math.abs(p.q)),YP,'#d64550',2); txt(ctx,'F',xB+dir*(36+10*Math.abs(p.q)),YP+4,{c:'#d64550',w:700,a:'center'});
   // afstand tot de − plaat
@@ -2353,8 +2368,8 @@ function enTeken(now){
     const y1=yV(V0), y2=yV(V), xb=AX+12; pijl(ctx,xb,y2,xb,y1,'#b45309',1.6); pijl(ctx,xb,y1,xb,y2,'#b45309',1.6);
     ctx.fillStyle='#fbfcfd'; ctx.fillRect(xb+4,(y1+y2)/2-9,96,18); const ym=(y1+y2)/2+4; txt(ctx,'U',xb+6,ym,{w:700,s:13,c:'#b45309'}); txt(ctx,'AB',xb+16,ym+4,{w:700,s:9,c:'#b45309'}); txt(ctx,'= '+(V0-V>0?'+':'−')+nl(Math.abs(V0-V),0)+' V',xb+32,ym,{w:700,s:13,c:'#b45309'}); }
   // ---- energiebalken (in eV) ----
-  const Ep=p.q*V, Ep0=p.q*V0, Ek=Ep0-Ep, Etot=Ep0;
-  const bx=410, zero=250, sc=150/(2*u), bar=(x,v,k,l)=>{ ctx.fillStyle=k; const hpx=v*sc; ctx.fillRect(x,zero-Math.max(0,hpx),40,Math.abs(hpx)); txt(ctx,l,x+20,zero+190,{a:'center',w:700,s:12}); txt(ctx,nl(v,0)+' eV',x+20,(hpx>=0?zero-hpx-6:zero-hpx+16),{a:'center',s:11}); };
+  const Ep=p.q*V, Ep0=p.q*V0, Ek=Math.max(0,en.Ek0+Ep0-Ep), Etot=en.Ek0+Ep0;
+  const bx=410, zero=250, sc=150/Math.max(2*u, en.Ek0+Math.abs(p.q)*u), bar=(x,v,k,l)=>{ ctx.fillStyle=k; const hpx=v*sc; ctx.fillRect(x,zero-Math.max(0,hpx),40,Math.abs(hpx)); txt(ctx,l,x+20,zero+190,{a:'center',w:700,s:12}); txt(ctx,nl(v,0)+' eV',x+20,(hpx>=0?zero-hpx-6:zero-hpx+16),{a:'center',s:11}); };
   ctx.strokeStyle='#1D2A36'; ctx.lineWidth=1.5; ctx.beginPath(); ctx.moveTo(bx-10,zero); ctx.lineTo(bx+170,zero); ctx.stroke();
   bar(bx,Ep,'#2f8f6b','Epot'); bar(bx+60,Ek,'#d97706','Ekin'); bar(bx+120,Etot,'#64748b','Etot');
   txt(ctx,'energie (eV)',bx+80,40,{a:'center',w:700});
@@ -2366,19 +2381,22 @@ function enTeken(now){
    `<div class="readout-row"><span class="k">potentiaal in A: V<sub>A</sub> = E · d<sub>A</sub></span><span class="num">${nl(V0,0)} V</span></div>`+
    `<div class="readout-row"><span class="k">potentiaal in B: V<sub>B</sub> = E · d<sub>B</sub></span><span class="num">${nl(V,0)} V</span></div>`+
    `<div class="readout-row"><span class="k">potentiaalverschil U<sub>AB</sub> = V<sub>A</sub> − V<sub>B</sub></span><span class="num">${tk(Uab)} V</span></div>`+
-   `<div class="readout-row"><span class="k">ΔE<sub>kin</sub> = Q · U<sub>AB</sub> = (${qs}) · (${tk(Uab)} V)</span><span class="num">${tk(Ek)} eV</span></div>`+
+   (en.Ek0>0?`<div class="readout-row"><span class="k">E<sub>kin</sub> in A (wegschieten)</span><span class="num">${nl(en.Ek0,0)} eV</span></div>`:'')+
+   `<div class="readout-row"><span class="k">ΔE<sub>kin</sub> = Q · U<sub>AB</sub> = (${qs}) · (${tk(Uab)} V)</span><span class="num">${tk(Ek-en.Ek0)} eV</span></div>`+
    `<div class="readout-row"><span class="k">E<sub>pot</sub> in B = Q · V<sub>B</sub></span><span class="num">${nl(Ep,0)} eV = ${sci(Ep*1.602e-19,'J')}</span></div>`+
    `<div class="readout-row"><span class="k">snelheid in B</span><span class="num">${sci(v,'m/s')}</span></div>`+
-   `<div class="k" style="margin-top:6px">${p.q>0?'Een positieve lading beweegt <b>met</b> de veldlijnen mee, naar lagere potentiaal: U<sub>AB</sub> is positief.':'Een negatieve lading beweegt <b>tegen</b> de veldlijnen in, naar hogere potentiaal: U<sub>AB</sub> is negatief.'} E<sub>pot</sub> neemt af, E<sub>kin</sub> neemt evenveel toe.</div>`;
+   `<div class="k" style="margin-top:6px">${en.schiet ? (Ek<en.Ek0-0.5 ? 'Het deeltje beweegt <b>tegen</b> de elektrische kracht in. Q en U<sub>AB</sub> hebben een tegengesteld teken: E<sub>kin</sub> neemt af, E<sub>pot</sub> neemt evenveel toe.' : 'Het deeltje is teruggekeerd en beweegt nu <b>met</b> de kracht mee: E<sub>kin</sub> neemt weer toe.') + (en.eind==='plaat'?' Het deeltje had genoeg energie en bereikt de plaat.':en.eind==='terug'?' De beginenergie was te klein om de plaat te bereiken: het deeltje stopt en keert terug.':'') : (p.q>0?'Een positieve lading beweegt <b>met</b> de veldlijnen mee, naar lagere potentiaal: U<sub>AB</sub> is positief.':'Een negatieve lading beweegt <b>tegen</b> de veldlijnen in, naar hogere potentiaal: U<sub>AB</sub> is negatief.')+' E<sub>pot</sub> neemt af, E<sub>kin</sub> neemt evenveel toe.'}</div>`;
+  document.getElementById('en_E0Val').textContent=E0()+' eV';
 }
 let enSleep=false;
-ecv.addEventListener('pointerdown',e=>{ en.t0=null; enSleep=true; ecv.setPointerCapture(e.pointerId); zetH(e); });
+ecv.addEventListener('pointerdown',e=>{ en.t0=null; en.Ek0=0; en.schiet=false; en.eind=''; enSleep=true; ecv.setPointerCapture(e.pointerId); zetH(e); });
 ecv.addEventListener('pointermove',e=>{ if(enSleep) zetH(e); });
 ecv.addEventListener('pointerup',()=>enSleep=false);
 function zetH(e){ const r=ecv.getBoundingClientRect(), x=(e.clientX-r.left)*EW/r.width; en.h0=en.h=Math.round(Math.max(0,Math.min(1,(XR-x)/(XR-XL)))*20)/20; }
-document.querySelectorAll('#en_deeltje button').forEach(b=>b.onclick=()=>{ en.d=b.dataset.d; en.h=en.h0; en.t0=null; document.querySelectorAll('#en_deeltje button').forEach(o=>o.classList.toggle('active',o===b)); });
-document.getElementById('en_los').onclick=()=>{ en.h=en.h0; en.t0=performance.now(); };
-document.getElementById('en_reset').onclick=()=>{ en.h=en.h0; en.t0=null; };
+document.querySelectorAll('#en_deeltje button').forEach(b=>b.onclick=()=>{ en.d=b.dataset.d; en.h=en.h0; en.t0=null; en.Ek0=0; en.schiet=false; en.eind=''; document.querySelectorAll('#en_deeltje button').forEach(o=>o.classList.toggle('active',o===b)); });
+document.getElementById('en_los').onclick=()=>{ en.h=en.h0; en.Ek0=0; en.schiet=false; en.eind=''; en.t0=performance.now(); };
+document.getElementById('en_schiet').onclick=()=>{ en.h=en.h0; en.Ek0=E0(); en.schiet=true; en.eind=''; en.t0=performance.now(); };
+document.getElementById('en_reset').onclick=()=>{ en.h=en.h0; en.t0=null; en.Ek0=0; en.schiet=false; en.eind=''; };
 
 /* ---------------- ZWAARTEVELD EN ELEKTRISCH VELD (analogie) ---------------- */
 const acv=document.getElementById('an_cv'), actx=hd(acv), AW=acv._w, AH=acv._h;
