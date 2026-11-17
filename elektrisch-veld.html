@@ -2377,6 +2377,14 @@ function enTeken(now){
   const E=u/(d*0.01), v=Math.sqrt(Math.max(0,2*Ek*1.602e-19/p.m)), qs=(p.q>0?'+':'−')+(Math.abs(p.q)>1?Math.abs(p.q):'')+'e', Uab=V0-V;
   const tk=x=>(x>0?'+':x<0?'−':'')+nl(Math.abs(x),0);
   document.getElementById('en_UVal').textContent=u+' V'; document.getElementById('en_dVal').textContent=d+' cm · E = '+nl(E,0)+' N/C';
+  if(!bewogen && en.t0==null){
+    document.getElementById('en_readout').innerHTML=
+     `<div class="readout-row"><span class="k">potentiaal in A: V<sub>A</sub> = E · d<sub>A</sub></span><span class="num">${nl(V0,0)} V</span></div>`+
+     `<div class="readout-row"><span class="k">E<sub>pot</sub> in A = Q · V<sub>A</sub></span><span class="num">${nl(Ep0,0)} eV</span></div>`+
+     `<div class="k" style="margin-top:6px"><b>B</b> is de plaats waar het deeltje naartoe gaat. Klik op <b>Loslaten</b> of <b>Wegschieten</b>: dan verschijnt B in de tekening en in de grafiek.</div>`;
+    document.getElementById('en_E0Val').textContent=E0()+' eV';
+    return;
+  }
   document.getElementById('en_readout').innerHTML=
    `<div class="readout-row"><span class="k">potentiaal in A: V<sub>A</sub> = E · d<sub>A</sub></span><span class="num">${nl(V0,0)} V</span></div>`+
    `<div class="readout-row"><span class="k">potentiaal in B: V<sub>B</sub> = E · d<sub>B</sub></span><span class="num">${nl(V,0)} V</span></div>`+
