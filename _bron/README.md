@@ -111,3 +111,9 @@ Leerlingen krijgen een ingevulde naslag; wisbordvragen per deel (`aso_wisbord.py
 - `potentiaal.html` maak je met `python3 _bron/ev/potentiaal.py`, daarna `python3 _bron/lesdoelen/nw_lesdoelen.py` (lesdoelen 3.x en 4.x).
 - Een tab rechtstreeks openen: `potentiaal.html#energie`, `#homogeen`, `#analogie`.
 - Knop "Bordweergave": volledig scherm zonder titel en lesdoelen. In het tabblad Homogeen veld staan het veld en de grafieken van E, V en E_p onder elkaar, met dezelfde x-as, en alles past op één scherm.
+
+## Leerstofoverzichten (`leerstofoverzichten.html`)
+- Bronnen: `_bron/leerstofoverzichten/*.md` (één bestand per klas en examen, tekst uit de Word-overzichten). `bouw.py` maakt er één pagina van met knoppen per klas en examen; `sjabloon.html` is de opmaak.
+- Bouwen: `python3 _bron/leerstofoverzichten/bouw.py`.
+- Nieuw overzicht: `pandoc bestand.docx -t gfm -o _bron/leerstofoverzichten/<id>.md`, voeg een regel toe in `OVERZICHTEN` in `bouw.py` en bouw opnieuw.
+- Rechtstreeks openen: `leerstofoverzichten.html#4nw-dec` (de laatste keuze wordt onthouden).

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="nl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Leerstofoverzichten · Wetenschappen</title>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#EEF2F5;--paper:#fff;--ink:#1D2A36;--muted:#51606E;--line:#CBD5DE;--c:#C99406;--c2:#8A6604;color-scheme:light}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font-size:1.0625rem;line-height:1.5}
+main{max-width:62rem;margin:0 auto;padding:1.5rem 1.1rem 4rem}
+.terug{font-size:.95rem;color:var(--muted);text-decoration:none}
+h1{font-size:clamp(1.7rem,5vw,2.3rem);line-height:1.1;margin:.6rem 0 .3rem}
+.uitleg{margin:0 0 1rem;color:var(--muted)}
+nav{position:sticky;top:0;z-index:5;background:var(--bg);padding:.6rem 0;border-bottom:1px solid var(--line);display:flex;flex-wrap:wrap;gap:8px 18px}
+.groep{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.klas{font-weight:700;min-width:3.2rem}
+nav button{font:inherit;font-size:.92rem;border:1.5px solid var(--line);background:var(--paper);color:var(--ink);border-radius:999px;padding:3px 12px;cursor:pointer}
+nav button:hover{border-color:var(--c)}
+nav button[aria-pressed="true"]{background:var(--c2);border-color:var(--c2);color:#fff}
+h2{font-size:1.5rem;margin:1.4rem 0 .1rem}
+.bron{margin:0 0 1rem;color:var(--muted);font-size:.9rem}
+.lso > p{margin:.4rem 0}
+table{width:100%;border-collapse:collapse;background:var(--paper);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin:0 0 1.4rem}
+th{background:#FBF3DC;text-align:left;padding:10px 12px;font-size:1.1rem;border-bottom:2px solid var(--c)}
+td{padding:8px 12px;border-top:1px solid var(--line);vertical-align:top}
+td:first-child{width:30%;font-size:.95rem}
+td[colspan]{width:auto!important}
+td b,th b{font-weight:700}
+@media (max-width:640px){td{display:block;width:auto!important;border-top:0;padding:4px 12px}td:first-child{border-top:1px solid var(--line);padding-top:10px;font-weight:700}}
+@media print{nav,.terug,.uitleg{display:none}body{background:#fff;font-size:11pt}.lso[hidden]{display:none}main{padding:0}}
+</style></head><body><main>
+<a class="terug" href="index.html">← Alle tools</a>
+<h1>Leerstofoverzichten</h1>
+<p class="uitleg">Kies je klas en je examen. Zoeken in een overzicht: Ctrl + F.</p>
+<nav aria-label="Kies een overzicht">
+<!--NAV-->
+</nav>
+<!--INHOUD-->
+<p class="uitleg" style="margin-top:2rem;font-size:.85rem">Vakgroep wetenschappen · Maria Assumpta Lyceum</p>
+</main>
+<script>
+(function(){
+  const knoppen=[...document.querySelectorAll('nav button')];
+  const secties=[...document.querySelectorAll('.lso')];
+  function toon(id,scroll){
+    if(!secties.some(s=>s.dataset.id===id)) id=secties[0].dataset.id;
+    secties.forEach(s=>s.hidden=s.dataset.id!==id);
+    knoppen.forEach(k=>k.setAttribute('aria-pressed',k.dataset.id===id));
+    try{localStorage.setItem('lso-keuze',id)}catch(e){}
+    if(location.hash!=='#'+id) history.replaceState(null,'','#'+id);
+    if(scroll) window.scrollTo({top:0});
+  }
+  knoppen.forEach(k=>k.addEventListener('click',()=>toon(k.dataset.id,true)));
+  let start=location.hash.slice(1);
+  if(!start){try{start=localStorage.getItem('lso-keuze')||''}catch(e){}}
+  toon(start,false);
+  window.addEventListener('hashchange',()=>toon(location.hash.slice(1),true));
+})();
+</script>
+</body></html>
