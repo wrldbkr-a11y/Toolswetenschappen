@@ -54,7 +54,8 @@ def cel_regels(regel):
         return regel
     regel = re.sub(r'\|\s*-\s+(?=\d)', '| ', regel)
     regel = DOEL.sub(' <br>• ', regel)
-    regel = re.sub(r'(?<=[.)!])\s+(?=(?:Ik|Je)\b)', ' <br>• ', regel)
+    regel = re.sub(r'(?<=[^•\s|])\s+(?=Ik\b)', ' <br>• ', regel)
+    regel = re.sub(r'(?<=[.)!])\s+(?=Je\b)', ' <br>• ', regel)
     regel = SUBNR.sub(' <br>', regel)
     regel = re.sub(r'(Lesdoelen\s*:?)\s+(?!\|)', r'<b>\1</b><br>', regel)
     regel = re.sub(r'\|\s*<br>', '| ', regel)
@@ -77,11 +78,36 @@ def omzetten(md):
     # paragraaftitels in een cel vet
     h = re.sub(r'(<td>|<br>)\s*(\d+\.\d+(?:\.\d+)?\.?\s[^<•]*?)\s*(?=<br>|</td>)', r'\1<b>\2</b>', h)
     # rij met lege rechtercel: één brede cel
-    h = re.sub(r'<(td|th)>((?:(?!</\1>).)*?\S(?:(?!</\1>).)*?)</\1>\s*<\1>\s*</\1>', r'<\1 colspan="2">\2</\1>', h, flags=re.S)
+    h = re.sub(r'<tr>(.*?)</tr>', breed, h, flags=re.S)
     h = re.sub(r'<th>\s*</th>', '<th></th>', h)
     # lege rijen weg
     h = re.sub(r'<tr>\s*(<td>\s*</td>\s*)+</tr>', '', h)
+    h = re.sub(r'<td([^>]*)>(.*?)</td>', lambda m: f'<td{m.group(1)}>' + doelen_klikbaar(m.group(2)) + '</td>', h, flags=re.S)
     return h
+
+
+def breed(m):
+    cellen = re.findall(r'<(td|th)>(.*?)</\1>', m.group(1), flags=re.S)
+    if len(cellen) == 2 and cellen[0][1].strip() and not cellen[1][1].strip():
+        t, inhoud = cellen[0]
+        return f'<tr>\n<{t} colspan="2">{inhoud}</{t}>\n</tr>'
+    return m.group(0)
+
+
+def doelen_klikbaar(cel):
+    """Elk lesdoel (regel die met • of Ik/Je begint) wordt een klikbaar stuk."""
+    uit = []
+    for stuk in re.split(r'<br\s*/?>', cel):
+        kaal = re.sub(r'<[^>]+>', '', stuk).strip()
+        if re.match(r'^(•\s*)?(Ik|Je|ik|je)\b', kaal):
+            stuk = re.sub(r'^(\s*)•\s*', r'\1', stuk)
+            uit.append(f'<span class="doel" tabindex="0">{stuk.strip()}</span>')
+        else:
+            uit.append(stuk)
+    tekst = '<br>'.join(uit)
+    # een lesdoel is al een eigen regel: geen extra witregel ervoor of erna
+    tekst = re.sub(r'(</span>)<br>', r'\1', tekst)
+    return re.sub(r'<br>(<span class="doel")', r'\1', tekst)
 
 
 def titel_en_inhoud(h):

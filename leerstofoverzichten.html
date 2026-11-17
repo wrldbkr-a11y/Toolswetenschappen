@@ -25,12 +25,18 @@ td{padding:8px 12px;border-top:1px solid var(--line);vertical-align:top}
 td:first-child{width:30%;font-size:.95rem}
 td[colspan]{width:auto!important}
 td b,th b{font-weight:700}
+.doel{display:block;cursor:zoom-in;border-radius:6px;padding:1px 4px 1px 1.1em;margin:0 -4px;text-indent:-.8em}
+.doel::before{content:"•";display:inline-block;width:.8em;text-indent:0}
+.doel:hover,.doel:focus-visible{background:#FBF3DC;outline:none}
+#groot{position:fixed;inset:0;z-index:20;background:rgba(29,42,54,.55);display:flex;align-items:center;cursor:zoom-out}
+#groot[hidden]{display:none}
+#groot div{width:100%;background:var(--paper);border-top:6px solid var(--c);border-bottom:6px solid var(--c);padding:4vh 5vw;font-size:clamp(1.6rem,4.2vw,3.6rem);line-height:1.3;font-weight:700}
 @media (max-width:640px){td{display:block;width:auto!important;border-top:0;padding:4px 12px}td:first-child{border-top:1px solid var(--line);padding-top:10px;font-weight:700}}
 @media print{nav,.terug,.uitleg{display:none}body{background:#fff;font-size:11pt}.lso[hidden]{display:none}main{padding:0}}
 </style></head><body><main>
 <a class="terug" href="index.html">← Alle tools</a>
 <h1>Leerstofoverzichten</h1>
-<p class="uitleg">Kies je klas en je examen. Zoeken in een overzicht: Ctrl + F.</p>
+<p class="uitleg">Kies je klas en je examen. Klik op een lesdoel om het groot te tonen; klik opnieuw om het te sluiten. Zoeken: Ctrl + F.</p>
 <nav aria-label="Kies een overzicht">
 <div class="groep"><span class="klas">3NW</span><button type="button" data-id="3nw-dec">PW december</button><button type="button" data-id="3nw-jun">2de en 3de trimester</button></div>
 <div class="groep"><span class="klas">4NW</span><button type="button" data-id="4nw-dec">PW december</button><button type="button" data-id="4nw-pasen">2de en 3de trimester</button></div>
@@ -58,7 +64,7 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td><b>1.1 Lichtbronnen en donkere lichamen (p12-14)</b><br>• Ik kan lichtbronnen en donkere lichamen van elkaar onderscheiden. <br><b>1.2 Voortplanting van het licht en soorten lichtbundels(p15-19)</b><br>• Je kan uitleggen wat een optische middenstof is en hier 4 voorbeelden van noteren. <br>• Ik geef weer op welke manier licht zich voortplant in een optische middenstof en kan aangeven dat de stralengang omkeerbaar is. <br>• Ik onderscheid de drie soorten lichtbundels (divergerend, convergerend en evenwijdig ) van elkaar, kan ze herkennen op een tekening en ook zelf tekenen. <br><b>1.3 Schaduwvorming (p20-23)</b><br>• Ik kan noteren van welke eigenschap van het licht schaduwvorming het gevolg is. <br>• Ik van een tekening waarop aarde, maan en zon afgebeeld zijn afleiden of er maans- of zonsverduistering plaatsvindt. Of een gedeeltelijke maan-of zonsverduistering. <br>• Ik kan uitleggen waarom er (gedeeltelijke) zonsverduistering plaatsvindt</td>
+<td><b>1.1 Lichtbronnen en donkere lichamen (p12-14)</b><span class="doel" tabindex="0">Ik kan lichtbronnen en donkere lichamen van elkaar onderscheiden.</span><b>1.2 Voortplanting van het licht en soorten lichtbundels(p15-19)</b><span class="doel" tabindex="0">Je kan uitleggen wat een optische middenstof is en hier 4 voorbeelden van noteren.</span><span class="doel" tabindex="0">Ik geef weer op welke manier licht zich voortplant in een optische middenstof en kan aangeven dat de stralengang omkeerbaar is.</span><span class="doel" tabindex="0">Ik onderscheid de drie soorten lichtbundels (divergerend, convergerend en evenwijdig ) van elkaar, kan ze herkennen op een tekening en ook zelf tekenen.</span><b>1.3 Schaduwvorming (p20-23)</b><span class="doel" tabindex="0">Ik kan noteren van welke eigenschap van het licht schaduwvorming het gevolg is.</span><span class="doel" tabindex="0">Ik van een tekening waarop aarde, maan en zon afgebeeld zijn afleiden of er maans- of zonsverduistering plaatsvindt. Of een gedeeltelijke maan-of zonsverduistering.</span><span class="doel" tabindex="0">Ik kan uitleggen waarom er (gedeeltelijke) zonsverduistering plaatsvindt</span></td>
 </tr>
 <tr>
 <td>2. Zien door weerkaatsing (p24-48)</td>
@@ -66,7 +72,7 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td><b>2.1 Lichamen zien p 24</b><br>• Ik toon aan wanneer je lichtbronnen kunt zien en wanneer je donkere lichamen kunt zien door absorptie en/of weerkaatsing. (Donkere lichamen kan je zien omdat het licht vanuit de lichtbron op het lichaam en in onze ogen weerkaatst). <br><b>2.2 Weerkaatsing op een vlak spiegelend oppervlak p 29</b><br>• Ik omschrijf de begrippen invalshoek, weerkaatsingshoek, invalspunt en normaal en kan ze op een tekening aanduiden. <br>• Ik kan omschrijven aan welke wetten de weerkaatsing van het licht voldoet. <br>• Ik teken de stralengang van het licht in een figuur van de weerkaatsing. <br><b>2.3 Regelmatige en diffuse weerkaatsing p 34</b><br>• Ik noteer verschil weer tussen regelmatige en diffuse weerkaatsing in woorden en kan dit ook tekenen. (“Weerkaatste stralen” moet in je antwoord voorkomen) <br>• Ik kan aan de hand van een gegeven voorwerp uitleggen hoe je kan zien dat een voorwerp een regelmatig of onregelmatig oppervlak heeft. <br><b>2.4 Kenmerken van het beeld bij de vlakke spiegel p 38</b><br>• Ik geef de vijf kenmerken weer van het beeld bij een vlakke spiegel. <br>• Ik kan het beeld van een voorwerp (potlood) door een spiegel construeren. <br><b>2.5 Gezichtveld</b><br>• Ik kan het gezichtsveld van een spiegel tekenen. (Volg hiervoor het stappenplan) <br>• Ik kan het belang van het gezichtsveld door een spiegel in het dagelijks leven met voorbeelden aangeven.</td>
+<td><b>2.1 Lichamen zien p 24</b><span class="doel" tabindex="0">Ik toon aan wanneer je lichtbronnen kunt zien en wanneer je donkere lichamen kunt zien door absorptie en/of weerkaatsing. (Donkere lichamen kan je zien omdat het licht vanuit de lichtbron op het lichaam en in onze ogen weerkaatst).</span><b>2.2 Weerkaatsing op een vlak spiegelend oppervlak p 29</b><span class="doel" tabindex="0">Ik omschrijf de begrippen invalshoek, weerkaatsingshoek, invalspunt en normaal en kan ze op een tekening aanduiden.</span><span class="doel" tabindex="0">Ik kan omschrijven aan welke wetten de weerkaatsing van het licht voldoet.</span><span class="doel" tabindex="0">Ik teken de stralengang van het licht in een figuur van de weerkaatsing.</span><b>2.3 Regelmatige en diffuse weerkaatsing p 34</b><span class="doel" tabindex="0">Ik noteer verschil weer tussen regelmatige en diffuse weerkaatsing in woorden en kan dit ook tekenen. (“Weerkaatste stralen” moet in je antwoord voorkomen)</span><span class="doel" tabindex="0">Ik kan aan de hand van een gegeven voorwerp uitleggen hoe je kan zien dat een voorwerp een regelmatig of onregelmatig oppervlak heeft.</span><b>2.4 Kenmerken van het beeld bij de vlakke spiegel p 38</b><span class="doel" tabindex="0">Ik geef de vijf kenmerken weer van het beeld bij een vlakke spiegel.</span><span class="doel" tabindex="0">Ik kan het beeld van een voorwerp (potlood) door een spiegel construeren.</span><b>2.5 Gezichtveld</b><span class="doel" tabindex="0">Ik kan het gezichtsveld van een spiegel tekenen. (Volg hiervoor het stappenplan)</span><span class="doel" tabindex="0">Ik kan het belang van het gezichtsveld door een spiegel in het dagelijks leven met voorbeelden aangeven.</span></td>
 </tr>
 <tr>
 <td>3. Lichtbreking (p 49-59)</td>
@@ -74,21 +80,21 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td></td>
-<td>• Ik kan uitleggen wat lichtbreking is en wanneer het optreedt. <br>• Ik kan de stralengang van het licht in een figuur van de lichtbreking bij de overgang van een optisch ijle naar een optisch dichte middenstof en omgekeerd tekenen. <br>• Ik kan met de correcte terminologie verwoorden wat met een lichtstraal gebeurt bij breking. Vb. Bij overgang van optisch ijl naar een optisch dichte middenstof breekt de lichtstraal naar de normaal toe. (zie ook groene kader p 52) <br>• Ik kan bij breking van het licht het verband tussen invalshoek en brekingshoek noteren (bij overgang van het licht van ijl naar dicht is de invalshoek groter dan de brekingshoek. <br>• Ik kan de schijnbare verhoging van een voorwerp in water verklaren aan de hand van een tekening. <br>• Ik kan de voorwaarden voor totale weerkaatsing noteren en de uitleg hiervan toepassen op concrete situaties. <br>• Ik kan de stralengang bij totale weerkaatsing tekenen. <br>• Ik kan een fata morgana verklaren aan de hand van een tekening <br>• Ik kan de werking van een glasvezelkabel (fiber)uitleggen.</td>
+<td><span class="doel" tabindex="0">Ik kan uitleggen wat lichtbreking is en wanneer het optreedt.</span><span class="doel" tabindex="0">Ik kan de stralengang van het licht in een figuur van de lichtbreking bij de overgang van een optisch ijle naar een optisch dichte middenstof en omgekeerd tekenen.</span><span class="doel" tabindex="0">Ik kan met de correcte terminologie verwoorden wat met een lichtstraal gebeurt bij breking. Vb. Bij overgang van optisch ijl naar een optisch dichte middenstof breekt de lichtstraal naar de normaal toe. (zie ook groene kader p 52)</span><span class="doel" tabindex="0">Ik kan bij breking van het licht het verband tussen invalshoek en brekingshoek noteren (bij overgang van het licht van ijl naar dicht is de invalshoek groter dan de brekingshoek.</span><span class="doel" tabindex="0">Ik kan de schijnbare verhoging van een voorwerp in water verklaren aan de hand van een tekening.</span><span class="doel" tabindex="0">Ik kan de voorwaarden voor totale weerkaatsing noteren en de uitleg hiervan toepassen op concrete situaties.</span><span class="doel" tabindex="0">Ik kan de stralengang bij totale weerkaatsing tekenen.</span><span class="doel" tabindex="0">Ik kan een fata morgana verklaren aan de hand van een tekening</span><span class="doel" tabindex="0">Ik kan de werking van een glasvezelkabel (fiber)uitleggen.</span></td>
 </tr>
 <tr>
 <td>4. Lenzen (p 60- 80)</td>
-<td colspan="2">Definitie <b>beeldafstand en voorwerpsafstand en vergrotingsfactor</b> Vergrotingsfactor Formule N = b/v en N = B/V verschillende betekenis van de symbolen kennen. oef 10, 12 <b>11, 13, 15</b>, <b>17, 20, 21, 25, 27 , 30, 31, 33</b></td>
+<td>Definitie <b>beeldafstand en voorwerpsafstand en vergrotingsfactor</b> Vergrotingsfactor Formule N = b/v en N = B/V verschillende betekenis van de symbolen kennen. oef 10, 12 <b>11, 13, 15</b>, <b>17, 20, 21, 25, 27 , 30, 31, 33</b></td>
 </tr>
 <tr>
-<td>LPD 5F De leerlingen bepalen eigenschappen van het beeld van een voorwerp bij vlakke spiegels en dunne bolle lenzen via constructie.</td>
+<td colspan="2">LPD 5F De leerlingen bepalen eigenschappen van het beeld van een voorwerp bij vlakke spiegels en dunne bolle lenzen via constructie.</td>
 </tr>
 <tr>
 <td></td>
-<td colspan="2"><b>4.1 Lichtbreking bij bolle lenzen p 60</b><br>• Ik kan in een figuur de drie hoofdstralen die gebroken worden door een bolle lens tekenen. <br><b>4.2 Beeldvorming bij bolle lenzen p68</b><br>• Ik kan de de stralengang van het licht voor een figuur bij een bolle lens tekenen en het gevormde beeld tekenen. <br>• Ik kan de kenmerken van het beeld: Stand, grootte, aard en toepassing noteren die bij een constructie hoort. <br><b>4.3 Vergrotingsfactor van een bolle lens p 76</b><br>• Ik ken het principe van de gelijkvormigheid gebruiken om de vergrotingsfactor bij een bolle lens te bereken <br>• Ik gebruik de formule voor het berekenen van de vergrotingsfactor van een lens en kan de formule omvormen om grootte van beeld, voorwerp of beeld- en voorwerpsafstand te berekenen.</td>
+<td><b>4.1 Lichtbreking bij bolle lenzen p 60</b><span class="doel" tabindex="0">Ik kan in een figuur de drie hoofdstralen die gebroken worden door een bolle lens tekenen.</span><b>4.2 Beeldvorming bij bolle lenzen p68</b><span class="doel" tabindex="0">Ik kan de de stralengang van het licht voor een figuur bij een bolle lens tekenen en het gevormde beeld tekenen.</span><span class="doel" tabindex="0">Ik kan de kenmerken van het beeld: Stand, grootte, aard en toepassing noteren die bij een constructie hoort.</span><b>4.3 Vergrotingsfactor van een bolle lens p 76</b><span class="doel" tabindex="0">Ik ken het principe van de gelijkvormigheid gebruiken om de vergrotingsfactor bij een bolle lens te bereken</span><span class="doel" tabindex="0">Ik gebruik de formule voor het berekenen van de vergrotingsfactor van een lens en kan de formule omvormen om grootte van beeld, voorwerp of beeld- en voorwerpsafstand te berekenen.</span></td>
 </tr>
 <tr>
-<td><b>Thema 2 Krachten</b></td>
+<td colspan="2"><b>Thema 2 Krachten</b></td>
 </tr>
 <tr>
 <td><b>Hoofdstuk 1</b></td>
@@ -100,7 +106,7 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Krachten p 103-130</td>
-<td><b>Oef 6, 11, 12, 14 ,15, 16 , 18,</b> 19, <b>21!, 32, 33, 34, 35,</b> 38, 39, <b>42</b> Effect van een kracht p103 <br>• Ik kan het statisch en dynamisch effect van een kracht aan in concrete situaties herkennen en noteren. <br>• Ik kan krachten definiëren als mogelijke oorzaak van vormverandering of verandering in bewegingstoestand. <br><b>1.2 Tekenen van een kracht als vector</b><br>• Ik geef het vectoriële karakter van een kracht weer in concrete situaties en kan de 4 kenmerken van deze vector benoemen. <br>• Ik teken krachten als vectoren met behulp van een schaal. <br>• Ik kan aan de hand van de schaal de grootte van een vector bepalen. <br><b>1.3 Samenstellen van krachten</b><br>• Ik toon via een tekening of berekening aan hoe de vectoriële krachtensom bij krachten met hetzelfde aangrijpingspunt en met dezelfde en/of verschillende richting en zin bepaald wordt. <br><b>1.4 Ontbinden van krachten</b><br>• Ik kan een kracht ontbinden volgens zijn componenten.</td>
+<td><b>Oef 6, 11, 12, 14 ,15, 16 , 18,</b> 19, <b>21!, 32, 33, 34, 35,</b> 38, 39, <b>42</b> Effect van een kracht p103 <span class="doel" tabindex="0">Ik kan het statisch en dynamisch effect van een kracht aan in concrete situaties herkennen en noteren.</span><span class="doel" tabindex="0">Ik kan krachten definiëren als mogelijke oorzaak van vormverandering of verandering in bewegingstoestand.</span><b>1.2 Tekenen van een kracht als vector</b><span class="doel" tabindex="0">Ik geef het vectoriële karakter van een kracht weer in concrete situaties en kan de 4 kenmerken van deze vector benoemen.</span><span class="doel" tabindex="0">Ik teken krachten als vectoren met behulp van een schaal.</span><span class="doel" tabindex="0">Ik kan aan de hand van de schaal de grootte van een vector bepalen.</span><b>1.3 Samenstellen van krachten</b><span class="doel" tabindex="0">Ik toon via een tekening of berekening aan hoe de vectoriële krachtensom bij krachten met hetzelfde aangrijpingspunt en met dezelfde en/of verschillende richting en zin bepaald wordt.</span><b>1.4 Ontbinden van krachten</b><span class="doel" tabindex="0">Ik kan een kracht ontbinden volgens zijn componenten.</span></td>
 </tr>
 </tbody>
 </table>
@@ -119,13 +125,13 @@ td b,th b{font-weight:700}
 <thead>
 <tr>
 <th>Rekenen in fysica p 96-103</th>
-<th colspan="2">+ extra blaadjes Oef 10, 12, 13</th>
+<th>+ extra blaadjes Oef 10, 12, 13</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Lesdoelen:</td>
-<td>• Ik geef meetresultaten weer in de SI-eenheid en in de afgeleide eenheid. <br>• Ik geef meetresultaten weer met het correcte aantal beduidende cijfers. <br>• Ik gebruik de wetenschappelijke notatie om meetresultaten te noteren.</td>
+<td><span class="doel" tabindex="0">Ik geef meetresultaten weer in de SI-eenheid en in de afgeleide eenheid.</span><span class="doel" tabindex="0">Ik geef meetresultaten weer met het correcte aantal beduidende cijfers.</span><span class="doel" tabindex="0">Ik gebruik de wetenschappelijke notatie om meetresultaten te noteren.</span></td>
 </tr>
 
 <tr>
@@ -134,20 +140,17 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td>• Ik toon via een tekening of berekening aan hoe een kracht wordt ontbonden in componenten.</td>
+<td><span class="doel" tabindex="0">Ik toon via een tekening of berekening aan hoe een kracht wordt ontbonden in componenten.</span></td>
 </tr>
 <tr>
-<td>Begrippen:</td>
-<td></td>
+<td colspan="2">Begrippen:</td>
 </tr>
 
 <tr>
-<td><b>Kracht en beweging</b></td>
-<td></td>
+<td colspan="2"><b>Kracht en beweging</b></td>
 </tr>
 <tr>
-<td>LPD 3F De leerlingen stellen krachten vectorieel voor en leggen het verband tussen de verandering van bewegingstoestand van een lichaam en de resulterende kracht.</td>
-<td></td>
+<td colspan="2">LPD 3F De leerlingen stellen krachten vectorieel voor en leggen het verband tussen de verandering van bewegingstoestand van een lichaam en de resulterende kracht.</td>
 </tr>
 <tr>
 <td><b>3.1 Verandering van bewegingstoestand p135-140</b></td>
@@ -155,7 +158,7 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td>• Ik teken de snelheidsvector bij verschillende bewegingstoestanden van een lichaam.</td>
+<td><span class="doel" tabindex="0">Ik teken de snelheidsvector bij verschillende bewegingstoestanden van een lichaam.</span></td>
 </tr>
 
 <tr>
@@ -164,12 +167,11 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td><b>2.2 Resulterende kracht en beweging p154</b><br>• Ik leg het traagheidsbeginsel uit in concrete situaties. <br>• Ik toon aan hoe de bewegingstoestand van een lichaam verandert in concrete situaties in relatie tot de resulterende kracht. <br>• Ik kan de resulterende kracht en het gevolg ervan op de bewegingstoestand weergeven.</td>
+<td><b>2.2 Resulterende kracht en beweging p154</b><span class="doel" tabindex="0">Ik leg het traagheidsbeginsel uit in concrete situaties.</span><span class="doel" tabindex="0">Ik toon aan hoe de bewegingstoestand van een lichaam verandert in concrete situaties in relatie tot de resulterende kracht.</span><span class="doel" tabindex="0">Ik kan de resulterende kracht en het gevolg ervan op de bewegingstoestand weergeven.</span></td>
 </tr>
 
 <tr>
-<td><b>4 Zwaartekracht</b></td>
-<td></td>
+<td colspan="2"><b>4 Zwaartekracht</b></td>
 </tr>
 <tr>
 <td><b>3.1 Zwaartekracht is overal p 153-155</b></td>
@@ -177,7 +179,7 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen</td>
-<td>• Ik toon aan dat de zwaartekracht werkzaam is in het zwaarteveld van een hemellichaam. <br>• Ik geef het verschil weer tussen het zwaarteveld en de zwaartekracht. <br>• Ik toon de kenmerken van de zwaartekracht als vector aan in concrete situaties.</td>
+<td><span class="doel" tabindex="0">Ik toon aan dat de zwaartekracht werkzaam is in het zwaarteveld van een hemellichaam.</span><span class="doel" tabindex="0">Ik geef het verschil weer tussen het zwaarteveld en de zwaartekracht.</span><span class="doel" tabindex="0">Ik toon de kenmerken van de zwaartekracht als vector aan in concrete situaties.</span></td>
 </tr>
 
 <tr>
@@ -186,7 +188,7 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td>• Ik kan het begrip zwaarteveld van een willekeurig hemellichaam beschrijven. <br>• Ik geef in woorden het verband weer tussen de grootte van de zwaartekracht en massa en het verband met de zwaarteveldsterkte. <br>• Ik ken de formule voor het berekenen van de zwaartekracht. <br>• Ik vorm de formule van de zwaartekracht om voor het berekenen van de massa en de zwaarteveldsterkte. <br>• Ik weet dat op andere hemellichamen een andere zwaarteveldsterkte is. <br>• Ik kan de correcte grafiek herkennen die het correcte verband weergeeft tussen zwaartekracht en massa, zwaartekracht en zwaarteveldsterkte, massa en zwaarteveldsterkte.</td>
+<td><span class="doel" tabindex="0">Ik kan het begrip zwaarteveld van een willekeurig hemellichaam beschrijven.</span><span class="doel" tabindex="0">Ik geef in woorden het verband weer tussen de grootte van de zwaartekracht en massa en het verband met de zwaarteveldsterkte.</span><span class="doel" tabindex="0">Ik ken de formule voor het berekenen van de zwaartekracht.</span><span class="doel" tabindex="0">Ik vorm de formule van de zwaartekracht om voor het berekenen van de massa en de zwaarteveldsterkte.</span><span class="doel" tabindex="0">Ik weet dat op andere hemellichamen een andere zwaarteveldsterkte is.</span><span class="doel" tabindex="0">Ik kan de correcte grafiek herkennen die het correcte verband weergeeft tussen zwaartekracht en massa, zwaartekracht en zwaarteveldsterkte, massa en zwaarteveldsterkte.</span></td>
 </tr>
 
 <tr>
@@ -195,7 +197,7 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td></td>
-<td>• Ik geef het verschil weer tussen massa en gewicht. <br>• Ik kan het verschil tussen zwaartekracht, massa en gewicht aan de hand van een voorbeeld uitleggen. <br>• Ik kan het begrip gewichtloosheid uitleggen.</td>
+<td><span class="doel" tabindex="0">Ik geef het verschil weer tussen massa en gewicht.</span><span class="doel" tabindex="0">Ik kan het verschil tussen zwaartekracht, massa en gewicht aan de hand van een voorbeeld uitleggen.</span><span class="doel" tabindex="0">Ik kan het begrip gewichtloosheid uitleggen.</span></td>
 </tr>
 
 <tr>
@@ -204,16 +206,14 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td></td>
-<td>• Ik geef in woorden en vectorieel het verschil weer tussen normaalkracht, zwaartekracht en gewicht.</td>
+<td><span class="doel" tabindex="0">Ik geef in woorden en vectorieel het verschil weer tussen normaalkracht, zwaartekracht en gewicht.</span></td>
 </tr>
 
 <tr>
-<td><b>5. Wrijvingskracht</b></td>
-<td></td>
+<td colspan="2"><b>5. Wrijvingskracht</b></td>
 </tr>
 <tr>
-<td>LPD6F De leerlingen stellen een krachtenbalans op van een systeem om het effect van de resultante te bepalen.</td>
-<td></td>
+<td colspan="2">LPD6F De leerlingen stellen een krachtenbalans op van een systeem om het effect van de resultante te bepalen.</td>
 </tr>
 <tr>
 <td><b>5.1 Statische en dynamische wrijvingskracht (p. 180 – 187)</b></td>
@@ -221,7 +221,7 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td></td>
-<td>• Ik geef het verschil weer tussen de statische wrijvingskracht en de dynamische wrijvingskracht. <br>• Ik kan in voorbeelden herkennen of een statische of dynamische wrijvingskracht werkzaam is. <br>• Ik kan de werking van een ABS-systeem uitleggen of uitleggen wat aquaplaning is met betrekking tot statische en dynamische wrijvingscoëfficiënt.</td>
+<td><span class="doel" tabindex="0">Ik geef het verschil weer tussen de statische wrijvingskracht en de dynamische wrijvingskracht.</span><span class="doel" tabindex="0">Ik kan in voorbeelden herkennen of een statische of dynamische wrijvingskracht werkzaam is.</span><span class="doel" tabindex="0">Ik kan de werking van een ABS-systeem uitleggen of uitleggen wat aquaplaning is met betrekking tot statische en dynamische wrijvingscoëfficiënt.</span></td>
 </tr>
 <tr>
 <td><b>5.2 Verband tussen de maximale statische wrijvingskracht en de normaalkracht (p. 188-194)</b></td>
@@ -229,7 +229,7 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td></td>
-<td>• Ik <b>geef</b> het verband <b>weer</b> tussen de maximale statische wrijvingskracht en de normaalkracht. <br>• Ik <b>gebruik</b> de formule voor het berekenen van de grootte van de statische wrijvingskracht. <br>• Ik <b>vorm</b> de formule van de statische wrijvingskracht <b>om</b> voor het berekenen van de normaalkracht en de statische wrijvingscoëfficiënt. <br>• Ik kan de invloed van statische wrijvingscoëfficiënt bespreken op de wrijvingskracht bespreken.</td>
+<td><span class="doel" tabindex="0">Ik <b>geef</b> het verband <b>weer</b> tussen de maximale statische wrijvingskracht en de normaalkracht.</span><span class="doel" tabindex="0">Ik <b>gebruik</b> de formule voor het berekenen van de grootte van de statische wrijvingskracht.</span><span class="doel" tabindex="0">Ik <b>vorm</b> de formule van de statische wrijvingskracht <b>om</b> voor het berekenen van de normaalkracht en de statische wrijvingscoëfficiënt.</span><span class="doel" tabindex="0">Ik kan de invloed van statische wrijvingscoëfficiënt bespreken op de wrijvingskracht bespreken.</span></td>
 </tr>
 </tbody>
 </table>
@@ -237,7 +237,7 @@ td b,th b{font-weight:700}
 
 <thead>
 <tr>
-<th><b>HOOFDSTUK 6: VEERKRACHT (p. 195)</b> oef 5, 7, 8, 9, 10, 11, 12, 13, 14 (p 212-216)</th>
+<th colspan="2"><b>HOOFDSTUK 6: VEERKRACHT (p. 195)</b> oef 5, 7, 8, 9, 10, 11, 12, 13, 14 (p 212-216)</th>
 </tr>
 </thead>
 <tbody>
@@ -247,10 +247,10 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td colspan="2">• Ik <b>leg uit</b> wat veerkracht is. <br>• Ik <b>teken</b> de veerkracht in concrete situaties <br>• Ik <b>geef</b> in woorden het verband <b>weer</b> tussen de grootte van de veerkracht, de veerconstante en de lengteverandering van een elastisch voorwerp. <br>• Ik ken de formule voor het berekenen van de veerkracht en kan ze omvormen om de veerconstante en uitrekking van de veer te bepalen. <br>• Ik <b>gebruik</b> de omgevormde formules voor de grootte van de veerkracht om vraagstukken op te lossen. <br>• Ik <b>kan omschrijven</b> wat een bepaalde waarde van een veerconstante betekent. <br>• Ik kan <b>grafieken</b> in verband met veerconstante <b>interpreteren.</b> Ik kan het verschil tussen een elastische en plastische vervorming uitleggen en wanneer de wet van Hooke geldig is.</td>
+<td><span class="doel" tabindex="0">Ik <b>leg uit</b> wat veerkracht is.</span><span class="doel" tabindex="0">Ik <b>teken</b> de veerkracht in concrete situaties</span><span class="doel" tabindex="0">Ik <b>geef</b> in woorden het verband <b>weer</b> tussen de grootte van de veerkracht, de veerconstante en de lengteverandering van een elastisch voorwerp.</span><span class="doel" tabindex="0">Ik ken de formule voor het berekenen van de veerkracht en kan ze omvormen om de veerconstante en uitrekking van de veer te bepalen.</span><span class="doel" tabindex="0">Ik <b>gebruik</b> de omgevormde formules voor de grootte van de veerkracht om vraagstukken op te lossen.</span><span class="doel" tabindex="0">Ik <b>kan omschrijven</b> wat een bepaalde waarde van een veerconstante betekent.</span><span class="doel" tabindex="0">Ik kan <b>grafieken</b> in verband met veerconstante <b>interpreteren.</b></span><span class="doel" tabindex="0">Ik kan het verschil tussen een elastische en plastische vervorming uitleggen en wanneer de wet van Hooke geldig is.</span></td>
 </tr>
 <tr>
-<td><b>HOOFDSTUK 7 KRACHTMOMENT (p. 204)</b> (Oef 4, 5, 6, 8, 9, 10, 12, 13, 14 + extra oefening, 25 (zelfstandig alle belangrijke punten aanduiden en voorwaarden voor soort evenwicht noteren)</td>
+<td colspan="2"><b>HOOFDSTUK 7 KRACHTMOMENT (p. 204)</b> (Oef 4, 5, 6, 8, 9, 10, 12, 13, 14 + extra oefening, 25 (zelfstandig alle belangrijke punten aanduiden en voorwaarden voor soort evenwicht noteren)</td>
 </tr>
 <tr>
 <td colspan="2">LPD 7F De leerlingen analyseren de statica van een systeem aan de hand van de krachtmomentenbalans: grafisch en via berekening.</td>
@@ -261,7 +261,7 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td>• Ik kan het concept van een hefboom uitleggen en enkele voorbeelden van hefbomen in het dagelijk leven benoemen. <br>• Ik kan op een tekening van deze voorbeelden de kracht en krachtarm aanduiden. <br>• Ik <b>leg uit</b> wat het moment van een kracht is en wanneer een lichaam in evenwicht is. <br>• Ik kan de krachtenbalans opstellen. Aan de hand van een schets. <br>• Ik kan krachtarm en kracht correct aanduiden op een tekening. <br>• Ik <b>leg</b> aan de hand van het resulterend krachtmoment <b>uit</b> welke draaibeweging een lichaam kan maken. <br>• Ik <b>schets</b> de draaibeweging van een lichaam. <br>• Ik <b>gebruik de formules</b> M= F.r of M= F.r.sinα, die nodig zijn voor het berekenen van het moment van een kracht. <br>• Ik <b>vorm</b> de formules van het moment van een kracht <b>om</b> voor het <b>berekenen</b> van de kracht en de krachtarm. <br>• Ik kan het begrip momentbalans toelichten aan de hand van een voorbeeld. <br>• Ik kan vanuit een momentenbalans de grootte van de gevraagde krachtarm of kracht berekenen.</td>
+<td><span class="doel" tabindex="0">Ik kan het concept van een hefboom uitleggen en enkele voorbeelden van hefbomen in het dagelijk leven benoemen.</span><span class="doel" tabindex="0">Ik kan op een tekening van deze voorbeelden de kracht en krachtarm aanduiden.</span><span class="doel" tabindex="0">Ik <b>leg uit</b> wat het moment van een kracht is en wanneer een lichaam in evenwicht is.</span><span class="doel" tabindex="0">Ik kan de krachtenbalans opstellen. Aan de hand van een schets.</span><span class="doel" tabindex="0">Ik kan krachtarm en kracht correct aanduiden op een tekening.</span><span class="doel" tabindex="0">Ik <b>leg</b> aan de hand van het resulterend krachtmoment <b>uit</b> welke draaibeweging een lichaam kan maken.</span><span class="doel" tabindex="0">Ik <b>schets</b> de draaibeweging van een lichaam.</span><span class="doel" tabindex="0">Ik <b>gebruik de formules</b> M= F.r of M= F.r.sinα, die nodig zijn voor het berekenen van het moment van een kracht.</span><span class="doel" tabindex="0">Ik <b>vorm</b> de formules van het moment van een kracht <b>om</b> voor het <b>berekenen</b> van de kracht en de krachtarm.</span><span class="doel" tabindex="0">Ik kan het begrip momentbalans toelichten aan de hand van een voorbeeld.</span><span class="doel" tabindex="0">Ik kan vanuit een momentenbalans de grootte van de gevraagde krachtarm of kracht berekenen.</span></td>
 </tr>
 <tr>
 <td><b>7.2 Statisch evenwicht (p219)</b></td>
@@ -269,10 +269,10 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td colspan="2">• Ik leg met behulp van het zwaartepunt en het steunpunt het verschil uit tussen stabiel en labiel evenwicht. <br>• Ik teken het steunpunt of het steunvlak van een lichaam. <br>• Ik geef de factoren weer die de stabiliteit van een lichaam vergroten. uitbreiding: Ik weet dat de totale voorwaarde voor evenwicht (geen translatie en geen rotatie vraagt dat zowel de vectoriële som van de krachten als de algebraïsche som van de momenten nul moet zijn.</td>
+<td><span class="doel" tabindex="0">Ik leg met behulp van het zwaartepunt en het steunpunt het verschil uit tussen stabiel en labiel evenwicht.</span><span class="doel" tabindex="0">Ik teken het steunpunt of het steunvlak van een lichaam.</span><span class="doel" tabindex="0">Ik geef de factoren weer die de stabiliteit van een lichaam vergroten. uitbreiding:</span><span class="doel" tabindex="0">Ik weet dat de totale voorwaarde voor evenwicht (geen translatie en geen rotatie vraagt dat zowel de vectoriële som van de krachten als de algebraïsche som van de momenten nul moet zijn.</span></td>
 </tr>
 <tr>
-<td><b>Thema 4: Snelheid</b></td>
+<td colspan="2"><b>Thema 4: Snelheid</b></td>
 </tr>
 <tr>
 <td colspan="2">HOOFDSTUK 1 BASISBEGRIPPEN VAN EEN BEWEGING (p. 236) Oef 1, 2, 3, 6, 7, 9, 11 (p 250-258)</td>
@@ -286,10 +286,10 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td colspan="2">• Ik kan de definitie noteren voor puntmassa, baan, positie, verplaatsing, tijdstip, tijdsverloop, afgelegde weg. <br>• Ik kan snelheid omzetten van m/s naar km/h en omgekeerd.</td>
+<td><span class="doel" tabindex="0">Ik kan de definitie noteren voor puntmassa, baan, positie, verplaatsing, tijdstip, tijdsverloop, afgelegde weg.</span><span class="doel" tabindex="0">Ik kan snelheid omzetten van m/s naar km/h en omgekeerd.</span></td>
 </tr>
 <tr>
-<td>HOOFDSTUK 2 SNELHEID (p. 245) Oef 4, 5 en 6 p (260 – 262) ; Oef 8, 9, 10!, 12, 13!, 16, 18 (p 268 -277)</td>
+<td colspan="2">HOOFDSTUK 2 SNELHEID (p. 245) Oef 4, 5 en 6 p (260 – 262) ; Oef 8, 9, 10!, 12, 13!, 16, 18 (p 268 -277)</td>
 </tr>
 <tr>
 <td><b>2.1 Gemiddelde en ogenblikkelijke snelheid (p. 245)</b></td>
@@ -297,7 +297,7 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td>• Ik leg het begrip snelheid uit. <br>• Ik geef het verschil weer tussen de gemiddelde snelheid en de ogenblikkelijke snelheid.</td>
+<td><span class="doel" tabindex="0">Ik leg het begrip snelheid uit.</span><span class="doel" tabindex="0">Ik geef het verschil weer tussen de gemiddelde snelheid en de ogenblikkelijke snelheid.</span></td>
 </tr>
 <tr>
 <td><b>2.2 Eenparig rechtlijnige beweging (p. 249)</b></td>
@@ -305,7 +305,7 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td>• Ik beschrijf en herken een eenparig rechtlijnige beweging. <br>• Ik kende formule voor het berekenen van de gemiddelde snelheid. <br>• Ik vorm de formule van de gemiddelde snelheid om voor het berekenen van de verplaatsing en het tijdsverloop. <br>• Ik teken de x(t)-grafiek en de v(t)-grafiek van een eenparig rechtlijnige beweging. <br>• Ik kan een x(t) en een v(t)-grafiek interpreteren naar bewegingstoestanden <br>• Ik geef het verband weer tussen de helling van de grafiek en de snelheid van een lichaam. <br>• Ik kan een x(t)-grafiek omvormen naar en v(t)-grafiek. <br>• Ik leg het differentiequotiënt Δx/Δt uit. <br>• Ik kan de oppervlakte onder de snelheidsgrafiek interpreteren als een verplaatsing</td>
+<td><span class="doel" tabindex="0">Ik beschrijf en herken een eenparig rechtlijnige beweging.</span><span class="doel" tabindex="0">Ik kende formule voor het berekenen van de gemiddelde snelheid.</span><span class="doel" tabindex="0">Ik vorm de formule van de gemiddelde snelheid om voor het berekenen van de verplaatsing en het tijdsverloop.</span><span class="doel" tabindex="0">Ik teken de x(t)-grafiek en de v(t)-grafiek van een eenparig rechtlijnige beweging.</span><span class="doel" tabindex="0">Ik kan een x(t) en een v(t)-grafiek interpreteren naar bewegingstoestanden</span><span class="doel" tabindex="0">Ik geef het verband weer tussen de helling van de grafiek en de snelheid van een lichaam.</span><span class="doel" tabindex="0">Ik kan een x(t)-grafiek omvormen naar en v(t)-grafiek.</span><span class="doel" tabindex="0">Ik leg het differentiequotiënt Δx/Δt uit.</span><span class="doel" tabindex="0">Ik kan de oppervlakte onder de snelheidsgrafiek interpreteren als een verplaatsing</span></td>
 </tr>
 </tbody>
 </table>
@@ -371,12 +371,14 @@ td b,th b{font-weight:700}
 <td>de snelheidsvectoren</td>
 </tr>
 <tr>
-<td colspan="2">de traagheid</td>
+<td>de traagheid</td>
 <td>Een lichaam wil zijn bewegingstoestand blijven behouden.</td>
+<td></td>
 </tr>
 <tr>
-<td colspan="2">de traagheidswet</td>
+<td>de traagheidswet</td>
 <td>Als de grootte van de resulterende kracht op een voorwerp nul newton is, behoudt het zijn bewegingstoestand.</td>
+<td></td>
 </tr>
 <tr>
 <td>het veld</td>
@@ -389,8 +391,9 @@ td b,th b{font-weight:700}
 <td>de veldkrachten</td>
 </tr>
 <tr>
-<td colspan="2">de zwaartekracht</td>
+<td>de zwaartekracht</td>
 <td>de aantrekkingskracht die een hemellichaam uitoefent op alle lichamen in zijn omgeving</td>
+<td></td>
 </tr>
 <tr>
 <td>het zwaarteveld</td>
@@ -428,8 +431,9 @@ td b,th b{font-weight:700}
 <td>de ophangpunten</td>
 </tr>
 <tr>
-<td colspan="2">gewichtloos</td>
+<td>gewichtloos</td>
 <td>een lichaam dat geen gewicht heeft omdat het niet ondersteund wordt of geen ophangpunt heeft</td>
+<td></td>
 </tr>
 <tr>
 <td>de normaalkracht</td>
@@ -489,7 +493,7 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen</td>
-<td>• Ik kan het begrip ‘druk’ uitleggen. <br>• Ik kan de formule van druk gebruiken en vorm ze om voor het berekenen van de kracht en de oppervlakte. <br>• Ik gebruik de factoren die druk beïnvloeden om drukverlagende of drukverhogende aspecten bij dagelijkse gebruiksvoorwerpen uit te leggen. (vb. mes, rupsbanden, …) <br>• Ik kan beredeneren wat met de druk gebeurt als de kracht en/ of oppervlakte met een bepaalde factor toenemen of afnemen.</td>
+<td><span class="doel" tabindex="0">Ik kan het begrip ‘druk’ uitleggen.</span><span class="doel" tabindex="0">Ik kan de formule van druk gebruiken en vorm ze om voor het berekenen van de kracht en de oppervlakte.</span><span class="doel" tabindex="0">Ik gebruik de factoren die druk beïnvloeden om drukverlagende of drukverhogende aspecten bij dagelijkse gebruiksvoorwerpen uit te leggen. (vb. mes, rupsbanden, …)</span><span class="doel" tabindex="0">Ik kan beredeneren wat met de druk gebeurt als de kracht en/ of oppervlakte met een bepaalde factor toenemen of afnemen.</span></td>
 </tr>
 <tr>
 <td><b>Hoofdstuk 2</b></td>
@@ -501,11 +505,11 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td><b>2.1 Druk bij gassen (p20-21) Lesdoelen</b></td>
-<td>• Ik kan omschrijven hoe de druk in een gas wordt veroorzaakt. <br>• Ik kan verklaren hoe een kaartje onder aan een omgekeerd glas gevuld met water blijft hangen. <br>• Ik kan verklaren hoe zuignappen werken. <br>• Ik kan met behulp van het deeltjesmodel verklaren waarom de luchtdruk toeneemt bij een hoger temperatuur <br>• Ik kan uitleggen van welke factoren de grootte van de luchtdruk of de atmosferische druk afhankelijk is. <br>• Ik kan de grootte van de kracht die uitgeoefend wordt door een gas berekenen.</td>
+<td><span class="doel" tabindex="0">Ik kan omschrijven hoe de druk in een gas wordt veroorzaakt.</span><span class="doel" tabindex="0">Ik kan verklaren hoe een kaartje onder aan een omgekeerd glas gevuld met water blijft hangen.</span><span class="doel" tabindex="0">Ik kan verklaren hoe zuignappen werken.</span><span class="doel" tabindex="0">Ik kan met behulp van het deeltjesmodel verklaren waarom de luchtdruk toeneemt bij een hoger temperatuur</span><span class="doel" tabindex="0">Ik kan uitleggen van welke factoren de grootte van de luchtdruk of de atmosferische druk afhankelijk is.</span><span class="doel" tabindex="0">Ik kan de grootte van de kracht die uitgeoefend wordt door een gas berekenen.</span></td>
 </tr>
 <tr>
 <td><b>2.2 Meten van gasdruk, overdruk, onderdruk (p 22-27) Lesdoelen</b></td>
-<td>• Ik kan noteren met welke toestellen je luchtdruk en gasdruk meet. <br>• Ik kan uitleggen wat onderdruk en overdruk zijn en van een gegeven toepassing zeggen of het gaat om overdruk of onderdruk. <br>• Ik kan de grootte van de normdruk noteren en gebruik ze in toepassingen.</td>
+<td><span class="doel" tabindex="0">Ik kan noteren met welke toestellen je luchtdruk en gasdruk meet.</span><span class="doel" tabindex="0">Ik kan uitleggen wat onderdruk en overdruk zijn en van een gegeven toepassing zeggen of het gaat om overdruk of onderdruk.</span><span class="doel" tabindex="0">Ik kan de grootte van de normdruk noteren en gebruik ze in toepassingen.</span></td>
 </tr>
 <tr>
 <td><b>Hoofdstuk 3</b></td>
@@ -521,11 +525,11 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen</td>
-<td>• Ik kan uitleggen hoe hydrostatische druk ontstaat. <br>• Ik kan noteren van welke factoren de grootte van de hydrostatische druk afhankelijk en niet afhankelijk is. <br>• Ik kan van een tekening van een proefopstelling afleiden welke factor onderzocht wordt. <br>• Ik kan beredeneren wat in wat het effect is op de grootte van één bepaalde factor als de andere factoren veranderen <br>• Ik gebruik de formule voor het berekenen van de hydrostatische druk en vorm ze om voor het berekenen van de massadichtheid van de vloeistof, de zwaarteveldsterkte en de diepte in de vloeistof.</td>
+<td><span class="doel" tabindex="0">Ik kan uitleggen hoe hydrostatische druk ontstaat.</span><span class="doel" tabindex="0">Ik kan noteren van welke factoren de grootte van de hydrostatische druk afhankelijk en niet afhankelijk is.</span><span class="doel" tabindex="0">Ik kan van een tekening van een proefopstelling afleiden welke factor onderzocht wordt.</span><span class="doel" tabindex="0">Ik kan beredeneren wat in wat het effect is op de grootte van één bepaalde factor als de andere factoren veranderen</span><span class="doel" tabindex="0">Ik gebruik de formule voor het berekenen van de hydrostatische druk en vorm ze om voor het berekenen van de massadichtheid van de vloeistof, de zwaarteveldsterkte en de diepte in de vloeistof.</span></td>
 </tr>
 <tr>
 <td><b>3.2 Beginsel van Pascal (34-43) Lesdoelen</b></td>
-<td>• Ik kan het beginsel van Pascal noteren. <br>• Ik leg uit van welke factoren de grootte van de totale druk in een vloeistof afhankelijk is. <br>• Ik gebruik de formule voor het berekenen van de totale druk in een vloeistof en vorm ze om voor het berekenen van de hydrostatische druk en de atmosferische druk. <br>• Ik kan uitleggen wat de functie is van een hydraulisch systeem. <br>• Ik kan de formule voor in een hydraulisch systeem gebruiken om krachten en oppervlakten te berekenen.</td>
+<td><span class="doel" tabindex="0">Ik kan het beginsel van Pascal noteren.</span><span class="doel" tabindex="0">Ik leg uit van welke factoren de grootte van de totale druk in een vloeistof afhankelijk is.</span><span class="doel" tabindex="0">Ik gebruik de formule voor het berekenen van de totale druk in een vloeistof en vorm ze om voor het berekenen van de hydrostatische druk en de atmosferische druk.</span><span class="doel" tabindex="0">Ik kan uitleggen wat de functie is van een hydraulisch systeem.</span><span class="doel" tabindex="0">Ik kan de formule voor in een hydraulisch systeem gebruiken om krachten en oppervlakten te berekenen.</span></td>
 </tr>
 <tr>
 <td><b>Hoofdstuk 4</b></td>
@@ -541,17 +545,17 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen</td>
-<td colspan="2">• Ik kan noteren wat de archimedeskracht in vloeistoffen is. <br>• Ik kan de kenmerken van de archimedeskrachtvector noteren. <br>• Ik kan de formule voor het berekenen van de archimedeskracht gebruiken en omvormen voor het berekenen van de massadichtheid van de vloeistof, de zwaarteveldsterkte en het volume van het ondergedompelde voorwerp. <br>• Ik kan de formule voor archimedeskracht verklaren aan de hand van een tekening. (p51) <br>• Ik kan met behulp van de archimedeskracht en een krachtenbalans uitleggen wanneer een voorwerp in een vloeistof zal zinken, zweven, stijgen of drijven. <br>• Ik kan uitleggen hoe een vis kan zinken, zweven of drijven (p53)</td>
+<td><span class="doel" tabindex="0">Ik kan noteren wat de archimedeskracht in vloeistoffen is.</span><span class="doel" tabindex="0">Ik kan de kenmerken van de archimedeskrachtvector noteren.</span><span class="doel" tabindex="0">Ik kan de formule voor het berekenen van de archimedeskracht gebruiken en omvormen voor het berekenen van de massadichtheid van de vloeistof, de zwaarteveldsterkte en het volume van het ondergedompelde voorwerp.</span><span class="doel" tabindex="0">Ik kan de formule voor archimedeskracht verklaren aan de hand van een tekening. (p51)</span><span class="doel" tabindex="0">Ik kan met behulp van de archimedeskracht en een krachtenbalans uitleggen wanneer een voorwerp in een vloeistof zal zinken, zweven, stijgen of drijven.</span><span class="doel" tabindex="0">Ik kan uitleggen hoe een vis kan zinken, zweven of drijven (p53)</span></td>
 </tr>
 <tr>
-<td><b>4.2 Archimedeskracht in gassen (56-59)</b></td>
+<td colspan="2"><b>4.2 Archimedeskracht in gassen (56-59)</b></td>
 </tr>
 <tr>
 <td>Lesdoelen</td>
-<td colspan="2">Ik kan uitleggen wat de wet van Archimedes bij gassen inhoudt. <br>• Ik kan de wet van Archimedes bij gassen in formulevorm in toepassingen gebruiken. <br>• Ik kan uitleggen wanneer een voorwerp in een gas zal dalen, zweven of opstijgen. (p57)</td>
+<td><span class="doel" tabindex="0">Ik kan uitleggen wat de wet van Archimedes bij gassen inhoudt.</span><span class="doel" tabindex="0">Ik kan de wet van Archimedes bij gassen in formulevorm in toepassingen gebruiken.</span><span class="doel" tabindex="0">Ik kan uitleggen wanneer een voorwerp in een gas zal dalen, zweven of opstijgen. (p57)</span></td>
 </tr>
 <tr>
-<td><b>Thema 2: Energie en vermogen (p 73-119)</b></td>
+<td colspan="2"><b>Thema 2: Energie en vermogen (p 73-119)</b></td>
 </tr>
 <tr>
 <td><b>Hoofdstuk 1</b></td>
@@ -559,18 +563,18 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td></td>
-<td colspan="2">(Oef 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 (p 85-87)</td>
+<td>(Oef 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 (p 85-87)</td>
 </tr>
 <tr>
-<td>LPD 9F De leerlingen stellen de energiebalans van energieomzettingen op aan de hand van de wet van behoud van energie. LPD10F De leerlingen kwantificeren arbeid en energieomzettingen tussen kinetische, gravitationele en elastische energie.</td>
+<td colspan="2">LPD 9F De leerlingen stellen de energiebalans van energieomzettingen op aan de hand van de wet van behoud van energie. LPD10F De leerlingen kwantificeren arbeid en energieomzettingen tussen kinetische, gravitationele en elastische energie.</td>
 </tr>
 <tr>
 <td><b>1.1 Energie in systemen Lesdoelen</b></td>
-<td>• Ik kan het verschil uitleggen tussen een open, gesloten en geïsoleerd systeem. <br>• Ik kan uitleggen waarom een zwaarteveld, magnetisch veld en elektrisch veld potentiële energie bevatten. <br>• Ik kan uit voorbeelden van het dagelijks leven de energieomzetting noteren met betrekking tot gravitationele energie, elastische energie, kinetische energie, chemische energie, thermische energie, stralingsenergie, kernenergie en elektrische energie. <br>• Je kan uitleggen hoe via energieomzetten een waterreservoir op een heuvel energie kan opslaan.</td>
+<td><span class="doel" tabindex="0">Ik kan het verschil uitleggen tussen een open, gesloten en geïsoleerd systeem.</span><span class="doel" tabindex="0">Ik kan uitleggen waarom een zwaarteveld, magnetisch veld en elektrisch veld potentiële energie bevatten.</span><span class="doel" tabindex="0">Ik kan uit voorbeelden van het dagelijks leven de energieomzetting noteren met betrekking tot gravitationele energie, elastische energie, kinetische energie, chemische energie, thermische energie, stralingsenergie, kernenergie en elektrische energie.</span><span class="doel" tabindex="0">Je kan uitleggen hoe via energieomzetten een waterreservoir op een heuvel energie kan opslaan.</span></td>
 </tr>
 <tr>
 <td><b>1.2 Formules van energie Lesdoelen</b></td>
-<td>• Ik gebruik de formule voor het berekenen van de potentiële gravitationele energie, de kinetische energie en de potentiële elastische energie en vorm ze om.</td>
+<td><span class="doel" tabindex="0">Ik gebruik de formule voor het berekenen van de potentiële gravitationele energie, de kinetische energie en de potentiële elastische energie en vorm ze om.</span></td>
 </tr>
 <tr>
 <td><b>Hoofdstuk 2</b></td>
@@ -578,18 +582,18 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td></td>
-<td colspan="2">(Oef 1,2, 3, 4 5, 6, 7, 8, 9, + extra oefening arbeid met hoek)</td>
+<td>(Oef 1,2, 3, 4 5, 6, 7, 8, 9, + extra oefening arbeid met hoek)</td>
 </tr>
 <tr>
-<td>LPD10F De leerlingen kwantificeren arbeid en energieomzettingen tussen kinetische, gravitationele en elastische energie.</td>
+<td colspan="2">LPD10F De leerlingen kwantificeren arbeid en energieomzettingen tussen kinetische, gravitationele en elastische energie.</td>
 </tr>
 <tr>
 <td><b>2.1 Arbeid Lesdoelen</b></td>
-<td>• Ik omschrijf het begrip ‘arbeid geleverd door een kracht op een voorwerp’. <br>• Ik gebruik de formule voor het berekenen van de arbeid en vorm ze om voor het berekenen van de kracht en de verplaatsing. <br>• Je kan de formule van het arbeid-energietheorema noteren en met een voorbeeld illustreren.</td>
+<td><span class="doel" tabindex="0">Ik omschrijf het begrip ‘arbeid geleverd door een kracht op een voorwerp’.</span><span class="doel" tabindex="0">Ik gebruik de formule voor het berekenen van de arbeid en vorm ze om voor het berekenen van de kracht en de verplaatsing.</span><span class="doel" tabindex="0">Je kan de formule van het arbeid-energietheorema noteren en met een voorbeeld illustreren.</span></td>
 </tr>
 <tr>
 <td><b>2.2 Vermogen</b></td>
-<td>• Je kan het begrip vermogen omschrijven. <br>• Je kan de formule voor het berekenen van vermogen gebruiken en omvormen om tijdsverloop en hoeveelheid energie te berekenen.</td>
+<td><span class="doel" tabindex="0">Je kan het begrip vermogen omschrijven.</span><span class="doel" tabindex="0">Je kan de formule voor het berekenen van vermogen gebruiken en omvormen om tijdsverloop en hoeveelheid energie te berekenen.</span></td>
 </tr>
 </tbody>
 </table>
@@ -620,10 +624,10 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td colspan="2">• Ik stel kwalitatief de energiebalans op bij een omzetting van verschillende energievormen. <br>• Ik omschrijf het behoud van energie in een geïsoleerd systeem. <br>• Ik bereken een onbekende grootheid door gebruik te maken van het behoud van energie.</td>
+<td><span class="doel" tabindex="0">Ik stel kwalitatief de energiebalans op bij een omzetting van verschillende energievormen.</span><span class="doel" tabindex="0">Ik omschrijf het behoud van energie in een geïsoleerd systeem.</span><span class="doel" tabindex="0">Ik bereken een onbekende grootheid door gebruik te maken van het behoud van energie.</span></td>
 </tr>
 <tr>
-<td>De leerlingen voeren berekeningen uit in verband met vermogen en rendement bij energieomzettingen in systemen.</td>
+<td colspan="2">De leerlingen voeren berekeningen uit in verband met vermogen en rendement bij energieomzettingen in systemen.</td>
 </tr>
 <tr>
 <td><b>3.2 Rendement p 89, 90</b></td>
@@ -631,7 +635,7 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen</td>
-<td colspan="2">• Ik omschrijf het begrip ‘energiedissipatie’ als het verlies aan nuttige energie. <br>• Ik bereken de energiedissipatie bij een omzetting tussen energievormen. <br>• Ik omschrijf het begrip ‘rendement’. <br>• Ik gebruik de formule voor het berekenen van het rendement en vorm ze om voor het berekenen van de nuttige energie en de totale energie.</td>
+<td><span class="doel" tabindex="0">Ik omschrijf het begrip ‘energiedissipatie’ als het verlies aan nuttige energie.</span><span class="doel" tabindex="0">Ik bereken de energiedissipatie bij een omzetting tussen energievormen.</span><span class="doel" tabindex="0">Ik omschrijf het begrip ‘rendement’.</span><span class="doel" tabindex="0">Ik gebruik de formule voor het berekenen van het rendement en vorm ze om voor het berekenen van de nuttige energie en de totale energie.</span></td>
 </tr>
 
 <tr>
@@ -649,7 +653,7 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td colspan="2">• Ik omschrijf het verschil tussen warmte, temperatuur en thermische energie. <br>• Ik leg het ontstaan van thermisch evenwicht tussen twee stoffen uit. <br>• Ik omschrijf de begrippen ‘absolute nulpunt’ en ‘cohesiekracht’. <br>• Ik kan uitleggen en berekenen wat de absolute temperatuur is en omgekeerd.</td>
+<td><span class="doel" tabindex="0">Ik omschrijf het verschil tussen warmte, temperatuur en thermische energie.</span><span class="doel" tabindex="0">Ik leg het ontstaan van thermisch evenwicht tussen twee stoffen uit.</span><span class="doel" tabindex="0">Ik omschrijf de begrippen ‘absolute nulpunt’ en ‘cohesiekracht’.</span><span class="doel" tabindex="0">Ik kan uitleggen en berekenen wat de absolute temperatuur is en omgekeerd.</span></td>
 </tr>
 
 <tr>
@@ -658,7 +662,7 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen</td>
-<td colspan="2">• Ik verklaar convectie, straling en geleiding met het deeltjesmodel en de overdracht van energie. (zie ook groene kader p 200)</td>
+<td><span class="doel" tabindex="0">Ik verklaar convectie, straling en geleiding met het deeltjesmodel en de overdracht van energie. (zie ook groene kader p 200)</span></td>
 </tr>
 
 <tr>
@@ -667,7 +671,7 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen</td>
-<td colspan="2">• Ik interpreteer de betekenis van de waarde van de warmtecapaciteit en de specifieke warmtecapaciteit van een stof. <br>• Ik gebruik de formule voor het berekenen van de warmtecapaciteit en de specifieke warmtecapaciteit en vorm deze om voor het berekenen van de warmte, de massa en de temperatuur. <br>• Ik heb een besef van de grootte van de soortelijke warmtecapaciteit van water en de implicaties voor toepassingen in het dagelijks leven</td>
+<td><span class="doel" tabindex="0">Ik interpreteer de betekenis van de waarde van de warmtecapaciteit en de specifieke warmtecapaciteit van een stof.</span><span class="doel" tabindex="0">Ik gebruik de formule voor het berekenen van de warmtecapaciteit en de specifieke warmtecapaciteit en vorm deze om voor het berekenen van de warmte, de massa en de temperatuur.</span><span class="doel" tabindex="0">Ik heb een besef van de grootte van de soortelijke warmtecapaciteit van water en de implicaties voor toepassingen in het dagelijks leven</span></td>
 </tr>
 
 <tr>
@@ -676,7 +680,7 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen</td>
-<td colspan="2">• Ik omschrijf de warmtebalans in een geïsoleerd systeem als voorbeeld van de behoudswet van energie. <br>• Ik gebruik de formule voor het berekenen van de warmtebalans en vorm deze om voor het berekenen van de warmtecapaciteit, de specifieke warmtecapaciteit, de warmte, de massa en de temperatuur.</td>
+<td><span class="doel" tabindex="0">Ik omschrijf de warmtebalans in een geïsoleerd systeem als voorbeeld van de behoudswet van energie.</span><span class="doel" tabindex="0">Ik gebruik de formule voor het berekenen van de warmtebalans en vorm deze om voor het berekenen van de warmtecapaciteit, de specifieke warmtecapaciteit, de warmte, de massa en de temperatuur.</span></td>
 </tr>
 
 <tr>
@@ -691,7 +695,7 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen</td>
-<td colspan="2">• Ik verklaar het verschil tussen merkbare warmte en latente warmte aan de hand van een toename of afname van energie en toon dit verschil grafisch aan. <br>• Ik heb een besef van de grootte van de hoeveelheid latente warmte van water en de implicaties voor toepassingen in het dagelijks leven</td>
+<td><span class="doel" tabindex="0">Ik verklaar het verschil tussen merkbare warmte en latente warmte aan de hand van een toename of afname van energie en toon dit verschil grafisch aan.</span><span class="doel" tabindex="0">Ik heb een besef van de grootte van de hoeveelheid latente warmte van water en de implicaties voor toepassingen in het dagelijks leven</span></td>
 </tr>
 
 <tr>
@@ -700,7 +704,7 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen</td>
-<td colspan="2">• Ik benoem de faseovergangen smelten, stollen, verdampen, condenseren, sublimeren en desublimeren op een grafiek of in oefeningen. <br>• Ik herken het smeltpunt. <br>• Ik gebruik de formule voor het berekenen van de warmte die wordt opgenomen of afgestaan tijdens een faseovergang en vorm de formule van de warmtebalans om voor het berekenen van de warmtecapaciteit, de specifieke warmtecapaciteit, de latente warme, de massa en de temperaturen bij een faseovergang.</td>
+<td><span class="doel" tabindex="0">Ik benoem de faseovergangen smelten, stollen, verdampen, condenseren, sublimeren en desublimeren op een grafiek of in oefeningen.</span><span class="doel" tabindex="0">Ik herken het smeltpunt.</span><span class="doel" tabindex="0">Ik gebruik de formule voor het berekenen van de warmte die wordt opgenomen of afgestaan tijdens een faseovergang en vorm de formule van de warmtebalans om voor het berekenen van de warmtecapaciteit, de specifieke warmtecapaciteit, de latente warme, de massa en de temperaturen bij een faseovergang.</span></td>
 </tr>
 </tbody>
 </table>
@@ -708,29 +712,28 @@ td b,th b{font-weight:700}
 
 <thead>
 <tr>
-<th><b>HOOFDSTUK 3 DE GASWETTEN (p. 189)</b> Oefeningen (6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 (p 193-199)</th>
-<th></th>
+<th colspan="2"><b>HOOFDSTUK 3 DE GASWETTEN (p. 189)</b> Oefeningen (6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 (p 193-199)</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>De leerlingen kwantificeren druk, volume, temperatuur en stofhoeveelheid aan de hand van de ideale gaswet.</td>
+<td colspan="2">De leerlingen kwantificeren druk, volume, temperatuur en stofhoeveelheid aan de hand van de ideale gaswet.</td>
 </tr>
 <tr>
 <td><b>3.1 Gassen bij een constante temperatuur (p. 189)</b></td>
-<td><b>Lesdoelen:</b><br>• Ik gebruik de formule voor het berekenen van volume en druk van een gas bij een constante temperatuur en vorm de formule van de gaswet bij een constante temperatuur om voor de berekening van een onbekend volume of onbekende druk. <br>• Ik kan grafieken grafisch interpreteren.</td>
+<td><b>Lesdoelen:</b><span class="doel" tabindex="0">Ik gebruik de formule voor het berekenen van volume en druk van een gas bij een constante temperatuur en vorm de formule van de gaswet bij een constante temperatuur om voor de berekening van een onbekend volume of onbekende druk.</span><span class="doel" tabindex="0">Ik kan grafieken grafisch interpreteren.</span></td>
 </tr>
 <tr>
 <td><b>3.2 Gassen bij een constant volume (p. 191)</b></td>
-<td><b>Lesdoelen:</b><br>• Ik gebruik de formule voor het berekenen van temperatuur en druk van een gas bij een constant volume en vorm de formule van de gaswet bij een constant volume om voor de berekening van een onbekende temperatuur of onbekende druk. <br>• Ik kan grafieken grafisch interpreteren.</td>
+<td><b>Lesdoelen:</b><span class="doel" tabindex="0">Ik gebruik de formule voor het berekenen van temperatuur en druk van een gas bij een constant volume en vorm de formule van de gaswet bij een constant volume om voor de berekening van een onbekende temperatuur of onbekende druk.</span><span class="doel" tabindex="0">Ik kan grafieken grafisch interpreteren.</span></td>
 </tr>
 <tr>
 <td><b>3.3 Gassen bij een constante druk (p. 192)</b></td>
-<td><b>Lesdoelen:</b><br>• Ik gebruik de formule voor het berekenen van temperatuur en volume van een gas bij een constante druk en vorm de formule van de gaswet bij een constante druk om voor de berekening van een onbekende temperatuur of onbekend volume. <br>• Ik kan grafieken grafisch interpreteren.</td>
+<td><b>Lesdoelen:</b><span class="doel" tabindex="0">Ik gebruik de formule voor het berekenen van temperatuur en volume van een gas bij een constante druk en vorm de formule van de gaswet bij een constante druk om voor de berekening van een onbekende temperatuur of onbekend volume.</span><span class="doel" tabindex="0">Ik kan grafieken grafisch interpreteren.</span></td>
 </tr>
 <tr>
 <td><b>3.4 De algemene en ideale gaswet (p. 193)</b></td>
-<td colspan="2"><b>Lesdoelen:</b><br>• Ik omschrijf de toestandsgrootheden en de stofhoeveelheid van een ideaal gas. <br>• Ik verklaar het verschil tussen een reëel gas en een ideaal gas aan de hand van condensatie. <br>• Ik gebruik de formule van de algemene gaswet en vorm de formule om voor de berekening van de druk, het volume en de temperatuur. <br>• Ik leid het molair volume af door de ideale gaswet toe te passen in normomstandigheden. <br>• Ik gebruik de formule van de ideale gaswet en vorm de formule om voor de berekening van de druk, het volume, de stofhoeveelheid en de temperatuur. <br>• Ik kan de algemene gaswet toepassen om aan de hand van een deeltjesmodel fenomenen uit het dagelijks leven te verklaren.</td>
+<td><b>Lesdoelen:</b><span class="doel" tabindex="0">Ik omschrijf de toestandsgrootheden en de stofhoeveelheid van een ideaal gas.</span><span class="doel" tabindex="0">Ik verklaar het verschil tussen een reëel gas en een ideaal gas aan de hand van condensatie.</span><span class="doel" tabindex="0">Ik gebruik de formule van de algemene gaswet en vorm de formule om voor de berekening van de druk, het volume en de temperatuur.</span><span class="doel" tabindex="0">Ik leid het molair volume af door de ideale gaswet toe te passen in normomstandigheden.</span><span class="doel" tabindex="0">Ik gebruik de formule van de ideale gaswet en vorm de formule om voor de berekening van de druk, het volume, de stofhoeveelheid en de temperatuur.</span><span class="doel" tabindex="0">Ik kan de algemene gaswet toepassen om aan de hand van een deeltjesmodel fenomenen uit het dagelijks leven te verklaren.</span></td>
 </tr>
 
 <tr>
@@ -744,38 +747,38 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td><b>1.1 Statisch geladen toestand (p. 109)</b></td>
-<td><b>Lesdoelen:</b><br>• Ik herken kenmerken van positieve en negatieve ladingen. <br>• Ik weet dat de eenheid van elektrische lading Coulomb is.</td>
+<td><b>Lesdoelen:</b><span class="doel" tabindex="0">Ik herken kenmerken van positieve en negatieve ladingen.</span><span class="doel" tabindex="0">Ik weet dat de eenheid van elektrische lading Coulomb is.</span></td>
 </tr>
 <tr>
 <td><b>1.2 Geleider en isolator (p. 111)</b></td>
-<td colspan="2"><b>Lesdoelen:</b><br>• Ik licht het verschil toe tussen een geleider en een isolator en kan dit koppelen aan de lessen chemie. <br>• Ik kan de verschillen tussen geleider en isolator in interactie met geladen voorwerpen verklaren met behulp van een tekening.</td>
+<td><b>Lesdoelen:</b><span class="doel" tabindex="0">Ik licht het verschil toe tussen een geleider en een isolator en kan dit koppelen aan de lessen chemie.</span><span class="doel" tabindex="0">Ik kan de verschillen tussen geleider en isolator in interactie met geladen voorwerpen verklaren met behulp van een tekening.</span></td>
 </tr>
 <tr>
-<td><b>HOOFDSTUK 2 ELEKTRISCHE SPANNING EN STROOMSTERKTE (p. 116)</b> (Oef 3, 4, 5, 6, 7, 8, 9, 12 p 117-120)</td>
+<td colspan="2"><b>HOOFDSTUK 2 ELEKTRISCHE SPANNING EN STROOMSTERKTE (p. 116)</b> (Oef 3, 4, 5, 6, 7, 8, 9, 12 p 117-120)</td>
 </tr>
 <tr>
 <td><b>2.1 Elektrische spanning (p. 116)</b></td>
-<td><b>Lesdoelen:</b><br>• Ik licht het begrip ‘spanning’ toe als de energie per lading. <br>• Ik beschrijf de werking van een gelijkspanningsbron.</td>
+<td><b>Lesdoelen:</b><span class="doel" tabindex="0">Ik licht het begrip ‘spanning’ toe als de energie per lading.</span><span class="doel" tabindex="0">Ik beschrijf de werking van een gelijkspanningsbron.</span></td>
 </tr>
 <tr>
 <td><b>2.2 Elektrische stroomsterkte (p. 118)</b></td>
-<td colspan="2"><b>Lesdoelen:</b><br>• Ik beschrijf elektrische stroom als de hoeveelheid lading die in beweging is. <br>• Ik beschrijf het verschil tussen conventionele en werkelijke stroomzin. <br>• Ik licht het begrip ‘stroomsterkte’ toe aan de hand van de hoeveelheid lading per tijdseenheid door een geleider. <br>• Ik gebruik de formule van stroomsterkte voor het berekenen van de hoeveelheid lading en het tijdsverloop en vorm deze om.</td>
+<td><b>Lesdoelen:</b><span class="doel" tabindex="0">Ik beschrijf elektrische stroom als de hoeveelheid lading die in beweging is.</span><span class="doel" tabindex="0">Ik beschrijf het verschil tussen conventionele en werkelijke stroomzin.</span><span class="doel" tabindex="0">Ik licht het begrip ‘stroomsterkte’ toe aan de hand van de hoeveelheid lading per tijdseenheid door een geleider.</span><span class="doel" tabindex="0">Ik gebruik de formule van stroomsterkte voor het berekenen van de hoeveelheid lading en het tijdsverloop en vorm deze om.</span></td>
 </tr>
 <tr>
-<td><b>HOOFDSTUK 3 ENKELVOUDIGE STROOMKRING (p. 121)</b> (Oef 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 18, 20, 21, 22, 24 p 126-134)</td>
+<td colspan="2"><b>HOOFDSTUK 3 ENKELVOUDIGE STROOMKRING (p. 121)</b> (Oef 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 18, 20, 21, 22, 24 p 126-134)</td>
 </tr>
 <tr>
 <td><b>3.1 Elektrische weerstand als fysieke component (p. 121)</b></td>
-<td><b>Lesdoelen:</b><br>• Ik licht het begrip ‘weerstand’ toe. <br>• Ik hanteer een volt- en ampèremeter in een gelijkstroomkring</td>
+<td><b>Lesdoelen:</b><span class="doel" tabindex="0">Ik licht het begrip ‘weerstand’ toe.</span><span class="doel" tabindex="0">Ik hanteer een volt- en ampèremeter in een gelijkstroomkring</span></td>
 </tr>
 <tr>
 <td><b>3.2 De wet van Ohm en geleidbaarheid (p. 122)</b></td>
-<td colspan="2"><b>Lesdoelen:</b><br>• Ik omschrijf de wet van Ohm. <br>• Ik gebruik de formule van weerstand voor het berekenen van de weerstand, de stroomsterkte en de spanning en vorm deze om. <br>• Ik interpreteer een grafiek die het recht of omgekeerd evenredig verband tussen de grootheden spanning, stroomsterkte en weerstand aantoont. <br>• Ik omschrijf het begrip ‘geleidbaarheid’. <br>• Ik interpreteer de formule van geleidbaarheid.</td>
+<td><b>Lesdoelen:</b><span class="doel" tabindex="0">Ik omschrijf de wet van Ohm.</span><span class="doel" tabindex="0">Ik gebruik de formule van weerstand voor het berekenen van de weerstand, de stroomsterkte en de spanning en vorm deze om.</span><span class="doel" tabindex="0">Ik interpreteer een grafiek die het recht of omgekeerd evenredig verband tussen de grootheden spanning, stroomsterkte en weerstand aantoont.</span><span class="doel" tabindex="0">Ik omschrijf het begrip ‘geleidbaarheid’.</span><span class="doel" tabindex="0">Ik interpreteer de formule van geleidbaarheid.</span></td>
 </tr>
 
 <tr>
 <td><b>3.3 Risico’s en veiligheidssystemen in een elektrische installatie (p. 125)</b></td>
-<td colspan="2"><b>Lesdoelen:</b><br>• Ik omschrijf de oorzaken van kortsluiting, overbelasting en elektrocutie en herken het gevaar. <br>• Ik beschrijf de werking en herken het nut van een automatische zekering, een aarding en een verliesstroomschakelaar. <br>• Ik kan uitleggen wat het joule-effect is. <br>• Ik kan toepassingen van het joule-effect bespreken, bv. de bliksem, elektrische toestellen. Soms is het joule-effect gewenst (bv. bij verwarmingstoestellen), soms is het ongewenst (bv. bij verlichtingstoestellen, computers, elektrische leidingen in bijvoorbeeld een huisinstallatie).</td>
+<td><b>Lesdoelen:</b><span class="doel" tabindex="0">Ik omschrijf de oorzaken van kortsluiting, overbelasting en elektrocutie en herken het gevaar.</span><span class="doel" tabindex="0">Ik beschrijf de werking en herken het nut van een automatische zekering, een aarding en een verliesstroomschakelaar.</span><span class="doel" tabindex="0">Ik kan uitleggen wat het joule-effect is.</span><span class="doel" tabindex="0">Ik kan toepassingen van het joule-effect bespreken, bv. de bliksem, elektrische toestellen. Soms is het joule-effect gewenst (bv. bij verwarmingstoestellen), soms is het ongewenst (bv. bij verlichtingstoestellen, computers, elektrische leidingen in bijvoorbeeld een huisinstallatie).</span></td>
 </tr>
 
 <tr>
@@ -786,7 +789,7 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td><b>4.1 Verschillende soorten schakelingen (p. 136)</b></td>
-<td><b>Lesdoelen:</b><br>• Ik beschrijf en herken een serie- en parallelschakeling. <br>• Ik gebruik de formule van de substitutieweerstand bij een serie- en parallelschakeling om de invloed op de totale weerstand te verklaren. (☐ Ik bereken in een gelijkstroomkring met een spanningsbron alle stromen door en spanningen over de individuele weerstanden bij een eenvoudige gemengde schakeling)</td>
+<td><b>Lesdoelen:</b><span class="doel" tabindex="0">Ik beschrijf en herken een serie- en parallelschakeling.</span><span class="doel" tabindex="0">Ik gebruik de formule van de substitutieweerstand bij een serie- en parallelschakeling om de invloed op de totale weerstand te verklaren. (☐</span><span class="doel" tabindex="0">Ik bereken in een gelijkstroomkring met een spanningsbron alle stromen door en spanningen over de individuele weerstanden bij een eenvoudige gemengde schakeling)</span></td>
 </tr>
 </tbody>
 </table>
@@ -806,76 +809,76 @@ td b,th b{font-weight:700}
 <tbody>
 <tr>
 <td><b>Hoofdstuk 1</b></td>
-<td colspan="2"><b>Ladingen</b></td>
+<td><b>Ladingen</b></td>
 </tr>
 <tr>
-<td>Oefeningen 1, 6, 7, 8, 9, 10 (p25-26)</td>
+<td colspan="2">Oefeningen 1, 6, 7, 8, 9, 10 (p25-26)</td>
 </tr>
 <tr>
 <td colspan="2">LPD2F De leerlingen analyseren en kwantificeren de elektrische krachtwerking in eenvoudige geometrieën.</td>
 </tr>
 <tr>
 <td><b>1.1 Lading in materie (p13-16)</b></td>
-<td><b>Lesdoelen:</b><br>Elementaire lading <br>• Ik kan verklaren waarom een voorwerp positief of negatief geladen is <br>• Ik leg het principe van de tribo-elektrische reeks aan de hand van een voorbeeld uit. <br>• Ik kan de grootte van de elementaire lading noteren en zeggen waar ze voorkomen in het atoom. Geleiders en isolatoren <br>• Ik leg het verschil uit tussen geleiders en isolatoren. Aarding <br>• Ik leg uit wat aarding is en kan dit toepassen op positief en negatief geladen voorwerpen.</td>
+<td><b>Lesdoelen:</b><br>Elementaire lading <span class="doel" tabindex="0">Ik kan verklaren waarom een voorwerp positief of negatief geladen is</span><span class="doel" tabindex="0">Ik leg het principe van de tribo-elektrische reeks aan de hand van een voorbeeld uit.</span><span class="doel" tabindex="0">Ik kan de grootte van de elementaire lading noteren en zeggen waar ze voorkomen in het atoom. Geleiders en isolatoren</span><span class="doel" tabindex="0">Ik leg het verschil uit tussen geleiders en isolatoren. Aarding</span><span class="doel" tabindex="0">Ik leg uit wat aarding is en kan dit toepassen op positief en negatief geladen voorwerpen.</span></td>
 </tr>
 <tr>
 <td><b>1.2 Laden van voorwerpen (p 17-24)</b></td>
-<td><b>Lesdoelen:</b><br><b>1.2.1 Laden en ontladen door contact en wrijving</b><br>• Ik kan wat gebeurt bij een bliksemontlading uitleggen. <br>• Ik kan uitleggen hoe je neutrale voorwerpen kunt laden door wrijving, contact en influentie. <br>• Ik kan het begrip polarisatie uit met een tekening uitleggen. <br><b>1.2.2 Laden door elektrische influentie</b><br>• Ik illustreer de bewegingen van ladingen bij het proces van laden door wrijving, contact en influentie met een tekening. <br>• Ik kan het principe van een fotokopieertoestel uitleggen met de correcte terminologie. <br>• Ik kan met de correcte terminologie uitleggen hoe swifferstofdoekjes werken.</td>
+<td><b>Lesdoelen:</b><br><b>1.2.1 Laden en ontladen door contact en wrijving</b><span class="doel" tabindex="0">Ik kan wat gebeurt bij een bliksemontlading uitleggen.</span><span class="doel" tabindex="0">Ik kan uitleggen hoe je neutrale voorwerpen kunt laden door wrijving, contact en influentie.</span><span class="doel" tabindex="0">Ik kan het begrip polarisatie uit met een tekening uitleggen.</span><b>1.2.2 Laden door elektrische influentie</b><span class="doel" tabindex="0">Ik illustreer de bewegingen van ladingen bij het proces van laden door wrijving, contact en influentie met een tekening.</span><span class="doel" tabindex="0">Ik kan het principe van een fotokopieertoestel uitleggen met de correcte terminologie.</span><span class="doel" tabindex="0">Ik kan met de correcte terminologie uitleggen hoe swifferstofdoekjes werken.</span></td>
 </tr>
 <tr>
 <td><b>Hoofdstuk 2</b></td>
-<td colspan="2"><b>Krachten tussen ladingen (p27-32)</b></td>
+<td><b>Krachten tussen ladingen (p27-32)</b></td>
 </tr>
 <tr>
-<td>Oef 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 (p31 en 32)</td>
+<td colspan="2">Oef 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 (p31 en 32)</td>
 </tr>
 <tr>
 <td><b>2.1 Krachten tussen twee ladingen</b></td>
-<td><b>Lesdoelen </b><br>• Ik bepaal de richting, de zin en de grootte van de coulombkracht die twee ladingen op elkaar uitoefenen en kan de formule van de Coulombkracht omvormen om andere grootheden te berekenen <br>• Ik kan redeneervragen met betrekking tot de coulombkracht tussen 2 ladingen oplossen.</td>
+<td><b>Lesdoelen </b><span class="doel" tabindex="0">Ik bepaal de richting, de zin en de grootte van de coulombkracht die twee ladingen op elkaar uitoefenen en kan de formule van de Coulombkracht omvormen om andere grootheden te berekenen</span><span class="doel" tabindex="0">Ik kan redeneervragen met betrekking tot de coulombkracht tussen 2 ladingen oplossen.</span></td>
 </tr>
 <tr>
 <td><b>2.2 Krachten tussen meerdere ladingen</b></td>
-<td>• Ik bepaal de richting, de zin en de grootte van de coulombkracht die meerdere ladingen op één lijn op elkaar uitoefenen en kan de formule van de Coulombkracht omvormen om andere grootheden te berekenen. <br>• Ik kan in een geometrie van 3 ladingen die niet op een lijn liggen de resulterende en eenvoudige opgaven de resulterende coulombkracht op één welbepaalde lading tekenen.</td>
+<td><span class="doel" tabindex="0">Ik bepaal de richting, de zin en de grootte van de coulombkracht die meerdere ladingen op één lijn op elkaar uitoefenen en kan de formule van de Coulombkracht omvormen om andere grootheden te berekenen.</span><span class="doel" tabindex="0">Ik kan in een geometrie van 3 ladingen die niet op een lijn liggen de resulterende en eenvoudige opgaven de resulterende coulombkracht op één welbepaalde lading tekenen.</span></td>
 </tr>
 <tr>
 <td><b>Hoofdstuk 3</b></td>
-<td colspan="2"><b>Elektrisch veld (p35-46)</b></td>
+<td><b>Elektrisch veld (p35-46)</b></td>
 </tr>
 <tr>
-<td>LPD3F De leerlingen analyseren en kwantificeren het elektrisch veld in eenvoudige geometrieën.</td>
+<td colspan="2">LPD3F De leerlingen analyseren en kwantificeren het elektrisch veld in eenvoudige geometrieën.</td>
 </tr>
 <tr>
 <td colspan="2">Oef 1, 2, 3, 4, 5, 6, 8, 9, 10,11, 12, 17, 19!, 20 (p44-46)</td>
 </tr>
 <tr>
 <td><b>3.1 Grootte van het elektrisch veld</b></td>
-<td><b>Lesdoelen </b><br>• Ik kan de elektrische veldvector ten gevolge van een positieve of negatieve bronlading in een bepaald punt tekenen. <br>• Ik kan noteren hoe de zin van de coulombkracht op een bepaalde lading en de zin van het elektrisch veld zich tot elkaar verhouden. <br>• Ik kan de grootte van een radiaal en een homogeen elektrisch veld met de formule van de elektrische veldsterkte berekenen. <br>• Ik kan redeneervragen met betrekking tot de grootte van het elektrisch veld oplossen. (Let op voor verwarring met coulombkracht)</td>
+<td><b>Lesdoelen </b><span class="doel" tabindex="0">Ik kan de elektrische veldvector ten gevolge van een positieve of negatieve bronlading in een bepaald punt tekenen.</span><span class="doel" tabindex="0">Ik kan noteren hoe de zin van de coulombkracht op een bepaalde lading en de zin van het elektrisch veld zich tot elkaar verhouden.</span><span class="doel" tabindex="0">Ik kan de grootte van een radiaal en een homogeen elektrisch veld met de formule van de elektrische veldsterkte berekenen.</span><span class="doel" tabindex="0">Ik kan redeneervragen met betrekking tot de grootte van het elektrisch veld oplossen. (Let op voor verwarring met coulombkracht)</span></td>
 </tr>
 <tr>
 <td><b>3.2 Eigenschappen van het elektrisch veld</b></td>
-<td><b>Lesdoelen</b><br><b>3.2.1 Elektrische veldlijnen</b><br>• Ik kan de kenmerken (p38) van elektrische veldlijnen toepassen bij het tekenen van elektrische veldlijnen. <br>• Ik kan, wanneer een elektrische veldlijn gegeven is, het elektrisch veld in een punt op die veldlijn tekenen. <br><b>3.2.2 Soorten elektrische velden</b><br>• Ik kan de veldlijnen rond één of meerdere puntladingen, rond een bolvormige geleider en in een homogeen veld tekenen en berekenen. <br>• Ik kan de grafieken van de grootte van het elektrisch veld bij een radiaal en een homogeen elektrisch veld tekenen. <br><b>3.2.3 Gedrag van geleiders en isolatoren in een elektrisch veld</b><br>• Ik kan het gedrag van geleiders en isolatoren in een elektrisch veld.(Kooi van Faraday) verklaren. <br>• Ik kan 2 voorbeelden (coaxkabel, vliegtuig, microgolf, auto, …) van de kooi van Faraday noteren en uitleggen wat de functie in die situaties is.</td>
+<td><b>Lesdoelen</b><br><b>3.2.1 Elektrische veldlijnen</b><span class="doel" tabindex="0">Ik kan de kenmerken (p38) van elektrische veldlijnen toepassen bij het tekenen van elektrische veldlijnen.</span><span class="doel" tabindex="0">Ik kan, wanneer een elektrische veldlijn gegeven is, het elektrisch veld in een punt op die veldlijn tekenen.</span><b>3.2.2 Soorten elektrische velden</b><span class="doel" tabindex="0">Ik kan de veldlijnen rond één of meerdere puntladingen, rond een bolvormige geleider en in een homogeen veld tekenen en berekenen.</span><span class="doel" tabindex="0">Ik kan de grafieken van de grootte van het elektrisch veld bij een radiaal en een homogeen elektrisch veld tekenen.</span><b>3.2.3 Gedrag van geleiders en isolatoren in een elektrisch veld</b><span class="doel" tabindex="0">Ik kan het gedrag van geleiders en isolatoren in een elektrisch veld.(Kooi van Faraday) verklaren.</span><span class="doel" tabindex="0">Ik kan 2 voorbeelden (coaxkabel, vliegtuig, microgolf, auto, …) van de kooi van Faraday noteren en uitleggen wat de functie in die situaties is.</span></td>
 </tr>
 <tr>
 <td><b>Hoofdstuk 4</b></td>
-<td colspan="2"><b>Potentiaal (p47-60)</b></td>
+<td><b>Potentiaal (p47-60)</b></td>
 </tr>
 <tr>
-<td>LPD4 De leerlingen kwantificeren de elektrische potentiële energie bij een homogeen elektrisch veld.</td>
+<td colspan="2">LPD4 De leerlingen kwantificeren de elektrische potentiële energie bij een homogeen elektrisch veld.</td>
 </tr>
 <tr>
 <td><b>4.1 Potentiële elektrische energie in een homogeen veld</b></td>
-<td><b>Lesdoelen </b><br>• Ik kan de analogie tussen de potentiële gravitationele energie E<sub>pot,g</sub>=m.g.h en E<sub>pot,E</sub>=Q.E.d uitleggen. <br>• Ik kan het verband tussen potentiële elektrische energie en arbeid verricht door het elektrisch veld uitleggen. <br>• Ik kan de grootte van de potentiële elektrische energie op een bepaalde plaats in een homogeen veld voor een positieve en een negatieve lading berekenen. (Belangrijk is dat de potentiële energie van een lading op de negatieve plaat als 0 gedefinieerd wordt!)</td>
+<td><b>Lesdoelen </b><span class="doel" tabindex="0">Ik kan de analogie tussen de potentiële gravitationele energie E<sub>pot,g</sub>=m.g.h en E<sub>pot,E</sub>=Q.E.d uitleggen.</span><span class="doel" tabindex="0">Ik kan het verband tussen potentiële elektrische energie en arbeid verricht door het elektrisch veld uitleggen.</span><span class="doel" tabindex="0">Ik kan de grootte van de potentiële elektrische energie op een bepaalde plaats in een homogeen veld voor een positieve en een negatieve lading berekenen. (Belangrijk is dat de potentiële energie van een lading op de negatieve plaat als 0 gedefinieerd wordt!)</span></td>
 </tr>
 <tr>
 <td><b>4.2 Elektrische potentiaal in een homogeen veld</b></td>
-<td><b>Lesdoelen</b><br><b>4.2.1 Grootte van de elektrische potentiaal in een homogeen veld</b><br>• Ik kan verwoorden dat de elektrische potentiaal in een bepaald punt te linken is aan de potentiële energie van een testlading van +1C in dat punt of korter, de potentiële energie per lading. <br>• Ik kan de grootte van de elektrische potentiaal op een bepaalde plaats in een homogeen veld berekenen. <br>• Ik kan het verband uit tussen elektrisch veld, elektrische energie en elektrische potentiaal en kan de grafieken tekenen die bij deze grootheden horen en de vorm van de grafieken ook uitleggen. <br><b>4.2.2 Equipotentiaaloppervlak Ik kan verwoorden wat en een equipotentiaaloppervlak is en in een homogeen elektrisch veld tekenen.</b></td>
+<td><b>Lesdoelen</b><br><b>4.2.1 Grootte van de elektrische potentiaal in een homogeen veld</b><span class="doel" tabindex="0">Ik kan verwoorden dat de elektrische potentiaal in een bepaald punt te linken is aan de potentiële energie van een testlading van +1C in dat punt of korter, de potentiële energie per lading.</span><span class="doel" tabindex="0">Ik kan de grootte van de elektrische potentiaal op een bepaalde plaats in een homogeen veld berekenen.</span><span class="doel" tabindex="0">Ik kan het verband uit tussen elektrisch veld, elektrische energie en elektrische potentiaal en kan de grafieken tekenen die bij deze grootheden horen en de vorm van de grafieken ook uitleggen.</span><b>4.2.2 Equipotentiaaloppervlak</b><span class="doel" tabindex="0">Ik kan verwoorden wat en een equipotentiaaloppervlak is en in een homogeen elektrisch veld tekenen.</span></td>
 </tr>
 <tr>
 <td><b>4.3 Potentiaalverschil</b></td>
-<td colspan="2"><b>Lesdoelen </b><br>• Ik kan de definitie voor spanning (of potentiaalverschil) noteren. <br>• Ik kan het verband uitleggen tussen potentiaalverschil en de verandering in potentiële en kinetische energie voor een positieve en een negatieve lading in een homogeen elektrisch veld.( toename of afname van Ekin/ Epot en teken van het potentiaalverschil). <br>• Ik kan verwoorden wat de eenheid elektronvolt (eV) betekent (p56).</td>
+<td><b>Lesdoelen </b><span class="doel" tabindex="0">Ik kan de definitie voor spanning (of potentiaalverschil) noteren.</span><span class="doel" tabindex="0">Ik kan het verband uitleggen tussen potentiaalverschil en de verandering in potentiële en kinetische energie voor een positieve en een negatieve lading in een homogeen elektrisch veld.( toename of afname van Ekin/ Epot en teken van het potentiaalverschil).</span><span class="doel" tabindex="0">Ik kan verwoorden wat de eenheid elektronvolt (eV) betekent (p56).</span></td>
 </tr>
 <tr>
-<td><b>Thema 2: Elektrodynamica (p 98-105)</b></td>
+<td colspan="2"><b>Thema 2: Elektrodynamica (p 98-105)</b></td>
 </tr>
 <tr>
 <td><b>Hoofdstuk 3</b></td>
@@ -883,7 +886,7 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td></td>
-<td><b>Lesdoelen </b><br>• Ik ken de wet van Ohm en kan ze gebruiken in oefeningen van gemengde schakelingen <br>• Ik gebruik de formules van substitutieweerstand om een substitutieweerstand te bepalen van een gemengde schakeling. <br>• Ik gebruik de formules van stroom- en spanningsverdeling bij serie- en parellelschakelingen om de elektrische grootheden spanning, stroomsterkte en weerstand te bepalen van weerstanden die geplaatst zijn in een gemengde schakeling.</td>
+<td><b>Lesdoelen </b><span class="doel" tabindex="0">Ik ken de wet van Ohm en kan ze gebruiken in oefeningen van gemengde schakelingen</span><span class="doel" tabindex="0">Ik gebruik de formules van substitutieweerstand om een substitutieweerstand te bepalen van een gemengde schakeling.</span><span class="doel" tabindex="0">Ik gebruik de formules van stroom- en spanningsverdeling bij serie- en parellelschakelingen om de elektrische grootheden spanning, stroomsterkte en weerstand te bepalen van weerstanden die geplaatst zijn in een gemengde schakeling.</span></td>
 </tr>
 </tbody>
 </table>
@@ -910,7 +913,7 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td>• Ik omschrijf de onderlinge krachtwerking tussen magneetpolen. <br>• Ik leg het verband uit tussen magnetische veldlijnen en magnetische veldsterkte. <br>• Ik teken de magnetische veldlijnen bij een permanente magneet en bij het aardmagnetisch veld. <br>• Ik leg het ontstaan van weissgebieden uit aan de hand van het begrip spin. <br>• Ik kan de link tussen magnetisme en beweging van lading illustreren met het magnetisch veld van de aarde (geïoniseerd magma in de buitenkern) en het magnetisme van permanente magneten als gevolg van elektronenspin. <br>• Ik leg de magnetische werking en de magnetische influentie bij ferromagnetische materialen uit aan de hand van weissgebieden. <br>• Je kan de link tussen magnetisme en beweging van lading illustreren met het magnetisch veld van de aarde (geïoniseerd magma in de buitenkern) en het magnetisme van permanente magneten als gevolg van elektronenspin.</td>
+<td><span class="doel" tabindex="0">Ik omschrijf de onderlinge krachtwerking tussen magneetpolen.</span><span class="doel" tabindex="0">Ik leg het verband uit tussen magnetische veldlijnen en magnetische veldsterkte.</span><span class="doel" tabindex="0">Ik teken de magnetische veldlijnen bij een permanente magneet en bij het aardmagnetisch veld.</span><span class="doel" tabindex="0">Ik leg het ontstaan van weissgebieden uit aan de hand van het begrip spin.</span><span class="doel" tabindex="0">Ik kan de link tussen magnetisme en beweging van lading illustreren met het magnetisch veld van de aarde (geïoniseerd magma in de buitenkern) en het magnetisme van permanente magneten als gevolg van elektronenspin.</span><span class="doel" tabindex="0">Ik leg de magnetische werking en de magnetische influentie bij ferromagnetische materialen uit aan de hand van weissgebieden.</span><span class="doel" tabindex="0">Je kan de link tussen magnetisme en beweging van lading illustreren met het magnetisch veld van de aarde (geïoniseerd magma in de buitenkern) en het magnetisme van permanente magneten als gevolg van elektronenspin.</span></td>
 </tr>
 <tr>
 <td><b>1.2 Magnetisch veld door een elektrische stroom</b> (p 138-157)</td>
@@ -918,10 +921,10 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td colspan="2">• Ik definieer de grootheden magnetische inductie en magnetische permeabiliteit. <br>• Ik leg het verschil uit tussen een permanente magneet en een elektromagneet. <br>• Ik teken de magnetische veldlijnen bij een rechte geleider en een spoel via twee rechterhandregels. <br>• Ik gebruik de formules voor de magnetische inductie bij een rechte geleider en bij een spoel. <br>• Ik kan het principe van een elektromagneet uitleggen en 2 toepassingen noteren Ik kan voorbeelden van technische systemen met elektromagneten: een (veiligheids)relais, een elektromagnetische klep, een deurbel, scheidings- en transportsystemen voor (ferromagnetische) metalen, MRI-scanners, automatische zekering, afstandsbediende deurontgrendeling … geven.</td>
+<td><span class="doel" tabindex="0">Ik definieer de grootheden magnetische inductie en magnetische permeabiliteit.</span><span class="doel" tabindex="0">Ik leg het verschil uit tussen een permanente magneet en een elektromagneet.</span><span class="doel" tabindex="0">Ik teken de magnetische veldlijnen bij een rechte geleider en een spoel via twee rechterhandregels.</span><span class="doel" tabindex="0">Ik gebruik de formules voor de magnetische inductie bij een rechte geleider en bij een spoel.</span><span class="doel" tabindex="0">Ik kan het principe van een elektromagneet uitleggen en 2 toepassingen noteren</span><span class="doel" tabindex="0">Ik kan voorbeelden van technische systemen met elektromagneten: een (veiligheids)relais, een elektromagnetische klep, een deurbel, scheidings- en transportsystemen voor (ferromagnetische) metalen, MRI-scanners, automatische zekering, afstandsbediende deurontgrendeling … geven.</span></td>
 </tr>
 <tr>
-<td><b>HOOFDSTUK 2 KRACHT OP EEN ELEKTRISCHE STROOM (p 138-157)</b> (Oef: extra oefeningen op extra blaadjes + Oef 1, 2, 3, 4, 5, 6, 8, 9, 10, 11 p 156-157)</td>
+<td colspan="2"><b>HOOFDSTUK 2 KRACHT OP EEN ELEKTRISCHE STROOM (p 138-157)</b> (Oef: extra oefeningen op extra blaadjes + Oef 1, 2, 3, 4, 5, 6, 8, 9, 10, 11 p 156-157)</td>
 </tr>
 <tr>
 <td colspan="2"><b>LPD 6F De leerlingen analyseren en kwantificeren de magnetische kracht op een bewegende lading en op een stroomvoerende rechte geleider.</b></td>
@@ -932,7 +935,7 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td>• Ik teken de lorentzkracht op een geleider en de baan van een bewegende lading in een magnetisch veld. <br>• Ik gebruik de formule voor de lorentzkracht op een stroomvoerende geleider. <br>• Ik leg de krachtwerking tussen twee evenwijdige stroomvoerende geleiders uit. (niet te kennen voor evaluatie) <br>• Ik licht enkele toepassingen op de lorentzkracht toe. (luidspreker en noorderlicht als toepassing)</td>
+<td><span class="doel" tabindex="0">Ik teken de lorentzkracht op een geleider en de baan van een bewegende lading in een magnetisch veld.</span><span class="doel" tabindex="0">Ik gebruik de formule voor de lorentzkracht op een stroomvoerende geleider.</span><span class="doel" tabindex="0">Ik leg de krachtwerking tussen twee evenwijdige stroomvoerende geleiders uit. (niet te kennen voor evaluatie)</span><span class="doel" tabindex="0">Ik licht enkele toepassingen op de lorentzkracht toe. (luidspreker en noorderlicht als toepassing)</span></td>
 </tr>
 <tr>
 <td><b>2.2 Lorentzkracht op een bewegende lading</b></td>
@@ -940,7 +943,7 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td></td>
-<td>• Ik teken en bereken de lorentzkracht en teken de baan van een bewegende lading in een magnetisch veld en kan de formules omvormen. <br>• Ik kan volgende toepassingen kort uitleggen: Hall-sensor, magnetische schermwerking van de aarde, noorderlicht.</td>
+<td><span class="doel" tabindex="0">Ik teken en bereken de lorentzkracht en teken de baan van een bewegende lading in een magnetisch veld en kan de formules omvormen.</span><span class="doel" tabindex="0">Ik kan volgende toepassingen kort uitleggen: Hall-sensor, magnetische schermwerking van de aarde, noorderlicht.</span></td>
 </tr>
 <tr>
 <td><b>2.3 De gelijkstroommotor</b></td>
@@ -948,10 +951,10 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td colspan="2">Ik leg de krachtwerking op een stroomvoerende winding in een magneetveld uit. <br>• Ik kan de principiële werking van een elektrische gelijkstroommotor als systeem uitleggen.</td>
+<td><span class="doel" tabindex="0">Ik leg de krachtwerking op een stroomvoerende winding in een magneetveld uit.</span><span class="doel" tabindex="0">Ik kan de principiële werking van een elektrische gelijkstroommotor als systeem uitleggen.</span></td>
 </tr>
 <tr>
-<td><b>HOOFDSTUK 3 ELEKTROMAGNETISCHE INDUCTIE (p158-179)</b> (Oef: oefeningen op extra bladen + oef 1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12, 14 (p 174-176)</td>
+<td colspan="2"><b>HOOFDSTUK 3 ELEKTROMAGNETISCHE INDUCTIE (p158-179)</b> (Oef: oefeningen op extra bladen + oef 1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12, 14 (p 174-176)</td>
 </tr>
 <tr>
 <td colspan="2"><b>LPD 7F De leerlingen analyseren en kwantificeren elektromagnetische inductie aan de hand van verschijnselen of toepassingen.</b> Wet van Faraday en Lenz; opwekken van wisselspanning</td>
@@ -962,7 +965,7 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td>• Ik licht de algemene inductiewet van Faraday toe. <br>• Ik definieer het begrip magnetische flux. <br>• Ik licht de wet van Lenz toe <br>• Ik pas de algemene inductiewet van Faraday en de wet van Lenz toe in concrete voorbeelden. (+ <b>Verklaren</b> van de wet van <b>Lenz</b> vanuit de Lorentzkracht) <br>• Ik kan de polariteit van een geïnduceerde spanning en de zin van de geïnduceerde stroom aan de hand van conceptuele oefeningen bepalen en zo de wet van Lenz inoefenen.</td>
+<td><span class="doel" tabindex="0">Ik licht de algemene inductiewet van Faraday toe.</span><span class="doel" tabindex="0">Ik definieer het begrip magnetische flux.</span><span class="doel" tabindex="0">Ik licht de wet van Lenz toe</span><span class="doel" tabindex="0">Ik pas de algemene inductiewet van Faraday en de wet van Lenz toe in concrete voorbeelden. (+ <b>Verklaren</b> van de wet van <b>Lenz</b> vanuit de Lorentzkracht)</span><span class="doel" tabindex="0">Ik kan de polariteit van een geïnduceerde spanning en de zin van de geïnduceerde stroom aan de hand van conceptuele oefeningen bepalen en zo de wet van Lenz inoefenen.</span></td>
 </tr>
 <tr>
 <td><b>3.2 Wervelstromen</b></td>
@@ -970,7 +973,7 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td>• Ik kan uitleggen wat wervelstromen zijn en wat de oorzaak van wervelstromen is. <br>• Ik herken elektromagnetische rem en inductiekookplaat als toepassingen. <br>• Ik kan aan de hand van elektromagnetische inductie de principiële werking van een transformator verklaren.</td>
+<td><span class="doel" tabindex="0">Ik kan uitleggen wat wervelstromen zijn en wat de oorzaak van wervelstromen is.</span><span class="doel" tabindex="0">Ik herken elektromagnetische rem en inductiekookplaat als toepassingen.</span><span class="doel" tabindex="0">Ik kan aan de hand van elektromagnetische inductie de principiële werking van een transformator verklaren.</span></td>
 </tr>
 <tr>
 <td><b>3.3 De wisselspanningsgenerator</b></td>
@@ -978,7 +981,7 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td colspan="2">• Ik ken de onderdelen van een generator. <br>• Ik kan uitleggen hoe wisselspanning via een generator opgewekt wordt. <br>• Ik leg het verschil uit tussen een elektrische motor en een generator. (p172)</td>
+<td><span class="doel" tabindex="0">Ik ken de onderdelen van een generator.</span><span class="doel" tabindex="0">Ik kan uitleggen hoe wisselspanning via een generator opgewekt wordt.</span><span class="doel" tabindex="0">Ik leg het verschil uit tussen een elektrische motor en een generator. (p172)</span></td>
 </tr>
 </tbody>
 </table>
@@ -987,13 +990,12 @@ td b,th b{font-weight:700}
 
 <thead>
 <tr>
-<th><b>HOOFDSTUK 1 HET ATOOMMODEL (p 186-194)</b> (Geen oefeningen; Theorie: Enkel te kennen 1u= … kg en 1 eV= … J + groene kaders van ppt)</th>
-<th></th>
+<th colspan="2"><b>HOOFDSTUK 1 HET ATOOMMODEL (p 186-194)</b> (Geen oefeningen; Theorie: Enkel te kennen 1u= … kg en 1 eV= … J + groene kaders van ppt)</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><b>LPD 24F De leerlingen illustreren fenomenen of toepassingen aan de hand van concepten uit kwantumfysica of relativiteitstheorie.</b></td>
+<td colspan="2"><b>LPD 24F De leerlingen illustreren fenomenen of toepassingen aan de hand van concepten uit kwantumfysica of relativiteitstheorie.</b></td>
 </tr>
 <tr>
 <td><b>1.1 Bouw van het atoom</b></td>
@@ -1001,7 +1003,7 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td>• Ik beschrijf de bouw van een atoom en zijn atoomkern met behulp van elektronen, neutronen en protonen. <br>• Ik beschrijf een atoomkern aan de hand van zijn protonental, neutronental en nucleonental. <br>• Ik reken met atomaire eenheden. (1u= … kg en 1eV = … J)</td>
+<td><span class="doel" tabindex="0">Ik beschrijf de bouw van een atoom en zijn atoomkern met behulp van elektronen, neutronen en protonen.</span><span class="doel" tabindex="0">Ik beschrijf een atoomkern aan de hand van zijn protonental, neutronental en nucleonental.</span><span class="doel" tabindex="0">Ik reken met atomaire eenheden. (1u= … kg en 1eV = … J)</span></td>
 </tr>
 <tr>
 <td><b>1.2 Het standaardmodel</b></td>
@@ -1009,10 +1011,10 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td colspan="2">• Ik kan de ontstaansgeschiedenis van een quantumchemische theorie omschrijven. <br>• Ik beschrijf de elementaire deeltjes en wisselwerkingen in een kern met behulp van het standaardmodel. <br>• Ik weet dat Georges Lemaître, Robert Brout, François Englert belangrijke Belgische bijdragen geleverd hebben voor de moderne fysica en kan omschrijven welke bijdragen dat waren. <br>• ik weet dat Francis Halzen in 2026 de nobelprijs fysica kreeg voor zijn baanbrekend werk om neutrino’s uit het heelal op te sporen en wat het belang hiervan is. <br>• Slechts één toepassing van relativiteit en één toepassing van kwantumfysica kennen.</td>
+<td><span class="doel" tabindex="0">Ik kan de ontstaansgeschiedenis van een quantumchemische theorie omschrijven.</span><span class="doel" tabindex="0">Ik beschrijf de elementaire deeltjes en wisselwerkingen in een kern met behulp van het standaardmodel.</span><span class="doel" tabindex="0">Ik weet dat Georges Lemaître, Robert Brout, François Englert belangrijke Belgische bijdragen geleverd hebben voor de moderne fysica en kan omschrijven welke bijdragen dat waren.</span><span class="doel" tabindex="0">ik weet dat Francis Halzen in 2026 de nobelprijs fysica kreeg voor zijn baanbrekend werk om neutrino’s uit het heelal op te sporen en wat het belang hiervan is.</span>• Slechts één toepassing van relativiteit en één toepassing van kwantumfysica kennen.</td>
 </tr>
 <tr>
-<td><b>HOOFDSTUK 2 VERVAL VAN KERNEN (p 194– 222)</b> (Oef: Oef 1, 2, 4, 5, 6, 7, 9, 10, 11, 14, 15, 18, 20, 21, 25, 26, 27, 28, p 219-222)</td>
+<td colspan="2"><b>HOOFDSTUK 2 VERVAL VAN KERNEN (p 194– 222)</b> (Oef: Oef 1, 2, 4, 5, 6, 7, 9, 10, 11, 14, 15, 18, 20, 21, 25, 26, 27, 28, p 219-222)</td>
 </tr>
 <tr>
 <td colspan="2">LPD 8F: De leerlingen lichten het spontaan radioactief verval van isotopen toe. Massadefect, bindingsenergie, alfa-, beta-emissie en gammastraling</td>
@@ -1023,7 +1025,7 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td>• Ik verklaar de (in)stabiliteit van atoomkernen. (stochastisch proces) <br>• Ik leg uit wat een isotoop is. ( beschouw ik als voorkennis) <br>• Ik kan aangeven dat de kerndeeltjes in een atoomkern bij elkaar worden gehouden door de (residuele) sterke interactie die ingaat tegen de sterke elektrostatische afstotingskracht tussen de protonen. <br>• Ik kan op een nuclidekaart, de evolutie richting de stabiliteitsvallei via radioactief verval en uitzenden van ioniserende straling duiden. <br>• Je kan alfa verval, beta+ en beta- verval en gamma straling bespreken op niveau van kerndeeltjes.</td>
+<td><span class="doel" tabindex="0">Ik verklaar de (in)stabiliteit van atoomkernen. (stochastisch proces)</span><span class="doel" tabindex="0">Ik leg uit wat een isotoop is. ( beschouw ik als voorkennis)</span><span class="doel" tabindex="0">Ik kan aangeven dat de kerndeeltjes in een atoomkern bij elkaar worden gehouden door de (residuele) sterke interactie die ingaat tegen de sterke elektrostatische afstotingskracht tussen de protonen.</span><span class="doel" tabindex="0">Ik kan op een nuclidekaart, de evolutie richting de stabiliteitsvallei via radioactief verval en uitzenden van ioniserende straling duiden.</span><span class="doel" tabindex="0">Je kan alfa verval, beta+ en beta- verval en gamma straling bespreken op niveau van kerndeeltjes.</span></td>
 </tr>
 <tr>
 <td><b>2.2 Equivalentie tussen massa en energie</b></td>
@@ -1031,7 +1033,7 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td>• Ik bereken het massadefect. <br>• Ik bereken de (specifieke) rustenergie met behulp van de formule E= mc<sup>2</sup>. <br>• Ik leg het verband tussen energieproductie en massaverlies uit. <br>• Ik bereken de (specifieke) bindingsenergie. <br>• Ik kan aan de hand van een grafiek aangeven dat radioactief verval een spontaan proces is waarbij een atoomkern evolueert naar een toestand met hoge specifieke bindingsenergie (kernfusie en kernfissie) <br>• Je kan op een grafiek de specifieke rustenergie weergeven in functie van het massagetal en aangeven dat die grafiek een minimum vertoont bij Fe-56. Lichtere of zwaardere kernen hebben een hogere specifieke rustenergie: uit die kernen kan energie worden gewonnen via kernfusie of kernsplitsing.</td>
+<td><span class="doel" tabindex="0">Ik bereken het massadefect.</span><span class="doel" tabindex="0">Ik bereken de (specifieke) rustenergie met behulp van de formule E= mc<sup>2</sup>.</span><span class="doel" tabindex="0">Ik leg het verband tussen energieproductie en massaverlies uit.</span><span class="doel" tabindex="0">Ik bereken de (specifieke) bindingsenergie.</span><span class="doel" tabindex="0">Ik kan aan de hand van een grafiek aangeven dat radioactief verval een spontaan proces is waarbij een atoomkern evolueert naar een toestand met hoge specifieke bindingsenergie (kernfusie en kernfissie)</span><span class="doel" tabindex="0">Je kan op een grafiek de specifieke rustenergie weergeven in functie van het massagetal en aangeven dat die grafiek een minimum vertoont bij Fe-56. Lichtere of zwaardere kernen hebben een hogere specifieke rustenergie: uit die kernen kan energie worden gewonnen via kernfusie of kernsplitsing.</span></td>
 </tr>
 <tr>
 <td><b>2.3 Soorten straling</b></td>
@@ -1039,24 +1041,24 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td colspan="2">• Ik beschrijf de eigenschappen van de verschillende soorten straling. alfa-straling, beta-straling, Elektronenvangst ,γ-straling</td>
+<td><span class="doel" tabindex="0">Ik beschrijf de eigenschappen van de verschillende soorten straling. alfa-straling, beta-straling, Elektronenvangst ,γ-straling</span></td>
 </tr>
 <tr>
-<td>LPD 10F De leerlingen passen de radioactieve vervalwet toe in concrete gevallen. Halveringstijd, activiteit</td>
+<td colspan="2">LPD 10F De leerlingen passen de radioactieve vervalwet toe in concrete gevallen. Halveringstijd, activiteit</td>
 </tr>
 <tr>
 <td colspan="2"><b>2.4 Vervalreeksen</b></td>
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td colspan="2">• Ik stel vervalreeksen op door gebruik te maken van de isotopentabel</td>
+<td><span class="doel" tabindex="0">Ik stel vervalreeksen op door gebruik te maken van de isotopentabel</span></td>
 </tr>
 <tr>
-<td><b>2.5 Halveringstijd</b></td>
+<td colspan="2"><b>2.5 Halveringstijd</b></td>
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td>• Ik gebruik de halveringstijd om het kernverval grafisch en numeriek te beschrijven</td>
+<td><span class="doel" tabindex="0">Ik gebruik de halveringstijd om het kernverval grafisch en numeriek te beschrijven</span></td>
 </tr>
 <tr>
 <td><b>2.6 Ioniserend vermogen en doordringend vermogen</b></td>
@@ -1064,24 +1066,24 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td colspan="2">• Ik beschrijf de oorzaken en de gevaren van ioniserende straling. <br>• Ik beschrijf het doordringend en ioniserend vermogen.</td>
+<td><span class="doel" tabindex="0">Ik beschrijf de oorzaken en de gevaren van ioniserende straling.</span><span class="doel" tabindex="0">Ik beschrijf het doordringend en ioniserend vermogen.</span></td>
 </tr>
 <tr>
-<td><b>2.7 Activiteit</b></td>
-</tr>
-<tr>
-<td>Lesdoelen:</td>
-<td colspan="2">• Ik leg uit wat de activiteit van radioactieve atomen is.</td>
-</tr>
-<tr>
-<td><b>2.8 Waarnemen van straling</b></td>
+<td colspan="2"><b>2.7 Activiteit</b></td>
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td colspan="2">• Ik leg uit hoe je ioniserende straling kan waarnemen.</td>
+<td><span class="doel" tabindex="0">Ik leg uit wat de activiteit van radioactieve atomen is.</span></td>
 </tr>
 <tr>
-<td><b>HOOFDSTUK 3 RADIOACTIVITEIT IN DE MAATSCHAPPIJ (p 223 – 248)</b> (oef: 1, 2, 3, 5, 7, 10, 14, 15, 16, 19, 20 p 246-249)</td>
+<td colspan="2"><b>2.8 Waarnemen van straling</b></td>
+</tr>
+<tr>
+<td>Lesdoelen:</td>
+<td><span class="doel" tabindex="0">Ik leg uit hoe je ioniserende straling kan waarnemen.</span></td>
+</tr>
+<tr>
+<td colspan="2"><b>HOOFDSTUK 3 RADIOACTIVITEIT IN DE MAATSCHAPPIJ (p 223 – 248)</b> (oef: 1, 2, 3, 5, 7, 10, 14, 15, 16, 19, 20 p 246-249)</td>
 </tr>
 <tr>
 <td><b>3.1 Radioactiviteit rondom ons</b></td>
@@ -1089,10 +1091,10 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td colspan="2">• Ik geef voorbeelden van kunstmatige en spontane radioactiviteit. <br>• Ik leg het verschil uit tussen bestraling en besmetting.</td>
+<td><span class="doel" tabindex="0">Ik geef voorbeelden van kunstmatige en spontane radioactiviteit.</span><span class="doel" tabindex="0">Ik leg het verschil uit tussen bestraling en besmetting.</span></td>
 </tr>
 <tr>
-<td><b>LPD F11 De leerlingen beschrijven de effecten van de vrijgekomen ioniserende straling op organismen met inbegrip van de effectieve dosis.</b></td>
+<td colspan="2"><b>LPD F11 De leerlingen beschrijven de effecten van de vrijgekomen ioniserende straling op organismen met inbegrip van de effectieve dosis.</b></td>
 </tr>
 <tr>
 <td><b>3.2 Bescherming tegen straling</b></td>
@@ -1100,7 +1102,7 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td>• Ik beschrijf het verschil tussen geabsorbeerde dosis, equivalente dosis en effectieve dosis. <br>• Ik weet hoe ik me kan beschermen tegen ioniserende straling.</td>
+<td><span class="doel" tabindex="0">Ik beschrijf het verschil tussen geabsorbeerde dosis, equivalente dosis en effectieve dosis.</span><span class="doel" tabindex="0">Ik weet hoe ik me kan beschermen tegen ioniserende straling.</span></td>
 </tr>
 <tr>
 <td><b>3.3 Dateringstechnieken</b></td>
@@ -1108,18 +1110,18 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td>• Ik pas de formule van de halveringstijd toe in andere STEM-disciplines</td>
+<td><span class="doel" tabindex="0">Ik pas de formule van de halveringstijd toe in andere STEM-disciplines</span></td>
 </tr>
 <tr>
 <td><b>3.4 Energie uit atoomkernen</b></td>
-<td colspan="2"><b>3.4.1 Kernfusie in de zon</b><br><b>3.4.2 Kernfusie op aarde</b><br><b>3.4.3 Kernfissie</b></td>
+<td><b>3.4.1 Kernfusie in de zon</b><br><b>3.4.2 Kernfusie op aarde</b><br><b>3.4.3 Kernfissie</b></td>
 </tr>
 <tr>
-<td><b>LPD 9F De leerlingen beschrijven kernreacties in het kader van energievoorziening en bijbehorende veiligheidsaspecten.</b> Kernfusie en kernsplitsing</td>
+<td colspan="2"><b>LPD 9F De leerlingen beschrijven kernreacties in het kader van energievoorziening en bijbehorende veiligheidsaspecten.</b> Kernfusie en kernsplitsing</td>
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td>Ik leg het verschil uit tussen kernfusie en kernfissie. <br>• Ik beschrijf hoe kernfissie en kernfusie op aarde kan worden toegepast. <br>• Ik kan uitleggen wat de technische beperkingen zijn voor een fusiereactor op aarde. <br>• Ik kan berekenen dat de totale rustenergie daalt als een zware kern splitst. Dat is de energie die vrijkomt bij de splitsing van de kern <br>• Ik weet dat de belangrijkste operationele fusiereactor voor ons de zon is.</td>
+<td><span class="doel" tabindex="0">Ik leg het verschil uit tussen kernfusie en kernfissie.</span><span class="doel" tabindex="0">Ik beschrijf hoe kernfissie en kernfusie op aarde kan worden toegepast.</span><span class="doel" tabindex="0">Ik kan uitleggen wat de technische beperkingen zijn voor een fusiereactor op aarde.</span><span class="doel" tabindex="0">Ik kan berekenen dat de totale rustenergie daalt als een zware kern splitst. Dat is de energie die vrijkomt bij de splitsing van de kern</span><span class="doel" tabindex="0">Ik weet dat de belangrijkste operationele fusiereactor voor ons de zon is.</span></td>
 </tr>
 <tr>
 <td><b>3.5 Toepassingen van radioactieve materialen</b></td>
@@ -1127,7 +1129,7 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td>• Ik illustreer de link tussen kernfysica en andere STEM-disciplines aan de hand van vreedzame en oorlogstoepassingen, zoals X-stralentomografie, tracers, radiotherapie, neutronenactiveringsanalyse, doorstraling en atoomwapens.</td>
+<td><span class="doel" tabindex="0">Ik illustreer de link tussen kernfysica en andere STEM-disciplines aan de hand van vreedzame en oorlogstoepassingen, zoals X-stralentomografie, tracers, radiotherapie, neutronenactiveringsanalyse, doorstraling en atoomwapens.</span></td>
 </tr>
 </tbody>
 </table>
@@ -1181,7 +1183,7 @@ td b,th b{font-weight:700}
 <thead>
 <tr>
 <th><b>Thema 1</b></th>
-<th colspan="2"><b>Belang en werking van feedbacksystemen</b></th>
+<th><b>Belang en werking van feedbacksystemen</b></th>
 </tr>
 </thead>
 <tbody>
@@ -1199,7 +1201,7 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td><b>1.1 Aanpassingen van bladeren aan de waterhuishouding p11</b><br><b>1.2 Aanpassingen van wortels aan de waterhuishouding p13</b><br><b>1.3 Aanpassingen van stengels aan de waterhuishouding p14</b></td>
-<td>• Ik benoem en herken de plantenweefsels <b>deelweefsel, vaatbundels, dekweefsel, huidmondjes, houtvaten, zeefvaten, sluitcellen, vulweefsel en cortex</b> bij planten. <br>• Ik kan noteren wat van waterhuishouding bij planten inhoud. <br>• Ik ken de functie van deelweefsel, vaatbundels, dekweefsel, huidmondjes, houtvaten, zeefvaten, sluitcellen, vulweefsel en cortex bij planten. <br>• Ik kan uitleggen hoe de gasuitwisseling via <b>huidmondjes</b> gebeurt. <br>• Ik gebruik in mijn uitleg de woorden <b>vacuole, turgor</b> en openen of sluiten van huidmondjes. <br>• Ik benoem wortel, stengel, blad en bloem als plantenorganen. <br>• Ik kan verwoorden dat <b>assimilaten</b> (eindproducten van fotosynthese) bestaan uit glucose, zetmeel, eiwitten en vetten. <br>• Ik leg uit hoe het water- en assimilatentransport in de plant verloopt. <br>• Ik gebruik hiervoor de woorden wortelhaartjes, houtvaten, zeefvaten, huidmondjes en opwaarts en neerwaarts transport (Oef 15 p 17) <br>• Ik kan reeks tekeningen maken van houtvaten en zeefvaten en deelweefsel bij stengel, wortel</td>
+<td><span class="doel" tabindex="0">Ik benoem en herken de plantenweefsels <b>deelweefsel, vaatbundels, dekweefsel, huidmondjes, houtvaten, zeefvaten, sluitcellen, vulweefsel en cortex</b> bij planten.</span><span class="doel" tabindex="0">Ik kan noteren wat van waterhuishouding bij planten inhoud.</span><span class="doel" tabindex="0">Ik ken de functie van deelweefsel, vaatbundels, dekweefsel, huidmondjes, houtvaten, zeefvaten, sluitcellen, vulweefsel en cortex bij planten.</span><span class="doel" tabindex="0">Ik kan uitleggen hoe de gasuitwisseling via <b>huidmondjes</b> gebeurt.</span><span class="doel" tabindex="0">Ik gebruik in mijn uitleg de woorden <b>vacuole, turgor</b> en openen of sluiten van huidmondjes.</span><span class="doel" tabindex="0">Ik benoem wortel, stengel, blad en bloem als plantenorganen.</span><span class="doel" tabindex="0">Ik kan verwoorden dat <b>assimilaten</b> (eindproducten van fotosynthese) bestaan uit glucose, zetmeel, eiwitten en vetten.</span><span class="doel" tabindex="0">Ik leg uit hoe het water- en assimilatentransport in de plant verloopt.</span><span class="doel" tabindex="0">Ik gebruik hiervoor de woorden wortelhaartjes, houtvaten, zeefvaten, huidmondjes en opwaarts en neerwaarts transport (Oef 15 p 17)</span><span class="doel" tabindex="0">Ik kan reeks tekeningen maken van houtvaten en zeefvaten en deelweefsel bij stengel, wortel</span></td>
 </tr>
 <tr>
 <td><b>Hoofdstuk 2</b></td>
@@ -1215,15 +1217,15 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td><b>2.1 Homeostase via een (technisch) feedbacksysteem (p20 en 21)</b></td>
-<td>Ik kan verwoorden dat planten (en dieren) als een systeem functioneren: Ze kunnen prikkels opvangen, verwerken en erop reageren. <br>• Ik kan de definitie en 4 voorbeelden van prikkels van intern of extern milieu noteren. <br>• Ik kan de definitie van homeostase noteren en 3 voorbeelden van homeostase in ons lichaam geven. <br>• Ik kan de definitie van een feedbacksysteem schematisch en in eigen woorden noteren.</td>
+<td><span class="doel" tabindex="0">Ik kan verwoorden dat planten (en dieren) als een systeem functioneren: Ze kunnen prikkels opvangen, verwerken en erop reageren.</span><span class="doel" tabindex="0">Ik kan de definitie en 4 voorbeelden van prikkels van intern of extern milieu noteren.</span><span class="doel" tabindex="0">Ik kan de definitie van homeostase noteren en 3 voorbeelden van homeostase in ons lichaam geven.</span><span class="doel" tabindex="0">Ik kan de definitie van een feedbacksysteem schematisch en in eigen woorden noteren.</span></td>
 </tr>
 <tr>
 <td><b>2.2 Positieve en negatieve feedbacksystemen p21</b></td>
-<td>Ik leg uit hoe een positief en een negatief feedbacksysteem werken en kan een bijhorende grafiek van beide processen tekenen . <br>• Ik geef 3 voorbeelden van feedbacksystemen in plantaardige en dierlijke organismen.</td>
+<td><span class="doel" tabindex="0">Ik leg uit hoe een positief en een negatief feedbacksysteem werken en kan een bijhorende grafiek van beide processen tekenen .</span><span class="doel" tabindex="0">Ik geef 3 voorbeelden van feedbacksystemen in plantaardige en dierlijke organismen.</span></td>
 </tr>
 <tr>
 <td><b>2.3 Homeostase van de waterhuishouding in planten p22</b></td>
-<td>Ik kan de correcte antwoorden met betrekking tot de waterhuishouding bij planten via hun huidmondjes aankruisen (Oef 5 p 23)</td>
+<td><span class="doel" tabindex="0">Ik kan de correcte antwoorden met betrekking tot de waterhuishouding bij planten via hun huidmondjes aankruisen (Oef 5 p 23)</span></td>
 </tr>
 <tr>
 <td><b>Thema 2</b></td>
@@ -1243,7 +1245,7 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen</td>
-<td>Ik leg uit welke receptoren welke prikkels kunnen opvangen en omzetten. Foto-, mechano-, thermo-, chemo- en pijnreceptoren. (Oef 2 en 4) <br>• Ik kan aan de hand van 2 voorbeelden uitleggen wat een prikkeldrempel is. <br>• Ik kan aan de hand van 2 voorbeelden uitleggen wat prikkelgewenning is en wat het effect op de prikkeldrempel is. <br>• Ik kan uitleggen wat een prikkelfilter is.</td>
+<td><span class="doel" tabindex="0">Ik leg uit welke receptoren welke prikkels kunnen opvangen en omzetten. Foto-, mechano-, thermo-, chemo- en pijnreceptoren. (Oef 2 en 4)</span><span class="doel" tabindex="0">Ik kan aan de hand van 2 voorbeelden uitleggen wat een prikkeldrempel is.</span><span class="doel" tabindex="0">Ik kan aan de hand van 2 voorbeelden uitleggen wat prikkelgewenning is en wat het effect op de prikkeldrempel is.</span><span class="doel" tabindex="0">Ik kan uitleggen wat een prikkelfilter is.</span></td>
 </tr>
 <tr>
 <td><b>Hoofdstuk 2</b></td>
@@ -1251,7 +1253,7 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen</td>
-<td>Ik benoem, herken en ken de functies van de inwendige delen van het oog. p41en 42</td>
+<td><span class="doel" tabindex="0">Ik benoem, herken en ken de functies van de inwendige delen van het oog. p41en 42</span></td>
 </tr>
 <tr>
 <td><b>Hoofdstuk 3</b></td>
@@ -1259,47 +1261,42 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td></td>
-<td>Ik benoem en herken de inwendige delen van het oog. p41 + oef p 42 onderaan.</td>
+<td><span class="doel" tabindex="0">Ik benoem en herken de inwendige delen van het oog. p41 + oef p 42 onderaan.</span></td>
 </tr>
 <tr>
-<td><b>3.3 Fotoreceptoren in het netvlies vangen lichtprikkels op p. 52</b></td>
-<td></td>
+<td colspan="2"><b>3.3 Fotoreceptoren in het netvlies vangen lichtprikkels op p. 52</b></td>
 </tr>
 <tr>
 <td>Lesdoelen</td>
-<td>• Ik benoem en herken de delen van het netvlies: <b>zenuwcellen</b>, <b>fotoreceptoren</b>, <b>pigmentcellen</b>. <br>• Ik kan op verschillende tekeningen de weg van het licht in het oog aanduiden. <br>• Ik kan een vergelijking maken tussen staafjes en kegeltjes qua vorm, aantal, locatie, waarneming, werking en kenmerken (p54) <br>• Ik leg uit hoe de fotoreceptoren van het netvlies beelden en kleuren opvangen (kader p 55 eerste 2 puntjes)</td>
+<td><span class="doel" tabindex="0">Ik benoem en herken de delen van het netvlies: <b>zenuwcellen</b>, <b>fotoreceptoren</b>, <b>pigmentcellen</b>.</span><span class="doel" tabindex="0">Ik kan op verschillende tekeningen de weg van het licht in het oog aanduiden.</span><span class="doel" tabindex="0">Ik kan een vergelijking maken tussen staafjes en kegeltjes qua vorm, aantal, locatie, waarneming, werking en kenmerken (p54)</span><span class="doel" tabindex="0">Ik leg uit hoe de fotoreceptoren van het netvlies beelden en kleuren opvangen (kader p 55 eerste 2 puntjes)</span></td>
 </tr>
 <tr>
 <td><b>3.4 Beeldverwerking in de hersenen p. 56</b></td>
-<td>Ik leg uit dat het beeld in de hersenen wordt verwerkt tot wat we zien. <br>• Ik leg uit wat een optische illusie is.</td>
+<td><span class="doel" tabindex="0">Ik leg uit dat het beeld in de hersenen wordt verwerkt tot wat we zien.</span><span class="doel" tabindex="0">Ik leg uit wat een optische illusie is.</span></td>
 </tr>
 <tr>
 <td><b>Hoofdstuk 4</b></td>
 <td><b>Receptoren bij andere organismen (p. 62-65) (BZL)</b></td>
 </tr>
 <tr>
-<td><b>4.1 Receptoren bij dierlijke organismen p. 62</b></td>
-<td></td>
+<td colspan="2"><b>4.1 Receptoren bij dierlijke organismen p. 62</b></td>
 </tr>
 <tr>
 <td>Lesdoelen</td>
-<td>Ik herken verschillende receptoren bij dieren aan de hand van voorbeelden.</td>
+<td><span class="doel" tabindex="0">Ik herken verschillende receptoren bij dieren aan de hand van voorbeelden.</span></td>
 </tr>
 <tr>
-<td><b>4.2 Receptoren bij plantaardige organismen p. 63</b></td>
-<td></td>
+<td colspan="2"><b>4.2 Receptoren bij plantaardige organismen p. 63</b></td>
 </tr>
 <tr>
 <td>Lesdoelen</td>
-<td>Ik herken verschillende receptoren bij planten aan de hand van voorbeelden.</td>
+<td><span class="doel" tabindex="0">Ik herken verschillende receptoren bij planten aan de hand van voorbeelden.</span></td>
 </tr>
 <tr>
-<td><b>Thema 3 Effectoren reageren op prikkels (p. 69-106)</b></td>
-<td></td>
+<td colspan="2"><b>Thema 3 Effectoren reageren op prikkels (p. 69-106)</b></td>
 </tr>
 <tr>
-<td>Werkboek Oef 3, 11, 12 Scoodle;</td>
-<td></td>
+<td colspan="2">Werkboek Oef 3, 11, 12 Scoodle;</td>
 </tr>
 <tr>
 <td><b>Hoofdstuk 1</b></td>
@@ -1307,35 +1304,32 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen</td>
-<td>Ik kan voor eigen ervaringen of voorbeelden het schema prikkel, receptor, verwerking, effector, effect invullen en noteer of de reactie bewust of onbewust is. <br>• Ik leg uit hoe je via spieren of klieren, bewust of onbewust op prikkels kunt reageren</td>
+<td><span class="doel" tabindex="0">Ik kan voor eigen ervaringen of voorbeelden het schema prikkel, receptor, verwerking, effector, effect invullen en noteer of de reactie bewust of onbewust is.</span><span class="doel" tabindex="0">Ik leg uit hoe je via spieren of klieren, bewust of onbewust op prikkels kunt reageren</span></td>
 </tr>
 <tr>
 <td><b>Hoofdstuk 2</b></td>
 <td><b>Reactie door spieren (p. 74-83)</b> Scoodle: 1a -&gt; 3b</td>
 </tr>
 <tr>
-<td><b>2.1 Spieren zorgen voor beweging p75</b></td>
-<td></td>
+<td colspan="2"><b>2.1 Spieren zorgen voor beweging p75</b></td>
 </tr>
 <tr>
 <td>Lesdoelen</td>
-<td>Ik kan volgende spieren aanduiden en benoemen: biceps, triceps, buikspieren, rugspieren, hamstrings en quadriceps. <br>• Ik leg uit wat de functie van spieren is (groene kader p 76) <br>• Ik leg uit wat de functie van een pees en van een gewricht is. <br>• Ik kan 5 voorbeelden van gewrichten noteren.</td>
+<td><span class="doel" tabindex="0">Ik kan volgende spieren aanduiden en benoemen: biceps, triceps, buikspieren, rugspieren, hamstrings en quadriceps.</span><span class="doel" tabindex="0">Ik leg uit wat de functie van spieren is (groene kader p 76)</span><span class="doel" tabindex="0">Ik leg uit wat de functie van een pees en van een gewricht is.</span><span class="doel" tabindex="0">Ik kan 5 voorbeelden van gewrichten noteren.</span></td>
 </tr>
 <tr>
-<td><b>2.2 Soorten spieren p. 77</b></td>
-<td></td>
-</tr>
-<tr>
-<td>Lesdoelen</td>
-<td>Ik kan de correcte vakjes aankruisen bij een vergelijking tussen een dwarsgestreepte spier, gladde spier en hartspier. <br>• Ik kan dwarsgestreepte spier, gladde spier en hartspier op een afbeelding herkennen.</td>
-</tr>
-<tr>
-<td><b>2.3 Bouw en werking van spieren p. 78</b></td>
-<td></td>
+<td colspan="2"><b>2.2 Soorten spieren p. 77</b></td>
 </tr>
 <tr>
 <td>Lesdoelen</td>
-<td>Ik leg uit hoe spieren samentrekken. (Kader p 79) <br>• Ik leg uit hoe spieren ontspannen door het samentrekken van hun antagonistische spier en pas dit toe bij de kringspieren van de slokdarm en bij biceps en triceps.</td>
+<td><span class="doel" tabindex="0">Ik kan de correcte vakjes aankruisen bij een vergelijking tussen een dwarsgestreepte spier, gladde spier en hartspier.</span><span class="doel" tabindex="0">Ik kan dwarsgestreepte spier, gladde spier en hartspier op een afbeelding herkennen.</span></td>
+</tr>
+<tr>
+<td colspan="2"><b>2.3 Bouw en werking van spieren p. 78</b></td>
+</tr>
+<tr>
+<td>Lesdoelen</td>
+<td><span class="doel" tabindex="0">Ik leg uit hoe spieren samentrekken. (Kader p 79)</span><span class="doel" tabindex="0">Ik leg uit hoe spieren ontspannen door het samentrekken van hun antagonistische spier en pas dit toe bij de kringspieren van de slokdarm en bij biceps en triceps.</span></td>
 </tr>
 </tbody>
 </table>
@@ -1344,7 +1338,7 @@ td b,th b{font-weight:700}
 
 <thead>
 <tr>
-<th><b>Thema 1 Van Mengsels tot zuivere stoffen (p. 7-46)</b></th>
+<th colspan="2"><b>Thema 1 Van Mengsels tot zuivere stoffen (p. 7-46)</b></th>
 </tr>
 </thead>
 <tbody>
@@ -1358,7 +1352,7 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen</td>
-<td>Chemie als wetenschap p11 <br>• Ik beschrijf wat in de chemie bestudeerd wordt. Veilig omgaan met stoffen p13 <br>• Ik ken de gevarensymbolen en kan P- en H- zinnen categoriseren als voorzorg of gevaar. <br>• Ik gebruik producten in een labo en in het dagelijks leven op een verantwoorde manier.</td>
+<td>Chemie als wetenschap p11 <span class="doel" tabindex="0">Ik beschrijf wat in de chemie bestudeerd wordt. Veilig omgaan met stoffen p13</span><span class="doel" tabindex="0">Ik ken de gevarensymbolen en kan P- en H- zinnen categoriseren als voorzorg of gevaar.</span><span class="doel" tabindex="0">Ik gebruik producten in een labo en in het dagelijks leven op een verantwoorde manier.</span></td>
 </tr>
 <tr>
 <td><b>Hoofdstuk 2</b></td>
@@ -1366,7 +1360,7 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen</td>
-<td><b>2.1 Soorten mengsels P. 19</b><br>• Ik onderscheid de begrippen zuivere stof, bestanddeel en mengsel. <br>• Ik kan uitleggen waarom een bepaald mengsel homogeen is of heterogeen is. <br><b>2.2 Soorten heterogene en homogene mengsels P. 21</b><br>• Ik onderscheid de specifieke soorten homogene en heterogene mengsels op basis van de aggregatietoestand van hun bestanddelen. (<b>aerosol, rook, nevel, oplossing, schuim, suspensie, emulsie, legering</b>) <br><b>2.3 Stofeigenschappen p23</b><br>• Ik beschrijf wat een stofeigenschap is en kan voorbeelden van stofeigenschappen noteren. <br>• Ik kan het onderscheid maken tussen een stofeigenschap en voorwerpseigenschap.</td>
+<td><b>2.1 Soorten mengsels P. 19</b><span class="doel" tabindex="0">Ik onderscheid de begrippen zuivere stof, bestanddeel en mengsel.</span><span class="doel" tabindex="0">Ik kan uitleggen waarom een bepaald mengsel homogeen is of heterogeen is.</span><b>2.2 Soorten heterogene en homogene mengsels P. 21</b><span class="doel" tabindex="0">Ik onderscheid de specifieke soorten homogene en heterogene mengsels op basis van de aggregatietoestand van hun bestanddelen. (<b>aerosol, rook, nevel, oplossing, schuim, suspensie, emulsie, legering</b>)</span><b>2.3 Stofeigenschappen p23</b><span class="doel" tabindex="0">Ik beschrijf wat een stofeigenschap is en kan voorbeelden van stofeigenschappen noteren.</span><span class="doel" tabindex="0">Ik kan het onderscheid maken tussen een stofeigenschap en voorwerpseigenschap.</span></td>
 </tr>
 <tr>
 <td><b>Hoofdstuk 3</b></td>
@@ -1374,10 +1368,10 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen</td>
-<td colspan="2"><b>3.1 Scheiden van mengsels p31</b><br>• Ik kan de definitie van scheidingstechniek noteren. <br><b>3.2 Scheiden van heterogene mengsels p32</b><br><b>3.3 Scheiden van homogene mengsels p35</b><br>• Ik kan het principe van verschillende scheidingstechnieken (zeven, decanteren, filtreren, centrifugeren, uitdampen, destilleren, extraheren, absorberen) uitleggen aan de hand van een tekening en noteren op welke stofeigenschap het scheiden gebaseerd is. <br>• Ik kan de onderdelen van elke scheidingstechniek benoemen. <br>• Ik kan van een voorbeeld uit het dagelijks leven noteren welke scheidingstechniek gebruikt wordt. (samenvatting p 35 en 40)</td>
+<td><b>3.1 Scheiden van mengsels p31</b><span class="doel" tabindex="0">Ik kan de definitie van scheidingstechniek noteren.</span><b>3.2 Scheiden van heterogene mengsels p32</b><br><b>3.3 Scheiden van homogene mengsels p35</b><span class="doel" tabindex="0">Ik kan het principe van verschillende scheidingstechnieken (zeven, decanteren, filtreren, centrifugeren, uitdampen, destilleren, extraheren, absorberen) uitleggen aan de hand van een tekening en noteren op welke stofeigenschap het scheiden gebaseerd is.</span><span class="doel" tabindex="0">Ik kan de onderdelen van elke scheidingstechniek benoemen.</span><span class="doel" tabindex="0">Ik kan van een voorbeeld uit het dagelijks leven noteren welke scheidingstechniek gebruikt wordt. (samenvatting p 35 en 40)</span></td>
 </tr>
 <tr>
-<td><b>Thema 2 De atoombouw en het PSE (p. 47-84)</b></td>
+<td colspan="2"><b>Thema 2 De atoombouw en het PSE (p. 47-84)</b></td>
 </tr>
 <tr>
 <td colspan="2">LPD 6C: De leerlingen gebruiken een atoommodel om de structuur van atomen en ionen te beschrijven.</td>
@@ -1388,29 +1382,29 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen</td>
-<td><b>1.1 Atoommodel als dynamisch gegeven p51</b><br>• Ik kan uitleggen waarom het atoommodel een dynamisch model is. <br>• Ik ken de namen van de verschillende atoommodellen en hun kenmerken en kan ze chronologisch rangschikken. <br><b>1.2 Symbolische voorstelling van de chemische elementen p52 Ik benoem het chemisch symbool als de naam gegeven is en omgekeerd. (tabel p 53)</b></td>
+<td><b>1.1 Atoommodel als dynamisch gegeven p51</b><span class="doel" tabindex="0">Ik kan uitleggen waarom het atoommodel een dynamisch model is.</span><span class="doel" tabindex="0">Ik ken de namen van de verschillende atoommodellen en hun kenmerken en kan ze chronologisch rangschikken.</span><b>1.2 Symbolische voorstelling van de chemische elementen p52</b><span class="doel" tabindex="0">Ik benoem het chemisch symbool als de naam gegeven is en omgekeerd. (tabel p 53)</span></td>
 </tr>
 <tr>
 <td><b>Hoofdstuk 2</b></td>
-<td colspan="2"><b>Bouw van het atoom (p. 57-69)</b></td>
+<td><b>Bouw van het atoom (p. 57-69)</b></td>
 </tr>
 <tr>
-<td>LPD 8C De leerlingen beschrijven het PSE als een rangschikking van elementen volgens toenemend atoomnummer voor elementen uit de a-groepen en de edelgassen.</td>
+<td colspan="2">LPD 8C De leerlingen beschrijven het PSE als een rangschikking van elementen volgens toenemend atoomnummer voor elementen uit de a-groepen en de edelgassen.</td>
 </tr>
 <tr>
 <td>Lesdoelen</td>
-<td><b>2.1 Bouwstenen van het atoom p57</b><br>• Ik beschrijf hoe een atoom is opgebouwd.(kern, protonen, neutronen, elektronen, elektronenmantel) <br>• Ik kan noteren welke de elementaire deeltjes zijn. <br>• Ik kan voor de eerste 18 elementen van het PSE de elektronenconfiguratie tekenen en noteren. (… / … / … ) <br>• Ik kan de definitie van valentie-elektronen noteren. <br>• Ik kan noteren dat de schillen van een atoom energieniveaus’s zijn. <br><b>2.2 Atoomnummer en massagetal p. 65</b><br>• Ik kan aan de hand van het atoomnummer het aantal protonen en elektronen van een element bepalen. <br>• Ik kan noteren wat het verband is tussen het massagetal (A) en de elementaire deeltjes van een atoom. <br>• Ik kan noteren wat het verband is tussen het atoomnummer (Z) en de elementaire deeltjes van een atoom. <br>• Ik kan een element symbolisch voorstellen met atoomnummer en massagetal <br>• Ik kan aan de hand van atoomnummer en massagetal het aantal neutronen bepalen en omgekeerd. <br>• Ik leg het verband tussen absolute en relatieve atoommassa uit.</td>
+<td><b>2.1 Bouwstenen van het atoom p57</b><span class="doel" tabindex="0">Ik beschrijf hoe een atoom is opgebouwd.(kern, protonen, neutronen, elektronen, elektronenmantel)</span><span class="doel" tabindex="0">Ik kan noteren welke de elementaire deeltjes zijn.</span><span class="doel" tabindex="0">Ik kan voor de eerste 18 elementen van het PSE de elektronenconfiguratie tekenen en noteren. (… / … / … )</span><span class="doel" tabindex="0">Ik kan de definitie van valentie-elektronen noteren.</span><span class="doel" tabindex="0">Ik kan noteren dat de schillen van een atoom energieniveaus’s zijn.</span><b>2.2 Atoomnummer en massagetal p. 65</b><span class="doel" tabindex="0">Ik kan aan de hand van het atoomnummer het aantal protonen en elektronen van een element bepalen.</span><span class="doel" tabindex="0">Ik kan noteren wat het verband is tussen het massagetal (A) en de elementaire deeltjes van een atoom.</span><span class="doel" tabindex="0">Ik kan noteren wat het verband is tussen het atoomnummer (Z) en de elementaire deeltjes van een atoom.</span><span class="doel" tabindex="0">Ik kan een element symbolisch voorstellen met atoomnummer en massagetal</span><span class="doel" tabindex="0">Ik kan aan de hand van atoomnummer en massagetal het aantal neutronen bepalen en omgekeerd.</span><span class="doel" tabindex="0">Ik leg het verband tussen absolute en relatieve atoommassa uit.</span></td>
 </tr>
 <tr>
 <td><b>Hoofdstuk 3</b></td>
-<td colspan="2"><b>Periodiek systeem van de elementen (p. 70-76)</b></td>
+<td><b>Periodiek systeem van de elementen (p. 70-76)</b></td>
 </tr>
 <tr>
-<td>LPD9C De leerlingen gebruiken het PSE om eigenschappen van atomen af te leiden.</td>
+<td colspan="2">LPD9C De leerlingen gebruiken het PSE om eigenschappen van atomen af te leiden.</td>
 </tr>
 <tr>
 <td></td>
-<td>• Ik kan noteren dat de elementen in eenzelfde groep dezelfde chemische eigenschappen hebben en dus op eenzelfde manier reageren. <br>• Ik kan met behulp van het PSE noteren wat het verband is tussen het groepsnummer en het periode nummer en de eigenschappen van het atoom. <br>• Ik kan met behulp van het PSE de opbouw van een atoom noteren en omgekeerd. <br>• Ik kan uitleggen wat een hoge of lage elektronegatieve waarde betekent voor een element. <br>• Ik kan uitleggen wat de edelgasconfiguratie is. <br>• Ik kan noteren welke categorieën van elementen er zijn en waar deze elementen zich in het PSE bevinden.</td>
+<td><span class="doel" tabindex="0">Ik kan noteren dat de elementen in eenzelfde groep dezelfde chemische eigenschappen hebben en dus op eenzelfde manier reageren.</span><span class="doel" tabindex="0">Ik kan met behulp van het PSE noteren wat het verband is tussen het groepsnummer en het periode nummer en de eigenschappen van het atoom.</span><span class="doel" tabindex="0">Ik kan met behulp van het PSE de opbouw van een atoom noteren en omgekeerd.</span><span class="doel" tabindex="0">Ik kan uitleggen wat een hoge of lage elektronegatieve waarde betekent voor een element.</span><span class="doel" tabindex="0">Ik kan uitleggen wat de edelgasconfiguratie is.</span><span class="doel" tabindex="0">Ik kan noteren welke categorieën van elementen er zijn en waar deze elementen zich in het PSE bevinden.</span></td>
 </tr>
 </tbody>
 </table>
@@ -1439,10 +1433,10 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td colspan="2">Ik <b>gebruik</b> het PSE om de bouw en eigenschappen van een atoom te vinden.</td>
+<td><span class="doel" tabindex="0">Ik <b>gebruik</b> het PSE om de bouw en eigenschappen van een atoom te vinden.</span></td>
 </tr>
 <tr>
-<td><b>HOOFDSTUK 4 IONVORMING (p. 77)</b></td>
+<td colspan="2"><b>HOOFDSTUK 4 IONVORMING (p. 77)</b></td>
 </tr>
 <tr>
 <td><b>Ionvorming</b></td>
@@ -1450,7 +1444,7 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td colspan="2">Ik <b>leg uit</b> wanneer een ion gevormd wordt. <br>• Ik <b>benoem</b> een ion en <b>geef</b> de notatie <b>weer</b>.</td>
+<td><span class="doel" tabindex="0">Ik <b>leg uit</b> wanneer een ion gevormd wordt.</span><span class="doel" tabindex="0">Ik <b>benoem</b> een ion en <b>geef</b> de notatie <b>weer</b>.</span></td>
 </tr>
 </tbody>
 </table>
@@ -1458,13 +1452,12 @@ td b,th b{font-weight:700}
 
 <thead>
 <tr>
-<th><b>Chemie – Thema 3: Chemische samenstelling van stoffen (p. 85-132)</b> Wat ga ik leren? p. 87 – Samenvatting (Leren leren) p. 131 – Begrippenlijst p. 132 (verklaring op Scoodle)</th>
-<th></th>
+<th colspan="2"><b>Chemie – Thema 3: Chemische samenstelling van stoffen (p. 85-132)</b> Wat ga ik leren? p. 87 – Samenvatting (Leren leren) p. 131 – Begrippenlijst p. 132 (verklaring op Scoodle)</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><b>HOOFDSTUK 1 ENKELVOUDIGE EN SAMENGESTELDE STOFFEN (p. 88)</b></td>
+<td colspan="2"><b>HOOFDSTUK 1 ENKELVOUDIGE EN SAMENGESTELDE STOFFEN (p. 88)</b></td>
 </tr>
 <tr>
 <td><b>1.1 Het verschil tussen enkelvoudige en samengestelde stoffen (p. 89)</b></td>
@@ -1472,7 +1465,7 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td>Ik <b>gebruik</b> het deeltjesmodel om het verschil tussen een enkelvoudige en een samengestelde stof te verklaren. <br>• Ik <b>leg</b> het verschil <b>uit</b> tussen een analyse en synthese.</td>
+<td><span class="doel" tabindex="0">Ik <b>gebruik</b> het deeltjesmodel om het verschil tussen een enkelvoudige en een samengestelde stof te verklaren.</span><span class="doel" tabindex="0">Ik <b>leg</b> het verschil <b>uit</b> tussen een analyse en synthese.</span></td>
 </tr>
 <tr>
 <td><b>1.2 Symbolische schrijfwijze en naamgeving (p. 97)</b></td>
@@ -1480,10 +1473,10 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td colspan="2">Ik <b>beschrijf</b> de betekenis van een index en ik <b>interpreteer</b> chemische formules. <br>• Ik <b>leg</b> het verschil <b>uit</b> tussen een index en een coëfficiënt. <br>• Ik <b>gebruik</b> de symbolische schrijfwijze of naamgeving van stoffen om de stoffen te classificeren als enkelvoudige of samengestelde stof.</td>
+<td><span class="doel" tabindex="0">Ik <b>beschrijf</b> de betekenis van een index en ik <b>interpreteer</b> chemische formules.</span><span class="doel" tabindex="0">Ik <b>leg</b> het verschil <b>uit</b> tussen een index en een coëfficiënt.</span><span class="doel" tabindex="0">Ik <b>gebruik</b> de symbolische schrijfwijze of naamgeving van stoffen om de stoffen te classificeren als enkelvoudige of samengestelde stof.</span></td>
 </tr>
 <tr>
-<td><b>HOOFDSTUK 2 CHEMISCHE BINDINGEN (p. 106)</b></td>
+<td colspan="2"><b>HOOFDSTUK 2 CHEMISCHE BINDINGEN (p. 106)</b></td>
 </tr>
 <tr>
 <td><b>2.1 Ionbinding (p. 107)</b></td>
@@ -1491,7 +1484,7 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td>Ik <b>leg uit</b> hoe een ionbinding tot stand komt.</td>
+<td><span class="doel" tabindex="0">Ik <b>leg uit</b> hoe een ionbinding tot stand komt.</span></td>
 </tr>
 <tr>
 <td><b>2.2 Atoombinding (p. 114)</b></td>
@@ -1499,7 +1492,7 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td>Ik <b>leg uit</b> hoe een atoombinding tot stand komt.</td>
+<td><span class="doel" tabindex="0">Ik <b>leg uit</b> hoe een atoombinding tot stand komt.</span></td>
 </tr>
 <tr>
 <td><b>2.3 Metaalbinding (p. 123)</b></td>
@@ -1507,7 +1500,7 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td colspan="2">Ik <b>leg uit</b> hoe een metaalbinding tot stand komt. <br>• Ik <b>gebruik</b> het PSE om samengestelde stoffen als ionverbindingen of covalente verbindingen te classificeren.</td>
+<td><span class="doel" tabindex="0">Ik <b>leg uit</b> hoe een metaalbinding tot stand komt.</span><span class="doel" tabindex="0">Ik <b>gebruik</b> het PSE om samengestelde stoffen als ionverbindingen of covalente verbindingen te classificeren.</span></td>
 </tr>
 </tbody>
 </table>
@@ -1515,13 +1508,12 @@ td b,th b{font-weight:700}
 
 <thead>
 <tr>
-<th><b>Chemie – Thema 4: De chemische reactie (p. 133-157)</b> Wat ga ik leren? p. 135 – Samenvatting (Leren leren) p. 156 – Begrippenlijst p. 157 (verklaring op Scoodle)</th>
-<th></th>
+<th colspan="2"><b>Chemie – Thema 4: De chemische reactie (p. 133-157)</b> Wat ga ik leren? p. 135 – Samenvatting (Leren leren) p. 156 – Begrippenlijst p. 157 (verklaring op Scoodle)</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><b>HOOFDSTUK 1 CHEMISCHE REACTIEWETTEN (p. 136)</b></td>
+<td colspan="2"><b>HOOFDSTUK 1 CHEMISCHE REACTIEWETTEN (p. 136)</b></td>
 </tr>
 <tr>
 <td><b>1.1 Wet van behoud van massa (p. 136)</b></td>
@@ -1529,7 +1521,7 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td>Ik <b>hanteer</b> de begrippen reactievergelijking, aflopende reactie, reagentia en reactieproducten. <br>• Ik <b>geef</b> de wet van behoud van massa (Lavoisier) <b>weer</b> en <b>hanteer</b> ze correct.</td>
+<td><span class="doel" tabindex="0">Ik <b>hanteer</b> de begrippen reactievergelijking, aflopende reactie, reagentia en reactieproducten.</span><span class="doel" tabindex="0">Ik <b>geef</b> de wet van behoud van massa (Lavoisier) <b>weer</b> en <b>hanteer</b> ze correct.</span></td>
 </tr>
 <tr>
 <td><b>1.2 Wet van behoud van atomen (p. 139)</b></td>
@@ -1537,10 +1529,10 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td colspan="2">Ik <b>geef</b> de wet van behoud van atomen <b>weer</b> en <b>hanteer</b> ze correct. <br>• Ik kan een reactievergelijking uitbalanceren.</td>
+<td><span class="doel" tabindex="0">Ik <b>geef</b> de wet van behoud van atomen <b>weer</b> en <b>hanteer</b> ze correct.</span><span class="doel" tabindex="0">Ik kan een reactievergelijking uitbalanceren.</span></td>
 </tr>
 <tr>
-<td><b>HOOFDSTUK 2 ENERGIE BIJ CHEMISCHE REACTIES (p. 144)</b></td>
+<td colspan="2"><b>HOOFDSTUK 2 ENERGIE BIJ CHEMISCHE REACTIES (p. 144)</b></td>
 </tr>
 <tr>
 <td><b>2.1 Endo-energetische reacties (p. 145) <br>2.2 Exo-energetische reacties (p. 149)</b></td>
@@ -1548,7 +1540,7 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td colspan="2">Ik <b>interpreteer</b> het onderscheid tussen exo-energetische en endo-energetische reacties vanuit gegeven energie-uitwisselingen. <br>• Ik <b>leid</b> uit een energiediagram <b>af</b> of de reactie endo- of exo-energetisch is.</td>
+<td><span class="doel" tabindex="0">Ik <b>interpreteer</b> het onderscheid tussen exo-energetische en endo-energetische reacties vanuit gegeven energie-uitwisselingen.</span><span class="doel" tabindex="0">Ik <b>leid</b> uit een energiediagram <b>af</b> of de reactie endo- of exo-energetisch is.</span></td>
 </tr>
 </tbody>
 </table>
@@ -1556,13 +1548,12 @@ td b,th b{font-weight:700}
 
 <thead>
 <tr>
-<th><b>Biologie – Thema 3: Effectoren reageren op prikkels (p. 69-106)</b> Wat ga ik leren? p. 70 – Samenvatting (Leren leren) p. 104 – Begrippenlijst p. 105 (verklaring op Scoodle)</th>
-<th></th>
+<th colspan="2"><b>Biologie – Thema 3: Effectoren reageren op prikkels (p. 69-106)</b> Wat ga ik leren? p. 70 – Samenvatting (Leren leren) p. 104 – Begrippenlijst p. 105 (verklaring op Scoodle)</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><b>HOOFDSTUK 3 REACTIE DOOR KLIEREN (p. 84)</b></td>
+<td colspan="2"><b>HOOFDSTUK 3 REACTIE DOOR KLIEREN (p. 84)</b></td>
 </tr>
 <tr>
 <td><b>3.1 Excretie of secretie (p. 85)</b></td>
@@ -1570,7 +1561,7 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td>Ik <b>leg</b> het verschil <b>uit</b> tussen excretie- en secretieproducten.</td>
+<td><span class="doel" tabindex="0">Ik <b>leg</b> het verschil <b>uit</b> tussen excretie- en secretieproducten.</span></td>
 </tr>
 <tr>
 <td><b>3.2 Soorten klieren (p. 86)</b></td>
@@ -1578,7 +1569,7 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td>Ik <b>leg uit</b> welke kliertypes bij de mens voorkomen.</td>
+<td><span class="doel" tabindex="0">Ik <b>leg uit</b> welke kliertypes bij de mens voorkomen.</span></td>
 </tr>
 <tr>
 <td><b>3.3 Werking van exocriene klieren (p. 89)</b></td>
@@ -1586,7 +1577,7 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td>Ik <b>geef</b> twee <b>voorbeelden</b> van exocriene klieren, hun klierafscheidingen en hun functie.</td>
+<td><span class="doel" tabindex="0">Ik <b>geef</b> twee <b>voorbeelden</b> van exocriene klieren, hun klierafscheidingen en hun functie.</span></td>
 </tr>
 <tr>
 <td><b>3.4 Werking van endocriene klieren (p. 90)</b></td>
@@ -1594,10 +1585,10 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td colspan="2">Ik <b>geef</b> twee <b>voorbeelden</b> van endocriene klieren, hun klierafscheidingen en hun functie.</td>
+<td><span class="doel" tabindex="0">Ik <b>geef</b> twee <b>voorbeelden</b> van endocriene klieren, hun klierafscheidingen en hun functie.</span></td>
 </tr>
 <tr>
-<td><b>HOOFDSTUK 4 REACTIE BIJ ANDERE ORGANISMEN (p. 95)</b> Enkel aangeduide kader p. 96 (dieren) en p. 100 (planten, banaan: ethyleen)</td>
+<td colspan="2"><b>HOOFDSTUK 4 REACTIE BIJ ANDERE ORGANISMEN (p. 95)</b> Enkel aangeduide kader p. 96 (dieren) en p. 100 (planten, banaan: ethyleen)</td>
 </tr>
 </tbody>
 </table>
@@ -1619,10 +1610,10 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td colspan="2">Ik <b>geef</b> meetresultaten <b>weer</b> in de SI-eenheid en in de afgeleide eenheid. <br>• Ik <b>geef</b> meetresultaten <b>weer</b> met het correcte aantal beduidende cijfers. <br>• Ik <b>gebruik</b> de wetenschappelijke notatie om meetresultaten te noteren.</td>
+<td><span class="doel" tabindex="0">Ik <b>geef</b> meetresultaten <b>weer</b> in de SI-eenheid en in de afgeleide eenheid.</span><span class="doel" tabindex="0">Ik <b>geef</b> meetresultaten <b>weer</b> met het correcte aantal beduidende cijfers.</span><span class="doel" tabindex="0">Ik <b>gebruik</b> de wetenschappelijke notatie om meetresultaten te noteren.</span></td>
 </tr>
 <tr>
-<td><b>HOOFDSTUK 2 KRACHTEN (p. 19)</b></td>
+<td colspan="2"><b>HOOFDSTUK 2 KRACHTEN (p. 19)</b></td>
 </tr>
 <tr>
 <td><b>2.1 Effect van een kracht (p. 21)</b></td>
@@ -1630,7 +1621,7 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td>Ik <b>toon</b> het statisch en dynamisch effect van een kracht <b>aan</b> in concrete situaties.</td>
+<td><span class="doel" tabindex="0">Ik <b>toon</b> het statisch en dynamisch effect van een kracht <b>aan</b> in concrete situaties.</span></td>
 </tr>
 <tr>
 <td><b>2.2 Tekenen van een kracht als vector (p. 25)</b></td>
@@ -1638,10 +1629,10 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td colspan="2">Ik <b>geef</b> het vectoriële karakter van een kracht <b>weer</b> in concrete situaties. <br>• Ik <b>teken</b> krachten als vectoren met behulp van een schaal.</td>
+<td><span class="doel" tabindex="0">Ik <b>geef</b> het vectoriële karakter van een kracht <b>weer</b> in concrete situaties.</span><span class="doel" tabindex="0">Ik <b>teken</b> krachten als vectoren met behulp van een schaal.</span></td>
 </tr>
 <tr>
-<td><b>HOOFDSTUK 3 KRACHT EN BEWEGING (p. 33)</b></td>
+<td colspan="2"><b>HOOFDSTUK 3 KRACHT EN BEWEGING (p. 33)</b></td>
 </tr>
 <tr>
 <td><b>3.1 Verandering van de bewegingstoestand (p. 33)</b></td>
@@ -1649,7 +1640,7 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td>Ik <b>toon aan</b> hoe de bewegingstoestand van een lichaam verandert in concrete situaties.</td>
+<td><span class="doel" tabindex="0">Ik <b>toon aan</b> hoe de bewegingstoestand van een lichaam verandert in concrete situaties.</span></td>
 </tr>
 <tr>
 <td><b>3.2 Resulterende kracht en beweging (p. 38)</b></td>
@@ -1657,10 +1648,10 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td colspan="2">Ik <b>leg</b> het traagheidsbeginsel <b>uit</b> in concrete situaties. <br>• Ik <b>teken</b> de snelheidsvector bij verschillende bewegingstoestanden van een lichaam.</td>
+<td><span class="doel" tabindex="0">Ik <b>leg</b> het traagheidsbeginsel <b>uit</b> in concrete situaties.</span><span class="doel" tabindex="0">Ik <b>teken</b> de snelheidsvector bij verschillende bewegingstoestanden van een lichaam.</span></td>
 </tr>
 <tr>
-<td><b>HOOFDSTUK 4 ZWAARTEKRACHT (p. 50)</b></td>
+<td colspan="2"><b>HOOFDSTUK 4 ZWAARTEKRACHT (p. 50)</b></td>
 </tr>
 <tr>
 <td><b>4.1 Zwaartekracht is overal (p. 51)</b></td>
@@ -1668,7 +1659,7 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td>Ik <b>toon aan</b> dat de zwaartekracht werkzaam is in het zwaarteveld van een hemellichaam. <br>• Ik <b>geef</b> het verschil <b>weer</b> tussen het zwaarteveld en de zwaartekracht.</td>
+<td><span class="doel" tabindex="0">Ik <b>toon aan</b> dat de zwaartekracht werkzaam is in het zwaarteveld van een hemellichaam.</span><span class="doel" tabindex="0">Ik <b>geef</b> het verschil <b>weer</b> tussen het zwaarteveld en de zwaartekracht.</span></td>
 </tr>
 <tr>
 <td><b>4.2 Verband tussen de grootte van de zwaartekracht, massa en zwaarteveldsterkte (p. 54)</b></td>
@@ -1676,7 +1667,7 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td>Ik <b>toon</b> de kenmerken van de zwaartekracht als vector <b>aan</b> in concrete situaties. <br>• Ik <b>geef</b> in woorden het verband <b>weer</b> tussen de grootte van de zwaartekracht en de massa. <br>• Ik <b>gebruik</b> de formule voor het berekenen van de zwaartekracht. <br>• Ik <b>vorm</b> de formule van de zwaartekracht <b>om</b> voor het berekenen van de massa en de zwaarteveldsterkte. <br>• Ik <b>geef</b> in woorden het verband <b>weer</b> tussen het zwaarteveld en de zwaartekracht.</td>
+<td><span class="doel" tabindex="0">Ik <b>toon</b> de kenmerken van de zwaartekracht als vector <b>aan</b> in concrete situaties.</span><span class="doel" tabindex="0">Ik <b>geef</b> in woorden het verband <b>weer</b> tussen de grootte van de zwaartekracht en de massa.</span><span class="doel" tabindex="0">Ik <b>gebruik</b> de formule voor het berekenen van de zwaartekracht.</span><span class="doel" tabindex="0">Ik <b>vorm</b> de formule van de zwaartekracht <b>om</b> voor het berekenen van de massa en de zwaarteveldsterkte.</span><span class="doel" tabindex="0">Ik <b>geef</b> in woorden het verband <b>weer</b> tussen het zwaarteveld en de zwaartekracht.</span></td>
 </tr>
 <tr>
 <td><b>4.3 Verschil tussen massa en gewicht (p. 68)</b></td>
@@ -1684,7 +1675,7 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td>Ik <b>geef</b> het verschil <b>weer</b> tussen massa en gewicht.</td>
+<td><span class="doel" tabindex="0">Ik <b>geef</b> het verschil <b>weer</b> tussen massa en gewicht.</span></td>
 </tr>
 <tr>
 <td><b>4.4 Normaalkracht, zwaartekracht en gewicht (p. 73)</b></td>
@@ -1692,10 +1683,10 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td colspan="2">Ik <b>geef</b> het verschil <b>weer</b> tussen zwaartekracht, massa en gewicht. <br>• Ik <b>geef</b> het verschil <b>weer</b> tussen normaalkracht, zwaartekracht en gewicht.</td>
+<td><span class="doel" tabindex="0">Ik <b>geef</b> het verschil <b>weer</b> tussen zwaartekracht, massa en gewicht.</span><span class="doel" tabindex="0">Ik <b>geef</b> het verschil <b>weer</b> tussen normaalkracht, zwaartekracht en gewicht.</span></td>
 </tr>
 <tr>
-<td><b>HOOFDSTUK 5 VEERKRACHT (p. 78)</b></td>
+<td colspan="2"><b>HOOFDSTUK 5 VEERKRACHT (p. 78)</b></td>
 </tr>
 <tr>
 <td><b>Veerkracht</b></td>
@@ -1703,7 +1694,7 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td colspan="2">Ik <b>leg uit</b> wat veerkracht is. <br>• Ik <b>geef</b> in woorden het verband <b>weer</b> tussen de grootte van de veerkracht, de veerconstante en de lengteverandering van een elastisch voorwerp. <br>• Ik <b>gebruik</b> de omgevormde formules voor de grootte van de veerkracht om vraagstukken op te lossen.</td>
+<td><span class="doel" tabindex="0">Ik <b>leg uit</b> wat veerkracht is.</span><span class="doel" tabindex="0">Ik <b>geef</b> in woorden het verband <b>weer</b> tussen de grootte van de veerkracht, de veerconstante en de lengteverandering van een elastisch voorwerp.</span><span class="doel" tabindex="0">Ik <b>gebruik</b> de omgevormde formules voor de grootte van de veerkracht om vraagstukken op te lossen.</span></td>
 </tr>
 </tbody>
 </table>
@@ -1711,13 +1702,12 @@ td b,th b{font-weight:700}
 
 <thead>
 <tr>
-<th><b>Fysica – Thema 2: Analyseren van rechtlijnige bewegingen (p. 91-137)</b> Wat ga ik leren? p. 93 – Samenvatting (Leren leren) p. 135-136 – Begrippenlijst p. 137 (verklaring op Scoodle)</th>
-<th></th>
+<th colspan="2"><b>Fysica – Thema 2: Analyseren van rechtlijnige bewegingen (p. 91-137)</b> Wat ga ik leren? p. 93 – Samenvatting (Leren leren) p. 135-136 – Begrippenlijst p. 137 (verklaring op Scoodle)</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><b>HOOFDSTUK 1 BASISBEGRIPPEN VAN EEN BEWEGING (p. 94)</b></td>
+<td colspan="2"><b>HOOFDSTUK 1 BASISBEGRIPPEN VAN EEN BEWEGING (p. 94)</b></td>
 </tr>
 <tr>
 <td><b>Basisbegrippen van een beweging</b></td>
@@ -1725,10 +1715,10 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td colspan="2">Ik <b>geef</b> het verschil <b>weer</b> tussen de begrippen puntmassa, baan, positie, tijdstip, verplaatsing en tijdsverloop.</td>
+<td><span class="doel" tabindex="0">Ik <b>geef</b> het verschil <b>weer</b> tussen de begrippen puntmassa, baan, positie, tijdstip, verplaatsing en tijdsverloop.</span></td>
 </tr>
 <tr>
-<td><b>HOOFDSTUK 2 SNELHEID (p. 102)</b></td>
+<td colspan="2"><b>HOOFDSTUK 2 SNELHEID (p. 102)</b></td>
 </tr>
 <tr>
 <td><b>2.1 Gemiddelde en ogenblikkelijke snelheid (p. 102)</b></td>
@@ -1736,7 +1726,7 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td>Ik <b>leg</b> het begrip snelheid <b>uit</b>. <br>• Ik <b>geef</b> het verschil <b>weer</b> tussen de gemiddelde snelheid en de ogenblikkelijke snelheid.</td>
+<td><span class="doel" tabindex="0">Ik <b>leg</b> het begrip snelheid <b>uit</b>.</span><span class="doel" tabindex="0">Ik <b>geef</b> het verschil <b>weer</b> tussen de gemiddelde snelheid en de ogenblikkelijke snelheid.</span></td>
 </tr>
 <tr>
 <td><b>2.2 Eenparig rechtlijnige beweging (p. 106)</b></td>
@@ -1744,7 +1734,7 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td colspan="2">Ik <b>beschrijf</b> en <b>herken</b> een eenparig rechtlijnige beweging. <br>• Ik <b>gebruik</b> de formule voor het berekenen van de gemiddelde snelheid. <br>• Ik <b>vorm</b> de formule van de gemiddelde snelheid <b>om</b> voor het berekenen van de verplaatsing en het tijdsverloop. <br>• Ik <b>teken</b> de x(t)-grafiek en de v(t)-grafiek van een eenparig rechtlijnige beweging. <br>• Ik <b>geef</b> het verband <b>weer</b> tussen de helling van de grafiek en de snelheid van een lichaam. <br>• Ik <b>leg</b> het differentiequotiënt Δx/Δt <b>uit</b>.</td>
+<td><span class="doel" tabindex="0">Ik <b>beschrijf</b> en <b>herken</b> een eenparig rechtlijnige beweging.</span><span class="doel" tabindex="0">Ik <b>gebruik</b> de formule voor het berekenen van de gemiddelde snelheid.</span><span class="doel" tabindex="0">Ik <b>vorm</b> de formule van de gemiddelde snelheid <b>om</b> voor het berekenen van de verplaatsing en het tijdsverloop.</span><span class="doel" tabindex="0">Ik <b>teken</b> de x(t)-grafiek en de v(t)-grafiek van een eenparig rechtlijnige beweging.</span><span class="doel" tabindex="0">Ik <b>geef</b> het verband <b>weer</b> tussen de helling van de grafiek en de snelheid van een lichaam.</span><span class="doel" tabindex="0">Ik <b>leg</b> het differentiequotiënt Δx/Δt <b>uit</b>.</span></td>
 </tr>
 </tbody>
 </table>
@@ -1752,13 +1742,12 @@ td b,th b{font-weight:700}
 
 <thead>
 <tr>
-<th><b>Biologie – Thema 4: Coördinatie van reacties op prikkels (p. 107-145)</b> Aangeduide leerstofonderdelen tijdens de les. Wat ga ik leren? p. 108 – Samenvatting (Leren leren) p. 144 – Begrippenlijst p. 145 (verklaring op Scoodle)</th>
-<th></th>
+<th colspan="2"><b>Biologie – Thema 4: Coördinatie van reacties op prikkels (p. 107-145)</b> Aangeduide leerstofonderdelen tijdens de les. Wat ga ik leren? p. 108 – Samenvatting (Leren leren) p. 144 – Begrippenlijst p. 145 (verklaring op Scoodle)</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><b>HOOFDSTUK 1 HET MENSELIJK ORGANISME ALS SYSTEEM (p. 110)</b></td>
+<td colspan="2"><b>HOOFDSTUK 1 HET MENSELIJK ORGANISME ALS SYSTEEM (p. 110)</b></td>
 </tr>
 <tr>
 <td><b>Het menselijk organisme als systeem</b></td>
@@ -1766,10 +1755,10 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td colspan="2">Ik <b>leg uit</b> hoe prikkels en reacties gecoördineerd worden door het zenuwstelsel en het hormoonstelsel.</td>
+<td><span class="doel" tabindex="0">Ik <b>leg uit</b> hoe prikkels en reacties gecoördineerd worden door het zenuwstelsel en het hormoonstelsel.</span></td>
 </tr>
 <tr>
-<td><b>HOOFDSTUK 2 BOUW EN FUNCTIE VAN HET ZENUWSTELSEL (p. 112)</b></td>
+<td colspan="2"><b>HOOFDSTUK 2 BOUW EN FUNCTIE VAN HET ZENUWSTELSEL (p. 112)</b></td>
 </tr>
 <tr>
 <td><b>2.1 Centraal en perifeer zenuwstelsel (p. 112)</b></td>
@@ -1777,7 +1766,7 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td>Ik <b>leg uit</b> wat het verschil is tussen het centrale en het perifere zenuwstelsel. <br>• Ik <b>leg uit</b> hoe de hersenen en het ruggenmerg beschermd worden.</td>
+<td><span class="doel" tabindex="0">Ik <b>leg uit</b> wat het verschil is tussen het centrale en het perifere zenuwstelsel.</span><span class="doel" tabindex="0">Ik <b>leg uit</b> hoe de hersenen en het ruggenmerg beschermd worden.</span></td>
 </tr>
 <tr>
 <td><b>2.2 De hersenen en het ruggenmerg (p. 114)</b></td>
@@ -1785,10 +1774,10 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td colspan="2">Ik <b>benoem</b> en <b>herken</b> de grote delen van de hersenen.</td>
+<td><span class="doel" tabindex="0">Ik <b>benoem</b> en <b>herken</b> de grote delen van de hersenen.</span></td>
 </tr>
 <tr>
-<td><b>HOOFDSTUK 3 IMPULSEN DOORGEVEN IN HET ZENUWSTELSEL (p. 116)</b></td>
+<td colspan="2"><b>HOOFDSTUK 3 IMPULSEN DOORGEVEN IN HET ZENUWSTELSEL (p. 116)</b></td>
 </tr>
 <tr>
 <td><b>3.1 Microscopische bouw van het zenuwstelsel (p. 116)</b></td>
@@ -1796,7 +1785,7 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td>Ik <b>herken</b> en <b>benoem</b> de delen van het neuron. <br>• Ik <b>benoem</b> en herken de soorten neuronen.</td>
+<td><span class="doel" tabindex="0">Ik <b>herken</b> en <b>benoem</b> de delen van het neuron.</span><span class="doel" tabindex="0">Ik <b>benoem</b> en herken de soorten neuronen.</span></td>
 </tr>
 <tr>
 <td><b>3.2 Impulsgeleiding binnen neuronen (p. 118)</b></td>
@@ -1804,7 +1793,7 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td>Ik <b>leg uit</b> hoe de elektrische impulsgeleiding binnen neuronen verloopt.</td>
+<td><span class="doel" tabindex="0">Ik <b>leg uit</b> hoe de elektrische impulsgeleiding binnen neuronen verloopt.</span></td>
 </tr>
 <tr>
 <td><b>3.3 Impulsoverdracht tussen neuronen (p. 121)</b></td>
@@ -1812,10 +1801,10 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td colspan="2">Ik <b>leg uit</b> hoe de chemische impulsoverdracht tussen neuronen verloopt.</td>
+<td><span class="doel" tabindex="0">Ik <b>leg uit</b> hoe de chemische impulsoverdracht tussen neuronen verloopt.</span></td>
 </tr>
 <tr>
-<td><b>HOOFDSTUK 4 COÖRDINERENDE ROL VAN HET ZENUWSTELSEL (p. 126)</b></td>
+<td colspan="2"><b>HOOFDSTUK 4 COÖRDINERENDE ROL VAN HET ZENUWSTELSEL (p. 126)</b></td>
 </tr>
 <tr>
 <td><b>4.1 Animaal en autonoom zenuwstelsel (p. 126)</b></td>
@@ -1823,7 +1812,7 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td>Ik <b>leg uit</b> wat het verschil is tussen het animale en het autonome zenuwstelsel.</td>
+<td><span class="doel" tabindex="0">Ik <b>leg uit</b> wat het verschil is tussen het animale en het autonome zenuwstelsel.</span></td>
 </tr>
 <tr>
 <td><b>4.2 Aansturing van reflexen (p. 128)</b></td>
@@ -1831,7 +1820,7 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td>Ik <b>leg uit</b> hoe de informatieoverdracht bij reflexen verloopt via het ruggenmerg of de hersenstam.</td>
+<td><span class="doel" tabindex="0">Ik <b>leg uit</b> hoe de informatieoverdracht bij reflexen verloopt via het ruggenmerg of de hersenstam.</span></td>
 </tr>
 <tr>
 <td><b>4.3 Aansturing van bewuste bewegingen (p. 129)</b></td>
@@ -1839,10 +1828,10 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td colspan="2">Ik <b>leg uit</b> hoe de informatieoverdracht bij bewuste bewegingen verloopt via de hersenen.</td>
+<td><span class="doel" tabindex="0">Ik <b>leg uit</b> hoe de informatieoverdracht bij bewuste bewegingen verloopt via de hersenen.</span></td>
 </tr>
 <tr>
-<td><b>HOOFDSTUK 5 COÖRDINERENDE ROL VAN HET HORMOONSTELSEL (p. 133)</b></td>
+<td colspan="2"><b>HOOFDSTUK 5 COÖRDINERENDE ROL VAN HET HORMOONSTELSEL (p. 133)</b></td>
 </tr>
 <tr>
 <td><b>5.1 Samenwerking tussen zenuwstelsel en hormoonstelsel (p. 133)</b></td>
@@ -1850,7 +1839,7 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td>Ik <b>leg uit</b> wat het verschil is tussen de informatieoverdracht via het zenuw- of het hormoonstelsel.</td>
+<td><span class="doel" tabindex="0">Ik <b>leg uit</b> wat het verschil is tussen de informatieoverdracht via het zenuw- of het hormoonstelsel.</span></td>
 </tr>
 <tr>
 <td><b>5.3 Homeostase van de bloedsuikerspiegel (p. 137)</b></td>
@@ -1858,13 +1847,14 @@ td b,th b{font-weight:700}
 </tr>
 <tr>
 <td>Lesdoelen:</td>
-<td>Ik <b>leg uit</b> hoe de alvleesklier voor homeostase van de bloedsuikerspiegel zorgt. <br>• Ik <b>benoem</b> de drie vormen van diabetes.</td>
+<td><span class="doel" tabindex="0">Ik <b>leg uit</b> hoe de alvleesklier voor homeostase van de bloedsuikerspiegel zorgt.</span><span class="doel" tabindex="0">Ik <b>benoem</b> de drie vormen van diabetes.</span></td>
 </tr>
 </tbody>
 </table>
 </section>
 <p class="uitleg" style="margin-top:2rem;font-size:.85rem">Vakgroep wetenschappen · Maria Assumpta Lyceum</p>
 </main>
+<div id="groot" hidden><div></div></div>
 <script>
 (function(){
   const knoppen=[...document.querySelectorAll('nav button')];
@@ -1881,6 +1871,19 @@ td b,th b{font-weight:700}
   let start=location.hash.slice(1);
   if(!start){try{start=localStorage.getItem('lso-keuze')||''}catch(e){}}
   toon(start,false);
+  const groot=document.getElementById('groot'), gTekst=groot.firstElementChild;
+  let open=null;
+  function sluit(){groot.hidden=true; if(open) open.focus({preventScroll:true}); open=null;}
+  document.addEventListener('click',e=>{
+    const d=e.target.closest('.doel');
+    if(d&&!groot.hidden) return;
+    if(d){gTekst.innerHTML=d.innerHTML; groot.hidden=false; open=d;}
+  });
+  groot.addEventListener('click',sluit);
+  document.addEventListener('keydown',e=>{
+    if(e.key==='Escape'&&!groot.hidden) sluit();
+    else if((e.key==='Enter'||e.key===' ')&&e.target.classList.contains('doel')){e.preventDefault(); e.target.click();}
+  });
   window.addEventListener('hashchange',()=>toon(location.hash.slice(1),true));
 })();
 </script>
