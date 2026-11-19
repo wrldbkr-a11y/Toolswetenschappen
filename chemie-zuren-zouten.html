@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Zuren, zouten en hydroxiden</title>
+<title>Oxiden, hydroxiden, zuren en zouten</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=JetBrains+Mono:wght@500;700&display=swap">
 <style>
@@ -13,7 +13,7 @@
   --bg:#f3f7f6; --surface:#fff; --surface-2:#e9f1ef; --ink:#13201d; --muted:#53635e; --line:#d3dfdb;
   --accent:#0b6b66; --accent-ink:#fff; --accent-soft:#d8eeeb;
   --good:#1d7a3b; --good-soft:#dcf2e2; --bad:#b3261e; --bad-soft:#fbe3e1;
-  --bz:#2f6fb0; --tz:#6b46c1; --hy:#0b6b66; --bzo:#c2410c; --tzo:#a16207;
+  --mo:#475569; --nmo:#be185d; --bz:#2f6fb0; --tz:#6b46c1; --hy:#0b6b66; --bzo:#c2410c; --tzo:#a16207;
   --f-display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
   --f-body:"Atkinson Hyperlegible","Segoe UI",system-ui,sans-serif;
   --f-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
@@ -75,8 +75,8 @@ button{cursor:pointer}
 .vak.letop::before{content:"Let op";color:#B45309}
 .vak.vb{background:transparent;border:1.5px dashed #94A3B8;border-radius:10px}
 .vak.vb::before{content:"Voorbeeld";color:#64748B}
-.vak.vk{background:#EEF4FB;border-left:4px solid #64748B}
-.vak.vk::before{content:"Voorkennis";color:#475569}
+.vak.voork{background:#EEF4FB;border-left:4px solid #64748B}
+.vak.voork::before{content:"Voorkennis";color:#475569}
 .duo{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 @media (max-width:720px){.duo{grid-template-columns:1fr}}
 .kaart{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:8px}
@@ -115,9 +115,9 @@ th{font-family:var(--f-mono);font-size:.74rem;letter-spacing:.06em;text-transfor
 
 /* sleeptabel */
 .bak{display:flex;flex-wrap:wrap;gap:8px;min-height:58px;padding:10px;border:2px dashed var(--line);border-radius:12px;background:var(--surface-2)}
-.kolommen{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.kolommen{display:grid;grid-template-columns:repeat(auto-fit,minmax(122px,1fr));gap:10px}
 .kolom{border:2px solid var(--kl);border-radius:12px;background:var(--surface);display:flex;flex-direction:column;min-height:190px}
-.kolom h3{font-size:1rem;padding:8px 10px;background:color-mix(in srgb,var(--kl) 14%,#fff);border-radius:10px 10px 0 0;color:color-mix(in srgb,var(--kl) 75%,#000)}
+.kolom h3{font-size:.95rem;padding:8px 10px;background:color-mix(in srgb,var(--kl) 14%,#fff);border-radius:10px 10px 0 0;color:color-mix(in srgb,var(--kl) 75%,#000)}
 .kolom .zone{flex:1;display:flex;flex-direction:column;gap:6px;padding:8px;align-items:flex-start}
 .zone.doel-actief{outline:3px dashed var(--accent);outline-offset:-4px;border-radius:10px}
 .chip{font-family:var(--f-display);font-weight:800;font-size:1.15rem;background:var(--surface);border:2px solid var(--line);border-radius:10px;padding:5px 12px;touch-action:none;user-select:none;cursor:grab}
@@ -137,17 +137,17 @@ footer{color:var(--muted);font-size:12px;text-align:center}
 
 <header class="hero">
   <span class="eyebrow">Chemie · 4de jaar · wetenschappelijke richtingen</span>
-  <h1>Zuren, zouten en hydroxiden</h1>
+  <h1>Oxiden, hydroxiden, zuren en zouten</h1>
   <p>Herken de stofklasse, geef de naam en schrijf de formule.</p>
 </header>
 
 <details id="ldnw">
   <summary><span class="pijl">▶</span>Lesdoelen · Ik kan … <span class="hint">klik om te openen en af te vinken</span></summary>
   <ul class="doelen">
-    <li>Ik herken aan de formule en aan de naam of een stof een binair zuur, ternair zuur, hydroxide, binair zout of ternair zout is.</li>
+    <li>Ik herken aan de formule en aan de naam of een stof een metaaloxide, niet-metaaloxide, hydroxide, binair zuur, ternair zuur, binair zout of ternair zout is.</li>
     <li>Ik leid de lading van een ion af uit het PSE (groep Ia, IIa, IIIa, VIa en VIIa).</li>
-    <li>Ik geef de naam van een zuur, zout of hydroxide als de formule gegeven is.</li>
-    <li>Ik schrijf de formule van een zuur, zout of hydroxide als de naam gegeven is.</li>
+    <li>Ik geef de naam van een oxide, hydroxide, zuur of zout als de formule gegeven is.</li>
+    <li>Ik schrijf de formule van een oxide, hydroxide, zuur of zout als de naam gegeven is.</li>
   </ul>
   <p class="lpd">Leerplandoel (voor de leerkracht): II-NatS-d · LPD 13C (classificeren), LPD 14C (IUPAC-naamgeving), LPD 15+ (formules opstellen met het PSE)</p>
 </details>
@@ -167,7 +167,7 @@ footer{color:var(--muted);font-size:12px;text-align:center}
 
 <!-- 1 UITLEG -->
 <section class="les" id="t1" role="tabpanel">
-  <div class="vak vk">
+  <div class="vak voork">
     <p><b>Ionen uit het PSE.</b> Een metaal geeft elektronen af en wordt positief. Groep Ia → 1+, IIa → 2+, IIIa → 3+. Een niet-metaal neemt elektronen op en wordt negatief. Groep VIIa → 1−, VIa → 2−.</p>
   </div>
 
@@ -178,7 +178,7 @@ footer{color:var(--muted);font-size:12px;text-align:center}
         <tr><td><span class="f">H<sup>+</sup></span> waterstof</td><td><span class="f">F<sup>−</sup></span> fluoride</td><td><span class="f">OH<sup>−</sup></span> hydroxide</td></tr>
         <tr><td><span class="f">Li<sup>+</sup></span> lithium, <span class="f">Na<sup>+</sup></span> natrium, <span class="f">K<sup>+</sup></span> kalium</td><td><span class="f">Cl<sup>−</sup></span> chloride</td><td><span class="f">NO<sub>3</sub><sup>−</sup></span> nitraat</td></tr>
         <tr><td><span class="f">Mg<sup>2+</sup></span> magnesium, <span class="f">Ca<sup>2+</sup></span> calcium, <span class="f">Ba<sup>2+</sup></span> barium</td><td><span class="f">Br<sup>−</sup></span> bromide, <span class="f">I<sup>−</sup></span> jodide</td><td><span class="f">SO<sub>4</sub><sup>2−</sup></span> sulfaat</td></tr>
-        <tr><td><span class="f">Al<sup>3+</sup></span> aluminium</td><td><span class="f">S<sup>2−</sup></span> sulfide</td><td><span class="f">CO<sub>3</sub><sup>2−</sup></span> carbonaat, <span class="f">PO<sub>4</sub><sup>3−</sup></span> fosfaat</td></tr>
+        <tr><td><span class="f">Al<sup>3+</sup></span> aluminium</td><td><span class="f">O<sup>2−</sup></span> oxide, <span class="f">S<sup>2−</sup></span> sulfide</td><td><span class="f">CO<sub>3</sub><sup>2−</sup></span> carbonaat, <span class="f">PO<sub>4</sub><sup>3−</sup></span> fosfaat</td></tr>
       </tbody>
     </table>
   </div>
@@ -200,7 +200,8 @@ footer{color:var(--muted);font-size:12px;text-align:center}
         <li>Telwoord + naam van het positieve deel.</li>
         <li>Telwoord + naam van het negatieve deel.</li>
       </ol>
-      <p>Telwoorden: 1 = niets, 2 = di, 3 = tri. Bij een zuur is het positieve deel <i>waterstof</i>.</p>
+      <p>Telwoorden: 1 = niets, 2 = di, 3 = tri, 4 = tetra, 5 = penta. Bij een zuur is het positieve deel <i>waterstof</i>.</p>
+      <p><b>Niet-metaaloxide:</b> bij oxide staat altijd een telwoord, ook mono: CO = koolstofmonoxide.</p>
     </div>
     <div class="vak ken">
       <p><b>Formule schrijven</b></p>
@@ -209,6 +210,7 @@ footer{color:var(--muted);font-size:12px;text-align:center}
         <li>Neem zoveel ionen dat + en − samen 0 zijn.</li>
         <li>Schrijf die aantallen als index. Staat er meer dan één samengesteld ion? Zet het tussen haakjes.</li>
       </ol>
+      <p><b>Niet-metaaloxide:</b> geen ionen. De telwoorden geven de aantallen: distikstofpentaoxide = N<sub>2</sub>O<sub>5</sub>.</p>
     </div>
   </div>
 
@@ -226,10 +228,11 @@ footer{color:var(--muted);font-size:12px;text-align:center}
   <div class="vak letop">
     <p>NaOH bevat zuurstof, maar het is geen ternair zout. OH is geen zuurrest: het is een <b>hydroxide</b>.</p>
     <p>Schrijf Ca(OH)<sub>2</sub>, niet CaOH<sub>2</sub>. Zonder haakjes betekent de 2 alleen 2 H-atomen.</p>
+    <p>Mono gebruik je alleen bij een niet-metaaloxide. MgO is magnesiumoxide.</p>
   </div>
 
   <div class="vak vb">
-    <p>Keukenzout is NaCl. Kalkaanslag in je waterkoker is CaCO<sub>3</sub>. In cola zit fosforzuur (H<sub>3</sub>PO<sub>4</sub>). Een ontstopper voor de lavabo bevat NaOH. Een autobatterij bevat zwavelzuur (H<sub>2</sub>SO<sub>4</sub>).</p>
+    <p>Koolzuurgas in frisdrank is CO<sub>2</sub>. Keukenzout is NaCl. Kalkaanslag in je waterkoker is CaCO<sub>3</sub>. In cola zit fosforzuur (H<sub>3</sub>PO<sub>4</sub>). Een ontstopper voor de lavabo bevat NaOH. Een autobatterij bevat zwavelzuur (H<sub>2</sub>SO<sub>4</sub>).</p>
   </div>
 </section>
 
@@ -275,9 +278,11 @@ const gcd = (a, b) => b ? gcd(b, a % b) : a;
 
 /* ---------- gegevens ---------- */
 const KLASSEN = [
+  { id:'mo',  naam:'Metaaloxide',  kl:'var(--mo)',  bouw:'metaal + O', vb:'MgO, Na2O' },
+  { id:'nmo', naam:'Niet-metaaloxide', kl:'var(--nmo)', bouw:'niet-metaal + O', vb:'CO2, SO3' },
+  { id:'hy',  naam:'Hydroxide',    kl:'var(--hy)',  bouw:'metaal + OH', vb:'NaOH, Ca(OH)2' },
   { id:'bz',  naam:'Binair zuur',  kl:'var(--bz)',  bouw:'H + niet-metaal (geen O)', vb:'HCl, H2S' },
   { id:'tz',  naam:'Ternair zuur', kl:'var(--tz)',  bouw:'H + niet-metaal + O', vb:'H2SO4, HNO3' },
-  { id:'hy',  naam:'Hydroxide',    kl:'var(--hy)',  bouw:'metaal + OH', vb:'NaOH, Ca(OH)2' },
   { id:'bzo', naam:'Binair zout',  kl:'var(--bzo)', bouw:'metaal + niet-metaal (geen O)', vb:'NaCl, CaBr2' },
   { id:'tzo', naam:'Ternair zout', kl:'var(--tzo)', bouw:'metaal + niet-metaal + O', vb:'CaCO3, Na2SO4' },
 ];
@@ -291,6 +296,7 @@ const POS = [
 const NEG = [
   { s:'F', n:'fluoride', q:1 }, { s:'Cl', n:'chloride', q:1 }, { s:'Br', n:'bromide', q:1 }, { s:'I', n:'jodide', q:1 },
   { s:'S', n:'sulfide', q:2 },
+  { s:'O', n:'oxide', q:2, oxi:true },
   { s:'OH', n:'hydroxide', q:1, poly:true, hy:true },
   { s:'NO3', n:'nitraat', q:1, poly:true, ox:true },
   { s:'SO4', n:'sulfaat', q:2, poly:true, ox:true },
@@ -308,16 +314,26 @@ function maakStof(p, n) {
   const formule = p.s + (np > 1 ? np : '') + fNeg;
   let klasse;
   if (p.s === 'H') klasse = n.ox ? 'tz' : 'bz';
-  else klasse = n.hy ? 'hy' : n.ox ? 'tzo' : 'bzo';
+  else klasse = n.oxi ? 'mo' : n.hy ? 'hy' : n.ox ? 'tzo' : 'bzo';
   const naam = TW[np] + p.n + TW[nn] + n.n;
   return { p, n, np, nn, formule, klasse, naam, kaal: p.n + n.n, triv: TRIV[formule] };
 }
 const STOFFEN = [];
 for (const p of POS) for (const n of NEG) {
-  if (p.s === 'H' && n.hy) continue;              // H2O is geen zuur
+  if (p.s === 'H' && (n.hy || n.oxi)) continue;   // H2O is geen zuur
   if (p.s === 'Al' && n.s === 'CO3') continue;    // bestaat niet
   STOFFEN.push(maakStof(p, n));
 }
+
+/* niet-metaaloxiden: atoombinding, de telwoorden geven de aantallen */
+const TW2 = ['', 'mono', 'di', 'tri', 'tetra', 'penta'];
+const NM = { C:'koolstof', S:'zwavel', N:'stikstof', P:'fosfor', Si:'silicium' };
+[['C',1,1],['C',1,2],['S',1,2],['S',1,3],['N',1,1],['N',1,2],['N',2,1],['N',2,3],['N',2,5],['P',2,5],['Si',1,2]].forEach(([e, a, b]) => {
+  const formule = e + (a > 1 ? a : '') + 'O' + (b > 1 ? b : '');
+  const naam = (a > 1 ? TW2[a] : '') + NM[e] + TW2[b] + 'oxide';
+  STOFFEN.push({ formule, naam: naam.replace('monooxide', 'monoxide'), klasse:'nmo', kaal: NM[e] + 'oxide',
+    uitleg: `Niet-metaaloxide: geen ionen. ${a > 1 ? TW2[a] + ' = ' + a + ' ' + e + ', ' : ''}${TW2[b]} = ${b} O.` });
+});
 
 /* ---------- uitlegtabel ---------- */
 $('#klassentabel').innerHTML = KLASSEN.map(k =>
@@ -325,14 +341,14 @@ $('#klassentabel').innerHTML = KLASSEN.map(k =>
 
 /* ---------- keuze ---------- */
 let gekozen = new Set(KLASSEN.map(k => k.id));
-try { const b = JSON.parse(localStorage.getItem('zuren-zouten:klassen')); if (Array.isArray(b) && b.length) gekozen = new Set(b); } catch (e) {}
+try { const b = JSON.parse(localStorage.getItem('zuren-zouten:klassen2')); if (Array.isArray(b) && b.length) gekozen = new Set(b); } catch (e) {}
 $('#klasknoppen').innerHTML = KLASSEN.map(k =>
   `<button class="klasknop" style="--kl:${k.kl}" data-k="${k.id}" aria-pressed="${gekozen.has(k.id)}"><span class="bol"></span>${k.naam}</button>`).join('');
 $$('.klasknop').forEach(b => b.addEventListener('click', () => {
   const k = b.dataset.k;
   if (gekozen.has(k)) { if (gekozen.size === 1) return; gekozen.delete(k); } else gekozen.add(k);
   b.setAttribute('aria-pressed', gekozen.has(k));
-  try { localStorage.setItem('zuren-zouten:klassen', JSON.stringify([...gekozen])); } catch (e) {}
+  try { localStorage.setItem('zuren-zouten:klassen2', JSON.stringify([...gekozen])); } catch (e) {}
   alles();
 }));
 
@@ -352,12 +368,13 @@ $$('.lestab').forEach(t => t.addEventListener('click', () => {
 
 /* ---------- waarom-uitleg ---------- */
 function waarom(s) {
+  if (s.uitleg) return s.uitleg;
   const pos = ionHtml(s.p, '+'), neg = ionHtml(s.n, '−');
   const plus = s.np * s.p.q;
   return `${s.np > 1 ? s.np + ' × ' : ''}${pos} en ${s.nn > 1 ? s.nn + ' × ' : ''}${neg}: ${plus}+ en ${plus}− is samen 0.`;
 }
 function klasseReden(s) {
-  const r = { bz:'H + niet-metaal, zonder O', tz:'H + zuurrest met O', hy:'metaal + OH', bzo:'metaal + niet-metaal, zonder O', tzo:'metaal + zuurrest met O' };
+  const r = { mo:'metaal + O', nmo:'niet-metaal + O', bz:'H + niet-metaal, zonder O', tz:'H + zuurrest met O', hy:'metaal + OH', bzo:'metaal + niet-metaal, zonder O', tzo:'metaal + zuurrest met O' };
   return `${KL[s.klasse].naam.toLowerCase()}: ${r[s.klasse]}`;
 }
 
@@ -367,7 +384,7 @@ function sorteerNieuw() {
   const box = $('#sorteer');
   const kl = KLASSEN.filter(k => gekozen.has(k.id));
   if (kl.length < 2) { box.innerHTML = '<p class="leeg">Kies bovenaan minstens twee stofklassen om te sorteren.</p>'; $('#s-sort').textContent = '–'; return; }
-  sortStoffen = kies(Math.min(12, Math.max(8, kl.length * 2)));
+  sortStoffen = kies(Math.min(14, Math.max(8, kl.length * 2)));
   box.innerHTML = `
     <div class="bak zone" data-k="">${sortStoffen.map((s, i) => `<span class="chip" data-i="${i}" tabindex="0">${sub(s.formule)}</span>`).join('')}</div>
     <div class="kolommen" style="margin-top:12px">${kl.map(k => `<div class="kolom" style="--kl:${k.kl}"><h3>${k.naam}</h3><div class="zone" data-k="${k.id}"></div></div>`).join('')}</div>
@@ -444,7 +461,8 @@ function sorteerCheck() {
 }
 
 /* ---------- 3 NAAM ---------- */
-const norm = t => t.toLowerCase().replace(/[\s\-]/g, '').replace(/iodide/g, 'jodide');
+const norm = t => t.toLowerCase().replace(/[\s\-]/g, '').replace(/iodide/g, 'jodide')
+  .replace(/monooxide/g, 'monoxide').replace(/pentoxide/g, 'pentaoxide').replace(/tetroxide/g, 'tetraoxide');
 function reeks(lijstSel, scoreSel, maakItem) {
   const ul = $(lijstSel); const st = kies(6);
   let goed = 0, klaar = 0;
@@ -467,7 +485,7 @@ function itemNaam(li, s, klaar) {
     if (a === norm(s.naam)) ok = true;
     else if (s.triv && a === norm(s.triv)) { ok = true; tip = ` <i>${s.triv}</i> is de triviale naam. De systematische naam is <b>${s.naam}</b>.`; }
     else if (a === norm(s.kaal) && s.kaal !== s.naam) tip = 'Bijna: de telwoorden ontbreken.';
-    else if (a.replace(/(di|tri|tetra|mono)/g, '') === norm(s.kaal).replace(/(di|tri|tetra|mono)/g, '')) tip = 'Kijk de telwoorden na: tel de ionen in de formule.';
+    else if (a.replace(/(di|tri|tetra|penta|mono)/g, '') === norm(s.kaal).replace(/(di|tri|tetra|penta|mono)/g, '')) tip = 'Kijk de telwoorden na: tel de ionen in de formule.';
     gedaan = true; inp.disabled = true; knop.disabled = true;
     li.classList.add(ok ? 'juist' : 'fout');
     ui.innerHTML = ok
@@ -492,7 +510,7 @@ function itemFormule(li, s, klaar) {
       const letters = x => x.replace(/[\d()]/g, '');
       if (a.toLowerCase() === j.toLowerCase()) tip = 'Let op de hoofdletters: elk symbool begint met één hoofdletter.';
       else if (a.replace(/[()]/g, '') === j.replace(/[()]/g, '')) tip = 'Let op de haakjes rond het samengestelde ion.';
-      else if (letters(a) === letters(j)) tip = 'Kijk de aantallen na: + en − moeten samen 0 zijn.';
+      else if (letters(a) === letters(j)) tip = s.klasse === 'nmo' ? 'Kijk de aantallen na: lees de telwoorden.' : 'Kijk de aantallen na: + en − moeten samen 0 zijn.';
       else tip = 'Kijk welke ionen in de naam staan.';
     }
     gedaan = true; inp.disabled = true; knop.disabled = true;
