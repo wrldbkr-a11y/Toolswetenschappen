@@ -1,0 +1,548 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Zuren, zouten en hydroxiden</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+:root{
+  --bg:#f3f7f6; --surface:#fff; --surface-2:#e9f1ef; --ink:#13201d; --muted:#53635e; --line:#d3dfdb;
+  --accent:#0b6b66; --accent-ink:#fff; --accent-soft:#d8eeeb;
+  --good:#1d7a3b; --good-soft:#dcf2e2; --bad:#b3261e; --bad-soft:#fbe3e1;
+  --bz:#2f6fb0; --tz:#6b46c1; --hy:#0b6b66; --bzo:#c2410c; --tzo:#a16207;
+  --f-display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --f-body:"Atkinson Hyperlegible","Segoe UI",system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+  color-scheme:light;
+}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.55}
+.wrap{max-width:1000px;margin:0 auto;padding:24px 18px 64px;display:flex;flex-direction:column;gap:24px}
+h1,h2,h3{font-family:var(--f-display);margin:0;line-height:1.15;text-wrap:balance}
+h1{font-size:clamp(2rem,6vw,3rem);font-weight:800;letter-spacing:-.02em}
+h2{font-size:1.5rem;font-weight:800}
+h3{font-size:1.15rem;font-weight:600}
+p{margin:0;max-width:68ch}
+a{color:var(--accent)}
+sub{font-size:.7em;line-height:0}
+sup{font-size:.7em;line-height:0}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:6px}
+.eyebrow{font-family:var(--f-mono);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.hero{display:flex;flex-direction:column;gap:8px}
+.hero p{color:var(--muted)}
+
+/* lesdoelen */
+#ldnw{border:1px solid #c9d6e3;border-radius:10px;padding:8px 14px;background:rgba(127,160,200,.08)}
+#ldnw>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;font-weight:700}
+#ldnw>summary::-webkit-details-marker{display:none}
+#ldnw .pijl{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:#2F6FB0;color:#fff;font-size:13px;transition:transform .2s}
+#ldnw[open] .pijl{transform:rotate(90deg)}
+#ldnw .hint{font-weight:500;font-size:13px;opacity:.75}
+#ldnw[open] .hint{display:none}
+#ldnw ul.doelen{margin:10px 0 6px;font-size:15px;line-height:1.5}
+#ldnw .lpd{font-size:12px;color:var(--muted);margin:4px 0 2px}
+
+/* keuze stofklassen */
+.keuze{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.keuze .rij{display:flex;flex-wrap:wrap;gap:8px}
+.klasknop{display:flex;align-items:center;gap:8px;background:var(--surface);border:2px solid var(--line);border-radius:999px;padding:6px 14px;font-weight:700}
+.klasknop .bol{width:14px;height:14px;border-radius:4px;border:2px solid var(--kl);background:transparent}
+.klasknop[aria-pressed="true"]{border-color:var(--kl);background:color-mix(in srgb,var(--kl) 12%,#fff)}
+.klasknop[aria-pressed="true"] .bol{background:var(--kl)}
+.klein{font-size:.9rem;color:var(--muted)}
+
+/* tabs */
+.lesnav{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;position:sticky;top:0;z-index:5;background:var(--bg);padding-block:8px}
+.lestab{text-align:left;background:var(--surface);border:2px solid var(--line);border-radius:14px;padding:9px 12px;display:flex;gap:10px;align-items:flex-start;min-width:0}
+.lestab .nr{font-family:var(--f-mono);font-weight:700;font-size:1.1rem;color:var(--accent)}
+.lestab b{font-family:var(--f-display);font-size:1rem;line-height:1.2}
+.lestab small{display:block;color:var(--muted);font-size:.8rem}
+.lestab[aria-selected="true"]{border-color:var(--accent);background:var(--accent-soft)}
+@media (max-width:760px){.lesnav{grid-template-columns:1fr 1fr;position:static}}
+.les{display:flex;flex-direction:column;gap:20px}
+
+/* vakken */
+.vak{border-radius:0 10px 10px 0;padding:12px 16px;display:flex;flex-direction:column;gap:6px}
+.vak::before{display:block;font-size:11.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+.vak.ken{background:#E8F5EC;border-left:4px solid #1F7A4A}
+.vak.ken::before{content:"Ken dit";color:#1F7A4A}
+.vak.letop{background:#FFF7ED;border-left:4px solid #D97706}
+.vak.letop::before{content:"Let op";color:#B45309}
+.vak.vb{background:transparent;border:1.5px dashed #94A3B8;border-radius:10px}
+.vak.vb::before{content:"Voorbeeld";color:#64748B}
+.vak.vk{background:#EEF4FB;border-left:4px solid #64748B}
+.vak.vk::before{content:"Voorkennis";color:#475569}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:720px){.duo{grid-template-columns:1fr}}
+.kaart{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+ol.stappen{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:4px}
+ol.stappen .waarom{color:var(--muted);font-size:.93rem}
+
+.tabelwrap{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:14px}
+table{border-collapse:collapse;width:100%;font-size:.95rem}
+th,td{text-align:left;padding:8px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+th{font-family:var(--f-mono);font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.f{font-family:var(--f-display);font-weight:800;white-space:nowrap}
+.tag{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;background:var(--kl)}
+
+/* oefeningen */
+.knop{background:var(--surface);border:2px solid var(--line);border-radius:10px;padding:7px 14px;font-weight:700}
+.knop:hover{border-color:var(--accent)}
+.knop.hoofd{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.knoppen{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.oefening{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.oef-kop{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;align-items:center}
+.score{font-family:var(--f-mono);font-weight:700;background:var(--surface-2);border-radius:8px;padding:4px 10px}
+.items{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.item{border:1px solid var(--line);border-left:6px solid var(--line);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:8px}
+.item .vraag{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.item .gegeven{font-family:var(--f-display);font-weight:800;font-size:1.25rem}
+.item input{border:2px solid var(--line);border-radius:8px;padding:6px 10px;background:var(--surface);width:16em;max-width:100%}
+.item input.form{font-family:var(--f-mono);width:10em}
+.item .voorbeeld{font-family:var(--f-display);font-weight:800;font-size:1.15rem;min-width:4em;color:var(--muted)}
+.item.juist{border-left-color:var(--good);background:var(--good-soft)}
+.item.fout{border-left-color:var(--bad);background:var(--bad-soft)}
+.item .uitleg{font-size:.95rem}
+.item.juist .uitleg b:first-child{color:var(--good)}
+.item.fout .uitleg b:first-child{color:var(--bad)}
+.leeg{padding:12px;border:1.5px dashed var(--line);border-radius:12px;color:var(--muted)}
+
+/* sleeptabel */
+.bak{display:flex;flex-wrap:wrap;gap:8px;min-height:58px;padding:10px;border:2px dashed var(--line);border-radius:12px;background:var(--surface-2)}
+.kolommen{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.kolom{border:2px solid var(--kl);border-radius:12px;background:var(--surface);display:flex;flex-direction:column;min-height:190px}
+.kolom h3{font-size:1rem;padding:8px 10px;background:color-mix(in srgb,var(--kl) 14%,#fff);border-radius:10px 10px 0 0;color:color-mix(in srgb,var(--kl) 75%,#000)}
+.kolom .zone{flex:1;display:flex;flex-direction:column;gap:6px;padding:8px;align-items:flex-start}
+.zone.doel-actief{outline:3px dashed var(--accent);outline-offset:-4px;border-radius:10px}
+.chip{font-family:var(--f-display);font-weight:800;font-size:1.15rem;background:var(--surface);border:2px solid var(--line);border-radius:10px;padding:5px 12px;touch-action:none;user-select:none;cursor:grab}
+.chip.gekozen{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.chip.weg{opacity:.3}
+.chip.juist{border-color:var(--good);background:var(--good-soft)}
+.chip.fout{border-color:var(--bad);background:var(--bad-soft)}
+.spook{position:fixed;pointer-events:none;z-index:50;transform:translate(-50%,-50%) rotate(-3deg);box-shadow:0 8px 20px rgba(0,0,0,.18)}
+.fb{display:flex;flex-direction:column;gap:4px}
+.fb ul{margin:0;padding-left:20px}
+
+footer{color:var(--muted);font-size:12px;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <span class="eyebrow">Chemie · 4de jaar · wetenschappelijke richtingen</span>
+  <h1>Zuren, zouten en hydroxiden</h1>
+  <p>Herken de stofklasse, geef de naam en schrijf de formule.</p>
+</header>
+
+<details id="ldnw">
+  <summary><span class="pijl">▶</span>Lesdoelen · Ik kan … <span class="hint">klik om te openen en af te vinken</span></summary>
+  <ul class="doelen">
+    <li>Ik herken aan de formule en aan de naam of een stof een binair zuur, ternair zuur, hydroxide, binair zout of ternair zout is.</li>
+    <li>Ik leid de lading van een ion af uit het PSE (groep Ia, IIa, IIIa, VIa en VIIa).</li>
+    <li>Ik geef de naam van een zuur, zout of hydroxide als de formule gegeven is.</li>
+    <li>Ik schrijf de formule van een zuur, zout of hydroxide als de naam gegeven is.</li>
+  </ul>
+  <p class="lpd">Leerplandoel (voor de leerkracht): II-NatS-d · LPD 13C (classificeren), LPD 14C (IUPAC-naamgeving), LPD 15+ (formules opstellen met het PSE)</p>
+</details>
+
+<section class="keuze" aria-labelledby="keuzetitel">
+  <h3 id="keuzetitel">Met welke stofklassen wil je oefenen?</h3>
+  <div class="rij" id="klasknoppen"></div>
+  <p class="klein">De oefeningen in 2, 3 en 4 gebruiken alleen de stofklassen die je hier aanzet.</p>
+</section>
+
+<nav class="lesnav" role="tablist">
+  <button class="lestab" role="tab" aria-selected="true" aria-controls="t1"><span class="nr">1</span><span><b>Uitleg</b><small>stofklassen en ionen</small></span></button>
+  <button class="lestab" role="tab" aria-selected="false" aria-controls="t2"><span class="nr">2</span><span><b>Sorteren</b><small>sleep naar de juiste kolom</small></span></button>
+  <button class="lestab" role="tab" aria-selected="false" aria-controls="t3"><span class="nr">3</span><span><b>Naam geven</b><small>formule → naam</small></span></button>
+  <button class="lestab" role="tab" aria-selected="false" aria-controls="t4"><span class="nr">4</span><span><b>Formule schrijven</b><small>naam → formule</small></span></button>
+</nav>
+
+<!-- 1 UITLEG -->
+<section class="les" id="t1" role="tabpanel">
+  <div class="vak vk">
+    <p><b>Ionen uit het PSE.</b> Een metaal geeft elektronen af en wordt positief. Groep Ia → 1+, IIa → 2+, IIIa → 3+. Een niet-metaal neemt elektronen op en wordt negatief. Groep VIIa → 1−, VIa → 2−.</p>
+  </div>
+
+  <div class="tabelwrap">
+    <table>
+      <thead><tr><th>Positieve ionen</th><th>Negatieve ionen (één atoom)</th><th>Samengestelde ionen</th></tr></thead>
+      <tbody>
+        <tr><td><span class="f">H<sup>+</sup></span> waterstof</td><td><span class="f">F<sup>−</sup></span> fluoride</td><td><span class="f">OH<sup>−</sup></span> hydroxide</td></tr>
+        <tr><td><span class="f">Li<sup>+</sup></span> lithium, <span class="f">Na<sup>+</sup></span> natrium, <span class="f">K<sup>+</sup></span> kalium</td><td><span class="f">Cl<sup>−</sup></span> chloride</td><td><span class="f">NO<sub>3</sub><sup>−</sup></span> nitraat</td></tr>
+        <tr><td><span class="f">Mg<sup>2+</sup></span> magnesium, <span class="f">Ca<sup>2+</sup></span> calcium, <span class="f">Ba<sup>2+</sup></span> barium</td><td><span class="f">Br<sup>−</sup></span> bromide, <span class="f">I<sup>−</sup></span> jodide</td><td><span class="f">SO<sub>4</sub><sup>2−</sup></span> sulfaat</td></tr>
+        <tr><td><span class="f">Al<sup>3+</sup></span> aluminium</td><td><span class="f">S<sup>2−</sup></span> sulfide</td><td><span class="f">CO<sub>3</sub><sup>2−</sup></span> carbonaat, <span class="f">PO<sub>4</sub><sup>3−</sup></span> fosfaat</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="vak ken">
+    <p><b>Herken de stofklasse.</b> Kijk eerst waarmee de formule begint, en dan wat erachter staat. <b>Binair</b> = 2 soorten atomen. <b>Ternair</b> = 3 soorten atomen. Het negatieve deel van een zuur heet de <b>zuurrest</b>.</p>
+  </div>
+  <div class="tabelwrap">
+    <table>
+      <thead><tr><th>Stofklasse</th><th>Bouw</th><th>Voorbeelden</th></tr></thead>
+      <tbody id="klassentabel"></tbody>
+    </table>
+  </div>
+
+  <div class="duo">
+    <div class="vak ken">
+      <p><b>Naam geven</b></p>
+      <ol class="stappen">
+        <li>Telwoord + naam van het positieve deel.</li>
+        <li>Telwoord + naam van het negatieve deel.</li>
+      </ol>
+      <p>Telwoorden: 1 = niets, 2 = di, 3 = tri. Bij een zuur is het positieve deel <i>waterstof</i>.</p>
+    </div>
+    <div class="vak ken">
+      <p><b>Formule schrijven</b></p>
+      <ol class="stappen">
+        <li>Schrijf de twee ionen met hun lading.</li>
+        <li>Neem zoveel ionen dat + en − samen 0 zijn.</li>
+        <li>Schrijf die aantallen als index. Staat er meer dan één samengesteld ion? Zet het tussen haakjes.</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="kaart">
+    <h3>Uitgewerkt voorbeeld: Al<sub>2</sub>(SO<sub>4</sub>)<sub>3</sub></h3>
+    <ol class="stappen">
+      <li>Stofklasse: ternair zout. <span class="waarom">Waarom? Het begint met een metaal (Al) en de rest bevat zuurstof (SO<sub>4</sub>).</span></li>
+      <li>Ionen: Al<sup>3+</sup> en SO<sub>4</sub><sup>2−</sup>. <span class="waarom">Waarom? Al staat in groep IIIa. Sulfaat ken je uit de tabel.</span></li>
+      <li>2 Al<sup>3+</sup> geeft 6+, 3 SO<sub>4</sub><sup>2−</sup> geeft 6−. <span class="waarom">Waarom? Samen moet het 0 zijn.</span></li>
+      <li>Formule: Al<sub>2</sub>(SO<sub>4</sub>)<sub>3</sub>. <span class="waarom">Waarom de haakjes? De 3 geldt voor de hele groep SO<sub>4</sub>.</span></li>
+      <li>Naam: <b>dialuminiumtrisulfaat</b>. <span class="waarom">Waarom? 2 Al = di + aluminium, 3 SO<sub>4</sub> = tri + sulfaat.</span></li>
+    </ol>
+  </div>
+
+  <div class="vak letop">
+    <p>NaOH bevat zuurstof, maar het is geen ternair zout. OH is geen zuurrest: het is een <b>hydroxide</b>.</p>
+    <p>Schrijf Ca(OH)<sub>2</sub>, niet CaOH<sub>2</sub>. Zonder haakjes betekent de 2 alleen 2 H-atomen.</p>
+  </div>
+
+  <div class="vak vb">
+    <p>Keukenzout is NaCl. Kalkaanslag in je waterkoker is CaCO<sub>3</sub>. In cola zit fosforzuur (H<sub>3</sub>PO<sub>4</sub>). Een ontstopper voor de lavabo bevat NaOH. Een autobatterij bevat zwavelzuur (H<sub>2</sub>SO<sub>4</sub>).</p>
+  </div>
+</section>
+
+<!-- 2 SORTEREN -->
+<section class="les" id="t2" role="tabpanel" hidden>
+  <div class="oefening">
+    <div class="oef-kop"><h2>Sleep elke formule naar de juiste kolom</h2><span class="score" id="s-sort">–</span></div>
+    <p class="klein">Op een tablet of het bord: tik een formule aan en tik daarna op de kolom.</p>
+    <div id="sorteer"></div>
+  </div>
+</section>
+
+<!-- 3 NAAM -->
+<section class="les" id="t3" role="tabpanel" hidden>
+  <div class="oefening">
+    <div class="oef-kop"><h2>Geef de naam</h2><span class="score" id="s-naam">–</span></div>
+    <p class="klein">Typ de naam en druk op Enter. Vergeet de telwoorden niet (di, tri).</p>
+    <ul class="items" id="r-naam"></ul>
+    <div class="knoppen"><button class="knop" id="n-naam">Nieuwe reeks</button></div>
+  </div>
+</section>
+
+<!-- 4 FORMULE -->
+<section class="les" id="t4" role="tabpanel" hidden>
+  <div class="oefening">
+    <div class="oef-kop"><h2>Schrijf de formule</h2><span class="score" id="s-form">–</span></div>
+    <p class="klein">Typ cijfers gewoon, bv. <b>Ca3(PO4)2</b>. Ze worden vanzelf klein gezet. Let op hoofdletters. Druk op Enter.</p>
+    <ul class="items" id="r-form"></ul>
+    <div class="knoppen"><button class="knop" id="n-form">Nieuwe reeks</button></div>
+  </div>
+</section>
+
+<footer>vakgroep wetenschappen · Maria Assumpta Lyceum · ontwikkeld met hulp van AI · CC BY-NC-SA 4.0</footer>
+</div>
+
+<script>
+(() => {
+const $ = (s, el = document) => el.querySelector(s);
+const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const sub = f => f.replace(/(\d+)/g, '<sub>$1</sub>');
+const gcd = (a, b) => b ? gcd(b, a % b) : a;
+
+/* ---------- gegevens ---------- */
+const KLASSEN = [
+  { id:'bz',  naam:'Binair zuur',  kl:'var(--bz)',  bouw:'H + niet-metaal (geen O)', vb:'HCl, H2S' },
+  { id:'tz',  naam:'Ternair zuur', kl:'var(--tz)',  bouw:'H + niet-metaal + O', vb:'H2SO4, HNO3' },
+  { id:'hy',  naam:'Hydroxide',    kl:'var(--hy)',  bouw:'metaal + OH', vb:'NaOH, Ca(OH)2' },
+  { id:'bzo', naam:'Binair zout',  kl:'var(--bzo)', bouw:'metaal + niet-metaal (geen O)', vb:'NaCl, CaBr2' },
+  { id:'tzo', naam:'Ternair zout', kl:'var(--tzo)', bouw:'metaal + niet-metaal + O', vb:'CaCO3, Na2SO4' },
+];
+const KL = Object.fromEntries(KLASSEN.map(k => [k.id, k]));
+const POS = [
+  { s:'H', n:'waterstof', q:1 },
+  { s:'Li', n:'lithium', q:1 }, { s:'Na', n:'natrium', q:1 }, { s:'K', n:'kalium', q:1 },
+  { s:'Mg', n:'magnesium', q:2 }, { s:'Ca', n:'calcium', q:2 }, { s:'Ba', n:'barium', q:2 },
+  { s:'Al', n:'aluminium', q:3 },
+];
+const NEG = [
+  { s:'F', n:'fluoride', q:1 }, { s:'Cl', n:'chloride', q:1 }, { s:'Br', n:'bromide', q:1 }, { s:'I', n:'jodide', q:1 },
+  { s:'S', n:'sulfide', q:2 },
+  { s:'OH', n:'hydroxide', q:1, poly:true, hy:true },
+  { s:'NO3', n:'nitraat', q:1, poly:true, ox:true },
+  { s:'SO4', n:'sulfaat', q:2, poly:true, ox:true },
+  { s:'CO3', n:'carbonaat', q:2, poly:true, ox:true },
+  { s:'PO4', n:'fosfaat', q:3, poly:true, ox:true },
+];
+const TW = ['', '', 'di', 'tri', 'tetra'];
+const TRIV = { HCl:'zoutzuur', HNO3:'salpeterzuur', H2SO4:'zwavelzuur', H2CO3:'koolzuur', H3PO4:'fosforzuur' };
+const lad = q => (q > 1 ? q : '') ;
+const ionHtml = (x, teken) => `${sub(x.s)}<sup>${lad(x.q)}${teken}</sup>`;
+
+function maakStof(p, n) {
+  const g = gcd(p.q, n.q), np = n.q / g, nn = p.q / g;
+  const fNeg = n.poly && nn > 1 ? `(${n.s})${nn}` : n.s + (nn > 1 ? nn : '');
+  const formule = p.s + (np > 1 ? np : '') + fNeg;
+  let klasse;
+  if (p.s === 'H') klasse = n.ox ? 'tz' : 'bz';
+  else klasse = n.hy ? 'hy' : n.ox ? 'tzo' : 'bzo';
+  const naam = TW[np] + p.n + TW[nn] + n.n;
+  return { p, n, np, nn, formule, klasse, naam, kaal: p.n + n.n, triv: TRIV[formule] };
+}
+const STOFFEN = [];
+for (const p of POS) for (const n of NEG) {
+  if (p.s === 'H' && n.hy) continue;              // H2O is geen zuur
+  if (p.s === 'Al' && n.s === 'CO3') continue;    // bestaat niet
+  STOFFEN.push(maakStof(p, n));
+}
+
+/* ---------- uitlegtabel ---------- */
+$('#klassentabel').innerHTML = KLASSEN.map(k =>
+  `<tr><td style="--kl:${k.kl}"><span class="tag"></span><b>${k.naam}</b></td><td>${k.bouw}</td><td>${k.vb.split(', ').map(f => `<span class="f">${sub(f)}</span>`).join(', ')}</td></tr>`).join('');
+
+/* ---------- keuze ---------- */
+let gekozen = new Set(KLASSEN.map(k => k.id));
+try { const b = JSON.parse(localStorage.getItem('zuren-zouten:klassen')); if (Array.isArray(b) && b.length) gekozen = new Set(b); } catch (e) {}
+$('#klasknoppen').innerHTML = KLASSEN.map(k =>
+  `<button class="klasknop" style="--kl:${k.kl}" data-k="${k.id}" aria-pressed="${gekozen.has(k.id)}"><span class="bol"></span>${k.naam}</button>`).join('');
+$$('.klasknop').forEach(b => b.addEventListener('click', () => {
+  const k = b.dataset.k;
+  if (gekozen.has(k)) { if (gekozen.size === 1) return; gekozen.delete(k); } else gekozen.add(k);
+  b.setAttribute('aria-pressed', gekozen.has(k));
+  try { localStorage.setItem('zuren-zouten:klassen', JSON.stringify([...gekozen])); } catch (e) {}
+  alles();
+}));
+
+/* gespreid kiezen: om beurten een stof uit elke gekozen klasse */
+function kies(aantal) {
+  const per = KLASSEN.filter(k => gekozen.has(k.id)).map(k => shuffle(STOFFEN.filter(s => s.klasse === k.id)));
+  const uit = []; let i = 0;
+  while (uit.length < aantal && per.some(l => l.length)) { const l = per[i++ % per.length]; if (l.length) uit.push(l.pop()); }
+  return shuffle(uit);
+}
+
+/* ---------- tabs ---------- */
+$$('.lestab').forEach(t => t.addEventListener('click', () => {
+  $$('.lestab').forEach(x => x.setAttribute('aria-selected', x === t));
+  $$('.les').forEach(p => p.hidden = p.id !== t.getAttribute('aria-controls'));
+}));
+
+/* ---------- waarom-uitleg ---------- */
+function waarom(s) {
+  const pos = ionHtml(s.p, '+'), neg = ionHtml(s.n, '−');
+  const plus = s.np * s.p.q;
+  return `${s.np > 1 ? s.np + ' × ' : ''}${pos} en ${s.nn > 1 ? s.nn + ' × ' : ''}${neg}: ${plus}+ en ${plus}− is samen 0.`;
+}
+function klasseReden(s) {
+  const r = { bz:'H + niet-metaal, zonder O', tz:'H + zuurrest met O', hy:'metaal + OH', bzo:'metaal + niet-metaal, zonder O', tzo:'metaal + zuurrest met O' };
+  return `${KL[s.klasse].naam.toLowerCase()}: ${r[s.klasse]}`;
+}
+
+/* ---------- 2 SORTEREN ---------- */
+let sortStoffen = [];
+function sorteerNieuw() {
+  const box = $('#sorteer');
+  const kl = KLASSEN.filter(k => gekozen.has(k.id));
+  if (kl.length < 2) { box.innerHTML = '<p class="leeg">Kies bovenaan minstens twee stofklassen om te sorteren.</p>'; $('#s-sort').textContent = '–'; return; }
+  sortStoffen = kies(Math.min(12, Math.max(8, kl.length * 2)));
+  box.innerHTML = `
+    <div class="bak zone" data-k="">${sortStoffen.map((s, i) => `<span class="chip" data-i="${i}" tabindex="0">${sub(s.formule)}</span>`).join('')}</div>
+    <div class="kolommen" style="margin-top:12px">${kl.map(k => `<div class="kolom" style="--kl:${k.kl}"><h3>${k.naam}</h3><div class="zone" data-k="${k.id}"></div></div>`).join('')}</div>
+    <div class="knoppen" style="margin-top:12px"><button class="knop hoofd" id="sort-check">Controleer</button><button class="knop" id="sort-nieuw">Nieuwe formules</button></div>
+    <div class="fb" id="sort-fb" aria-live="polite"></div>`;
+  $('#s-sort').textContent = `0/${sortStoffen.length}`;
+  $('#sort-check').onclick = sorteerCheck;
+  $('#sort-nieuw').onclick = sorteerNieuw;
+  $$('.chip', box).forEach(maakSleepbaar);
+  $$('.zone', box).forEach(z => z.addEventListener('click', e => {
+    if (e.target.closest('.chip')) return;
+    const c = $('.chip.gekozen', box); if (c) { verplaats(c, z); }
+  }));
+}
+function verplaats(chip, zone) {
+  chip.classList.remove('gekozen', 'juist', 'fout');
+  zone.appendChild(chip);
+  $('#sort-fb').innerHTML = '';
+}
+function maakSleepbaar(chip) {
+  let start = null, spook = null, doel = null;
+  const zoneOp = (x, y) => { const el = document.elementFromPoint(x, y); return el && el.closest('#sorteer .zone'); };
+  chip.addEventListener('pointerdown', e => {
+    if (e.button > 0) return;
+    start = { x: e.clientX, y: e.clientY }; chip.setPointerCapture(e.pointerId);
+  });
+  chip.addEventListener('pointermove', e => {
+    if (!start) return;
+    if (!spook && Math.hypot(e.clientX - start.x, e.clientY - start.y) > 6) {
+      spook = chip.cloneNode(true); spook.classList.add('spook'); spook.classList.remove('gekozen');
+      document.body.appendChild(spook); chip.classList.add('weg');
+    }
+    if (spook) {
+      spook.style.left = e.clientX + 'px'; spook.style.top = e.clientY + 'px';
+      const z = zoneOp(e.clientX, e.clientY);
+      if (z !== doel) { doel && doel.classList.remove('doel-actief'); doel = z; doel && doel.classList.add('doel-actief'); }
+    }
+  });
+  const einde = e => {
+    if (!start) return;
+    if (spook) {
+      spook.remove(); spook = null; chip.classList.remove('weg');
+      doel && doel.classList.remove('doel-actief');
+      const z = zoneOp(e.clientX, e.clientY); if (z) verplaats(chip, z);
+      doel = null;
+    } else if (e.type === 'pointerup') {
+      const was = chip.classList.contains('gekozen');
+      $$('#sorteer .chip.gekozen').forEach(c => c.classList.remove('gekozen'));
+      if (!was) chip.classList.add('gekozen');
+    }
+    start = null;
+  };
+  chip.addEventListener('pointerup', einde);
+  chip.addEventListener('pointercancel', einde);
+  chip.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); chip.classList.toggle('gekozen'); }
+  });
+}
+function sorteerCheck() {
+  let goed = 0; const fouten = [];
+  $$('#sorteer .kolom .chip').forEach(c => {
+    const s = sortStoffen[+c.dataset.i], k = c.parentElement.dataset.k;
+    const ok = s.klasse === k;
+    c.classList.toggle('juist', ok); c.classList.toggle('fout', !ok);
+    if (ok) goed++; else fouten.push(`<li><b class="f">${sub(s.formule)}</b> is een ${klasseReden(s)}.</li>`);
+  });
+  const rest = $$('#sorteer .bak .chip').length;
+  $('#s-sort').textContent = `${goed}/${sortStoffen.length}`;
+  let t = '';
+  if (rest) t += `<p>Er liggen nog <b>${rest}</b> formules in de bak.</p>`;
+  if (fouten.length) t += `<p class="nok"><b style="color:var(--bad)">Nog niet juist:</b></p><ul>${fouten.join('')}</ul><p class="klein">Sleep de rode formules naar de juiste kolom en controleer opnieuw.</p>`;
+  if (!rest && !fouten.length) t = `<p><b style="color:var(--good)">Alles juist!</b> Klik op <i>Nieuwe formules</i> voor een nieuwe reeks.</p>`;
+  $('#sort-fb').innerHTML = t;
+}
+
+/* ---------- 3 NAAM ---------- */
+const norm = t => t.toLowerCase().replace(/[\s\-]/g, '').replace(/iodide/g, 'jodide');
+function reeks(lijstSel, scoreSel, maakItem) {
+  const ul = $(lijstSel); const st = kies(6);
+  let goed = 0, klaar = 0;
+  ul.innerHTML = '';
+  st.forEach(s => {
+    const li = document.createElement('li'); li.className = 'item';
+    ul.appendChild(li);
+    maakItem(li, s, ok => { klaar++; if (ok) goed++; $(scoreSel).textContent = `${goed}/${st.length}`; });
+  });
+  $(scoreSel).textContent = `0/${st.length}`;
+}
+function itemNaam(li, s, klaar) {
+  li.innerHTML = `<div class="vraag"><span class="gegeven">${sub(s.formule)}</span><input type="text" autocomplete="off" spellcheck="false" aria-label="naam"><button class="knop">Controleer</button></div><div class="uitleg" aria-live="polite"></div>`;
+  const inp = $('input', li), knop = $('button', li), ui = $('.uitleg', li);
+  let gedaan = false;
+  const check = () => {
+    if (gedaan) return;
+    const a = norm(inp.value); if (!a) return;
+    let ok = false, tip = '';
+    if (a === norm(s.naam)) ok = true;
+    else if (s.triv && a === norm(s.triv)) { ok = true; tip = ` <i>${s.triv}</i> is de triviale naam. De systematische naam is <b>${s.naam}</b>.`; }
+    else if (a === norm(s.kaal) && s.kaal !== s.naam) tip = 'Bijna: de telwoorden ontbreken.';
+    else if (a.replace(/(di|tri|tetra|mono)/g, '') === norm(s.kaal).replace(/(di|tri|tetra|mono)/g, '')) tip = 'Kijk de telwoorden na: tel de ionen in de formule.';
+    gedaan = true; inp.disabled = true; knop.disabled = true;
+    li.classList.add(ok ? 'juist' : 'fout');
+    ui.innerHTML = ok
+      ? `<b>Juist!</b> ${tip || ''} <span class="klein">${KL[s.klasse].naam}.</span>`
+      : `<b>Niet juist.</b> ${tip} Juist is <b>${s.naam}</b>${s.triv ? ` (${s.triv})` : ''}. <br>${KL[s.klasse].naam} · ${waarom(s)}`;
+    klaar(ok);
+  };
+  knop.onclick = check; inp.addEventListener('keydown', e => { if (e.key === 'Enter') check(); });
+}
+
+/* ---------- 4 FORMULE ---------- */
+function itemFormule(li, s, klaar) {
+  li.innerHTML = `<div class="vraag"><span class="gegeven" style="font-size:1.1rem;min-width:13.5em">${s.naam}</span><input class="form" type="text" autocomplete="off" spellcheck="false" autocapitalize="off" aria-label="formule"><span class="voorbeeld" aria-hidden="true"></span><button class="knop">Controleer</button></div><div class="uitleg" aria-live="polite"></div>`;
+  const inp = $('input', li), knop = $('button', li), ui = $('.uitleg', li), vb = $('.voorbeeld', li);
+  inp.addEventListener('input', () => { vb.innerHTML = sub(inp.value.replace(/[<>&]/g, '').replace(/\s/g, '')); });
+  let gedaan = false;
+  const check = () => {
+    if (gedaan) return;
+    const a = inp.value.replace(/\s/g, ''); if (!a) return;
+    const j = s.formule; let ok = a === j, tip = '';
+    if (!ok) {
+      const letters = x => x.replace(/[\d()]/g, '');
+      if (a.toLowerCase() === j.toLowerCase()) tip = 'Let op de hoofdletters: elk symbool begint met één hoofdletter.';
+      else if (a.replace(/[()]/g, '') === j.replace(/[()]/g, '')) tip = 'Let op de haakjes rond het samengestelde ion.';
+      else if (letters(a) === letters(j)) tip = 'Kijk de aantallen na: + en − moeten samen 0 zijn.';
+      else tip = 'Kijk welke ionen in de naam staan.';
+    }
+    gedaan = true; inp.disabled = true; knop.disabled = true;
+    li.classList.add(ok ? 'juist' : 'fout');
+    ui.innerHTML = ok
+      ? `<b>Juist!</b> <span class="klein">${waarom(s)}</span>`
+      : `<b>Niet juist.</b> ${tip} Juist is <b class="f">${sub(j)}</b>.<br>${waarom(s)}`;
+    klaar(ok);
+  };
+  knop.onclick = check; inp.addEventListener('keydown', e => { if (e.key === 'Enter') check(); });
+}
+
+const nieuwNaam = () => reeks('#r-naam', '#s-naam', itemNaam);
+const nieuwForm = () => reeks('#r-form', '#s-form', itemFormule);
+$('#n-naam').onclick = nieuwNaam;
+$('#n-form').onclick = nieuwForm;
+function alles() { sorteerNieuw(); nieuwNaam(); nieuwForm(); }
+alles();
+})();
+</script>
+<!--vinkjes-->
+<style>
+.doel ul:has(.vk-li),ul.doelen:has(.vk-li){list-style:none;padding-left:0}
+.vk-li{display:flex;gap:10px;align-items:flex-start;cursor:pointer;margin:4px 0;list-style:none}
+.vk{flex:none;width:22px;height:22px;margin-top:1px;border:2px solid #64748b;border-radius:5px;background:#fff;display:inline-grid;place-items:center;cursor:pointer;padding:0}
+.vk:focus-visible{outline:3px solid #60a5fa;outline-offset:2px}
+.vk.aan{background:#16a34a;border-color:#16a34a}
+.vk.aan::after{content:"";width:6px;height:11px;border:solid #fff;border-width:0 3px 3px 0;transform:translateY(-1px) rotate(45deg)}
+.vk-li.aan .vk-t{color:#15803d}
+@media print{.vk{background:#fff!important;border-color:#000!important}.vk.aan::after{border-color:#000}}
+</style>
+<script>
+(function(){
+  var K='vinkjes:'+location.pathname.split('/').pop();
+  var st={}; try{st=JSON.parse(localStorage.getItem(K)||'{}')}catch(e){}
+  function bewaar(){try{localStorage.setItem(K,JSON.stringify(st))}catch(e){}}
+  var lis=document.querySelectorAll('.doel ul > li, ul.doelen > li');
+  [].forEach.call(lis,function(li,i){
+    if(li.querySelector('.vk')) return;
+    var b=document.createElement('button'); b.type='button'; b.className='vk'; b.setAttribute('role','checkbox');
+    b.setAttribute('aria-label','Ik kan dit');
+    var t=document.createElement('span'); t.className='vk-t';
+    while(li.firstChild) t.appendChild(li.firstChild);
+    li.appendChild(b); li.appendChild(t); li.classList.add('vk-li');
+    function zet(a){ st[i]=a; b.classList.toggle('aan',a); li.classList.toggle('aan',a); b.setAttribute('aria-checked',a?'true':'false'); }
+    zet(!!st[i]);
+    li.addEventListener('click',function(e){ if(e.target.closest('a')) return; zet(!st[i]); bewaar(); });
+  });
+})();
+</script>
+<!--/vinkjes-->
+</body>
+</html>
