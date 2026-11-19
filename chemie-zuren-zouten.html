@@ -497,6 +497,31 @@ function itemNaam(li, s, klaar) {
 }
 
 /* ---------- 4 FORMULE ---------- */
+/* verkeerde zuurrest, bv. HNO4 i.p.v. HNO3 */
+function zuurrestFout(a, s) {
+  if (!s.n || !s.n.ox) return '';
+  const m = s.n.s.match(/^([A-Z][a-z]?)O(\d)$/), c = m[1], o = m[2];
+  const rest = a.slice(s.p.s.length).replace(/^\d*/, '');
+  const g = rest.match(new RegExp('^\\(?' + c + 'O(\\d*)'));
+  if (!g || (g[1] || '1') === o) return '';
+  return `${s.n.n[0].toUpperCase() + s.n.n.slice(1)} is <b>${ionHtml(s.n, '−')}</b>, niet ${sub(c + 'O' + (g[1] || ''))}. Kijk de zuurrest na in de tabel van de ionen.`;
+}
+/* juiste ionen, verkeerde aantallen, bv. H2NO3: totale lading is niet 0 */
+function ladingFout(a, s) {
+  if (!s.n) return '';
+  const esc = x => x.replace(/[()]/g, '\\$&');
+  const m = a.match(new RegExp('^' + s.p.s + '(\\d*)(?:\\(' + esc(s.n.s) + '\\)(\\d+)|' + esc(s.n.s) + '(\\d*))$'));
+  if (!m) return '';
+  const np = +(m[1] || 1), nn = +(m[2] || m[3] || 1);
+  const plus = np * s.p.q, min = nn * s.n.q;
+  const ion = (n, x, t) => (n > 1 ? n + ' × ' : '') + ionHtml(x, t);
+  if (plus !== min) {
+    const tot = plus - min;
+    return `Kijk naar de ladingen: ${ion(np, s.p, '+')} geeft ${plus}+ en ${ion(nn, s.n, '−')} geeft ${min}−. Samen is dat ${tot > 0 ? tot + '+' : -tot + '−'}. De totale lading moet 0 zijn.`;
+  }
+  if (np !== s.np) return 'De totale lading is 0, maar gebruik de kleinste aantallen.';
+  return '';
+}
 function itemFormule(li, s, klaar) {
   li.innerHTML = `<div class="vraag"><span class="gegeven" style="font-size:1.1rem;min-width:13.5em">${s.naam}</span><input class="form" type="text" autocomplete="off" spellcheck="false" autocapitalize="off" aria-label="formule"><span class="voorbeeld" aria-hidden="true"></span><button class="knop">Controleer</button></div><div class="uitleg" aria-live="polite"></div>`;
   const inp = $('input', li), knop = $('button', li), ui = $('.uitleg', li), vb = $('.voorbeeld', li);
@@ -510,6 +535,8 @@ function itemFormule(li, s, klaar) {
       const letters = x => x.replace(/[\d()]/g, '');
       if (a.toLowerCase() === j.toLowerCase()) tip = 'Let op de hoofdletters: elk symbool begint met één hoofdletter.';
       else if (a.replace(/[()]/g, '') === j.replace(/[()]/g, '')) tip = 'Let op de haakjes rond het samengestelde ion.';
+      else if (zuurrestFout(a, s)) tip = zuurrestFout(a, s);
+      else if (ladingFout(a, s)) tip = ladingFout(a, s);
       else if (letters(a) === letters(j)) tip = s.klasse === 'nmo' ? 'Kijk de aantallen na: lees de telwoorden.' : 'Kijk de aantallen na: + en − moeten samen 0 zijn.';
       else tip = 'Kijk welke ionen in de naam staan.';
     }
